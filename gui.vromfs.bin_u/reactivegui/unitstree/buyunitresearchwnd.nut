@@ -1,28 +1,31 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { buy_unit_research, unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { textButtonPricePurchase } = require("%rGui/components/textButton.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
-let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
-let { PURCH_SRC_UNIT_RESEARCH, PURCH_TYPE_UNIT_EXP, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { unitsResearchStatus, visibleNodes } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { unitPlateWidth, unitPlateHeight } = require("%rGui/unit/components/unitPlateComp.nut")
-let { mkTreeNodesUnitPlateSimple } = require("%rGui/unitsTree/components/unitPlateNodeComp.nut")
-let { mkCustomMsgBoxWnd, mkBtn } = require("%rGui/components/msgBox.nut")
-let { animUnitAfterResearch, animExpPart, animNewUnitsAfterResearch } = require("%rGui/unitsTree/animState.nut")
-let { spendingUnlocks } = require("%rGui/unlocks/unlocks.nut")
-let { mkQuestDesc } = require("%rGui/shop/msgQuestDesc.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/currenciesState.nut" import GOLD
+from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import buy_unit_research, unitInProgress, registerHandler
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/msgBox.nut" import mkCustomMsgBoxWnd, mkBtn
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/textButton.nut" import textButtonPricePurchase
+from "%rGui/gameModes/newbieOfflineMissions.nut" import isFirstBattleRewardPart
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_UNIT_RESEARCH, PURCH_TYPE_UNIT_EXP, mkBqPurchaseInfo
+from "%rGui/shop/msgBoxPurchase.nut" import showNoBalanceMsgIfNeed
+from "%rGui/shop/msgQuestDesc.nut" import mkQuestDesc
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/tutorial/tutorialConst.nut" import TUTORIAL_UNITS_RESEARCH_ID
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import activeTutorialId
+from "%rGui/unit/components/unitPlateComp.nut" import unitPlateWidth, unitPlateHeight
+from "%rGui/unitsTree/animState.nut" import animUnitAfterResearch, animExpPart, animNewUnitsAfterResearch
+from "%rGui/unitsTree/components/unitPlateNodeComp.nut" import mkTreeNodesUnitPlateSimple
+from "%rGui/unitsTree/unitsTreeNodesState.nut" import unitsResearchStatus, visibleNodes
+from "%rGui/unlocks/unlocks.nut" import spendingUnlocks
 
 
-let WND_UID = "buyUnitResearchWnd"
+const WND_UID = "buyUnitResearchWnd"
 let currencyIdByUnitCost = {
   costGold = "gold"
 }
@@ -35,6 +38,8 @@ let unitResearchCfg = Computed(@() campConfigs.get()?.unitResearchLevels[unit.ge
 let unitCurrencyId = Computed(@()
   currencyIdByUnitCost?[unitResearchCfg.get()?.keys().findvalue(@(v) v in currencyIdByUnitCost)] ?? "")
 let needShowWnd = keepref(Computed(@() unitName.get() != null))
+let hasFreeUnitResearchToBuy = Computed(@() activeTutorialId.get() == TUTORIAL_UNITS_RESEARCH_ID
+  && isFirstBattleRewardPart.get())
 let wndSize = [hdpx(1100), hdpx(700)]
 
 let close = @() unitName.set(null)
@@ -68,8 +73,10 @@ registerHandler("buyUnitResearch", function(res, context) {
   close()
 })
 
-let function mkPrice() {
+function mkPrice() {
   let speedUpCost = Computed(function() {
+    if (hasFreeUnitResearchToBuy.get())
+      return 0
     let { costGold = 0, nextLevelExp = 0 } = unitResearchCfg.get()
     return nextLevelExp
         ? max(1, (min(1.0, (nextLevelExp - unitExp.get()).tofloat() / nextLevelExp) * costGold + 0.5).tointeger())
@@ -78,12 +85,15 @@ let function mkPrice() {
 
   return @() {
     watch = [unitInProgress, speedUpCost, unitCurrencyId]
+    key = "buy_unit_research_btn" 
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = speedUpCost.get() == null ? null
       : unitInProgress.get() != null ? spinner
       : textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
-        mkCurrencyComp(speedUpCost.get(), unitCurrencyId.get()), @() onClick(speedUpCost.get() ?? 0))
+          mkCurrencyComp(speedUpCost.get() == 0 ? utf8ToUpper(loc("shop/free")) : speedUpCost.get(),
+            unitCurrencyId.get()),
+          @() onClick(speedUpCost.get() ?? 0))
   }
 }
 
@@ -96,7 +106,7 @@ function mkContent() {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
-    margin = [0, 0, hdpx(20), 0]
+    margin = const [0, 0, hdpx(20), 0]
     gap = hdpx(30)
     children = [
       @() {

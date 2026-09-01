@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { bpCardStyle, bpCardPadding, bpCardMargin } = require("%rGui/battlePass/bpCardsStyle.nut")
-let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
-let { bpCurProgressbar, bpProgressbarEmpty, bpProgressbarFull, progressIconSize, mkBuyLevelBlock
-} = require("%rGui/battlePass/passPkg.nut")
-let { purchBtnHeight } = require("%rGui/battlePass/passRewardsListComp.nut")
+from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle, bpCardPadding, bpCardMargin
+from "%rGui/battlePass/passPkg.nut" import bpCurProgressbar, bpProgressbarEmpty, bpProgressbarFull, progressIconSize,
+  mkBuyLevelBlock
+from "%rGui/battlePass/passRewardsListComp.nut" import purchBtnHeight
+from "%rGui/rewards/rewardStyles.nut" import getRewardPlateSize
+
 
 let buyLevelBlockOffs = -(purchBtnHeight + hdpx(10))
 
@@ -92,7 +93,7 @@ function bpLineBetweenLevelIcons(stage, curStage, pointsCurStage, pointsPerStage
   return @() {
     watch = curStage
     size = [widthLine, hdpx(15)]
-    pos = [0, hdpx(16)]
+    pos = const [0, hdpx(16)]
     children = stage?.isVip ? null
       : stage.progress == curStage.get() ? bpCurProgressbar(pointsCurStage, pointsPerStage, {size = const [FLEX, hdpx(15)]})
       : stage.progress < curStage.get() ? bpProgressbarFull
@@ -115,6 +116,7 @@ function bpProgressBar(rewardsStages, curStage, pointsCurStage, pointsPerStage,
       stage?.isVip ? emptyStage : mkStageIcon(stage, curStage, levelPrice, isLevelPurchaseInProgress, buyLevelMsg)
       lastIdx == idx ? null : bpLineBetweenLevelIcons(stage, curStage, pointsCurStage, pointsPerStage) )
   return {
+    key = "battle_pass_progress_bar"
     pos = [ posFirstElem, 0]
     margin = [-buyLevelBlockOffs, buyOverflow, 0, 0]
     flow = FLOW_HORIZONTAL

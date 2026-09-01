@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_time_msec } = require("dagor.time")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { sin, cos, PI } = require("math")
-let { addDbgOverlay, removeDbgOverlay } = require("%rGui/components/debugOverlay.nut")
-let { debugAdsWndParams } = require("%rGui/ads/adsInternalState.nut")
-let { textButtonPrimary } = require("%rGui/components/textButton.nut")
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "eventbus" import eventbus_send
+from "math" import sin, cos, PI
+from "%rGui/ads/adsInternalState.nut" import debugAdsWndParams
+from "%rGui/components/debugOverlay.nut" import addDbgOverlay, removeDbgOverlay
+from "%rGui/components/textButton.nut" import textButtonPrimary
 
 
-let WND_UID = "debugAdsWnd"
+const WND_UID = "debugAdsWnd"
 let isOpened = keepref(Computed(@() debugAdsWndParams.get() != null))
 function sendEnvet(evt) {
   let evtId = debugAdsWndParams.get()?[$"{evt}Event"]
@@ -21,13 +21,13 @@ function close() {
 }
 
 let isRewardReceived = Watched(false)
-let REWARDS_TIME = 5.0
-let AUTO_FINISH_TIME = 8.0
-let totalAnim = 40
-let imgSize = hdpxi(50)
+const REWARDS_TIME = 5.0
+const AUTO_FINISH_TIME = 8.0
+const totalAnim = 40
+const imgSize = hdpxi(50)
 let image = Picture($"ui/gameuiskin#currency_eagles.svg:{imgSize}:{imgSize}")
-let rotatePeriodMsec = 2500
-let movePeriodMsec = 11000
+const rotatePeriodMsec = 2500
+const movePeriodMsec = 11000
 let blockSize = [hdpx(900), hdpx(600)]
 
 function applyRewards() {
@@ -87,7 +87,7 @@ let openScene = @() addDbgOverlay({
     }.__update(fontMedium)
     @() {
       watch = isRewardReceived
-      pos = [0, sh(15)]
+      pos = const [0, sh(15)]
       rendObj = ROBJ_TEXT
       text = isRewardReceived.get() ? "Rewards received" : ""
     }

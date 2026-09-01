@@ -1,13 +1,15 @@
-let { Computed } = require("frp")
-let { get_settings_blk } = require("blkGetters")
-let { is_ios, is_android, is_nswitch } = require("%sqstd/platform.nut")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
-let { number_of_set_bits } = require("%sqstd/math.nut")
-let { shouldDisableMenu, isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
-let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
+from "blkGetters" import get_settings_blk
+from "frp" import Computed
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/math.nut" import number_of_set_bits
+from "%sqstd/platform.nut" import is_ios, is_android, is_nswitch
+import "%globalScripts/isAppLoaded.nut" as isAppLoaded
+from "%appGlobals/clientState/initialState.nut" import shouldDisableMenu, isOfflineMenu
+from "%appGlobals/curCircuitOverride.nut" import isExternalOperator
+
+
 let { isHMSAvailable = @() false } = require("android.account.huawei")
 let { getBuildMarket = @() "googleplay" } = require("android.platform")
-let { isExternalOperator } = require("%appGlobals/curCircuitOverride.nut")
 
 let LOGIN_STATE = { 
   
@@ -44,21 +46,22 @@ let LOGIN_STATE = {
   LOGGED_IN                   = 0x07FF7 
 }
 
-let LOGIN_UPDATER_EVENT_ID = "loginUpdaterEvent"
+const LOGIN_UPDATER_EVENT_ID = "loginUpdaterEvent"
 
-let loginState = sharedWatched("loginState", @() LOGIN_STATE.NOT_LOGGED_IN)
-let isLoginRequired = sharedWatched("isLoginRequired", @() !shouldDisableMenu && !isOfflineMenu)
-let curLoginType = sharedWatched("curLoginType", @() "")
-let authTags = sharedWatched("authTags", @() [])
-let isLoginByGajin = sharedWatched("isLoginByGajin", @() false)
-let legalListForApprove = sharedWatched("legalsToApprove", @() {})
-let isMatchingOnline = sharedWatched("isMatchingOnline", @() false)
-let isConsentAllowLogin = sharedWatched("isConsentAllowLogin", @() false)
-let goodleConsent = sharedWatched("googleConsent", @() null)
+let loginState = hardPersistWatched("loginState", LOGIN_STATE.NOT_LOGGED_IN)
+let isLoginRequired = hardPersistWatched("isLoginRequired", !shouldDisableMenu && !isOfflineMenu)
+let curLoginType = hardPersistWatched("curLoginType", "")
+let authTags = hardPersistWatched("authTags", [])
+let isLoginByGajin = hardPersistWatched("isLoginByGajin", false)
+let legalListForApprove = hardPersistWatched("legalsToApprove", {})
+let isMatchingOnline = hardPersistWatched("isMatchingOnline", false)
+let isConsentAllowLogin = hardPersistWatched("isConsentAllowLogin", false)
+let goodleConsent = hardPersistWatched("googleConsent", null)
 let isGoogleConsentShowed = Computed(@() goodleConsent.get()?.isShowed ?? false)
-let isPreviewIDFAShowed = sharedWatched("isPreviewIDFAShowed", @() false)
-let isReadyForShowPreviewIdfa = sharedWatched("isReadyForShowPreviewIdfa", @() false)
-let isTcfConsentAllowLogin = sharedWatched("isTcfConsentAllowLogin", @() false)
+let isPreviewIDFAShowed = hardPersistWatched("isPreviewIDFAShowed", false)
+let isReadyForShowPreviewIdfa = hardPersistWatched("isReadyForShowPreviewIdfa", false)
+let isTcfConsentAllowLogin = hardPersistWatched("isTcfConsentAllowLogin", false)
+let needLogoutAfterSession = hardPersistWatched("needLogoutAfterSession", false)
 
 function getLoginStateDebugStr(state = null) {
   state = state ?? loginState.get()
@@ -84,6 +87,16 @@ let secondStepTypes = {
   SST_GP = "GP"
   SST_UNKNOWN = "Unknown"
 }
+
+let authState = hardPersistWatched("login.authState", {
+  loginType = loginTypes.LT_GAIJIN
+  loginName = ""
+  loginPas = ""
+  twoStepAuthCode = ""
+  check2StepAuthCode = false
+  secStepType = secondStepTypes.SST_UNKNOWN
+})
+
 let isGoogleBuild = getBuildMarket() == "googleplay"
 let isOnlyGuestLogin = get_settings_blk()?.onlyGuestLogin ?? false
 local availableLoginTypes = { [loginTypes.LT_GAIJIN] = true }
@@ -124,6 +137,8 @@ return loginTypes.__merge(secondStepTypes, {
   availableLoginTypes
   legalListForApprove
   isMatchingOnline
+  needLogoutAfterSession
+  authState
   isConsentAllowLogin
   goodleConsent
   isGoogleConsentShowed

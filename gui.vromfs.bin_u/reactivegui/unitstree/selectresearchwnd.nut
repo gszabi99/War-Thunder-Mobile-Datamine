@@ -1,46 +1,46 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { isInSquad } = require("%appGlobals/squadState.nut")
-let { curCampaign, isAnyCampaignSelected } = require("%appGlobals/pServer/campaign.nut")
-let { set_research_unit, unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { buttonsHGap, textButtonBattle } = require("%rGui/components/textButton.nut")
-let { selectedLineHorSolid } = require("%rGui/components/selectedLine.nut")
-let { unitsResearchStatus, currentResearch, selectedCountry, visibleNodes, mkResearchableCountries
-} = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateTiny, mkUnitInfo, mkFlagImage, mkFlagImageWithoutGrad
-} = require("%rGui/unit/components/unitPlateComp.nut")
-let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
-let { rewardTutorialMission } = require("%rGui/tutorial/tutorialMissions.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%appGlobals/pServer/campaign.nut" import curCampaign, isAnyCampaignSelected
+from "%appGlobals/pServer/pServerApi.nut" import set_research_unit, unitInProgress, registerHandler
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/squadState.nut" import isInSquad
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
+from "%rGui/components/selectedLine.nut" import selectedLineHorSolid
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import buttonsHGap, textButtonBattle
+from "%rGui/controlsMenu/gpActBtn.nut" import EMPTY_ACTION
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/gradients.nut" import gradTexSize, mkGradientCtorRadial
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import selectColor
+from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
+from "%rGui/tutorial/tutorialMissions.nut" import rewardTutorialMission
+from "%rGui/unit/components/unitInfoPanel.nut" import unitInfoPanel, mkUnitTitle
+from "%rGui/unit/components/unitPlateComp.nut" import mkUnitBg, mkUnitImage, mkUnitTexts, unitPlateTiny, mkUnitInfo,
+  mkFlagImage, mkFlagImageWithoutGrad
+from "%rGui/unitsTree/unitsTreeNodesState.nut" import unitsResearchStatus, currentResearch, selectedCountry,
+  visibleNodes, mkResearchableCountries
 
 
-let WND_UID = "chooseResearch"
-let minWidthWnd = hdpx(1400)
-let defaultLineWidth = hdpxi(2)
-let defaultMargin = hdpx(10)
-let smallVertLineHeight = hdpx(20)
-let bigVertLineHeight = hdpx(50)
+const WND_UID = "chooseResearch"
+const minWidthWnd = hdpx(1400)
+const defaultLineWidth = hdpxi(2)
+const defaultMargin = hdpx(10)
+const smallVertLineHeight = hdpx(20)
+const bigVertLineHeight = hdpx(50)
 let maxAmountOfUnitsOnScreen = (saSize[0] / (unitPlateTiny[0] + buttonsHGap)).tointeger()
 let flagSize = evenPx(70)
 let flagBtnWidth = evenPx(120)
-let flagGap = hdpx(20)
+const flagGap = hdpx(20)
 
 
-let flagBgColor = 0xFF000000
-let flagBgColorSelected = 0x99405780
+const flagBgColor = 0xFF000000
+const flagBgColorSelected = 0x99405780
 
 let needSelectResearch = keepref(Computed(@() isAnyCampaignSelected.get()
   && currentResearch.get() == null
@@ -99,7 +99,7 @@ let mkFlowLine = @(line, size = FLEX) {
   children = line
 }
 
-let function unitsBlock(startUnit) {
+function unitsBlock(startUnit) {
   let childUnits = Computed(function() {
     local childUnits = {}
     foreach(key, value in visibleNodes.get())
@@ -189,7 +189,7 @@ let flagBg = @(isSelected) @() {
   transitions = [{ prop = AnimProp.color, duration = 0.3, easing = InOutQuad }]
 }
 
-let function mkFlag(country, curCountry) {
+function mkFlag(country, curCountry) {
   let isSelected = Computed(@() curCountry.get() == country)
   return {
     size = [flagBtnWidth, flagBtnWidth]
@@ -251,8 +251,6 @@ function acceptChooseResearch(unitId, country) {
 }
 
 function openImpl() {
-  sendUiBqEvent("first_country_choice", { id = "start_select_research" })
-
   let allCountriesRaw = mkResearchableCountries(visibleNodes)
   let countriesInfo = Computed(function() {
     let res = { allowedNow = [], allowedLater = [] }
@@ -278,6 +276,13 @@ function openImpl() {
   let startUnitName = Computed(@() unitsResearchStatus.get()
     .findindex(@(r) r.canResearch && visibleNodes.get()?[r.name].country == curCountry.get()))
   let startUnit = Computed(@() serverConfigs.get()?.allUnits[startUnitName.get()])
+
+  if (allCountries.get().len() == 1) {
+    acceptChooseResearch(startUnit.get()?.name, curCountry.get())
+    return
+  }
+
+  sendUiBqEvent("first_country_choice", { id = "start_select_research" })
   return addModalWindow(bgShaded.__merge({
     key = WND_UID
     size = FLEX

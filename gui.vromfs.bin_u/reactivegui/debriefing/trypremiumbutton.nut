@@ -1,29 +1,30 @@
 from "%globalsDarg/darg_library.nut" import *
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { set_session_id_for_premium_bonus } = require("%appGlobals/pServer/pServerApi.nut")
-let { allow_subscriptions } = require("%appGlobals/permissions.nut")
-let { havePremium } = require("%rGui/state/profilePremium.nut")
-let { openShopWnd } = require("%rGui/shop/shopState.nut")
-let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
-let { PURCH_SRC_DEBRIEFING, PURCH_TYPE_PREMIUM } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { gradTranspDoubleSideX, gradRadial } = require("%rGui/style/gradients.nut")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%appGlobals/pServer/pServerApi.nut" import set_session_id_for_premium_bonus
+from "%appGlobals/permissions.nut" import allow_subscriptions
+from "%rGui/debriefing/debriefingState.nut" import isDebriefingAnimFinished
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_DEBRIEFING, PURCH_TYPE_PREMIUM
+from "%rGui/shop/shopCommon.nut" import SC_PREMIUM
+from "%rGui/shop/shopState.nut" import openShopWnd
+from "%rGui/state/profilePremium.nut" import havePremium
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradRadial
 
-let btnW = hdpx(400)
-let btnH = hdpxi(180)
-let premIconW = hdpxi(225)
-let premIconH = hdpxi(155)
 
-let glareAnimDuration = 0.4
-let glareRepeatDelay = 2
+const btnW = hdpx(400)
+const btnH = hdpxi(180)
+const premIconW = hdpxi(225)
+const premIconH = hdpxi(155)
+
+const glareAnimDuration = 0.4
+const glareRepeatDelay = 2
 let startGlareAnim = @() anim_start("glareAnim")
-let glareWidth = hdpx(40)
-let glareHeight = btnH * 1.25
+const glareWidth = hdpx(40)
+const glareHeight = btnH * 1.25
 
-let glowColor = 0xFF8A5627
-let bgColor = 0xFF1A1D1E
-let textColor = 0xFFFFFFFF
+const glowColor = 0xFF8A5627
+const bgColor = 0xFF1A1D1E
+const textColor = 0xFFFFFFFF
 
 let isActive = @(sf) (sf & S_ACTIVE) != 0
 
@@ -34,7 +35,7 @@ let btnBg = {
 }
 
 let btnGlow = {
-  size = [btnW * 1.2, btnW * 1.2]
+  size = const [btnW * 1.2, btnW * 1.2]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
@@ -44,7 +45,7 @@ let btnGlow = {
 
 let btnIcon = @() {
   watch = allow_subscriptions
-  size = [premIconW, premIconH]
+  size = const [premIconW, premIconH]
   rendObj = ROBJ_IMAGE
   image = allow_subscriptions.get()
     ? Picture($"ui/gameuiskin#subs_vip.avif:{premIconW}:{premIconH}:P")
@@ -68,7 +69,7 @@ let glare = @() !isDebriefingAnimFinished.get() ? { watch = isDebriefingAnimFini
   watch = isDebriefingAnimFinished
   key = "glare"
   rendObj = ROBJ_IMAGE
-  size = [glareWidth, glareHeight]
+  size = const [glareWidth, glareHeight]
   image = gradTranspDoubleSideX
   color = 0x00A0A0A0
   transform = { translate = [-glareWidth * 3, 0], rotate = 25 }
@@ -86,7 +87,7 @@ function mkTryPremiumButton(mulComps, sessionId = null) {
   let stateFlags = Watched(0)
   return @() havePremium.get() ? { watch = havePremium } : {
     watch = [havePremium, stateFlags]
-    size = [btnW, btnH]
+    size = const [btnW, btnH]
 
     behavior = Behaviors.Button
     function onClick() {

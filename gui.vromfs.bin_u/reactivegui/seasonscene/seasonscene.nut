@@ -68,14 +68,14 @@ function mkSeasonTab(tabName, tabConfig, isActive) {
         halign = ALIGN_CENTER
         children = @() {
           watch = isActive
-          size = [hdpx(370), hdpx(120)]
+          size = const [hdpx(370), hdpx(120)]
           rendObj = ROBJ_IMAGE
           image = tabHighlight()
           color = isActive.get() ? selectColor : 0
         }
       }
       {
-        padding = [hdpx(10), 0, 0, 0]
+        padding = const [hdpx(10), 0, 0, 0]
         flow = FLOW_HORIZONTAL
         gap = hdpx(10)
         children = [
@@ -92,7 +92,7 @@ function mkSeasonTab(tabName, tabConfig, isActive) {
             children = isUnseen == null ? null
               : @() {
                   watch = [isUnseen, isActive]
-                  pos = [pw(100), 0]
+                  pos = const [pw(100), 0]
                   children = isUnseen.get() && !isActive.get() ? priorityUnseenMark : null
                 }
           }.__update(fontSmallShaded)
@@ -171,7 +171,7 @@ function seasonScene() {
       children = backButton(closeSeasonScene)
     }
 
-  let { content } = tabConfig
+  let { content, sceneShadeColor = null } = tabConfig
 
   return {
     watch = [seasonPageId, bgUnits]
@@ -183,8 +183,10 @@ function seasonScene() {
 
     children = [
       {
-        size = [FLEX, SIZE_TO_CONTENT]
+        size = const [FLEX, SIZE_TO_CONTENT]
         padding = [saBordersRv[0], saBordersRv[1], 0, saBordersRv[1]]
+        rendObj = sceneShadeColor != null ? ROBJ_SOLID : null
+        color = sceneShadeColor
         children = seasonHeader
       }
       {
@@ -197,7 +199,7 @@ function seasonScene() {
       {
         rendObj = ROBJ_SOLID
         color = selectColor
-        size = [FLEX, hdpx(8)]
+        size = const [FLEX, hdpx(8)]
       }
       seasonTabsBlock
     ]
@@ -205,7 +207,7 @@ function seasonScene() {
   }
 }
 
-let sceneId = "seasonScene"
+const sceneId = "seasonScene"
 
 registerScene(sceneId, seasonScene, closeSeasonScene, seasonSceneOpenCounter)
 setSceneBg(sceneId, bgSceneExt.get()?.bg, isBattleTab.get() ? null : bgSceneExt.get()?.bgColor)

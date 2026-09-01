@@ -1,13 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let logM = log_with_prefix("[ModalWnd] ")
-let { register_command } = require("console")
-let { EMPTY_ACTION, btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+from "console" import register_command
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
+from "%rGui/controlsMenu/gpActBtn.nut" import EMPTY_ACTION, btnBEscUp
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
-let MWP_COMMON = 0
-let MWP_ALWAYS_TOP = 1000
+
+let logM = log_with_prefix("[ModalWnd] ")
+
+const MWP_COMMON = 0
+const MWP_ALWAYS_TOP = 1000
 
 let WND_PARAMS = {
   key = null 

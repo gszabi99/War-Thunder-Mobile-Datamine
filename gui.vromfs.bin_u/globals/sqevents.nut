@@ -1,5 +1,6 @@
-let { registerUnicastEvent, registerBroadcastEvent } = require("%sqstd/ecs.nut")
-let dedicLogerrSqEvents = require("%globalScripts/debugTools/dedicLogerrSqEvents.nut")
+from "%sqstd/ecs.nut" import registerUnicastEvent, registerBroadcastEvent
+import "%globalScripts/debugTools/dedicLogerrSqEvents.nut" as dedicLogerrSqEvents
+
 
 let broadcastEvents = {}
 foreach (name, payload in {

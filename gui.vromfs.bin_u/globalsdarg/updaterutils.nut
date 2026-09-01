@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round_by_value } = require("%sqstd/math.nut")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
+from "%sqstd/math.nut" import round_by_value
+from "%sqstd/time.nut" import secondsToTimeSimpleString
 
-let KB = 1 << 10
-let MB = 1 << 20
-let GB = 1 << 30
+
+const KB = 1 << 10
+const MB = 1 << 20
+const GB = 1 << 30
 
 let totalSizeText = @(bytes) bytes > 10 * GB ? "".concat(round_by_value(bytes.tofloat() / GB, 0.1), loc("measureUnits/GB"))
   : bytes > 10 * MB ? "".concat((bytes + (MB / 2)) / MB, loc("measureUnits/MB"))

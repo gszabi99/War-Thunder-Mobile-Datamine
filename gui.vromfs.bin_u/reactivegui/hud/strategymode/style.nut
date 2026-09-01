@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { NODE_SELF, NODE_ORDER_RETURN, NODE_ORDER_POINT, NODE_ORDER_ATTACK,
-  NODE_ORDER_DEFEND, NODE_ORDER_HUNT, NODE_ORDER_ORBIT
-} = require("guiStrategyMode")
-let supportPlaneConfig = require("%rGui/hud/supportPlaneConfig.nut")
+from "guiStrategyMode" import NODE_SELF, NODE_ORDER_RETURN, NODE_ORDER_POINT, NODE_ORDER_ATTACK, NODE_ORDER_DEFEND,
+  NODE_ORDER_HUNT, NODE_ORDER_ORBIT
+import "%rGui/hud/supportPlaneConfig.nut" as supportPlaneConfig
+
 
 const edgeColorDefault = 0x40000000
 const edgeColorSelectedDefault = 0x40000000

@@ -1,71 +1,67 @@
 from "%globalsDarg/darg_library.nut" import *
-let { HangarCameraControl } = require("wt.behaviors")
-let { eventbus_subscribe } = require("eventbus")
-let { defer, resetTimeout } = require("dagor.workcycle")
-let { getCustomGoodsNameById } = require("%appGlobals/config/goodsPresentation.nut")
-let { getBattleModPresentationForOffer } = require("%appGlobals/config/battleModPresentation.nut")
-let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
-let { blockedResearchByBattleMods } = require("%appGlobals/pServer/battleMods.nut")
-let { mark_offer_seen, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { unitRewardTypes, G_UNIT_UPGRADE, G_UNIT, G_BLUEPRINT, G_BATTLE_MOD, G_SKIN
-} = require("%appGlobals/rewardType.nut")
-let { battleRentInfo, rentalCd } = require("%appGlobals/rentalState.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
-let { GPT_UNIT, GPT_BLUEPRINT, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount,
-  HIDE_PREVIEW_MODALS_ID
-} = require("%rGui/shop/goodsPreviewState.nut")
-let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
-let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
-let { mkRentBattlesButton, queueCurRandomBattleMode } = require("%rGui/mainMenu/toBattleButton.nut")
-let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener,
-  ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem, aTimePriceFull,
-  aTimeInfoItemOffset, aTimeInfoLight, horGap
-} = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { activeRewardHint } = require("%rGui/shop/goodsPreview/goodsPreviewHint.nut")
-let { unitForCutscene } = require("%rGui/shop/goodsPreview/unitCutscene.nut")
-let { set_load_sounds_for_model } = require("hangar")
-let { setCustomHangarUnit, resetCustomHangarUnit, hangarUnitDataBackup } = require("%rGui/unit/hangarUnit.nut")
-let { isPurchEffectVisible, requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
-} = require("%rGui/shop/unseenPurchasesState.nut")
-let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
-let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { getUnitPresentation, getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { unitPlateTiny, mkUnitInfo, mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts,
-  unitPlateWidth, unitPlateHeight
-} = require("%rGui/unit/components/unitPlateComp.nut")
-let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
-let { mkRewardReceivedMark } = require("%rGui/rewards/rewardPlateComp.nut")
-let { isEmptyByRType } = require("%rGui/rewards/rewardViewInfo.nut")
-let { animatedProgressBar } = require("%rGui/unitsTree/components/unitPlateNodeComp.nut")
-let { mkGradRank } = require("%rGui/components/gradTexts.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { schRewards } = require("%rGui/shop/schRewardsState.nut")
-let { activeOffer } = require("%rGui/shop/offerState.nut")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow, scrollArrowImageSmall, scrollArrowImageSmallSize } = require("%rGui/components/scrollArrows.nut")
-let { backButtonHeight } = require("%rGui/components/backButton.nut")
-let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
-let mkGiftSchRewardBtn = require("%rGui/shop/goodsPreview/mkGiftSchRewardBtn.nut")
-let mkPersonalDiscountBtn = require("%rGui/shop/goodsPreview/mkPersonalDiscountBtn.nut")
-let skipOfferBtn = require("%rGui/shop/goodsPreview/skipOfferBtn.nut")
-let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
-let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
-let { simpleHorGrad } = require("%rGui/style/gradients.nut")
+from "dagor.workcycle" import defer, resetTimeout
+from "eventbus" import eventbus_subscribe
+from "hangar" import set_load_sounds_for_model
+from "wt.behaviors" import HangarCameraControl
+from "%sqstd/underscore.nut" import arrayByRows
+from "%appGlobals/config/battleModPresentation.nut" import getBattleModPresentationForOffer
+from "%appGlobals/config/goodsPresentation.nut" import getCustomGoodsNameById
+from "%appGlobals/pServer/battleMods.nut" import blockedResearchByBattleMods
+from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
+from "%appGlobals/pServer/pServerApi.nut" import mark_offer_seen, registerHandler
+from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/slots.nut" import isCampaignWithSlots
+from "%appGlobals/rentalState.nut" import battleRentInfo, rentalCd
+from "%appGlobals/rewardType.nut" import unitRewardTypes, G_UNIT_UPGRADE, G_UNIT, G_BLUEPRINT, G_BATTLE_MOD, G_SKIN
+from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitName
+from "%rGui/components/backButton.nut" import backButtonHeight
+from "%rGui/components/gradTexts.nut" import mkGradRank
+from "%rGui/components/infoButton.nut" import infoEllipseButton
+from "%rGui/components/modalWindows.nut" import hideModals, unhideModals
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall, scrollArrowImageSmallSize
+from "%rGui/components/selectedLineUnits.nut" import selectedLineHorUnits, selLineSize
+from "%rGui/gameModes/gameModeState.nut" import randomBattleMode
+from "%rGui/mainMenu/balanceComps.nut" import mkCurrencyBalance
+from "%rGui/mainMenu/toBattleButton.nut" import mkRentBattlesButton, queueCurRandomBattleMode
+from "%rGui/navState.nut" import registerScene
+import "%rGui/queue/queuePenaltyWnd.nut" as tryOpenQueuePenaltyWnd
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardReceivedMark
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_TINY
+from "%rGui/rewards/rewardViewInfo.nut" import isEmptyByRType
+from "%rGui/shop/goodsPreview/goodsPreviewHint.nut" import activeRewardHint
+from "%rGui/shop/goodsPreview/goodsPreviewPkg.nut" import opacityAnims, colorAnims, mkPreviewHeader,
+  mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener, ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull,
+  aTimePackNameBack, aTimeBackBtn, aTimeInfoItem, aTimePriceFull, aTimeInfoItemOffset, aTimeInfoLight, horGap
+import "%rGui/shop/goodsPreview/mkGiftSchRewardBtn.nut" as mkGiftSchRewardBtn
+import "%rGui/shop/goodsPreview/mkPersonalDiscountBtn.nut" as mkPersonalDiscountBtn
+import "%rGui/shop/goodsPreview/skipOfferBtn.nut" as skipOfferBtn
+from "%rGui/shop/goodsPreview/unitCutscene.nut" import unitForCutscene
+from "%rGui/shop/goodsPreviewState.nut" import GPT_UNIT, GPT_BLUEPRINT, previewType, previewGoods, previewGoodsUnit,
+  closeGoodsPreview, openPreviewCount, HIDE_PREVIEW_MODALS_ID
+import "%rGui/shop/missingPremiumAccWnd.nut" as showNoPremMessageIfNeed
+from "%rGui/shop/offerState.nut" import activeOffer
+from "%rGui/shop/schRewardsState.nut" import schRewards
+from "%rGui/shop/unseenPurchasesState.nut" import addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler,
+  markPurchasesSeen
+from "%rGui/style/gradients.nut" import simpleHorGrad
+from "%rGui/unit/components/unitInfoPanel.nut" import unitInfoPanel, mkUnitTitle
+from "%rGui/unit/components/unitPlateComp.nut" import unitPlateTiny, mkUnitInfo, mkUnitBg, mkUnitSelectedGlow,
+  mkUnitImage, mkUnitTexts, unitPlateWidth, unitPlateHeight
+from "%rGui/unit/hangarUnit.nut" import setCustomHangarUnit, resetCustomHangarUnit, hangarUnitDataBackup
+from "%rGui/unit/unitPurchaseEffectScene.nut" import isPurchEffectVisible, requestOpenUnitPurchEffect
+from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
+from "%rGui/unitsTree/components/unitPlateNodeComp.nut" import animatedProgressBar
 
 
-let TIME_TO_SHOW_UI = 5.0 
-let TIME_TO_SHOW_UI_AFTER_SHOT = 0.3
-let MAX_ITEMS_IN_ROW = 6
+const TIME_TO_SHOW_UI = 5.0 
+const TIME_TO_SHOW_UI_AFTER_SHOT = 0.3
+const MAX_ITEMS_IN_ROW = 6
 
 let unitPlateSize = unitPlateTiny
-let verticalGap = hdpx(20)
+const verticalGap = hdpx(20)
 let maxInfoPanelHeight = saSize[1] - hdpx(380)
 
 let isWindowAttached = Watched(false)
@@ -83,13 +79,13 @@ let goodsBattleMode = Computed(function() {
 })
 
 
-let aTimeHeaderStart = 0
+const aTimeHeaderStart = 0
 let aTimePackInfoStart = aTimePackNameFull
-let aTimePackInfoHeader = 0.3
-let aTimePackUnitInfoStart = aTimePackInfoHeader + 0.05
-let aTimePackUnitPlates = 0.3
-let aTimePackUnitPlatesOffset = 0.05
-let aTimeFirstItemOfset = 0.1
+const aTimePackInfoHeader = 0.3
+const aTimePackUnitInfoStart = aTimePackInfoHeader + 0.05
+const aTimePackUnitPlates = 0.3
+const aTimePackUnitPlatesOffset = 0.05
+const aTimeFirstItemOfset = 0.1
 let aTimeInfoHeaderFull = aTimeInfoLight + 0.3 * aTimeInfoItem + aTimeFirstItemOfset + 3 * aTimeInfoItemOffset
 
 let aTimePriceStart = aTimePackInfoStart + aTimeInfoHeaderFull
@@ -309,7 +305,7 @@ let packInfo = @(isHintBottom) {
       animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
     }
     {
-      padding = [REWARD_STYLE_TINY.boxGap, 0]
+      padding = const [REWARD_STYLE_TINY.boxGap, 0]
       pos = [0, isHintBottom ? 0 : ph(-100)]
       valign = ALIGN_BOTTOM
       vplace = ALIGN_BOTTOM
@@ -515,7 +511,7 @@ let totalUnits = Computed(@() sortedUnits.get().len())
 let pannableArea = verticalPannableAreaCtor(sh(100) - saBorders[1] * 2 - backButtonHeight - 2*verticalGap, [verticalGap, saBorders[1]*3])
 let scrollHandler = ScrollHandler()
 
-let gapForBranch = hdpx(20)
+const gapForBranch = hdpx(20)
 
 let scrollArrowsBlock = {
   size = [SIZE_TO_CONTENT, saSize[1] - backButtonHeight - verticalGap - hdpx(100)]
@@ -548,7 +544,7 @@ let leftBlockUnits = @() {
     : leftBlockSingleUnit
 }
 
-let cbId = "onResetPenaltyToRandomBattleInUnitPreview"
+const cbId = "onResetPenaltyToRandomBattleInUnitPreview"
 
 registerHandler(cbId, @(res) res?.error == null ? showNoPremMessageIfNeed(@() queueCurRandomBattleMode()) : null)
 

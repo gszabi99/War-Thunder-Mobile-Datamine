@@ -1,27 +1,29 @@
 from "%globalsDarg/darg_library.nut" import *
-from "string" import format
 from "dagor.time" import get_time_msec
+from "string" import format
 from "%sqstd/string.nut" import utf8ToUpper, utf8ToLower
-from "%appGlobals/permissions.nut" import allow_clusters_selection
-from "%appGlobals/clustersState.nut" import OPTIMAL_RTT_LIMIT_MS, CAN_USER_DISABLE_FASTEST_CLUSTER, selClusters, clusterStats, fastestClusterId, userPreferredClusters, isWaitingManualRefresh, clustersRefreshNow, saveUserClusters
-from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid, serverTime, gameStartServerTimeMsec
+from "%appGlobals/clustersState.nut" import OPTIMAL_RTT_LIMIT_MS, CAN_USER_DISABLE_FASTEST_CLUSTER, selClusters,
+  clusterStats, fastestClusterId, userPreferredClusters, isWaitingManualRefresh, clustersRefreshNow, saveUserClusters
 from "%appGlobals/config/clusterPresentation.nut" import getClusterName, getClusterFullName
-from "%rGui/navState.nut" import registerScene
+from "%appGlobals/permissions.nut" import allow_clusters_selection
+from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid, serverTime, gameStartServerTimeMsec
 from "%rGui/components/backButton.nut" import backButton
-from "%rGui/components/infoButton.nut" import infoTooltipButton
-from "%rGui/components/toggle.nut" import toggleWithLabel, toggle
-from "%rGui/components/textButton.nut" import textButtonCommon
 from "%rGui/components/buttonStyles.nut" import defButtonMinWidth, defButtonHeight
+from "%rGui/components/infoButton.nut" import infoTooltipButton
 from "%rGui/components/msgBox.nut" import openMsgBox
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/components/textButton.nut" import textButtonCommon
+from "%rGui/components/toggle.nut" import toggleWithLabel, toggle
+from "%rGui/navState.nut" import registerScene
 from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import goodTextColor2, badTextColor, tabBgColor
+
 
 const MANUAL_REFRESH_COOLDOWN_SEC = 60
 
-let warnTextColor = 0xFFFFD93E
+const warnTextColor = 0xFFFFD93E
 
-let bgPanelPadding = hdpx(30)
+const bgPanelPadding = hdpx(30)
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let onClose = @() isOpened.set(false)
@@ -60,7 +62,7 @@ let mkTextarea = @(text, ovr = {}) {
 
 function mkClusterToggle(clusterId, valueW, isAvailable) {
   let sf = Watched(0)
-  return toggleWithLabel(sf, valueW, toggle(valueW, sf.get()), {
+  return toggleWithLabel(sf, valueW, @(s) toggle(valueW, s), {
     opacity = isAvailable ? 1 : 0.2
     function onClick() {
       let v = !valueW.get()
@@ -172,7 +174,7 @@ let bgPanel = {
 
 let currentClustersComp = bgPanel.__merge({
   halign = ALIGN_CENTER
-  padding = [bgPanelPadding, bgPanelPadding]
+  padding = const [bgPanelPadding, bgPanelPadding]
   flow = FLOW_HORIZONTAL
   gap = hdpx(16)
   children = [
@@ -190,7 +192,7 @@ let currentClustersComp = bgPanel.__merge({
 
 let mkHeaderRow = @() {
   size = FLEX_H
-  padding = [bgPanelPadding, bgPanelPadding, hdpx(8), bgPanelPadding]
+  padding = const [bgPanelPadding, bgPanelPadding, hdpx(8), bgPanelPadding]
   flow = FLOW_HORIZONTAL
   children = columnsCfg.map(@(c) {
     size = [c.width, SIZE_TO_CONTENT]
@@ -228,7 +230,7 @@ function onRefreshBtn() {
   clustersRefreshNow(true, true)
 }
 
-let cdCircleSz = hdpxi(50)
+const cdCircleSz = hdpxi(50)
 function mkBtnSizeCooldownProgress(timeLeftSec, timeTotalSec) {
   if (timeLeftSec <= 0 || timeTotalSec == 0)
     return null
@@ -244,8 +246,8 @@ function mkBtnSizeCooldownProgress(timeLeftSec, timeTotalSec) {
     children = [
       {
         key = "refreshCooldown"
-        size = [cdCircleSz, cdCircleSz]
-        margin = [0, hdpx(10), 0, 0]
+        size = const [cdCircleSz, cdCircleSz]
+        margin = const [0, hdpx(10), 0, 0]
         rendObj = ROBJ_PROGRESS_CIRCULAR
         image = Picture($"ui/gameuiskin#circular_progress_1.svg:{cdCircleSz}:{cdCircleSz}")
         fgColor = 0xFFFFFFFF
@@ -286,7 +288,7 @@ let clustersOptionsScene = bgShaded.__merge({
         currentClustersComp
         mkHeaderRow()
         bgPanel.__merge({
-          padding = [bgPanelPadding, bgPanelPadding]
+          padding = const [bgPanelPadding, bgPanelPadding]
           size = FLEX_H
           flow = FLOW_VERTICAL
           gap = bgPanelPadding

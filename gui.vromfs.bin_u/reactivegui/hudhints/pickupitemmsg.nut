@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-from "eventbus" import eventbus_subscribe
-from "%rGui/hudHints/mainHintLogState.nut" import addEvent
 from "%rGui/hud/crewState.nut" import crewState
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut" import MARKER_TYPE, addMapMarker
 from "%rGui/hudHints/hintCtors.nut" import registerHintCreator, defaultHintCtor
-let { MARKER_TYPE, addMapMarker } = require("%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut")
+from "%rGui/hudHints/mainHintLogState.nut" import addEvent
 
 
-let CREW_HINT_TYPE = "battleRoyaleCrew"
-let MSG_SHOW_TIME = 5.0
+const CREW_HINT_TYPE = "battleRoyaleCrew"
+const MSG_SHOW_TIME = 5.0
 
 let defaultEvent = {
   id = "pickUpDefault"
@@ -55,7 +55,7 @@ registerHintCreator(CREW_HINT_TYPE, @(_, __) @() {
   }, null)
 })
 
-eventbus_subscribe("onPickupItem", function(data) {
+subscribeHudEvent("onPickupItem", function(data) {
   let rewardKeys = data.filter(@(_, k) eventByReward?[k] != null)
   if (rewardKeys.len() == 0 && data?.reconRadius == null) {
     addEvent(defaultEvent)
@@ -70,7 +70,7 @@ eventbus_subscribe("onPickupItem", function(data) {
     addMapMarker(MARKER_TYPE.RECON_AREA, { radius = reconRadius, showSec = reconDuration })
 })
 
-eventbus_subscribe("onRadioDetected", function(_data) {
+subscribeHudEvent("onRadioDetected", function(_data) {
   addEvent({
     id = "radioDetected"
     hType = "mission"

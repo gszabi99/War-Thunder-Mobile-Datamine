@@ -1,11 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { opacityAnims, aTimePackNameFull, ANIM_SKIP_DELAY, ANIM_SKIP } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { openSeasonScene, QUESTS_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
-let { campaignActiveUnlocks } = require("%rGui/unlocks/unlocks.nut")
-let { discountsToApply } = require("%rGui/shop/discounts.nut")
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/event/eventState.nut" import specialEvents
+from "%rGui/quests/questsState.nut" import questsCfg, tabIdToOpen
+from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, QUESTS_TAB
+from "%rGui/shop/discounts.nut" import discountsToApply
+from "%rGui/shop/goodsPreview/goodsPreviewPkg.nut" import opacityAnims, aTimePackNameFull, ANIM_SKIP_DELAY, ANIM_SKIP
+from "%rGui/unlocks/unlocks.nut" import campaignActiveUnlocks
 
-let giftBoxAnimDur = 0.2
+
+const giftBoxAnimDur = 0.2
 
 function mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart) {
   let userstatRewards = Computed(@() serverConfigs.get()?.userstatRewards)
@@ -35,7 +38,7 @@ function mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart) {
     foreach (u in campaignActiveUnlocks.get()) {
       let { event_id = null, sub_event_of = null } = u?.meta
       if (event_id != null && u?.stages.findindex(@(s) s?.rewards.findindex(@(_, id) id in discountRewards) != null) != null)
-        return sub_event_of ?? event_id
+        return {sub_event_of, event_id}
     }
 
     return null
@@ -50,7 +53,15 @@ function mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart) {
           rendObj = ROBJ_IMAGE
           image = Picture("ui/gameuiskin#offer_upgrade_discount_icon.avif:0:P")
           behavior = Behaviors.Button
-          onClick = @() openSeasonScene(eventIdByPersonalDiscount.get(), QUESTS_TAB)
+          function onClick() {
+            let ids = eventIdByPersonalDiscount.get()
+            if (ids == null)
+              return
+            let { sub_event_of, event_id } = ids
+            tabIdToOpen.set(event_id in questsCfg.get() ? event_id
+              : specialEvents.get().findindex(@(s) s.eventName == event_id) ?? event_id)
+            openSeasonScene(sub_event_of ?? event_id, QUESTS_TAB)
+          }
           transform = {}
           animations = opacityAnims(0.5 * aTimePackNameFull, aTimeHeaderStart).append(
             { prop = AnimProp.translate, from = [-hdpx(100), 0.0], to = [0.0, 0.0], easing = InQuad, play = true,

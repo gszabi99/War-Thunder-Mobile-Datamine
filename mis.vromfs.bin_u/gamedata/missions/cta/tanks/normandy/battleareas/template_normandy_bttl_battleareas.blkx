@@ -16,20 +16,38 @@
     }
   },
   "imports": {
-    "import_record": {
-      "file": "gameData/missions/cta/tanks/normandy/tank_spawns/template_normandy_Bttl_tank_spawns.blk",
-      "importAreas": true,
-      "importUnits": true,
-      "importTriggers": true,
-      "importMissionObjectives": true,
-      "importWayPoints": true,
-      "showAreas": true,
-      "showUnits": true,
-      "showTriggers": true,
-      "showMissionObjectives": true,
-      "showWayPoints": true,
-      "excludes": {}
-    }
+    "import_record": [
+      {
+        "file": "gameData/missions/cta/tanks/normandy/tank_spawns/template_normandy_Bttl_tank_spawns.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/cta/tanks/normandy/battleareas/template_normandy_battlearea_exclude.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
   },
   "triggers": {
     "isCategory": true,
@@ -64,13 +82,18 @@
             1.0
           ],
           [
-            2264.2,
-            42.1992,
-            521.4
+            2442.6,
+            57.85,
+            2654.05
           ]
         ],
         "props": {
-          "squad_members": "t1_killarea_block01"
+          "squad_members": [
+            "t1_killarea_block01",
+            "t1_killarea_block02",
+            "t1_killarea_block03",
+            "t1_killarea_block04"
+          ]
         }
       },
       {
@@ -92,13 +115,18 @@
             1.0
           ],
           [
-            1800.3,
-            33.3492,
-            510.766
+            2097.9,
+            75.95,
+            2663.15
           ]
         ],
         "props": {
-          "squad_members": "t2_killarea_block01"
+          "squad_members": [
+            "t2_killarea_block01",
+            "t2_killarea_block02",
+            "t2_killarea_block03",
+            "t2_killarea_block04"
+          ]
         }
       }
     ]
@@ -150,9 +178,9 @@
           150.0
         ],
         [
-          2752.15,
-          15.8,
-          3343.4
+          2745.1,
+          -2.8,
+          3633.8
         ]
       ],
       "objLayer": 0,
@@ -177,9 +205,171 @@
           150.0
         ],
         [
+          1826.15,
+          -6.35,
+          3727.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_killarea_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          150.0
+        ],
+        [
+          2752.15,
+          15.8,
+          3343.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_killarea_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          150.0
+        ],
+        [
           1827.2,
           13.6,
           3432.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_killarea_block03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          150.0
+        ],
+        [
+          2751.15,
+          33.55,
+          3095.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_killarea_block03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          150.0
+        ],
+        [
+          1827.25,
+          25.35,
+          3189.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_killarea_block04": {
+      "type": "Box",
+      "tm": [
+        [
+          500.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1500.0
+        ],
+        [
+          2885.3,
+          47.6001,
+          3456.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_killarea_block04": {
+      "type": "Box",
+      "tm": [
+        [
+          500.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1500.0
+        ],
+        [
+          1690.0,
+          47.6001,
+          3456.55
         ]
       ],
       "objLayer": 0,

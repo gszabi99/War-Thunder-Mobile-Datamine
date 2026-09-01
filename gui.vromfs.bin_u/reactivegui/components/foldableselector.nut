@@ -3,20 +3,20 @@ from "%sqstd/underscore.nut" import arrayByRows
 from "%rGui/components/expandArrow.nut" import expandArrow, defaultExpandAnimationDuration
 from "%rGui/style/gradients.nut" import mkColoredGradientY
 
-let headerH = hdpx(90)
-let headerGap = hdpx(20)
-let itemGap = hdpx(8)
-let contentPadding = itemGap
+const headerH = hdpx(90)
+const headerGap = hdpx(20)
+const itemGap = hdpx(8)
+const contentPadding = itemGap
 
-let contentBgColor = 0x990C1113
-let headerBgColor = 0x99000000
-let headerBgHoverColor = 0x99080808
-let itemBgColor = 0xFF29292C
-let itemBgHoverColor = 0xFF2F2F33
+const contentBgColor = 0x990C1113
+const headerBgColor = 0x99000000
+const headerBgHoverColor = 0x99080808
+const itemBgColor = 0xFF29292C
+const itemBgHoverColor = 0xFF2F2F33
 
 let arrowSize = [evenPx(30), evenPx(24)]
 let arrowOvr = {
-  margin = [0, hdpx(30)]
+  margin = const [0, hdpx(30)]
   image = Picture($"ui/gameuiskin#triangle.svg:{arrowSize[0]}:{arrowSize[1]}:P")
 }
 
@@ -26,7 +26,7 @@ function mkFoldableList(listContent, headerContent, curOpenedSelector, selectorI
 
   let header = @() {
     watch = stateFlags
-    size = [FLEX, headerH]
+    size = const [FLEX, headerH]
     rendObj = ROBJ_SOLID
     color = (stateFlags.get() & S_HOVER) != 0 ? headerBgHoverColor : headerBgColor
     behavior = Behaviors.Button

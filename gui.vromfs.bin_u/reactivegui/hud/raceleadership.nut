@@ -1,19 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { preciseSecondsToString } = require("%appGlobals/timeToText.nut")
-let { myUserName } = require("%appGlobals/profileStates.nut")
-let { raceLeadershipPlayers } = require("%rGui/hud/raceState.nut")
-let { teamRedLightColor } = require("%rGui/style/teamColors.nut")
-let { localPlayerColor } = require("%rGui/style/stdColors.nut")
-let { getElemFont } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
-let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
-let { mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
+from "%appGlobals/profileStates.nut" import myUserName
+from "%appGlobals/timeToText.nut" import preciseSecondsToString
+from "%rGui/components/playerPlaceIcon.nut" import mkPlaceIcon
+from "%rGui/hud/raceState.nut" import raceLeadershipPlayers
+from "%rGui/hudTuning/cfg/cfgOptions.nut" import getElemFont
+from "%rGui/hudTuning/hudTuningBattleState.nut" import curUnitHudTuningOptions
+from "%rGui/style/stdColors.nut" import localPlayerColor
+from "%rGui/style/teamColors.nut" import teamRedLightColor
 
 
-let MAX_ROWS = 4
-let evenRowColor = 0x40000000
-let unevenRowColor = 0x80000000
-let rowHtMul = 1.7
-let placeHtMul = 2.0
+const MAX_ROWS = 4
+const evenRowColor = 0x40000000
+const unevenRowColor = 0x80000000
+const rowHtMul = 1.7
+const placeHtMul = 2.0
 
 let getFont = @(o) getElemFont(o, "raceLeadership")
 

@@ -1,212 +1,208 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
-let { activeUnlocks, getUnlockPrice, isPrevUnlockCompleted
-} = require("%rGui/unlocks/unlocks.nut")
-let { specialEventsWithTree } = require("%rGui/event/eventState.nut")
-let { separateEventModes } = require("%rGui/gameModes/gameModeState.nut")
-let { getUnlockRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { unseenUnlocks, inactiveEventUnlocks } = require("%rGui/quests/questsState.nut")
-let { loadPresetOnce, updatePresetByUnlocks } = require("%rGui/event/treeEvent/treeEventUtils.nut")
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/pServerApi.nut" import eventMapNodeInProgress
+from "%appGlobals/userstats/serverTime.nut" import serverTime, isServerTimeValid
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%rGui/event/eventState.nut" import curEvent, MAIN_EVENT_ID
+from "%rGui/event/treeEvent/treeEventUtils.nut" import loadPresetOnce, updatePresetByTree, getEventMapNodes,
+  resolveTreeEventId, nextTreeBoundary, getTreeNodeViewTypes, getNodePageStarts, composeNodeViews, lineSectionLen,
+  mapLineWidth, LINE_DASHED
+from "%rGui/unlocks/unlocks.nut" import activeUnlocks
 
 
 let defaultMapSize = [2000, 1000]
-let defaultPointSize = 50
-let defaultGridSize = 200
+const defaultGridSize = 200
 
-let openedTreeEventId = mkWatched(persist, "openedTreeEventId")
-let openedSubPresetId = mkWatched(persist, "openedSubPresetId")
-let selectedElemId = mkWatched(persist, "selectedElemId", null)
+
+const NS_UNLOCKED = 0x1 
+const NS_PURCHASED = 0x2
+const NS_REWARDS_RECEIVED = 0x4
+
+const NODE_QUESTS = "quests"
+const NODE_REWARD = "reward"
+const NODE_INTERMEDIATE = "intermediate"
+
+const NODE_LOCKED = "locked"
+const NODE_AVAILABLE = "available"
+const NODE_PURCHASED = "purchased"
+const NODE_RECEIVED = "received"
+
 let selectedPointId = mkWatched(persist, "selectedPointId", null)
+let curPage = mkWatched(persist, "treeEventCurPage", null)
 
-let currentPresetState = Computed(function() {
-  let eventId = openedTreeEventId.get()
-  if (eventId == null)
-    return null
-  return updatePresetByUnlocks(eventId, loadPresetOnce(eventId) ?? {})
-})
-let currentSubPresetState = Computed(function() {
-  let eventId = openedSubPresetId.get()
-  if (eventId == null)
-    return null
-  return updatePresetByUnlocks(eventId, loadPresetOnce(eventId) ?? {})
-})
-let presetPoints = Computed(@() currentPresetState.get()?.points ?? {})
-let presetBgElems = Computed(@() currentPresetState.get()?.bgElements ?? [])
-let presetBackground = Computed(@() currentPresetState.get()?.bg ?? "")
-let presetMapSize = Computed(@() currentPresetState.get()?.mapSize ?? defaultMapSize)
-let presetPointSize = Computed(@() currentPresetState.get()?.pointSize ?? defaultPointSize)
-let presetGridSize = Computed(@() currentPresetState.get()?.gridSize ?? defaultGridSize)
-let presetLines = Computed(@() currentPresetState.get()?.lines ?? [])
+let openedTreeEventId = Watched(null)
+let treeBoundary = Watched({ time = 0 })
 
-let curEventUnlocks = keepref(Computed(@() openedTreeEventId.get() != null
-  ? activeUnlocks.get().filter(@(u) u?.meta.event_id == openedTreeEventId.get())
-  : {}))
-
-let treeEventPresets = Computed(@() curEventUnlocks.get().filter(@(unlock) unlock?.meta.quest_cluster).keys())
-
-let mkCompletedPrevElem = @(id) Computed(@() isPrevUnlockCompleted(id, curEventUnlocks.get()))
-
-let selectedBgElem = Computed(@() presetBgElems.get().findvalue(@(elem) elem.id == selectedElemId.get()))
-let selectedBgElemId = Computed(@() selectedBgElem.get()?.id)
-
-let curEventEndsAt = Computed(@() specialEventsWithTree.get()?[openedTreeEventId.get()].endsAt ?? 0)
-let curGmList = Computed(@() separateEventModes.get()?[openedTreeEventId.get()] ?? [])
-
-let mkUnlockCompleteState = @(id, unlocks) {
-  isCompletedPrevQuest = isPrevUnlockCompleted(id, unlocks),
-  isCompleted = unlocks?[id].isCompleted
+function updateOpenedTree() {
+  if (!isServerTimeValid.get()) {
+    openedTreeEventId.set(null)
+    treeBoundary.set({ time = 0 })
+    return
+  }
+  let configs = serverConfigs.get()
+  let time = serverTime.get()
+  openedTreeEventId.set(resolveTreeEventId(configs, curEvent.get(), MAIN_EVENT_ID, time))
+  treeBoundary.set({ time = nextTreeBoundary(configs?.eventMapTree, time) ?? 0 })
 }
 
-let mkPresetUnlocksComplete = @(points, bgElems, unlocks)
-  points.map(@(_, id) mkUnlockCompleteState(id, unlocks))
-    .__merge(bgElems
-      .reduce(@(res, e) (e?.id ?? "") == "" ? res
-          : res.$rawset(e.id, mkUnlockCompleteState(e.id, unlocks)),
-        {}))
+let onTreeBoundary = @() updateOpenedTree()
 
-let subPresetUnlocksComplete = Computed(function() {
-  let { points = {}, bgElements = [] } = currentSubPresetState.get()
-  return mkPresetUnlocksComplete(points, bgElements, curEventUnlocks.get())
-})
+treeBoundary.subscribe(@(v) v.time == 0 ? clearExtTimer(onTreeBoundary)
+  : resetExtTimeout(v.time - serverTime.get(), onTreeBoundary))
 
-let presetUnlocksComplete = Computed(@()
-  mkPresetUnlocksComplete(presetPoints.get(), presetBgElems.get(), curEventUnlocks.get()))
+updateOpenedTree()
+foreach (w in [serverConfigs, curEvent, isServerTimeValid])
+  w.subscribe(@(_) updateOpenedTree())
 
-let pointsStatusesByPresets = Computed(function () {
-  let unlocks = curEventUnlocks.get()
-  let res = {}
-  foreach (id, unlock in unlocks) {
-    let { quest_cluster = false, quest_cluster_id = "" } = unlock?.meta
+let curEventMapNodes = Computed(@() getEventMapNodes(serverConfigs.get(), openedTreeEventId.get()))
+let hasTreeMap = @(id) resolveTreeEventId(serverConfigs.get(), id, MAIN_EVENT_ID, serverTime.get()) != null
+let curEventMapStatus = Computed(@() servProfile.get()?.eventMapStatus[openedTreeEventId.get()] ?? {})
 
-    if (quest_cluster) {
-      if (id not in res)
-        res[id] <- {}
-      continue
-    }
-    if (quest_cluster_id != "") {
-      if (quest_cluster_id not in res)
-        res[quest_cluster_id] <- {}
-
-      let isCompletedPrevQuest = isPrevUnlockCompleted(id, unlocks)
-      let isCompleted = isCompletedPrevQuest && !!unlock?.isCompleted
-      let isUnseen = unlock?.name in unseenUnlocks.get() && unlock?.name not in inactiveEventUnlocks.get()
-
-      res[quest_cluster_id][id] <- {
-        isCompletedPrevQuest
-        isCompleted
-        isUnseen = (isCompleted && !unlock?.isFinished) || (isUnseen && isCompletedPrevQuest && !isCompleted)
-      }
-    }
-  }
-  return res
-})
-
-let presetsStatuses = Computed(function () {
-  let unlocks = curEventUnlocks.get()
-  let res = {}
-  foreach (id, unlock in unlocks) {
-    let { quest_cluster = false } = unlock?.meta
-
-    if (!quest_cluster)
-      continue
-
-    let isCompletedPrevQuest = isPrevUnlockCompleted(id, unlocks)
-    let price = getUnlockPrice(unlock)
-    let isAvailable = isCompletedPrevQuest && ((price.price ?? 0) == 0)
-    let isBlocked = !isCompletedPrevQuest
-
-    res[id] <- { price, isAvailable, isBlocked }
-  }
-  return res
-})
-
-openedTreeEventId.subscribe(function(v) {
-  if (!v) {
-    selectedElemId.set(null)
-    selectedPointId.set(null)
-    openedSubPresetId.set(null)
-  }
-})
-
-selectedBgElemId.subscribe(@(v) v != null ? openedSubPresetId.set(v) : null)
-function closeSubPreset() {
-  selectedElemId.set(null)
-  selectedPointId.set(null)
-  openedSubPresetId.set(null)
-}
-
-function getUnlocksCurrencies(unlocks, sConfigs) {
+let curEventMapCurrencies = Computed(function() {
   let res = []
-  foreach (unlock in unlocks) {
-    let stage = unlock.stages?[unlock.stage] ?? unlock.stages?[unlock.stages.len() - 1]
-    if (stage != null) {
-      if (stage?.currencyCode != null) {
-        let stageCurrency = getBaseCurrency(stage.currencyCode)
-        if ((stage?.price ?? 0) > 0 && !res.contains(stageCurrency))
-          res.append(stageCurrency)
-      }
-      foreach (reward in getUnlockRewardsViewInfo(stage, sConfigs)) {
-        let rewardCurrency = getBaseCurrency(reward.id)
-        if (reward.rType == "currency" && !res.contains(rewardCurrency))
-          res.append(rewardCurrency)
-      }
-    }
+  foreach (_, node in curEventMapNodes.get()) {
+    let currencyId = node?.currencyId
+    if ((node?.price ?? 0) > 0 && currencyId != null && currencyId != "" && !res.contains(currencyId))
+      res.append(currencyId)
   }
   return res
+})
+
+let curEventClusters = Computed(function() {
+  let res = {}
+  foreach (_, node in curEventMapNodes.get())
+    if (node?.meta.quests != null)
+      res[node.meta.quests] <- true
+  return res
+})
+let curEventUnlocks = keepref(Computed(@() activeUnlocks.get().filter(@(u) (u?.meta.quests ?? "") in curEventClusters.get())))
+
+function getEventNodeType(node) {
+  if (node?.meta.quests != null)
+    return NODE_QUESTS
+  if ((node?.rewards ?? []).len() > 0)
+    return NODE_REWARD
+  return NODE_INTERMEDIATE
 }
 
-function getFirstOrCurSubPreset() {
-  if(treeEventPresets.get().len() == 0)
+let nodeViewTypes = Computed(@() getTreeNodeViewTypes(curEventMapNodes.get()))
+let nodeViews = Computed(@() composeNodeViews(nodeViewTypes.get(), openedTreeEventId.get()))
+let pageStartNodes = Computed(@() getNodePageStarts(curEventMapNodes.get()))
+
+let isUnlocked = @(status) ((status ?? 0) & NS_UNLOCKED) != 0
+let isPurchased = @(status) ((status ?? 0) & NS_PURCHASED) != 0
+let isRewardsReceived = @(status) ((status ?? 0) & NS_REWARDS_RECEIVED) != 0
+
+let getNodeStatusKind = @(status)
+  isRewardsReceived(status) ? NODE_RECEIVED
+    : isPurchased(status) ? NODE_PURCHASED
+    : isUnlocked(status) ? NODE_AVAILABLE
+    : NODE_LOCKED
+
+let nodeStatusKind = Computed(function() {
+  let status = curEventMapStatus.get()
+  let res = {}
+  foreach (id, _ in curEventMapNodes.get())
+    res[id] <- getNodeStatusKind(status?[id])
+  return res
+})
+
+let pagesList = Computed(function() {
+  let seen = {}
+  let res = []
+  foreach (_, node in curEventMapNodes.get()) {
+    let page = node?.page ?? ""
+    if (page not in seen) {
+      seen[page] <- true
+      res.append(page)
+    }
+  }
+  res.sort()
+  return res
+})
+
+let curPageResolved = Computed(function() {
+  let pages = pagesList.get()
+  let p = curPage.get()
+  return (p != null && pages.contains(p)) ? p : pages?[0]
+})
+
+let curPageNodes = Computed(@() curEventMapNodes.get().filter(@(node) (node?.page ?? "") == curPageResolved.get()))
+
+let currentPageState = Computed(function() {
+  let eventId = openedTreeEventId.get()
+  let page = curPageResolved.get()
+  if (eventId == null || page == null)
     return null
-  let presets = treeEventPresets.get()
-  let presentsInfo = []
-  foreach(p in presets) {
-    if(p not in curEventUnlocks.get())
-      continue
-    presentsInfo.append({
-      name = p
-      price = getUnlockPrice(curEventUnlocks.get()[p])
-      isCompleted = curEventUnlocks.get()?[p].isCompleted ?? false
-    })
-  }
-  let sortPresentsInfo = presentsInfo.sort(@(a, b) a.price.price <=> b.price.price)
-  local lastCompletedPreset = sortPresentsInfo[0].name
-  foreach(i, v in sortPresentsInfo) {
-    if(v.isCompleted && !sortPresentsInfo?[i+1].isCompleted)
-      lastCompletedPreset = v.name
-  }
-  return lastCompletedPreset
-}
+  return updatePresetByTree(curPageNodes.get(), loadPresetOnce($"{eventId}_{page}") ?? {})
+})
+
+let curPageBgElems = Computed(@() currentPageState.get()?.bgElements ?? [])
+let curPageBackground = Computed(@() currentPageState.get()?.bg ?? "")
+let curPageMapSize = Computed(@() currentPageState.get()?.mapSize ?? defaultMapSize)
+let curPageGridSize = Computed(@() currentPageState.get()?.gridSize ?? defaultGridSize)
+let curPagePoints = Computed(@() currentPageState.get()?.points ?? {})
+let curPageLines = Computed(@() currentPageState.get()?.lines ?? [])
+let curPageLineSectionLen = Computed(@() currentPageState.get()?.lineSectionLen ?? lineSectionLen)
+let curPageRoundedDashes = Computed(@() currentPageState.get()?.roundedDashes ?? true)
+let curPageLineType = Computed(@() currentPageState.get()?.lineType ?? LINE_DASHED)
+let curPageLineWidth = Computed(function() {
+  let w = currentPageState.get()?.lineWidth
+  return w != null ? hdpx(w) : mapLineWidth
+})
+let curPagePointSizes = Computed(@() currentPageState.get()?.pointSizes ?? {})
+
+let getClusterQuests = @(clusterId) curEventUnlocks.get().filter(@(u) u?.meta.quests == clusterId)
+
+openedTreeEventId.subscribe(function(_) {
+  selectedPointId.set(null)
+  curPage.set(null)
+})
+
+curPage.subscribe(@(_) selectedPointId.set(null))
 
 return {
   openedTreeEventId
-  isTreeEventWndOpened = Computed(@() openedTreeEventId.get() != null)
-  closeTreeEventWnd = @() openedTreeEventId.set(null)
-  openTreeEventWnd = @(eventId) openedTreeEventId.set(eventId)
-  presetPoints
-  presetBgElems
-  presetBackground
-  presetMapSize
-  presetPointSize
-  presetLines
-  selectedElemId
+  hasTreeMap
+  curPageBgElems
+  curPageBackground
+  curPageMapSize
+  curPageGridSize
   selectedPointId
-  selectedBgElemId
-  curEventEndsAt
   curEventUnlocks
-  presetGridSize
-  getUnlocksCurrencies
-  mkCompletedPrevElem
-  curGmList
-  treeEventPresets
 
-  presetsStatuses
-  pointsStatusesByPresets
-  getFirstOrCurSubPreset
-  currentSubPresetState
-  subPresetUnlocksComplete
-  presetUnlocksComplete
-  openedSubPresetId
-  isSubPresetOpened = Computed(@() openedSubPresetId.get() != null)
-  closeSubPreset
+  curEventMapNodes
+  curEventMapCurrencies
+  curEventMapStatus
+  getEventNodeType
+  isUnlocked
+  isPurchased
+  isRewardsReceived
+  nodeViews
+  nodeViewTypes
+  pageStartNodes
+  nodeStatusKind
+  NODE_QUESTS
+  NODE_REWARD
+  NODE_INTERMEDIATE
+  NODE_LOCKED
+  NODE_AVAILABLE
+  NODE_PURCHASED
+  NODE_RECEIVED
+
+  pagesList
+  curPage
+  curPageResolved
+  curPagePoints
+  curPageLines
+  curPageLineSectionLen
+  curPageRoundedDashes
+  curPageLineType
+  curPageLineWidth
+  curPagePointSizes
+
+  getClusterQuests
+
+  eventMapNodeInProgress
 }

@@ -1,69 +1,66 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { resetTimeout, deferOnce } = require("dagor.workcycle")
-let { playSound } = require("sound_wt")
-let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { GPT_SLOTS, previewType, previewGoods, closeGoodsPreview, openPreviewCount, GPT_BLUEPRINT, openedGoodsId,
-  openedUnitFromTree
-} = require("%rGui/shop/goodsPreviewState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
-let { serverTimeDay, getDay, dayOffset, untilNextDaySec } = require("%appGlobals/userstats/serverTimeDay.nut")
-let { registerHandler, shopPurchaseInProgress, shopGenSlotInProgress,
+from "console" import register_command
+from "dagor.workcycle" import resetTimeout, deferOnce
+from "sound_wt" import playSound
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import isEqual
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%appGlobals/config/goodsPresentation.nut" import getSlotsPreviewBg, getSlotsTexts
+from "%appGlobals/currenciesState.nut" import GOLD
+from "%appGlobals/pServer/campaign.nut" import todayPurchasesCount
+from "%appGlobals/pServer/pServerApi.nut" import registerHandler, shopPurchaseInProgress, shopGenSlotInProgress,
   gen_goods_slots, buy_goods_slot, reset_reward_slots
-} = require("%appGlobals/pServer/pServerApi.nut")
-let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
-let { openMsgBoxPurchase, PURCHASE_BOX_UID } = require("%rGui/shop/msgBoxPurchase.nut")
-let { PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLOT, PURCH_TYPE_GOODS_REROLL_SLOTS,
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, getDay, dayOffset, dayEndsAt
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
+from "%rGui/components/infoButton.nut" import infoTooltipButton
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/textButton.nut" import textButtonPricePurchase, buttonsHGap, buttonStyles, buttonTextWidth
+from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
+from "%rGui/navState.nut" import registerScene
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts,
+  mkRewardSearchPlate, mkRewardUnitFlag
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, getRewardPlateSize,
+  progressBarHeight
+from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, isRewardEmpty
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLOT, PURCH_TYPE_GOODS_REROLL_SLOTS,
   mkBqPurchaseInfo
-} = require("%rGui/shop/bqPurchaseInfo.nut")
-let { getAdjustedPriceInfo } = require("%rGui/shop/goodsUtils.nut")
-let { discountsToApply } = require("%rGui/shop/discounts.nut")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
+from "%rGui/shop/discounts.nut" import discountsToApply
+from "%rGui/shop/goodsPreviewState.nut" import GPT_SLOTS, previewType, previewGoods, closeGoodsPreview,
+  openPreviewCount, GPT_BLUEPRINT, openedGoodsId, openedUnitFromTree
+from "%rGui/shop/goodsUtils.nut" import getAdjustedPriceInfo
+from "%rGui/shop/goodsView/goods.nut" import getGoodsLocName
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase, PURCHASE_BOX_UID
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/gradients.nut" import mkGradientCtorRadial, gradTexSize
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import userlogTextColor
+from "%rGui/tooltip.nut" import mkTooltipText
+from "%rGui/unit/components/unitUnlockAnimation.nut" import revealAnimation
+from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
+from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
+from "%rGui/components/timerBlock.nut" import mkTimer
 
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { textButtonPricePurchase, buttonsHGap, buttonStyles, buttonTextWidth } = require("%rGui/components/textButton.nut")
+
 let { defButtonHeight, PRIMARY } = buttonStyles
-let { getSlotsPreviewBg, getSlotsTexts } = require("%appGlobals/config/goodsPresentation.nut")
-let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, getRewardPlateSize, progressBarHeight
-} = require("%rGui/rewards/rewardStyles.nut")
-let { mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts, mkRewardSearchPlate,
-  mkRewardUnitFlag
-} = require("%rGui/rewards/rewardPlateComp.nut")
-let { getRewardsViewInfo, isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
-let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
-let { mkTooltipText } = require("%rGui/tooltip.nut")
-let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
-let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
-let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
-let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
-let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
 
-let MAX_BIG_SLOTS = 8
-let RETRY_EMPTY_REFRESH_SEC = 300 
+const MAX_BIG_SLOTS = 8
+const RETRY_EMPTY_REFRESH_SEC = 300 
 let maxWndWidth = min(saSize[0], hdpxi(2200))
 let blockGap = buttonsHGap
 
-let selBorderColor = 0xFFFFFFFF
-let hoverBorderColor = 0x40404040
-let borderHeight = hdpx(8)
+const selBorderColor = 0xFFFFFFFF
+const hoverBorderColor = 0x40404040
+const borderHeight = hdpx(8)
 
 let rerollTrigger = {}
 let rerollUnitAnim = [{
@@ -97,7 +94,7 @@ let previewGoodsWithUpdatedPrice = Computed(function() {
   })
 })
 
-let AUTO_REQUEST_AFTER_ERROR_TIME = 10
+const AUTO_REQUEST_AFTER_ERROR_TIME = 10
 let freeRefreshErrorSoon = Watched(null)
 let needFreeRefreshSlots = keepref(Computed(function() {
   let { id = null } = previewGoods.get()
@@ -167,14 +164,19 @@ function timer() {
   let { count = 0 } = todayPurchasesCount.get()?[previewGoods.get()?.id]
   if(count == 0)
     return { watch = [ todayPurchasesCount, previewGoods] }
-  let timerText = secondsToTimeAbbrString(untilNextDaySec(serverTime.get(), dayOffset.get()))
+
   return {
-    watch = [dayOffset, serverTime, previewGoods, todayPurchasesCount]
-    rendObj = ROBJ_TEXTAREA
-    behavior = Behaviors.TextArea
-    halign = ALIGN_CENTER
-    text = loc("shop/hint/updatePriceTimer", { time = timerText })
-  }.__update(fontSmall)
+    watch = [previewGoods, todayPurchasesCount]
+    flow = FLOW_VERTICAL
+    children = [
+      {
+        rendObj = ROBJ_TEXT
+        halign = ALIGN_CENTER
+        text = loc("shop/hint/updatePriceTimer")
+      }.__update(fontSmall)
+      mkTimer(Computed(@() dayEndsAt(serverTime.get(), dayOffset.get())), {halign = ALIGN_CENTER})
+    ]
+  }
 }
 
 function headerText() {
@@ -240,8 +242,8 @@ let mkHightlightPlate = @(isSelected, rStyle) {
       opacity = 0.5
     }
     {
-      size = [FLEX, borderHeight]
-      pos = [0, -borderHeight]
+      size = const [FLEX, borderHeight]
+      pos = const [0, -borderHeight]
       rendObj = ROBJ_BOX
       hplace = ALIGN_TOP
       fillColor = isSelected ? selBorderColor : hoverBorderColor

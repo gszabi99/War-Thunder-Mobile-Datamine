@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/hud/components/tacticalMap.nut" import tacticalMap
+from "%rGui/hud/hitCamera/hitCamera.nut" import hitCamera
+import "%rGui/hud/strategyMode/airGroupsView.nut" as airGroupsUi
+from "%rGui/hud/strategyMode/strategyPathInput.nut" import pathInputUi
+from "%rGui/hud/strategyMode/strategyPathView.nut" import pathNodesUi, pathCommandsUi
+from "%rGui/hud/strategyMode/strategyState.nut" import strategyStateUpdateStart, strategyStateUpdateStop
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { tacticalMap } = require("%rGui/hud/components/tacticalMap.nut")
-let { strategyStateUpdateStart, strategyStateUpdateStop } = require("%rGui/hud/strategyMode/strategyState.nut")
-let { pathInputUi } = require("%rGui/hud/strategyMode/strategyPathInput.nut")
-let { pathNodesUi, pathCommandsUi } = require("%rGui/hud/strategyMode/strategyPathView.nut")
-let { hitCamera } = require("%rGui/hud/hitCamera/hitCamera.nut")
-let airGroupsUi = require("%rGui/hud/strategyMode/airGroupsView.nut")
 
 let areaTopLeft = {
   flow = FLOW_HORIZONTAL

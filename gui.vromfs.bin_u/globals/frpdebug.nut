@@ -1,7 +1,7 @@
+from "app" import get_cur_circuit_name
 from "blkGetters" import get_settings_blk
 from "frp" import get_slow_subscriber_threshold_usec, set_slow_subscriber_threshold_usec
 from "nestdb" import ndbRead, ndbWrite, ndbExists
-from "app" import get_cur_circuit_name
 from "%appGlobals/clientState/clientState.nut" import isInBattle
 
 

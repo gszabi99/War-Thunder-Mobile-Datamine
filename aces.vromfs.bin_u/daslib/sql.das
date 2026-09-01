@@ -19,11 +19,25 @@ module sql shared public
 
 require daslib/option public
 require daslib/result public
+require strings
+
+typedef SqlError = Option<string>
 
 
 
 
+def sql_quote_id(s : string) : string {
+    
+    let escaped = s |> replace("\"", "\"\"")
+    return "\"{escaped}\""
+}
 
+def sql_quote_lit(s : string) : string {
+    
+    
+    let escaped = s |> replace("'", "''")
+    return "'{escaped}'"
+}
 
 
 
@@ -41,4 +55,5 @@ struct ColumnInfo {
     is_pk : bool                   
     is_nullable : bool             
     default_expr : string          
+    is_computed : bool             
 }

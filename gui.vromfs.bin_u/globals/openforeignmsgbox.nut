@@ -1,5 +1,5 @@
+from "eventbus" import eventbus_subscribe, eventbus_send
 
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
 
 let openFMsgBox = @(cfg) eventbus_send("fMsgBox.open", cfg)
 let closeFMsgBox = @(uid) eventbus_send("fMsgBox.close", { uid })

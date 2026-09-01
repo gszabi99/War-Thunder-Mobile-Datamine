@@ -1,10 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { get_mission_time } = require("mission")
-let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { isGtRace } = require("%rGui/missionState.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+from "dagor.workcycle" import setInterval, clearTimer
+from "eventbus" import eventbus_subscribe
+from "mission" import get_mission_time
+from "%sqstd/underscore.nut" import prevIfEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/missionState.nut" import isGtRace
+
 
 let playerOrder = ["leader", "beforePlayer", "player", "afterPlayer"]
 let raceData = mkWatched(persist, "raceData", null)
@@ -31,7 +33,7 @@ let raceTotalLaps = Computed(@() raceData.get()?.totalLaps ?? 0)
 let raceCurrentCheckpoint = Computed(@() raceData.get()?.passedCheckpointsInLap ?? 0)
 let raceTotalCheckpoints = Computed(@() raceData.get()?.checkpointsPerLap ?? 0)
 
-eventbus_subscribe("RaceSegmentUpdate", @(data) !isGtRace.get() ? null : raceData.set(data))
+subscribeHudEvent("RaceSegmentUpdate", @(data) !isGtRace.get() ? null : raceData.set(data))
 eventbus_subscribe("RaceStart", @(data) raceStartTime.set(data.start))
 isInBattle.subscribe(function(v) {
   raceStartTime.set(null)

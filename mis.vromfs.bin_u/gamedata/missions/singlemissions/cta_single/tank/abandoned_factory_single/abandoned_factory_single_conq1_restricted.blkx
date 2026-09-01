@@ -107,7 +107,8 @@
       "country_axis": "germany",
       "country_allies": "ussr",
       "restoreType": "attempts",
-      "optionalTakeOff": false
+      "optionalTakeOff": false,
+      "useAIForCollectiveDetection": true
     },
     "spectator_points": {},
     "briefing": {

@@ -1,23 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
+from "ecs.computed" import mkEcsComputedEidMap
 
-let playersCommonStats = Watched({})
 let dbgCommonStats = mkWatched(persist, "dbgCommonStats", {})
 
-register_es("players_common_stats_es",
-  {
-    [["onInit", "onChange"]] = function trackStatistics(_, comp) {
-      if (comp.isBattleDataReceived)
-        playersCommonStats.mutate(@(v) v[comp.server_player__userId] <- comp.commonStats.getAll())
-    },
-  },
-  {
-    comps_track = [
-      ["commonStats", TYPE_OBJECT],
-      ["isBattleDataReceived", TYPE_BOOL],
-    ],
-    comps_ro = [["server_player__userId", TYPE_UINT64]],
-  })
+
+let commonStatsByEid = mkEcsComputedEidMap({
+  comps = [
+    ["commonStats", TYPE_OBJECT],
+    ["server_player__userId", TYPE_UINT64],
+  ]
+  comps_filter = [["isBattleDataReceived", TYPE_BOOL]]
+  filter = "isBattleDataReceived"
+})
+
+
+let playersCommonStats = Computed(function() {
+  let res = {}
+  foreach (row in commonStatsByEid.get())
+    res[row.server_player__userId] <- row.commonStats
+  return res
+})
 
 return {
   playersCommonStats = Computed(@() playersCommonStats.get().__merge(dbgCommonStats.get()))

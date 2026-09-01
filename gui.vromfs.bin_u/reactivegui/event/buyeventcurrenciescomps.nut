@@ -1,41 +1,39 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkCurrencyFullId, currencyToFullId, sortByCurrencyId, currencySeasons
-} = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { getCurrencyConvertInfo } = require("%appGlobals/config/currencyPresentation.nut")
-let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
-let { eventCurrenciesGoods, closeBuyEventCurrenciesWnd, currencyId, parentEventLoc,
-  buyCurrencyWndGamercardCurrencies
-} = require("%rGui/event/buyEventCurrenciesState.nut")
-let { mkGoodsWrap, mkSlotBgImg, mkCurrencyAmountTitle, mkGoodsImg, mkPricePlate, mkGoodsCommonParts, mkBgParticles,
-  txt, mkGoodsLimitAndEndTime, goodsGlareAnimDuration } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { mkColoredGradientY, mkFontGradient } = require("%rGui/style/gradients.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { onGoodsClick, mkGoodsListWithBaseValue, mkGoodsState } = require("%rGui/shop/shopWndPage.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
-let { getQuestNextRewardCurrenciesInTab, questsCfg, questsBySection, progressUnlockBySection, progressUnlockByTab
-} = require("%rGui/quests/questsState.nut")
-let { openQuestsWndOnTab } = require("%rGui/seasonScene/seasonSceneState.nut")
-let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
-let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { inactiveLootboxes } = require("%rGui/event/eventLootboxes.nut")
-
+from "%sqstd/string.nut" import utf8ToUpper
+import "%appGlobals/config/currencyGoodsPresentation.nut" as getCurrencyGoodsPresentation
+from "%appGlobals/config/currencyPresentation.nut" import getCurrencyConvertInfo
+from "%appGlobals/pServer/seasonCurrencies.nut" import mkCurrencyFullId, currencyToFullId, sortByCurrencyId,
+  currencySeasons
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/rewardType.nut" import G_CURRENCY
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/pannableArea.nut" import horizontalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow
+from "%rGui/event/buyEventCurrenciesState.nut" import eventCurrenciesGoods, closeBuyEventCurrenciesWnd, currencyId,
+  parentEventLoc, buyCurrencyWndGamercardCurrencies
+from "%rGui/event/eventLootboxes.nut" import inactiveLootboxes
+from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
+from "%rGui/quests/questsState.nut" import getQuestNextRewardCurrenciesInTab, questsCfg, questsBySection,
+  progressUnlockBySection, progressUnlockByTab
+from "%rGui/seasonScene/seasonSceneState.nut" import openQuestsWndOnTab
+from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, mkSlotBgImg, mkCurrencyAmountTitle, mkGoodsImg,
+  mkPricePlate, mkGoodsCommonParts, mkBgParticles, txt, mkGoodsLimitAndEndTime, goodsGlareAnimDuration
+from "%rGui/shop/shopWndPage.nut" import onGoodsClick, mkGoodsListWithBaseValue, mkGoodsState
+from "%rGui/style/gradients.nut" import mkColoredGradientY, mkFontGradient
+from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
 
 let tasksBgGrad = mkColoredGradientY(0xFF09C6F9, 0xFF00808E, 12)
 let titleFontGrad = mkFontGradient(0xFFDADADA, 0xFF848484, 11, 6, 2)
-let glareDelay = 5.0
+const glareDelay = 5.0
 let glareOffsetMul = 0.62 * goodsGlareAnimDuration
 let glareDuration = 0.2 * goodsGlareAnimDuration
 
-let gap = hdpx(40)
-let goodsW = hdpx(360)
-let goodsH = hdpx(600)
-let pricePlateH = hdpx(90)
+const gap = hdpx(40)
+const goodsW = hdpx(360)
+const goodsH = hdpx(600)
+const pricePlateH = hdpx(90)
 let goodsSize = [goodsW, goodsH]
 let goodsBgSize = [goodsW, goodsH - pricePlateH]
 
@@ -159,7 +157,7 @@ let pannableArea = horizontalPannableAreaCtor(sw(100), [saBorders[0], saBorders[
 let scrollHandler = ScrollHandler()
 
 let scrollArrowsBlock = {
-  size = [sw(100), goodsH]
+  size = const [sw(100), goodsH]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   children = [
@@ -214,7 +212,7 @@ function mkEventCurrenciesGoods() {
         children = [
           pannableArea(
             mkCurrenciesList(cFullId.get(), eventCurrenciesGoods.get(), showQuestsLinkTabId.get(), needUseScroll.get()),
-            { size = [sw(100), FLEX] },
+            { size = const [sw(100), FLEX] },
             {
               behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],
               scrollHandler = scrollHandler
@@ -227,11 +225,11 @@ function mkEventCurrenciesGoods() {
 
 let buyEventCurrenciesHeader = @() {
   watch = [currencyId, parentEventLoc]
-  size = FLEX_H
-  halign = ALIGN_CENTER
-  margin = const [0, 0, hdpx(20), 0]
+  size = FLEX_V
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
   text = utf8ToUpper(loc($"events/buyCurrency/{currencyId.get()}", { name = parentEventLoc.get() }))
 }.__update(fontBig)
 
@@ -254,24 +252,19 @@ let buyEventCurrenciesDesc = function() {
 }
 
 let buyEventCurrenciesGamercard = @() {
-  watch = currencyId
-  size = [saSize[0], gamercardHeight]
+  watch = [currencyId, buyCurrencyWndGamercardCurrencies]
+  size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   children = [
-    backButton(closeBuyEventCurrenciesWnd, { vplace = ALIGN_CENTER })
-    { size = FLEX }
-    {
-      valign = ALIGN_CENTER
-      flow = FLOW_HORIZONTAL
-      gap = hdpx(70)
-      children = buyCurrencyWndGamercardCurrencies.get().map(@(v) mkCurrencyBalance(v))
-    }
+    headerGradientWithRightBlock([ backButton(closeBuyEventCurrenciesWnd), buyEventCurrenciesHeader ],
+      mkCurrenciesBtns(buyCurrencyWndGamercardCurrencies.get(), { [currencyId.get()] = true })
+    )
+
   ]
 }
 
 return {
-  buyEventCurrenciesHeader
   buyEventCurrenciesGamercard
   mkEventCurrenciesGoods
   buyEventCurrenciesDesc

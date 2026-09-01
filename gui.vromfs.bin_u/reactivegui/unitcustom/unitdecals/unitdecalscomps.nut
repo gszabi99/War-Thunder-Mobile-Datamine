@@ -1,22 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.localize" import doesLocTextExist
 from "%appGlobals/permissions.nut" import allow_subscriptions
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
-let { mkButtonHoldTooltip } = require("%rGui/tooltip.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
-let { getDecalImg } = require("%rGui/unitCustom/unitDecals/decalsCache.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/currencyStyles.nut" import CS_SMALL
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/style/stdColors.nut" import selectColor
+from "%rGui/tooltip.nut" import mkButtonHoldTooltip
+from "%rGui/unitCustom/unitDecals/decalsCache.nut" import getDecalImg
 
 
 let decalIconSize = evenPx(130)
 let disableIconSize = evenPx(100)
 let decalIconSizeBig = evenPx(180)
-let borderWidth = hdpxi(4)
-let decalsGap = hdpxi(8)
+const borderWidth = hdpxi(4)
+const decalsGap = hdpxi(8)
 let decalCardWidth = decalIconSize + 2 * borderWidth
 let selBorderDecalColor = selectColor
-let commonBgColor = 0x70000000
+const commonBgColor = 0x70000000
 let decalsFooterHeight = decalCardWidth + decalsGap * 2
 let lockIconSize = [evenPx(25), evenPx(32)]
 let lockIconBlockHeight = evenPx(42)
@@ -25,7 +25,7 @@ let mkDecalIcon = @(id, size = decalIconSize) {
   size
   rendObj = ROBJ_IMAGE
   image = (id ?? "") == "" ? Picture($"ui/gameuiskin#icon_primary_attention.svg:{size?[0] ?? size}:P")
-    : Picture($"!{getDecalImg(id)}*", {texFormat=TEXFMT_SRGB})
+    : Picture($"!{getDecalImg(id)}*", {texFormat=TEXFMT_SRGB_DECAL})
   keepAspect = true
 }
 
@@ -51,7 +51,7 @@ function getDecalDesc(name) {
 
 let mkDecalPrice = @(isAvailable, decalPrice, ovr = {}) @() {
   watch = [isAvailable, decalPrice]
-  size = [FLEX, ph(30)]
+  size = const [FLEX, ph(30)]
   vplace = ALIGN_BOTTOM
   valign = ALIGN_CENTER
   children = !isAvailable.get() && (decalPrice.get()?.price ?? 0) > 0
@@ -62,7 +62,7 @@ let mkDecalPrice = @(isAvailable, decalPrice, ovr = {}) @() {
           fillColor = commonBgColor
         }
         mkCurrencyComp(decalPrice.get().price, decalPrice.get().currencyId, CS_SMALL)
-          .__update({ pos = [borderWidth, 0] })
+          .__update({ pos = const [borderWidth, 0] })
       ]
     : null
 }.__update(ovr)

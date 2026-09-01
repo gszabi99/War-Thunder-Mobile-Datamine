@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/rewards/rewardViewInfo.nut" import isRewardEmpty
 
 
 let previewLootboxId = mkWatched(persist, "previewLootboxId", null)

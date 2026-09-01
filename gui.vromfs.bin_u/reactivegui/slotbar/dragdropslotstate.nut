@@ -1,10 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { setSlots } = require("%rGui/slotBar/slotBarUpdater.nut")
-let { selectedSlotIdx, actualSlotIdx, selectedUnitToSlot, setUnitToSlot } = require("%rGui/slotBar/slotBarState.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/slotBar/slotBarState.nut" import selectedSlotIdx, actualSlotIdx, selectedUnitToSlot, setUnitToSlot
+from "%rGui/slotBar/slotBarUpdater.nut" import setSlots
 
 
 let draggedData = Watched(null)

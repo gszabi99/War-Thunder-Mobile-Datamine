@@ -1,4 +1,5 @@
-let DataBlock = require("DataBlock")
+import "DataBlock" as DataBlock
+
 
 let configParameters = {
   degreeRemainingHealthPlayer = 1.0

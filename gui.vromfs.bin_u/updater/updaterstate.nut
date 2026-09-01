@@ -1,9 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { dgs_get_settings } = require("dagor.system")
+from "dagor.system" import dgs_get_settings
+from "eventbus" import eventbus_subscribe
+from "%sqstd/platform.nut" import is_android, is_ios
+from "%globalsDarg/updaterUtils.nut" import getDownloadInfoText, MB
+from "types" import Integer
+
+
 let logU = log_with_prefix("[UPDATER] ")
-let { is_android, is_ios } = require("%sqstd/platform.nut")
-let { getDownloadInfoText, MB } = require("%globalsDarg/updaterUtils.nut")
 
 
 let isUpdaterEnabled = dgs_get_settings()?.debug.contentUpdater.enabled ?? false
@@ -40,7 +43,7 @@ let statusText = Computed(@() updaterError.get() != null ? loc($"updater/error/{
 
 let errorNames = {}
 foreach(id, val in contentUpdater)
-  if (type(val) != "integer")
+  if (!(val instanceof Integer))
     continue
   else if (id.startswith("UPDATER_ERROR"))
     errorNames[val] <- id
@@ -80,7 +83,7 @@ let updaterEvents = {
 let stageNames = {}
 let eventNames = {}
 foreach(id, val in contentUpdater)
-  if (type(val) != "integer" || id.startswith("UPDATER_RESULT_"))
+  if (!(val instanceof Integer) || id.startswith("UPDATER_RESULT_"))
     continue
   else if (id.startswith("UPDATER_EVENT_"))
     eventNames[val] <- id

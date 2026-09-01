@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { fabs } = require("math")
-let { capZones, capZonesCount } = require("%rGui/hud/capZones/capZonesState.nut")
-let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
-let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
-let { ECT_CAPTURE_INDIVIDUAL } = require("guiMission")
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
+from "guiMission" import ECT_CAPTURE_INDIVIDUAL
+from "math" import fabs
+from "%appGlobals/clientState/clientState.nut" import localMPlayerTeam
+from "%rGui/hud/capZones/capZonesState.nut" import capZones, capZonesCount
+from "%rGui/style/hudColors.nut" import hudWhiteColor
+from "%rGui/style/teamColors.nut" import teamBlueColor, teamRedColor
 
 
 let zoneSizeBase = evenPx(50)
-let bigZoneMul = 1.5
+const bigZoneMul = 1.5
 let neutralColor = hudWhiteColor
 const MP_TEAM_NEUTRAL = 0
 

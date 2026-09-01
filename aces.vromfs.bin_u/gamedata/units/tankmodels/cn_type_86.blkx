@@ -1824,9 +1824,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 13100.0,
+      "Empty": 12700.0,
       "Fuel": 300.0,
-      "TakeOff": 13400.0,
+      "TakeOff": 13000.0,
       "momentOfInertia": [
         2.0,
         2.0,
@@ -1847,7 +1847,7 @@
     "tracks": {
       "animationMultiplier": 0.6,
       "height": 0.05,
-      "width": 0.35,
+      "width": 0.28,
       "fricSideRotAlternative": [
         5.0,
         0.0,
@@ -1867,18 +1867,24 @@
     "mechanics": {
       "maxBrakeForce": 52800.0,
       "driveGearRadius": 0.27,
-      "mainGearRatio": 0.87,
+      "mainGearRatio": 0.86,
       "sideGearRatio": 5.5,
-      "alternativeGearControl": 3.0,
+      "alternativeGearControl": 4.0,
       "gearRatios": {
         "ratio": [
-          -4.95,
+          -5.25,
+          -7.56,
           0.0,
+          7.56,
           5.25,
+          4.092,
           2.842,
+          2.753,
           1.912,
+          1.849,
           1.284,
-          0.85
+          1.236,
+          0.858
         ]
       }
     },
@@ -2892,7 +2898,6 @@
     },
     "ammo2": {
       "weaponTrigger": "gunner2",
-      "removeLoadedAmmo": false,
       "fatalFire": true,
       "fatalExplosion": true,
       "shells": [

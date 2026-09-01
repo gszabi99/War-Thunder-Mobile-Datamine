@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { TARGET_HUE_ALLY, TARGET_HUE_ENEMY, TARGET_HUE_SQUAD, correctHueTarget, correctColorLightness
-} = require("colorCorrector")
-let { format } = require("string")
-let { hudBlueColor, hudCoralRedColor, hudGreenColor } = require("%rGui/style/hudColors.nut")
+from "colorCorrector" import TARGET_HUE_ALLY, TARGET_HUE_ENEMY, TARGET_HUE_SQUAD, correctHueTarget,
+  correctColorLightness
+from "string" import format
+from "%rGui/style/hudColors.nut" import hudBlueColor, hudCoralRedColor, hudGreenColor
+
 
 let teamBlueColor = correctHueTarget(hudBlueColor, TARGET_HUE_ALLY)
 let teamRedColor = correctHueTarget(hudCoralRedColor, TARGET_HUE_ENEMY)

@@ -1,9 +1,9 @@
-let { Watched, Computed } = require("frp")
-let { deferOnce } = require("dagor.workcycle")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { rights } = require("permissions/userRights.nut")
-let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
-let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
+from "dagor.workcycle" import deferOnce
+from "frp" import Watched, Computed
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout
+from "%appGlobals/userstats/serverTime.nut" import serverTime, isServerTimeValid
+from "permissions/userRights.nut" import rights
 
 
 let defaults = {

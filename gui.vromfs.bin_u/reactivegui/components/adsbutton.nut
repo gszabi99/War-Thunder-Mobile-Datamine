@@ -1,22 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { apply_last_battle_ad_reward, registerHandler, adBudgetInProgress
-} = require("%appGlobals/pServer/pServerApi.nut")
-let { battleAdsBonusesCfg, isAdsAvailable, showAdsForReward, isProviderInited } = require("%rGui/ads/adsState.nut")
-let { SECONDARY, COMMON, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { iconTextButton, mergeStyles } = require("%rGui/components/textButton.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
-let { hasVip } = require("%rGui/state/profilePremium.nut")
-let adBudget = require("%rGui/ads/adBudget.nut")
-let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/pServer/bqClient.nut" import sendErrorLocIdBqEvent
+from "%appGlobals/pServer/pServerApi.nut" import apply_last_battle_ad_reward, registerHandler, adBudgetInProgress
+import "%rGui/ads/adBudget.nut" as adBudget
+from "%rGui/ads/adsState.nut" import battleAdsBonusesCfg, isAdsAvailable, showAdsForReward, isProviderInited
+from "%rGui/components/buttonStyles.nut" import SECONDARY, COMMON, defButtonHeight
+from "%rGui/components/currencyComp.nut" import mkCurrencyImage
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/textButton.nut" import iconTextButton, mergeStyles
+from "%rGui/debriefing/debriefingState.nut" import debriefingData
+from "%rGui/state/profilePremium.nut" import hasVip
 
 
-let bonusIconSize = hdpxi(35)
-let bonusIconShift = hdpx(25)
+const bonusIconSize = hdpxi(35)
+const bonusIconShift = hdpx(25)
 let adsBonusBtnSize = [hdpx(400), defButtonHeight]
 
 let adsBonuses = Computed(function() {

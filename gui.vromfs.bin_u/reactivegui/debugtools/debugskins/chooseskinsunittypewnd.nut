@@ -1,14 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let modalPopupWnd = require("%rGui/components/modalPopupWnd.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+import "%rGui/components/modalPopupWnd.nut" as modalPopupWnd
+from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/style/backgrounds.nut" import bgShaded
 
-let wndUid = "chooseSkinsUnitType"
+
+const wndUid = "chooseSkinsUnitType"
 let close = @() modalPopupWnd.remove(wndUid)
 
-let gap = hdpx(10)
+const gap = hdpx(10)
 
 let content = @(unitTypes, curUnitType, onChange) {
   size = FLEX_H
@@ -41,7 +42,7 @@ return @(targetRect, unitTypes, curUnitType, onChange) modalPopupWnd.add(targetR
     flow = FLOW_VERTICAL
     children = [
       {
-        pos = [hdpx(10), 0]
+        pos = const [hdpx(10), 0]
         rendObj = ROBJ_TEXT
         text = loc("hudTuning/chooseUnitType")
       }.__update(fontSmall)

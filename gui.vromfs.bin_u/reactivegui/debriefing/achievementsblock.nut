@@ -1,23 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkStreakIcon, mkStreakWithMultiplier, prepareStreaksArray, getUnlockLocText, getUnlockDescLocText } = require("%rGui/unlocks/streakPkg.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { WP } = require("%appGlobals/currenciesState.nut")
-let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+from "%appGlobals/currenciesState.nut" import WP
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/currencyStyles.nut" import CS_SMALL
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
+from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
+from "%rGui/unlocks/streakPkg.nut" import mkStreakIcon, mkStreakWithMultiplier, prepareStreaksArray, getUnlockLocText,
+  getUnlockDescLocText
 
-let gradientWidth = sw(100)
+
+const gradientWidth = sw(100)
 let contentWidth = saSize[0]
-let gap = hdpx(20)
-let itemSize = hdpx(120)
-let hintSideGradWidth = hdpx(300)
-let bgColor = 0x60606060
+const gap = hdpx(20)
+const itemSize = hdpx(120)
+const hintSideGradWidth = hdpx(300)
+const bgColor = 0x60606060
 
-let maxStreaksAnimTimeTotal = 1.0
-let streakAnimTime = 0.4
-let streakAppearTime = 0.2
-let streakBlinkTime = 0.3
-let streakBlinkDelayTime = streakAnimTime - streakBlinkTime
+const maxStreaksAnimTimeTotal = 1.0
+const streakAnimTime = 0.4
+const streakAppearTime = 0.2
+const streakBlinkTime = 0.3
+const streakBlinkDelayTime = streakAnimTime - streakBlinkTime
 
 let mkText = @(text) {
   size = SIZE_TO_CONTENT
@@ -61,7 +63,7 @@ function mkInfoButton(val) {
     watch = stateFlags
     key
     behavior = Behaviors.Button
-    size = [itemSize, itemSize]
+    size = const [itemSize, itemSize]
     transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
     children = mkStreakWithMultiplier(id, completed, itemSize, val?.stage)
@@ -98,7 +100,7 @@ let mkAchievementsComp = @(streaksArr, startAnimTime, delayPerItem, offset) stre
   size = FLEX_H
   children = [
     {
-      size = [gradientWidth, FLEX]
+      size = const [gradientWidth, FLEX]
       hplace = ALIGN_CENTER
       rendObj = ROBJ_9RECT
       image = gradTranspDoubleSideX
@@ -111,7 +113,7 @@ let mkAchievementsComp = @(streaksArr, startAnimTime, delayPerItem, offset) stre
       margin = hdpx(20)
       hplace = ALIGN_CENTER
       children = {
-        size = [FLEX, itemSize]
+        size = const [FLEX, itemSize]
         children = streaksArr.map(@(val, idx) mkAppearAnim(mkInfoButton(val), idx, startAnimTime, delayPerItem, offset))
       }
     }

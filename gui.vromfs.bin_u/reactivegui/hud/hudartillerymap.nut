@@ -1,33 +1,35 @@
+from "%globalScripts/gameRendObjs.nut" import *
 from "%globalsDarg/darg_library.nut" import *
+from "eventbus" import eventbus_subscribe
+from "guiArtillery" import getMapRelativePlayerPos, getArtilleryRange, getArtilleryDispersion, callArtillery,
+  artilleryCancel, onArtilleryClose, isSuperArtilleryMode, getSuperArtilleryRadius
+from "hudActionBar" import getActionBarItems
+from "math" import round
+from "mission" import get_mission_time
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/textButton.nut" import textButtonBattle
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut" import tacticalMapMarkersLayer
+import "%rGui/hud/tacticalMap/tacticalMapPointingProcessor.nut" as mkTacticalMapPointingInputProcessor
+from "%rGui/hudState.nut" import unitType
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/hudColors.nut" import hudBlackColor, hudTransparentBlackColor
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import textColor, goodTextColor, badTextColor
 
-let { get_mission_time } = require("mission")
-let { eventbus_subscribe } = require("eventbus")
-let { round } = require("math")
-let { getMapRelativePlayerPos, getArtilleryRange, getArtilleryDispersion,
-  callArtillery, artilleryCancel, onArtilleryClose, isSuperArtilleryMode, getSuperArtilleryRadius
-} = require("guiArtillery")
-let { getActionBarItems } = require("hudActionBar")
+
 local { EII_ARTILLERY_TARGET } = require("hudActionBarConst")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { unitType } = require("%rGui/hudState.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { textButtonBattle } = require("%rGui/components/textButton.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { textColor, goodTextColor, badTextColor } = require("%rGui/style/stdColors.nut")
-let { tacticalMapMarkersLayer } = require("%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut")
-let mkTacticalMapPointingInputProcessor = require("%rGui/hud/tacticalMap/tacticalMapPointingProcessor.nut")
-let { hudBlackColor, hudTransparentBlackColor } = require("%rGui/style/hudColors.nut")
 
 const DATA_UPDATE_TIMEOUT = 0.2
 
 let mapSizePx = min(saSize[1], saSize[0] * 0.5625)
-let crosshairSizePx = round(sh(25) / 2) * 2
-let crosshairLineWidth = round(hdpx(8) / 2) * 2
+const crosshairSizePx = round(sh(25) / 2) * 2
+const crosshairLineWidth = round(hdpx(8) / 2) * 2
 
 eventbus_subscribe("artilleryMapClose", @(_) onArtilleryClose())
-eventbus_subscribe("MissionResult", @(_) artilleryCancel())
-eventbus_subscribe("LocalPlayerDead", @(_) artilleryCancel())
+subscribeHudEvent("MissionResult", @(_) artilleryCancel())
+subscribeHudEvent("LocalPlayerDead", @(_) artilleryCancel())
 unitType.subscribe(@(_) artilleryCancel())
 
 let mapCoords = mkWatched(persist, "mapCoords", [ 0.5, 0.5 ])
@@ -143,7 +145,7 @@ function mapShading() {
       })
       spaceT <= 0 ? null : bgShaded.__merge({
         size = [ mapSizePx, spaceT ]
-        pos = [ 0, 0 ]
+        pos = const [ 0, 0 ]
       })
       spaceB <= 0 ? null : bgShaded.__merge({
         size = [ mapSizePx, spaceB ]
@@ -184,7 +186,7 @@ function crosshairDrawing() {
   let circleRadPrc = 100.0 * crosshairCircleRadPx.get() / crosshairSizePx
   return {
     watch = [ canCallArtillery, crosshairCircleRadPx ]
-    size = [ crosshairSizePx, crosshairSizePx ]
+    size = const [ crosshairSizePx, crosshairSizePx ]
     rendObj = ROBJ_VECTOR_CANVAS
     fillColor = 0
     commands = [].extend(
@@ -199,7 +201,7 @@ let pointingInputProcessor = mkTacticalMapPointingInputProcessor(mapCoords)
 
 let crosshair = @() {
   watch = [ crosshairPosX, crosshairPosY ]
-  size = [ crosshairSizePx, crosshairSizePx ]
+  size = const [ crosshairSizePx, crosshairSizePx ]
   pos = [ crosshairPosX.get(), crosshairPosY.get() ]
   children = crosshairDrawing
 }

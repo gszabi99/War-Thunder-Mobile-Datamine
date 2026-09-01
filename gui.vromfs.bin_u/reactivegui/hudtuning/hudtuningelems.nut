@@ -1,12 +1,11 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%rGui/hudTuning/hudTuningConsts.nut" import *
-let { dfAnimBottomCenter, dfAnimBottomLeft, dfAnimBottomRight
-} = require("%rGui/style/unitDelayAnims.nut")
-let { isUnitDelayed } = require("%rGui/hudState.nut")
-let { hudUnitType } = require("%rGui/hudStateExt.nut")
-let { cfgByUnitTypeOrdered } = require("%rGui/hudTuning/cfgByUnitType.nut")
-let { curUnitHudTuning } = require("%rGui/hudTuning/hudTuningBattleState.nut")
-let { optScale, getElemVisible } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "%rGui/hudState.nut" import isUnitDelayed
+from "%rGui/hudStateExt.nut" import hudUnitType
+from "%rGui/hudTuning/cfg/cfgOptions.nut" import optScale, getElemVisible
+from "%rGui/hudTuning/cfgByUnitType.nut" import cfgByUnitTypeOrdered
+from "%rGui/hudTuning/hudTuningBattleState.nut" import curUnitHudTuning
+from "%rGui/style/unitDelayAnims.nut" import dfAnimBottomCenter, dfAnimBottomLeft, dfAnimBottomRight
 
 
 let anims = {

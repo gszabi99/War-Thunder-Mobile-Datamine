@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { setTimeout, resetTimeout, setInterval, clearTimer } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
-let random_pick = require("%sqstd/random_pick.nut")
-let { mkAnimBg } = require("%globalsDarg/components/mkAnimBg.nut")
-let { screensList } = require("loadingScreensCfg.nut")
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout, resetTimeout, setInterval, clearTimer
+import "%sqstd/random_pick.nut" as random_pick
+from "%globalsDarg/components/mkAnimBg.nut" import mkAnimBg
+from "loadingScreensCfg.nut" import screensList
+
 
 let curScreenId = mkWatched(persist, "curScreenId", null)
 let lastAttachedTime = mkWatched(persist, "lastAttachedTime", -1000000)

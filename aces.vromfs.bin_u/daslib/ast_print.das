@@ -248,7 +248,7 @@ class PrintVisitor : AstVisitor {
     }
     def override visitExprBlockExpression(blk : ExprBlock?; expr : ExpressionPtr) {
         
-        self->newLine();
+        self.newLine();
         return expr;
     }
     def override preVisitExprBlockFinal(blk : ExprBlock?) {
@@ -265,7 +265,7 @@ class PrintVisitor : AstVisitor {
     }
     def override visitExprBlockFinalExpression(blk : ExprBlock?; expr : ExpressionPtr) {
         
-        self->newLine();
+        self.newLine();
         return expr;
     }
 
@@ -511,6 +511,9 @@ class PrintVisitor : AstVisitor {
     def override preVisitExprWith(expr : ExprWith?) {
         
         write(*writer, "with ");
+        if (!empty(expr.moduleName)) {
+            write(*writer, "(module {expr.moduleName})");
+        }
     }
     def override preVisitExprWithBody(expr : ExprWith?; right : ExpressionPtr) {
         
@@ -916,6 +919,11 @@ class PrintVisitor : AstVisitor {
         write(*writer, "{expr.value}");
     }
 
+    def override preVisitExprConstFloat16(expr : ExprConstFloat16?) : void {
+        
+        write(*writer, "{expr.value}h");
+    }
+
     def override preVisitExprConstInt64(expr : ExprConstInt64?) : void {
         
         write(*writer, "{expr.value}");
@@ -1230,7 +1238,7 @@ def allExpr(arg : int) {
     print("{easc}");
     
     unsafe {
-        let aaf = reinterpret<float> aa;
+        let aaf = reinterpret<float>(aa);
         print("{aaf}");
     }
     

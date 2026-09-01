@@ -1,4 +1,5 @@
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+from "%sqstd/globalState.nut" import hardPersistWatched
+
 
 let serverConfigs = hardPersistWatched("pserver.config", {}, true)
 

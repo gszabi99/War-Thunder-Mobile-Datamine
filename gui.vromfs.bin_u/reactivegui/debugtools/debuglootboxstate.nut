@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
+from "console" import register_command
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/rewards/rewardViewInfo.nut" import getAllLootboxRewardsViewInfo, fillRewardsCounts
+from "%rGui/shop/lootboxPreviewState.nut" import previewLootboxId
 
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { getAllLootboxRewardsViewInfo, fillRewardsCounts } = require("%rGui/rewards/rewardViewInfo.nut")
-let { previewLootboxId } = require("%rGui/shop/lootboxPreviewState.nut")
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let selectedLootbox = mkWatched(persist, "selectedLootbox", null)

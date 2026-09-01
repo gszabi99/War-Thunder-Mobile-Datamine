@@ -1,35 +1,33 @@
 from "%globalsDarg/darg_library.nut" import *
-let { HangarCameraControl } = require("wt.behaviors")
-let { eventbus_subscribe } = require("eventbus")
-let { defer, resetTimeout } = require("dagor.workcycle")
-let { registerScene } = require("%rGui/navState.nut")
-let { G_SKIN, unitRewardTypes } = require("%appGlobals/rewardType.nut")
-let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
-let { GPT_SKIN, previewType, previewGoods, previewGoodsUnit, closeGoodsPreview, openPreviewCount,
-  HIDE_PREVIEW_MODALS_ID
-} = require("%rGui/shop/goodsPreviewState.nut")
-let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
-let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
-let { opacityAnims, colorAnims, mkPreviewHeader, mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener,
-  ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimePackNameBack, aTimeBackBtn, aTimeInfoItem, aTimePriceFull,
-  aTimeInfoItemOffset, aTimeInfoLight, horGap
-} = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { activeRewardHint } = require("%rGui/shop/goodsPreview/goodsPreviewHint.nut")
-let { unitForCutscene } = require("%rGui/shop/goodsPreview/unitCutscene.nut")
-let { set_load_sounds_for_model } = require("hangar")
-let { setCustomHangarUnit, resetCustomHangarUnit, hangarUnitDataBackup } = require("%rGui/unit/hangarUnit.nut")
-let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
-let mkTextRow = require("%darg/helpers/mkTextRow.nut")
+from "dagor.workcycle" import defer, resetTimeout
+from "eventbus" import eventbus_subscribe
+from "hangar" import set_load_sounds_for_model
+from "wt.behaviors" import HangarCameraControl
+import "%darg/helpers/mkTextRow.nut" as mkTextRow
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg
+from "%appGlobals/rewardType.nut" import G_SKIN, unitRewardTypes
+from "%rGui/components/infoButton.nut" import infoEllipseButton
+from "%rGui/components/modalWindows.nut" import hideModals, unhideModals
+from "%rGui/mainMenu/balanceComps.nut" import mkCurrencyBalance
+from "%rGui/navState.nut" import registerScene
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_TINY
+from "%rGui/shop/goodsPreview/goodsPreviewHint.nut" import activeRewardHint
+from "%rGui/shop/goodsPreview/goodsPreviewPkg.nut" import opacityAnims, colorAnims, mkPreviewHeader,
+  mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener, ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull,
+  aTimePackNameBack, aTimeBackBtn, aTimeInfoItem, aTimePriceFull, aTimeInfoItemOffset, aTimeInfoLight, horGap
+from "%rGui/shop/goodsPreview/unitCutscene.nut" import unitForCutscene
+from "%rGui/shop/goodsPreviewState.nut" import GPT_SKIN, previewType, previewGoods, previewGoodsUnit,
+  closeGoodsPreview, openPreviewCount, HIDE_PREVIEW_MODALS_ID
+from "%rGui/unit/components/unitInfoPanel.nut" import mkUnitTitle
+from "%rGui/unit/hangarUnit.nut" import setCustomHangarUnit, resetCustomHangarUnit, hangarUnitDataBackup
+from "%rGui/unit/unitPurchaseEffectScene.nut" import isPurchEffectVisible
+from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
 
 
-let TIME_TO_SHOW_UI = 5.0 
-let TIME_TO_SHOW_UI_AFTER_SHOT = 0.3
+const TIME_TO_SHOW_UI = 5.0 
+const TIME_TO_SHOW_UI_AFTER_SHOT = 0.3
 
-let verticalGap = hdpx(20)
+const verticalGap = hdpx(20)
 
 let isWindowAttached = Watched(false)
 let needShowUi = Watched(false)
@@ -37,10 +35,10 @@ let skipAnimsOnce = Watched(false)
 let openCount = Computed(@() previewType.get() == GPT_SKIN ? openPreviewCount.get() : 0)
 
 
-let aTimeHeaderStart = 0
+const aTimeHeaderStart = 0
 let aTimePackInfoStart = aTimePackNameFull
-let aTimePackInfoHeader = 0.3
-let aTimeFirstItemOfset = 0.1
+const aTimePackInfoHeader = 0.3
+const aTimeFirstItemOfset = 0.1
 let aTimeInfoHeaderFull = aTimeInfoLight + 0.3 * aTimeInfoItem + aTimeFirstItemOfset + 3 * aTimeInfoItemOffset
 
 let aTimePriceStart = aTimePackInfoStart + aTimeInfoHeaderFull
@@ -145,7 +143,7 @@ let packInfo = {
       animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
     }
     {
-      padding = [REWARD_STYLE_TINY.boxGap, 0]
+      padding = const [REWARD_STYLE_TINY.boxGap, 0]
       children = activeRewardHint
     }
   ]

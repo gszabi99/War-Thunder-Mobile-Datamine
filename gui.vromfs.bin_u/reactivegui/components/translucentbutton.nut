@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { unitPlateSize } = require("%rGui/slotBar/slotBarConsts.nut")
+from "%rGui/slotBar/slotBarConsts.nut" import unitPlateSize
+from "%rGui/style/stdColors.nut" import hoverColor
 
 
-let translucentButtonsHeight = hdpx(96)
-let translucentSmallButtonsHeight = hdpx(80)
-let lineWidth = hdpx(2)
+const translucentButtonsHeight = hdpx(96)
+const translucentSmallButtonsHeight = hdpx(80)
+const lineWidth = hdpx(2)
 let iconSlotSize = evenPx(44)
 let buttonSlotHeight = evenPx(66)
-let translucentButtonsVGap = hdpx(10)
-let translucentButtonsWidth = hdpx(115)
+const translucentButtonsVGap = hdpx(10)
+const translucentButtonsWidth = hdpx(115)
 
 let slotBtnSize = [unitPlateSize[0] / 3 - lineWidth, buttonSlotHeight]
 
 let translucentBtnStyles = {
-  PRIMARY = { size = [hdpx(115), translucentSmallButtonsHeight - lineWidth * 2], iconSize = evenPx(55) }
-  SECONDARY = { size = [hdpx(155), translucentButtonsHeight - lineWidth * 2], iconSize = evenPx(65) }
+  PRIMARY = { size = const [hdpx(115), translucentSmallButtonsHeight - lineWidth * 2], iconSize = evenPx(55) }
+  SECONDARY = { size = const [hdpx(155), translucentButtonsHeight - lineWidth * 2], iconSize = evenPx(65) }
 }
 
 let COMMADN_STATE = { 
@@ -32,7 +32,7 @@ let bordersCommands = {
   [LEFT | RIGHT] = [[VECTOR_POLY, 0, 26, 18, 0, 82, 0, 100, 26, 100, 100, 0, 100, 0, 26]]
 }
 
-let defaultGradientSvg = "gradient_btn_full.svg"
+const defaultGradientSvg = "gradient_btn_full.svg"
 let gradientSvgs = {
   [LEFT] = "gradient_btn_left_cut.svg",
   [RIGHT] = "gradient_btn_right_cut.svg",
@@ -42,7 +42,7 @@ let gradientSvgs = {
 let { PRIMARY, SECONDARY } = translucentBtnStyles
 let getBorderCommand = @(mask) bordersCommands?[mask] ?? bordersCommands[0]
 
-let textColor = 0xFFFFFFFF
+const textColor = 0xFFFFFFFF
 let fgColor = @(sf) sf & S_HOVER ? hoverColor : textColor
 let bgColor = @(sf) sf & S_HOVER ? hoverColor : 0xFFDEDEDE
 
@@ -67,6 +67,7 @@ function translucentButton(icon, onClick, text = null, mkChild = null, ovr = {})
   let stateFlags = Watched(0)
   let style = text != null ? SECONDARY : PRIMARY
   let iconSize = ((ovr?.iconSize ?? style.iconSize) * (ovr?.iconMul ?? 1) + 0.5).tointeger()
+  let { bitMask = RIGHT } = ovr
 
   return @() {
     behavior = Behaviors.Button
@@ -83,22 +84,22 @@ function translucentButton(icon, onClick, text = null, mkChild = null, ovr = {})
     children = {
       key = ovr?.key
       size = ovr?.size ?? style.size
-      valign = ALIGN_CENTER
       children = [
-        mkBtnBg(RIGHT, bgColor(stateFlags.get()), ovr?.size ?? style.size)
+        mkBtnBg(bitMask, bgColor(stateFlags.get()), ovr?.size ?? style.size)
         {
           size = FLEX
           flow = FLOW_VERTICAL
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           children = [
-            {
-              rendObj = ROBJ_IMAGE
-              size = iconSize
-              color = fgColor(stateFlags.get())
-              image = Picture($"{icon}:{iconSize}:{iconSize}:P")
-              keepAspect = true
-            }
+            typeof icon == "table" ? icon
+              : {
+                  rendObj = ROBJ_IMAGE
+                  size = iconSize
+                  color = fgColor(stateFlags.get())
+                  image = Picture($"{icon}:{iconSize}:{iconSize}:P")
+                  keepAspect = true
+                }
             text && {
               rendObj = ROBJ_TEXT
               color = fgColor(stateFlags.get())

@@ -1,14 +1,16 @@
 from "daRg" import *
+from "dagor.localize" import loc
 from "math" import max, min, clamp
+from "%sqstd/underscore.nut" import getSubArray, getSubTable
+import "%darg/darg_library.nut" as dargBaseLib
+import "%globalScripts/logs.nut" as log
+from "%appGlobals/safeArea.nut" import safeAreaW, safeAreaH
+import "fontsStyle.nut" as fontsStyle
+import "screenUnits.nut" as screenUnits
+
+
 if (require_optional("json") != null) 
   require("%sqstd/globalState.nut").setUniqueNestKey("darg")
-let log = require("%globalScripts/logs.nut")
-let { loc } = require("dagor.localize")
-let dargBaseLib = require("%darg/darg_library.nut")
-let { getSubArray, getSubTable } = require("%sqstd/underscore.nut")
-let screenUnits = require("screenUnits.nut")
-let { safeAreaW, safeAreaH } = require("%appGlobals/safeArea.nut")
-let fontsStyle = require("fontsStyle.nut")
 
 let colorArr = @(color) [(color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF, (color >> 24) & 0xFF]
 
@@ -26,12 +28,12 @@ let appearAnim = @(delay, duration) [
   { prop = AnimProp.opacity, from = 0, to = 1, delay, duration, easing = OutQuad, play = true }
 ]
 
-let Layers = freeze({
+const Layers = {
   Default = 0
   Upper = 1
   Tooltip = 2
   Inspector = 3
-})
+}
 
 let XmbContainer = @(ovr = {}) {
   canFocus = false

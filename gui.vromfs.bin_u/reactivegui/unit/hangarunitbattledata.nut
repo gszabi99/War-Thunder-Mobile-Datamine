@@ -1,12 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+import "io" as io
+from "json" import object_to_json_string
+from "scriptRespondent" import registerRespondent
 import "%globalScripts/ecs.nut" as ecs
-let { registerRespondent } = require("scriptRespondent")
-let io = require("io")
-let { object_to_json_string } = require("json")
-let { register_command } = require("console")
+from "%appGlobals/profileStates.nut" import myUserId
+from "%rGui/unit/hangarUnit.nut" import hangarBattleData, lastHangarUnitBattleData
+
+
 let logBD = log_with_prefix("[HANGAR_BATTLE_DATA] ")
-let { hangarBattleData, lastHangarUnitBattleData } = require("%rGui/unit/hangarUnit.nut")
-let { myUserId } = require("%appGlobals/profileStates.nut")
 
 
 let battleDataQuery = ecs.SqQuery("hangarBattleDataQuery",

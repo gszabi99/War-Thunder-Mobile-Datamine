@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
 from "blkGetters" import get_current_mission_info_cached
-let { AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN, AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE,
-  AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY, AB_TOOLKIT_WITH_MEDICAL, AB_SPECIAL_FIGHTER,
-  AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_ELECTRONIC_WARFARE, AB_ROCKET_ASW, AB_ACOUSTIC_DECOY,
-  AB_CIWS, AB_ROCKET_TERTIARY
-} = require("%rGui/hud/actionBar/actionType.nut")
-let { hasCountermeasures } = require("%rGui/hudState.nut")
-let { HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM } = require("%rGui/hud/hudHaptic.nut")
+from "%rGui/hud/actionBar/actionType.nut" import AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN,
+  AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE, AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY,
+  AB_TOOLKIT_WITH_MEDICAL, AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_ELECTRONIC_WARFARE,
+  AB_ROCKET_ASW, AB_ACOUSTIC_DECOY, AB_CIWS, AB_ROCKET_TERTIARY
+from "%rGui/hud/hudHaptic.nut" import HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM
+from "%rGui/hudState.nut" import hasCountermeasures
+
 
 function getActionBarShortcut(unitType, itemConfig) {
   let shortcutIdx = itemConfig.shortcutIdx

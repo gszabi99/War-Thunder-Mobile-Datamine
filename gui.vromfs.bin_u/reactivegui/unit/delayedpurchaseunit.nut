@@ -1,17 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { deferOnce } = require("dagor.workcycle")
-let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
+from "console" import register_command
+from "dagor.workcycle" import deferOnce
+from "%appGlobals/clientState/clientState.nut" import isInLoadingScreen
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%appGlobals/unitsState.nut" import setCurrentUnit
+from "%rGui/components/modalWindows.nut" import hasModalWindows
+from "%rGui/mainMenu/mainMenuState.nut" import isMainMenuAttached
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import isTutorialActive
+from "%rGui/unit/hangarUnit.nut" import setHangarUnit
+from "%rGui/unit/unitPurchaseEffectScene.nut" import requestOpenUnitPurchEffect, isPurchEffectVisible
 
-let { requestOpenUnitPurchEffect, isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
-let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
 
 let delayedPurchaseList = persist("delayedPurchaseList", @() [])
 let needSaveUnitDataForTutorial = mkWatched(persist, "needSaveUnitDataForTutorial", false)

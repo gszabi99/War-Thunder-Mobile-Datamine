@@ -560,6 +560,225 @@
           ]
         }
       }
+    ],
+    "objectGroups": [
+      {
+        "name": "no_rendinst_01",
+        "tm": [
+          [
+            0.762377,
+            0.0,
+            -0.647133
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.647133,
+            0.0,
+            0.762377
+          ],
+          [
+            2225.65,
+            8.45021,
+            2487.05
+          ]
+        ],
+        "unit_class": "noRendInstObjectGroup10",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "no_rendinst_02",
+        "tm": [
+          [
+            0.762377,
+            0.0,
+            -0.647133
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.647133,
+            0.0,
+            0.762377
+          ],
+          [
+            1827.1,
+            8.45003,
+            2352.8
+          ]
+        ],
+        "unit_class": "noRendInstObjectGroup10",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "no_rendinst_03",
+        "tm": [
+          [
+            0.762377,
+            0.0,
+            -0.647133
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.647133,
+            0.0,
+            0.762377
+          ],
+          [
+            1822.75,
+            8.45003,
+            2329.95
+          ]
+        ],
+        "unit_class": "noRendInstObjectGroup10",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "no_rendinst_05",
+        "tm": [
+          [
+            0.762377,
+            0.0,
+            -0.647133
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.647133,
+            0.0,
+            0.762377
+          ],
+          [
+            1938.55,
+            8.0,
+            2189.35
+          ]
+        ],
+        "unit_class": "noRendInstObjectGroup10",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "no_rendinst_04",
+        "tm": [
+          [
+            0.762377,
+            0.0,
+            -0.647133
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.647133,
+            0.0,
+            0.762377
+          ],
+          [
+            1937.85,
+            8.45002,
+            2153.5
+          ]
+        ],
+        "unit_class": "noRendInstObjectGroup10",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "no_rendinst_06",
+        "tm": [
+          [
+            0.762377,
+            0.0,
+            -0.647133
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.647133,
+            0.0,
+            0.762377
+          ],
+          [
+            1942.9,
+            8.45002,
+            2162.4
+          ]
+        ],
+        "unit_class": "noRendInstObjectGroup10",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "no_rendinst_07",
+        "tm": [
+          [
+            0.762377,
+            0.0,
+            -0.647133
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.647133,
+            0.0,
+            0.762377
+          ],
+          [
+            1931.05,
+            8.0,
+            2196.85
+          ]
+        ],
+        "unit_class": "noRendInstObjectGroup10",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
     ]
   },
   "areas": {

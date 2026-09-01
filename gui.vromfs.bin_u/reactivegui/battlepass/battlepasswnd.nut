@@ -1,23 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { isBpActive, openBPPurchaseWnd, selectedStage, curStage, getBpIcon,
-  BP_VIP, BP_COMMON, BP_NONE, purchasedBp, battlePassGoods, pointsCurStage, pointsPerStage,
-  receiveBpRewards, isBpRewardsInProgress, bpSeasonEndTime,
-  bpLevelPrice, isBPLevelPurchaseInProgress
-} = require("%rGui/battlePass/battlePassState.nut")
-let { eventSeason } = require("%rGui/event/eventState.nut")
-let { textButtonMultiline } = require("%rGui/components/textButton.nut")
-let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable, mkTimeEndsAtText, mkPassIcon
-} = require("%rGui/battlePass/passPkg.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
-let battlePassRewardsList = require("%rGui/battlePass/battlePassRewardsList.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let bpRewardDesc = require("%rGui/battlePass/bpRewardDesc.nut")
-let { simpleHorGrad } = require("%rGui/style/gradients.nut")
-let buyBPLevelMsg = require("%rGui/battlePass/buyBPLevelMsg.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%rGui/battlePass/battlePassRewardsList.nut" as battlePassRewardsList
+from "%rGui/battlePass/battlePassState.nut" import isBpActive, openBPPurchaseWnd, selectedStage, curStage, getBpIcon,
+  BP_VIP, BP_COMMON, BP_NONE, purchasedBp, battlePassGoods, pointsCurStage, pointsPerStage, receiveBpRewards,
+  isBpRewardsInProgress, bpSeasonEndTime, bpLevelPrice, isBPLevelPurchaseInProgress
+import "%rGui/battlePass/bpProgressBar.nut" as bpProgressBar
+import "%rGui/battlePass/bpRewardDesc.nut" as bpRewardDesc
+import "%rGui/battlePass/buyBPLevelMsg.nut" as buyBPLevelMsg
+from "%rGui/battlePass/passPkg.nut" import bpCurProgressbar, bpProgressText, contentH,
+  mkRewardsPannable, mkPassIcon
+from "%rGui/components/buttonStyles.nut" import PURCHASE, defButtonHeight, defButtonMinWidth
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
+from "%rGui/components/textButton.nut" import textButtonMultiline
+from "%rGui/event/eventState.nut" import eventSeason
+from "%rGui/style/gradients.nut" import simpleHorGrad
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/components/timerBlock.nut" import mkTimerBlock
+
 
 let scrollHandler = ScrollHandler()
 
@@ -88,7 +88,7 @@ let leftMiddle = {
   flow = FLOW_VERTICAL
   gap = { size = flex() }
   children = [
-    mkTimeEndsAtText(bpSeasonEndTime, { key = "battle_pass_time" }) 
+    mkTimerBlock(bpSeasonEndTime, { key = "battle_pass_time" }) 
     levelBlock
   ]
 }
@@ -160,10 +160,6 @@ let contentBP = @(stagesList, recommendInfo, isFullScreenWidth) @() {
         size = FLEX_H
         margin = [0, 0, hdpx(30), 0]
         children = [
-          {
-            key = "battle_pass_progress_bar" 
-            size = [FLEX, progressIconSize[1]]
-          }
           mkRewardsPannable(rewardsList(stagesList.get(), recommendInfo),
             scrollHandler, isFullScreenWidth)
           scrollArrowsBlock

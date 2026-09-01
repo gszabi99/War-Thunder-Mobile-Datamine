@@ -401,6 +401,7 @@
     "mapCamera": "map_camera",
     "deadUnitIcon": "objective_kill",
     "deadUnitIconScale": 0.5,
+    "wholeTrackBboxMargin": 1.2,
     "captureZoneAlpha": 1.0,
     "textOffset": [
       3.0,
@@ -461,6 +462,15 @@
       255,
       255
     ],
+    "useZoneHatchMask": true,
+    "useZoneHatchOutline": true,
+    "colorBattleAreaOutline": [
+      0,
+      0,
+      0,
+      127
+    ],
+    "zoneOutlineWidth": 2.0,
     "unitIconAlpha": 255,
     "iconScale": 1.0,
     "briefingIconScale": 0.75,

@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/textButton.nut" import textButtonPrimary
+from "%rGui/debugTools/debugLootboxState.nut" import lootboxesCfg, isOpened, selectedLootbox, allRewards
+import "%rGui/debugTools/debugSkins/chooseByNameWnd.nut" as chooseByNameWnd
+from "%rGui/navState.nut" import registerScene
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, REWARD_STYLE_MEDIUM
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
-let { lootboxesCfg, isOpened, selectedLootbox, allRewards } = require("%rGui/debugTools/debugLootboxState.nut")
-let { mkRewardPlate, REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardPlateComp.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let chooseByNameWnd = require("%rGui/debugTools/debugSkins/chooseByNameWnd.nut")
-let { registerScene } = require("%rGui/navState.nut")
 
 let close = @() isOpened.set(false)
 
 let opacityGradientSize = saBorders[1]
-let wndHeaderHeight = hdpx(60)
+const wndHeaderHeight = hdpx(60)
 let wndContentWidth = saSize[0]
 let wndContentHeight = saSize[1] - wndHeaderHeight + opacityGradientSize
-let wndBackgroundColor = 0xFF5c5e73
+const wndBackgroundColor = 0xFF5c5e73
 
 let wndHeader = @(children) {
   size = const [FLEX, hdpx(60)]

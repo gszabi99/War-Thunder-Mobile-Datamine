@@ -2,21 +2,22 @@ from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
 from "%appGlobals/unitPresentation.nut" import getUnitName
-from "%rGui/cursor.nut" import needShowCursor, cursor
-from "%rGui/navState.nut" import registerScene
-from "%rGui/mainMenu/gamercard.nut" import mkLeftBlockUnitCampaign
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 import "%rGui/components/panelBg.nut" as panelBg
 from "%rGui/components/textButton.nut" import textButtonBattle
-from "%rGui/weaponry/weaponsVisual.nut" import getAmmoNameShortText
-from "%rGui/dmViewer/protectionAnalysisState.nut" import inspectedBaseUnit, isSimulationMode,
-  threatUnit, threatBulletData, fireDistance, isHintVisible, doFire
+from "%rGui/cursor.nut" import needShowCursor, cursor
 import "%rGui/dmViewer/protectionAnalysisControl.nut" as protectionAnalysisControl
 import "%rGui/dmViewer/protectionAnalysisCrosshair.nut" as protectionAnalysisCrosshair
-from "%rGui/dmViewer/protectionAnalysisHint.nut" import strTitle, strAngle, strHeadingAngle,
-  strPenetratedArmor, strRicochetProb, strParts
+from "%rGui/dmViewer/protectionAnalysisHint.nut" import strTitle, strAngle, strHeadingAngle, strPenetratedArmor,
+  strRicochetProb, strParts
+from "%rGui/dmViewer/protectionAnalysisState.nut" import inspectedBaseUnit, isSimulationMode, threatUnit,
+  threatBulletData, fireDistance, isHintVisible, doFire
+from "%rGui/mainMenu/gamercard.nut" import mkLeftBlockUnitCampaign
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/weaponry/weaponsVisual.nut" import getAmmoNameShortText
 
-let hintContentMaxWidth = hdpx(400)
+
+const hintContentMaxWidth = hdpx(400)
 
 let close = @() isSimulationMode.set(false)
 
@@ -41,7 +42,7 @@ let threatInfoComp = {
   flow = FLOW_VERTICAL
   children = [
     mkInfoStr(null, @(_) loc("protection_analysis/attacker"),
-      { margin = [0, 0, hdpx(24), 0] }.__update(fontTinyAccentedShaded))
+      { margin = const [0, 0, hdpx(24), 0] }.__update(fontTinyAccentedShaded))
     mkInfoStr(threatUnit, @(v) getUnitName(v?.name ?? ""))
     mkInfoStr(threatBulletData, @(v) getAmmoNameShortText(v?.bSet))
     mkInfoStr(fireDistance, @(v) " ".concat(v, loc("measureUnits/meters_alt")))
@@ -59,12 +60,12 @@ let mkHintStr = @(watch, ovr = {}) @() {
 let hintComp = @() !isHintVisible.get() ? { watch = isHintVisible } : panelBg.__merge({
   watch = isHintVisible
   children = [
-    mkHintStr(strTitle, { margin = [0, 0, hdpx(24), 0], maxWidth = null }.__update(fontSmall))
+    mkHintStr(strTitle, { margin = const [0, 0, hdpx(24), 0], maxWidth = null }.__update(fontSmall))
     mkHintStr(strAngle)
     mkHintStr(strHeadingAngle)
     mkHintStr(strPenetratedArmor)
     mkHintStr(strRicochetProb)
-    mkHintStr(strParts, { margin = [hdpx(24), 0, 0, 0] })
+    mkHintStr(strParts, { margin = const [hdpx(24), 0, 0, 0] })
   ]
 })
 

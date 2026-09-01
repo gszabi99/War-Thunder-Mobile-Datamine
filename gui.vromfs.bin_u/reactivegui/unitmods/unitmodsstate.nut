@@ -1,18 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%appGlobals/currenciesState.nut" import WP
+from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/pServerApi.nut" import enable_unit_mod
+from "%appGlobals/pServer/pServerMath.nut" import roundPrice
+from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/bullets/bulletsConst.nut" import BULLETS_PRIM_SLOTS
+from "%rGui/unit/hangarUnit.nut" import hangarUnit
+from "%rGui/unitDetails/unitDetailsState.nut" import baseUnit
+from "%rGui/unitMods/unitModsConst.nut" import iconsCfg
+from "%rGui/unitMods/unseenBullets.nut" import getUnseenUnitBulletsNonUpdatable, markShellsSeen
+from "%rGui/unitMods/unseenMods.nut" import unseenCampUnitMods, markUnitModsSeen
+
+
 require("%rGui/onlyAfterLogin.nut")
-let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { enable_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { roundPrice } = require("%appGlobals/pServer/pServerMath.nut")
-let { WP } = require("%appGlobals/currenciesState.nut")
-let { BULLETS_PRIM_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
-let { iconsCfg } = require("%rGui/unitMods/unitModsConst.nut")
-let { unseenCampUnitMods, markUnitModsSeen } = require("%rGui/unitMods/unseenMods.nut")
-let { getUnseenUnitBulletsNonUpdatable, markShellsSeen } = require("%rGui/unitMods/unseenBullets.nut")
-let { baseUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
 
 
 const MOD_NOT_AVAILABLE = -1

@@ -1,23 +1,22 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%rGui/hudTuning/hudTuningConsts.nut" import *
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { cfgByUnitTypeOrdered } = require("%rGui/hudTuning/cfgByUnitType.nut")
-let { isTuningOpened, tuningUnitType, tuningTransform, transformInProgress, selectedId,
-  allTuningUnitTypes, closeTuning, tuningOptions
-} = require("%rGui/hudTuning/hudTuningState.nut")
-let { optScale, getElemVisible } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
-
-let manipulator = require("%rGui/hudTuning/hudTuningManipulator.nut")
-let hudTuningOptions = require("%rGui/hudTuning/hudTuningOptions.nut")
-let hudTuningElemOptions = require("%rGui/hudTuning/hudTuningElemOptions.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "%rGui/hudTuning/cfg/cfgOptions.nut" import optScale, getElemVisible
+from "%rGui/hudTuning/cfgByUnitType.nut" import cfgByUnitTypeOrdered
+import "%rGui/hudTuning/hudTuningElemOptions.nut" as hudTuningElemOptions
+import "%rGui/hudTuning/hudTuningManipulator.nut" as manipulator
+import "%rGui/hudTuning/hudTuningOptions.nut" as hudTuningOptions
+from "%rGui/hudTuning/hudTuningState.nut" import isTuningOpened, tuningUnitType, tuningTransform, transformInProgress,
+  selectedId, allTuningUnitTypes, closeTuning, tuningOptions
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/hudColors.nut" import hudWhiteColor
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "types" import Function
 
 
 let hiddenIconSize = evenPx(30)
 let lineWidth = evenPx(4)
-let lineColor = 0xC01860C0
-let pointColor = 0xFF2080FF
+const lineColor = 0xC01860C0
+const pointColor = 0xFF2080FF
 
 foreach(t, _ in allTuningUnitTypes)
   if (t not in cfgByUnitTypeOrdered)
@@ -85,7 +84,7 @@ function mkHudTuningElem(cfg) {
   let isElemVisible = !canHide ? Watched(true)
     : Computed(@() getElemVisible(tuningOptions.get(), id))
 
-  let viewWithBorder = type(editView) == "function"
+  let viewWithBorder = editView instanceof Function
     ? @() {
         watch = [isSelected, tuningOptions, isElemVisible]
         key = editViewKey

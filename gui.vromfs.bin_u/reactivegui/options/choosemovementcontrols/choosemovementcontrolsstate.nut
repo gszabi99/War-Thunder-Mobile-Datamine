@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { currentTankMoveCtrlType, currentWalkerMoveCtrlType } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
+from "%rGui/options/chooseMovementControls/groundMoveControlType.nut" import currentTankMoveCtrlType,
+  currentWalkerMoveCtrlType
 
 
 let orderByFirstVal = {

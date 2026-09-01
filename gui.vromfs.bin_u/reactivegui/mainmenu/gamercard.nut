@@ -1,43 +1,43 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/gamercardStyle.nut" import *
-let { playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
-let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
-let { curCampaign, campConfigs, purchasesCount, todayPurchasesCount, goodsLimitReset
-} = require("%appGlobals/pServer/campaign.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { serverTimeDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
-let { havePremium } = require("%rGui/state/profilePremium.nut")
-let { SC_GOLD, SC_WP, SC_PLATINUM } = require("%rGui/shop/shopCommon.nut")
-let { openShopWnd, shopGoods, soonGoods } = require("%rGui/shop/shopState.nut")
-let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { getGoodsByCurrencyId } = require("%rGui/shop/goodsUtils.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate, levelProgressBarWidth
-} = require("%rGui/components/levelBlockPkg.nut")
-let { accountOptionsScene } = require("%rGui/options/accountOptionsScene.nut")
-let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
-let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
-let { textColor, premiumTextColor, hoverColor } = require("%rGui/style/stdColors.nut")
-let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
-let premIconWithTimeOnChange = require("%rGui/mainMenu/premIconWithTimeOnChange.nut")
-let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
-let { myNameWithFrame, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
-let { priorityUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
-let { openBuyEventCurrenciesWnd } = require("%rGui/event/buyEventCurrenciesState.nut")
-let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
-let { mkUnitLevelBlock } = require("%rGui/unit/components/unitLevelComp.nut")
-let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { starLevelSmall } = require("%rGui/components/starLevel.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/currenciesState.nut" import WP, GOLD, PLATINUM
+from "%appGlobals/pServer/campaign.nut" import curCampaign, campConfigs, purchasesCount, todayPurchasesCount,
+  goodsLimitReset
+from "%appGlobals/pServer/profile.nut" import playerLevelInfo, campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/pServer/seasonCurrencies.nut" import sortByCurrencyId
+import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
+from "%appGlobals/rewardType.nut" import G_CURRENCY
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, dayOffset
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/currencyStyles.nut" import gamercardGap
+from "%rGui/components/gradientDefComps.nut" import doubleSideGradient
+from "%rGui/components/levelBlockPkg.nut" import mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate,
+  levelProgressBarWidth
+from "%rGui/components/starLevel.nut" import starLevelSmall
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark, unseenSize
+from "%rGui/decorators/decoratorState.nut" import myNameWithFrame, myAvatarImage, hasUnseenDecorators
+from "%rGui/decorators/decoratorsPkg.nut" import mkTitle
+from "%rGui/event/buyEventCurrenciesState.nut" import openBuyEventCurrenciesWnd
+from "%rGui/mainMenu/balanceComps.nut" import mkCurrencyBalance
+import "%rGui/mainMenu/premIconWithTimeOnChange.nut" as premIconWithTimeOnChange
+from "%rGui/options/accountOptionsScene.nut" import accountOptionsScene
+from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
+from "%rGui/shop/goodsUtils.nut" import getGoodsByCurrencyId
+from "%rGui/shop/shopCommon.nut" import SC_GOLD, SC_WP, SC_PLATINUM
+from "%rGui/shop/shopState.nut" import openShopWnd, shopGoods, soonGoods
+from "%rGui/state/profilePremium.nut" import havePremium
+from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset
+from "%rGui/style/stdColors.nut" import textColor, premiumTextColor, hoverColor
+from "%rGui/unit/components/unitLevelComp.nut" import mkUnitLevelBlock
+from "%rGui/unit/hangarUnit.nut" import hangarUnit
 
 
-let nextLevelBorderColor = 0xFFDADADA
-let nextLevelBgColor = 0xFF464646
-let nextLevelTextColor = 0xFFFFFFFF
+const nextLevelBorderColor = 0xFFDADADA
+const nextLevelBgColor = 0xFF464646
+const nextLevelTextColor = 0xFFFFFFFF
 
 let profileStateFlags = Watched(0)
 
@@ -76,7 +76,7 @@ let name =  @() textParams.__merge({
 })
 
 let starLevelOvr = {
-  pos = [pw(40), ph(40)]
+  pos = const [pw(40), ph(40)]
   transform = { rotate = -45 }
 }
 
@@ -201,7 +201,7 @@ function platoonOrUnitTitle(unit) {
         margin = [0, 0, 0, evenPx(84)]
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
-        pos = [0, -hdpx(20)]
+        pos = const [0, -hdpx(20)]
         gap = hdpx(20)
         children = [
           !isElite ? null : {
@@ -232,7 +232,7 @@ function gamercardUnitLevelLine(unit, keyHintText) {
         children = doubleSideGradient.__merge(
           {
             padding = const [hdpx(5), hdpx(50)]
-            pos = [hdpx(30) hdpx(55)]
+            pos = const [hdpx(30) hdpx(55)]
             children = @() {
               watch = [curCampaign, maxLevel]
               halign = ALIGN_LEFT
@@ -338,7 +338,7 @@ function mkCurrencyOpenAction(cId, goods, soon, configs, limitReset, dOffset, se
   return goodsId == null ? null : @() openGoodsPreview(goodsId)
 }
 
-let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}) {
+let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}, ovr = {}) {
   size = FLEX_H
   halign = ALIGN_RIGHT
   valign = ALIGN_CENTER
@@ -356,7 +356,7 @@ let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}) {
             : mkCurrencyOpenAction(c, shopGoods.get(), soonGoods.get(), serverConfigs.get(),
                 goodsLimitReset.get(), dayOffset.get(), serverTimeDay.get(), purchasesCount.get(), todayPurchasesCount.get())))
   }
-}
+}.__update(ovr)
 
 let gamercardBalanceBtns = mkCurrenciesBtns([WP, GOLD])
 

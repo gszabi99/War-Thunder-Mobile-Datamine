@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkPieMenu } = require("%rGui/hud/pieMenu.nut")
-let { voiceMsgCfg, isVoiceMsgEnabled, isVoiceMsgStickActive, voiceMsgSelectedIdx
-} = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
+from "%rGui/hud/pieMenu.nut" import mkPieMenu
+from "%rGui/hud/voiceMsg/voiceMsgState.nut" import voiceMsgCfg, isVoiceMsgEnabled, isVoiceMsgStickActive,
+  voiceMsgSelectedIdx
+
 
 let voiceMsgPieComp = mkPieMenu(voiceMsgCfg, voiceMsgSelectedIdx)
 

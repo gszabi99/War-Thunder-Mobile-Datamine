@@ -1,17 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { sortCountries } = require("%appGlobals/config/countryPresentation.nut")
-let { unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
-let { canBuyUnitsStatus, US_UNKNOWN, US_OWN, US_NOT_FOR_SALE, US_CAN_BUY, US_NOT_RESEARCHED,
-  US_NEED_BLUEPRINTS, US_CAN_RESEARCH, UUP_NOT_UPGRADEABLE, UUP_UPGRADEABLE, UUP_UPGRADED,
+from "dagor.workcycle" import deferOnce
+from "%appGlobals/config/countryPresentation.nut" import sortCountries
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg, campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/unitPresentation.nut" import unitClassFontIcons
+from "%appGlobals/unitsState.nut" import canBuyUnitsStatus, US_UNKNOWN, US_OWN, US_NOT_FOR_SALE, US_CAN_BUY,
+  US_NOT_RESEARCHED, US_NEED_BLUEPRINTS, US_CAN_RESEARCH, UUP_NOT_UPGRADEABLE, UUP_UPGRADEABLE, UUP_UPGRADED,
   getUnitCategory, UC_RESEARCHABLE, UC_BLUEPRINT, UC_COLLECTIBLE, UC_PREMIUM, UC_SEASON_PREMIUM, UC_OTHER
-} = require("%appGlobals/unitsState.nut")
-let { OCT_TEXTINPUT, OCT_MULTISELECT, OCT_MULTISELECT_MASK } = require("%rGui/options/optCtrlType.nut")
-let { mkGradRank } = require("%rGui/components/gradTexts.nut")
-let { mkFlagImageWithoutGrad, mkFlagFrame } = require("%rGui/unit/components/unitPlateComp.nut")
-let { isUnitNameMatchSearchStr } = require("%rGui/unit/unitNameSearch.nut")
+from "%rGui/components/gradTexts.nut" import mkGradRank
+from "%rGui/options/optCtrlType.nut" import OCT_TEXTINPUT, OCT_MULTISELECT, OCT_MULTISELECT_MASK
+from "%rGui/unit/components/unitPlateComp.nut" import mkFlagImageWithoutGrad, mkFlagFrame
+from "%rGui/unit/unitNameSearch.nut" import isUnitNameMatchSearchStr
+from "types" import Table
 
 
 let curFiltersById = mkWatched(persist, "curFiltersById", {})
@@ -43,8 +43,8 @@ let upgradeLoc = {
 let mkValue = @(id, curFilters, defValue = null) Computed(@() curFilters.get()?[id] ?? defValue)
 let mkSetValue = @(id, setFilterValue) @(value) setFilterValue(id, value)
 
-let textColor = 0xFFFFFFFF
-let inactiveTextColor = 0xFFD96363
+const textColor = 0xFFFFFFFF
+const inactiveTextColor = 0xFFD96363
 
 function fillFilters(filters) {
   foreach (f in filters ?? []) {
@@ -89,7 +89,7 @@ let mkListToggleValueMask = @(id, curFilters, setFilterValue, allBits) function 
 }
 
 function optName(_, curFilters, setFilterValue) {
-  let nameId = "name"
+  const nameId = "name"
   let nameValue = mkValue(nameId, curFilters, "")
   return {
     id = nameId
@@ -181,7 +181,7 @@ function optType(units, curFilters, setFilterValue) {
     return mask
   })
 
-  let optTypeId = "unitGroup"
+  const optTypeId = "unitGroup"
   return {
     id = optTypeId
     locId = null
@@ -215,7 +215,7 @@ function optUpgrade(units, curFilters, setFilterValue) {
     return mask
   })
 
-  let optUpgradeId = "unitUpgrade"
+  const optUpgradeId = "unitUpgrade"
   return {
     id = optUpgradeId
     locId = null
@@ -284,7 +284,7 @@ function mkFilters(setId, allNodes) {
     return activeFilters.set(filters.reduce(function(res, f) {
       let value = f.value.get()
       if (value != null && value != ""
-          && (type(value) != "table" || value.len() < f.allValues.get().len()))
+          && (!(value instanceof Table) || value.len() < f.allValues.get().len()))
         res++
       return res
     }, 0))

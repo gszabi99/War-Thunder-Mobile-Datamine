@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { leaveSquad, isInSquad } = require("%rGui/squad/squadManager.nut")
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/squad/squadManager.nut" import leaveSquad, isInSquad
+
 
 let notAvailableForSquadMsg = @(action, msg = null)
   !isInSquad.get() ? action()

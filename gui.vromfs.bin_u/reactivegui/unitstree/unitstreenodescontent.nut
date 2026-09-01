@@ -1,54 +1,51 @@
 from "%globalsDarg/darg_library.nut" import *
-let { PI, sin } = require("math")
-let { deferOnce, resetTimeout } = require("dagor.workcycle")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { flagsWidth, bgLight, mkTreeNodesFlag, flagTreeOffset, gamercardOverlap, infoPanelWidth
-} = require("%rGui/unitsTree/unitsTreeComps.nut")
-let { unitsTreeOpenRank, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
-let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { curSelectedUnit, curUnitName, visibleUnitsList } = require("%rGui/unit/unitsWndState.nut")
-let { isSlotsAnimActive, selectedTreeSlotIdx, actualSlotIdx, selectTreeSlotByUnitName,
-  selectedUnitToSlot
-} = require("%rGui/slotBar/slotBarState.nut")
-let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { doubleSidePannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { unseenArrowsBlockCtor, scrollHandler, scrollPos, startAnimScroll, interruptAnimScroll
-} = require("%rGui/unitsTree/unitsTreeScroll.nut")
-let { mkTreeNodesUnitPlate, mkTreeNodesUnitPlateDefault } = require("%rGui/unitsTree/mkUnitPlate.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { unseenUnits, markUnitSeen, markUnitsSeen } = require("%rGui/unit/unseenUnits.nut")
-let { markBranchSeen } = require("%rGui/unitsTree/unseenBranches.nut")
-let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
-let { selectedCountry, mkCountryNodesCfg, mkCountries, needDebugLines,
-  setResearchedUnitsSeen, currentResearch, researchCountry, unitsResearchStatus, unseenResearchedUnits,
-  setUnitToScroll, unitToScroll, unitInfoToScroll, visibleNodes
-} = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { slotBarUnitsTree, slotBarTreeHeight } = require("%rGui/slotBar/slotBar.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { isCampaignWithSlots, curSlots } = require("%appGlobals/pServer/slots.nut")
-let { rankBlockOffset } = require("%rGui/unitsTree/unitsTreeConsts.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let { animUnitWithLink, animNewUnitsAfterResearch, isBuyUnitWndOpened,
-  animUnitAfterResearch, canPlayAnimUnitWithLink, hasAnimDarkScreen, resetAnim,
-  animBuyRequirementsUnitId, animBuyRequirements, animResearchRequirementsUnitId, animResearchRequirements
-  animResearchRequirementsAncestors, animNewUnitsAfterResearchTrigger, animBuyRequirementsInfo
-} = require("%rGui/unitsTree/animState.nut")
-let { attractColor } = require("%rGui/unitsTree/treeAnimConsts.nut")
-let { draggedData, removeUnitFromSlot } = require("%rGui/slotBar/dragDropSlotState.nut")
-let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
+from "dagor.workcycle" import deferOnce, resetTimeout
+from "math" import PI, sin
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/slots.nut" import isCampaignWithSlots, curSlots
+from "%rGui/components/modalWindows.nut" import hasModalWindows
+from "%rGui/components/pannableArea.nut" import doubleSidePannableAreaCtor
+from "%rGui/slotBar/dragDropSlotState.nut" import draggedData, removeUnitFromSlot
+from "%rGui/slotBar/slotBar.nut" import slotBarUnitsTree, slotBarTreeHeight
+from "%rGui/slotBar/slotBarState.nut" import isSlotsAnimActive, selectedTreeSlotIdx, actualSlotIdx,
+  selectTreeSlotByUnitName, selectedUnitToSlot
+from "%rGui/style/gamercardStyle.nut" import gamercardHeight
+from "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" import mkCutBg
+from "%rGui/unit/components/unitInfoPanel.nut" import statsWidth
+from "%rGui/unit/components/unitPlateComp.nut" import unitPlateTiny
+from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
+from "%rGui/unit/unitsWndState.nut" import curSelectedUnit, curUnitName, visibleUnitsList
+from "%rGui/unit/unseenUnits.nut" import unseenUnits, markUnitSeen, markUnitsSeen
+from "%rGui/unitsTree/animState.nut" import animUnitWithLink, animNewUnitsAfterResearch, isBuyUnitWndOpened,
+  animUnitAfterResearch, canPlayAnimUnitWithLink, hasAnimDarkScreen, resetAnim, animBuyRequirementsUnitId,
+  animBuyRequirements, animResearchRequirementsUnitId, animResearchRequirements, animResearchRequirementsAncestors,
+  animNewUnitsAfterResearchTrigger, animBuyRequirementsInfo
+from "%rGui/unitsTree/mkUnitPlate.nut" import mkTreeNodesUnitPlate, mkTreeNodesUnitPlateDefault
+from "%rGui/unitsTree/treeAnimConsts.nut" import attractColor
+from "%rGui/unitsTree/unitsTreeComps.nut" import flagsWidth, bgLight, mkTreeNodesFlag, flagTreeOffset,
+  gamercardOverlap, infoPanelWidth
+from "%rGui/unitsTree/unitsTreeConsts.nut" import rankBlockOffset
+from "%rGui/unitsTree/unitsTreeNodesState.nut" import selectedCountry, mkCountryNodesCfg, mkCountries, needDebugLines,
+  setResearchedUnitsSeen, currentResearch, researchCountry, unitsResearchStatus, unseenResearchedUnits, setUnitToScroll,
+  unitToScroll, unitInfoToScroll, visibleNodes
+from "%rGui/unitsTree/unitsTreeScroll.nut" import unseenArrowsBlockCtor, scrollHandler, scrollPos, startAnimScroll,
+  interruptAnimScroll
+from "%rGui/unitsTree/unitsTreeState.nut" import unitsTreeOpenRank, isUnitsTreeOpen
+from "%rGui/unitsTree/unseenBranches.nut" import markBranchSeen
+from "types" import String, Array
 
 
-let maxPremRows = 3
+const maxPremRows = 3
 
-let aTimeAppearLink = 1
-let aTimeChangeLink = 0.5
-let aTimeDimmingScreen = 0.4
-let aTimeShowRequirements = 1
+const aTimeAppearLink = 1
+const aTimeChangeLink = 0.5
+const aTimeDimmingScreen = 0.4
+const aTimeShowRequirements = 1
 let darkScreenAnim = [
   { play = true, prop = AnimProp.opacity, from = 0, to = 1,
     duration = aTimeDimmingScreen, onFinish = @() hasAnimDarkScreen.set(false) }
@@ -64,9 +61,9 @@ let calcAreaSize = @(hasSlotbar) [
 ]
 let gradientOffsetX = [hdpx(120), hdpx(120)]
 let gradientOffsetY = [hdpx(3), hdpx(50)]
-let linkColor = 0xFFC0C0C0
-let linkColorGrey = 0xFF808080
-let linkColorLocked = 0xFFC03030
+const linkColor = 0xFFC0C0C0
+const linkColorGrey = 0xFF808080
+const linkColorLocked = 0xFFC03030
 
 let gapLineX3 = nodePlatesGap[0] / 3
 let gapLineX2 = nodePlatesGap[0] / 2
@@ -125,7 +122,6 @@ let mkUnseenNodesIndex = @(ranksCfg) Computed(function(prev) {
   if (!isUnitsTreeOpen.get())
     return res
   if (unseenUnits.get().len() == 0
-      && unseenSkins.get().len() == 0
       && unseenResearchedUnits.get().len() == 0)
     return res
   let unitTreeNodes = serverConfigs.get()?.unitTreeNodes[curCampaign.get()]
@@ -135,9 +131,7 @@ let mkUnseenNodesIndex = @(ranksCfg) Computed(function(prev) {
   foreach (unit in visibleUnitsList.get()) {
     let { name, country, rank } = unit
     let nodeCountry = unitTreeNodes?[name].country ?? country
-    if (name not in unseenUnits.get()
-        && name not in unseenSkins.get()
-        && name not in (unseenResearchedUnits.get()?[nodeCountry] ?? {}))
+    if (name not in unseenUnits.get() && name not in (unseenResearchedUnits.get()?[nodeCountry] ?? {}))
       continue
     if (nodeCountry not in res)
       res[nodeCountry] <- {}
@@ -271,7 +265,7 @@ let mkLinks = @(linksCfg) function() {
   let animLockCommands = []
 
   foreach(reqNames, cmds in linesFrom) {
-    let isStr = type(reqNames) == "string"
+    let isStr = reqNames instanceof String
     let hasAccess = isStr ? reqNames in own : null != reqNames.findvalue(@(name) name in own)
     if (hasAccess && (isStr ? animUnlockUnit == reqNames : reqNames.contains(animUnlockUnit))) {
       if (canPlayAnim)
@@ -291,7 +285,7 @@ let mkLinks = @(linksCfg) function() {
 
   foreach(cfg in linesTo) {
     let { name, reqUnits, cmd } = cfg
-    let isList = type(name) == "array"
+    let isList = name instanceof Array
     let hasAccess = null != reqUnits.findvalue(@(n) n in own)
 
     if (hasAccess && reqUnits.contains(animUnlockUnit)) {
@@ -757,7 +751,7 @@ function genLinks(nodes, positions, size) {
   }
 }
 
-let function mkUnitsNode(node, pos, hasDarkScreenV) {
+function mkUnitsNode(node, pos, hasDarkScreenV) {
   let { name } = node
   let xmbNode = XmbNode()
   let unit = Computed(@() campMyUnits.get()?[name] ?? campUnitsCfg.get()?[name])
@@ -797,7 +791,7 @@ let function mkUnitsNode(node, pos, hasDarkScreenV) {
   }
 }
 
-let function selectCountryByCurResearch() {
+function selectCountryByCurResearch() {
   let lastResUnitName = servProfile.get()?.levelInfo[curCampaign.get()].lastResearchedUnit ?? ""
   let lastResUnit = unitsResearchStatus.get()?[lastResUnitName]
   selectedCountry.set(researchCountry.get() ?? lastResUnit?.country )
@@ -992,7 +986,7 @@ let pannableAreaWithSlobar = mkAreaPannable(calcAreaSize(true))
 
 let contentKey = {}
 let pannableKey = {}
-let function mkUnitsTreeNodesContent(filteredNodes) {
+function mkUnitsTreeNodesContent(filteredNodes) {
   let allCountries = mkCountries(filteredNodes)
   let curCountry = Computed(@() allCountries.get().contains(selectedCountry.get())
     ? selectedCountry.get()
@@ -1075,7 +1069,7 @@ let function mkUnitsTreeNodesContent(filteredNodes) {
         unseenArrowsBlockCtor(
           needShowArrowL(curCountry, unseenNodesIndex),
           needShowArrowR(curCountry, unseenNodesIndex, areaSize),
-          { pos = [0, hdpx(5)] })
+          { pos = const [0, hdpx(5)] })
       ]
     }
     @() {

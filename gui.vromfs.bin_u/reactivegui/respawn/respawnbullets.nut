@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bulletsInfo, chosenBullets, bulletStep, bulletTotalSteps, bulletLeftSteps, setCurUnitBullets, isFakeSecondary,
-  maxBulletsCountForExtraAmmo, hasExtraBullets, bulletsSecInfo, bulletSecStep, bulletSecLeftSteps, isFakeSpecial,
-  chosenBulletsSec, bulletSecTotalSteps, hasExtraBulletsSec, maxBulletsSecCountForExtraAmmo, maxBulletsSpecCountForExtraAmmo,
-  bulletsSpecInfo, bulletSpecStep, bulletSpecLeftSteps, chosenBulletsSpec, bulletSpecTotalSteps, hasExtraBulletsSpec, brPickupPrimIdx
-} = require("%rGui/respawn/bulletsChoiceState.nut")
-let { headerMargin, headerText, header, bulletsLegend, mkBulletHeightInfo, gap } = require("%rGui/respawn/respawnComps.nut")
-let { openedSlot } = require("%rGui/respawn/respawnChooseBulletWnd.nut")
-let { selSlot, hasUnseenShellsBySlot } = require("%rGui/respawn/respawnState.nut")
-let { mkBulletSliderSlot, mkBulletLockedSlot } = require("%rGui/bullets/bulletsSlotComps.nut")
+from "%rGui/bullets/bulletsSlotComps.nut" import mkBulletSliderSlot, mkBulletLockedSlot
+from "%rGui/respawn/bulletsChoiceState.nut" import bulletsInfo, chosenBullets, brPickupPrimIdx, bulletStep, bulletTotalSteps,
+  bulletLeftSteps, setCurUnitBullets, isFakeSecondary, maxBulletsCountForExtraAmmo, hasExtraBullets, bulletsSecInfo,
+  bulletSecStep, bulletSecLeftSteps, isFakeSpecial, chosenBulletsSec, bulletSecTotalSteps, hasExtraBulletsSec,
+  maxBulletsSecCountForExtraAmmo, maxBulletsSpecCountForExtraAmmo, bulletsSpecInfo, bulletSpecStep, bulletSpecLeftSteps,
+  chosenBulletsSpec, bulletSpecTotalSteps, hasExtraBulletsSpec
+from "%rGui/respawn/respawnChooseBulletWnd.nut" import openedSlot
+from "%rGui/respawn/respawnComps.nut" import headerMargin, headerText, header, bulletsLegend, mkBulletHeightInfo, gap
+from "%rGui/respawn/respawnState.nut" import selSlot, hasUnseenShellsBySlot
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
 let choiceCount = Computed(@() chosenBullets.get().len())

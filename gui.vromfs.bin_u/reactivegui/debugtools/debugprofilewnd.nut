@@ -1,11 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { openDebugWnd } = require("%rGui/components/debugWnd.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { campProfile } = require("%appGlobals/pServer/campaign.nut")
-let { isForCampaign, dbgCampaignSelector } = require("%rGui/debugTools/debugCampaignSelector.nut")
+from "%appGlobals/pServer/campaign.nut" import campProfile
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/components/debugWnd.nut" import openDebugWnd
+from "%rGui/debugTools/debugCampaignSelector.nut" import isForCampaign, dbgCampaignSelector
+from "types" import Table, Array
+
 
 let tabs = Computed(@() (isForCampaign.get() ? campProfile.get() : servProfile.get())
-  .filter(@(v) type(v) == "table" || type(v) == "array")
+  .filter(@(v) v instanceof Table || v instanceof Array)
   .map(@(data, id) { id, data })
   .values()
   .sort(@(a, b) a.id <=> b.id))

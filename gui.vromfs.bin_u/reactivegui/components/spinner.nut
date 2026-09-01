@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let defHeight = hdpx(50)
+const defHeight = hdpx(50)
 let spinnerOpacityAnim = { prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, easing = InQuad, play = true }
 let animations = freeze([
   spinnerOpacityAnim

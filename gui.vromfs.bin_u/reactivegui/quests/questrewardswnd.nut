@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { openRewardsPreviewModal } = require("%rGui/rewards/rewardsPreviewModal.nut")
-let { isRewardsListOpen, closeRewardsList, rewardsList, isRewardsQuestFinished } = require("%rGui/quests/questsState.nut")
-let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
-let { mkRewardPlateWithAnim } = require("%rGui/quests/rewardsComps.nut")
+from "%rGui/components/modalWindows.nut" import removeModalWindow
+from "%rGui/quests/questsState.nut" import isRewardsListOpen, closeRewardsList, rewardsList, isRewardsQuestFinished
+from "%rGui/quests/rewardsComps.nut" import mkRewardPlateWithAnim
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM
+from "%rGui/rewards/rewardsPreviewModal.nut" import openRewardsPreviewModal
 
 
-let REWARDS_PREVIEW_MODAL_UID = "rewardsPreviewModal"
-let REWARD_INTERVAL = 0.1
-let MAX_APPEAR_TIME = 0.25
+const REWARDS_PREVIEW_MODAL_UID = "rewardsPreviewModal"
+const REWARD_INTERVAL = 0.1
+const MAX_APPEAR_TIME = 0.25
 
 function mkContent(rewards, isQuestFinished, style) {
   let interval = rewards.len() == 0 ? REWARD_INTERVAL

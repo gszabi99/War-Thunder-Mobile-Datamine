@@ -1,17 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
 
-let textBlockDuration = 0.3
-let textOpacityDuration = 0.1
-let textScaleDuration = textOpacityDuration
-let borderColorDelay = textBlockDuration
-let borderColorDuration = 0.5
-let textBlockScaleDuration = textBlockDuration / 3
-let textBlockScaleDelay = textBlockScaleDuration
 
-let orangeBgColor = 0x66663900
-let noBgColor = 0x00000000
-let blackBgColor = 0xFF000000
+const textBlockDuration = 0.3
+const textOpacityDuration = 0.1
+const textScaleDuration = textOpacityDuration
+const borderColorDelay = textBlockDuration
+const borderColorDuration = 0.5
+const textBlockScaleDuration = textBlockDuration / 3
+const textBlockScaleDelay = textBlockScaleDuration
+
+const orangeBgColor = 0x66663900
+const noBgColor = 0x00000000
+const blackBgColor = 0xFF000000
 
 let animatedTextBlock = @(text) {
   size = FLEX

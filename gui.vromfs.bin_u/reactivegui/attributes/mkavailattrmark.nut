@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hoverColor } = require("%rGui/style/stdColors.nut")
+from "%rGui/style/stdColors.nut" import hoverColor
+
 
 let mkBgAnim = @(duration, colorFrom, colorTo) [
   { prop = AnimProp.fillColor, from = colorFrom, to = colorTo, duration,

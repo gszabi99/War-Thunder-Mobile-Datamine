@@ -87,6 +87,19 @@ def disable_radar_on_start_es(evt : Event;
   gm.useSearchRadar = false
 
 [es(tag=server, on_appear, REQUIRE=unit_tag__gm)]
+def set_search_radar_duty_cycle_es(evt : Event;
+                                   var unit__ref : UnitRef&;
+                                   search_radar_duty__emissionTime : float;
+                                   search_radar_duty__emissionTimeVar : float;
+                                   search_radar_duty__silenceTime : float;
+                                   search_radar_duty__silenceTimeVar : float)
+  var gm = unit__ref.unit |> as_gm()
+  (*gm) |> set_search_radar_duty_cycle(true, search_radar_duty__emissionTime,
+                                       search_radar_duty__emissionTimeVar,
+                                       search_radar_duty__silenceTime,
+                                       search_radar_duty__silenceTimeVar)
+
+[es(tag=server, on_appear, REQUIRE=unit_tag__gm)]
 def set_rearm_on_field_time_es(evt : Event;
                                var unit__ref : UnitRef&;
                                unit_params__rearmTimeOnField : float)
@@ -98,7 +111,10 @@ def set_rearm_on_field_time_es(evt : Event;
 [es(no_order, tag=server, on_event=EventOnUnitDead)]
 def activate_restore_timer_es(evt : Event;
                               restore_unit_by_timer__restoreTime : float;
+                              restore_unit_by_timer__isRestoringActive : bool;
                               var restore_unit_by_timer__restoreAtTime : float&)
+  if !restore_unit_by_timer__isRestoringActive
+    return
   restore_unit_by_timer__restoreAtTime = get_sync_time() + restore_unit_by_timer__restoreTime
 
 [es(no_order, tag=server)]

@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { DM_VIEWER_NONE, DM_VIEWER_ARMOR, DM_VIEWER_XRAY } = require("hangar")
-let { SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
-let { allow_dm_viewer, allow_dm_viewer_ships_armor } = require("%appGlobals/permissions.nut")
-let { hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
-let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { dmViewerMode } = require("%rGui/dmViewer/dmViewerState.nut")
+from "hangar" import DM_VIEWER_NONE, DM_VIEWER_ARMOR, DM_VIEWER_XRAY
+from "%appGlobals/permissions.nut" import allow_dm_viewer, allow_dm_viewer_ships_armor
+from "%appGlobals/unitConst.nut" import SHIP, BOAT, SUBMARINE
+from "%rGui/dmViewer/dmViewerState.nut" import dmViewerMode
+from "%rGui/style/gradients.nut" import mkColoredGradientY
+from "%rGui/unit/hangarUnit.nut" import hasHangarUnitResources
+
 
 let forAnyUnit = @(_unitW) Watched(true)
 let noArmorForShips = @(unitW) Computed(
@@ -16,12 +17,12 @@ let btnsCfg = [
   { mode = DM_VIEWER_XRAY,  text = loc("dm_viewer/mode/xray"),  mkIsVisible = forAnyUnit }
 ]
 
-let plateH = hdpx(70)
-let platePad = hdpx(5)
-let btnH = plateH - (2 * platePad)
-let lightColor = 0xFFCACACA
-let darkColor = 0xFF292929
-let hoverColor = 0xFF606060
+const plateH = hdpx(70)
+const platePad = hdpx(5)
+const btnH = plateH - (2 * platePad)
+const lightColor = 0xFFCACACA
+const darkColor = 0xFF292929
+const hoverColor = 0xFF606060
 
 let btnBgSelected = {
   size = FLEX
@@ -42,7 +43,7 @@ function mkModeBtn(btnCfg, unitW) {
   let isVisible = mkIsVisible(unitW)
   return @() !isVisible.get() ? { watch = isVisible } : {
     watch = [stateFlags, isSelected, isVisible]
-    size = [FLEX, btnH]
+    size = const [FLEX, btnH]
 
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
@@ -69,7 +70,7 @@ function mkModeBtn(btnCfg, unitW) {
 }
 
 let mkModeBtnsSet = @(unitW) {
-  size = [FLEX, plateH]
+  size = const [FLEX, plateH]
   padding = platePad
   onDetach = @() dmViewerMode.set(DM_VIEWER_NONE)
   rendObj = ROBJ_SOLID

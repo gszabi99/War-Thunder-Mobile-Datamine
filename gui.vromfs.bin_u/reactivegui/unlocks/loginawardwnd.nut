@@ -1,46 +1,45 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%rGui/unlocks/loginAwardPlaces.nut" import *
-let { register_command } = require("console")
-let { get_time_msec } = require("dagor.time")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { lerp } = require("%sqstd/math.nut")
-let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { loginAwardUnlock, isLoginAwardOpened, receiveLoginAward, isLoginAwardInProgress,
-  hasLoginAwardByAds, showLoginAwardAds
-} = require("%rGui/unlocks/loginAwardState.nut")
-let { getRelativeStageData } = require("%rGui/unlocks/unlocks.nut")
-let { userstatStats, registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
-let { isAuthorized } = require("%appGlobals/loginState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { mkRewardImage, getRewardName } = require("%rGui/unlocks/rewardsView/rewardsPresentation.nut")
-let { gradRadialSq } = require("%rGui/style/gradients.nut")
-let { textButtonBattle, textButtonPrimary, textButtonInactive
-} = require("%rGui/components/textButton.nut")
-let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { adsButtonCounter, isProviderInited } = require("%rGui/ads/adsState.nut")
-let { isShowUnseenDelayed } = require("%rGui/shop/unseenPurchasesState.nut")
-let { playSound } = require("sound_wt")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { getGamepadHotkey } = require("%rGui/controlsMenu/dargHotkeys.nut")
-let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
-let { openLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
-let { hasVip } = require("%rGui/state/profilePremium.nut")
-let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "sound_wt" import playSound
+from "%sqstd/math.nut" import lerp
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%appGlobals/loginState.nut" import isAuthorized
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/rewardType.nut" import G_LOOTBOX
+from "%rGui/ads/adsState.nut" import adsButtonCounter, isProviderInited
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/gradientDefComps.nut" import headerGradientBg
+from "%rGui/components/infoButton.nut" import infoEllipseButton
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonBattle, textButtonPrimary, textButtonInactive
+from "%rGui/controlsMenu/dargHotkeys.nut" import getGamepadHotkey
+from "%rGui/controlsMenu/gamepadImgByKey.nut" import mkBtnImageComp
+from "%rGui/navState.nut" import registerScene
+from "%rGui/shop/lootboxPreviewState.nut" import openLootboxPreview
+from "%rGui/shop/unseenPurchasesState.nut" import isShowUnseenDelayed
+from "%rGui/state/profilePremium.nut" import hasVip
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/gradients.nut" import gradRadialSq
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/unlocks/loginAwardState.nut" import loginAwardUnlock, isLoginAwardOpened, receiveLoginAward,
+  isLoginAwardInProgress, hasLoginAwardByAds, showLoginAwardAds
+from "%rGui/unlocks/rewardsView/rewardsPresentation.nut" import mkRewardImage, getRewardName
+from "%rGui/unlocks/unlocks.nut" import getRelativeStageData
+from "%rGui/unlocks/userstat.nut" import userstatStats, registerUnlocksSceneToUpdate
+
 
 let itemBlockSize = [ (itemWidth + itemGap) * 4 + itemBigWidth + backItemOffset, itemBigHeight ]
-let imageSize = hdpxi(210)
-let bigImageSize = hdpxi(330)
-let highlightSize = hdpxi(550)
+const imageSize = hdpxi(210)
+const bigImageSize = hdpxi(330)
+const highlightSize = hdpxi(550)
 let buttonHeight = evenPx(60)
-let checkSize = hdpxi(120)
-let dayTextHeight = hdpx(50)
-let borderWidth = hdpx(4)
+const checkSize = hdpxi(120)
+const dayTextHeight = hdpx(50)
+const borderWidth = hdpx(4)
 let debugAnimState = mkWatched(persist, "debugAnimState", null)
 
 local lastPeriodStartStage = null
@@ -53,13 +52,13 @@ isAuthorized.subscribe(@(_) {
   lastShowedReceivedStage = -1
 })
 
-let activeTextColor = 0xFFFFFFFF
-let commonTextColor = 0xA0A0A0A0
+const activeTextColor = 0xFFFFFFFF
+const commonTextColor = 0xA0A0A0A0
 
-let receiveAnimItemTime = 0.5
-let receiveAnimFadeTime = 0.3
-let receiveAnimCheckTime = 0.5
-let receiveAnimCheckStartShowTime = receiveAnimItemTime - 0.1
+const receiveAnimItemTime = 0.5
+const receiveAnimFadeTime = 0.3
+const receiveAnimCheckTime = 0.5
+const receiveAnimCheckStartShowTime = receiveAnimItemTime - 0.1
 
 local lastAnimState = -1
 local animStateStartTime = 0
@@ -98,8 +97,8 @@ let rewardBg = {
   borderColor = 0xFFC07B44
   borderWidth
 }
-let canReceiveBgColor = 0xFF2F5086
-let hugeRewardBgColor = 0xFFC61EA4
+const canReceiveBgColor = 0xFF2F5086
+const hugeRewardBgColor = 0xFFC61EA4
 let rewardBgCanReceive = rewardBg.__merge({ fillColor = canReceiveBgColor })
 let rewardBgNextReceive = rewardBgCanReceive.__merge({ borderColor = 0xFFB9B9B9 })
 let rewardBgReceived = rewardBg.__merge({
@@ -109,7 +108,7 @@ let rewardBgReceived = rewardBg.__merge({
 
 let highlight = {
   key = {}
-  size = [highlightSize, highlightSize]
+  size = const [highlightSize, highlightSize]
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
@@ -138,8 +137,8 @@ let mkBigSlotImage = @(ovr) {
 
 let checkImg = {
   key = {}
-  size = [checkSize, checkSize]
-  pos = [0.1 * checkSize, -0.2 * checkSize]
+  size = const [checkSize, checkSize]
+  pos = const [0.1 * checkSize, -0.2 * checkSize]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
@@ -161,7 +160,7 @@ let checkImgWithAnim = checkImg.__merge({
 })
 
 let mkDayText = @(text, isReceived) {
-  size = [FLEX, dayTextHeight]
+  size = const [FLEX, dayTextHeight]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   rendObj = ROBJ_SOLID
@@ -231,12 +230,12 @@ function activePlateHotkeyComp() {
 }
 
 let smallBtnHeight = evenPx(50)
-let smallBtnMargin = hdpx(10)
+const smallBtnMargin = hdpx(10)
 function previewBtnBlock() {
   let res = { watch = [loginAwardUnlock, isShowUnseenDelayed] }
   return (isShowUnseenDelayed.get() || loginAwardUnlock.get()?.hasReward) ? res : res.__update({
     hplace = ALIGN_LEFT
-    margin = [dayTextHeight + smallBtnMargin, 0, 0, smallBtnMargin]
+    margin = const [dayTextHeight + smallBtnMargin, 0, 0, smallBtnMargin]
     children = [
       infoEllipseButton(
         null,
@@ -502,7 +501,7 @@ let awardScene = bgShaded.__merge({
   animations = wndSwitchAnim
 })
 
-let sceneId = "loginAwardWnd"
+const sceneId = "loginAwardWnd"
 registerScene(sceneId, awardScene, close, isLoginAwardOpened)
 registerUnlocksSceneToUpdate(sceneId)
 

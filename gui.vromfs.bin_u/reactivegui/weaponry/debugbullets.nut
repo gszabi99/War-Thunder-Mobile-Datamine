@@ -1,17 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { Point2 } = require("dagor.math")
-let { register_command, command } = require("console")
-let { get_unittags_blk } = require("blkGetters")
-let { object_to_json_string } = require("json")
-let io = require("io")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { calcUnitTypeFromTags } = require("%appGlobals/unitConst.nut")
-let { loadUnitBulletsFull, loadUnitBulletsChoice, loadUnitBulletsAndSlots, loadUnitWeaponSlots
-} = require("%rGui/weaponry/loadUnitBullets.nut")
-let { getBulletBeltImageId } = require("%appGlobals/config/bulletsPresentation.nut")
+from "blkGetters" import get_unittags_blk
+from "console" import register_command, command
+from "dagor.math" import Point2
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setInterval, clearTimer
+import "io" as io
+from "json" import object_to_json_string
+from "%sqstd/datablock.nut" import eachBlock
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/config/bulletsPresentation.nut" import getBulletBeltImageId
+from "%appGlobals/unitConst.nut" import calcUnitTypeFromTags
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitBulletsFull, loadUnitBulletsChoice, loadUnitBulletsAndSlots,
+  loadUnitWeaponSlots
+
 
 register_command(@(unitName) log($"Unit {unitName} full all bullets: ", loadUnitBulletsFull(unitName)),
   "debug.get_unit_bullets_full_all")

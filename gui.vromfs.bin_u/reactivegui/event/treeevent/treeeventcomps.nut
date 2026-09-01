@@ -1,47 +1,35 @@
 from "%globalsDarg/darg_library.nut" import *
-let { CatmullRomSplineBuilder2D } = require("dagor.math")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-
-let { mkLineSplinePoints } = require("%rGui/event/treeEvent/segmentMath.nut")
-let { getMapPointsPresentation } = require("%appGlobals/config/mapPointsPresentation.nut")
-let { mkCompletedPrevElem, selectedElemId, curEventUnlocks, selectedPointId, pointsStatusesByPresets,
-  presetsStatuses, treeEventPresets
-} = require("%rGui/event/treeEvent/treeEventState.nut")
-let { saveSeenQuests, mkHasReceivedAllRewards } = require("%rGui/quests/questsState.nut")
-let { priorityUnseenMarkLight } = require("%rGui/components/unseenMark.nut")
-let { mkRewardsPreview, questItemsGap, getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
-let { exploreRewardMsgBox, mkQuestBtn } = require("%rGui/quests/questsWndPage.nut")
-let { btnSize } = require("%rGui/quests/questsPkg.nut")
-let { mkQuestBar } = require("%rGui/quests/questBar.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let currencyStyles = require("%rGui/components/currencyStyles.nut")
-let { CS_COMMON } = currencyStyles
+from "dagor.math" import CatmullRomSplineBuilder2D
+from "%sqstd/math.nut" import sqrt
+from "%appGlobals/config/mapPointsPresentation.nut" import getMapPointsPresentation, getDefaultPointSize, getPointOffset,
+  defaultPointView
+from "%rGui/event/treeEvent/segmentMath.nut" import mkLineSplinePoints
+from "%rGui/event/treeEvent/treeEventUtils.nut" import lineSectionLen, lineOutlineWidth, mapLineWidth,
+  LINE_DASHED, LINE_SOLID
+from "%rGui/event/treeEvent/treeEventState.nut" import curEventMapNodes, curEventMapStatus, selectedPointId,
+  getEventNodeType, nodeStatusKind, nodeViews, curPagePointSizes, eventMapNodeInProgress, isRewardsReceived,
+  NODE_QUESTS, NODE_REWARD, NODE_LOCKED, NODE_AVAILABLE, NODE_PURCHASED, NODE_RECEIVED, isPurchased
+from "%rGui/components/spinner.nut" import mkSpinner
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_VERY_TINY
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlateBg, mkRewardPlateImage, getRewardPlateSize
+from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, sortRewardsViewInfo
 
 
-let lineSectionLen = 6
-let lineDashSections = 3
-let lineSpaceSections = 3
-let lineBorderEmptySections = 6
-let splineTension = -0.5
-let linePeriod = lineDashSections + lineSpaceSections
-let selectMarkerSize = hdpxi(90)
-let imgLockSize = hdpxi(60)
-let infoPanelWidth = hdpx(550)
-let textSubPresetColor = 0xFF512E0B
-let lineOutlineWidth = hdpxi(1)
-let mapLineWidth = hdpx(7) + 2 * lineOutlineWidth
-let blockedIconSize = [hdpx(140), hdpx(40)]
-let completedIconSize = hdpxi(40)
-let minBgElemSizeSqForComplexView = hdpx(200) * hdpx(200)
+const lineDashSections = 3
+const lineSpaceSections = 3
+const lineBorderEmptySections = 6
+const splineTension = -0.5
+const linePeriod = lineDashSections + lineSpaceSections
+const minBgElemSizeSqForComplexView = hdpx(200) * hdpx(200)
+const completedIconSize = evenPx(40)
 
-let editorSelLineColor = 0xC01860C0
-let lineToCompletedColor = 0xFFEEE7D9
-let lineToUnlockedColor = 0xFF9E0606
-let lineToLockedColor = 0xFF411D04
+const editorSelLineColor = 0xC01860C0
+const lineToCompletedColor = 0xFF7FAEFF
+const lineToUnlockedColor = 0x80405780
+const lineToLockedColor = 0x33192333
 
-let defOutlineColor = 0x80000000
+const defOutlineColor = 0x80000000
 let lineOutLineColors = { 
   [editorSelLineColor] = 0xFF000000,
   [lineToUnlockedColor] = 0x40181810,
@@ -49,82 +37,170 @@ let lineOutLineColors = {
   [lineToCompletedColor] = 0xFF4C1804,
 }
 let lineOutlineWidthByColor = {
-  [lineToCompletedColor] = hdpxi(2)
+  [lineToCompletedColor] = 0
 }
 
-let selectMarker = {
-  size = [selectMarkerSize, selectMarkerSize]
+let variantFieldByKind = {
+  [NODE_RECEIVED] = "finished",
+  [NODE_PURCHASED] = "completed",
+  [NODE_AVAILABLE] = "unlocked",
+  [NODE_LOCKED] = "locked",
+}
+
+let completedMark = {
+  size = completedIconSize
+  pos = const [hdpx(4), -hdpx(4)]
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#scroll_selection.avif:{selectMarkerSize}:{selectMarkerSize}:P")
+  image = Picture($"ui/gameuiskin#daily_mark_claimed.avif:{completedIconSize}:P")
+  keepAspect = true
 }
 
-let scalePointAnim = [{
-  prop = AnimProp.scale, from = [1.0, 1.0], to = [1.2, 1.2],
-  duration = 1.2, easing = CosineFull, play = true, loop = true
-}]
+let rewardPlateBase = getRewardPlateSize(1, REWARD_STYLE_VERY_TINY)
 
-function mkPoint(state, pointSize) {
-  let { id, view = "", pos } = state
-  let size = evenPx(pointSize)
+let sqr = @(v) v * v
+let onNodeClick = @(id, node) node != null ? selectedPointId.set(id) : null
+let resolveNodeView = @(id, view, nodesV) view != ""
+  ? view
+  : (nodesV?[id] ?? defaultPointView)
 
-  let unlock = Computed(@() curEventUnlocks.get()?[id])
-  let pointStatus = Computed(@() pointsStatusesByPresets.get()?[unlock.get()?.meta.quest_cluster_id][id])
-  let isCompletedPrevQuest = Computed(@() pointStatus.get()?.isCompletedPrevQuest ?? false)
-  let isCompleted = Computed(@() pointStatus.get()?.isCompleted ?? false)
-  let isFinished = Computed(@() !!unlock.get()?.isFinished)
-  let isSelected = Computed(@() id == selectedPointId.get())
+let pointStateCache = {}
+function getPointState(id) {
+  if (pointStateCache?[id] != null)
+    return pointStateCache[id]
 
-  let hasUnseenMarker = Computed(@() pointStatus.get()?.isUnseen ?? false)
+  let node = Computed(@() curEventMapNodes.get()?[id])
+  let nodeStatus = Computed(@() curEventMapStatus.get()?[id])
+
+  let res = {
+    node
+    nodeStatus
+    kind = Computed(@() nodeStatusKind.get()?[id] ?? NODE_LOCKED)
+    isSelected = Computed(@() id == selectedPointId.get())
+    isNodeInProgress = Computed(@() eventMapNodeInProgress.get() == id)
+    hasUnseenReward = Computed(@() isPurchased(nodeStatus.get()) && !isRewardsReceived(nodeStatus.get()))
+  }
+  pointStateCache[id] <- res.weakref()
+  return res
+}
+
+let mkRewardPlate = @(r, rStyle) {
+  transform = {}
+  children = [
+    mkRewardPlateBg(r, rStyle)
+    mkRewardPlateImage(r, rStyle.__merge({ iconShiftY = 0 })) 
+  ]
+}
+
+function mkNodeMarkerLayers(node, sizePx, marker, isCompleted, imgOffset) {
+  let { image, color, opacity } = marker
+  let nodeType = getEventNodeType(node)
+  let rewards = nodeType == NODE_REWARD ? getRewardsViewInfo(node?.rewards).sort(sortRewardsViewInfo) : []
+  let reward = rewards.findvalue(@(r) (r?.slots ?? 1) == 1)
+  let plateScale = sizePx.tofloat() * 0.6 / rewardPlateBase[0]
+  let questsIconSize = sizePx / 2
+
+  return [
+    {
+      size = sizePx
+      pos = [imgOffset[0] * sizePx, imgOffset[1] * sizePx]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"{image}:{sizePx}:P")
+      color
+      opacity
+      keepAspect = true
+    }
+    reward == null
+      ? null
+      : {
+          size = sizePx
+          hplace = ALIGN_CENTER
+          vplace = ALIGN_CENTER
+          opacity = isCompleted ? 0.5 : 1
+          children = {
+            size = rewardPlateBase
+            hplace = ALIGN_CENTER
+            vplace = ALIGN_CENTER
+            transform = { scale = [plateScale, plateScale], pivot = [0.5, 0.5] }
+            children = mkRewardPlate(reward, REWARD_STYLE_VERY_TINY)
+          }
+        }
+    nodeType != NODE_QUESTS
+      ? null
+      : {
+          size = questsIconSize
+          opacity = isCompleted ? 0.5 : 1
+          hplace = ALIGN_CENTER
+          vplace = ALIGN_CENTER
+          rendObj = ROBJ_IMAGE
+          image = Picture($"ui/gameuiskin#quests.svg:{questsIconSize}:P")
+          keepAspect = true
+        }
+  ]
+}
+
+function mkNodeMarkerPreview(node, effView, box, isCompleted = false) {
+  let presentation = getMapPointsPresentation(effView)
+  let sizePx = (box.r - box.l + 0.5).tointeger()
+
+  return {
+    pos = [box.l, box.t]
+    size = sizePx
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = mkNodeMarkerLayers(node, sizePx, presentation.selected, isCompleted, getPointOffset(effView))
+      .append(!isCompleted ? null : completedMark)
+  }
+}
+
+function mkPoint(state) {
+  let { id, view = "", pos } = state 
+  let { node, kind, isSelected, isNodeInProgress, hasUnseenReward } = getPointState(id)
 
   return function() {
-    let presentation = getMapPointsPresentation(view)
-    let { image, color, scale } = isFinished.get() ? presentation.finished
-      : isCompleted.get() ? presentation.completed
-      : isCompletedPrevQuest.get() ? presentation.unlocked
-      : presentation.locked
-    let sizeExt = scaleEven(size, scale)
+    let effView = resolveNodeView(id, view, nodeViews.get())
+    let presentation = getMapPointsPresentation(effView)
+    let curKind = kind.get()
+    let variant = presentation[variantFieldByKind?[curKind] ?? "locked"]
+    let marker = isSelected.get() ? presentation.selected : variant
+    let sizePx = evenPx(curPagePointSizes.get()?[effView] ?? getDefaultPointSize(effView))
+    let isCompleted = curKind == NODE_RECEIVED
+
     return {
-      watch = [isCompletedPrevQuest, isCompleted, isFinished, isSelected, hasUnseenMarker]
-      pos = pos.map(@(v) hdpx(v) - sizeExt / 2)
-      size = [sizeExt, sizeExt]
-      behavior = Behaviors.Button
+      watch = [kind, isSelected, node, nodeViews, curPagePointSizes, isNodeInProgress, hasUnseenReward]
+      key = id
+      pos = pos.map(@(v) hdpx(v) - sizePx / 2)
+      size = sizePx
       touchMarginPriority = 1
-      function onClick() {
-        saveSeenQuests([id])
-        selectedPointId.set(id)
-      }
-      sound = { click  = "click" }
+      behavior = Behaviors.Button
+      onClick = isNodeInProgress.get() ? @() null : @() onNodeClick(id, node.get())
+      sound = { click = "click" }
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      children = [
-        !hasUnseenMarker.get() ? null : priorityUnseenMarkLight
-        {
-          key = {}
-          children = [
-            {
-              key = id
-              size = FLEX
-              halign = ALIGN_CENTER
-              valign = ALIGN_CENTER
-              children = {
-                size = [sizeExt, sizeExt]
-                rendObj = ROBJ_IMAGE
-                image = Picture($"{image}:{sizeExt}:{sizeExt}:P")
-                color =!hasUnseenMarker.get() ? color : 0xFFffb71d
-                keepAspect = true
-              }
-            }
-            isSelected.get() ? selectMarker : null
-          ]
-          transform = !hasUnseenMarker.get() ? null : {}
-          animations = !hasUnseenMarker.get() ? null : scalePointAnim
-        }
-      ]
+      children = mkNodeMarkerLayers(node.get(), sizePx, marker, isCompleted, getPointOffset(effView)).append(
+        !hasUnseenReward.get() ? null
+          : {
+              size = sizePx
+              hplace = ALIGN_RIGHT
+              vplace = ALIGN_TOP
+              children = priorityUnseenMark
+            },
+        !isNodeInProgress.get() ? null
+          : {
+              size = sizePx
+              hplace = ALIGN_CENTER
+              vplace = ALIGN_CENTER
+              children = mkSpinner(sizePx / 2)
+            },
+        !isCompleted ? null : completedMark)
     }
   }
 }
 
 function mkBgElementImg(img, size, ovr = {}) {
+  if ((img ?? "") == "")
+    return { size }.__update(ovr)
   let isComplexView = size[0] * size[1] <= minBgElemSizeSqForComplexView
   return {
     size
@@ -134,99 +210,9 @@ function mkBgElementImg(img, size, ovr = {}) {
   }.__update(ovr)
 }
 
-let mkStatusPlateText = @(text) {
-  rendObj = ROBJ_TEXT
-  maxWidth = hdpx(100)
-  color = textSubPresetColor
-  text
-}.__update(CS_COMMON.fontStyle)
-
-let mkRangeStatus = @(range, hasUnseenMarker) {
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = hdpx(6)
-  children = [
-    {
-      children = [
-        !hasUnseenMarker ? null : priorityUnseenMarkLight
-        {
-          key = {}
-          size = [completedIconSize, completedIconSize]
-          rendObj = ROBJ_IMAGE
-          image = Picture($"ui/gameuiskin#scroll_quest_completed.avif:{completedIconSize}:{completedIconSize}:P")
-          color = hasUnseenMarker ? 0xFFffb71d : lineToCompletedColor
-          keepAspect = true
-          transform = !hasUnseenMarker ? null : {}
-          animations = !hasUnseenMarker ? null : scalePointAnim
-        }
-      ]
-    }
-    mkStatusPlateText($"{range.count}/{range.total}")
-  ]
-}
-
-let mkCurrencyComp = @(value, currencyId, style) {
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = style.iconGap
-  children = [
-    mkCurrencyImage(currencyId, style.iconSize, { key = style?.iconKey })
-    mkStatusPlateText(value)
-  ]
-}
-
-function mkStatusPlate(isAvailable, isBlocked, price, range, hasUnseenMarker, ovr = {}) {
-  let currency = mkCurrencyComp(price.price, price.currency, CS_COMMON.__merge({ textColor = textSubPresetColor }))
-  let children = isBlocked ? mkBgElementImg("ui/images/pirates/island_status_locked.avif", blockedIconSize)
-    : isAvailable ? mkRangeStatus(range, hasUnseenMarker)
-    : currency
-
-  return {
-    size = FLEX
-    halign = ALIGN_CENTER
-    valign = ALIGN_TOP
-    padding = const [hdpx(5), 0]
-    children
-  }.__update(ovr)
-}
-
-function mkBgElementStatus(state) {
-  let { img, size, pos, rotate, flipX = false, flipY = false, required = "" } = state
-  let sizePx = size.map(hdpx)
-
-  let presetStatuses = Computed(@() presetsStatuses.get()?[required])
-  let price = Computed(@() presetStatuses.get()?.price)
-  let isAvailable = Computed(@() presetStatuses.get()?.isAvailable)
-  let isBlocked = Computed(@() presetStatuses.get()?.isBlocked)
-
-  let hasUnseenMarker = Computed(@() pointsStatusesByPresets.get()?[required]
-    .findindex(@(point) point.isUnseen) != null)
-
-  let completedPointsRange = Computed(function() {
-    let presets = pointsStatusesByPresets.get()?[required] ?? {}
-    return presets.reduce(function(res, point) {
-      if (point.isCompleted)
-        res.count = res.count + 1
-      return res
-    }, { total = presets.len(), count = 0 })
-  })
-
-  return @() {
-    watch = [isAvailable, isBlocked, price, completedPointsRange, hasUnseenMarker]
-    pos = pos.map(hdpx)
-    size = sizePx
-    children = [
-      mkBgElementImg(img, sizePx, { flipX, flipY })
-      mkStatusPlate(isAvailable.get(), isBlocked.get(), price.get(), completedPointsRange.get(), hasUnseenMarker.get())
-    ]
-    transform = { rotate }
-  }
-}
-
-function mkDefaultBgElement(state) {
+function mkBgElement(state) {
   let { img, size, pos, rotate, flipX = false, flipY = false } = state
   let sizePx = size.map(hdpx)
-
   return {
     pos = pos.map(hdpx)
     size = sizePx
@@ -235,87 +221,87 @@ function mkDefaultBgElement(state) {
   }
 }
 
-function mkBgElementIsland(state) {
-  let { id, img, size, pos, rotate, flipX = false, flipY = false } = state
-  let unlock = Computed(@() curEventUnlocks.get()?[id])
-  let sizeBase = size.map(hdpx)
+let lineKindRank = [NODE_LOCKED, NODE_AVAILABLE, NODE_PURCHASED, NODE_RECEIVED]
+  .reduce(@(res, v, i) res.$rawset(v, i), {})
 
-  let presetStatuses = Computed(@() presetsStatuses.get()?[id] ?? {})
-
-  let price = Computed(@() presetStatuses.get()?.price)
-  let isAvailable = Computed(@() presetStatuses.get()?.isAvailable)
-  let isBlocked = Computed(@() presetStatuses.get()?.isBlocked)
-
-  let rewardsPreview = Computed(@() getRewardsPreviewInfo(unlock.get(), serverConfigs.get()))
-  let eventCurrencyReward = Computed(@() getEventCurrencyReward(rewardsPreview.get()))
-
-  return @() {
-    key = id
-    watch = [unlock, price, isAvailable, rewardsPreview, eventCurrencyReward, isBlocked, treeEventPresets]
-    pos = pos.map(hdpx)
-    size = sizeBase
-    onClick = @() !treeEventPresets.get().contains(id) || isBlocked.get() ? null
-      : isAvailable.get() ? selectedElemId.set(id)
-      : exploreRewardMsgBox(unlock.get(), rewardsPreview.get(), price.get().price, price.get().currency, eventCurrencyReward.get())
-    behavior = Behaviors.Button
-    sound = id != null ? { click  = "click" } : null
-    children = mkBgElementImg(img, sizeBase, { key = id, flipX, flipY })
-    transform = { rotate }
-  }
-}
-
-let bgElementCtor = {
-  island = mkBgElementIsland
-  status = mkBgElementStatus
-}
-
-let mkBgElement = @(bgElem) (bgElementCtor?[bgElem?.bgType] ?? mkDefaultBgElement)(bgElem)
-
-function mkLinePresetColor(id, unlocksCompletion) {
-  let { isCompleted = false, isCompletedPrevQuest = false } = unlocksCompletion?[id]
+function mkLinePresetColor(fromId, toId, statusKinds) {
+  let kindFrom = statusKinds?[fromId] ?? NODE_LOCKED
+  let kindTo = statusKinds?[toId] ?? NODE_LOCKED
+  let kind = (lineKindRank?[kindFrom] ?? 0) <= (lineKindRank?[kindTo] ?? 0) ? kindFrom : kindTo
   return [VECTOR_COLOR,
-    isCompleted && isCompletedPrevQuest ? lineToCompletedColor
+    (kind == NODE_PURCHASED || kind == NODE_RECEIVED) ? lineToCompletedColor
+      : kind == NODE_AVAILABLE ? lineToUnlockedColor
       : lineToLockedColor
   ]
 }
 
-function mkLineColor(id, unlocksCompletion) {
-  let { isCompleted = false, isCompletedPrevQuest = false } = unlocksCompletion?[id]
-  return [VECTOR_COLOR,
-    isCompleted && isCompletedPrevQuest ? lineToCompletedColor
-      : isCompletedPrevQuest ? lineToUnlockedColor
-      : lineToLockedColor
-  ]
-}
-
-function mkLineCmds(line, points, size) {
+function buildLineSpline(line, points) {
   let all = mkLineSplinePoints(line, points)
-  let res = []
   if (all.len() < 2)
-    return res
-
+    return null
   local spline = CatmullRomSplineBuilder2D()
   spline.build(all.reduce(@(r, v) r.extend(v), []), false, splineTension)
+  return spline
+}
+
+function splineCenter(spline) {
+  if (spline == null)
+    return null
+  let p = spline.getMonotonicPoint(0.5)
+  return [p.x, p.y]
+}
+
+function mkLineCmdsFromSpline(spline, size, sectionLen = lineSectionLen, rounded = true, width = mapLineWidth) {
+  let res = []
+  if (spline == null)
+    return res
 
   let length = spline.getTotalSplineLength()
-  let sectionsMin = (length / lineSectionLen + 0.5).tointeger()
+  let sectionsMin = (length / max(1, sectionLen ?? lineSectionLen) + 0.5).tointeger()
   let periods = max(2, (sectionsMin - 2 * lineBorderEmptySections + lineSpaceSections) / linePeriod)
   let periodF = 1.0 * linePeriod / (periods * linePeriod - lineSpaceSections + 2 * lineBorderEmptySections)
   let dashF = periodF * lineDashSections / linePeriod
   let start = periodF * lineBorderEmptySections / linePeriod
   let end = 1.0 - start
+
+  let halfWidthMap = width / (2.0 * hdpxi(1))
   for (local f = start; f < end; f += periodF) {
     local p1 = spline.getMonotonicPoint(f)
     local p2 = spline.getMonotonicPoint(f + dashF)
-    res.append([ VECTOR_LINE,
-      100.0 * p1.x / size[0],
-      100.0 * p1.y / size[1],
-      100.0 * p2.x / size[0],
-      100.0 * p2.y / size[1]
+    if (rounded) {
+      res.append([ VECTOR_LINE,
+        100.0 * p1.x / size[0],
+        100.0 * p1.y / size[1],
+        100.0 * p2.x / size[0],
+        100.0 * p2.y / size[1]
+      ])
+      continue
+    }
+    let len = sqrt(sqr(p2.x - p1.x) + sqr(p2.y - p1.y))
+    let nx = len > 0 ? -(p2.y - p1.y) / len * halfWidthMap : 0.0
+    let ny = len > 0 ? (p2.x - p1.x) / len * halfWidthMap : 0.0
+    res.append([ VECTOR_POLY,
+      100.0 * (p1.x + nx) / size[0], 100.0 * (p1.y + ny) / size[1],
+      100.0 * (p2.x + nx) / size[0], 100.0 * (p2.y + ny) / size[1],
+      100.0 * (p2.x - nx) / size[0], 100.0 * (p2.y - ny) / size[1],
+      100.0 * (p1.x - nx) / size[0], 100.0 * (p1.y - ny) / size[1]
     ])
   }
   return res
 }
+
+function mkSolidLineCmds(line, points, size) {
+  let pts = mkLineSplinePoints(line, points)
+  if (pts.len() < 2)
+    return []
+  let cmd = [VECTOR_LINE]
+  foreach (p in pts)
+    cmd.append(100.0 * p[0] / size[0], 100.0 * p[1] / size[1])
+  return [cmd]
+}
+
+let mkLineCmds = @(line, points, size, sectionLen = lineSectionLen, rounded = true, width = mapLineWidth)
+  mkLineCmdsFromSpline(buildLineSpline(line, points), size, sectionLen, rounded, width)
 
 function mkLineCmdsOutline(commands, baseWidth = mapLineWidth, defColor = lineToCompletedColor) {
   let res = [
@@ -337,122 +323,49 @@ function mkLineCmdsOutline(commands, baseWidth = mapLineWidth, defColor = lineTo
   return res
 }
 
-let mkText = @(text, ovr = {}) {
-  rendObj = ROBJ_TEXTAREA
-  behavior = Behaviors.TextArea
-  maxWidth = pw(100)
-  halign = ALIGN_CENTER
-  text
-}.__update(ovr)
-
-function mkQuestTexts(item) {
-  let locId = item.meta?.lang_id ?? item.name
-  let header = loc(locId)
-  let text = loc($"{locId}/desc")
-  return {
-    size = FLEX_H
-    flow = FLOW_VERTICAL
-    halign = ALIGN_CENTER
-    gap = hdpx(8)
-    children = [
-      mkText(header, fontSmall)
-      mkText(text, fontTiny)
-    ]
-  }
-}
-
-function mkEventInfoPanelContent(id) {
-  let unlock = Computed(@() curEventUnlocks.get()?[id])
-  let isCompletedPrevQuest = mkCompletedPrevElem(id)
-  let isAvailable = Computed(@() isCompletedPrevQuest.get())
-
-  let rewardsPreview = Computed(@() getRewardsPreviewInfo(unlock.get(), serverConfigs.get()))
-  let eventCurrencyReward = Computed(@() getEventCurrencyReward(rewardsPreview.get()))
-
-  let hasReceivedAllRewards = mkHasReceivedAllRewards(unlock, rewardsPreview)
-
-  return {
-    stopMouse = true
-    rendObj = ROBJ_SOLID
-    color = 0x80000000
-    children = {
-      size = [infoPanelWidth, SIZE_TO_CONTENT]
-      padding = const [hdpx(20), hdpx(10)]
-      flow = FLOW_VERTICAL
-      gap = questItemsGap
-      children = [
-        {
-          size = FLEX_H
-          padding = const [hdpx(10), hdpx(30), hdpx(15), hdpx(30)]
-          flow = FLOW_HORIZONTAL
-          gap = questItemsGap
-          vplace = ALIGN_CENTER
-          valign = ALIGN_CENTER
-          children = [
-            @() {
-              watch = [unlock, isAvailable]
-              size = FLEX_H
-              flow = FLOW_VERTICAL
-              gap = hdpx(8)
-              halign = ALIGN_CENTER
-              children = isAvailable.get()
-                ? [
-                    mkQuestTexts(unlock.get())
-                    mkQuestBar(unlock.get())
-                  ]
-                : mkText(loc("quests/requiredCompletePreviousQuest"), fontSmall)
-            }
-          ]
-        }
-        @() {
-          watch = [rewardsPreview, unlock]
-          flow = FLOW_HORIZONTAL
-          gap = questItemsGap
-          hplace = ALIGN_CENTER
-          halign = ALIGN_CENTER
-          children = rewardsPreview.get().len() > 0
-            ? mkRewardsPreview(rewardsPreview.get(), unlock.get()?.isFinished)
-            : null
-        }
-        @() {
-          watch = [unlock, eventCurrencyReward, rewardsPreview, hasReceivedAllRewards, isAvailable]
-          hplace = ALIGN_CENTER
-          children = isAvailable.get()
-            ? mkQuestBtn(unlock.get(), eventCurrencyReward.get(), rewardsPreview.get(), hasReceivedAllRewards.get())
-            : {
-              size = btnSize
-              halign = ALIGN_CENTER
-              valign = ALIGN_CENTER
-              children = {
-                rendObj = ROBJ_IMAGE
-                size = [imgLockSize, imgLockSize]
-                image = Picture($"ui/gameuiskin#lock_icon.svg:{imgLockSize}:{imgLockSize}:P")
-                keepAspect = true
-              }
-            }
-        }
-      ]
+let lineTypeCtors = {
+  [LINE_DASHED] = function(lineSplines, ctx) {
+    let { size, width, sectionLen, rounded, colorOf } = ctx
+    local commands = rounded ? [] : [[VECTOR_WIDTH, 0]]
+    foreach (ls in lineSplines) {
+      let colorCmd = colorOf(ls.line)
+      if (colorCmd != null) {
+        commands.append(colorCmd)
+        if (!rounded)
+          commands.append([VECTOR_FILL_COLOR, colorCmd[1]])
+      }
+      commands.extend(mkLineCmdsFromSpline(ls.spline, size, sectionLen, rounded, width))
     }
+    return rounded ? mkLineCmdsOutline(commands, width) : commands
+  },
+  [LINE_SOLID] = function(lineSplines, ctx) {
+    let { size, width, points, colorOf } = ctx
+    local commands = [[VECTOR_WIDTH, width]]
+    foreach (ls in lineSplines) {
+      let colorCmd = colorOf(ls.line)
+      if (colorCmd != null)
+        commands.append(colorCmd)
+      commands.extend(mkSolidLineCmds(ls.line, points, size))
+    }
+    return commands
   }
-}
-
-let mkQuestInfoWnd = @(id) {
-  margin = [0, saBorders[0], saBorders[1] + defButtonHeight + questItemsGap, 0]
-  onClick = @() selectedPointId.set(null)
-  children = mkEventInfoPanelContent(id)
-  transform = {}
-  animations = wndSwitchAnim
 }
 
 return {
   mkLineCmds
+  mkLineCmdsFromSpline
+  mkSolidLineCmds
   mkLineCmdsOutline
+  lineTypeCtors
   mkLinePresetColor
-  mkLineColor
+  buildLineSpline
+  splineCenter
   mkPoint
+  mkNodeMarkerPreview
   mkBgElement
-  mkQuestInfoWnd
+  resolveNodeView
 
+  LINE_DASHED
+  LINE_SOLID
   editorSelLineColor
-  mapLineWidth
 }

@@ -1,28 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let itemWidth = hdpx(280)
-let itemHeight = hdpx(340)
-let itemGap = hdpx(20)
-let itemBigHeight = 2 * itemHeight + itemGap
-let itemBigWidth = 2 * itemWidth + itemGap
-let backItemOffset = hdpx(10)
+const itemWidth = hdpx(280)
+const itemHeight = hdpx(340)
+const itemGap = hdpx(20)
+const itemBigHeight = 2 * itemHeight + itemGap
+const itemBigWidth = 2 * itemWidth + itemGap
+const backItemOffset = hdpx(10)
 
-let BEFORE_APPEAR = -1 
-let BEFORE_7_DAY = 0
-let AFTER_7_DAY = 1
-let AFTER_14_DAY = 2 
+const BEFORE_APPEAR = -1 
+const BEFORE_7_DAY = 0
+const AFTER_7_DAY = 1
+const AFTER_14_DAY = 2 
 
-let SLOT_COMMON = ""
-let SLOT_BIG = "big"
-let SLOT_HUGE = "huge"
+const SLOT_COMMON = ""
+const SLOT_BIG = "big"
+const SLOT_HUGE = "huge"
 
-let completeAnimDelay = 1.1
-let animTime = 0.3
-let disappearAnimTime = 0.2
-let animOffsetTime = 0.1
+const completeAnimDelay = 1.1
+const animTime = 0.3
+const disappearAnimTime = 0.2
+const animOffsetTime = 0.1
 
 let defaultPlace = {
-  size = [itemWidth, itemHeight]
+  size = const [itemWidth, itemHeight]
   slotType = SLOT_COMMON
   transformByState = {}
 }
@@ -37,7 +37,7 @@ let rewardsPlaces = [
   
   {
     slotType = SLOT_BIG
-    size = [itemWidth, itemBigHeight]
+    size = const [itemWidth, itemBigHeight]
     transformByState = {
       [BEFORE_7_DAY] = { translate = [3 * (itemWidth + itemGap), 0] },
       [AFTER_7_DAY] = { translate = [0, 0], animDelay = 0.0 },
@@ -94,7 +94,7 @@ let rewardsPlaces = [
   
   {
     slotType = SLOT_HUGE
-    size = [itemBigWidth, itemBigHeight]
+    size = const [itemBigWidth, itemBigHeight]
     transformByState = {
       [BEFORE_7_DAY] = { translate = [4 * (itemWidth + itemGap), 0] },
       [AFTER_7_DAY] = { translate = [4 * (itemWidth + itemGap), 0] },

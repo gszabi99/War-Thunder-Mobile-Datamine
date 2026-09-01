@@ -1871,7 +1871,7 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 815.0,
+      "horsePowers": 816.0,
       "maxRPM": 2350.0,
       "minRPM": 600.0,
       "manufacturer": "scania",

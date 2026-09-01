@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { opacityTransition } = require("%rGui/components/selectedLine.nut")
-let { selectColor, tabBgColor } = require("%rGui/style/stdColors.nut")
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%rGui/components/selectedLine.nut" import opacityTransition
+from "%rGui/style/gradients.nut" import gradTexSize, mkGradientCtorRadial
+from "%rGui/style/stdColors.nut" import selectColor, tabBgColor
 
-let iconSizeDef = hdpxi(60)
-let tabHeight = hdpx(120)
 
-let textColor = 0xFFFFFFFF
+const iconSizeDef = hdpxi(60)
+const tabHeight = hdpx(120)
+
+const textColor = 0xFFFFFFFF
 
 let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(selectColor, 0, 35, 15, 30, -35))
@@ -58,7 +59,7 @@ function tabData(tab, idx) {
     id = idx
     isVisible
     content = {
-      size = [FLEX, tabHeight]
+      size = const [FLEX, tabHeight]
       padding = const [hdpx(10), hdpx(20)]
       children = [
         {

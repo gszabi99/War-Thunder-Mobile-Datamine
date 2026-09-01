@@ -346,10 +346,7 @@ def private re_char(expr : string; offset : int) : MaybeReNode {
 }
 
 
-
-
-
-def private re_set_items(expr : string; offset : int) : MaybeReNode {
+def private re_set_items(expr : string; offset : int) : MaybeReNode {  
     trace("re_set_items", offset)
     if (eos(expr, offset)) return nada()
     var cset : CharSet
@@ -624,9 +621,6 @@ def private mk_union(var left, right : ReNode?) : ReNode? {
 }
 
 
-
-
-
 def private  re_re(expr : string; offset : int) : MaybeReNode {
     trace("re_re", offset)
     if (eos(expr, offset)) return nada()
@@ -656,11 +650,7 @@ def private  re_re(expr : string; offset : int) : MaybeReNode {
 }
 
 
-
-
-
-
-def private re_basic(expr : string; offset : int) : MaybeReNode {
+def private re_basic(expr : string; offset : int) : MaybeReNode {  
     trace("re_basic", offset)
     if (eos(expr, offset)) return nada()
     var oelem = re_elementary(expr, offset)
@@ -824,8 +814,8 @@ def private re_assign_groups(var re : Regex) {
 
 
 
-def private re_assign_match_functions(var re : Regex) {
-    visit_top_down(re.root) $(var node) {
+def private re_assign_match_functions(var re : Regex) {  
+    visit_top_down(re.root) $(var node) {  
         if (node.op == ReOp.Char) {
             if (re.caseInsensitive) {
                 if (node.textLen == 1) {
@@ -919,7 +909,7 @@ def private re_assign_match_functions(var re : Regex) {
 
 def private ci_lower(ch : int) : int {
     
-    if (ch >= 'A' && ch <= 'Z') return ch + 32  
+    if (ch >= 'A' && ch <= 'Z') return ch + 32
     return ch
 }
 
@@ -928,7 +918,7 @@ def private case_fold_set(var cset : CharSet) {
     for (ch in range(0, 256)) {
         if (is_char_in_set(ch, cset)) {
             let lo = ci_lower(ch)
-            let up = (lo >= 'a' && lo <= 'z') ? lo - 32 : lo  
+            let up = (lo >= 'a' && lo <= 'z') ? lo - 32 : lo
             set_or_char(cset, lo)
             set_or_char(cset, up)
         }
@@ -961,7 +951,7 @@ def private re_match2_char(var regex : Regex; var node : ReNode?; str : uint8 co
     }
     if (*str == 0u8) return null
     unsafe {
-        if (memcmp(reinterpret<uint8?> node.text, str, node.textLen) != 0) return null
+        if (memcmp(reinterpret<uint8?>(node.text), str, node.textLen) != 0) return null
         var tail = str + node.textLen
         node.tail = tail
         var node2 = node.next
@@ -1209,7 +1199,7 @@ def private re_match2_group(var regex : Regex; var node : ReNode?; str : uint8 c
     let osub = invoke(nsub.fun2, regex, nsub, str)
     if (osub == null) return null
     if (node.index >= 0) {
-        regex.groups[node.index]._0 = range(int(str - regex.match), int(node.subexpr.tail - regex.match))
+        regex.groups[node.index]._0 = range(int(str - regex.match), int(node.subexpr.tail - regex.match))  
     }
     return osub
 }
@@ -1537,9 +1527,9 @@ def private re_early_out(var cset : CharSet; node : ReNode?) : bool {
         let fc = first_character(node.text)
         set_or_char(cset, fc)
         
-        if (fc >= 'A' && fc <= 'Z') {  
+        if (fc >= 'A' && fc <= 'Z') {
             set_or_char(cset, fc + 32)
-        } elif (fc >= 'a' && fc <= 'z') {  
+        } elif (fc >= 'a' && fc <= 'z') {
             set_or_char(cset, fc - 32)
         }
         return false
@@ -1591,15 +1581,12 @@ def private re_early_out(var cset : CharSet; node : ReNode?) : bool {
 
 
 
-def is_valid(var re : Regex) {
+def is_valid(re : Regex) {
     
     return re.root != null
 }
 
 def regex_compile(var re : Regex; expr : string; case_insensitive : bool = false; dot_all : bool = false) : bool {
-    
-    
-    
     
     re.caseInsensitive = case_insensitive
     re.dotAll = dot_all
@@ -1642,7 +1629,7 @@ def regex_match(var regex : Regex; str : string; offset : int = 0) : int {
         print("matching with `{str}` at {offset}\n")
     }
     unsafe {
-        regex.match = reinterpret<uint8?> str
+        regex.match = reinterpret<uint8?>(str)
         let mptr = invoke(regex.root.fun2, regex, regex.root, regex.match + offset)
         if (mptr == null) return -1
         return int(mptr - regex.match)
@@ -1660,9 +1647,9 @@ def regex_foreach(var regex : Regex; str : string; blk : block<(at : range) : bo
     
     if (empty(str)) return
     unsafe {
-        regex.match = reinterpret<uint8 const?> str
+        regex.match = reinterpret<uint8 const?>(str)
         var root = regex.root
-        var pstr = reinterpret<uint8 const?> str
+        var pstr = reinterpret<uint8 const?>(str)
         var cstr = pstr
         if (regex.canEarlyOut) {
             
@@ -1672,7 +1659,7 @@ def regex_foreach(var regex : Regex; str : string; blk : block<(at : range) : bo
                 if (is_char_in_set(Ch, regex.earlyOut)) {
                     let om = invoke(root.fun2, regex, root, cstr)
                     if (om != null) {
-                        if (!invoke(blk, range(int(cstr - pstr), int(om - pstr)))) break
+                        if (!invoke(blk, range(int(cstr - pstr), int(om - pstr)))) break  
                         if (om == cstr) {
                             cstr++
                         } else {
@@ -1689,7 +1676,7 @@ def regex_foreach(var regex : Regex; str : string; blk : block<(at : range) : bo
             while (int(*cstr) != 0) {
                 let om = invoke(root.fun2, regex, root, cstr)
                 if (om != null) {
-                    if (!invoke(blk, range(int(cstr - pstr), int(om - pstr)))) break
+                    if (!invoke(blk, range(int(cstr - pstr), int(om - pstr)))) break  
                     if (om == cstr) {
                         cstr++
                     } else {
@@ -1703,15 +1690,15 @@ def regex_foreach(var regex : Regex; str : string; blk : block<(at : range) : bo
     }
 }
 
-[unsafe_deref]
+[unsafe_deref, temp_string_result]
 def regex_replace(var regex : Regex; str : string; blk : block<(at : string) : string>) {
     
     if (empty(str)) return ""
     unsafe {
         return build_string() $(writer) {
-            regex.match = reinterpret<uint8 const?> str
+            regex.match = reinterpret<uint8 const?>(str)
             var root = regex.root
-            var pstr = reinterpret<uint8 const?> str
+            var pstr = reinterpret<uint8 const?>(str)
             var cstr = pstr
             if (regex.canEarlyOut) {
                 
@@ -1760,8 +1747,7 @@ def regex_replace(var regex : Regex; str : string; blk : block<(at : string) : s
     }
 }
 
-def private expand_replacement(var regex : Regex; str : string; replacement : string; match_start, match_end : int) : string {
-    
+def private expand_replacement(regex : Regex; str : string; replacement : string; match_start, match_end : int) : string {
     
     return build_string() $(writer) {
         let rlen = length(replacement)
@@ -1829,18 +1815,15 @@ def private expand_replacement(var regex : Regex; str : string; replacement : st
     }
 }
 
-[unsafe_deref]
+[unsafe_deref, temp_string_result]
 def regex_replace(var regex : Regex; str : string; replacement : string) : string {
-    
-    
-    
     
     if (empty(str)) return ""
     unsafe {
         return build_string() $(writer) {
-            regex.match = reinterpret<uint8 const?> str
+            regex.match = reinterpret<uint8 const?>(str)
             var root = regex.root
-            var pstr = reinterpret<uint8 const?> str
+            var pstr = reinterpret<uint8 const?>(str)
             var cstr = pstr
             if (regex.canEarlyOut) {
                 while (true) {
@@ -1899,9 +1882,9 @@ def regex_search(var regex : Regex; str : string; offset : int = 0) : int2 {
     
     if (empty(str)) return int2(-1, -1)
     unsafe {
-        regex.match = reinterpret<uint8 const?> str
+        regex.match = reinterpret<uint8 const?>(str)
         var root = regex.root
-        var pstr = reinterpret<uint8 const?> str
+        var pstr = reinterpret<uint8 const?>(str)
         var cstr = pstr + offset
         if (regex.canEarlyOut) {
             while (true) {
@@ -1948,6 +1931,7 @@ def regex_match_all(var regex : Regex; str : string) : array<range> {
     return <- result
 }
 
+[temp_string_result]
 def regex_group_by_name(regex : Regex; name : string; str : string) : string {
     
     
@@ -2005,7 +1989,7 @@ def debug_set(cset : CharSet) {
     }
 }
 
-def private debug_re(node : ReNode?; tab : int) {
+def private debug_re(node : ReNode?; tab : int) {  
     print("(")
     if (node != null) {
         print("#{node.id}")

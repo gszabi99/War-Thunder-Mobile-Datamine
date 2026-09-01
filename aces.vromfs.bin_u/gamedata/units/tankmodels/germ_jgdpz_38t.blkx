@@ -1736,9 +1736,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 15500.0,
+      "Empty": 15750.0,
       "Fuel": 250.0,
-      "TakeOff": 15750.0,
+      "TakeOff": 16000.0,
       "momentOfInertia": [
         2.5,
         2.5,
@@ -1784,15 +1784,15 @@
       "cls_body_01": "convex_hull"
     },
     "engine": {
-      "horsePowers": 160.0,
-      "maxRPM": 3000.0,
+      "horsePowers": 150.0,
+      "maxRPM": 2600.0,
       "minRPM": 700.0
     },
     "mechanics": {
       "maxBrakeForce": 50000.0,
       "driveGearRadius": 0.3165,
       "mainGearRatio": 1.474,
-      "sideGearRatio": 4.3,
+      "sideGearRatio": 3.9,
       "alternativeGearControl": 2.0,
       "gearRatios": {
         "ratio": [

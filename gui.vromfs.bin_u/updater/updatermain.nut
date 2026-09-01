@@ -1,10 +1,14 @@
+#default:forbid-root-table
+
 from "%globalsDarg/darg_library.nut" import *
-let { ref_time_ticks } = require("dagor.time")
-let { set_rnd_seed } = require("dagor.random")
+from "dagor.random" import set_rnd_seed
+from "dagor.time" import ref_time_ticks
+import "messages.nut" as messages
+import "updaterScene.nut" as updaterScene
+
+
 set_rnd_seed(ref_time_ticks())
 
-let updaterScene = require("updaterScene.nut")
-let messages = require("messages.nut")
 
 gui_scene.setConfigProps({
   clickRumbleEnabled = false

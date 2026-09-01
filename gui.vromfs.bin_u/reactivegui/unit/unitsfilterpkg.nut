@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { fillFilters } = require("%rGui/unit/unitsFilterState.nut")
-let mkUnitsFilter = require("%rGui/unit/mkUnitsFilter.nut")
-let modalPopupWnd = require("%rGui/components/modalPopupWnd.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+import "%rGui/components/modalPopupWnd.nut" as modalPopupWnd
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+import "%rGui/unit/mkUnitsFilter.nut" as mkUnitsFilter
+from "%rGui/unit/unitsFilterState.nut" import fillFilters
 
 
 let isFiltersVisible = Watched(false)

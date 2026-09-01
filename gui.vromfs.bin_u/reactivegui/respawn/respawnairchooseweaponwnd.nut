@@ -1,54 +1,51 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("%sqstd/math.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let buttonStyles = require("%rGui/components/buttonStyles.nut")
-let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
-let { textButtonPrimary, textButtonInactive, textButtonMultiline } = require("%rGui/components/textButton.nut")
-let { mkLevelLockSmall, mkNotPurchasedShade, mkModCost } = require("%rGui/unitMods/modsComps.nut")
-let { CS_TINY } = require("%rGui/components/currencyStyles.nut")
-let { selectedSlotWeaponName, equippedWeaponsBySlots, wCards, beltCards,
-  canShowChooseBulletWnd, curUnit, curModPresetCfg, curUnitModCostCfg,
-  selectedBeltWeaponId, selectedBeltCardIdx, selectedWSlotIdx, selectedBeltCard, selectedBeltSlot,
-  selectedWCardIdx, selectedWCard, selectedWCardStates, selectedBeltCardStates,
-  applyBelt, closeWnd, equipSelWeapon, unequipSelWeapon, equipWeaponListWithMirrors,
-  selectWeaponSlot, selectBeltSlot, selectWeaponCard, selectBeltCard,
-  overloadInfo, fixCurPresetOverload, courseBeltSlots, turretBeltSlots, mirrorIdx,
-  unequipSelWeaponFromWings, equipSelWeaponToWings, isEmptyBomber, setDefaultSecondaryWeapon
-} = require("%rGui/respawn/respawnAirChooseState.nut")
-let { mkWeaponStates, getConflictsList, mkHasConflicts } = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { customEquipCurWeaponMsg } = require("%rGui/unitMods/equipSlotWeaponMsgBox.nut")
-let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
-let { mkBeltDesc, mkSlotWeaponDesc } = require("%rGui/unitMods/unitModsSlotsDesc.nut")
-let { padding, weaponSize, smallGap, commonWeaponIcon, getWeaponTitle, mkBeltImage,
-  header, headerText, caliberTitle, headerHeight, defPadding, imgSize
-} = require("%rGui/respawn/respawnComps.nut")
-let { badTextColor2, commonTextColor, warningTextColor, selectColor } = require("%rGui/style/stdColors.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
+from "%sqstd/math.nut" import ceil
+from "%sqstd/string.nut" import utf8ToUpper
+import "%rGui/components/buttonStyles.nut" as buttonStyles
+from "%rGui/components/currencyStyles.nut" import CS_TINY
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonInactive, textButtonMultiline
+from "%rGui/respawn/playerActivity.nut" import sendPlayerActivityToServer
+from "%rGui/respawn/respawnAirChooseState.nut" import selectedSlotWeaponName, equippedWeaponsBySlots, wCards,
+  beltCards, canShowChooseBulletWnd, curUnit, curModPresetCfg, curUnitModCostCfg, selectedBeltWeaponId,
+  selectedBeltCardIdx, selectedWSlotIdx, selectedBeltCard, selectedBeltSlot, selectedWCardIdx, selectedWCard,
+  selectedWCardStates, selectedBeltCardStates, applyBelt, closeWnd, equipSelWeapon, unequipSelWeapon,
+  equipWeaponListWithMirrors, selectWeaponSlot, selectBeltSlot, selectWeaponCard, selectBeltCard, overloadInfo,
+  fixCurPresetOverload, courseBeltSlots, turretBeltSlots, mirrorIdx, unequipSelWeaponFromWings, equipSelWeaponToWings,
+  isEmptyBomber, setDefaultSecondaryWeapon
+from "%rGui/respawn/respawnComps.nut" import padding, weaponSize, smallGap, commonWeaponIcon, getWeaponTitle,
+  mkBeltImage, header, headerText, caliberTitle, headerHeight, defPadding, imgSize
+from "%rGui/style/stdColors.nut" import badTextColor2, commonTextColor, warningTextColor, selectColor
+from "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" import mkCutBg
+from "%rGui/unitMods/equipSlotWeaponMsgBox.nut" import customEquipCurWeaponMsg
+from "%rGui/unitMods/modsComps.nut" import mkLevelLockSmall, mkNotPurchasedShade, mkModCost
+from "%rGui/unitMods/unitModsSlotsDesc.nut" import mkBeltDesc, mkSlotWeaponDesc
+from "%rGui/unitMods/unitModsSlotsState.nut" import mkWeaponStates, getConflictsList, mkHasConflicts
+from "%rGui/weaponry/weaponsVisual.nut" import getBulletBeltShortName
 
 
-let connectingLineWidth = hdpx(4)
-let cellGap = connectingLineWidth * 4
+const connectingLineWidth = hdpx(4)
+const cellGap = connectingLineWidth * 4
 let cellSizeWithGap = weaponSize + cellGap
-let SLOTS_IN_ROW = 5
-let CARDS_IN_ROW = 5
+const SLOTS_IN_ROW = 5
+const CARDS_IN_ROW = 5
 let wndSize = @(cells) cellSizeWithGap * cells - cellGap
 let infoBlockWidth = wndSize(CARDS_IN_ROW)
-let infoBlockHeight = hdpx(700)
-let paddingWnd = hdpx(10)
-let contentGap = hdpx(20)
+const infoBlockHeight = hdpx(700)
+const paddingWnd = hdpx(10)
+const contentGap = hdpx(20)
 let infoDescriptionWidth = infoBlockWidth - paddingWnd * 2
-let WND_UID = "respawn_choose_secondary_wnd"
+const WND_UID = "respawn_choose_secondary_wnd"
 let wndKey = {}
 
-let cardBgColor = 0xFF45545D
-let cardBgConflictColor = 0xFF65343D
+const cardBgColor = 0xFF45545D
+const cardBgConflictColor = 0xFF65343D
 
-let WEAPON = "weapon"
-let BELT = "belt"
+const WEAPON = "weapon"
+const BELT = "belt"
 let contentType = Computed(@() selectedWSlotIdx.get() != null ? WEAPON
   : selectedBeltWeaponId.get() != null ? BELT
   : null)

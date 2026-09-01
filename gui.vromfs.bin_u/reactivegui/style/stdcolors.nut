@@ -1,5 +1,5 @@
-let markTextColor = 0xFFFFB70B
-let darkenTextColor = 0xFF8898CC
+const markTextColor = 0xFFFFB70B
+const darkenTextColor = 0xFF8898CC
 
 return {
   textColor = 0xFFFFFFFF

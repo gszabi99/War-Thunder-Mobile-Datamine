@@ -1,20 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%rGui/battlePass/passPkg.nut" import contentH
+from "%rGui/components/horizontalTabs.nut" import mkHorizontalTabs
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
+import "%rGui/options/mkOption.nut" as mkOption
+from "%rGui/options/optionsStyle.nut" import tabW
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import selectColor
 
-let mkOption = require("%rGui/options/mkOption.nut")
-let { tabW } = require("%rGui/options/optionsStyle.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkHorizontalTabs } = require("%rGui/components/horizontalTabs.nut")
-let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
-let { contentH } = require("%rGui/battlePass/passPkg.nut")
 
 let contentWidth = saSize[0] - tabW - saBorders[0]
 let pannableAreaWidth = saSize[0] - tabW + saBorders[0]
 
-let backButtonHeight = hdpx(60)
-let gapBackButton = hdpx(50)
-let tabHeight = hdpx(120)
+const backButtonHeight = hdpx(60)
+const gapBackButton = hdpx(50)
+const tabHeight = hdpx(120)
 
 let topAreaSize = saBorders[1] + backButtonHeight + gapBackButton - tabHeight
 let gradientHeightBottom = saBorders[1] * 2
@@ -51,7 +51,7 @@ function mkChildrenOptions(tabs) {
   }
 
   curTabIdx.subscribe(@(_) scrollHandler.scrollToY(0))
-  let gap = hdpx(50)
+  const gap = hdpx(50)
 
   function curOptionsContent() {
     let tab = tabs?[curTabIdx.get()]
@@ -91,7 +91,7 @@ function mkChildrenOptions(tabs) {
       gap
       children = [
         {
-          size = [FLEX, SIZE_TO_CONTENT]
+          size = const [FLEX, SIZE_TO_CONTENT]
           flow = FLOW_VERTICAL
           children = [
             mkHorizontalTabs(tabs, curTabIdx)

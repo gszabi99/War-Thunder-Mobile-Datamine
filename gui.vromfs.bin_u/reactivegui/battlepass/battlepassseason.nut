@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/gradientDefComps.nut" import doubleSideGradient
+
 
 let battlePassSeason = @(text, seasonEndTime, children = null, ovr = {}) doubleSideGradient.__merge({
   padding = const [hdpx(20), hdpx(200), hdpx(17), hdpx(30) ]

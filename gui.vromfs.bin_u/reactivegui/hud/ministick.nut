@@ -1,14 +1,14 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%rGui/controls/shortcutConsts.nut" import *
-let { get_mission_time } = require("mission")
-let { TouchScreenStick } = require("wt.behaviors")
-let { Point2 } = require("dagor.math")
-let { rnd_int } = require("dagor.random")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { mkGamepadShortcutImage, mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
-let axisListener = require("%rGui/controls/axisListener.nut")
-let { STICK } = require("%rGui/hud/stickState.nut")
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "dagor.math" import Point2
+from "dagor.random" import rnd_int
+from "mission" import get_mission_time
+from "wt.behaviors" import TouchScreenStick
+from "%appGlobals/activeControls.nut" import isGamepad
+import "%rGui/controls/axisListener.nut" as axisListener
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkContinuousButtonParams
+from "%rGui/hud/stickState.nut" import STICK
+from "%rGui/style/hudColors.nut" import hudWhiteColor
 
 
 let stickHeadSize = evenPx(120)
@@ -97,7 +97,7 @@ let mkMiniStick = kwarg(function mkMiniStick(
         @() isStickActive.set(true),
         @() isStickActive.set(false),
         shortcutId),
-      mkGamepadShortcutImage(shortcutId, {pos = [0, ph(-50)]})
+      mkGamepadShortcutImage(shortcutId, {pos = const [0, ph(-50)]})
     ]
     transform = { scale = isStickActive.get() ? [0.8, 0.8] : [1.0, 1.0] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
@@ -155,7 +155,7 @@ let mkMiniStick = kwarg(function mkMiniStick(
   function stickControl(scale) {
     let size = scaleEven(stickTouchAreaSize, scale)
     return @() { watch = isStickEnabled }
-      .__update(isStickEnabled?.get() ? stickControlEnabled(size, scale) : stickControlDisabled(size, scale))
+      .__update(isStickEnabled.get() ? stickControlEnabled(size, scale) : stickControlDisabled(size, scale))
   }
 
   let stickView = {

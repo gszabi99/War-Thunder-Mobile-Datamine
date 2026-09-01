@@ -1,26 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { resetTimeout, deferOnce } = require("dagor.workcycle")
-let { rnd_int } = require("dagor.random")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { isReadyToFullLoad, isLoggedIn } = require("%appGlobals/loginState.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
-let { registerAutoDownloadUnits } = require("%rGui/updater/updaterState.nut")
-let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-let { openGoodsPreviewInMenuOnly, getAllTagsUnitsToShowGoods, getNotLoadedTagsUnitsToShowGoods
-} = require("%rGui/shop/goodsPreviewState.nut")
-let { shopSeenGoods, isUnseenGoods } = require("%rGui/shop/shopState.nut")
-let { actualSchRewards } = require("%rGui/shop/schRewardsState.nut")
-let { featureGoodsToShow } = require("%rGui/shop/goodsAutoPreview.nut")
-let { offerToShow, offerShowedTime } = require("%rGui/shop/offerAutoPreview.nut")
-let { offersByGoodsToShow } = require("%rGui/shop/offerByGoodsAutoPreview.nut")
-let { hasLoginReward } = require("%rGui/unlocks/loginAwardState.nut")
-let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
+from "console" import register_command
+from "dagor.random" import rnd_int
+from "dagor.workcycle" import resetTimeout, deferOnce
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/underscore.nut" import prevIfEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/loginState.nut" import isReadyToFullLoad, isLoggedIn
+from "%appGlobals/pServer/bqClient.nut" import sendOfferBqEvent
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/updater/addonsState.nut" import unitSizes
+from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
+from "%rGui/shop/goodsAutoPreview.nut" import featureGoodsToShow
+from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreviewInMenuOnly, getAllTagsUnitsToShowGoods,
+  getNotLoadedTagsUnitsToShowGoods
+from "%rGui/shop/offerAutoPreview.nut" import offerToShow, offerShowedTime
+from "%rGui/shop/offerByGoodsAutoPreview.nut" import offersByGoodsToShow
+from "%rGui/shop/schRewardsState.nut" import actualSchRewards
+from "%rGui/shop/shopState.nut" import shopSeenGoods, isUnseenGoods
+from "%rGui/unlocks/loginAwardState.nut" import hasLoginReward
+from "%rGui/unlocks/userstat.nut" import isUserstatMissingData
+from "%rGui/updater/updaterState.nut" import registerAutoDownloadUnits
 
 
 let isDebugMode = hardPersistWatched("autoPreviewQueue.isDebugMode", true)

@@ -1,5 +1,6 @@
 from "%darg/ui_imports.nut" import *
 from "string" import regexp, split_by_chars
+from "types" import String
 
 
 
@@ -27,7 +28,7 @@ function isStringLikelyEmail(str, _verbose = true) {
 
 
 
-  if (type(str) != "string")
+  if (!(str instanceof String))
     return false
   let splitted = split_by_chars(str, "@")
   if (splitted.len() < 2)
@@ -64,10 +65,10 @@ function isValidStrByType(str, inputType) {
   return true
 }
 
-let textColor = Color(255, 255, 255)
-let placeHolderColor = Color(80, 80, 80, 80)
-let backGroundColor = 0xFF000000
-let failureColor = Color(255, 60, 70)
+const textColor = Color(255, 255, 255)
+const placeHolderColor = Color(80, 80, 80, 80)
+const backGroundColor = 0xFF000000
+const failureColor = Color(255, 60, 70)
 
 
 let failAnim = @(trigger) {
@@ -153,7 +154,7 @@ function textInput(text_state, options = {}) {
     rendObj = ROBJ_TEXT
     behavior = Behaviors.TextInput
 
-    size = [FLEX, fontH(100)]
+    size = const [FLEX, fontH(100)]
     color = textColor
     group
     valign = ALIGN_CENTER

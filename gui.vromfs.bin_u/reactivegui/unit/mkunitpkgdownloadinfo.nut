@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
-let { openDownloadAddonsWnd, wantStartDownloadAddons } = require("%rGui/updater/updaterState.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
-let { textColor } = require("%rGui/style/stdColors.nut")
-let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/updater/addonsState.nut" import unitSizes
+from "%rGui/components/textButton.nut" import textButtonCommon
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
+from "%rGui/style/stdColors.nut" import textColor
+from "%rGui/unit/components/unitInfoPanel.nut" import statsWidth
+import "%rGui/updater/downloadInfoBlock.nut" as downloadInfoBlock
+from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd, wantStartDownloadAddons
 
 
 let textArea = @(text, ovr = {}) {

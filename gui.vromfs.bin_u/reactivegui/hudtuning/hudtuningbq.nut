@@ -2,11 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/math.nut" import round_by_value
 from "%sqstd/underscore.nut" import isEqual
 from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
+from "cfg/cfgOptions.nut" import allElemOptionsList
+from "cfgByUnitType.nut" import cfgByUnitType
 from "hudTuningConsts.nut" import tuningStateDefault, ALIGN_C, ALIGN_L, ALIGN_R, ALIGN_T, ALIGN_B
 from "hudTuningState.nut" import tuningStateOnOpen, tuningUnitType, hudTuningStateByUnitType, optionsToElemIds,
   mkEmptyTuningState, registerBeforeUnitTypeChangeCb
-from "cfgByUnitType.nut" import cfgByUnitType
-from "cfg/cfgOptions.nut" import allElemOptionsList
+from "types" import Integer, Float, String, Bool
 
 
 let alignToString = {
@@ -40,15 +41,15 @@ function fillChangedElems(elemIds, s1, s2, uType) {
       elemIds[id] <- true
 }
 
-let getParam = @(value, idx) type(value) == "integer" ? $"paramInt{idx}"
-  : type(value) == "float" ? $"paramFloat{idx}"
-  : type(value) == "string" ? $"paramStr{idx}"
+let getParam = @(value, idx) value instanceof Integer ? $"paramInt{idx}"
+  : value instanceof Float ? $"paramFloat{idx}"
+  : value instanceof String ? $"paramStr{idx}"
   : ""
 
 let modifyValue = {
   scale = @(v) v?.tofloat()
   visible = @(v) v == null ? null
-    : type(v) == "bool" ? v
+    : v instanceof Bool ? v
     : v.tointeger() == 1
 }
 
@@ -100,7 +101,7 @@ function trySendToBq() {
       if (o.id in tuningStateDefault.options) {
         idx++
         let rawVal = newState?.options[o.id][elemId] ?? tuningStateDefault.options[o.id]
-        let val = type(rawVal) == "bool" ? rawVal.tointeger() : rawVal
+        let val = rawVal instanceof Bool ? rawVal.tointeger() : rawVal
         let paramValue = getParam(val, idx)
         if (paramValue == "") {
           logerr($"Incorrect option value type of /*{o.id}*/ for hud tuning")
@@ -114,7 +115,7 @@ function trySendToBq() {
       else if (o.id in tuningStateDefault.customOptions) {
         idx++
         let rawVal = newState?.options[o.id] ?? tuningStateDefault.customOptions[o.id]
-        let val = type(rawVal) == "bool" ? rawVal.tointeger() : rawVal
+        let val = rawVal instanceof Bool ? rawVal.tointeger() : rawVal
         let paramValue = getParam(val, idx)
         if (paramValue == "") {
           logerr($"Incorrect option value type of /*{o.id}*/ for hud tuning")

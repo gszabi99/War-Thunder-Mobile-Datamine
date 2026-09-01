@@ -1,16 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import isDataBlock, blk2SquirrelObjNoArrays
+from "%appGlobals/loginState.nut" import isSettingsAvailable
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%rGui/bullets/bulletsConst.nut" import BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS, BS_VISIBLE, BS_UNLOCKED,
+  BS_ONLY_EXTERNAL_SLOT
+from "%rGui/bullets/calcBullets.nut" import calcBulletsStatus
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitBulletsChoice
+
+
 require("%rGui/onlyAfterLogin.nut")
-let { eventbus_send } = require("eventbus")
-let { register_command } = require("console")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { isDataBlock, blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
-let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { calcBulletsStatus } = require("%rGui/bullets/calcBullets.nut")
-let { BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS, BS_VISIBLE, BS_UNLOCKED, BS_ONLY_EXTERNAL_SLOT
-} = require("%rGui/bullets/bulletsConst.nut")
 
 
 const SEEN_SHELLS = "SeenShells"

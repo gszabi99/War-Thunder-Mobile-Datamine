@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { decoratorInProgress, set_current_decorator, buy_decorator, registerHandler
-} = require("%appGlobals/pServer/pServerApi.nut")
-let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { allDecorators, myDecorators } = require("%rGui/decorators/decoratorState.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
+from "%appGlobals/pServer/pServerApi.nut" import decoratorInProgress, set_current_decorator, buy_decorator,
+  registerHandler
+from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
+from "%rGui/decorators/decoratorState.nut" import allDecorators, myDecorators
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
+from "%rGui/style/stdColors.nut" import userlogTextColor
+
 
 registerHandler("onDecoratorPurchaseResult",
   function onUnitPurchaseResult(res, context) {

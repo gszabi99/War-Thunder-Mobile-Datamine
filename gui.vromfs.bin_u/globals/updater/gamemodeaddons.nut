@@ -1,26 +1,26 @@
 from "%globalScripts/logs.nut" import *
-from "math" import max, min
+from "blkGetters" import get_unittags_blk
 from "frp" import Computed
-let { get_unittags_blk } = require("blkGetters")
-let { tostring_r } = require("%sqstd/string.nut")
-let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { kwarg } = require("%sqstd/functools.nut")
-let { isNewbieMode, isNewbieModeSingle } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
-let { getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieCoop, getCampaignPkgsForNewbieSingle
-} = require("%appGlobals/updater/campaignAddons.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
-let { gameModeAddonToAddonSetMap, knownAddons
-} = require("%appGlobals/updater/addons.nut")
-let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
-let { curUnit } = require("%appGlobals/pServer/profile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
-let { squadMembers, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
-let { getMGameModeMissionUnitsAndAddons, getBotUnits, addSupportUnits, getHighestRankRange
-} = require("%appGlobals/updater/missionUnits.nut")
-let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
-let { battleRentInfo } = require("%appGlobals/rentalState.nut")
+from "math" import max, min
+from "%sqstd/functools.nut" import kwarg
+from "%sqstd/string.nut" import tostring_r
+from "%sqstd/underscore.nut" import prevIfEqual
+from "%appGlobals/gameModes/newbieGameModesConfig.nut" import isNewbieMode, isNewbieModeSingle
+from "%appGlobals/loginState.nut" import isReadyToFullLoad
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profile.nut" import curUnit
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/pServer/slots.nut" import curCampaignSlotUnits
+import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
+from "%appGlobals/rentalState.nut" import battleRentInfo
+from "%appGlobals/squadState.nut" import squadMembers, squadLeaderCampaign
+from "%appGlobals/updater/addons.nut" import gameModeAddonToAddonSetMap, knownAddons
+from "%appGlobals/updater/addonsState.nut" import unitSizes
+from "%appGlobals/updater/campaignAddons.nut" import getCampaignPkgsForOnlineBattle, getCampaignPkgsForNewbieCoop,
+  getCampaignPkgsForNewbieSingle
+from "%appGlobals/updater/missionUnits.nut" import getMGameModeMissionUnitsAndAddons, getBotUnits, addSupportUnits,
+  getHighestRankRange
+from "types" import Array
 
 
 function addToCampRank(res, camp, name, rank) {
@@ -172,7 +172,7 @@ let allBattleUnits = Computed(function() {
   if (squadLeaderCampaign.get() == curCampaign.get())
     foreach(m in squadMembers.get()) {
       let list = m?.units[squadLeaderCampaign.get()]
-      if (type(list) == "array")
+      if (list instanceof Array)
         foreach(name in list)
           res[name] <- true
     }

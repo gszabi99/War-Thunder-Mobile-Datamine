@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-from "dagor.workcycle" import resetTimeout, clearTimer
 from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, clearTimer
 from "math" import fabs
-from "%rGui/debriefing/debriefingState.nut" import curDebrTabId, isDebriefingAnimFinished, DEBR_TAB_SCORES, stopDebriefingAnimation,
-  showReleaseToContinueBtn
+from "%rGui/debriefing/debriefingState.nut" import curDebrTabId, isDebriefingAnimFinished, DEBR_TAB_SCORES,
+  stopDebriefingAnimation, showReleaseToContinueBtn
 
 
 local pointer = null
-let doubleTapDifTime = 500
-let swipeDifTime = 700
-let posDif = sh(4)
-let swipeDistance = hdpx(200)
+const doubleTapDifTime = 500
+const swipeDifTime = 700
+const posDif = sh(4)
+const swipeDistance = hdpx(200)
 
 let showReleaseToContinueClue = @() showReleaseToContinueBtn.set(true)
 

@@ -1,17 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { TANK, SHIP, SUBMARINE } = require("%appGlobals/unitConst.nut")
-let { needScoreBoard, scoreBoardCfgByType, scoreBoardType } = require("%rGui/hud/scoreBoard.nut")
-let { Z_ORDER, mkLTPos, mkCTPos, mkLBPos } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
-let { mkDollCtor, defHealthSize } = require("%rGui/hud/shipStateModule.nut")
-let { xrayModel } = require("%rGui/hud/aircraftStateModule.nut")
-let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
-let { mkDoll } = require("%rGui/hud/tankStateModule.nut")
-let { hudUnitType } = require("%rGui/hudStateExt.nut")
+from "%appGlobals/unitConst.nut" import TANK, SHIP, SUBMARINE
+from "%rGui/hud/aircraftStateModule.nut" import xrayModel
+from "%rGui/hud/menuButton.nut" import mkMenuButton
+from "%rGui/hud/scoreBoard.nut" import needScoreBoard, scoreBoardCfgByType, scoreBoardType
+from "%rGui/hud/shipStateModule.nut" import mkDollCtor, defHealthSize
+from "%rGui/hud/tankStateModule.nut" import mkDoll
+from "%rGui/hudStateExt.nut" import hudUnitType
+from "%rGui/hudTuning/cfg/hudTuningPkg.nut" import Z_ORDER, mkLTPos, mkCTPos, mkLBPos
+import "%rGui/hudTuning/cfg/initHudTuningCfg.nut" as initHudTuningCfg
 
 
 let dollPosX = clamp(saSize[0] / 2 - hdpx(460), hdpx(420), hdpx(540))
 
-return {
+return initHudTuningCfg({
   menuBtn = {
     ctor = @(scale) mkMenuButton(scale)
     defTransform = mkLTPos([0, 0])
@@ -44,4 +45,4 @@ return {
     defTransform = mkLBPos([dollPosX, hdpx(-38)])
     isVisibleInBattle = Computed(@() hudUnitType.get() == SHIP || hudUnitType.get() == SUBMARINE)
   }
-}
+})

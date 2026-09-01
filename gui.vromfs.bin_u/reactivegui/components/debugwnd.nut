@@ -1,17 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { set_clipboard_text } = require("dagor.clipboard")
-let { object_to_json_string } = require("json")
-let { tostring_r, utf8ToLower } = require("%sqstd/string.nut")
-let { startswith, endswith } = require("string")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let textInput = require("%rGui/components/textInputBase.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+from "dagor.clipboard" import set_clipboard_text
+from "json" import object_to_json_string
+from "string" import startswith, endswith
+from "%sqstd/string.nut" import tostring_r, utf8ToLower
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+import "%rGui/components/textInputBase.nut" as textInput
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "types" import Array, Table
 
-let wndWidth = min(sw(95), hdpx(1820))
 
-let gap = hdpx(5)
-let defaultColor = 0xFFA0A0A0
+const wndWidth = min(sw(95), hdpx(1820))
+
+const gap = hdpx(5)
+const defaultColor = 0xFFA0A0A0
 let defFilterText = mkWatched(persist, "filterText", "")
 
 let closeButtonHeight = calc_str_box("A", fontVeryTiny)[1] + 2 * hdpx(5) 
@@ -105,8 +107,8 @@ function defaultRowFilter(rowData, rowKey, txt) {
 }
 
 function filterData(data, curLevel, filterLevel, rowFilter, countLeft) {
-  let isArray = type(data) == "array"
-  if (!isArray && type(data) != "table")
+  let isArray = data instanceof Array
+  if (!isArray && !(data instanceof Table))
     return rowFilter(data, "") ? data : null
 
   let res = isArray ? [] : {}
@@ -192,7 +194,7 @@ function mkInfoBlock(curTabIdx, tabs, filterText, textWatch, dataToText) {
 }
 
 let debugWndContent = @(tabs, curTab, filterText, close, textWatch, dataToText, childrenOverTabs = null) {
-  size = [wndWidth + 2 * gap, sh(90)]
+  size = const [wndWidth + 2 * gap, sh(90)]
   stopMouse = true
   padding = gap
   vplace = ALIGN_CENTER

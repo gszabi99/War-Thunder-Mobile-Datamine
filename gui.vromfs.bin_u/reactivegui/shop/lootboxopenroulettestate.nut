@@ -1,25 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let { log10, round, ceil } = require("math")
-let { register_command } = require("console")
-let Rand = require("%sqstd/rand.nut")
-let { G_CURRENCY, G_ITEM } = require("%appGlobals/rewardType.nut")
-let { lootboxes, canOpenWithWindow, wasErrorSoon } = require("%rGui/shop/autoOpenLootboxes.nut")
-let { sortRewardsViewInfo, getRewardsViewInfo, isRewardEmpty, receivedGoodsToViewInfo,
-  getLootboxOpenRewardViewInfo
-} = require("%rGui/rewards/rewardViewInfo.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { isAdsVisible } = require("%rGui/ads/adsState.nut")
-let { open_lootbox_several, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+from "console" import register_command
+from "dagor.workcycle" import deferOnce
+from "math" import log10, round, ceil
+import "%sqstd/rand.nut" as Rand
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%appGlobals/pServer/bqClient.nut" import sendErrorLocIdBqEvent
+from "%appGlobals/pServer/pServerApi.nut" import open_lootbox_several, registerHandler
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/rewardType.nut" import G_CURRENCY, G_ITEM
+from "%rGui/ads/adsState.nut" import isAdsVisible
+from "%rGui/rewards/rewardViewInfo.nut" import sortRewardsViewInfo, getRewardsViewInfo, isRewardEmpty,
+  receivedGoodsToViewInfo, getLootboxOpenRewardViewInfo
+from "%rGui/shop/autoOpenLootboxes.nut" import lootboxes, canOpenWithWindow, wasErrorSoon
 
 
-let MIN_REWARDS_LEN = 100
-let MIN_REWARDS_CYCLE = 15
-let MAX_MULTIREWARD_OPEN = 50
-let MAX_ROULETTE_OPEN = 50
+const MIN_REWARDS_LEN = 100
+const MIN_REWARDS_CYCLE = 15
+const MAX_MULTIREWARD_OPEN = 50
+const MAX_ROULETTE_OPEN = 50
 let openConfig = mkWatched(persist, "openConfig", null)
 let rouletteOpenResult = mkWatched(persist, "rouletteOpenResult", null)
 let rouletteOpenIdx = Watched(0)
@@ -277,7 +276,7 @@ function closeRoulette() {
 registerHandler("onRouletteOpenLootbox", function(res, context) {
   if (res?.error != null) {
     wasErrorSoon.set(true)
-    let locId = "yn1/error/90000001"
+    const locId = "yn1/error/90000001"
     sendErrorLocIdBqEvent(locId)
     openFMsgBox({ text = loc(locId) })
     closeRoulette()

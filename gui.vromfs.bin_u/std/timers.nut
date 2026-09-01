@@ -12,7 +12,7 @@ import "math" as math
 
 
 
-function debounce(func, delay_s, delay_s_max = null){
+function debounce(func, delay_s: number, delay_s_max: number|null = null): function {
   let storage = { func = @() null }
   let action = @() storage.func()
   function debounced(...) {
@@ -30,7 +30,7 @@ function debounce(func, delay_s, delay_s_max = null){
 
 
 
-function debounceImmediate(func, delay_s){
+function debounceImmediate(func, delay_s: number): function {
   local isActionAllowed = true
   function allowAction() { isActionAllowed = true }
   function debounced(...) {
@@ -51,7 +51,7 @@ function debounceImmediate(func, delay_s){
 
 
 let defThrottleOptions = {leading = true, trailing=false}
-function throttle(func, delay_s, options=defThrottleOptions){
+function throttle(func, delay_s: number, options=defThrottleOptions): function {
   let leading = options?.leading ?? defThrottleOptions.leading
   let trailing = options?.trailing ?? defThrottleOptions.trailing
   assert(leading || trailing, "throttle should be called with at least one front call leading or trailing")

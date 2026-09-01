@@ -1,21 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { abs } = require("math")
-let { round_by_value } = require("%sqstd/math.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { TIME_DAY_IN_SECONDS, TIME_HOUR_IN_SECONDS, TIME_MINUTE_IN_SECONDS } = require("%sqstd/time.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
-let { havePremium, premiumEndsAt, hasPremiumSubs, hasVip, havePremiumDeprecated } = require("%rGui/state/profilePremium.nut")
-let { premiumTextColor, goodTextColor2, badTextColor2, hoverColor } = require("%rGui/style/stdColors.nut")
-let { isProfileReceived } = require("%appGlobals/pServer/campaign.nut")
-let { mkBalanceDiffAnims, mkBalanceHiglightAnims } = require("%rGui/mainMenu/balanceAnimations.nut")
-let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
-let { openShopWnd } = require("%rGui/shop/shopState.nut")
-let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
-let { CS_GAMERCARD } = require("%rGui/components/currencyComp.nut")
+from "math" import abs
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/math.nut" import round_by_value
+from "%sqstd/time.nut" import TIME_DAY_IN_SECONDS, TIME_HOUR_IN_SECONDS, TIME_MINUTE_IN_SECONDS
+from "%appGlobals/config/subsPresentation.nut" import mkSubsIcon
+from "%appGlobals/pServer/campaign.nut" import isProfileReceived
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/currencyComp.nut" import CS_GAMERCARD
+from "%rGui/mainMenu/balanceAnimations.nut" import mkBalanceDiffAnims, mkBalanceHiglightAnims
+from "%rGui/shop/shopCommon.nut" import SC_PREMIUM
+from "%rGui/shop/shopState.nut" import openShopWnd
+from "%rGui/state/profilePremium.nut" import havePremium, premiumEndsAt, hasPremiumSubs, hasVip, havePremiumDeprecated
+from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset
+from "%rGui/style/stdColors.nut" import premiumTextColor, goodTextColor2, badTextColor2, hoverColor
 
-let premIconH = hdpxi(50)
+
+const premIconH = hdpxi(50)
 let highlightTrigger = {}
 
 let visibleEndsAt = hardPersistWatched("premium.visibleEndsAt", premiumEndsAt.get() ?? -1)
@@ -38,7 +39,7 @@ premiumEndsAt.subscribe(function(endsAt) {
 
 let premImageMain = @() {
   watch = [havePremium, hasPremiumSubs, hasVip, havePremiumDeprecated]
-  pos = [0, -hdpx(5)]
+  pos = const [0, -hdpx(5)]
   children = [
     mkSubsIcon(
       !havePremium.get() ? "prem_inactive"
@@ -52,7 +53,7 @@ let premImageMain = @() {
       : {
           vplace = ALIGN_CENTER
           hplace = ALIGN_CENTER
-          pos = [pw(25), ph(25)]
+          pos = const [pw(25), ph(25)]
           rendObj = ROBJ_TEXT
           color = 0xFFFFFFFF
           text = "+"

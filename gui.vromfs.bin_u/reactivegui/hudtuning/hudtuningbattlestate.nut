@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hudUnitType } = require("%rGui/hudStateExt.nut")
-let { hudTuningStateByUnitType } = require("%rGui/hudTuning/hudTuningState.nut")
+from "%rGui/hudStateExt.nut" import hudUnitType
+from "%rGui/hudTuning/hudTuningState.nut" import hudTuningStateByUnitType
+
 
 let curUnitHudTuning = Computed(@() hudTuningStateByUnitType.get()?[hudUnitType.get()])
 

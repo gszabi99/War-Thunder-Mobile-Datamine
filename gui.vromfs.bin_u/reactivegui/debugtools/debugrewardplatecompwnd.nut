@@ -1,18 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { registerScene } = require("%rGui/navState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, mkRewardPlate
-} = require("%rGui/rewards/rewardPlateComp.nut")
+from "console" import register_command
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/navState.nut" import registerScene
+from "%rGui/rewards/rewardPlateComp.nut" import REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, mkRewardPlate
+from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, sortRewardsViewInfo
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "types" import Table
+
 
 let dbgRewardsTbl = []
 
 function apendDbgRewards(gType, list) {
-  if (type(list) == "table")
+  if (list instanceof Table)
     foreach(id, count in list)
       dbgRewardsTbl.append({ gType, id, count, subId = "" })
   else
@@ -64,12 +65,12 @@ let isOpened = mkWatched(persist, "isOpened", false)
 let close = @() isOpened.set(false)
 
 let opacityGradientSize = saBorders[1]
-let wndHeaderHeight = hdpx(60)
+const wndHeaderHeight = hdpx(60)
 let wndContentWidth = saSize[0]
 let wndContentHeight = saSize[1] - wndHeaderHeight + opacityGradientSize
 
 let wndHeader = {
-  size = [FLEX, wndHeaderHeight]
+  size = const [FLEX, wndHeaderHeight]
   valign = ALIGN_CENTER
   children = [
     backButton(close)

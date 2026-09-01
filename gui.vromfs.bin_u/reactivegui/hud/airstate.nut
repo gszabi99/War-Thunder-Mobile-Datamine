@@ -1,16 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { eventbus_subscribe } = require("eventbus")
-let { AirThrottleMode, AirParamsMain, AirParamsTertiary } = require("%globalScripts/sharedEnums.nut")
-let interopGen = require("%rGui/interopGen.nut")
-let { registerInteropFunc } = require("%globalsDarg/interop.nut")
+from "camera_control" import FlightCameraType, getCameraViewType
+from "console" import register_command
+from "dagor.random" import rnd_int
+from "eventbus" import eventbus_subscribe
+from "hudAircraftStates" import use_mgun_as_cannon_by_trigger
+from "%globalScripts/sharedEnums.nut" import AirThrottleMode, AirParamsMain, AirParamsTertiary
+from "%globalsDarg/interop.nut" import registerInteropFunc
+from "%rGui/hudState.nut" import isUnitAlive, isUnitDelayed, playerUnitName
+import "%rGui/interopGen.nut" as interopGen
+from "%rGui/unitDetails/unitBlkDetails.nut" import getUnitBlkDetails
+
+
 let { CANNON_1, MACHINE_GUNS_1, ROCKET, BOMBS, TORPEDO, CANNON_ADDITIONAL, FLARES } = AirParamsMain
-let { use_mgun_as_cannon_by_trigger } = require("hudAircraftStates")
-let { isUnitAlive, isUnitDelayed, playerUnitName } = require("%rGui/hudState.nut")
-let { getUnitBlkDetails } = require("%rGui/unitDetails/unitBlkDetails.nut")
-let { FlightCameraType, getCameraViewType } = require("camera_control")
 let debugDebuff = mkWatched(persist, "debugDebuff", 0)
-let { rnd_int } = require("dagor.random")
 let { TURRET } = FlightCameraType
 
 use_mgun_as_cannon_by_trigger(true)
@@ -183,7 +185,7 @@ let logMask = @(mask, params, text) log($"{text} = ",
 register_command(@() logMask(MainMask.get(), AirParamsMain, "MainMask"), "debug.airWeaponMask")
 register_command(@() logMask(TertiaryMask.get(), AirParamsTertiary, "TertiaryMask"), "debug.airTertiaryMask")
 
-let maxDebugDebuff = 1023
+const maxDebugDebuff = 1023
 register_command(@() debugDebuff.set(debugDebuff.get() == maxDebugDebuff ? 0 : maxDebugDebuff), "hud.debug.airDebuffsAll")
 register_command(@() debugDebuff.set(rnd_int(0, maxDebugDebuff)), "hud.debug.airDebuffsRandom")
 register_command(function(idx) {

@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { myUserIdStr } = require("%appGlobals/profileStates.nut")
-let { friendsUids, myRequestsUids, requestsToMeUids, rejectedByMeUids, myBlacklistUids
-} = require("%rGui/contacts/contactLists.nut")
-let { contactsInProgress, botRequests, addToFriendList, cancelMyFriendRequest, approveFriendRequest,
-  rejectFriendRequest, removeFromFriendList, addToBlackList, removeFromBlackList
-} = require("%rGui/contacts/contactsState.nut")
-let { inviteToSquad, dismissSquadMember, transferSquad, revokeSquadInvite, userInProgress,
-  leaveSquadMessage, isInSquad, isSquadLeader, squadMembers, isInvitedToSquad, canInviteToSquad
-} = require("%rGui/squad/squadManager.nut")
-let { maxSquadSize } = require("%rGui/gameModes/gameModeState.nut")
-let { viewProfile } = require("%rGui/mpStatistics/viewProfile.nut")
-let { viewReport } = require("%rGui/report/reportPlayerState.nut")
+from "%appGlobals/profileStates.nut" import myUserIdStr
+from "%rGui/contacts/contactLists.nut" import friendsUids, myRequestsUids, requestsToMeUids, rejectedByMeUids,
+  myBlacklistUids
+from "%rGui/contacts/contactsState.nut" import contactsInProgress, botRequests, addToFriendList,
+  cancelMyFriendRequest, approveFriendRequest, rejectFriendRequest, removeFromFriendList, addToBlackList,
+  removeFromBlackList
+from "%rGui/gameModes/gameModeState.nut" import maxSquadSize
+from "%rGui/mpStatistics/viewProfile.nut" import viewProfile
+from "%rGui/report/reportPlayerState.nut" import viewReport
+from "%rGui/squad/squadManager.nut" import inviteToSquad, dismissSquadMember, transferSquad, revokeSquadInvite,
+  userInProgress, leaveSquadMessage, isInSquad, isSquadLeader, squadMembers, isInvitedToSquad, canInviteToSquad
+
 
 let mkCommonInProgress = @(userId) Computed(@() userId in contactsInProgress.get() || userId.tointeger() in userInProgress.get())
 let isInMySquad = @(userId, members) members?[userId.tointeger()] != null

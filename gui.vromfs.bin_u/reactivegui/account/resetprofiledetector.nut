@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let { sharedStats } = require("%appGlobals/pServer/campaign.nut")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { isOnlineSettingsAvailable, isLoggedIn } = require("%appGlobals/loginState.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "dagor.workcycle" import deferOnce
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable, isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import sharedStats
 
-let SAVE_ID = "resetProfileTime"
+
+const SAVE_ID = "resetProfileTime"
 
 let lastResetTime = Computed(@() sharedStats.get()?.profileResetTime ?? -1)
 let savedLastResetTime = Watched(get_local_custom_settings_blk()?[SAVE_ID] ?? -1)

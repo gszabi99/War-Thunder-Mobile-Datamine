@@ -73,6 +73,10 @@ return {
     "arado-234": {
       "": "germ_ta_154a_1"
     },
+    "arado-234c-3": {
+      "": "germ_do335a_1",
+      "upgraded": "germ_bf_109c_1"
+    },
     "attaker_fb1": {
       "": "usa_pby_5a_early_a",
       "upgraded": "ussr_la_11_standard"
@@ -99,6 +103,17 @@ return {
     },
     "b-29_prem": {
       "": "usa_b_29_eagle"
+    },
+    "b-57": {
+      "": "ussr_la_11_standard",
+      "upgraded": "usa_f_82e"
+    },
+    "b-57b": {
+      "": "usa_f_82e",
+      "camo": "ussr_la_11_standard"
+    },
+    "b-57b_prem": {
+      "": "usa_f_80a_5_blue_a"
     },
     "b6n1": {
       "": "germ_bf_109c_1",
@@ -249,6 +264,10 @@ return {
       "": "germ_ger_bv_238_red",
       "croco": "germ_ger_bv_238_croco",
       "standart": "germ_ger_bv_238"
+    },
+    "canberra_bmk2": {
+      "": "usa_sb2u_2",
+      "upgraded": "ussr_i_180s_red"
     },
     "cn_al_khalid_1": {
       "": "pak_forest_fourcolor",
@@ -1096,6 +1115,14 @@ return {
     },
     "fr_frigate_rckt_la_fayette": {
       "upgraded": "camo_multicolor_spots"
+    },
+    "fr_leclerc_s2": {
+      "": "fr_camo_vert_olive_arme",
+      "forest": "fr_camo_green_sand_gray"
+    },
+    "fr_leclerc_s2_prem": {
+      "": "fr_camo_carc",
+      "forest": "fr_camo_vert_olive_arme"
     },
     "fr_lorraine_100": {
       "": "fr_camo_vert_olive_arme",
@@ -2170,6 +2197,10 @@ return {
       "": "ussr_il_2m_type3_1945",
       "upgraded": "ussr_il_10_winter44"
     },
+    "il_28": {
+      "": "ussr_la_11_standard",
+      "upgraded": "ussr_il_10"
+    },
     "il_2_1941": {
       "": "ussr_yak_1_early_green",
       "upgraded": "ussr_pe_8_m82"
@@ -2412,10 +2443,6 @@ return {
     "it_freccia": {
       "": "it_camo_threecolor_modern",
       "forest": "it_camo_olive_green"
-    },
-    "it_kf_41": {
-      "": "hu_camo_four_color",
-      "forest": "us_camo_modern_green"
     },
     "it_leopard_1a5": {
       "": "it_camo_olive_green",
@@ -4821,6 +4848,11 @@ return {
     "us_sub_balao_ss286": {
       "upgraded": "camo_modern_nordgeometry"
     },
+    "us_sub_los_angeles": {
+      "": "camo_syntheticblackpaint",
+      "blackwhite_net": "camo_blackwhite_net",
+      "upgraded": "camo_shuttle_los_angeles"
+    },
     "us_sub_seawolf": {
       "upgraded": "camo_blackgray_spots"
     },
@@ -5206,6 +5238,9 @@ return {
     },
     "ussr_destroyer_rckt_pr1155": {
       "upgraded": "camo_northern_fleet"
+    },
+    "ussr_destroyer_rckt_pr11551": {
+      "upgraded": "camo_arctic_minesweeper_block"
     },
     "ussr_destroyer_rckt_pr57bis": {
       "upgraded": "camo_violetgray_geometry"
@@ -5689,14 +5724,6 @@ return {
     },
     "ussr_t_72av_turms_event": {
       "": "ussr_t_72av_turms_anniversary2026"
-    },
-    "ussr_t_72b3_2011": {
-      "": "ussr_modern_green",
-      "forest": "ussr_modern_forest"
-    },
-    "ussr_t_72b3_2011_prem": {
-      "": "ussr_camo_modern_desert_deform",
-      "forest": "ussr_modern_green"
     },
     "ussr_t_72b3_arena": {
       "": "ussr_camo_desert_sand_green_brown",

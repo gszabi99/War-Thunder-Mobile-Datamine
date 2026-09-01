@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { campaignActiveUnlocks, unlockInProgress, batchReceiveRewards, unseenUnlocks, setLastSeenUnlocks
-} = require("%rGui/unlocks/unlocks.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { fillViewInfo, gatherUnlockStageInfo } = require("%rGui/battlePass/passStatePkg.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
-let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/battlePass/passStatePkg.nut" import fillViewInfo, gatherUnlockStageInfo
+from "%rGui/shop/shopState.nut" import shopGoods
+from "%rGui/unlocks/unlocks.nut" import campaignActiveUnlocks, unlockInProgress, batchReceiveRewards, unseenUnlocks,
+  setLastSeenUnlocks
+from "%rGui/unlocks/userstat.nut" import userstatStatsTables
 
 
 let isNPWndOpened = mkWatched(persist, "newPlayerBpSceneisNPWndOpened", false)

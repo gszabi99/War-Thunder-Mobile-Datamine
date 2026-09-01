@@ -1,6 +1,6 @@
+from "frp" import Watched, Computed
+from "%sqstd/globalState.nut" import hardPersistWatched
 
-let { Watched, Computed } = require("frp")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
 
 let HUD_TYPE = {
   HT_HUD = "hud",
@@ -10,8 +10,8 @@ let HUD_TYPE = {
   HT_NONE = "none"
 }
 
-let curHudType = sharedWatched("curHudType", @() HUD_TYPE.HT_NONE)
-let debugHudType = sharedWatched("debugHudType", @() null)
+let curHudType = hardPersistWatched("curHudType", HUD_TYPE.HT_NONE)
+let debugHudType = hardPersistWatched("debugHudType", null)
 let viewHudType = Computed(@() debugHudType.get() ?? curHudType.get())
 
 return HUD_TYPE.__merge({

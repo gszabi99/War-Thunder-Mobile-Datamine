@@ -1,14 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { eventbus_subscribe } = require("eventbus")
-let { isInAntiairMode } = require("%rGui/hudState.nut")
+from "dagor.workcycle" import resetTimeout
+from "eventbus" import eventbus_subscribe
+from "%rGui/hudState.nut" import isInAntiairMode
 
-let maxIndicatorsAmount = 3
-let showHitIndicatorTimer = 1.5
+
+const maxIndicatorsAmount = 3
+const showHitIndicatorTimer = 1.5
 let hitIndicatorStateCount = Watched(0)
 let hitIndicatorStateCrit = Watched(false)
-let hitIndicatorBlinkFreq = 0.3
-let hitIndicatorSize = hdpxi(80)
+const hitIndicatorBlinkFreq = 0.3
+const hitIndicatorSize = hdpxi(80)
 let hitIndicatorImage = Picture($"ui/gameuiskin#sight_hit_air.svg:{hitIndicatorSize}:{hitIndicatorSize}:P")
 let hitIndicatorCritImage = Picture($"ui/gameuiskin#sight_hit_air_crit.svg:{hitIndicatorSize}:{hitIndicatorSize}:P")
 
@@ -24,7 +25,7 @@ let hitIndicator = @() {
   valign = ALIGN_CENTER
   children = array(min(hitIndicatorStateCount.get(), maxIndicatorsAmount))
     .map(@(_, i) {
-      size = [hitIndicatorSize, hitIndicatorSize]
+      size = const [hitIndicatorSize, hitIndicatorSize]
       rendObj = ROBJ_IMAGE
       image = hitIndicatorStateCrit.get() ? hitIndicatorCritImage : hitIndicatorImage
       transform = { rotate = i * 10 }

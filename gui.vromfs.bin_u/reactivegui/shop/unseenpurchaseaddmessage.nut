@@ -1,19 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { G_CURRENCY, G_BLUEPRINT, G_UNIT } = require("%appGlobals/rewardType.nut")
-let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkRewardTextLabel, mkRewardPlateTexts,
-  mkRewardPlate, mkRewardUnitFlag, getRewardPlateSize
-} = require("%rGui/rewards/rewardPlateComp.nut")
-let { modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { REWARD_STYLE_MEDIUM, REWARD_STYLE_SMALL } = require("%rGui/rewards/rewardStyles.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { getRewardsViewInfo, shopGoodsToRewardsViewInfo, sortRewardsViewInfo, isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
-let { allShopGoods } = require("%rGui/shop/shopState.nut")
-let { calculateNewGoodsDiscount, discountsToApply, applyDiscount } = require("%rGui/shop/discounts.nut")
-let { discountTag } = require("%rGui/components/discountTag.nut")
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/rewardType.nut" import G_CURRENCY, G_BLUEPRINT, G_UNIT
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/discountTag.nut" import discountTag
+from "%rGui/components/modalWnd.nut" import modalWndHeader
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar,
+  mkRewardTextLabel, mkRewardPlateTexts, mkRewardPlate, mkRewardUnitFlag, getRewardPlateSize
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM, REWARD_STYLE_SMALL
+from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, shopGoodsToRewardsViewInfo, sortRewardsViewInfo,
+  isRewardEmpty
+from "%rGui/shop/discounts.nut" import calculateNewGoodsDiscount, discountsToApply, applyDiscount
+from "%rGui/shop/shopState.nut" import allShopGoods
 
 
 const textColor = 0xFFE0E0E0
@@ -133,7 +133,7 @@ function mkMsgConvert(stackDataV, onClick) {
   }
   return {
     minWidth = minWidthWnd
-    padding = [0,0, padding, 0]
+    padding = const [0,0, padding, 0]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     behavior = Behaviors.Button
@@ -148,7 +148,7 @@ function mkMsgConvert(stackDataV, onClick) {
         halign = ALIGN_CENTER
         children = [
           {
-              size = [minWidthWnd, SIZE_TO_CONTENT]
+              size = const [minWidthWnd, SIZE_TO_CONTENT]
               children = mainRewards.len() > 2 ? [
                 mkVerticalPannableArea(
                   cont,
@@ -190,7 +190,7 @@ function mkMsgConvert(stackDataV, onClick) {
 let mkDiscountTag = @(discount, ovr = {}, textOvr = {}) discountTag(discount, {
   hplace = ALIGN_LEFT
   vplace = ALIGN_TOP
-  pos = [0, 0]
+  pos = const [0, 0]
   size = const [hdpx(93), hdpx(46)]
   color = 0xFFE00000
 }.__update(ovr), { pos = null }.__update(fontTinyAccented, textOvr))
@@ -319,7 +319,7 @@ let mkMsgDiscount = @(stackDataV, onClick) function() {
   return {
     watch
     minWidth = minWidthWnd
-    padding = [0,0, padding, 0]
+    padding = const [0,0, padding, 0]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     behavior = Behaviors.Button

@@ -1,22 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { closeButton } = require("%rGui/components/debugWnd.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { cfgByUnitType } = require("%rGui/hudTuning/cfgByUnitType.nut")
-let { unitTypeOrder } = require("%appGlobals/unitConst.nut")
-let { tuningUnitType, isCurPresetChanged, saveCurrentTransform, openTuning } = require("%rGui/hudTuning/hudTuningState.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { unitTypesByEvent } = require("%rGui/event/eventState.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/unitConst.nut" import unitTypeOrder
+from "%rGui/components/debugWnd.nut" import closeButton
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/event/eventState.nut" import unitTypesByEvent
+from "%rGui/hudTuning/cfgByUnitType.nut" import cfgByUnitType
+from "%rGui/hudTuning/hudTuningState.nut" import tuningUnitType, isCurPresetChanged, saveCurrentTransform, openTuning
+from "%rGui/style/backgrounds.nut" import bgShaded
 
 
-let wndUid = "chooseTuningUnitType"
+const wndUid = "chooseTuningUnitType"
 let close = @() removeModalWindow(wndUid)
 let unitTypes = unitTypeOrder.filter(@(ut) ut in cfgByUnitType)
 
-let gap = hdpx(10)
+const gap = hdpx(10)
 
 function changeUnitType(unitType) {
   close()

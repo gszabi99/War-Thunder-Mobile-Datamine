@@ -1,44 +1,47 @@
 from "%globalsDarg/darg_library.nut" import *
-let { format } = require("string")
-let { skinSize } = require("%rGui/respawn/respawnSkins.nut")
-let { hasSkins } = require("%rGui/respawn/respawnState.nut")
-let { scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
-let { getBulletBeltImage, TOTAL_VIEW_BULLETS } = require("%appGlobals/config/bulletsPresentation.nut")
+from "string" import format
+from "%appGlobals/config/bulletsPresentation.nut" import getBulletBeltImage, TOTAL_VIEW_BULLETS
+from "%rGui/globals/fontUtils.nut" import getFontToFitWidth
+from "%rGui/hud/scoreBoard.nut" import scoreBoardHeight
+from "%rGui/respawn/respawnSkins.nut" import skinSize
+from "%rGui/respawn/respawnState.nut" import hasSkins
 
-let courseMenuKey = "courseMenuKey"
-let courseTitleKey = "courseTitleKey"
-let turretMenuKey = "turretMenuKey"
-let turretTitleKey = "turretTitleKey"
-let secondaryMenuKey = "secondaryMenuKey"
-let secondaryTitleKey = "secondaryTitleKey"
 
-let textColor = 0xFFD0D0D0
-let headerHeight = hdpx(60)
-let gap = hdpx(10)
-let bulletsBlockWidth = hdpx(500)
-let bulletsBlockMargin = hdpx(40)
-let bulletsLegendWidth = hdpx(220)
-let contentOffset = hdpx(40)
+const courseMenuKey = "courseMenuKey"
+const courseTitleKey = "courseTitleKey"
+const turretMenuKey = "turretMenuKey"
+const turretTitleKey = "turretTitleKey"
+const secondaryMenuKey = "secondaryMenuKey"
+const secondaryTitleKey = "secondaryTitleKey"
+
+const textColor = 0xFFD0D0D0
+const headerHeight = hdpx(60)
+const gap = hdpx(10)
+const bulletsBlockWidth = hdpx(500)
+const bulletsBlockMargin = hdpx(40)
+const bulletsLegendWidth = hdpx(220)
+const bulletsLegendTxtWidth = bulletsLegendWidth - gap*2
+const contentOffset = hdpx(40)
 let headerMargin = [0, hdpx(20), 0, bulletsBlockMargin]
 let unitListHeight = saSize[1] - scoreBoardHeight - contentOffset - headerHeight - gap
 
-let smallGap = hdpx(8)
+const smallGap = hdpx(8)
 let beltImgSize = evenPx(75)
 let imgSize = evenPx(100)
-let padding = hdpxi(5)
-let defPadding = hdpxi(3)
+const padding = hdpxi(5)
+const defPadding = hdpxi(3)
 let weaponSize = imgSize + 2 * padding
-let weaponGroupWidth = hdpx(600)
+const weaponGroupWidth = hdpx(600)
 
-let headerSlotHeight = hdpx(98)
-let skinTextHeight = hdpx(29)
-let topSkinPadding = hdpx(6)
-let skinPadding = hdpx(10)
-let skinGap = hdpx(12)
-let minBSlotHeight = hdpx(194)
-let maxBSlotHeight = hdpx(216)
-let minGapHeight = hdpx(8)
-let maxGapHeight = gap
+const headerSlotHeight = hdpx(98)
+const skinTextHeight = hdpx(29)
+const topSkinPadding = hdpx(6)
+const skinPadding = hdpx(10)
+const skinGap = hdpx(12)
+const minBSlotHeight = hdpx(194)
+const maxBSlotHeight = hdpx(216)
+const minGapHeight = hdpx(8)
+const maxGapHeight = gap
 let skinsListHeight = skinTextHeight + topSkinPadding + skinPadding + skinSize
 
 let mkBulletHeightInfo = @(primaryBulletSlots, secondaryBulletSlots, specialBulletSlots) Computed(function() {
@@ -90,7 +93,7 @@ let headerText = @(text) {
 }.__update(fontTinyAccented)
 
 let header = @(children, ovr = {}) bg.__merge({
-  size = [FLEX, headerHeight]
+  size = const [FLEX, headerHeight]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
@@ -104,39 +107,43 @@ let headerMarquee = @(width) {
   speed = hdpx(50)
 }
 
-let bulletIconHeight = hdpxi(77)
-let bulletsLegendBlock = @(text, bulletIcon, width, height) {
-  size = FLEX_H
-  flow = FLOW_VERTICAL
-  padding = gap
-  children = [
-    {
-      rendObj = ROBJ_TEXTAREA
-      behavior = Behaviors.TextArea
-      size = FLEX_H
-      halign = ALIGN_CENTER
-      color = textColor
-      text
-    }.__update(fontVeryTiny),
-    {
-      size = FLEX_H
-      flow = FLOW_HORIZONTAL
-      halign = ALIGN_CENTER
-      children = {
-        rendObj = ROBJ_IMAGE
-        size = [ width, height ]
-        opacity = 0.7
-        image = Picture($"ui/gameuiskin#{bulletIcon}.svg:{width}:{height}:P")
+const bulletIconHeight = hdpxi(77)
+function mkBulletsLegendBlock(text, bulletIcon, width, height) {
+  let legendTxt = {
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    size = [bulletsLegendTxtWidth, SIZE_TO_CONTENT]
+    halign = ALIGN_CENTER
+    color = textColor
+    text
+  }.__update(fontVeryTinyAccented)
+
+  return {
+    size = FLEX_H
+    flow = FLOW_VERTICAL
+    padding = gap
+    children = [
+      legendTxt.__update(getFontToFitWidth(legendTxt, bulletsLegendTxtWidth, [fontVeryVeryTinyAccented, fontVeryTinyAccented])),
+      {
+        size = FLEX_H
+        flow = FLOW_HORIZONTAL
+        halign = ALIGN_CENTER
+        children = {
+          rendObj = ROBJ_IMAGE
+          size = [ width, height ]
+          opacity = 0.7
+          image = Picture($"ui/gameuiskin#{bulletIcon}.svg:{width}:{height}:P")
+        }
       }
-    }
-  ]
+    ]
+  }
 }
 
 let bulletsLegend = {
   key = "bulletsLegend" 
   rendObj = ROBJ_BOX
-  size = [bulletsLegendWidth, hdpx(300) + gap]
-  pos = [0, headerHeight + gap]
+  size = const [bulletsLegendWidth, hdpx(300) + gap]
+  pos = const [0, headerHeight + gap]
   fillColor = 0x99000000
   borderWidth = hdpx(2)
   borderColor = textColor
@@ -144,8 +151,8 @@ let bulletsLegend = {
   valign = ALIGN_CENTER
   gap = hdpx(20)
   children = [
-    bulletsLegendBlock(loc("respawn/bullet_armor_penetration"), "hint_ap", hdpxi(155), bulletIconHeight)
-    bulletsLegendBlock(loc("respawn/bullet_explosion_power"), "hint_he", hdpxi(200), bulletIconHeight)
+    mkBulletsLegendBlock(loc("respawn/bullet_armor_penetration"), "hint_ap", hdpxi(155), bulletIconHeight)
+    mkBulletsLegendBlock(loc("respawn/bullet_explosion_power"), "hint_he", hdpxi(200), bulletIconHeight)
   ]
 }
 

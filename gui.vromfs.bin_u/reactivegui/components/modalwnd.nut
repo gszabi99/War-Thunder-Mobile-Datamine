@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gradTranspDoubleSideX, gradDoubleTexOffset, mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { closeWndBtn, closeWndBtnSize } = require("%rGui/components/closeWndBtn.nut")
+from "%rGui/components/closeWndBtn.nut" import closeWndBtn, closeWndBtnSize
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset, mkColoredGradientY
 
 
 let wndHeaderHeight = evenPx(76)

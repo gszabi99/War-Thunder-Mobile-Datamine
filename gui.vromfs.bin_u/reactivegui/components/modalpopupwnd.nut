@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "types" import Array
+
 
 let POPUP_PARAMS = {
   uid = null 
@@ -20,7 +22,7 @@ let POPUP_PARAMS = {
 let remove = @(uid) removeModalWindow(uid)
 
 function calcOffsets(rectOrPos, popupFlow, popupOffset, popupHalign, popupValign) {
-  let isArray = type(rectOrPos) == "array"
+  let isArray = rectOrPos instanceof Array
   assert(isArray || (("l" in rectOrPos) && ("b" in rectOrPos)))
   let res = {
     pos = isArray ? rectOrPos : [rectOrPos.l, rectOrPos.t]

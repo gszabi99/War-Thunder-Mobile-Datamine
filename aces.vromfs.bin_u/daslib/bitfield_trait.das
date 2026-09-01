@@ -12,7 +12,6 @@ module bitfield_trait shared private
 require daslib/ast
 require daslib/ast_boost
 require daslib/contracts
-require daslib/strings_boost
 require daslib/templates_boost
 require daslib/macro_boost
 
@@ -24,11 +23,6 @@ def public each(argT) {
 
 [tag_function_macro(tag="each_bitfield_tag")]
 class EachBitfieldMacro : AstFunctionAnnotation {
-    
-    
-    
-    
-    
     
     def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
         macro_verify(call.arguments[0]._type != null, compiling_program(), call.at, "expecting argument type")
@@ -74,11 +68,6 @@ def public each_bit_name(argT) {
 
 [tag_function_macro(tag="each_bit_name_bitfield_tag")]
 class EachBitNameBitfieldMacro : AstFunctionAnnotation {
-    
-    
-    
-    
-    
     
     def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
         macro_verify(call.arguments[0]._type != null, compiling_program(), call.at, "expecting argument type")

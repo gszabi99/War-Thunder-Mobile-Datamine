@@ -1984,19 +1984,19 @@
     },
     "engine": {
       "horsePowers": 500.0,
-      "maxRPM": 3200.0,
+      "maxRPM": 2700.0,
       "minRPM": 400.0
     },
     "mechanics": {
       "maxBrakeForce": 140000.0,
-      "driveGearRadius": 0.268,
-      "mainGearRatio": 1.79307,
-      "sideGearRatio": 2.774,
+      "driveGearRadius": 0.26,
+      "mainGearRatio": 4.66,
+      "sideGearRatio": 0.97,
       "neutralGearRatio": 10.0,
       "alternativeGearControl": 3.0,
       "gearRatios": {
         "ratio": [
-          -1.0,
+          -0.9,
           -1.36,
           -2.06,
           -3.36,
@@ -2008,7 +2008,7 @@
           3.36,
           2.06,
           1.36,
-          1.0
+          0.9
         ]
       }
     },
@@ -2022,13 +2022,13 @@
         -0.11,
         0.09
       ],
-      "defaultGearRadius": 0.26,
-      "topGearRadius": 0.13,
+      "defaultGearRadius": 0.28,
+      "topGearRadius": 0.15,
       "defaultDampeningForce": [
         150000.0,
         150000.0
       ],
-      "frontBackGearRadius": 0.265,
+      "frontBackGearRadius": 0.285,
       "dampeningRelaxationRatio": 0.2,
       "dampeningCompressionRatio": 0.65
     }

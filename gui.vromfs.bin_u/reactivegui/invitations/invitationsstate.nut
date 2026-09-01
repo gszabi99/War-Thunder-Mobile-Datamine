@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+
 
 let invitations = hardPersistWatched("invitations", [])
 let counter = hardPersistWatched("invitationsCounter", 0)

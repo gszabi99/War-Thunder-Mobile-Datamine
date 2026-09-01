@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-from "math" import max, round
 from "hangar" import CHECK_PROT_RICOCHET_POSSIBLE, CHECK_PROT_RICOCHET_GUARANTEED
-from "%sqstd/underscore.nut" import isEqual, prevIfEqual
+from "math" import max, round
 from "%sqstd/string.nut" import utf8Capitalize
-from "%rGui/style/stdColors.nut" import goodTextColor, badTextColor
-from "%rGui/dmViewer/protectionAnalysisState.nut" import isSimulationMode, isHintVisible, probabilityColor
+from "%sqstd/underscore.nut" import isEqual, prevIfEqual
 from "%rGui/dmViewer/dmViewerPkg.nut" import toggleSubscription, accentColor, hitProbPossibleColor, hitProbMinorColor
+from "%rGui/dmViewer/protectionAnalysisState.nut" import isSimulationMode, isHintVisible, probabilityColor
+from "%rGui/style/stdColors.nut" import goodTextColor, badTextColor
+
 
 let resultTypesOrderedCfg = [
   {

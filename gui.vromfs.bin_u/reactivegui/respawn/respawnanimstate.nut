@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
+from "dagor.workcycle" import deferOnce
 
-let lineSpeed = hdpx(1000)
+
+const lineSpeed = hdpx(1000)
 
 let slotAABB = Watched(null)
 let bulletsAABB = Watched({})

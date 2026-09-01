@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { blk2SquirrelObjNoArrays, isDataBlock } = require("%sqstd/datablock.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { blockedResearchByBattleMods } = require("%appGlobals/pServer/battleMods.nut")
-let { register_command } = require("console")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { G_BATTLE_MOD } = require("%appGlobals/rewardType.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import blk2SquirrelObjNoArrays, isDataBlock
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/battleMods.nut" import blockedResearchByBattleMods
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/rewardType.nut" import G_BATTLE_MOD
+from "%rGui/shop/shopState.nut" import shopGoods
 
 
-let UNSEEN_BRANCHES = "unseenBranches"
+const UNSEEN_BRANCHES = "unseenBranches"
 
 let unseenBranchesFromLS = Watched({})
 let unseenBranches = Computed(function() {

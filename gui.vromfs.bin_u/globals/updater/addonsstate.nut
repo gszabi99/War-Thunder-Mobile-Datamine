@@ -1,20 +1,20 @@
 from "%globalScripts/logs.nut" import *
-let { Computed, Watched } = require("frp")
-let { ndbTryRead } = require("nestdb")
-let { prevIfEqual } = require("%sqstd/underscore.nut")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
-let { knownAddons } = require("%appGlobals/updater/addons.nut")
-let { disableNetwork } = require("%appGlobals/clientState/initialState.nut")
+from "frp" import Computed, Watched
+from "nestdb" import ndbTryRead
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/underscore.nut" import prevIfEqual
+from "%appGlobals/clientState/initialState.nut" import disableNetwork
+from "%appGlobals/updater/addons.nut" import knownAddons
 
 
-let ADDON_VERSION_EMPTY = ""
-let UNIT_SIZES_NDB = "addons.unitSizes"
-let UNIT_SIZES_ACTUAL_NDB = "addons.isUnitSizesActual"
-let UNIT_SIZES_EVENT_ID = "onUnitSizesUpdate"
+const ADDON_VERSION_EMPTY = ""
+const UNIT_SIZES_NDB = "addons.unitSizes"
+const UNIT_SIZES_ACTUAL_NDB = "addons.isUnitSizesActual"
+const UNIT_SIZES_EVENT_ID = "onUnitSizesUpdate"
 
-let yupAddons = sharedWatched("yupAddons", @() null)
-let addonsSizes = sharedWatched("addonsSizes", @() {}) 
-let isAddonsSizesActual = sharedWatched("isAddonsSizesActual", @() disableNetwork)
+let yupAddons = hardPersistWatched("yupAddons", null)
+let addonsSizes = hardPersistWatched("addonsSizes", {}) 
+let isAddonsSizesActual = hardPersistWatched("isAddonsSizesActual", disableNetwork)
 let unitSizes = Watched(ndbTryRead(UNIT_SIZES_NDB) ?? {}) 
 let isUnitSizesActual = Watched(ndbTryRead(UNIT_SIZES_ACTUAL_NDB) ?? disableNetwork)
 let isAddonsAndUnitsInfoActual = Computed(@() isAddonsSizesActual.get() && isUnitSizesActual.get())

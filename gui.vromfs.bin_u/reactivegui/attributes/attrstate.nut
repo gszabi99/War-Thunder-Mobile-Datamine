@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+
 
 let selAttributes = mkWatched(persist, "selAttributes", {})
 let curCategoryId = mkWatched(persist, "curCategoryId", null)

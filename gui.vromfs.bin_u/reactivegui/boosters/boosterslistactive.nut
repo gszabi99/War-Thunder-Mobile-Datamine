@@ -1,17 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { isOpenedBoosterWnd } = require("%rGui/boosters/boostersState.nut")
-let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
-let { hoverColor } = require("%rGui/style/stdColors.nut")
+from "%appGlobals/config/boostersPresentation.nut" import getBoosterIcon
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/boosters/boostersState.nut" import isOpenedBoosterWnd
+from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset
+from "%rGui/style/stdColors.nut" import hoverColor
+
 
 let stateFlags = Watched(0)
 
-let iconSize = hdpxi(87)
-let iconShift = hdpx(-45)
-let boostersHeight = iconSize * 1.3
+const iconSize = hdpxi(87)
+const iconShift = hdpx(-45)
+const boostersHeight = iconSize * 1.3
 
 let activeBoosters = Computed(function() {
   let res = []
@@ -22,7 +23,7 @@ let activeBoosters = Computed(function() {
 })
 
 let hoverBg = {
-  size = [pw(150), boostersHeight]
+  size = const [pw(150), boostersHeight]
   rendObj = ROBJ_9RECT
   image = gradCircularSmallHorCorners
   color = hoverColor
@@ -33,7 +34,7 @@ let hoverBg = {
 }
 
 let plus = {
-  pos = [0, hdpx(15)]
+  pos = const [0, hdpx(15)]
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
@@ -43,13 +44,13 @@ let plus = {
 
 let bstIcon = @(b) {
   rendObj = ROBJ_IMAGE
-  size = [iconSize, iconSize]
+  size = const [iconSize, iconSize]
   image = Picture($"{getBoosterIcon(b)}:{iconSize}:{iconSize}:P")
 }
 
 let emptyBst = {
   rendObj = ROBJ_IMAGE
-  size = [iconSize, iconSize]
+  size = const [iconSize, iconSize]
   image = Picture("ui/gameuiskin#not_active_booster.avif")
 }
 
@@ -65,7 +66,7 @@ let boostersListActive = @(from) function() {
     : boostersList(activeBoosters.get())
   return {
     watch = [activeBoosters, stateFlags]
-    size = [SIZE_TO_CONTENT, iconSize]
+    size = const [SIZE_TO_CONTENT, iconSize]
     vplace = ALIGN_CENTER
     function onClick() {
       isOpenedBoosterWnd.set(true)

@@ -92,8 +92,6 @@ struct EcsRequestPos {
 
 def private normalize_file_name(name : string) : string {
     
-    
-    
     let s = replace(name, "\\", "/")
     var lastSlash = -1
     var pos = 0
@@ -168,9 +166,6 @@ def public describe(info : CTypeInfo) {
 }
 
 def public operator .(var cmp : ComponentMap; name : string) : ComponentValue& {
-    
-    
-    
     
     let idx = lower_bound(cmp, ComponentValue(name = name)) <| $(x, y) => x.name < y.name
     if (!(idx < length(cmp) && cmp[idx].name == name)) {
@@ -412,9 +407,6 @@ def private new_entity_id() {
         decsState.entityFreeList |> pop
     } else {
         
-        
-        
-        
         let next_id = long_length(decsState.entityLookup)
         if (next_id > MAX_ENTITY_ID) {
             panic("decs: entityLookup reached UINT_MAX entries ({next_id}); EntityId.id (uint) widening is required to allocate more")
@@ -546,7 +538,7 @@ def private get_eid(var arch : Archetype; index : int64) : EntityId& {
     
     unsafe {
         var ceid & = arch.components[arch.eidIndex]
-        return *(reinterpret<EntityId?> addr(ceid.data[index * int64(ceid.stride)]))
+        return *(addr<EntityId?>(ceid.data[index * int64(ceid.stride)]))
     }
 }
 
@@ -555,7 +547,9 @@ def private create_entity(var arch : Archetype; eid : EntityId; cmp : ComponentM
     
     let eidx = arch.size++
     for (c, comp in arch.components, cmp) {
-        c.data |> resize(long_length(c.data) + int64(c.stride))
+        let newSize = long_length(c.data) + int64(c.stride)
+        c.data |> ensure_capacity(newSize)
+        c.data |> resize(newSize)
         unsafe {
             memcpy(addr(c.data[eidx * int64(c.stride)]), addr(comp.data), c.stride)
         }
@@ -605,7 +599,7 @@ def public has(arch : Archetype; name : string) {
     return arch.components |> binary_search(Component(name = name)) <| $(x, y) => x.name < y.name
 }
 
-def private can_process_request(var erq : EcsRequest; var arch : Archetype) {
+def private can_process_request(var erq : EcsRequest; arch : Archetype) {
     if (erq.hash == arch.hash) return true
     for (r in erq.req) {
         if (!arch |> has(r)) return false
@@ -679,9 +673,6 @@ def public for_eid_archetype(eid : EntityId implicit; hash : ComponentHash; var 
     if (binary_search(decsState.ecsQueries[qi].archetypes, aidx - 1)) {
         var arch & = unsafe(decsState.allArchetypes[aidx - 1])
         assert(arch.size > 0_l)
-        
-        
-        
         
         if (lookup.index > int64(INT_MAX)) {
             panic("decs: for_eid_archetype index {lookup.index} exceeds INT_MAX (blk takes int); widening blk to int64 is a follow-up")
@@ -927,19 +918,15 @@ def public create_entity(var blk : lambda<(eid : EntityId; var cmp : ComponentMa
     return eid
 }
 
+def private grow_components(var arch : Archetype; entity_count : int) {
+    for (c in arch.components) {
+        let newSize = long_length(c.data) + int64(c.stride) * int64(entity_count)
+        c.data |> ensure_capacity(newSize)
+        c.data |> resize(newSize)
+    }
+}
+
 def public create_entities(count : int; blk : block<(eid : EntityId; i : int; var cmp : ComponentMap) : void>) {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     if (count <= 0) return
     if (insideQuery != 0) {
@@ -956,11 +943,8 @@ def public create_entities(count : int; blk : block<(eid : EntityId; i : int; va
         if (isNew) {
             arch |> create_archetype(cmp, arch_idx)
         }
-        
         let base = arch.size
-        for (c in arch.components) {
-            c.data |> resize(long_length(c.data) + int64(c.stride) * int64(count))
-        }
+        arch |> grow_components(count)
         
         for (c, comp in arch.components, cmp) {
             unsafe {
@@ -975,7 +959,7 @@ def public create_entities(count : int; blk : block<(eid : EntityId; i : int; va
             invoke(blk, eid, i, cmp)
             cmp |> set("eid", eid)
             if (cmp_archetype_hash(cmp) != ahash) {
-                panic("decs: create_entities — all entities must have the same components (entity {i} differs from entity 0)")
+                panic("decs: create_entities - all entities must have the same components (entity {i} differs from entity 0)")
             }
             let eidx = base + int64(i)
             for (c, comp in arch.components, cmp) {
@@ -993,11 +977,6 @@ def public create_entities(count : int; blk : block<(eid : EntityId; i : int; va
 def public create_entities_from_cmp(count : int; var cmp : ComponentMap;
                                     fill_blk : block<(var arch : Archetype; eidx : int; eid : EntityId; i : int) : void>) {
     
-    
-    
-    
-    
-    
     if (count <= 0) return
     if (insideQuery != 0) {
         panic("decs: can't call `create_entities_from_cmp` from inside query")
@@ -1010,9 +989,7 @@ def public create_entities_from_cmp(count : int; var cmp : ComponentMap;
             arch |> create_archetype(cmp, arch_idx)
         }
         let base = arch.size
-        for (c in arch.components) {
-            c.data |> resize(long_length(c.data) + int64(c.stride) * int64(count))
-        }
+        arch |> grow_components(count)
         
         
         let id_base_long = long_length(decsState.entityLookup)
@@ -1023,12 +1000,8 @@ def public create_entities_from_cmp(count : int; var cmp : ComponentMap;
             panic("decs: create_entities_from_cmp would push entityLookup past UINT_MAX (current = {id_base_long}, count = {count}); EntityId.id (uint) widening is required")
         }
         let id_base = uint(id_base_long)
+        decsState.entityLookup |> ensure_capacity(id_base_long + int64(count))
         decsState.entityLookup |> resize(id_base_long + int64(count))
-        
-        
-        
-        
-        
         
         if (base + int64(count) - 1_l > int64(INT_MAX)) {
             panic("decs: create_entities_from_cmp eidx range [{base} .. {base + int64(count)}) exceeds INT_MAX (fill_blk takes int); widening fill_blk to int64 is a follow-up")
@@ -1096,9 +1069,6 @@ def public long_entity_count() : int64 {
 
 def public get_component(eid : EntityId; name : string; defval : auto(TT)) : TT -const -& -# {
     
-    
-    
-    
     if (!is_alive(eid)) return defval
     let lookup = decsState.entityLookup[eid.id]
     let arch_index = unsafe(decsState.archetypeLookup[lookup.archetype]) - 1
@@ -1137,19 +1107,16 @@ def public get(var cmp : ComponentMap; name : string; var value : auto(TT)) {
     return value
 }
 
-def private make_callbacks(var cv : ComponentValue; value : auto(TT)) {
+def private make_callbacks(var cv : ComponentValue; value : auto(TT)) {   
     cv.info.mkTypeInfo = @@() : TypeInfo const? {
         return unsafe(addr(typeinfo rtti_typeinfo(type<array<TT -const -& -#>>)))
     }
     cv.info.dumper = @@(elem : void?) {
         if (elem == null) return ""
-        var pTT = unsafe(reinterpret<TT -const -& -#?> elem)
+        var pTT = unsafe(reinterpret<TT -const -& -#?>(elem))
         return "{*pTT}"
     }
     cv.info.gc = @@(var src : array<uint8>) : lambda {
-        
-        
-        
         
         var gc_dummy : array<TT -const -& -#>
         let stride = typeinfo sizeof(type<TT -const -& -#>)
@@ -1214,7 +1181,7 @@ def private make_callbacks(var cv : ComponentValue; value : auto(TT)) {
             for (i in range(length(arr) / stride)) {
                 let offset = i * stride
                 unsafe {
-                    var adel = reinterpret<TT -const -& -#?> addr(arr[offset])
+                    var adel = addr<TT -const -& -#?>(arr[offset])
                     delete * adel
                 }
             }
@@ -1257,7 +1224,7 @@ def public find_component_index(arch : Archetype; name : string) : int {
     for (i in range(length(arch.components))) {
         if (arch.components[i].name == name) return i
     }
-    panic("decs: find_component_index — component '{name}' not found in archetype")
+    panic("decs: find_component_index - component '{name}' not found in archetype")
     return -1
 }
 
@@ -1276,7 +1243,7 @@ def public set_direct(var arch : Archetype; name : string; eidx : int; value : a
     set_direct_at(arch, find_component_index(arch, name), eidx, value)
 }
 
-def public has(var cmp : ComponentMap; name : string) {
+def public has(cmp : ComponentMap; name : string) {
     
     return binary_search(cmp, ComponentValue(name = name)) <| $(x, y) => x.name < y.name
 }

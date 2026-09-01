@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
+
 const defaultProgressColor = 0xFFE8E8E8
 const progressbarBgColor = 0xFF827A7A
 const progressbarHeight = hdpx(15)

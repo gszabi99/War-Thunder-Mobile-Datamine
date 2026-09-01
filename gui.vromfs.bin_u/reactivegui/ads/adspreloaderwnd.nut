@@ -1,26 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { isLoaded } = require("%rGui/ads/adsState.nut")
-let { isOpenedAdsPreloaderWnd, closeAdsPreloader, hasAdsPreloadError, debugAdsWndParams,
-  isShowStarted
-} = require("%rGui/ads/adsInternalState.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/ads/adsInternalState.nut" import isOpenedAdsPreloaderWnd, closeAdsPreloader, hasAdsPreloadError,
+  debugAdsWndParams, isShowStarted
+from "%rGui/ads/adsState.nut" import isLoaded
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/textButton.nut" import textButtonCommon
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+
 
 let canClosePreloader = Watched(false)
 let setCanClosePreloader = @() canClosePreloader.set(true)
 
-let CLOSE_BUTTON_DELAYED_TIME = 2.0
-let DELAYED_TIME_AFTER_START_ADS = 15.0
-let PRELOAD_WND_UID = "adsPreloaderWnd"
-let MSG_UID_LEAVE_WINDOW = "leaveWindowAdsPreloader"
+const CLOSE_BUTTON_DELAYED_TIME = 2.0
+const DELAYED_TIME_AFTER_START_ADS = 15.0
+const PRELOAD_WND_UID = "adsPreloaderWnd"
+const MSG_UID_LEAVE_WINDOW = "leaveWindowAdsPreloader"
 
 hasAdsPreloadError.subscribe(function(v) {
   if (!v || !isOpenedAdsPreloaderWnd.get() || !!debugAdsWndParams.get())

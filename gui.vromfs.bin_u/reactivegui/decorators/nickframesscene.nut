@@ -1,43 +1,42 @@
 from "%globalsDarg/darg_library.nut" import *
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { myUserName } = require("%appGlobals/profileStates.nut")
-let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { chosenNickFrame, allFrames, availNickFrames,
-  unseenDecorators, markDecoratorSeen, markDecoratorsSeen, isShowAllDecorators
-} = require("%rGui/decorators/decoratorState.nut")
-let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { set_current_decorator, unset_current_decorator, decoratorInProgress
-} = require("%appGlobals/pServer/pServerApi.nut")
-let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { contentWidthFull } = require("%rGui/options/optionsStyle.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
-let purchaseDecorator = require("%rGui/decorators/purchaseDecorator.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let hoverHoldAction = require("%darg/helpers/hoverHoldAction.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { choosenMark } = require("%rGui/decorators/decoratorsPkg.nut")
-let { mkDecoratorUnlockProgress } = require("%rGui/decorators/mkDecoratorUnlockProgress.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import arrayByRows
+import "%darg/helpers/hoverHoldAction.nut" as hoverHoldAction
+from "%appGlobals/decorators/nickFrames.nut" import frameNick
+from "%appGlobals/pServer/pServerApi.nut" import set_current_decorator, unset_current_decorator, decoratorInProgress
+from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
+from "%appGlobals/profileStates.nut" import myUserName
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/currencyStyles.nut" import CS_SMALL
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonPricePurchase
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/decorators/decoratorState.nut" import chosenNickFrame, allFrames, availNickFrames, unseenDecorators,
+  markDecoratorSeen, markDecoratorsSeen, isShowAllDecorators
+from "%rGui/decorators/decoratorsPkg.nut" import choosenMark
+from "%rGui/decorators/mkDecoratorUnlockProgress.nut" import mkDecoratorUnlockProgress
+import "%rGui/decorators/purchaseDecorator.nut" as purchaseDecorator
+from "%rGui/options/optionsStyle.nut" import contentWidthFull
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import hoverColor
 
 
-let gap = hdpx(15)
+const gap = hdpx(15)
 let squareSize = [hdpx(163), hdpx(151)]
-let listPaddingVert = hdpx(30)
+const listPaddingVert = hdpx(30)
 let CS_DECORATORS = CS_SMALL.__merge({
   iconSize = hdpxi(30)
   fontStyle = fontTiny
 })
 
-let maxDecInRow = 9
+const maxDecInRow = 9
 let columns = min((contentWidthFull / (gap + squareSize[0])).tointeger(), maxDecInRow)
 
 let chosenFrameName = Computed(@() chosenNickFrame.get()?.name ?? "")
+let isDecoratorInProgress = Computed(@() decoratorInProgress.get() != null)
 let selectedFrameName = Watched(chosenFrameName.get())
 
 chosenFrameName.subscribe(@(v) markDecoratorSeen(v))
@@ -130,7 +129,7 @@ function tagBtn(item) {
               image =  Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(25)}:{hdpxi(32)}:P")
             }
           : isChoosen.get() || isSelected.get()
-            ? mkSpinnerHideBlock(Computed(@() decoratorInProgress.get() != null),
+            ? mkSpinnerHideBlock(isDecoratorInProgress,
               isChoosen.get() ? choosenMark : null)
           : isUnseen.get()
             ? {
@@ -193,14 +192,14 @@ function framesList() {
       })
 
   let chosenRow = (nickFrames.findindex(@(v) v.name == chosenFrameName.get()) ?? 0) / columns
-  let showRowsAbove = 1.5
+  const showRowsAbove = 1.5
   let onAttach = @()
     scrollHandler.scrollToY(listPaddingVert + ((squareSize[1] + gap) * (chosenRow - showRowsAbove)))
 
   return {
     key = listKey
     watch = [availNickFrames, allFrames, isShowAllDecorators]
-    padding = [listPaddingVert, 0]
+    padding = const [listPaddingVert, 0]
     flow = FLOW_VERTICAL
     gap
     onAttach

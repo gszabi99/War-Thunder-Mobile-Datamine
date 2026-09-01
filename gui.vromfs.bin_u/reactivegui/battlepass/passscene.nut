@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isEqual } = require("%sqstd/underscore.nut")
-let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { mkGradientCtorDoubleSideY, gradTexSize, simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bpCardStyle, bpCardPadding, bpCardMargin } = require("%rGui/battlePass/bpCardsStyle.nut")
-let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { passPageId, playerSelectedScene, passPageIdx, BATTLE_PASS, EVENT_PASS, OPERATION_PASS,
+from "%sqstd/underscore.nut" import isEqual
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%appGlobals/config/passPresentation.nut" import getOPPresentation
+from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle, bpCardPadding, bpCardMargin
+from "%rGui/battlePass/operationPassState.nut" import OPCampaign
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/rewards/rewardStyles.nut" import getRewardPlateSize
+from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideY, gradTexSize, simpleHorGrad
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import selectColor
+from "battlePassWnd.nut" import contentBP, scrollToCardBP
+from "eventPassWnd.nut" import contentEP, scrollToCardEP
+from "operationPassWnd.nut" import contentOP, scrollToCardOP
+from "passPkg.nut" import sideTabWidth, vGradientGapSize, tabSize, tabIconSize
+from "passState.nut" import passPageId, playerSelectedScene, passPageIdx, BATTLE_PASS, EVENT_PASS, OPERATION_PASS,
   visibleTabs, seenPasses, isPassGoodsUnseen, getTabStateData, isPassSceneAttached
-} = require("passState.nut")
-let { OPCampaign } = require("%rGui/battlePass/operationPassState.nut")
-let { contentBP, scrollToCardBP } = require("battlePassWnd.nut")
-let { contentEP, scrollToCardEP } = require("eventPassWnd.nut")
-let { contentOP, scrollToCardOP } = require("operationPassWnd.nut")
-let { sideTabWidth, vGradientGapSize, tabSize, tabIconSize } = require("passPkg.nut")
+
 
 let lineGradientVert = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, 0x80000000, 0.07))
 

@@ -1,20 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { getRewardPlateSize, rewardTicketDefaultSlots } = require("%rGui/rewards/rewardStyles.nut")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { mkGradientCtorDoubleSideX } = require("%rGui/style/gradients.nut")
+from "dagor.workcycle" import resetTimeout
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%rGui/rewards/rewardStyles.nut" import getRewardPlateSize, rewardTicketDefaultSlots
+from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideX
 
-let defColor = 0xFFFFFFFF
-let secondaryColor = 0xFFC5C5C5
-let pointSize = hdpx(11)
-let timeToDelay = 5.0
-let durationTime = 0.5
 
-let triggerStartAnimSlider = "triggerStartAnimSlider"
+const defColor = 0xFFFFFFFF
+const secondaryColor = 0xFFC5C5C5
+const pointSize = hdpx(11)
+const timeToDelay = 5.0
+const durationTime = 0.5
+
+const triggerStartAnimSlider = "triggerStartAnimSlider"
 
 let mkSliderPoint = @(isActive) {
   rendObj = ROBJ_IMAGE
-  size = [pointSize, pointSize]
+  size = const [pointSize, pointSize]
   image = Picture($"ui/gameuiskin#circle.svg:{pointSize}:{pointSize}:P")
   color = isActive ? defColor : secondaryColor
 }

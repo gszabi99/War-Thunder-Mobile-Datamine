@@ -1,29 +1,29 @@
-let { loc } = require("dagor.localize")
-let { Computed } = require("frp")
-let { set_current_unit, curUnitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { campMyUnits, campUnitsCfg, selectedUnitByPlayer, curUnitName } = require("%appGlobals/pServer/profile.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+from "dagor.localize" import loc
+from "frp" import Computed
+from "%appGlobals/pServer/pServerApi.nut" import set_current_unit, curUnitInProgress, registerHandler
+from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg, selectedUnitByPlayer, curUnitName
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
 
 
-let US_UNKNOWN = 0
-let US_OWN = 1
-let US_CAN_BUY = 2
-let US_NOT_FOR_SALE = 4
-let US_NOT_RESEARCHED = 5
-let US_NEED_BLUEPRINTS = 6
-let US_CAN_RESEARCH = 7
+const US_UNKNOWN = 0
+const US_OWN = 1
+const US_CAN_BUY = 2
+const US_NOT_FOR_SALE = 4
+const US_NOT_RESEARCHED = 5
+const US_NEED_BLUEPRINTS = 6
+const US_CAN_RESEARCH = 7
 
-let UUP_NOT_UPGRADEABLE = 0x01
-let UUP_UPGRADEABLE = 0x02
-let UUP_UPGRADED = 0x04
+const UUP_NOT_UPGRADEABLE = 0x01
+const UUP_UPGRADEABLE = 0x02
+const UUP_UPGRADED = 0x04
 
-let UC_RESEARCHABLE = 0x01
-let UC_BLUEPRINT = 0x02
-let UC_COLLECTIBLE = 0x04
-let UC_PREMIUM = 0x08
-let UC_SEASON_PREMIUM = 0x10
-let UC_OTHER = 0x20
+const UC_RESEARCHABLE = 0x01
+const UC_BLUEPRINT = 0x02
+const UC_COLLECTIBLE = 0x04
+const UC_PREMIUM = 0x08
+const UC_SEASON_PREMIUM = 0x10
+const UC_OTHER = 0x20
 
 
 let buyUnitsData = Computed(function() {

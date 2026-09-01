@@ -1,22 +1,22 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%rGui/hudTuning/hudTuningConsts.nut" import *
-let { deep_clone } = require("%sqstd/underscore.nut")
-let { cfgByUnitType } = require("%rGui/hudTuning/cfgByUnitType.nut")
-let { isElemHold, tuningState, setTuningState, tuningOptions, tuningTransform, tuningUnitType, selectedId,
-  isAllElemsOptionsOpened, optionsToElemIds
-} = require("%rGui/hudTuning/hudTuningState.nut")
-let { tuningBtnGap, tuningBtnSize } = require("%rGui/hudTuning/tuningBtn.nut")
-let { mkElemOption, mkAllElemsOption } = require("%rGui/hudTuning/mkElemOption.nut")
-let { optScale, allElemOptionsList } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
-let { hudVeilGrayColor } = require("%rGui/style/hudColors.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "%sqstd/underscore.nut" import deep_clone
+from "%rGui/hudTuning/cfg/cfgOptions.nut" import optScale, allElemOptionsList
+from "%rGui/hudTuning/cfgByUnitType.nut" import cfgByUnitType
+from "%rGui/hudTuning/hudTuningState.nut" import isElemHold, tuningState, setTuningState, tuningOptions,
+  tuningTransform, tuningUnitType, selectedId, isAllElemsOptionsOpened, optionsToElemIds
+from "%rGui/hudTuning/mkElemOption.nut" import mkElemOption, mkAllElemsOption
+from "%rGui/hudTuning/tuningBtn.nut" import tuningBtnGap, tuningBtnSize
+from "%rGui/style/hudColors.nut" import hudVeilGrayColor
+from "types" import Function
 
 
-let offset = hdpx(20)
+const offset = hdpx(20)
 let topPanelSize = saBorders[1] + tuningBtnSize + tuningBtnGap
 let minTop = topPanelSize + offset
 let wndPadding = [hdpx(20), hdpx(30)]
-let shortColWidth = hdpx(180)
-let colGap = hdpx(52)
+const shortColWidth = hdpx(180)
+const colGap = hdpx(52)
 
 let optionsBlockBg = {
   stopMouse = true
@@ -52,10 +52,10 @@ function mkTwoColBlock(wideChildren, shortChildren, header = null) {
   let cols = {
     flow = FLOW_HORIZONTAL
     gap = {
-      size = [colGap, FLEX]
+      size = const [colGap, FLEX]
       halign = ALIGN_CENTER
       children = {
-        size = [hdpxi(2), FLEX]
+        size = const [hdpxi(2), FLEX]
         rendObj = ROBJ_SOLID
         color = hudVeilGrayColor
       }
@@ -124,7 +124,7 @@ function optionsPosBlock(id, options, editView, transform) {
   let children = isForAllElems ? optionsBlockAllElems(options) : optionsBlock(id, options)
   let curOptionsV = tuningOptions.get() 
   let scale = optScale.getValue(curOptionsV, id)
-  let view = type(editView) != "function" ? editView
+  let view = !(editView instanceof Function) ? editView
     : editView.getfuncinfos().parameters.len() == 2 ? editView(curOptionsV)
     : editView(curOptionsV, id)
   let viewSize = calc_comp_size(view).map(@(v) (v * scale).tointeger())

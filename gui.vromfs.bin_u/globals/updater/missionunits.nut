@@ -1,11 +1,12 @@
 from "%globalScripts/logs.nut" import *
-from "console" import register_command
-from "math" import min, max
-from "guiMission" import get_meta_mission_info_by_name
-from "blkGetters" import get_unittags_blk, get_bots_blk
 import "DataBlock" as DataBlock
+from "blkGetters" import get_unittags_blk, get_bots_blk
+from "console" import register_command
+from "guiMission" import get_meta_mission_info_by_name
+from "math" import min, max
 from "%sqstd/datablock.nut" import blkOptFromPath, eachBlock, isDataBlock
 from "%sqstd/functools.nut" import memoize
+from "types" import Integer
 
 
 let campaignToBotsPreset = {
@@ -34,7 +35,7 @@ function addSupportUnits(resTbl) {
       continue
     if (support not in resTbl)
       resTbl[support] <- resTbl[parent]
-    else if (type(resTbl[parent]) == "integer")
+    else if (resTbl[parent] instanceof Integer)
       resTbl[support] = min(resTbl[parent], resTbl[support])
   }
   return resTbl

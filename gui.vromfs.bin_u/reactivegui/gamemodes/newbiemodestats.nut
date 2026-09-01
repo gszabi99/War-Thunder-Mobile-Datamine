@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getCampaignPkgsForOnlineBattle } = require("%appGlobals/updater/campaignAddons.nut")
-let { prepareStatsForNewbieConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
-let { curCampaign, sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
-let { missingUnitResourcesByRank } = require("%appGlobals/updater/gameModeAddons.nut")
+from "%appGlobals/gameModes/newbieGameModesConfig.nut" import prepareStatsForNewbieConfig
+from "%appGlobals/pServer/campaign.nut" import curCampaign, sharedStatsByCampaign
+from "%appGlobals/updater/addonsState.nut" import hasAddons
+from "%appGlobals/updater/campaignAddons.nut" import getCampaignPkgsForOnlineBattle
+from "%appGlobals/updater/gameModeAddons.nut" import missingUnitResourcesByRank
+
 
 let hasCurCampaignNewbiePkg = Computed(function() {
   if ((missingUnitResourcesByRank.get()?[curCampaign.get()][1].len() ?? 0) != 0)

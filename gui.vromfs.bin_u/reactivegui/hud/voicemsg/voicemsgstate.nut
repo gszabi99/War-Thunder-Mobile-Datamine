@@ -1,29 +1,29 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_mission_time, get_mplayer_by_name } = require("mission")
-let { CHAT_MODE_TEAM } = require("chat")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { missionPlayVoice } = require("sound_wt")
-let { Point2, Point3 } = require("dagor.math")
-let { rnd_int } = require("dagor.random")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { isInBattle, isInMpSession, localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
-let { isGtFFA } = require("%rGui/missionState.nut")
-let { getPieMenuSelectedIdx } = require("%rGui/hud/pieMenu.nut")
-let { CMD_MSG_PREFIX, registerChatCmdHandler, sendChatMessage } = require("%rGui/chat/mpChatState.nut")
-let { radioMessageVoice } = require("%rGui/options/options/soundOptions.nut")
-let { MARKER_TYPE, addMapMarker } = require("%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut")
-let { INDICATOR_TYPE, addHudIndicator } = require("%rGui/hud/indicators/hudIndicatorsState.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "chat" import CHAT_MODE_TEAM
+from "dagor.math" import Point2, Point3
+from "dagor.random" import rnd_int
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "eventbus" import eventbus_send
+from "mission" import get_mission_time, get_mplayer_by_name
+from "sound_wt" import missionPlayVoice
+from "%sqstd/underscore.nut" import isEqual
+from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath, getBlkValueByPath
+from "%appGlobals/clientState/clientState.nut" import isInBattle, isInMpSession, localMPlayerId
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
+from "%rGui/chat/mpChatState.nut" import CMD_MSG_PREFIX, registerChatCmdHandler, sendChatMessage
+from "%rGui/hud/indicators/hudIndicatorsState.nut" import INDICATOR_TYPE, addHudIndicator
+from "%rGui/hud/pieMenu.nut" import getPieMenuSelectedIdx
+from "%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut" import MARKER_TYPE, addMapMarker
+from "%rGui/missionState.nut" import isGtFFA
+from "%rGui/options/options/soundOptions.nut" import radioMessageVoice
 
 
 let CMD_MSG_PREFIX_VOICE = $"{CMD_MSG_PREFIX}voice:"
-let COOLDOWN_AFTER_USES = 2
-let COOLDOWN_TIME_SEC = 20.0
+const COOLDOWN_AFTER_USES = 2
+const COOLDOWN_TIME_SEC = 20.0
 
-let SAVE_ID_BLK = "voiceMsg"
+const SAVE_ID_BLK = "voiceMsg"
 let SAVE_ID_ORDER = $"{SAVE_ID_BLK}/order"
 let SAVE_ID_HIDDEN = $"{SAVE_ID_BLK}/hide"
 
@@ -35,7 +35,7 @@ let mapMarkTypeByMessageIdPrefix = {
   attention_to_point = MARKER_TYPE.ATTENTION_MARK
 }
 
-let voiceMsgPieOrderDefault = freeze([
+const voiceMsgPieOrderDefault = [
   "well_done"
   "follow_me"
   "cover_me"
@@ -45,7 +45,7 @@ let voiceMsgPieOrderDefault = freeze([
   "yes"
   "thank_you"
   "sorry"
-])
+]
 
 let voiceMsgParamsOvr = {
   cover_me  = { iconScale = 1.3 }
@@ -54,8 +54,8 @@ let voiceMsgParamsOvr = {
   no        = { iconScale = 0.8 }
 }
 
-let VOICE_VARIANT_MIN = 0
-let VOICE_VARIANT_MAX = 3
+const VOICE_VARIANT_MIN = 0
+const VOICE_VARIANT_MAX = 3
 let getMyVoice = @() radioMessageVoice.get()
 let getRandomVariant = @() rnd_int(VOICE_VARIANT_MIN, VOICE_VARIANT_MAX)
 

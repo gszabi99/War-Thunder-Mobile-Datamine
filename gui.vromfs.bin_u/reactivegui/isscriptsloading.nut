@@ -1,3 +1,4 @@
-let { Watched } = require("frp")
+from "frp" import Watched
+
 
 return Watched(false)

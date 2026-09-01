@@ -1,0 +1,163 @@
+from "%globalsDarg/darg_library.nut" import *
+from "dagor.random" import frnd
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "json" import object_to_json_string
+from "%appGlobals/clientState/clientState.nut" import isInBattle, isInDebriefing
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%rGui/matching/matchingApi.nut" import mnGenericSubscribe
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%appGlobals/pServer/pServerApi.nut" import get_profile, get_all_configs, registerHandler
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout
+from "%appGlobals/userstats/serverTime.nut" import getServerTime
+from "%rGui/debriefing/battleResult.nut" import battleResult
+
+
+let logPR = log_with_prefix("[profileRefresh] ")
+
+const MAX_CONFIGS_UPDATE_DELAY = 120 
+  
+const RETRY_UPDATE_PROFILE_TIME = 60
+const SEND_BQ_NOT_RECEIVED_TIME = 180
+
+let isProfileChanged = mkWatched(persist, "isProfileChanged", false)
+let isConfigsChanged = mkWatched(persist, "isConfigsChanged", false)
+let isProfileRequestedAfterBattle = mkWatched(persist, "isProfileRequestedAfterBattle", true)
+let isProfileReceivedAfterBattle = mkWatched(persist, "isProfileReceivedAfterBattle", true)
+let lastProfileError = mkWatched(persist, "lastProfileError", null)
+let lastConfigsError = mkWatched(persist, "lastConfigsError", null)
+let hasLastBattleReward = Computed(@() (battleResult.get()?.reward.playerExp.totalExp ?? 0) != 0
+  || (battleResult.get()?.reward.playerWp.totalWp ?? 0) != 0
+  || (battleResult.get()?.reward.units ?? []).findvalue(@(v) (v?.exp.totalExp ?? 0) != 0) != null
+  || (battleResult.get()?.reward.units ?? []).findvalue(@(v) (v?.gold.totalGold ?? 0) != 0) != null
+  || (battleResult.get()?.reward.unitExp.totalExp ?? 0) != 0 
+)
+let isWaitProfile = keepref(Computed(@()
+  !isInBattle.get() && hasLastBattleReward.get() && !isProfileReceivedAfterBattle.get()))
+let nextProfileChange = keepref(Computed(@() serverConfigs.get()?.nextConfigTime ?? 0))
+
+function checkUpdateProfile() {
+  if (isInBattle.get()) {
+    logPR("Delay update profile because in the battle")
+    isProfileChanged.set(true)
+    return
+  }
+  if (!isLoggedIn.get()) {
+    isProfileChanged.set(false)
+    isConfigsChanged.set(false)
+    return
+  }
+
+  logPR($"Update profile: isProfileChanged = {isProfileChanged.get()}, isConfigsChanged = {isConfigsChanged.get()}")
+  if (isConfigsChanged.get())
+    get_all_configs("onConfigsResfresh")
+  get_profile({}, "onProfileRefresh")
+  isProfileRequestedAfterBattle.set(true)
+  isProfileChanged.set(false)
+  isConfigsChanged.set(false)
+}
+
+registerHandler("onProfileRefresh",
+  function(res) {
+    if (!isLoggedIn.get())
+      return
+    lastProfileError.set(res?.error)
+    isProfileReceivedAfterBattle.set(lastProfileError.get() == null)
+    if (lastProfileError.get() == null)
+      return
+    logPR($"Queue profile to update in {RETRY_UPDATE_PROFILE_TIME} sec, because of error on update profile")
+    resetTimeout(RETRY_UPDATE_PROFILE_TIME, checkUpdateProfile)
+  })
+
+registerHandler("onConfigsResfresh",
+  function(res) {
+    if (!isLoggedIn.get())
+      return
+    lastConfigsError.set(res?.error)
+    if (lastConfigsError.get() == null)
+      return
+    logPR("Mark configs changed by error")
+    isConfigsChanged.set(true) 
+  })
+
+isInBattle.subscribe(function(v) {
+  if (v) {
+    isProfileRequestedAfterBattle.set(false)
+    isProfileReceivedAfterBattle.set(false)
+    return
+  }
+  logPR($"Leave battle: isProfileChanged = {isProfileChanged.get()}")
+  if (isProfileChanged.get())
+    checkUpdateProfile()
+})
+
+isInDebriefing.subscribe(function(v) {
+  if (!v && !isProfileRequestedAfterBattle.get() && hasLastBattleReward.get()) {
+    logPR("Request update profile after debriefigng, because no event from matching")
+    checkUpdateProfile()
+  }
+})
+
+function sendBqNotReceivedProfile() {
+  if (!isWaitProfile.get())
+    return
+  if (isInDebriefing.get()) {
+    
+    resetTimeout(SEND_BQ_NOT_RECEIVED_TIME, sendBqNotReceivedProfile)
+    return
+  }
+  sendUiBqEvent("profileUpdateError", {
+    id = $"not updated for {SEND_BQ_NOT_RECEIVED_TIME}sec after the battle",
+    status = object_to_json_string(lastProfileError.get()?.error)
+  })
+}
+
+isWaitProfile.subscribe(function(v) {
+  if (!v)
+    clearTimer(sendBqNotReceivedProfile)
+  else
+    resetTimeout(SEND_BQ_NOT_RECEIVED_TIME, sendBqNotReceivedProfile)
+})
+
+function updateNextProfileChangeTimer() {
+  let nextTime = nextProfileChange.get()
+  if (nextTime <= 0)
+    return
+  let timeLeft = nextTime - getServerTime()
+  if (timeLeft <= 0) {
+    logPR("Mark configs changed by configs time mark")
+    isConfigsChanged.set(true)
+  }
+  else
+    resetExtTimeout(timeLeft, updateNextProfileChangeTimer)
+}
+updateNextProfileChangeTimer()
+nextProfileChange.subscribe(@(_) updateNextProfileChangeTimer())
+
+function updateConfigsTimer() {
+  if (isConfigsChanged.get())
+    resetTimeout(frnd() * MAX_CONFIGS_UPDATE_DELAY, checkUpdateProfile)
+  else
+    clearTimer(checkUpdateProfile)
+}
+updateConfigsTimer()
+isConfigsChanged.subscribe(@(_) updateConfigsTimer())
+
+isLoggedIn.subscribe(function(v) {
+  isProfileRequestedAfterBattle.set(true)
+  isProfileReceivedAfterBattle.set(true)
+  if (v)
+    return
+  isProfileChanged.set(false)
+  isConfigsChanged.set(false)
+  lastProfileError.set(null)
+  lastConfigsError.set(null)
+})
+
+mnGenericSubscribe("profile", function(ev) {
+  let func = ev?.func
+  if (func == "updateConfig")
+    isConfigsChanged.set(true)
+  else
+    checkUpdateProfile()
+})

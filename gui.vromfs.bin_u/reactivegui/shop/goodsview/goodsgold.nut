@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, mkOfferWrap, borderBgGold, mkBgImg, mkSlotBgImg, goodsSmallSize, mkGoodsImg, mkCurrencyAmountTitle,
-  mkOfferTexts, mkFitCenterImg, mkPricePlate, mkGoodsCommonParts, mkOfferCommonParts, goodsBgH, mkBgParticles,
-  underConstructionBg, mkGoodsLimitAndEndTime, mkBorderByCurrency
-} = require("%rGui/shop/goodsView/sharedParts.nut")
-let { discountTagBig } = require("%rGui/components/discountTag.nut")
-let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { discountsToApply, applyDiscount } = require("%rGui/shop/discounts.nut")
+import "%appGlobals/config/currencyGoodsPresentation.nut" as getCurrencyGoodsPresentation
+from "%appGlobals/currenciesState.nut" import GOLD
+from "%rGui/components/discountTag.nut" import discountTagBig
+from "%rGui/shop/discounts.nut" import discountsToApply, applyDiscount
+from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, mkOfferWrap, borderBgGold, mkBgImg, mkSlotBgImg,
+  goodsSmallSize, mkGoodsImg, mkCurrencyAmountTitle, mkOfferTexts, mkFitCenterImg, mkPricePlate, mkGoodsCommonParts,
+  mkOfferCommonParts, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTime, mkBorderByCurrency
+from "%rGui/style/gradients.nut" import mkFontGradient
+from "%rGui/textFormatByLang.nut" import decimalFormat
+
 
 let titleFontGrad = mkFontGradient(0xFFFBF1B9, 0xFFCE733B, 11, 6, 2)
 
@@ -27,7 +27,7 @@ function getLocNameGold(goods) {
 }
 
 function mkGoodsGold(goods, onClick, state, animParams, addChildren) {
-  let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
+  let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {}, id } = goods
   let gold = goods.rewards?[0].count ?? 0
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
   let border = mkBorderByCurrency(borderBgGold, isFreeReward, price?.currencyId)
@@ -45,19 +45,21 @@ function mkGoodsGold(goods, onClick, state, animParams, addChildren) {
       mkCurrencyAmountTitle(gold, viewBaseValue, titleFontGrad)
       mkGoodsLimitAndEndTime(goods)
     ].extend(mkGoodsCommonParts(goods, state), addChildren),
-    mkPricePlate(goods, state, animParams), { size = goodsSmallSize })
+    mkPricePlate(goods, state, animParams),
+      { size = goodsSmallSize, key = isFreeReward ? $"shop_card_{id}" : null }) 
 }
 
 function mkOfferGold(goods, onClick, state) {
   let { isShowDebugOnly = false } = goods
   let discountInPercent = Computed(@() applyDiscount(goods, discountsToApply.get()).discountInPercent)
+  let offerTexts = mkOfferTexts(loc("offer/gold"), goods)
   return mkOfferWrap(onClick,
     @(sf) [
       mkBgImg("ui/gameuiskin#offer_bg_blue.avif")
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
       mkFitCenterImg("!ui/images/offer_art_gold.avif")
-      mkOfferTexts(loc("offer/gold"), goods)
+      offerTexts
       @() discountTagBig(discountInPercent.get(), { watch = discountInPercent })
     ].extend(mkOfferCommonParts(goods, state)))
 }

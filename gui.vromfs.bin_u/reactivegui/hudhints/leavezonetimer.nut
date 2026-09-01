@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
+from "eventbus" import eventbus_subscribe
+from "mission" import get_mission_time
+from "%appGlobals/timeToText.nut" import secondsToTimeAbbrString
+from "%rGui/hudHints/hintCtors.nut" import registerHintCreator
+from "%rGui/hudHints/warningHintLogState.nut" import addEvent, removeEvent
+from "%rGui/hudState.nut" import inKillZone
 
-let { get_mission_time } = require("mission")
-let { inKillZone } = require("%rGui/hudState.nut")
-let { registerHintCreator } = require("%rGui/hudHints/hintCtors.nut")
-let { addEvent, removeEvent } = require("%rGui/hudHints/warningHintLogState.nut")
-let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
-let { eventbus_subscribe } = require("eventbus")
 
-let HINT_TYPE = "returnToMapMessage"
-let alert = Color(221, 17, 17)
+const HINT_TYPE = "returnToMapMessage"
+const alert = Color(221, 17, 17)
 
 registerHintCreator(HINT_TYPE, @(hint, _) {
   rendObj = ROBJ_TEXT

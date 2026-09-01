@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { mkSwitchComp } = require("%rGui/notifications/consentTcf/mkExpandableSwitch.nut")
-let { isOpenedManage, isOpenedMain, showOptInfo, configManagePoints, defaultPointsTable, savedPoints,
-  applyConsent } = require("%rGui/notifications/consentFirebase/consentState.nut")
-let { mkContent, mkLinkText } = require("%rGui/notifications/consentFirebase/consentComps.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
+from "%rGui/notifications/consentFirebase/consentComps.nut" import mkContent, mkLinkText
+from "%rGui/notifications/consentFirebase/consentState.nut" import isOpenedManage, isOpenedMain, showOptInfo,
+  configManagePoints, defaultPointsTable, savedPoints, applyConsent
+from "%rGui/notifications/consentTcf/mkExpandableSwitch.nut" import mkSwitchComp
+
 
 let close = @() isOpenedManage.set(false)
 

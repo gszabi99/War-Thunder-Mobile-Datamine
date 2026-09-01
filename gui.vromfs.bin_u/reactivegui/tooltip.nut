@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { locColorTable } = require("%rGui/style/stdColors.nut")
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "%rGui/style/stdColors.nut" import locColorTable
+from "types" import Array, String
+
 
 const REPAY_TIME = 0.3
 const BLOCK_CLICK_TOOLTIP_TIME = 0.3
@@ -35,7 +37,7 @@ let mkTooltipText = @(text, ovr = {}) {
 }.__update(fontSmall, ovr)
 
 function calcPosition(rectOrPos, flow, flowOffset, halign, valign) {
-  let isArray = type(rectOrPos) == "array"
+  let isArray = rectOrPos instanceof Array
   assert(isArray || (("l" in rectOrPos) && ("b" in rectOrPos)))
   let res = {
     pos = isArray ? rectOrPos : [rectOrPos.l, rectOrPos.t]
@@ -85,15 +87,15 @@ function showTooltip(rectOrPos, params) {
     hideTooltip()
     return
   }
-  let content = type(params) == "string" ? params : params?.content
+  let content = params instanceof String ? params : params?.content
   if (content == null || content == "") {
     logerr("try to show tooltip with empty content")
     hideTooltip()
     return
   }
 
-  let newState = TOOLTIP_PARAMS.__merge(type(params) == "string" ? { content } : params)
-  if (type(content) != "string") {
+  let newState = TOOLTIP_PARAMS.__merge(params instanceof String ? { content } : params)
+  if (!(content instanceof String)) {
     curContent = content
     newState.content = null
   }
@@ -118,7 +120,7 @@ function showDelayedTooltip(rectOrPos, params, key, repayTime = REPAY_TIME) {
 
 function showHint(rectOrPos, params, showTime) {
   let hintOnCloseArea = { size = FLEX, behavior = Behaviors.Button, onClick = hideTooltip }
-  let openParams = type(params) == "string"
+  let openParams = params instanceof String
     ? { content = mkTooltipText(params, { children = hintOnCloseArea }) }
     : params.__merge({ content = hintOnCloseArea.__merge({ children = params?.content }) })
 

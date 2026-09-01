@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { register_command } = require("console")
-let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
-let { TUTORIAL_BATTLE_PASS_ID, TUTORIAL_ARSENAL_ID, TUTORIAL_SLOT_ATTRIBUTES_ID,
-  TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_TREE_EVENT } = require("%rGui/tutorial/tutorialConst.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import isDataBlock, eachParam
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
+from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
+from "%rGui/tutorial/tutorialConst.nut" import TUTORIAL_BATTLE_PASS_ID, TUTORIAL_ARSENAL_ID,
+  TUTORIAL_SLOT_ATTRIBUTES_ID, TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ATTRIBUTES_ID
 
 
 const SAVE_ID = "tutorials"
@@ -45,7 +45,7 @@ let isFinishedBattlePass = mkIsTutorialCompleted(TUTORIAL_BATTLE_PASS_ID)
 let isFinishedSlotAttributes = mkIsTutorialCompleted(TUTORIAL_SLOT_ATTRIBUTES_ID)
 let isFinishedArsenal = mkIsTutorialCompleted(TUTORIAL_ARSENAL_ID)
 let isFinishedUnitsResearch = mkIsTutorialCompleted(TUTORIAL_UNITS_RESEARCH_ID)
-let isFinishedEvent = mkIsTutorialCompleted(TUTORIAL_TREE_EVENT)
+let isFinishedAttributes = mkIsTutorialCompleted(TUTORIAL_ATTRIBUTES_ID)
 
 function resetAllTutorials() {
   if (completedTutorials.get().len() == 0)
@@ -66,8 +66,8 @@ return {
   mkIsTutorialCompleted
 
   isFinishedBattlePass
+  isFinishedAttributes
   isFinishedSlotAttributes
   isFinishedArsenal
   isFinishedUnitsResearch
-  isFinishedEvent
 }

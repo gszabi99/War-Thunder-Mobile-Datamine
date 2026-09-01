@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { strip, startswith } = require("string")
+from "string" import strip, startswith
+from "types" import String
+
 
 let parseDargHotkeysImpl = @(hotkey) hotkey.replace("^", "")
   .split("|")
@@ -18,8 +20,8 @@ function getGamepadHotkey(hotkeys) {
     return null
 
   foreach (hCfg in hotkeys) {
-    let h = type(hCfg) == "string" ? hCfg : hCfg[0]
-    if (type(h) != "string")
+    let h = hCfg instanceof String ? hCfg : hCfg[0]
+    if (!(h instanceof String))
       continue
     let list = parseDargHotkeys(h)
     if (list.len() > 0)

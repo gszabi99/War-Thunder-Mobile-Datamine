@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPicture, mkBitmapPictureLazy, setMaxCachedSize } = require("%darg/helpers/bitmap.nut")
-let { sqrt } = require("math")
+from "math" import sqrt
+from "%darg/helpers/bitmap.nut" import mkBitmapPicture, mkBitmapPictureLazy, setMaxCachedSize
+
 
 setMaxCachedSize(max(sw(15) * sh(15), 128 * 128))
 
-let gradTexSize = 64
+const gradTexSize = 64
 let colorParts = @(color) {
   r = (color >> 16) & 0xFF
   g = (color >> 8) & 0xFF
@@ -122,8 +123,8 @@ let mkGradientCtorInclined = function(color1, color2, p1, p2) {
 
 let gradTranspDoubleSideX = mkBitmapPicture(gradTexSize, 4, mkGradientCtorDoubleSideX(0, 0xFFFFFFFF))
 
-let gradCircCornerSize = 20
-let gradCircFullSize = 2 * gradCircCornerSize + 4
+const gradCircCornerSize = 20
+const gradCircFullSize = 2 * gradCircCornerSize + 4
 let gradCircularSqCorners = mkBitmapPicture(gradCircFullSize, gradCircFullSize,
   function(_, bmp) {
     let rel = array(gradCircFullSize).map(@(_, v)

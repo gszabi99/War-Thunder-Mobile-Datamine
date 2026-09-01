@@ -1,18 +1,20 @@
 from "%globalScripts/logs.nut" import *
+from "%sqstd/globalState.nut" import hardPersistWatched
 from "%sqstd/platform.nut" import is_ios, is_android
-import "%globalScripts/sharedWatched.nut" as sharedWatched
+
+
 let regexp2 = require_optional("regexp2") 
 let { get_user_system_info = @() {} } = require_optional("sysinfo")
 
-let SAFEAREA_DEFAULT = 0.9
+const SAFEAREA_DEFAULT = 0.9
 
-let SAFEAREA_W_DYNAMICISLAND = 0.875
-let SAFEAREA_W_PIXEL9 = 0.89
+const SAFEAREA_W_DYNAMICISLAND = 0.875
+const SAFEAREA_W_PIXEL9 = 0.89
 
 local safeAreaW = SAFEAREA_DEFAULT
 local safeAreaH = SAFEAREA_DEFAULT
 
-let debugSafeAreaW = sharedWatched("debugSafeAreaW", @() null)
+let debugSafeAreaW = hardPersistWatched("debugSafeAreaW", null)
 
 
 if (is_ios && regexp2 != null) {

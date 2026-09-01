@@ -1,57 +1,57 @@
 from "%globalsDarg/darg_library.nut" import *
-let { object_to_json_string } = require("json")
-let { resetTimeout } = require("dagor.workcycle")
-let { can_use_debug_console } = require("%appGlobals/permissions.nut")
-let { getCampaignPresentation, campaignPresentations } = require("%appGlobals/config/campaignPresentation.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { reset_campaigns, campaignInProgress, registerHandler
-} = require("%appGlobals/pServer/pServerApi.nut")
-let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
-let { campaignsList, setCampaign, curCampaign, isAnyCampaignSelected } = require("%appGlobals/pServer/campaign.nut")
-let { needFirstBattleTutorForCampaign, rewardTutorialMission, setSkippedTutor } = require("%rGui/tutorial/tutorialMissions.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
-let { modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let picturePreloader = require("%rGui/components/picturePreloader.nut")
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { isInSquad, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
-let { unseenCampaigns, markAllCampaignsSeen } = require("%rGui/mainMenu/unseenCampaigns.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { imageBtn } = require("%rGui/components/imageButton.nut")
-let { unseenUnits, markUnitsSeen } = require("%rGui/unit/unseenUnits.nut")
-let { headerGradientBg, doubleSideGradientPaddingY } = require("%rGui/components/gradientDefComps.nut")
-let { simpleVerGrad } = require("%rGui/style/gradients.nut")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { textColor, goodTextColor2, selectColor } = require("%rGui/style/stdColors.nut")
+from "dagor.workcycle" import resetTimeout
+from "json" import object_to_json_string
+from "%sqstd/string.nut" import utf8ToUpper
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation, campaignPresentations
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%appGlobals/pServer/campaign.nut" import campaignsList, setCampaign, curCampaign, isAnyCampaignSelected
+from "%appGlobals/pServer/pServerApi.nut" import reset_campaigns, campaignInProgress, registerHandler
+from "%appGlobals/permissions.nut" import can_use_debug_console
+from "%appGlobals/squadState.nut" import isInSquad, squadLeaderCampaign
+from "%rGui/components/backButton.nut" import backButton, backButtonHeight
+from "%rGui/components/gradientDefComps.nut" import headerGradientBg, doubleSideGradientPaddingY
+from "%rGui/components/imageButton.nut" import imageBtn
+from "%rGui/components/modalWnd.nut" import modalWndHeaderWithClose
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
+import "%rGui/components/picturePreloader.nut" as picturePreloader
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/mainMenu/unseenCampaigns.nut" import unseenCampaigns, markAllCampaignsSeen
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/gradients.nut" import simpleVerGrad
+from "%rGui/style/stdColors.nut" import textColor, goodTextColor2, selectColor
+from "%rGui/tutorial/tutorialMissions.nut" import needFirstBattleTutorForCampaign, rewardTutorialMission,
+  setSkippedTutor
+from "%rGui/unit/unseenUnits.nut" import unseenUnits, markUnitsSeen
 
 
-let colorBlack = 0xFF000000
-let colorTransparent = 0x00000000
-let checkboxBorderColor = 0x80FFFFFF
-let panelGradColor = 0xCA000000
-let slantBorderColor = 0xE8FFFFFF
-let RESET_MSG_UID = "resetCampaignMsg"
+const colorBlack = 0xFF000000
+const colorTransparent = 0x00000000
+const checkboxBorderColor = 0x80FFFFFF
+const panelGradColor = 0xCA000000
+const slantBorderColor = 0xE8FFFFFF
+const RESET_MSG_UID = "resetCampaignMsg"
 let iconSize = evenPx(40)
 let bgResetCampaignSize = (iconSize * 1.5).tointeger()
-let checkboxSize = hdpx(40)
-let smallGap = hdpx(10)
+const checkboxSize = hdpx(40)
+const smallGap = hdpx(10)
 
-let ANIM_DUR = 0.31
-let CAMPAIGN_CLOSE_DELAY = 0.03
-let CAMPAIGN_CLOSE_FALLBACK = ANIM_DUR + 0.1
+const ANIM_DUR = 0.31
+const CAMPAIGN_CLOSE_DELAY = 0.03
+const CAMPAIGN_CLOSE_FALLBACK = ANIM_DUR + 0.1
 
-let SLANT_PX = hdpxi(80)
+const SLANT_PX = hdpxi(80)
 let CENTER_X = (sw(100) * 0.30).tointeger()
 let CENTER_W = (sw(100) * 0.40).tointeger()
 let SIDE_W = (sw(100) * 0.50).tointeger()
 let SLANT_PCT = SLANT_PX.tofloat() / CENTER_W * 100.0
-let SLANT_BORDER_WIDTH = hdpxi(4)
-let MASK_DOWNSAMPLE = 8
-let MASK_SCALE_SIDE = 0.75
-let MASK_SCALE_CENTER = 1.25
-let MASK_SCALE_SIDE_INV = 1.0 / MASK_SCALE_SIDE
-let MASK_SCALE_CENTER_INV = 1.0 / MASK_SCALE_CENTER
+const SLANT_BORDER_WIDTH = hdpxi(4)
+const MASK_DOWNSAMPLE = 8
+const MASK_SCALE_SIDE = 0.75
+const MASK_SCALE_CENTER = 1.25
+const MASK_SCALE_SIDE_INV = 1.0 / MASK_SCALE_SIDE
+const MASK_SCALE_CENTER_INV = 1.0 / MASK_SCALE_CENTER
 let CENTER_SHIFT_SIDE = ((CENTER_W * (1.0 - MASK_SCALE_SIDE)) * 0.5).tointeger()
 let TITLE_BOTTOM_PAD = clamp((sh(100) * 0.02).tointeger(), hdpxi(60), hdpxi(104))
 
@@ -167,13 +167,16 @@ chosenCampaign.subscribe(function(campaign) {
 
   let isAnimFinished = focusedAnimFinishedCampaign.get() == campaign
   if (needFirstBattleTutorForCampaign(campaign) && !skipTutor.get()) {
-    if (isAnimFinished)
+    if (isAnimFinished) {
+      this_subscriber_call_may_take_up_to_usec(4 * get_slow_subscriber_threshold_usec())
       onCampaignChange(campaign)
+    }
     else
       resetTimeout(CAMPAIGN_CLOSE_FALLBACK,
         @() chosenCampaign.get() == campaign ? onCampaignChange(campaign) : null)
   }
   else {
+    this_subscriber_call_may_take_up_to_usec(4 * get_slow_subscriber_threshold_usec())
     onCampaignChange(campaign, isAnimFinished ? close : null)
     if (!isAnimFinished)
       resetTimeout(CAMPAIGN_CLOSE_FALLBACK, close)
@@ -366,7 +369,7 @@ function mkTitleSlot(campaign, colX, colW, activeXShift = 0, getTitleXShift = nu
             ]
           }.__update(titleFont)
           campaign not in unseenCampaigns.get() ? null
-            : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(6), hdpx(-6)] })
+            : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = const [hdpx(6), hdpx(-6)] })
           !can_use_debug_console.get() ? null
             : imageBtn(underConstructionBg, @() onResetCampaign(campaign), {
                 size = bgResetCampaignSize
@@ -500,7 +503,7 @@ function mkTriplePanelSelector(campaigns) {
 
 let topBar = @() {
   watch = [isAnyCampaignSelected, can_use_debug_console]
-  size = [FLEX, SIZE_TO_CONTENT]
+  size = const [FLEX, SIZE_TO_CONTENT]
   padding = saBordersRv
   zOrder = 5
   children = [

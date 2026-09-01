@@ -1,27 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
+import "utf8" as utf8
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/msgBox.nut" import mkCustomMsgBoxWnd
+from "%rGui/components/textButton.nut" import textButtonPrimary
+from "%rGui/components/textInput.nut" import textInput
+from "%rGui/style/backgrounds.nut" import bgShadedLight
+from "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" import mkCutBg
 
-let utf8 = require("utf8")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { bgShadedLight } = require("%rGui/style/backgrounds.nut")
-let { textInput } = require("%rGui/components/textInput.nut")
-let { mkCustomMsgBoxWnd } = require("%rGui/components/msgBox.nut")
-let { textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
 
-
-let WND_UID = "EDIT_TEXT_WND"
-let MAX_TEXT_LENGTH_DEFAULT = 16
-let editNameWndMaxHeight = hdpx(450)
-let editNameWndMinWidth = hdpx(250)
-let editNameBtnHeight = hdpx(70)
-let editNameInputHeight = hdpx(70)
+const WND_UID = "EDIT_TEXT_WND"
+const MAX_TEXT_LENGTH_DEFAULT = 16
+const editNameWndMaxHeight = hdpx(450)
+const editNameWndMinWidth = hdpx(250)
+const editNameBtnHeight = hdpx(70)
+const editNameInputHeight = hdpx(70)
 let isOpenedEditWnd = Watched(false)
 
 function mkInput(pName, maxLength) {
   return textInput(pName, {
     ovr = {
-      size = [FLEX, editNameInputHeight]
+      size = const [FLEX, editNameInputHeight]
       margin = const [hdpx(60), 0]
       padding = hdpx(10)
       borderRadius = editNameInputHeight / 2
@@ -55,7 +54,7 @@ let mainContent = @(text, onApply, maxLength) bgShadedLight.__merge({
         onApply,
         {
           ovr = {
-            size = [SIZE_TO_CONTENT, editNameBtnHeight],
+            size = const [SIZE_TO_CONTENT, editNameBtnHeight],
             minWidth = editNameWndMinWidth
           },
           childOvr = fontTinyAccentedShaded

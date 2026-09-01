@@ -46,6 +46,13 @@
     "protection_ammo_wetting": {
       "image": "#ui/gameuiskin#protection_ammo_wetting"
     },
+    "ship_anti_torpedo_bulge": {
+      "image": "#ui/gameuiskin#ship_additional_armor",
+      "modClass": "unsinkability",
+      "effects": {
+        "torpedoDamageReceivedMult": 0.8
+      }
+    },
     "protection_new_sonar": {
       "image": "#ui/gameuiskin#protection_new_sonar",
       "effects": {

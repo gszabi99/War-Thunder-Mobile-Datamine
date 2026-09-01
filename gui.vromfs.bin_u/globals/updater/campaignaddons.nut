@@ -1,13 +1,13 @@
 from "%globalScripts/logs.nut" import *
-from "math" import max, min
 from "dagor.localize" import loc
+from "math" import max, min
 from "%sqstd/math.nut" import getRomanNumeral
 from "%appGlobals/unitPresentation.nut" import getUnitName
-from "%appGlobals/updater/addons.nut" import commonCampaignAddons, campaignAddonsByRank,
-  campaignPostfix, soloNewbieByCampaign, coopNewbieByCampaign
+from "%appGlobals/updater/addons.nut" import commonCampaignAddons, campaignAddonsByRank, campaignPostfix,
+  soloNewbieByCampaign, coopNewbieByCampaign
 
 
-let nbsp = "\u00A0" 
+const nbsp = "\u00A0" 
 
 function appendCampaignRankAddons(addons, campaign, mRank) {
   let ext = campaignAddonsByRank?[campaign][mRank]

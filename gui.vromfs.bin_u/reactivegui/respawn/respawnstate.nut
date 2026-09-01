@@ -1,41 +1,41 @@
 from "%globalsDarg/darg_library.nut" import *
+from "blkGetters" import get_local_custom_settings_blk
+from "dagor.workcycle" import setInterval, clearTimer
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "guiRespawn" import setSelectedUnitInfo, getAvailableRespawnBases, getFullRespawnBasesList, getWasReadySlotsMask,
+  getSpareSlotsMask, getDisabledSlotsMask, selectRespawnBase
+from "guiSpectator" import onSpectatorMode
+from "math" import pow
+from "mission" import get_user_custom_state, get_unit_spawn_type
+from "vehicleModel" import getUnitFileName
+from "%sqstd/datablock.nut" import blkOptFromPath, isDataBlock, eachParam
+from "%sqstd/math.nut" import is_bit_set
+from "%sqstd/rand.nut" import chooseRandom
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle, isSingleMissionOverrided
+from "%appGlobals/clientState/missionState.nut" import hudCustomRules
+from "%appGlobals/clientState/respawnStateBase.nut" import isInRespawn, respawnUnitInfo, isRespawnStarted,
+  respawnsLeft, respawnUnitItems, curUnitsAvgCostWp, respawnUnitMods
+from "%appGlobals/config/skinPresentation.nut" import getSkinPresentation
+from "%appGlobals/decalBlkSerializer.nut" import decalBlkToTbl
+from "%appGlobals/itemsState.nut" import SPARE
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/unitConst.nut" import AIR, TANK
+from "%appGlobals/unitTags.nut" import getUnitTags, getUnitType, getUnitTagsCfg
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/hud/localMPlayer.nut" import mySpawnScore
+from "%rGui/missionState.nut" import isGtRace, localTeam
+from "%rGui/respawn/playerActivity.nut" import sendPlayerActivityToServer
+from "%rGui/unit/unitSettings.nut" import getSkinCustomTags, getDecalsPresets
+from "%rGui/unitCustom/unitDecals/unitDecalsState.nut" import decalsPenalty
+from "%rGui/unitCustom/unitSkins/levelSkinTags.nut" import curLevelTags
+from "%rGui/unitMods/unitModsSlotsState.nut" import getUnitSlotsPresetNonUpdatable, getUnitBeltsNonUpdatable
+from "%rGui/unitMods/unseenBullets.nut" import seenShells, SEEN_SHELLS
+from "%rGui/weaponry/bulletsCalc.nut" import getDefaultBulletsForSpawn
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitBulletsChoice
+
+
 let logR = log_with_prefix("[RESPAWN] ")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { pow } = require("math")
-let { setSelectedUnitInfo, getAvailableRespawnBases, getFullRespawnBasesList,
-  getWasReadySlotsMask, getSpareSlotsMask, getDisabledSlotsMask, selectRespawnBase
-} = require("guiRespawn")
-let { onSpectatorMode } = require("guiSpectator")
-let { getUnitFileName } = require("vehicleModel")
-let { get_user_custom_state, get_unit_spawn_type } = require("mission")
-let { is_bit_set } = require("%sqstd/math.nut")
-let { chooseRandom } = require("%sqstd/rand.nut")
-let { blkOptFromPath, isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { decalBlkToTbl } = require("%appGlobals/decalBlkSerializer.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { isInRespawn, respawnUnitInfo, isRespawnStarted, respawnsLeft, respawnUnitItems,
-  curUnitsAvgCostWp, respawnUnitMods
-} = require("%appGlobals/clientState/respawnStateBase.nut")
-let { getUnitTags, getUnitType, getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { AIR, TANK } = require("%appGlobals/unitConst.nut")
-let { isInBattle, isSingleMissionOverrided } = require("%appGlobals/clientState/clientState.nut")
-let { hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
-let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { getDefaultBulletsForSpawn } = require("%rGui/weaponry/bulletsCalc.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { SPARE } = require("%appGlobals/itemsState.nut")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { curLevelTags } = require("%rGui/unitCustom/unitSkins/levelSkinTags.nut")
-let { getSkinCustomTags, getDecalsPresets } = require("%rGui/unit/unitSettings.nut")
-let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
-let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
-let { getUnitSlotsPresetNonUpdatable, getUnitBeltsNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { seenShells, SEEN_SHELLS } = require("%rGui/unitMods/unseenBullets.nut")
-let { isGtRace, localTeam } = require("%rGui/missionState.nut")
-let { decalsPenalty } = require("%rGui/unitCustom/unitDecals/unitDecalsState.nut")
-let { mySpawnScore } = require("%rGui/hud/localMPlayer.nut")
 
 let unitListScrollHandler = ScrollHandler()
 let sparesNum = mkWatched(persist, "sparesNum", servProfile.get()?.items[SPARE].count ?? 0)
@@ -77,7 +77,6 @@ let mkSlot =  @(id, info, defMods, readyMask = 0, spareMask = 0)
     country = getUnitTagsCfg(info?.name)?.operatorCountry ?? info?.country ?? respawnUnitInfo.get()?.country ?? ""
     isCurrent = info?.isCurrent ?? false
     skins = info?.skins ?? {}
-    hasDailyBonus = info?.hasDailyBonus ?? false
     isFake = info?.isFake ?? false
     rewardedMasteryTier = info?.rewardedMasteryTier ?? 0
   }
@@ -339,10 +338,9 @@ function onEnterRespawn() {
   setInterval(1.0, updateMasks)
 }
 isInRespawn.subscribe(function(v) {
+  clearTimer(updateMasks)
   if (v)
     onEnterRespawn()
-  else
-    clearTimer(updateMasks)
 })
 if (isInRespawn.get())
   onEnterRespawn()

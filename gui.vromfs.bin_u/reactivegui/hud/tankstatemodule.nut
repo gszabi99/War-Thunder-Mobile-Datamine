@@ -1,23 +1,24 @@
+from "%globalScripts/gameRendObjs.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { fabs, round, PI } = require("math")
-let { XrayDoll, TouchAreaOutButton } = require("wt.behaviors")
-let { scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
-let { hasDebuffGuns, hasDebuffTurretDrive, hasDebuffEngine, hasDebuffTracks, hasDebuffFire, speed,
-  hasDebuffDriver, hasDebuffGunner, hasDebuffLoader, hasDebuffFireExternal
-} = require("%rGui/hud/tankState.nut")
-let { isStickActive, stickDelta } = require("%rGui/hud/stickState.nut")
-let { mkDebuffIcon, mkDebuffIconEditView } = require("%rGui/hud/components/debuffIcon.nut")
-let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { isInZoom, unitType } = require("%rGui/hudState.nut")
-let { WALKER } = require("%appGlobals/unitConst.nut")
-let damagePanelBacklight = require("%rGui/hud/components/damagePanelBacklight.nut")
+from "math" import fabs, round, PI
+from "wt.behaviors" import XrayDoll, TouchAreaOutButton
+from "%globalScripts/controls/shortcutActions.nut" import setShortcutOn, setShortcutOff
+from "%appGlobals/unitConst.nut" import WALKER
+from "%globalsDarg/fontScale.nut" import scaleFontWithTransform
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadHotkey, mkGamepadShortcutImage
+from "%rGui/hud/actionBar/actionBarState.nut" import updateActionBarDelayed
+import "%rGui/hud/components/damagePanelBacklight.nut" as damagePanelBacklight
+from "%rGui/hud/components/debuffIcon.nut" import mkDebuffIcon, mkDebuffIconEditView
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderColor
+from "%rGui/hud/stickState.nut" import isStickActive, stickDelta
+from "%rGui/hud/tankState.nut" import hasDebuffGuns, hasDebuffTurretDrive, hasDebuffEngine, hasDebuffTracks,
+  hasDebuffFire, speed, hasDebuffDriver, hasDebuffGunner, hasDebuffLoader, hasDebuffFireExternal
+from "%rGui/hudState.nut" import isInZoom, unitType
 
-let damagePanelSize = hdpxi(175)
-let moveTypeImageSize = hdpxi(50)
-let iconSize = hdpxi(53)
+
+const damagePanelSize = hdpxi(175)
+const moveTypeImageSize = hdpxi(50)
+const iconSize = hdpxi(53)
 
 let mkDebuffCfg = @(watch, imageId) { watch, icon = $"ui/gameuiskin#{imageId}" }
 
@@ -155,7 +156,7 @@ let xrayDoll = @(stateFlags, moveChild, size) @() {
 }
 
 let dollEditView = {
-  size = [damagePanelSize, damagePanelSize]
+  size = const [damagePanelSize, damagePanelSize]
   rendObj = ROBJ_BOX
   borderWidth = hdpx(3)
   borderColor
@@ -171,7 +172,7 @@ function useShortcutOn(shortcutId) {
   setShortcutOn(shortcutId)
   updateActionBarDelayed()
 }
-let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(60), ph(-50)] }
+let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(60), ph(-50)] }
 
 let shortcutId = "ID_SHOW_HERO_MODULES"
 let stateFlags = Watched(0)

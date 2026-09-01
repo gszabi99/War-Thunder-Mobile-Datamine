@@ -1,20 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getSubsPresentation, getSubsName } = require("%appGlobals/config/subsPresentation.nut")
-let { mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, mkBgImg, borderBgGold, mkSubsPricePlate,
-  mkSlotBgImg, mkSquareIconBtn,
-  goodsSmallSize, goodsBgH, mkBgParticles
-} = require("%rGui/shop/goodsView/sharedParts.nut")
-let { mkGradGlowMultiLine } = require("%rGui/components/gradTexts.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/subsPresentation.nut" import getSubsPresentation, getSubsName
+from "%rGui/components/gradTexts.nut" import mkGradGlowMultiLine
+from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, mkBgImg, borderBgGold, mkSubsPricePlate, mkSlotBgImg,
+  mkSquareIconBtn, goodsSmallSize, goodsBgH, mkBgParticles
+from "%rGui/style/gradients.nut" import mkFontGradient
 
 
-let fontIconPreview = "⌡"
-let contentMargin = hdpx(20)
+const fontIconPreview = "⌡"
+const contentMargin = hdpx(20)
 let mkSubsIcon = @(id) mkBgImg($"{getSubsPresentation(id).image}:0:P")
   .__update({
     size = const [hdpx(400), hdpx(200)]
-    pos = [0, hdpx(30)]
+    pos = const [0, hdpx(30)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
   })
@@ -27,7 +25,7 @@ let bgHiglight =  {
 }
 
 let mkTitle = @(id) mkGradGlowMultiLine(utf8ToUpper(getSubsName(id)), fontWtMediumAccented, titleFontGrad, goodsSmallSize[0], {
-  pos = [0, hdpx(10)]
+  pos = const [0, hdpx(10)]
   hplace = ALIGN_CENTER
 })
 

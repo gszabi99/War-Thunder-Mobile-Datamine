@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { unitRewardTypes } = require("%appGlobals/rewardType.nut")
-let { shopSeenGoods, goodsByCategory, isUnseenGoods } = require("%rGui/shop/shopState.nut")
-let { SC_FEATURED, SGT_SLOTS, SGT_UNIT, SGT_LOOTBOX, SGT_UNIT_BUNDLE } = require("%rGui/shop/shopConst.nut")
-let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
-let { actualSchRewards } = require("%rGui/shop/schRewardsState.nut")
-let { getPreviewType } = require("%rGui/shop/goodsPreviewState.nut")
-let { isFitSeasonRewardsRequirements } = require("%rGui/event/eventState.nut")
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/rewardType.nut" import unitRewardTypes
+from "%rGui/event/eventState.nut" import isFitSeasonRewardsRequirements
+from "%rGui/shop/goodsPreviewState.nut" import getPreviewType
+from "%rGui/shop/schRewardsState.nut" import actualSchRewards
+from "%rGui/shop/shopCommon.nut" import getGoodsType
+from "%rGui/shop/shopConst.nut" import SC_FEATURED, SGT_SLOTS, SGT_UNIT, SGT_LOOTBOX, SGT_UNIT_BUNDLE
+from "%rGui/shop/shopState.nut" import shopSeenGoods, goodsByCategory, isUnseenGoods
 
 
 let goodsCategories = [SC_FEATURED]

@@ -1,18 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { translucentButton, translucentButtonsVGap } = require("%rGui/components/translucentButton.nut")
-let { specialEventsLootboxesState, specialEventsOrdered, subEventsList
-} = require("%rGui/event/eventState.nut")
-let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
-let { openSeasonScene, openEventShopWnd, BATTLE_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
-let mkSeasonSceneUnseenMark = require("%rGui/seasonScene/mkSeasonSceneUnseenMark.nut")
-let { goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop, personalGoodsByShop } = require("%rGui/shop/shopState.nut")
-let { gmEventsList } = require("%rGui/event/gmEventState.nut")
-let { getShopEventName } = require("%rGui/shop/eventShopState.nut")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { tabIdToOpen } = require("%rGui/quests/questsState.nut")
-let { OP_EVENT_ID, isOpAvailable } = require("%rGui/battlePass/operationPassState.nut")
+from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+from "%appGlobals/config/passPresentation.nut" import getOPPresentation
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%rGui/battlePass/operationPassState.nut" import OP_EVENT_ID, isOpAvailable
+from "%rGui/components/translucentButton.nut" import translucentButton, translucentButtonsVGap
+from "%rGui/event/eventState.nut" import specialEventsLootboxesState, specialEventsOrdered, subEventsList
+from "%rGui/event/gmEventState.nut" import gmEventsList
+import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
+from "%rGui/quests/questsState.nut" import tabIdToOpen
+import "%rGui/seasonScene/mkSeasonSceneUnseenMark.nut" as mkSeasonSceneUnseenMark
+from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, openEventShopWnd, BATTLE_TAB
+from "%rGui/shop/eventShopState.nut" import getShopEventName
+from "%rGui/shop/shopState.nut" import goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop, personalGoodsByShop
 
 
 function mkUnseenWithSf(eventId) {
@@ -59,7 +58,11 @@ function btnsOpenSpecialEvents() {
 
     gmEventsList.get().keys().each(function(id) {
       usedEvents[id] <- true
-      children.append(translucentButton(getEventPresentation(id).icon, @() openSeasonScene(id, BATTLE_TAB)))
+      let eventId = specialEventsOrdered.get().findvalue(@(s) s.eventName == id)?.eventId
+      children.append(translucentButton(getEventPresentation(id).icon,
+        @() openSeasonScene(id, BATTLE_TAB),
+        null,
+        eventId != null ? mkUnseenWithSf(eventId) : null))
     })
 
     
@@ -74,7 +77,7 @@ function btnsOpenSpecialEvents() {
         children.append(translucentButton(getEventPresentation(eventName).icon,
           @() openEventShopWnd(eventName),
           null,
-          mkUnseenWithSf(eventName)))
+          mkUnseenWithSf(specialEventsOrdered.get().findvalue(@(s) s.eventName == eventName)?.eventId ?? eventName)))
       }
     }
   }

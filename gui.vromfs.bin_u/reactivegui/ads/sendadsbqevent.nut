@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_game_version_str } = require("app")
-let { get_user_system_info } = require("sysinfo")
-let { getCountryCode } = require("auth_wt")
-let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { rewardInfo } = require("%rGui/ads/adsInternalState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+from "app" import get_game_version_str
+from "auth_wt" import getCountryCode
+from "sysinfo" import get_user_system_info
+from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/ads/adsInternalState.nut" import rewardInfo
+
 
 function sendAdsBqEvent(status, provider, withReward = true) {
   let { platform = "" } = get_user_system_info()

@@ -1,25 +1,27 @@
 from "%globalsDarg/darg_library.nut" import *
-let { allow_subscriptions } = require("%appGlobals/permissions.nut")
-let dailyCounter = require("%appGlobals/pServer/dailyCounter.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { registerHandler, skip_offer, get_skip_offer_availability, skipOfferInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { activeOffer } = require("%rGui/shop/offerState.nut")
-let { previewGoods, openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { hasVip } = require("%rGui/state/profilePremium.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
-let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { PRIMARY, COMMON, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
+from "%appGlobals/config/subsPresentation.nut" import mkSubsIcon
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+import "%appGlobals/pServer/dailyCounter.nut" as dailyCounter
+from "%appGlobals/pServer/pServerApi.nut" import registerHandler, skip_offer, get_skip_offer_availability,
+  skipOfferInProgress
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/permissions.nut" import allow_subscriptions
+from "%rGui/components/buttonStyles.nut" import PRIMARY, COMMON, defButtonHeight
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/textButton.nut" import mkCustomButton, mergeStyles
+from "%rGui/shop/goodsPreviewState.nut" import previewGoods, openSubsPreview
+from "%rGui/shop/offerState.nut" import activeOffer
+from "%rGui/state/profilePremium.nut" import hasVip
+
 
 let iconSize = 2 * (defButtonHeight * 0.25).tointeger()
 let iconSizeBig = 2 * (defButtonHeight * 0.3).tointeger()
 
-let vipIconH = hdpxi(40)
+const vipIconH = hdpxi(40)
 
-let clock = "▩"
+const clock = "▩"
 
 let ovrBtn = {
   minWidth = defButtonHeight
@@ -100,7 +102,7 @@ let skipsEnded = {
       keepAspect = true
     }
     {
-      pos = [hdpx(17), hdpx(0)]
+      pos = const [hdpx(17), hdpx(0)]
       rendObj = ROBJ_TEXT
       text = clock
       halign = ALIGN_RIGHT
@@ -133,12 +135,12 @@ let contentCommon = @() {
   size = [FLEX, defButtonHeight]
   children = [
     {
-      pos = [-hdpx(25), 0]
+      pos = const [-hdpx(25), 0]
       children = mkSubsIcon("vip", vipIconH)
     }
     {
       size = [iconSize, iconSize]
-      pos = [hdpx(10), -hdpx(8)]
+      pos = const [hdpx(10), -hdpx(8)]
       rendObj = ROBJ_IMAGE
       hplace = ALIGN_RIGHT
       vplace = ALIGN_BOTTOM

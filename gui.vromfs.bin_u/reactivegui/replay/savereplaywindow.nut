@@ -1,17 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_replays_dir } = require("replays")
-let { file_exists } = require("dagor.fs")
-let regexp2 = require("regexp2")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { saveLastReplay } = require("%rGui/replay/lastReplayState.nut")
-let { textInput } = require("%rGui/components/textInput.nut")
-let { buttonsHGap, textButton } = require("%rGui/components/textButton.nut")
-let { PRIMARY, COMMON } = require("%rGui/components/buttonStyles.nut")
+from "dagor.fs" import file_exists
+import "regexp2" as regexp2
+from "replays" import get_replays_dir
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/buttonStyles.nut" import PRIMARY, COMMON
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/textButton.nut" import buttonsHGap, textButton
+from "%rGui/components/textInput.nut" import textInput
+from "%rGui/replay/lastReplayState.nut" import saveLastReplay
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
 const WND_UID = "saveReplayWnd"

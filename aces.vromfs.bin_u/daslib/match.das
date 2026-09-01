@@ -110,12 +110,37 @@ def match_copy(what : TypeDeclPtr; wths : Expression?; makeType : TypeDeclPtr; a
     return match_any(makeType, wths, access_new, to)
 }
 
+def public match_peel_r2v(var e : Expression?) : Expression? {
+    
+    while (e != null && e is ExprRef2Value) {
+        e = (e as ExprRef2Value).subexpr
+    }
+    return e
+}
+
+def public match_peel_r2v(e : Expression const?) : Expression const? {
+    
+    var c : Expression const? = e
+    while (c != null && c is ExprRef2Value) {
+        c = (c as ExprRef2Value).subexpr
+    }
+    return c
+}
+
 [macro_function]
 def match_struct(what : TypeDeclPtr; wths : ExprMakeStruct?; access : Expression?; var to : MatchTo) {
     
     if (wths.makeType.isHandle && isExpression(wths.makeType)
             && what.isPointer && what.firstType != null && isExpression(what.firstType)) {
         
+        if (wths.makeType.annotation.name != "ExprRef2Value") {
+            var peeled = qmacro(match_peel_r2v($e(access)))
+            peeled |> force_at(wths.at)
+            var cond_pz = qmacro($e(peeled) != null)
+            cond_pz |> force_at(wths.at)
+            to.conditions |> emplace(cond_pz)
+            return match_as_is(what, wths, wths.makeType, wths.makeType.annotation.name, peeled, to)
+        }
         var cond_nz = qmacro($e(access) != null)
         cond_nz |> force_at(wths.at)
         to.conditions |> emplace(cond_nz)
@@ -390,7 +415,8 @@ def match_expr(what : TypeDeclPtr; wthmt : ExprCall?; access : Expression?; var 
         return false
     }
     assume value = wthmt.arguments[0]
-    if (value._type != null && !is_same_type(what, value._type, RefMatters.no, ConstMatters.no, TemporaryMatters.no)) {
+    if (value._type != null && !is_same_type(what, value._type, RefMatters.no, ConstMatters.no, TemporaryMatters.no)
+            && !(is_string_like(what) && is_string_like(value._type))) {   
         to.errors |> match_error("mismatching expression type {describe(what)} vs {describe(value._type)}", value.at)
         return false
     }
@@ -461,7 +487,6 @@ def match_or(what : TypeDeclPtr; wth : ExprOp2?; access : Expression?; var to : 
         }
     }
     
-    
     for (k, v in keys(toL.declarations), values(toL.declarations)) {
         to.declarations[k] = v
     }
@@ -474,7 +499,7 @@ def match_or(what : TypeDeclPtr; wth : ExprOp2?; access : Expression?; var to : 
     return true
 }
 
-[macro_function, unused_argument(what)]
+[macro_function]
 def match_tag(what : TypeDeclPtr; wth : Expression?; access : Expression?; var to : MatchTo) {
     var tag = wth as ExprTag
     if (tag.name != "v") {
@@ -487,8 +512,14 @@ def match_tag(what : TypeDeclPtr; wth : Expression?; access : Expression?; var t
             to.errors |> match_error("duplicate variable {tname}", tag.at)
             return false
         }
+        var cap = clone_expression(access)
+        
+        if (what != null && what.isPointer && what.firstType != null && isExpression(what.firstType)) {
+            cap = qmacro(match_peel_r2v($e(cap)))
+            cap |> force_at(tag.at)
+        }
         unsafe {
-            to.declarations[tname] = clone_expression(access)
+            to.declarations[tname] = cap
         }
         log_m("\tadd variable {tname} as {describe(access)}\n")
         return true
@@ -581,7 +612,7 @@ def match_any(what : TypeDeclPtr; wth : Expression?; access : Expression?; var t
             return false
         }
         log_m("\tadd condition {describe(access)} == {describe(wth)}\n")
-        var ee = unsafe(reinterpret<Expression?> wth)
+        var ee = unsafe(reinterpret<Expression?>(wth))
         var cond = qmacro($e(access) == $e(ee))
         cond |> force_at(wth.at)
         to.conditions |> emplace(cond)
@@ -589,7 +620,7 @@ def match_any(what : TypeDeclPtr; wth : Expression?; access : Expression?; var t
     } elif (wth._type != null && (is_same_type(what, wth._type, RefMatters.no, ConstMatters.no, TemporaryMatters.no) ||
             (is_string_like(what) && is_string_like(wth._type)))) {
         log_m("\tadd condition {describe(access)} == {describe(wth)}\n")
-        var ee = unsafe(reinterpret<Expression?> copy_to_local(wth))
+        var ee = unsafe(reinterpret<Expression?>(copy_to_local(wth)))
         var cond = qmacro($e(access) == $e(ee))
         cond |> force_at(wth.at)
         to.conditions |> emplace(cond)
@@ -635,9 +666,6 @@ class MatchMacro : AstCallMacro {
         return if (length(expr.arguments) != 2)
         assume blk = expr.arguments[1]
         return if (!(blk is ExprMakeBlock))
-        
-        
-        
         
         var eblk = ((blk as ExprMakeBlock)._block as ExprBlock)
         for (ee in eblk.list) {
@@ -690,7 +718,6 @@ class MatchMacro : AstCallMacro {
                         rules |> replaceVarTag("_") <| clone_expression(access)
                     }
                     if (!multi_match && iff == null && empty(to.conditions)) {
-                        
                         
                         iff = nblk
                     } else {

@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkProgressLevelBg } = require("%rGui/components/levelBlockPkg.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { attractColor, aTimeHint, aTimePriceScale } = require("%rGui/unitsTree/treeAnimConsts.nut")
-let { unitsResearchStatus } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { getReceiveDesc } = require("%rGui/unitsTree/unitNodesReceiveInfo.nut")
-let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/slots.nut" import curCampaignSlotUnits
+from "%rGui/components/levelBlockPkg.nut" import mkProgressLevelBg
+from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
+from "%rGui/unitsTree/treeAnimConsts.nut" import attractColor, aTimeHint, aTimePriceScale
+from "%rGui/unitsTree/unitNodesReceiveInfo.nut" import getReceiveDesc
+from "%rGui/unitsTree/unitsTreeNodesState.nut" import unitsResearchStatus
 
 
-let statsWidth = hdpx(495)
+const statsWidth = hdpx(495)
 let barSize = [statsWidth, hdpx(30)]
 
-let blueprintBarColor = 0xFF3384C4
-let unitResearchExpColor = 0xFFE86C00
-let researchBlockWidth = statsWidth
+const blueprintBarColor = 0xFF3384C4
+const unitResearchExpColor = 0xFFE86C00
+const researchBlockWidth = statsWidth
 
 function mkLevelLine(cur, req, color, ovr = {}) {
   let percent =  1.0 * clamp(cur, 0, req ) / req
@@ -42,7 +42,7 @@ function mkLevelLine(cur, req, color, ovr = {}) {
 }
 
 let mkBarText = @(text) {
-  size = [statsWidth, SIZE_TO_CONTENT]
+  size = const [statsWidth, SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_CENTER
@@ -110,7 +110,7 @@ function unitResearchBar(unitName) {
           @() {
             watch = hintLocId
             key = hintLocId
-            size = [statsWidth, SIZE_TO_CONTENT]
+            size = const [statsWidth, SIZE_TO_CONTENT]
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             halign = ALIGN_LEFT
@@ -136,7 +136,7 @@ function mkReceiveInfoText(receiveInfo) {
 
 let researchBlock = @(unit, receiveInfo = null) unit == null ? null
   : {
-      size = [researchBlockWidth, SIZE_TO_CONTENT]
+      size = const [researchBlockWidth, SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
       valign = ALIGN_BOTTOM
       children = [

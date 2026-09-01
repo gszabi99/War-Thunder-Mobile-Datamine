@@ -2011,8 +2011,8 @@
     },
     "tracks": {
       "animationMultiplier": 0.605,
-      "height": 0.045,
-      "width": 0.4,
+      "height": 0.065,
+      "width": 0.59,
       "fricSideRotAlternative": [
         5.0,
         0.0,

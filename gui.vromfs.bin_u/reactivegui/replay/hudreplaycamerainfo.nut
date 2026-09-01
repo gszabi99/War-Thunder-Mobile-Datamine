@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getReplayTotalTime, getCameraFov, getCameraRoll } = require("replays")
-let { format } =  require("string")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { can_use_debug_console } = require("%appGlobals/permissions.nut")
-let { textColor } = require("%rGui/style/stdColors.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+from "dagor.workcycle" import setInterval, clearTimer
+from "replays" import getReplayTotalTime, getCameraFov, getCameraRoll
+from "string" import format
+from "%appGlobals/permissions.nut" import can_use_debug_console
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import textColor
 
 
-let bgColor = 0xC0000000
-let updateInterval = 0.5
+const bgColor = 0xC0000000
+const updateInterval = 0.5
 
 let replayTime = Watched(0)
 let cameraFov = Watched(0)
@@ -31,7 +31,7 @@ function mkCameraParameterInfo(name, val) {
 
 let replayCameraInfo = @() {
   size = SIZE_TO_CONTENT
-  padding = [hdpx(20), hdpx(50)]
+  padding = const [hdpx(20), hdpx(50)]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   rendObj = ROBJ_SOLID

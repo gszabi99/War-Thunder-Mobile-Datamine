@@ -228,6 +228,7 @@
   ],
   "dynamicCubeBlur": 0.05,
   "dynamicCubeUpdateDist": 1000000.0,
+  "panoramaTeleportInvalidationDist": 3000.0,
   "numAircraftThreads": 6,
   "lastMissionName": "reichstagassault",
   "mp_defaultPlayersModel": "dummy_plane",
@@ -242,7 +243,10 @@
   "criticalOffenderMaxClimbWeight": 1.0,
   "criticalOffenderMaxSpeedWeight": 1.0,
   "criticalOffenderMetricsDiffMin": 0.3,
-  "leaveKillerSearchDistanceMax": 3000.0,
+  "aircraftLeaveKillerSearchDistanceMax": 3000.0,
+  "groundLeaveKillerSearchDistanceMax": 0.0,
+  "shipLeaveKillerSearchDistanceMax": 0.0,
+  "crashKillerSearchDistanceMax": 0.0,
   "airfieldSafeLeaveZoneRadius": -1.0,
   "enableAircraftSevereDamage": true,
   "shipCrewKilledPartForAssist": 0.2,
@@ -273,6 +277,7 @@
   "autostartShowInColorTime": 10.0,
   "canAssistRepairWithoutRequest": true,
   "canEveryoneRepairAnyAlly": true,
+  "canAssistRepairShips": false,
   "rendinstExtraMaxCnt": 16384,
   "rendinstExtraSubstFaceThres": 65536,
   "aircraftRelSpeedToWingWaveAmplitude": 0.0,
@@ -289,6 +294,7 @@
   "enableNetShipPhysOnClient": true,
   "depthChargeMaxDepth": 1.0,
   "torpedoDestroyParent": false,
+  "isTorpedoSeriesEnabled": true,
   "timeBlinkingOfDeadIcon": 2.5,
   "opacityOfDeadIcon": 70,
   "timeIconForDeadOnMap": 12.0,
@@ -326,6 +332,7 @@
   "jetLightAngle": 0.8,
   "bulletCaliberForPlayHitEffectFromServerOnly": 0.0,
   "allowSalvoForSecondaryWeaponSeries": true,
+  "hasWeaponSelector": false,
   "deadTankTemperatureMul": 0.1,
   "guiBlurFallbackColor": [
     38,
@@ -380,6 +387,7 @@
   "useYawDeadzone": true,
   "showStreaksForOwnerOnly": true,
   "physObjUseMovementDamping": true,
+  "selectTargetOnLockUp": false,
   "minTorpedoHitTimeThreatShow": 10.0,
   "asrocTargetOnlySubmarine": true,
   "separateTorpedoInitialSpeedMult": 0.2,
@@ -393,6 +401,7 @@
   "missionTeamTicketsPenaltyStatEnabled": true,
   "missionTeamTicketsPenaltyStatDebug": true,
   "maxDistDrawUnderwaterAtSubmarine": 1000.0,
+  "sendShellIntersectionEvent": true,
   "disableDamageForBombOwner": true,
   "maxTimeWaitFirstSpawn": 60.0,
   "debugRiTexture": "detail_concrete_tex_d",
@@ -7991,8 +8000,8 @@
         "bulletDeltaMultiplierVert": 1.0,
         "bulletDeltaMultiplierAir": 1.0,
         "bulletDeltaMultiplierAirVert": 1.0,
-        "bulletDeltaMultiplierTank": 1.5,
-        "bulletDeltaMultiplierTankVert": 2.0,
+        "bulletDeltaMultiplierTank": 1.0,
+        "bulletDeltaMultiplierTankVert": 1.0,
         "autoLevelingViscosity": -1.0,
         "autoTargettingViscosity": -1.0,
         "torpedoSpeedMultFromDist": [
@@ -9505,6 +9514,8 @@
   },
   "vignette": {
     "multiplier": 0.5,
+    "ldrMultiplier": 1.0,
+    "width": -0.6,
     "start": [
       0.6,
       0.55
@@ -9515,7 +9526,8 @@
     ]
   },
   "zoomVignette": {
-    "multiplier": 0.15,
+    "multiplier": 0.5,
+    "ldrMultiplier": 0.15,
     "width": -0.6
   },
   "splatter": {
@@ -9744,6 +9756,7 @@
     "distanceMultForUnmaskingItself": 2.5,
     "distanceMultForTargetingView": 3.0,
     "distanceMultForBinocularView": 3.0,
+    "unmaskingItselfTime": 3.0,
     "angleForTargetingView": 10.0,
     "angleForBinocularView": 10.0,
     "enableMultipointVisibilityForShips": true,
@@ -13540,6 +13553,7 @@
     "cropIconFade": 0.25,
     "cropIconFarFade": 15.0,
     "MTL_useArgb4": true,
+    "dmgIndicatorTargetSize": 768,
     "shipArmorClassForViewer": "RHA_tank, concrete, armored_glass, ship_STS, ship_Wsh, ship_RHA, ship_RGA, CHA_tank, ships_coal_bunker"
   },
   "repairTanks": {

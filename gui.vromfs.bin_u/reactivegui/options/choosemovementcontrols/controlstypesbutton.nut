@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let bgColor = 0xC0313843
-let selBorderColor = 0xFFFFFFFF
-let hovBorderColor = 0xFF666666
-let selBorderWidth = hdpx(4)
+const bgColor = 0xC0313843
+const selBorderColor = 0xFFFFFFFF
+const hovBorderColor = 0xFF666666
+const selBorderWidth = hdpx(4)
 
 function btnBase(content, sf, isSelected) {
   let isActive = isSelected || (sf & S_ACTIVE) != 0

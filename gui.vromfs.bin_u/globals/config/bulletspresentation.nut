@@ -1,4 +1,4 @@
-let TOTAL_VIEW_BULLETS = 5
+const TOTAL_VIEW_BULLETS = 5
 
 let bulletsImages = {
   ap_tank                             = "shell_apbc_tank"
@@ -51,7 +51,7 @@ let bulletsImages = {
   sam_tank                            = "aim92_stinger_rocket"
 }
 
-let defaultBeltImage                  = "bullet_gun_default"
+const defaultBeltImage                  = "bullet_gun_default"
 let bulletsBeltImages = {
   ap                                  = "bullet_gun_black"
   ap_ball                             = "bullet_gun_black"

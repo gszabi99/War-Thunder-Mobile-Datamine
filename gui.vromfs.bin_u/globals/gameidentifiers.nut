@@ -1,4 +1,5 @@
-let {APP_ID} = require("app")
+from "app" import APP_ID
+
 
 return freeze({
   APP_ID

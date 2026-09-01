@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
+from "math" import round
 
 
-let defaultExpandAnimationDuration = 0.3
+const defaultExpandAnimationDuration = 0.3
 
 let defArrowH = evenPx(30)
 let defArrowW = round(defArrowH / 2.0 / 24 * 40).tointeger() * 2

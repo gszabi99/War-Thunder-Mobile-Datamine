@@ -1,18 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("%sqstd/math.nut")
-let { selSlot, cancelRespawn } = require("%rGui/respawn/respawnState.nut")
-let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { register_command } = require("console")
-let { setUnitBullets, setOrSwapUnitBullet, resetSavedBullets, applySavedBullets, savedBullets
-} = require("%rGui/bullets/savedBullets.nut")
-let { BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS, BULLETS_LOW_AMOUNT, BULLETS_LOW_PERCENT, BULLETS_SPEC_SLOTS,
-  ammoReductionSecFactorDef, ammoReductionSpecFactorDef, BS_BR_PICKUP
-} = require("%rGui/bullets/bulletsConst.nut")
-let { calcBulletStep, calcBulletsStatus, calcChosenBullets, calcMaxBullets, calcLeftSteps,
-  ammoReductionFactorDefExt, ammoReductionFactorsByIdxExt
-} = require("%rGui/bullets/calcBullets.nut")
+from "console" import register_command
+from "%sqstd/math.nut" import ceil
+from "%rGui/bullets/bulletsConst.nut" import BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS, BULLETS_LOW_AMOUNT,
+  BULLETS_LOW_PERCENT, BULLETS_SPEC_SLOTS, ammoReductionSecFactorDef, ammoReductionSpecFactorDef, BS_BR_PICKUP
+from "%rGui/bullets/calcBullets.nut" import calcBulletStep, calcBulletsStatus, calcChosenBullets, calcMaxBullets,
+  calcLeftSteps, ammoReductionFactorDefExt, ammoReductionFactorsByIdxExt
+from "%rGui/bullets/savedBullets.nut" import setUnitBullets, setOrSwapUnitBullet, resetSavedBullets,
+  applySavedBullets, savedBullets
+from "%rGui/respawn/respawnState.nut" import selSlot, cancelRespawn
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitBulletsChoice
 
-let BR_PICKUP_RESERVE = 999
+const BR_PICKUP_RESERVE = 999
 
 let unitName = Computed(@() selSlot.get()?.name)
 let bulletsInfo = Computed(@() unitName.get() == null ? null

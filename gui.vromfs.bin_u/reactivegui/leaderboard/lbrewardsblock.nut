@@ -1,34 +1,34 @@
 from "%globalsDarg/darg_library.nut" import *
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { lbRewardsBlockWidth, lbTableHeight, lbHeaderRowHeight, prizeIcons,
+from "math" import round
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/components/infoButton.nut" import infoTooltipButton
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderBg
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/contacts/contactsClient.nut" import contactsRequest, contactsRegisterHandler
+from "%rGui/leaderboard/lbRewardsState.nut" import curLbRewards
+from "%rGui/leaderboard/lbState.nut" import lbMyPlace, lbTotalPlaces, curLbCfg, curLbData
+from "%rGui/leaderboard/lbStyle.nut" import lbRewardsBlockWidth, lbTableHeight, lbHeaderRowHeight, prizeIcons,
   rewardStyle, lbRewardRowPadding, lbRewardsGap, rowBgOddColor, rowBgEvenColor
-} = require("%rGui/leaderboard/lbStyle.nut")
-let { localPlayerColor } = require("%rGui/style/stdColors.nut")
-let { curLbRewards } = require("%rGui/leaderboard/lbRewardsState.nut")
-let { lbMyPlace, lbTotalPlaces, curLbCfg, curLbData } = require("%rGui/leaderboard/lbState.nut")
-let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { mkRewardsPreview } = require("%rGui/quests/rewardsComps.nut")
-let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
-let { modalWndBg, modalWndHeaderBg } = require("%rGui/components/modalWnd.nut")
+from "%rGui/quests/rewardsComps.nut" import mkRewardsPreview
+from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, sortRewardsViewInfo
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import localPlayerColor
+from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
+from "lbStateBase.nut" import curLbRequestData
+
+
 let { boxSize } = rewardStyle
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-let { round } =  require("math")
-let { contactsRequest, contactsRegisterHandler } = require("%rGui/contacts/contactsClient.nut")
-let { curLbRequestData } = require("lbStateBase.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
 
 let reqPoints = Watched(null)
 let requestDataPlayer = Watched(null)
 requestDataPlayer.subscribe(@(_) reqPoints.set(null) )
 let isRequestInProgress = Watched(false)
 
-let prizeTextSlots = 2
-let defTxtColor = 0xFFD8D8D8
+const prizeTextSlots = 2
+const defTxtColor = 0xFFD8D8D8
 let prizeIconSize = evenPx(60)
-let MAX_REWARDS_SLOTS_COUNT = 3
+const MAX_REWARDS_SLOTS_COUNT = 3
 let prizeTooltipSize = [hdpx(400), SIZE_TO_CONTENT]
 
 function mkIsReady(rewardInfo) {

@@ -1,11 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkButtonHoldTooltip } = require("%rGui/tooltip.nut")
-let { hudBlueColor, hudWhiteColor, hudVeilGrayColorFade, hudLightGreenColor, hudClassicRedColor, hudGrayColorFade
-} = require("%rGui/style/hudColors.nut")
+from "%rGui/style/hudColors.nut" import hudBlueColor, hudWhiteColor, hudVeilGrayColorFade, hudLightGreenColor,
+  hudClassicRedColor, hudGrayColorFade
+from "%rGui/tooltip.nut" import mkButtonHoldTooltip
+from "types" import String
+
 
 let tuningBtnSize = evenPx(70)
 let imgSize = evenPx(54)
-let tuningBtnGap = hdpx(30)
+const tuningBtnGap = hdpx(30)
 
 let btnBgColorDefault = hudBlueColor
 let btnBgColorPositive = hudLightGreenColor
@@ -26,7 +28,7 @@ let tuningBtnImg = @(image, ovr = {}) {
 
 function tuningBtn(image, onClick, description, ovr = {}) {
   let stateFlags = Watched(0)
-  let children = type(image) == "string" ? tuningBtnImg(image) : image
+  let children = image instanceof String ? tuningBtnImg(image) : image
   let key = {}
   return @() {
     key

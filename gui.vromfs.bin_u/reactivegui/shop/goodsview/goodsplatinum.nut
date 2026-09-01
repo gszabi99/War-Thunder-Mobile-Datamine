@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, borderBgGold, mkSlotBgImg, goodsSmallSize, mkGoodsImg, mkCurrencyAmountTitle,
-  mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTime,
-  mkBorderByCurrency
-} = require("%rGui/shop/goodsView/sharedParts.nut")
-let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
-let { PLATINUM } = require("%appGlobals/currenciesState.nut")
+import "%appGlobals/config/currencyGoodsPresentation.nut" as getCurrencyGoodsPresentation
+from "%appGlobals/currenciesState.nut" import PLATINUM
+from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, borderBgGold, mkSlotBgImg, goodsSmallSize, mkGoodsImg,
+  mkCurrencyAmountTitle, mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg,
+  mkGoodsLimitAndEndTime, mkBorderByCurrency
+from "%rGui/style/gradients.nut" import mkFontGradient
+from "%rGui/textFormatByLang.nut" import decimalFormat
+
 
 let titleFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFFFFFFF, 11, 6, 2)
 

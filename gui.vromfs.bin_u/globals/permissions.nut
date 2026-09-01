@@ -1,11 +1,12 @@
 from "%globalScripts/logs.nut" import *
-let { get_cur_circuit_name } = require("app")
-let { Computed } = require("frp")
-let { DBGLEVEL } = require("dagor.system")
-let { trim } = require("%sqstd/string.nut")
-let { rights } = require("permissions/userRights.nut")
-let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
+from "app" import get_cur_circuit_name
+from "dagor.system" import DBGLEVEL
+from "frp" import Computed
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/string.nut" import trim
+from "%appGlobals/clientState/initialState.nut" import isOfflineMenu
+from "permissions/userRights.nut" import rights
+
 
 let isDevBuild = DBGLEVEL > 0
 let isCircuitDev = get_cur_circuit_name().contains("dev")
@@ -56,7 +57,7 @@ let defaults = {
   external_gp_build_released = false
 }
 
-let dbgPermissions = sharedWatched("dbgPermissions", @() {})
+let dbgPermissions = hardPersistWatched("dbgPermissions", {})
 
 let allPermissions = Computed(function() {
   let res = clone defaults

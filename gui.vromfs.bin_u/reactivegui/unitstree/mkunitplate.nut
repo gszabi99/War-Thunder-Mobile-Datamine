@@ -1,69 +1,67 @@
 from "%globalsDarg/darg_library.nut" import *
-let { unitsMaxRank, unitsTreeOpenRank, isUnitPlateLevelVisible } = require("%rGui/unitsTree/unitsTreeState.nut")
-let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
-let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
-let { playerLevelInfo, campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkUnitTimeLeft, mkUnitLevel,
-  mkUnitsTreePrice, mkUnitBlueprintMark, mkUnitResearchPrice,
-  mkUnitSelectedGlow, mkUnitEquippedIcon, plateTextsSmallPad, unitPlateTiny,
-  bgUnit, bgUnitNotAvailable, mkUnitBgPremium, unitBgImageBase, mkUnitInfo, mkProfileUnitDailyBonus
-} = require("%rGui/unit/components/unitPlateComp.nut")
-let { maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { canBuyUnits } = require("%appGlobals/unitsState.nut")
-let { flagsWidth, unitPlateSize, blockSize } = require("%rGui/unitsTree/unitsTreeComps.nut")
-let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
-let { discountTagUnitSmall } = require("%rGui/components/discountTag.nut")
-let { curSelectedUnit, curUnitName } = require("%rGui/unit/unitsWndState.nut")
-let { unseenUnits, markUnitSeen } = require("%rGui/unit/unseenUnits.nut")
-let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
-let { mkPriorityUnseenMarkWatch, priorityUnseenMarkFeature, priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
-let { ceil } = require("math")
-let { nodeToScroll } = require("%rGui/unitsTree/unitsTreeScroll.nut")
-let { unitsResearchStatus, researchCountry, currentResearch, blueprintUnitsStatus,
-  unseenResearchedUnits, selectedCountry, shownUnitsOffersForPurchase, markUnitOfferShown
-} = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { mkPlateExpBar, mkPlateBlueprintBar, mkPlateExpBarAnimSlot, plateBarHeight } = require("%rGui/unitsTree/unitResearchBar.nut")
-let { mkReceiveTimeLeft } = require("%rGui/unitsTree/unitNodesReceiveInfo.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { animUnitAfterResearch, needShowPriceUnit, animExpPart, animNewUnitsAfterResearch, needDelayAnimation, loadStatusesAnimUnits,
-  animNewUnitsAfterResearchTrigger, hasAnimDarkScreen, unitsForExpAnim, isBuyUnitWndOpened, canPlayAnimUnitAfterResearch
-} = require("%rGui/unitsTree/animState.nut")
-let { animUnitSlot, mkUnitResearchPriceAnim, mkBlueprintUnitResearchPriceAnim, priceAnimDuration } = require("%rGui/unitsTree/components/unitPlateAnimations.nut")
-let { PURCH_SRC_UNITS, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
-let unitBuyWnd = require("%rGui/unitsTree/components/unitBuyWnd.nut")
-let { aDelayPrice, aTimePriceScale, aTimePriceShake } = require("%rGui/unitsTree/treeAnimConsts.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { curCampaignUnseenBranches } = require("%rGui/unitsTree/unseenBranches.nut")
-let { draggedData } = require("%rGui/slotBar/dragDropSlotState.nut")
-let { isAllowAutoOfferToBuyUnitEnabled } = require("%rGui/options/options/gameOptions.nut")
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "math" import ceil
+from "%appGlobals/pServer/profile.nut" import playerLevelInfo, campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/slots.nut" import isCampaignWithSlots
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/unitsState.nut" import canBuyUnits
+from "%rGui/components/discountTag.nut" import discountTagUnitSmall
+from "%rGui/components/levelBlockPkg.nut" import maxLevelStarChar
+from "%rGui/components/selectedLineUnits.nut" import selectedLineHorUnits, selLineSize
+from "%rGui/components/unseenMark.nut" import mkPriorityUnseenMarkWatch, priorityUnseenMarkFeature, priorityUnseenMark
+from "%rGui/options/options/gameOptions.nut" import isAllowAutoOfferToBuyUnitEnabled
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_UNITS, PURCH_TYPE_UNIT, mkBqPurchaseInfo
+from "%rGui/slotBar/dragDropSlotState.nut" import draggedData
+from "%rGui/style/gradients.nut" import mkColoredGradientY
+from "%rGui/unit/components/unitPlateComp.nut" import mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkUnitTimeLeft,
+  mkUnitLevel, mkUnitsTreePrice, mkUnitBlueprintMark, mkUnitResearchPrice, mkUnitSelectedGlow, mkUnitEquippedIcon,
+  plateTextsSmallPad, unitPlateTiny, bgUnit, bgUnitNotAvailable, mkUnitBgPremium, unitBgImageBase, mkUnitInfo
+import "%rGui/unit/purchaseUnit.nut" as purchaseUnit
+from "%rGui/unit/unitUtils.nut" import getUnitAnyPrice
+from "%rGui/unit/unitsDiscountState.nut" import unitDiscounts
+from "%rGui/unit/unitsWndState.nut" import curSelectedUnit, curUnitName
+from "%rGui/unit/unseenUnits.nut" import unseenUnits, markUnitSeen
+from "%rGui/unitsTree/animState.nut" import animUnitAfterResearch, needShowPriceUnit, animExpPart,
+  animNewUnitsAfterResearch, needDelayAnimation, loadStatusesAnimUnits, animNewUnitsAfterResearchTrigger,
+  hasAnimDarkScreen, unitsForExpAnim, isBuyUnitWndOpened, canPlayAnimUnitAfterResearch
+import "%rGui/unitsTree/components/unitBuyWnd.nut" as unitBuyWnd
+from "%rGui/unitsTree/components/unitPlateAnimations.nut" import animUnitSlot, mkUnitResearchPriceAnim,
+  mkBlueprintUnitResearchPriceAnim, priceAnimDuration
+from "%rGui/unitsTree/treeAnimConsts.nut" import aDelayPrice, aTimePriceScale, aTimePriceShake
+from "%rGui/unitsTree/unitNodesReceiveInfo.nut" import mkReceiveTimeLeft
+from "%rGui/unitsTree/unitResearchBar.nut" import mkPlateExpBar, mkPlateBlueprintBar, mkPlateExpBarAnimSlot,
+  plateBarHeight
+from "%rGui/unitsTree/unitsTreeComps.nut" import flagsWidth, unitPlateSize, blockSize
+from "%rGui/unitsTree/unitsTreeNodesState.nut" import unitsResearchStatus, researchCountry, currentResearch,
+  blueprintUnitsStatus, unseenResearchedUnits, selectedCountry, shownUnitsOffersForPurchase, markUnitOfferShown
+from "%rGui/unitsTree/unitsTreeScroll.nut" import nodeToScroll
+from "%rGui/unitsTree/unitsTreeState.nut" import unitsMaxRank, unitsTreeOpenRank, isUnitPlateLevelVisible
+from "%rGui/unitsTree/unseenBranches.nut" import curCampaignUnseenBranches
 
 
-let frameBorderWidth = hdpxi(2)
+const frameBorderWidth = hdpxi(2)
 let scrollBlocks = ceil((saSize[0] - saBorders[0] - flagsWidth) / blockSize[0] / 2)
 
 let highlighCurrentResearch = mkColoredGradientY(0x20A0A0A0, 0)
 
-let aTimeUnitFromRed = 0.25
-let aTimeUnitToGrey = 0.25
-let aTimeUnitScaleUp = 0.25
-let aTimeUnitScaleDown = 0.25
-let aTimeUnitAppearBar = 0.6
-let aTimeUnitAppearPrice = 0.1
-let aTimeUnitScalePrice = 0.5
+const aTimeUnitFromRed = 0.25
+const aTimeUnitToGrey = 0.25
+const aTimeUnitScaleUp = 0.25
+const aTimeUnitScaleDown = 0.25
+const aTimeUnitAppearBar = 0.6
+const aTimeUnitAppearPrice = 0.1
+const aTimeUnitScalePrice = 0.5
 
-let aDelayUnitToGrey = aTimeUnitFromRed
-let aDelayUnitScaleUp = aDelayUnitToGrey + aTimeUnitToGrey
-let aDelayUnitScaleDown = aDelayUnitScaleUp + aTimeUnitScaleUp
-let aDelayUnitAppearBar = aDelayUnitScaleDown + aTimeUnitScaleDown
-let aDelayUnitAppearPrice = aDelayUnitAppearBar
-let aDelayUnitScalePrice = aDelayUnitAppearBar + aTimeUnitAppearPrice
+const aDelayUnitToGrey = aTimeUnitFromRed
+const aDelayUnitScaleUp = aDelayUnitToGrey + aTimeUnitToGrey
+const aDelayUnitScaleDown = aDelayUnitScaleUp + aTimeUnitScaleUp
+const aDelayUnitAppearBar = aDelayUnitScaleDown + aTimeUnitScaleDown
+const aDelayUnitAppearPrice = aDelayUnitAppearBar
+const aDelayUnitScalePrice = aDelayUnitAppearBar + aTimeUnitAppearPrice
 
-let totalATime = aDelayUnitScalePrice + aTimeUnitScalePrice
+const totalATime = aDelayUnitScalePrice + aTimeUnitScalePrice
 
 function triggerAnim() {
   anim_start(animNewUnitsAfterResearchTrigger)
@@ -98,14 +96,14 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
   let stateFlags = Watched(0)
   let isLocked = Computed(@() (unit.name not in campMyUnits.get()) && (unit.name not in canBuyUnits.get()))
   let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
+  let isGlowing = Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER))
   let isEquipped = Computed(@() unit.name == curUnitName.get())
   let canPurchase = Computed(@() unit.name in canBuyUnits.get())
   let price = Computed(@() canPurchase.get() ? getUnitAnyPrice(unit, unitDiscounts.get()) : null)
-  let discount = Computed(@() unitDiscounts?.get()[unit.name])
+  let discount = Computed(@() unitDiscounts.get()?[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
   let isCollectible = unit?.isCollectible
-  let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get()
-    || unit.name in unseenSkins.get())
+  let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get())
 
   return @() {
     watch = [isSelected, isLocked, canPurchase]
@@ -117,7 +115,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
     }
     onAttach = unitsTreeOpenRank.get() != null
       && unit.rank == (unitsTreeOpenRank.get() + min(scrollBlocks, unitsMaxRank.get() - playerLevelInfo.get().level))
-          ? nodeToScroll.set(xmbNode)
+          ? @() nodeToScroll.set(xmbNode)
         : null
     onElemState = @(s) stateFlags.set(s)
     clickableInfo = isSelected.get() ? { skipDescription = true } : loc("mainmenu/btnSelect")
@@ -125,7 +123,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
     sound = { click = "choose" }
     children = [
       mkUnitBg(unit, isLocked.get())
-      mkUnitSelectedGlow(unit, Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER)))
+      mkUnitSelectedGlow(unit, isGlowing)
       mkUnitImage(unit, canPurchase.get() || isLocked.get())
       mkUnitBlueprintMark(unit, {
         pos = [0, -plateBarHeight]
@@ -134,7 +132,7 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
       mkUnitTexts(unit, getUnitName(unit.name), isLocked.get())
       mkUnitLock(unit, isLocked.get())
       mkPlateBlueprintBar(unit, {
-        pos = [0, 0]
+        pos = const [0, 0]
       })
       @() {
         watch = [price, discount]
@@ -149,7 +147,6 @@ function mkUnitPlate(unit, xmbNode, ovr = {}) {
             : null
         ]
       }
-      mkProfileUnitDailyBonus(unit)
       mkUnitEquippedIcon(unit, isEquipped)
       {
         size = FLEX
@@ -382,7 +379,6 @@ function mkTreeNodesUnitPlateDefault(unit, xmbNode, ovr = {}) {
             borderWidth = frameBorderWidth
         }
         : { watch = researchStatus }
-      mkProfileUnitDailyBonus(unit)
     ]
   }.__update(ovr)
 }
@@ -397,6 +393,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
   let isOwned = Computed(@() unit.name in campMyUnits.get())
   let isLocked = Computed(@() !isOwned.get() && (unit.name not in canBuyUnits.get()))
   let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
+  let isGlowing = Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER))
   let canPurchase = Computed(@() unit.name in canBuyUnits.get())
   let canDrag = Computed(@() isOwned.get() && isCampaignWithSlots.get())
   let isDraggedUnit = Computed(@() draggedData.get() != null
@@ -405,11 +402,10 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
   let price = Computed(@() canPurchase.get() || (researchStatus.get()?.isResearched && unit.name not in campMyUnits.get())
       ? getUnitAnyPrice(unit, unitDiscounts.get())
     : null)
-  let discount = Computed(@() unitDiscounts?.get()[unit.name])
+  let discount = Computed(@() unitDiscounts.get()?[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
   let isCollectible = unit?.isCollectible
   let needShowUnseenMark = Computed(@() unit.name in unseenUnits.get()
-    || unit.name in unseenSkins.get()
     || unit.name in unseenResearchedUnits.get()?[selectedCountry.get()])
   let needShowUnseenBranchMark = Computed(@() curCampaignUnseenBranches.get()?[unit.country]
     && unitsResearchStatus.get()?[unit.name].canResearch)
@@ -449,7 +445,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
       key = treeNodeUnitPlateKey(unit.name)
       onAttach = unitsTreeOpenRank.get() != null
         && unit.rank == (unitsTreeOpenRank.get() + min(scrollBlocks, unitsMaxRank.get() - playerLevelInfo.get().level))
-            ? nodeToScroll.set(xmbNode)
+            ? @() nodeToScroll.set(xmbNode)
           : null
       onElemState = @(s) stateFlags.set(s)
       clickableInfo = isSelected.get() ? { skipDescription = true } : loc("mainmenu/btnSelect")
@@ -458,7 +454,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
       children = [
         mkUnitBg(unit, isLocked.get(),
           !isLocked.get() || (researchStatus.get()?.canResearch ?? false) || (researchStatus.get()?.isResearched ?? false))
-        mkUnitSelectedGlow(unit, Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER)))
+        mkUnitSelectedGlow(unit, isGlowing)
         needToShowHighlight.get()
           ? {
               key = unit.name
@@ -547,25 +543,19 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
               borderWidth = frameBorderWidth
           }
           : { watch = researchStatus }
-        unit?.level == null ? mkProfileUnitDailyBonus(unit)
-          : @() !isUnitPlateLevelVisible.get()
-                  ? {
-                      watch = isUnitPlateLevelVisible
-                      size = flex()
-                      children = mkProfileUnitDailyBonus(unit)
-                    }
-                  : {
-                      watch = [isUnitPlateLevelVisible, isMaxLevel]
-                      size = flex()
-                      children = [
-                        mkProfileUnitDailyBonus(unit, { padding = const [0, hdpx(15), 0, hdpx(50)]})
-                        mkUnitLevel(
-                          isMaxLevel.get() ? maxLevelStarChar : unit.level,
-                          unit.rewardedMasteryTier,
-                          { size = evenPx(36) }
-                        ).__update({ margin = hdpx(8) })
-                      ]
-                    }
+        unit?.level == null ? null
+          : @() {
+              watch = [isUnitPlateLevelVisible, isMaxLevel]
+              size = flex()
+              children = !isUnitPlateLevelVisible.get() ? null
+                : [
+                    mkUnitLevel(
+                      isMaxLevel.get() ? maxLevelStarChar : unit.level,
+                      unit.rewardedMasteryTier,
+                      { size = evenPx(36) }
+                    ).__update({ margin = hdpx(8) })
+                  ]
+            }
       ]
       transform = { scale = isDraggedUnit.get() ? [1.1, 1.1] : [1, 1] }
       animations = [

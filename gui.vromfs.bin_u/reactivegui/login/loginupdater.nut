@@ -1,18 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_base_game_version_str } = require("app")
-let { UPDATER_DOWNLOADING, UPDATER_PURIFYING, UPDATER_DOWNLOADING_YUP
-} = require("contentUpdater")
-let { getErrorName } = require("%appGlobals/updater/updaterErrors.nut")
-let { mkProgressStatusText, mkProgressbar, progressbarGap } = require("%globalsDarg/loading/loadingProgressbar.nut")
-let { updaterState } = require("%rGui/login/loginUpdaterState.nut")
-let { gradientLoadingTip } = require("%rGui/loading/loadingScreen.nut")
-let { myUserId } = require("%appGlobals/profileStates.nut")
-let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
-let { addFpsLimit, removeFpsLimit } = require("%rGui/guiFpsLimit.nut")
-let { getDownloadInfoText } = require("%globalsDarg/updaterUtils.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+from "app" import get_base_game_version_str
+from "contentUpdater" import UPDATER_DOWNLOADING, UPDATER_PURIFYING, UPDATER_DOWNLOADING_YUP
+from "%appGlobals/profileStates.nut" import myUserId
+from "%appGlobals/updater/updaterErrors.nut" import getErrorName
+from "%globalsDarg/components/titleLogo.nut" import mkTitleLogo
+from "%globalsDarg/loading/loadingProgressbar.nut" import mkProgressStatusText, mkProgressbar, progressbarGap
+from "%globalsDarg/updaterUtils.nut" import getDownloadInfoText
+from "%rGui/guiFpsLimit.nut" import addFpsLimit, removeFpsLimit
+from "%rGui/loading/loadingScreen.nut" import gradientLoadingTip
+from "%rGui/login/loginUpdaterState.nut" import updaterState
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
-let spinnerSize = hdpx(100)
+
+const spinnerSize = hdpx(100)
 
 let defaultStatusText = @(s) s?.percent == null ? loc("pl1/check_profile")
   : "".concat(loc("pl1/check_profile"), colon, s.percent.tointeger(), "%")
@@ -62,10 +62,10 @@ let bottomBlock = {
   ]
 }
 
-let tip = gradientLoadingTip.__merge({ pos = [0, sh(-15)] })
+let tip = gradientLoadingTip.__merge({ pos = const [0, sh(-15)] })
 
 let waitSpinner = {
-  size = [spinnerSize, spinnerSize]
+  size = const [spinnerSize, spinnerSize]
   hplace = ALIGN_RIGHT
   margin = saBordersRv
   rendObj = ROBJ_IMAGE

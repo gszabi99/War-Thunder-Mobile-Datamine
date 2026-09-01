@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { fabs } = require("%sqstd/math.nut")
-let { loadUnitSlotsParams } = require("%rGui/weaponry/loadUnitBullets.nut")
+from "%sqstd/math.nut" import fabs
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitSlotsParams
 
 
 function getEquippedWeapon(wPreset, slotIdx, weaponsList, unitMods = null) {

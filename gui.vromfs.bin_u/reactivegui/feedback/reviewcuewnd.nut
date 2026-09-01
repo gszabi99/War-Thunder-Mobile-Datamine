@@ -1,24 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { textButtonBattle, textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
-let { textInput } = require("%rGui/components/textInput.nut")
-let { isRateGameSeen, sendGameRating, platformAppReview, sendRateWndEvent
-} = require("%rGui/feedback/rateGameState.nut")
+from "console" import register_command
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
+from "%rGui/components/textButton.nut" import textButtonBattle, textButtonPrimary, textButtonCommon
+from "%rGui/components/textInput.nut" import textInput
+from "%rGui/feedback/rateGameState.nut" import isRateGameSeen, sendGameRating, platformAppReview, sendRateWndEvent
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
 const RATE_STARS_TOTAL = 5
 
-let contentW = hdpx(1064)
-let contentH = hdpx(660)
-let starIconSize = hdpxi(80)
-let starIconGap = hdpx(60)
-let starIconSizeSmall = hdpxi(64)
-let starIconGapSmall = hdpx(48)
+const contentW = hdpx(1064)
+const contentH = hdpx(660)
+const starIconSize = hdpxi(80)
+const starIconGap = hdpx(60)
+const starIconSizeSmall = hdpxi(64)
+const starIconGapSmall = hdpx(48)
 
 let isOpened = mkWatched(persist, "isOpened", false)
 
@@ -100,7 +99,7 @@ function mkRateStarsRow(valueWatch, needInteractive, needBig) {
 
 let mkBtnPlace = @(children) {
   vplace = ALIGN_BOTTOM
-  pos = [0, -hdpx(80)]
+  pos = const [0, -hdpx(80)]
   children
 }
 
@@ -111,7 +110,7 @@ let pageRating = {
     modalWndHeaderWithClose(loc("rateGame/title"), onCloseButton)
     textarea.__merge({
       vplace = ALIGN_CENTER
-      pos = [0, -hdpx(150)]
+      pos = const [0, -hdpx(150)]
       text = "\n".concat(loc("rateGame/did_you_like"), loc("rateGame/your_opinion"))
     })
     mkRateStarsRow(fieldRating, true, true)
@@ -140,11 +139,11 @@ let pageComment = {
   children = [
     modalWndHeaderWithClose(loc("rateGame/thanks_for_rating"), onCloseButton)
     mkRateStarsRow(fieldRating, false, false).__update({
-      pos = [0, -hdpx(170)]
+      pos = const [0, -hdpx(170)]
     })
     textarea.__merge({
       vplace = ALIGN_CENTER
-      pos = [0, -hdpx(100)]
+      pos = const [0, -hdpx(100)]
       text = loc("rateGame/what_did_not_like")
     })
     {
@@ -171,7 +170,7 @@ let girlImage = @() {
   watch = [fieldRating, hasAppliedRating, isRatedExcellent]
   size = const [hdpxi(644), hdpxi(914)]
   vplace = ALIGN_BOTTOM
-  pos = [ sw(45) - (contentW / 2) - hdpxi(444), 0 ]
+  pos = const [ sw(45) - (contentW / 2) - hdpxi(444), 0 ]
   rendObj = ROBJ_IMAGE
   image = !hasAppliedRating.get() && fieldRating.get() == 0 ? Picture($"!ui/images/review_cue_2.avif")
     : !hasAppliedRating.get() && fieldRating.get() < RATE_STARS_TOTAL ? Picture($"!ui/images/review_cue_4.avif")
@@ -188,7 +187,7 @@ let reviewCueWnd = bgShaded.__merge({
   children = [
     imagesPreloadComp
     modalWndBg.__merge({
-      size = [contentW, contentH]
+      size = const [contentW, contentH]
       children = [
         @() {
           watch = [hasAppliedRating, isRatedExcellent]

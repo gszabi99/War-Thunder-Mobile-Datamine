@@ -1,13 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { fabs, sin, cos, PI, acos, lerp } = require("%sqstd/math.nut")
+from "dagor.time" import get_time_msec
+from "%sqstd/math.nut" import fabs, sin, cos, PI, acos, lerp
+from "%rGui/style/gradients.nut" import mkRingGradientLazy
+
+
 let rand = require("%sqstd/rand.nut")()
-let { mkRingGradientLazy } = require("%rGui/style/gradients.nut")
 
 let sparkImage = mkRingGradientLazy(30, 5, 50000)
 let sparkMaxSize = [hdpx(5), hdpx(20)]
-let sparkMinSpeed = hdpx(20)
-let sparkMaxSpeed = hdpx(60)
+const sparkMinSpeed = hdpx(20)
+const sparkMaxSpeed = hdpx(60)
 
 function roundZoneInitPos(halfSize) {
   let x = rand.rfloat(-halfSize[0], halfSize[0])

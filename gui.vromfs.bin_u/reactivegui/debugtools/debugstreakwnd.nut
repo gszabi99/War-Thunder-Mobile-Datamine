@@ -1,30 +1,30 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { registerScene } = require("%rGui/navState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { mkStreakIcon, multiStageUnlockIdConfig, getUnlockLocText, getUnlockDescLocText
-} = require("%rGui/unlocks/streakPkg.nut")
-let { get_unlocks_blk} = require("blkGetters")
-let { ceil } = require("%sqstd/math.nut")
-let { rnd_int } = require("dagor.random")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
+from "blkGetters" import get_unlocks_blk
+from "console" import register_command
+from "dagor.random" import rnd_int
+from "%sqstd/math.nut" import ceil
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
+from "%rGui/unlocks/streakPkg.nut" import mkStreakIcon, multiStageUnlockIdConfig, getUnlockLocText, getUnlockDescLocText
+
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let close = @() isOpened.set(false)
-let wndHeaderHeight = hdpx(60)
+const wndHeaderHeight = hdpx(60)
 let opacityGradientSize = saBorders[1]
 let wndContentHeight = saSize[1] - wndHeaderHeight + opacityGradientSize
-let hgap = hdpx(50)
-let vgap = hdpx(20)
-let iconSize = hdpx(140)
+const hgap = hdpx(50)
+const vgap = hdpx(20)
+const iconSize = hdpx(140)
 
 let columns = max(1, (saSize[0].tofloat() / (iconSize + hgap)).tointeger())
 
 let wndHeader = {
-  size = [FLEX, wndHeaderHeight]
+  size = const [FLEX, wndHeaderHeight]
   valign = ALIGN_CENTER
   children = [
     backButton(close)
@@ -60,7 +60,7 @@ function mkList() {
         return item == null ? null
           : {
               key = item
-              size = [iconSize, SIZE_TO_CONTENT]
+              size = const [iconSize, SIZE_TO_CONTENT]
               flow = FLOW_VERTICAL
               halign = ALIGN_CENTER
               behavior = Behaviors.Button

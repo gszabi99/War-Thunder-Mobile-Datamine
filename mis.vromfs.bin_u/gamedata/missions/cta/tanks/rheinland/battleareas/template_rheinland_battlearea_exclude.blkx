@@ -1,0 +1,169 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "area_squad": {
+      "name": "battlearea_exclude_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          246.0,
+          138.7,
+          382.85
+        ]
+      ],
+      "props": {
+        "squad_members": "battlearea_exclude_01"
+      }
+    }
+  },
+  "areas": {
+    "battlearea_exclude_01": {
+      "type": "Polygon",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          381.5,
+          12.05,
+          17.4
+        ]
+      ],
+      "topY": 106.95,
+      "polygonPoint": [
+        [
+          323.75,
+          14.5,
+          109.85
+        ],
+        [
+          322.0,
+          37.0,
+          38.8
+        ],
+        [
+          300.6,
+          18.8,
+          -28.8
+        ],
+        [
+          297.25,
+          20.85,
+          -67.8
+        ],
+        [
+          337.25,
+          12.05,
+          -76.1
+        ],
+        [
+          379.4,
+          19.4,
+          -25.75
+        ],
+        [
+          422.95,
+          16.55,
+          12.35
+        ],
+        [
+          465.75,
+          16.85,
+          48.75
+        ],
+        [
+          417.9,
+          27.75,
+          96.55
+        ],
+        [
+          327.95,
+          14.7,
+          110.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      },
+      {
+        "enabled": false
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

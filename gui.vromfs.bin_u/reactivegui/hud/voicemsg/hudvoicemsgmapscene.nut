@@ -1,36 +1,38 @@
+from "%globalScripts/gameRendObjs.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { pow, fabs, round } = require("math")
-let { get_mp_local_team } = require("mission")
-let { eventbus_subscribe } = require("eventbus")
-let { Point2 } = require("dagor.math")
-let { mapPosToWorldPos } = require("guiTacticalMap")
-let { getMapRelativePlayerPos } = require("guiArtillery")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { unitType } = require("%rGui/hudState.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
-let { defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { tacticalMapMarkersLayer } = require("%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut")
-let mkTacticalMapPointingInputProcessor = require("%rGui/hud/tacticalMap/tacticalMapPointingProcessor.nut")
-let { capZones } = require("%rGui/hud/capZones/capZonesState.nut")
-let { sendVoiceMsgById } = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
-let { markMinimapVoiceMsgFeatureKnown } = require("%rGui/hud/voiceMsg/hudVoiceMsgMapHint.nut")
-let { hudWhiteColor, hudBlackColor, hudTransparentBlackColor, hudBlueColor } = require("%rGui/style/hudColors.nut")
+from "dagor.math" import Point2
+from "guiArtillery" import getMapRelativePlayerPos
+from "guiTacticalMap" import mapPosToWorldPos
+from "math" import pow, fabs, round
+from "mission" import get_mp_local_team
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%rGui/components/backButton.nut" import backButton, backButtonHeight
+from "%rGui/components/buttonStyles.nut" import defButtonMinWidth, defButtonHeight
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon
+from "%rGui/hud/capZones/capZonesState.nut" import capZones
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut" import tacticalMapMarkersLayer
+import "%rGui/hud/tacticalMap/tacticalMapPointingProcessor.nut" as mkTacticalMapPointingInputProcessor
+from "%rGui/hud/voiceMsg/hudVoiceMsgMapHint.nut" import markMinimapVoiceMsgFeatureKnown
+from "%rGui/hud/voiceMsg/voiceMsgState.nut" import sendVoiceMsgById
+from "%rGui/hudState.nut" import unitType
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudBlackColor, hudTransparentBlackColor, hudBlueColor
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+
 
 enum MAP_OBJ_TYPE {
   NONE
   CAPTURE_ZONE
 }
 
-let headerGap = hdpx(40)
+const headerGap = hdpx(40)
 let mapSizePx = min(saSize[1] - backButtonHeight - headerGap, saSize[0] - hdpx(700))
 let objectSnapRadiusSq = pow(hdpx(20) / mapSizePx, 2)
 let pointerObjectPickerSizePx = evenPx(70)
 let pointerCoordsPickerSizePx = evenPx(58)
-let pointerLineWidth = round(hdpx(8) / 2) * 2
+const pointerLineWidth = round(hdpx(8) / 2) * 2
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let close = @() isOpened.set(false)
@@ -38,8 +40,8 @@ let close = @() isOpened.set(false)
 let mapCoords = mkWatched(persist, "mapCoords", [ 0.5, 0.5 ])
 
 isInBattle.subscribe(@(_) close())
-eventbus_subscribe("MissionResult", @(_) close())
-eventbus_subscribe("LocalPlayerDead", @(_) close())
+subscribeHudEvent("MissionResult", @(_) close())
+subscribeHudEvent("LocalPlayerDead", @(_) close())
 unitType.subscribe(@(_) @(_) close())
 
 let relPosToToUiPos = @(pos) pos == null ? null : pos.map(@(v) round(v * mapSizePx))

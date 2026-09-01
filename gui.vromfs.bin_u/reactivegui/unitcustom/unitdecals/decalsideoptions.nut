@@ -1,12 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mirror_current_decal, get_mirror_current_decal, hangar_toggle_abs, get_hangar_abs,
+from "eventbus" import eventbus_subscribe
+from "unitCustomization" import mirror_current_decal, get_mirror_current_decal, hangar_toggle_abs, get_hangar_abs,
   set_hangar_opposite_mirrored, get_hangar_opposite_mirrored
-} = require("unitCustomization")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { textColor, selectColor } = require("%rGui/style/stdColors.nut")
-let { isEditingDecal } = require("%rGui/unitCustom/unitDecals/unitDecalsState.nut")
-let { mkButtonHoldTooltip } = require("%rGui/tooltip.nut")
-let { eventbus_subscribe } = require("eventbus")
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/style/stdColors.nut" import textColor, selectColor
+from "%rGui/tooltip.nut" import mkButtonHoldTooltip
+from "%rGui/unitCustom/unitDecals/unitDecalsState.nut" import isEditingDecal
 
 
 enum decalTwoSidedMode {
@@ -38,9 +37,9 @@ let isFlipActive = mkWatched(persist, "isFlipActive", false)
 
 let flipOpt = { img = "ui/gameuiskin#icon_decal_flip.svg", locId = "mainmenu/edit/decals/flip", isOptActive = isFlipActive }
 
-let actionsGap = hdpx(30)
-let optBorderWidth = hdpxi(4)
-let optImgSize = hdpx(50)
+const actionsGap = hdpx(30)
+const optBorderWidth = hdpxi(4)
+const optImgSize = hdpx(50)
 
 function mkOptBtn(opt, onClick) {
   let { id = null, img = "", locId = "", isOptActive = Watched(false) } = opt

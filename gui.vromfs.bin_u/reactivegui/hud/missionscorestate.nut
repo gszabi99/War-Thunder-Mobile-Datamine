@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isInBattle, localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { missionProgressType } = require("%appGlobals/clientState/missionState.nut")
-let { mkMissionVar } = require("%rGui/hud/missionVariableState.nut")
+from "eventbus" import eventbus_subscribe
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle, localMPlayerTeam
+from "%appGlobals/clientState/missionState.nut" import missionProgressType
+from "%rGui/hud/missionVariableState.nut" import mkMissionVar
 
 
 let missionScoresTable = mkWatched(persist, "missionScoresTable", {})

@@ -18,7 +18,7 @@ let hitResultCfg = {
   [DM_HIT_RESULT_INVULNERABLE] = { locId = "hitcamera/result/invulnerable", styleId = "miss" },
 }
 
-let defPartPriority = 1
+const defPartPriority = 1
 
 let partsPriority = {
   
@@ -50,7 +50,7 @@ let partsPriority = {
   ship_compartment = 21
 }
 
-let hitCameraWidth = hdpx(530)
+const hitCameraWidth = hdpx(530)
 let hitCameraRenderSize = [ hitCameraWidth, hdpx(260) ]
 
 let hitResultStyle = {

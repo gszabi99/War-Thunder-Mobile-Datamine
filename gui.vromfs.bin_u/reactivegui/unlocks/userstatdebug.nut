@@ -2,8 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 from "console" import register_command
 from "string" import split_by_chars
 from "%sqstd/underscore.nut" import arrayByRows
-from "%rGui/unlocks/userstat.nut" import userstatRequest, userstatRegisterHandler, userstatDescList,
-  userstatStats, forceRefreshUnlocks, forceRefreshStats, GET_STATS_FILTER
+from "%rGui/unlocks/userstat.nut" import userstatRequest, userstatRegisterHandler, userstatDescList, userstatStats,
+  forceRefreshUnlocks, forceRefreshStats, GET_STATS_FILTER
+from "types" import Integer, Float, Table
 
 
 function onChangeStats(result) {
@@ -32,7 +33,7 @@ function changeStat(stat, mode, amount, shouldSet) {
   let stats = stat.split(";")
   let missingStat = stats.findvalue(@(s) userstatDescList.get()?.stats[s] == null)
   local errorText = stats.len() == 0 ? "Empty stat"
-    : (type(amount) != "integer" && type(amount) != "float")
+    : (!(amount instanceof Integer) && !(amount instanceof Float))
       ? $"Amount must be numeric (current = {amount})"
     : missingStat != null ? $"Stat {missingStat} does not exist.\n  {getDebugSimilarStatsText(missingStat)}"
     : ""
@@ -60,7 +61,7 @@ function debugStatValues(stat) {
   let rows = []
   foreach(tblId, tbl in userstatStats.get()?.stats ?? {})
     foreach(modeId, mode in tbl)
-      if (type(mode) == "table" && modeId != "ratingSessions")
+      if (mode instanceof Table && modeId != "ratingSessions")
         rows.append($"{tblId}/{modeId} = {mode?[stat]}")
 
   return console_print("\n".join(rows)) 
@@ -89,7 +90,7 @@ function registerStatsCommands(uStats) {
     return
   stats.each(@(tbl)
     tbl.each(function(list, modeId) {
-      if (type(list) == "table" && modeId not in customFields)
+      if (list instanceof Table && modeId not in customFields)
         registerModCmdOnce(modeId)
     }))
 }

@@ -1,9 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-from "dagor.system" import DBGLEVEL
+from "app" import get_cur_circuit_name
 from "controlsOptions" import enable_gyroscope
-import "%globalScripts/isAppLoaded.nut" as isAppLoaded
+from "dagor.system" import DBGLEVEL
 from "%sqstd/platform.nut" import is_pc
+import "%globalScripts/isAppLoaded.nut" as isAppLoaded
+from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
 from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
+
 
 gui_scene.setConfigProps({
   clickRumbleEnabled = false
@@ -29,3 +32,7 @@ require("console").setObjPrintFunc(debugTableData)
 enable_gyroscope(true)
 isAppLoaded.subscribe(@(_) enable_gyroscope(true))
 isOnlineSettingsAvailable.subscribe(@(_) enable_gyroscope(true))
+
+if (is_pc && get_cur_circuit_name().indexof("production") == null
+  && getSystemConfigOption("debug/netLogerr") == null)
+    setSystemConfigOption("debug/netLogerr", true)

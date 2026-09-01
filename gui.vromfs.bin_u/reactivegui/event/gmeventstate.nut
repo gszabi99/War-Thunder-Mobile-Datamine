@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { separateEventModes } = require("%rGui/gameModes/gameModeState.nut")
-let { curEvent, specialEvents } = require("%rGui/event/eventState.nut")
+from "%rGui/event/eventState.nut" import curEvent, specialEvents
+from "%rGui/gameModes/gameModeState.nut" import separateEventModes
 
 
 let openedGmEventId = Computed(function() {

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/leaderboard/lbConst.nut" import *
-let { NUM, PLACE, NICKNAME, RATING, WIN_TEXT } = require("%rGui/leaderboard/lbDataType.nut")
+from "%rGui/leaderboard/lbDataType.nut" import NUM, PLACE, NICKNAME, RATING, WIN_TEXT
+
 
 function getRowValue(rowData, field) {
   local res = rowData?[field]

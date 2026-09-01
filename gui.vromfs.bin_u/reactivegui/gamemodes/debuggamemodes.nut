@@ -1,21 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { debugModes } = require("%rGui/gameModes/gameModeState.nut")
-let listButton = require("%rGui/components/listButton.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { closeButton } = require("%rGui/components/debugWnd.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
+from "eventbus" import eventbus_send
+from "%sqstd/underscore.nut" import arrayByRows
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%rGui/components/debugWnd.nut" import closeButton
+import "%rGui/components/listButton.nut" as listButton
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/textButton.nut" import textButtonCommon
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/gameModes/gameModeState.nut" import debugModes
+import "%rGui/queue/queuePenaltyWnd.nut" as tryOpenQueuePenaltyWnd
 
-let wndUid = "debugGameModes"
+
+const wndUid = "debugGameModes"
 let close = @() removeModalWindow(wndUid)
 
-let gap = hdpx(10)
+const gap = hdpx(10)
 let selectedCampaign = mkWatched(persist, "selectedCampaign", curCampaign.get())
 
 let specialTabs = [

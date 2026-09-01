@@ -1,19 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { getCountryCode } = require("auth_wt")
-let { get_cur_circuit_name } = require("app")
-let { get_network_block } = require("blkGetters")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+from "app" import get_cur_circuit_name
+from "auth_wt" import getCountryCode
+from "blkGetters" import get_network_block
+from "eventbus" import eventbus_send
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%appGlobals/loginState.nut" import isLoggedIn
 
 
 
 
-let ZENDESK_API_UPLOADS_URL_CFG_KEY = "zendeskApiUploadsURL"
-let DEFAULT_ZENDESK_API_UPLOADS_URL  = "https://gaijin.zendesk.com/api/v2/uploads.json?filename={0}"
-let ZENDESK_API_REQUESTS_URL_CFG_KEY = "zendeskApiRequestsURL"
-let DEFAULT_ZENDESK_API_REQUESTS_URL = "https://gaijin.zendesk.com/api/v2/requests"
+
+const ZENDESK_API_UPLOADS_URL_CFG_KEY = "zendeskApiUploadsURL"
+const DEFAULT_ZENDESK_API_UPLOADS_URL  = "https://gaijin.zendesk.com/api/v2/uploads.json?filename={0}"
+const ZENDESK_API_REQUESTS_URL_CFG_KEY = "zendeskApiRequestsURL"
+const DEFAULT_ZENDESK_API_REQUESTS_URL = "https://gaijin.zendesk.com/api/v2/requests"
 
 let zendeskApiUploadsUrl = Watched(DEFAULT_ZENDESK_API_UPLOADS_URL)
 let zendeskApiRequestsUrl = Watched(DEFAULT_ZENDESK_API_REQUESTS_URL)

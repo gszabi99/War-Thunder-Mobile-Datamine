@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let hudTimers = require("%rGui/hudHints/hudTimers.ui.nut")
+import "%rGui/hudHints/hudTimers.ui.nut" as hudTimers
 
-let hudTimerPosY = hdpx(130)
+
+const hudTimerPosY = hdpx(130)
 
 return {
   size = FLEX_H
@@ -9,7 +10,7 @@ return {
   vplace = ALIGN_BOTTOM
   halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
-  pos = [0, -hudTimerPosY]
+  pos = const [0, -hudTimerPosY]
   children = [
     hudTimers
   ]

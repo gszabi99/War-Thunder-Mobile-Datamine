@@ -1,46 +1,41 @@
+from "%globalScripts/weaponConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { TouchAreaOutButton } = require("wt.behaviors")
-let { get_mission_time } = require("mission")
-let { defer, resetTimeout } = require("dagor.workcycle")
-let { round } =  require("math")
-let { setDrawWeaponAllowableAngles } = require("hudState")
-let { activateActionBarAction } = require("hudActionBar")
-let { getRomanNumeral, ceil } = require("%sqstd/math.nut")
-let { getScaledFont, scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { updateActionBarDelayed, actionItemsInCd } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { touchButtonSize, touchSizeForRhombButton, borderWidth, btnBgStyle, imageColor, imageDisabledColor,
-  borderColor, borderColorPushed, zoneRadiusX, zoneRadiusY
-} = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
-} = require("%rGui/hud/currentWeaponsStates.nut")
-let { hasTarget, targetState, torpedoDistToLive, unitType, isInAntiairMode, repairAssistAllow
-} = require("%rGui/hudState.nut")
-let { playHapticPattern } = require("hapticVibration")
-let { fire, isFullBuoyancy, isAsmCaptureAllowed } = require("%rGui/hud/shipState.nut")
-let { playSound } = require("sound_wt")
-let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
-let { nextBulletIdx, currentBulletIdxPrim, currentBulletIdxSec
-} = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
-let { AB_TORPEDO, getActionType, AB_EXTINGUISHER, AB_MEDICALKIT } = require("%rGui/hud/actionBar/actionType.nut")
-let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
-} = require("%rGui/controls/shortcutSimpleComps.nut")
-let { mkActionGlare, mkConsumableSpend, mkActionBtnGlare
-} = require("%rGui/hud/weaponsButtonsAnimations.nut")
-let { isNotOnTheSurface, isDeeperThanPeriscopeDepth } = require("%rGui/hud/submarineDepthBlock.nut")
-let { TANK, SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
-let { set_can_lower_camera } = require("controlsOptions")
-let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
-let { mkRhombBtnBg, mkRhombBtnBorder, mkAmmoCount } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
-let { mkBtnZone } = require("%rGui/hud/buttons/hudButtonsPkg.nut")
-let { getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT } = require("%rGui/options/guiOptions.nut")
-let { isAvailableActionItem, mkActionItemProgress, mkActionItemCount, mkActionItemImage,
-  countHeightUnderActionItem, mkActionItemBorder, abShortcutImageOvr
-} = require("%rGui/hud/buttons/actionButtonComps.nut")
-let { isHudPrimaryStyle } = require("%rGui/options/options/hudStyleOptions.nut")
-let { hudBlueColor, hudCoralRedColor, hudWhiteColor, hudPearlGrayColor, hudTransparentColor
-} = require("%rGui/style/hudColors.nut")
+from "controlsOptions" import set_can_lower_camera
+from "dagor.workcycle" import defer, resetTimeout
+from "hapticVibration" import playHapticPattern
+from "hudActionBar" import activateActionBarAction
+from "hudState" import setDrawWeaponAllowableAngles
+from "math" import round
+from "mission" import get_mission_time
+from "sound_wt" import playSound
+from "wt.behaviors" import TouchAreaOutButton
+from "%sqstd/math.nut" import getRomanNumeral, ceil
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut, setShortcutOn, setShortcutOff
+from "%appGlobals/unitConst.nut" import TANK, SHIP, BOAT, SUBMARINE
+from "%globalsDarg/fontScale.nut" import getScaledFont, scaleFontWithTransform
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/controls/disabledControls.nut" import mkIsControlDisabled
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
+from "%rGui/hud/actionBar/actionBarState.nut" import updateActionBarDelayed, actionItemsInCd
+from "%rGui/hud/actionBar/actionType.nut" import AB_TORPEDO, getActionType, AB_EXTINGUISHER, AB_MEDICALKIT
+from "%rGui/hud/bullets/hudUnitBulletsState.nut" import nextBulletIdx, currentBulletIdxPrim, currentBulletIdxSec
+from "%rGui/hud/buttons/actionButtonComps.nut" import isAvailableActionItem, mkActionItemProgress, mkActionItemCount,
+  mkActionItemImage, countHeightUnderActionItem, mkActionItemBorder, abShortcutImageOvr
+from "%rGui/hud/buttons/hudButtonsPkg.nut" import mkBtnZone
+from "%rGui/hud/buttons/rhombTouchHudButtons.nut" import mkRhombBtnBg, mkRhombBtnBorder, mkAmmoCount
+from "%rGui/hud/currentWeaponsStates.nut" import markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
+from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize, touchSizeForRhombButton, borderWidth, btnBgStyle,
+  imageColor, imageDisabledColor, borderColor, borderColorPushed, zoneRadiusX, zoneRadiusY
+from "%rGui/hud/shipState.nut" import fire, isFullBuoyancy, isAsmCaptureAllowed
+from "%rGui/hud/submarineDepthBlock.nut" import isNotOnTheSurface, isDeeperThanPeriscopeDepth
+from "%rGui/hud/weaponsButtonsAnimations.nut" import mkActionGlare, mkConsumableSpend, mkActionBtnGlare
+from "%rGui/hudHints/commonHintLogState.nut" import addCommonHint
+from "%rGui/hudState.nut" import hasTarget, targetState, torpedoDistToLive, unitType, isInAntiairMode, repairAssistAllow
+from "%rGui/options/guiOptions.nut" import getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT
+from "%rGui/options/options/hudStyleOptions.nut" import isHudPrimaryStyle
+from "%rGui/style/hudColors.nut" import hudBlueColor, hudCoralRedColor, hudWhiteColor, hudPearlGrayColor,
+  hudTransparentColor
+
 
 let defImageSize = (0.75 * touchButtonSize).tointeger()
 let weaponNumberSize = (0.3 * touchButtonSize).tointeger()
@@ -52,8 +47,8 @@ let debuffImgSize = (0.6 * touchButtonSize).tointeger()
 let periscopIconWidth = touchButtonSize / 2
 let periscopIconHeight = (periscopIconWidth * 0.7).tointeger()
 let surfacingIconSize = (touchButtonSize * 0.4).tointeger()
-let changeMarkSize = hdpxi(20)
-let altImageSize = 1.0
+const changeMarkSize = hdpxi(20)
+const altImageSize = 1.0
 
 let gunImageBySizeOrder = [
   { image = "ui/gameuiskin#hud_ship_calibre_main_3_left.svg", relImageSize = 1.3 }
@@ -63,8 +58,8 @@ let gunImageBySizeOrder = [
 let svgNullable = @(image, size) ((image ?? "") == "") ? null
   : Picture($"{image}:{size}:{size}:P")
 
-let weaponryButtonRotate = 45
-let rotatedShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-70)] }
+const weaponryButtonRotate = 45
+let rotatedShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(-70)] }
 
 function useShortcut(shortcutId) {
   toggleShortcut(shortcutId)
@@ -177,7 +172,7 @@ function mkCountermeasureItem(buttonConfig, actionItem, scale) {
   let progressText = @() {
     watch = progress
     rendObj = ROBJ_TEXT
-    pos = [0, -hdpx(30)]
+    pos = const [0, -hdpx(30)]
     vplace = ALIGN_TOP
     halign = ALIGN_CENTER
     text = progress.get() ? progress.get() : ""
@@ -434,7 +429,7 @@ let mkWeaponBlockReasonIcon = @(isAvailable, iconComponent, scale) @() {
 }
 
 let mkWeaponRightBlock = @(scale, content) {
-  pos = [pw(30), 0]
+  pos = const [pw(30), 0]
   vplace = ALIGN_CENTER
   hplace = ALIGN_RIGHT
   valign = ALIGN_CENTER
@@ -586,7 +581,7 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
         watch = [canShoot, unitType, isBlocked, isDisabled, isOnCd]
         rendObj = ROBJ_IMAGE
         size = [imgSize, imgSize]
-        pos = [0, -hdpx(5)] 
+        pos = const [0, -hdpx(5)] 
         image = svgNullable(needUseAltImg ? alternativeImage : getImage(unitType.get()), imgSize)
         keepAspect = KEEP_ASPECT_FIT
         color = (!isAvailable && !isOnCd.get()) || isDisabled.get() || (hasAim && !(actionItem?.aimReady ?? true)) || !canShoot.get() || isBlocked.get() || isOnCd.get()

@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let interopGen = require("%rGui/interopGen.nut")
+import "%rGui/interopGen.nut" as interopGen
+
 
 let state = {
   isInFlight = mkWatched(persist, "isInFlight", false)

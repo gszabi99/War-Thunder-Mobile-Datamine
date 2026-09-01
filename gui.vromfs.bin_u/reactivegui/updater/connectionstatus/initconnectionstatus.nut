@@ -1,7 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let isFirstLoad = require("%rGui/isFirstLoad.nut")
-let { is_ios } = require("%sqstd/platform.nut")
-let { connectionStatus } = require("%appGlobals/clientState/connectionStatus.nut")
+from "%sqstd/platform.nut" import is_ios
+from "%appGlobals/clientState/connectionStatus.nut" import connectionStatus
+import "%rGui/isFirstLoad.nut" as isFirstLoad
+
+
 if (is_ios)
   require("%rGui/updater/connectionStatus/connectionStatusIos.nut")
 else

@@ -1,5 +1,6 @@
-let { Watched, Computed } = require("frp")
-let { Point2 } = require("dagor.math")
+from "dagor.math" import Point2
+from "frp" import Watched, Computed
+
 
 let isStickActiveByStick = Watched(false)
 let isStickActiveByArrows = Watched(false)

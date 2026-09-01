@@ -1,0 +1,175 @@
+from "%globalsDarg/darg_library.nut" import *
+from "%globalScripts/ecs.nut" import *
+from "app" import get_game_version_str, get_base_game_version_str
+from "auth_wt" import getCountryCode
+from "dagor.workcycle" import setInterval, clearTimer
+from "emulatorDetection" import get_emulator_system_flags, get_emulator_input_flags, get_emulated_input_count,
+  get_regular_input_count, reset_emulator_counters
+from "eventbus" import eventbus_subscribe, eventbus_unsubscribe
+from "gameEvents" import EventOnSetupFrameTimes
+from "guiOptions" import get_gui_option, addUserOption, addLocalUserOption
+from "math" import round
+from "mission" import get_current_mission_name
+from "multiplayer" import get_mp_session_id_int
+from "platform" import get_platform_string_id
+from "sysinfo" import get_battery, get_battery_capacity_mah, is_charging, get_thermal_state, get_network_connection_type
+from "%sqstd/datablock.nut" import blk2SquirrelObjNoArrays
+from "%sqstd/math.nut" import median
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/clientState/missionState.nut" import battleCampaign
+from "%appGlobals/clustersState.nut" import clusterStats
+from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
+from "%appGlobals/pServer/pServerJwt.nut" import decodeJwtAndHandleErrors
+from "%appGlobals/squadState.nut" import isInSquad
+from "%rGui/battleData/battleData.nut" import wasBattleDataApplied
+from "%rGui/matching/queuesClient.nut" import lastQueueStatsJwt
+from "%rGui/matchingRooms/sessionLobby.nut" import lastRoom
+from "battleResult.nut" import battleResult
+
+
+let OPT_GRAPHICS_QUALITY = addLocalUserOption("OPT_GRAPHICS_QUALITY")
+let OPT_GRAPHICS_SCENE_RESOLUTION = addLocalUserOption("OPT_GRAPHICS_SCENE_RESOLUTION")
+let OPT_FPS = addLocalUserOption("OPT_FPS")
+let OPT_RAYTRACING = addLocalUserOption("OPT_RAYTRACING")
+let OPT_AA = addLocalUserOption("OPT_AA")
+let OPT_TANK_MOVEMENT_CONTROL = addUserOption("OPT_TANK_MOVEMENT_CONTROL")
+
+const MEASURE_PING_INTERVAL_SEC = 15
+const PING_SAMPLES_MAX = 50
+local pingMin = -1
+local pingMax = -1
+let pingSamples = persist("pingSamples", @() [])
+let deviceState = Watched(null)
+let updateDeviceState = @(state) deviceState.set(state)
+deviceState.subscribe(function(v) {
+  let { ping = -1 } = v
+  if (ping == -1)
+    return
+  pingMin = pingMin == -1 ? ping : min(pingMin, ping)
+  pingMax = max(pingMax, ping)
+})
+function onCollectPing() {
+  let { ping = -1 } = deviceState.get()
+  if (ping == -1)
+    return
+  if (pingSamples.len() == PING_SAMPLES_MAX)
+    pingSamples.remove(0)
+  pingSamples.append(ping)
+}
+function activatePingMeasurement(isActivate, needReset) {
+  if (needReset) {
+    pingMin = -1
+    pingMax = -1
+    pingSamples.clear()
+  }
+  if (isActivate) {
+    eventbus_subscribe("updateStatusString", updateDeviceState)
+    setInterval(MEASURE_PING_INTERVAL_SEC, onCollectPing)
+    onCollectPing()
+  }
+  else {
+    eventbus_unsubscribe("updateStatusString", updateDeviceState)
+    clearTimer(onCollectPing)
+  }
+}
+
+local batteryOnBattleStart = 0
+local wasInSquadLastBattle = false
+
+function setSquadStatusInLastBattle() {
+  wasInSquadLastBattle = isInSquad.get()
+}
+
+function startBatteryChargeDrainGather() {
+  batteryOnBattleStart = get_battery()
+}
+
+isInBattle.subscribe(function(v) {
+  activatePingMeasurement(v, v)
+  if (v) {
+    startBatteryChargeDrainGather()
+    setSquadStatusInLastBattle()
+    reset_emulator_counters()
+  }
+})
+
+if (isInBattle.get()) {
+  activatePingMeasurement(true, false)
+}
+
+let connectionTypeMap = {
+  [-1] = "Unknown",
+  [0]  = "No connection" ,
+  [1] =  "Cellular",
+  [2] =  "Wi-Fi",
+}
+
+function getLastQueueAvgScore(campaign) {
+  if ((lastQueueStatsJwt.get() ?? "") == "")
+    return null
+  let { payload = null } = decodeJwtAndHandleErrors({ jwt = lastQueueStatsJwt.get() })
+  return payload?.stats["global"][campaign].m_avg_score
+}
+
+function onFrameTimes(evt, _eid, _comp) {
+  log("[BQ] send battle fps info to BQ")
+  let data = blk2SquirrelObjNoArrays(evt[0])
+  data?.$rawdelete("time")
+
+  let drainPercentage = batteryOnBattleStart - get_battery()
+  let drainmAh = drainPercentage * get_battery_capacity_mah()
+
+  let connectionType = connectionTypeMap?[get_network_connection_type()] ?? "Unknown"
+
+  let campaign = !wasBattleDataApplied.get() ? ""
+    : battleCampaign.get() != "" ? battleCampaign.get()
+    : (battleResult.get()?.campaign ?? "")
+
+  data.__update({
+    platform = get_platform_string_id()
+    country = getCountryCode()
+    cluster = lastRoom.get()?.public.cluster ?? ""
+    clusters_rtt = ",".join(clusterStats.get().map(@(c)
+      ":".join([ c.clusterId, c.hostsRTT == null ? null : round(c.hostsRTT).tointeger()], true)))
+    campaign
+    queueAvgScore = getLastQueueAvgScore(campaign)
+    wasBattleDataApplied = wasBattleDataApplied.get()
+    mission = get_current_mission_name()
+    fpsLimit = get_gui_option(OPT_FPS)
+    videoSetting = get_gui_option(OPT_GRAPHICS_QUALITY)
+    sceneResolution = get_gui_option(OPT_GRAPHICS_SCENE_RESOLUTION)
+    raytracing = get_gui_option(OPT_RAYTRACING)
+    sessionId = get_mp_session_id_int()
+    tankMoveControlType = get_gui_option(OPT_TANK_MOVEMENT_CONTROL) ?? "stick_static"
+    battery = get_battery()
+    isCharging = is_charging()
+    isEmulator = (get_emulator_system_flags() != 0)
+    isEmulatedInput = (get_emulator_input_flags() != 0)
+    isGamepad = isGamepad.get()
+    emulatorSystemFlags = get_emulator_system_flags()
+    emulatorInputFlags = get_emulator_input_flags()
+    emulatedInputCount = get_emulated_input_count()
+    regularInputCount = get_regular_input_count()
+    batteryDrainPercentage = drainPercentage
+    batteryDrainmAh = drainmAh
+    thermalState = get_thermal_state()
+    networkConnectionType = connectionType
+    pingMin
+    pingMax
+    pingMedian = round(median((clone pingSamples).sort()) ?? -1).tointeger()
+    gameVersion = get_game_version_str()
+    apkVersion = get_base_game_version_str()
+    isSquad = wasInSquadLastBattle
+    isDeferred = true
+    aa = get_gui_option(OPT_AA)
+  }.filter(@(v) v != null))
+
+  sendCustomBqEvent("session_fps", data)
+}
+
+register_es("frame_times_bq_es",
+  {
+    [EventOnSetupFrameTimes] = onFrameTimes,
+  },
+  {})

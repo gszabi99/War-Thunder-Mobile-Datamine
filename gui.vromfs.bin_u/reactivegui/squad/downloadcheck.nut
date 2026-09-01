@@ -1,28 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import resetTimeout
 from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/clientState/clientState.nut" import isInDebriefing, isInBattle, isInLoadingScreen
+from "%appGlobals/gameModes/gameModes.nut" import allGameModes, gameModeQueueGroups, getGameModeQueueGroup
 from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
-from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/squadState.nut" import isInSquad, isSquadLeader, squadLeaderDownloadCheckTime,
   squadLeaderWantedModeId, squadLeaderCampaign, isReady
-from "%appGlobals/updater/addonsState.nut" import hasAddons, unitSizes
-from "%appGlobals/updater/gameModeAddons.nut" import missingUnitResourcesByRank, allUnitsRanks,
-  getModeAddonsInfo, allBattleUnits, maxReleasedUnitRanks
 from "%appGlobals/updater/addons.nut" import localizeAddons
+from "%appGlobals/updater/addonsState.nut" import hasAddons, unitSizes
 from "%appGlobals/updater/campaignAddons.nut" import localizeUnitsResources
-from "%appGlobals/clientState/clientState.nut" import isInDebriefing, isInBattle, isInLoadingScreen
-from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
-from "%appGlobals/gameModes/gameModes.nut" import allGameModes, gameModeQueueGroups, getGameModeQueueGroup
-import "%rGui/squad/setReady.nut" as setReady
-from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd
-from "%rGui/debriefing/debriefingState.nut" import isDebriefingAnimFinished
+from "%appGlobals/updater/gameModeAddons.nut" import missingUnitResourcesByRank, allUnitsRanks, getModeAddonsInfo,
+  allBattleUnits, maxReleasedUnitRanks
+from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
+from "%rGui/debriefing/debriefingState.nut" import isDebriefingAnimFinished
 import "%rGui/gameModes/getGameModeLocName.nut" as getGameModeLocName
+import "%rGui/squad/setReady.nut" as setReady
 from "%rGui/style/stdColors.nut" import markTextColor
+from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd
 
 
-let MSG_UID = "mRankCheck"
-let CAN_REPEAT_SEC = 15
+const MSG_UID = "mRankCheck"
+const CAN_REPEAT_SEC = 15
 let wantedModeId = hardPersistWatched("wantedModeId", -1)
 let downloadCheckTime = hardPersistWatched("downloadCheckTime", 0)
 let isDownloadCheckSuspended = Watched(false)

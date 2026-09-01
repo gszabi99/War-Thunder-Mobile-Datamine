@@ -1,3 +1,4 @@
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+from "%sqstd/globalState.nut" import hardPersistWatched
+
 
 return hardPersistWatched("pserver.profile", {}, true)

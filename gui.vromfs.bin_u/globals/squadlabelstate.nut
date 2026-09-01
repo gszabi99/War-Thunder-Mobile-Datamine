@@ -1,5 +1,6 @@
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
+from "%sqstd/globalState.nut" import hardPersistWatched
 
-let squadLabels = sharedWatched("squadLabels", @() {})
+
+let squadLabels = hardPersistWatched("squadLabels", {})
 
 return { squadLabels }

@@ -228,6 +228,6 @@ struct EventChangeHangarBanners
   newRiExName : string
   bannerType : string
 
-[cpp_event(broadcast)]
-struct EventHangarChallengeEnemyHit
-  enemyEid : EntityId
+
+
+

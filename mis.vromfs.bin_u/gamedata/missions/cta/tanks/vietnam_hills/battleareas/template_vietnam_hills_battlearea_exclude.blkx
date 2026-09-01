@@ -1,0 +1,560 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "area_squad": {
+      "name": "battlearea_exclude_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          246.0,
+          138.7,
+          382.85
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "battlearea_exclude_01",
+          "battlearea_exclude_02",
+          "battlearea_exclude_03",
+          "battlearea_exclude_04",
+          "battlearea_exclude_05",
+          "battlearea_exclude_06",
+          "battlearea_exclude_07",
+          "battlearea_exclude_08",
+          "battlearea_exclude_09",
+          "battlearea_exclude_10",
+          "battlearea_exclude_11",
+          "battlearea_exclude_12",
+          "battlearea_exclude_13"
+        ]
+      }
+    }
+  },
+  "areas": {
+    "battlearea_exclude_01": {
+      "type": "Polygon",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          381.5,
+          12.05,
+          17.4
+        ]
+      ],
+      "topY": 106.95,
+      "polygonPoint": [
+        [
+          323.75,
+          14.5,
+          109.85
+        ],
+        [
+          322.0,
+          37.0,
+          38.8
+        ],
+        [
+          300.6,
+          18.8,
+          -28.8
+        ],
+        [
+          297.25,
+          20.85,
+          -67.8
+        ],
+        [
+          337.25,
+          12.05,
+          -76.1
+        ],
+        [
+          379.4,
+          19.4,
+          -25.75
+        ],
+        [
+          422.95,
+          16.55,
+          12.35
+        ],
+        [
+          465.75,
+          16.85,
+          48.75
+        ],
+        [
+          417.9,
+          27.75,
+          96.55
+        ],
+        [
+          327.95,
+          14.7,
+          110.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_02": {
+      "type": "Polygon",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          71.25,
+          17.3,
+          -30.225
+        ]
+      ],
+      "topY": 94.9,
+      "polygonPoint": [
+        [
+          -8.9,
+          28.3,
+          52.05
+        ],
+        [
+          41.9,
+          28.4,
+          29.9
+        ],
+        [
+          91.0,
+          29.35,
+          16.1
+        ],
+        [
+          137.85,
+          22.3,
+          -35.2
+        ],
+        [
+          159.45,
+          26.5,
+          -73.15
+        ],
+        [
+          139.65,
+          17.3,
+          -102.8
+        ],
+        [
+          79.4,
+          23.6,
+          -112.5
+        ],
+        [
+          23.65,
+          24.55,
+          -92.6
+        ],
+        [
+          -0.25,
+          22.6,
+          -53.85
+        ],
+        [
+          -16.95,
+          25.5,
+          10.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          100.0
+        ],
+        [
+          787.45,
+          88.4,
+          467.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_04": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          400.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          400.0
+        ],
+        [
+          1152.4,
+          15.3,
+          -75.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_05": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          649.2,
+          9.85001,
+          -362.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_06": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          50.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          50.0
+        ],
+        [
+          -27.05,
+          9.84998,
+          -664.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_07": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          50.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          50.0
+        ],
+        [
+          18.55,
+          9.84998,
+          -720.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_08": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          50.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          50.0
+        ],
+        [
+          -31.05,
+          9.84998,
+          -722.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_09": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          50.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          50.0
+        ],
+        [
+          -280.0,
+          9.84998,
+          -533.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_10": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          60.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          60.0
+        ],
+        [
+          -315.0,
+          9.84998,
+          -110.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_11": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          40.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40.0
+        ],
+        [
+          -304.8,
+          9.84998,
+          -181.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_12": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          70.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          70.0
+        ],
+        [
+          -283.15,
+          9.84982,
+          283.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_13": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          120.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          120.0
+        ],
+        [
+          -234.55,
+          9.84982,
+          388.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      },
+      {
+        "enabled": false
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

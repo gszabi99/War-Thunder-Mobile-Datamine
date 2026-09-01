@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+from "math" import round
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderColor
+
 
 function mkStickWidgetComps(fullSize) {
   let bgRadius = round(0.375 * fullSize)

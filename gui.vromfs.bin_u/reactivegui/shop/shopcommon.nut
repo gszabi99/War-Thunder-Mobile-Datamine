@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/shop/shopConst.nut" import *
 from "%appGlobals/rewardType.nut" import *
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { allow_subscriptions } = require("%appGlobals/permissions.nut")
+from "%rGui/shop/shopConst.nut" import *
+from "%appGlobals/permissions.nut" import allow_subscriptions
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
 
-let defaultFeaturedIcon = "ui/gameuiskin#shop_planes.svg"
+
+const defaultFeaturedIcon = "ui/gameuiskin#shop_planes.svg"
 let featuredIcon = {
   tanks = "ui/gameuiskin#shop_tanks.svg"
   ships = "ui/gameuiskin#shop_ships.svg"

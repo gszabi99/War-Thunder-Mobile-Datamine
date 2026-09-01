@@ -1,11 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { currencyWndOpenCount, closeBuyEventCurrenciesWnd, bgImage
-} = require("%rGui/event/buyEventCurrenciesState.nut")
-let { registerScene, setSceneBgFallback, setSceneBg } = require("%rGui/navState.nut")
-let { buyEventCurrenciesHeader, mkEventCurrenciesGoods, buyEventCurrenciesGamercard,
-  buyEventCurrenciesDesc } = require("%rGui/event/buyEventCurrenciesComps.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { eventBgFallback } = require("%appGlobals/config/eventSeasonPresentation.nut")
+from "%appGlobals/config/eventSeasonPresentation.nut" import eventBgFallback
+from "%rGui/event/buyEventCurrenciesComps.nut" import mkEventCurrenciesGoods, buyEventCurrenciesGamercard,
+  buyEventCurrenciesDesc
+from "%rGui/event/buyEventCurrenciesState.nut" import currencyWndOpenCount, closeBuyEventCurrenciesWnd, bgImage
+from "%rGui/navState.nut" import registerScene, setSceneBgFallback, setSceneBg
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
 let buyEventCurrenciesWnd = @() {
@@ -22,10 +21,7 @@ let buyEventCurrenciesWnd = @() {
       flow = FLOW_VERTICAL
       valign = ALIGN_CENTER
       children = [
-        { size = FLEX }
-        buyEventCurrenciesHeader
         mkEventCurrenciesGoods()
-        { size = flex(2) }
         buyEventCurrenciesDesc
       ]
     }
@@ -33,7 +29,7 @@ let buyEventCurrenciesWnd = @() {
   animations = wndSwitchAnim
 }
 
-let sceneId = "buyEventCurrenciesWnd"
+const sceneId = "buyEventCurrenciesWnd"
 registerScene("buyEventCurrenciesWnd", buyEventCurrenciesWnd, closeBuyEventCurrenciesWnd, currencyWndOpenCount)
 setSceneBgFallback(sceneId, eventBgFallback)
 setSceneBg(sceneId, bgImage.get())

@@ -1,9 +1,12 @@
+from "%globalScripts/weaponConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "dagor.math" import Point2
+from "dagor.random" import rnd_int
 import "%sqstd/ecs.nut" as ecs
-let interopGet = require("%rGui/interopGen.nut")
-let { register_command } = require("console")
-let { rnd_int } = require("dagor.random")
-let { Point2 } = require("dagor.math")
+from "ecs.computed" import mkEcsComputed
+import "%rGui/interopGen.nut" as interopGet
+
 
 let buoyancy = Watched(1.0)
 let fire = Watched(false)
@@ -22,7 +25,7 @@ let hasDebuffGuns = Computed(@() (damagedArtilleryCount.get() > 0) != ((debugDeb
 let hasDebuffMoveControl = Computed(@() blockMoveControl.get() != ((debugDebuff.get() & 16) != 0))
 let hasDebuffTorpedoes = Computed(@() (brokenTorpedosCount.get() > 0) != ((debugDebuff.get() & 32) != 0))
 
-let maxDebugDebuff = 63
+const maxDebugDebuff = 63
 register_command(@() debugDebuff.set(debugDebuff.get() == maxDebugDebuff ? 0 : maxDebugDebuff), "hud.debug.shipDebuffsAll")
 register_command(@() debugDebuff.set(rnd_int(0, maxDebugDebuff)), "hud.debug.shipDebuffsRandom")
 register_command(function(idx) {
@@ -32,21 +35,21 @@ register_command(function(idx) {
   log(debugDebuff.get())
 }, "hud.debug.shipDebuffsToggle")
 
-let maxHpToRepair = Watched(0.)
-let nominalHpToRepair = Watched(0.)
-ecs.register_es("maxHpToRepairTracker", {
-  [["onInit", "onChange"]] = function trackMaxHpToRepair(_eid, comp) {
-    maxHpToRepair.set(comp.meta_parts_hp_repair__maxHp)
-    nominalHpToRepair.set(comp.meta_parts_hp_repair__speed * comp.meta_parts_hp_repair__duration)
-  },
-  function onDestroy() {
-    maxHpToRepair.set(1.)
-  }
-},
-{
-  comps_track = [["meta_parts_hp_repair__maxHp", ecs.TYPE_FLOAT]],
-  comps_ro = [["meta_parts_hp_repair__speed", ecs.TYPE_FLOAT], ["meta_parts_hp_repair__duration", ecs.TYPE_FLOAT]],
+let heroHpRepair = mkEcsComputed({
+  comps = [
+    ["meta_parts_hp_repair__maxHp", ecs.TYPE_FLOAT],
+    ["meta_parts_hp_repair__speed", ecs.TYPE_FLOAT],
+    ["meta_parts_hp_repair__duration", ecs.TYPE_FLOAT],
+  ]
   comps_rq = ["controlledHero"]
+})
+
+
+let maxHpToRepair = Computed(@() heroHpRepair.get()?.meta_parts_hp_repair__maxHp ?? 1.)
+let nominalHpToRepair = Computed(function() {
+  let state = heroHpRepair.get()
+  return state == null ? 0.
+    : state.meta_parts_hp_repair__speed * state.meta_parts_hp_repair__duration
 })
 
 let shipState = {

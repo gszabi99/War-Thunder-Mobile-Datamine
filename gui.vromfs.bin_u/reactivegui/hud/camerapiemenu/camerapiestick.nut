@@ -1,8 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkMiniStick, stickHeadSize } = require("%rGui/hud/miniStick.nut")
-let { isCameraPieStickActive, cameraPieStickDelta, isCameraPieItemsEnabled } = require("%rGui/hud/cameraPieMenu/cameraPieState.nut")
-let { STICK } = require("%rGui/hud/stickState.nut")
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
+from "%rGui/hud/cameraPieMenu/cameraPieState.nut" import isCameraPieStickActive, cameraPieStickDelta,
+  isCameraPieItemsEnabled
+from "%rGui/hud/miniStick.nut" import mkMiniStick, stickHeadSize
+from "%rGui/hud/stickState.nut" import STICK
+from "%rGui/style/hudColors.nut" import hudWhiteColor
+
 
 let stickHeadIconSize = 2 * (stickHeadSize * 0.38 + 0.5).tointeger()
 

@@ -1,50 +1,53 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce, resetTimeout, clearTimer } = require("dagor.workcycle")
+from "console" import register_command
+from "dagor.workcycle" import deferOnce, resetTimeout, clearTimer
+from "%appGlobals/currenciesState.nut" import balance
+from "%appGlobals/pServer/campaign.nut" import curCampaign, campConfigs
+from "%appGlobals/pServer/pServerApi.nut" import buy_unit, add_player_exp, unitInProgress, buy_unit_research
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg, campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/slots.nut" import curSlots, isCampaignWithSlots, curCampaignSlotUnits
+import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
+from "%appGlobals/squadState.nut" import isInSquad
+from "%appGlobals/unitsState.nut" import canBuyUnits
+from "%rGui/components/modalWindows.nut" import hasModalWindows, moveModalToTop
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEsc, btnAUp
+from "%rGui/event/eventLootboxes.nut" import eventLootboxes
+import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
+from "%rGui/gameModes/newbieOfflineMissions.nut" import curProfileRewardId, isFirstBattleRewardPart
+from "%rGui/mainMenu/mainMenuState.nut" import isMainMenuAttached
+from "%rGui/options/options/gameOptions.nut" import isAllowAutoOfferToBuyUnitEnabled
+from "%rGui/shop/msgBoxPurchase.nut" import closePurchaseAndBalanceBoxes
+from "%rGui/shop/personalGoodsState.nut" import personalGoodsByShopCategory
+from "%rGui/shop/shopState.nut" import goodsByCategory
+from "%rGui/slotBar/slotBarState.nut" import setUnitToSlot, canOpenSelectUnitWithModal, slotBarSelectWndAttached,
+  selectedUnitToSlot, closeSelectUnitToSlotWnd
+from "%rGui/tutorial/completedTutorials.nut" import markTutorialCompleted, isFinishedUnitsResearch
+from "%rGui/tutorial/tutorialConst.nut" import TUTORIAL_UNITS_RESEARCH_ID
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import setTutorialConfig, isTutorialActive, finishTutorial,
+  WND_UID, goToStep, activeTutorialId
+from "%rGui/unit/delayedPurchaseUnit.nut" import delayedPurchaseUnitData, needSaveUnitDataForTutorial
+from "%rGui/unit/unitsWndActions.nut" import setResearchUnit
+from "%rGui/unit/unitsWndState.nut" import curSelectedUnit
+from "%rGui/unitsTree/animState.nut" import needDelayAnimation, isBuyUnitWndOpened, animExpPart, animUnitAfterResearch
+import "%rGui/unitsTree/buyUnitResearchWnd.nut" as openBuyUnitResearchWnd
+from "%rGui/unitsTree/mkUnitPlate.nut" import triggerAnim
+from "%rGui/unitsTree/unitNodesReceiveInfo.nut" import getNodesReceiveInfo
+from "%rGui/unitsTree/unitsTreeNodesContent.nut" import scrollToUnitGroupBottom, calcAreaSize
+from "%rGui/unitsTree/unitsTreeNodesState.nut" import visibleNodes, unitsResearchStatus, currentResearch,
+  selectedCountry, remapNodesPositionsShiftX
+from "%rGui/unitsTree/unitsTreeState.nut" import isUnitsTreeAttached, openUnitsTreeAtUnit, isUnitsTreeOpen
+
+
 let logFB = log_with_prefix("[TUTOR_UNITS_RESEARCH] ")
-let { register_command } = require("console")
-let { balance } = require("%appGlobals/currenciesState.nut")
-let { buy_unit, add_player_exp, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { curSlots, isCampaignWithSlots, curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
-let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { canBuyUnits } = require("%appGlobals/unitsState.nut")
-let { isInSquad } = require("%appGlobals/squadState.nut")
-let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
-
-let { goodsByCategory } = require("%rGui/shop/shopState.nut")
-let { personalGoodsByShopCategory } = require("%rGui/shop/personalGoodsState.nut")
-let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
-let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
-let { delayedPurchaseUnitData, needSaveUnitDataForTutorial } = require("%rGui/unit/delayedPurchaseUnit.nut")
-let { isUnitsTreeAttached, openUnitsTreeAtUnit, isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
-let { needDelayAnimation, isBuyUnitWndOpened, animExpPart,
-  animUnitAfterResearch } = require("%rGui/unitsTree/animState.nut")
-let { markTutorialCompleted, isFinishedUnitsResearch } = require("%rGui/tutorial/completedTutorials.nut")
-let { scrollToUnitGroupBottom, calcAreaSize } = require("%rGui/unitsTree/unitsTreeNodesContent.nut")
-let { visibleNodes, unitsResearchStatus, currentResearch, selectedCountry, remapNodesPositionsShiftX } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { hasModalWindows, moveModalToTop } = require("%rGui/components/modalWindows.nut")
-let { setTutorialConfig, isTutorialActive, finishTutorial, WND_UID, goToStep,
-  activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { setResearchUnit } = require("%rGui/unit/unitsWndActions.nut")
-let { closePurchaseAndBalanceBoxes } = require("%rGui/shop/msgBoxPurchase.nut")
-let { setUnitToSlot, canOpenSelectUnitWithModal, slotBarSelectWndAttached
-  selectedUnitToSlot, closeSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
-let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
-let { triggerAnim } = require("%rGui/unitsTree/mkUnitPlate.nut")
-let { TUTORIAL_UNITS_RESEARCH_ID } = require("%rGui/tutorial/tutorialConst.nut")
-let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
-let { btnBEsc, btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { isAllowAutoOfferToBuyUnitEnabled } = require("%rGui/options/options/gameOptions.nut")
-let { curProfileRewardId } = require("%rGui/gameModes/newbieOfflineMissions.nut")
-let { getNodesReceiveInfo } = require("%rGui/unitsTree/unitNodesReceiveInfo.nut")
 
 
-let STEP_SELECT_NEXT_RESEARCH_DESCRIPTION = "s6_select_next_research_description"
-let STEP_PARTING_WORDS = "s9_tutorial_parting_words_research_unit"
 
-let FORCED_UNIT_PURCHASE_SKIP_DELAY_SEC = 10.0
+const STEP_SELECT_NEXT_RESEARCH_DESCRIPTION = "s6_select_next_research_description"
+const STEP_PARTING_WORDS = "s9_tutorial_parting_words_research_unit"
+
+const FORCED_UNIT_PURCHASE_SKIP_DELAY_SEC = 10.0
 
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let savedAutoOfferOption = mkWatched(persist, "savedAutoOfferOption", null)
@@ -60,12 +63,15 @@ let canBuyCurResearchUnit = Computed(function() {
   return canBuyUnit || (isResearched && !canBuy)
 })
 
+let needShowTutorialByAbTest = Computed(@() isFirstBattleRewardPart.get()
+  ? curProfileRewardId.get() == 0 && currentResearch.get() != null
+  : curResearchUnitStatus.get()
+      && canBuyCurResearchUnit.get()
+      && currentResearch.get() == null)
 let needShowTutorial = Computed(@() !isInSquad.get()
   && !isFinishedUnitsResearch.get()
   && hasGotFirstPredifinedReward.get()
-  && curResearchUnitStatus.get()
-  && canBuyCurResearchUnit.get()
-  && currentResearch.get() == null)
+  && needShowTutorialByAbTest.get())
 let canStartTutorial = Computed(@() !hasModalWindows.get()
   && isUnitsTreeAttached.get()
   && !isTutorialActive.get())
@@ -91,6 +97,36 @@ function forcedUnitPurchaseSkip() {
 function startTutorial() {
   if (lastResearchedUnit.get() != "" && curSelectedUnit.get() != lastResearchedUnit.get())
     curSelectedUnit.set(lastResearchedUnit.get())
+
+  let addSteps = []
+  if (isFirstBattleRewardPart.get()) {
+    if (curSelectedUnit.get() != "")
+      curSelectedUnit.set(visibleNodes.get().findvalue(@(v) v.reqUnits.contains(curSelectedUnit.get()))?.name ?? "")
+    addSteps.append(
+      {
+        id = "s1.2_open_unit_research_wnd"
+        text = loc("tutorial/unitsResearch/openUnitResearch")
+        objects = [{
+          keys = "open_unit_research_btn"
+          onClick = @() openBuyUnitResearchWnd(curSelectedUnit.get())
+        }]
+      },
+      {
+        id = "s1.3_buy_unit_research"
+        text = loc("tutorial/unitsResearch/buyUnitResearch")
+        objects = [{
+          keys = "buy_unit_research_btn",
+          function onClick() {
+            let unitName = curSelectedUnit.get()
+            let { exp = 0 } = unitsResearchStatus.get()?[unitName]
+            let { campaign = "", rank = 0 } = serverConfigs.get()?.allUnits[unitName]
+            let { nextLevelExp = 0 } = campConfigs.get()?.unitResearchLevels[campaign][rank - 1]
+            buy_unit_research(unitName, curCampaign.get(), 0, nextLevelExp - exp,
+              { id = "buyUnitResearch", unitName })
+          }
+        }]
+      })
+  }
 
   let availableResearchNodesObjects = []
   let availableSelectSlotsObjects = []
@@ -121,19 +157,7 @@ function startTutorial() {
   canOpenSelectUnitWithModal.set(false)
   needDelayAnimation.set(true)
 
-  setTutorialConfig({
-    id = TUTORIAL_UNITS_RESEARCH_ID
-    function onStepStatus(stepId, status) {
-      logFB($"{stepId}: {status}")
-      if (status == "tutorial_finished") {
-        markTutorialCompleted(TUTORIAL_UNITS_RESEARCH_ID)
-        if (savedAutoOfferOption.get() != null) {
-          isAllowAutoOfferToBuyUnitEnabled.set(savedAutoOfferOption.get())
-          savedAutoOfferOption.set(null)
-        }
-      }
-    }
-    steps = [
+  let steps = [
       {
         id = "s1_welcome_to_research_menu"
         hasNextKey = true
@@ -301,6 +325,23 @@ function startTutorial() {
         text = loc("tutorial_finish_research_unit")
       }
     ].filter(@(v) !v?.isOnlyWithSlots || isCampaignWithSlots.get())
+
+  foreach (idx, _ in addSteps)
+    steps.insert(1, addSteps[addSteps.len() - 1 - idx])
+
+  setTutorialConfig({
+    id = TUTORIAL_UNITS_RESEARCH_ID
+    function onStepStatus(stepId, status) {
+      logFB($"{stepId}: {status}")
+      if (status == "tutorial_finished") {
+        markTutorialCompleted(TUTORIAL_UNITS_RESEARCH_ID)
+        if (savedAutoOfferOption.get() != null) {
+          isAllowAutoOfferToBuyUnitEnabled.set(savedAutoOfferOption.get())
+          savedAutoOfferOption.set(null)
+        }
+      }
+    }
+    steps
   })
 }
 
@@ -324,8 +365,10 @@ register_command(function() {
     if (researchingUnitId == "")
       return dlog("Can't start tutorial after first battle: need researchingUnitId")  
 
-    let { reqExp = 0, exp = 0 } = unitsResearchStatus.get()?[researchingUnitId] ?? {}
-    add_player_exp(curCampaign.get(), reqExp - exp, "consolePrintResult")
+    if (!isFirstBattleRewardPart.get()) {
+      let { reqExp = 0, exp = 0 } = unitsResearchStatus.get()?[researchingUnitId] ?? {}
+      add_player_exp(curCampaign.get(), reqExp - exp, "consolePrintResult")
+    }
     needDelayAnimation.set(true)
     curSelectedUnit.set(researchingUnitId)
     openUnitsTreeAtUnit(researchingUnitId)
@@ -333,4 +376,4 @@ register_command(function() {
   }
   else
     finishTutorial()
-}, "debug.tutorial_after_first_ballte")
+}, "debug.tutorial_units_research")

@@ -1,30 +1,33 @@
 from "%globalsDarg/darg_library.nut" import *
+import "android.billing.huawei" as billingModule
+from "auth_wt" import registerHuaweiPurchase, YU2_WRONG_PAYMENT, YU2_ALREADY, YU2_OK
+from "dagor.localize" import doesLocTextExist
+from "dagor.system" import DBGLEVEL
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout, resetTimeout, clearTimer
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "json" import parse_json, object_to_json_string
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/iso8601.nut" import parse_duration
+from "%sqstd/math.nut" import round_by_value
+from "%sqstd/platform.nut" import is_pc
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/loginState.nut" import isAuthorized
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%appGlobals/pServer/campaign.nut" import campConfigs, activeOffers
+from "%appGlobals/permissions.nut" import can_debug_shop
+from "%appGlobals/yu2ErrCodes.nut" import getYu2CodeName, yu2BadConnectionCodes
+from "%rGui/notifications/logEvents.nut" import logFirebaseEventWithJson
+from "%rGui/shop/byPlatform/platformGoodsCommon.nut" import showRestorePurchasesDoneMsg
+from "%rGui/shop/checkPurchases.nut" import startSeveralCheckPurchases, severalCheckPurchasesOnActivate
+from "%rGui/shop/priceExt.nut" import getPriceExtStr
+from "types" import Integer, Array
+
+
 let logG = log_with_prefix("[GOODS] ")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
-let { doesLocTextExist } = require("dagor.localize")
-let { parse_json, object_to_json_string } = require("json")
-let { registerHuaweiPurchase, YU2_WRONG_PAYMENT, YU2_ALREADY, YU2_OK } = require("auth_wt")
-let { is_pc } = require("%sqstd/platform.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { round_by_value } = require("%sqstd/math.nut")
-let { parse_duration } = require("%sqstd/iso8601.nut")
-let { getYu2CodeName, yu2BadConnectionCodes } = require("%appGlobals/yu2ErrCodes.nut")
-let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
-let { isAuthorized } = require("%appGlobals/loginState.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { can_debug_shop } = require("%appGlobals/permissions.nut")
-let { startSeveralCheckPurchases, severalCheckPurchasesOnActivate } = require("%rGui/shop/checkPurchases.nut")
-let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
-let { showRestorePurchasesDoneMsg } = require("%rGui/shop/byPlatform/platformGoodsCommon.nut")
-let { DBGLEVEL } = require("dagor.system")
 
 let isDebugMode = is_pc
 let getDebugPriceMicros = @(sku) (sku.hash() % 1000) * 1000000 + ((sku.hash() / 7) % 1000000)
-let billingModule = require("android.billing.huawei")
 let { HMS_ORDER_STATE_SUCCESS, HMS_ORDER_STATE_FAILED, HMS_ORDER_STATE_DEFAULT_CODE, HMS_ORDER_STATE_CANCEL,
   HMS_ORDER_STATE_CALLS_FREQUENT, HMS_ORDER_STATE_NET_ERROR, HMS_ORDER_PRODUCT_OWNED
 } = billingModule
@@ -110,7 +113,7 @@ let availableSkusPrices = Computed(function() {
 
 let statusNames = {}
 foreach(id, val in billingModule)
-  if (type(val) == "integer" && id.startswith("HMS_"))
+  if (val instanceof Integer && id.startswith("HMS_"))
     statusNames[val] <- id
 let getStatusName = @(status) statusNames?[status] ?? status
 
@@ -129,7 +132,7 @@ eventbus_subscribe("android.billing.huawei.onInitAndDataRequested", function(res
   if (status != HMS_ORDER_STATE_SUCCESS)
     return
   let info = parse_json(value)
-  if (type(info) != "array") {
+  if (!(info instanceof Array)) {
     logerr($"Bad format of android.billing.huawei.onInitAndDataRequested: type of parsed value is {type(info)}")
     return
   }

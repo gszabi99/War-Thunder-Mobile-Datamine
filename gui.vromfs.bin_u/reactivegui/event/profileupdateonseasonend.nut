@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { frnd } = require("dagor.random")
-let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { get_profile } = require("%appGlobals/pServer/pServerApi.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { allSpecialEvents, eventEndsAt } = require("%rGui/event/eventState.nut")
+from "dagor.random" import frnd
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/pServerApi.nut" import get_profile
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/event/eventState.nut" import allSpecialEvents, eventEndsAt
 
 
-let MAX_UPDATE_DELAY = 60.0
+const MAX_UPDATE_DELAY = 60.0
 let nextTime = Watched({ time = 0 }) 
 
 function updateTime() {

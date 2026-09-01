@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { check_new_personal_goods, personalGoodsInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { isLoggedIn, isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
-let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
-let { SC_FEATURED, SC_SPECIAL } = require("%rGui/shop/shopConst.nut")
-let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import isDataBlock, eachParam
+from "%sqstd/underscore.nut" import prevIfEqual
+from "%appGlobals/clientState/clientState.nut" import isInMenu
+from "%appGlobals/loginState.nut" import isLoggedIn, isSettingsAvailable
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import check_new_personal_goods, personalGoodsInProgress
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid, getServerTime
+import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
+from "%rGui/shop/shopConst.nut" import SC_FEATURED, SC_SPECIAL
 
 
-let SEEN_PERSONAL_GOODS = "seenPersonalGoods"
+const SEEN_PERSONAL_GOODS = "seenPersonalGoods"
 let seenPerosnalGoods = mkWatched(persist, "seenPersonalGoods", {})
 
 let personalGoodsCfg = Computed(@() serverConfigs.get()?.personalGoodsCfg ?? {})

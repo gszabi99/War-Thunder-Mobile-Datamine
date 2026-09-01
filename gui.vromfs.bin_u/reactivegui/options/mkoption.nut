@@ -1,18 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { ceil } = require("%sqstd/math.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { contentWidth } = require("%rGui/options/optionsStyle.nut")
-let { sliderWithButtons, sliderValueSound } = require("%rGui/components/slider.nut")
-let listbox = require("%rGui/components/listbox.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
-let { infoGreyButton, infoTooltipButton } = require("%rGui/components/infoButton.nut")
-let { resetTimeout } = require("dagor.workcycle")
-let { mkOvrTooltipContent } = require("%rGui/options/tooltipCtors.nut")
+from "dagor.workcycle" import resetTimeout
+from "%sqstd/math.nut" import ceil
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/infoButton.nut" import infoGreyButton, infoTooltipButton
+import "%rGui/components/listbox.nut" as listbox
+from "%rGui/components/slider.nut" import sliderWithButtons, sliderValueSound
+from "%rGui/components/textButton.nut" import textButtonCommon
+from "%rGui/options/optionsStyle.nut" import contentWidth
+from "%rGui/options/tooltipCtors.nut" import mkOvrTooltipContent
+from "types" import Function, Array
 
 
-let listMinWidth = hdpx(200)
-let listMaxWidth = hdpx(600)
+const listMinWidth = hdpx(200)
+const listMaxWidth = hdpx(600)
 let columnsMin = max(1, ceil(contentWidth / listMaxWidth).tointeger())
 let columnsMax = max((contentWidth / listMinWidth).tointeger(), columnsMin)
 
@@ -34,7 +35,7 @@ function mkHeader(header, child) {
     gap = hdpx(10)
     children = [
       {
-        pos = [hdpx(-70), 0]
+        pos = const [hdpx(-70), 0]
         children = child
       }
       textComp
@@ -44,7 +45,7 @@ function mkHeader(header, child) {
 
 let mkTooltipContentCtor = @(title, desc) @() "\n".concat(
   colorize("@darken", title),
-  type(desc) == "function" ? desc() : desc
+  desc instanceof Function ? desc() : desc
 )
 
 let optBlock = @(header, content, openInfo, desc, locId, tooltipCtorId, ovr = {}) {
@@ -74,7 +75,7 @@ let optionCtors = {
       ? { watch = isVisibleW }
       : {
           watch = isVisibleW
-          padding = [0, 0, hdpx(20)]
+          padding = const [0, 0, hdpx(20)]
           children = sliderWithButtons(value, loc(locId),
             setValue == null && onChangeValue == null ? ctrlOverride
               : ctrlOverride.__merge({
@@ -135,7 +136,7 @@ let optionCtors = {
           hplace = ALIGN_LEFT
           margin = const [hdpx(30), 0]
           children = textButtonCommon(utf8ToUpper(loc(locId)), onClick,
-            { childOvr = { size = [hdpx(430), SIZE_TO_CONTENT] } })
+            { childOvr = { size = const [hdpx(430), SIZE_TO_CONTENT], halign = ALIGN_CENTER } })
         }
   }
 }
@@ -152,7 +153,7 @@ function mkOptionImpl(opt) {
 }
 
 function mkOption(opt) {
-  if (type(opt) == "array")
+  if (opt instanceof Array)
     return {
       flow = FLOW_HORIZONTAL
       gap = hdpx(30)

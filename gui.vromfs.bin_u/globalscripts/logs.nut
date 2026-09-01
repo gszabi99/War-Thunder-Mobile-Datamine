@@ -1,9 +1,10 @@
+from "types" import Function
 let { Watched } = require("frp")
 let { tostring_r } = require("%sqstd/string.nut")
 
 let log = require("%sqstd/log.nut")([
   {
-    compare = @(val) type(val) == "instance" && type(val?.formatAsString) == "function"
+    compare = @(val) type(val) == "instance" && val?.formatAsString instanceof Function
     tostring = @(val) val.formatAsString()
   }
   {

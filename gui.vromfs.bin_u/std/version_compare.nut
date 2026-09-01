@@ -1,9 +1,10 @@
 from "dagor.debug" import logerr
 from "string.nut" import startsWith, toIntegerSafe
+from "types" import String
 
 let maskAny = const { x = true, X = true, ["*"] = true }
 
-let arrToInt = @(list) list.reduce(@(res, val)
+let arrToInt = @(list): int list.reduce(@(res, val)
   (res << 16) + toIntegerSafe(val), 0)
 
 let typeMap = [
@@ -16,7 +17,7 @@ let typeMap = [
   ["",        @(a, b) b == a],
 ]
 
-function checkVersion(verWildcard, verCurrent, compFn) {
+function checkVersion(verWildcard, verCurrent, compFn: function) {
   if (arrToInt(verCurrent) == 0)
     return true
 
@@ -48,7 +49,7 @@ function stripVerCondition(str) {
 }
 
 function check_version_impl(vermask, game_version) {
-  if (type(vermask) != "string" || type(game_version) != "string") {
+  if (!(vermask instanceof String) || !(game_version instanceof String)) {
     logerr($"Try to call check_version with not string parameters. (vermask = {vermask}, game_version = {game_version})")
     return false
   }

@@ -1,8 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { is_android, is_pc, is_ios } = require("%sqstd/platform.nut")
-let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { attachedAdsButtons } = require("%rGui/ads/adsInternalState.nut")
+from "%sqstd/platform.nut" import is_android, is_pc, is_ios
+from "%appGlobals/clientState/clientState.nut" import isInMenu
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/ads/adsInternalState.nut" import attachedAdsButtons
+
+
 let debugAs = require("dagor.system").get_arg_value_by_name("debugAs")
 let {
   isAdsAvailable = Watched(false),

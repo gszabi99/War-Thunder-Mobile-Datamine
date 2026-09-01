@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+from "eventbus" import eventbus_subscribe
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+
 
 eventbus_subscribe("bigQueryAddMissionRecord", function(data) {
   log($"[MISSION_BQ] {data?.event}")

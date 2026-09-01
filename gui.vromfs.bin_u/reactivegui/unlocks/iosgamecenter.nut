@@ -1,11 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { signInGC, isSignedInGC, submitAchievement, loadAchievements, getAchievementById, showGameCenter
-  APPLE_GC_SUCCESS, APPLE_GC_SHOW_ACHIEVMENTS
-} = require("ios.gamecenter")
-let { eventbus_subscribe } = require("eventbus")
-let { parse_json } = require("json")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { has_game_center } = require("%appGlobals/permissions.nut")
+from "eventbus" import eventbus_subscribe
+from "ios.gamecenter" import signInGC, isSignedInGC, submitAchievement, loadAchievements, getAchievementById,
+  showGameCenter, APPLE_GC_SUCCESS, APPLE_GC_SHOW_ACHIEVMENTS
+from "json" import parse_json
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/permissions.nut" import has_game_center
 
 
 let achievementsToUnlockCached = mkWatched(persist, "achievementsToUnlockCached", {})

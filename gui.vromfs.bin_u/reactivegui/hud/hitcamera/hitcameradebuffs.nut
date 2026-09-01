@@ -1,19 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { SHIP, BOAT } = require("%appGlobals/unitConst.nut")
-let { hcUnitType, hcInfo, hcDamageStatus } = require("%rGui/hud/hitCamera/hitCameraState.nut")
-let { hudWhiteColor, hudCoralRedColor, hudGoldColor } = require("%rGui/style/hudColors.nut")
+from "%appGlobals/unitConst.nut" import SHIP, BOAT
+from "%globalsDarg/fontScale.nut" import getScaledFont
+from "%rGui/hud/hitCamera/hitCameraState.nut" import hcUnitType, hcInfo, hcDamageStatus
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudCoralRedColor, hudGoldColor
 
-let iconSize = hdpxi(30)
 
-let HIDDEN = -1
-let HEALTHY = 0
-let GOOD = 1
-let CRITICAL = 2
-let KILLED = 3
-let OFF = 4
+const iconSize = hdpxi(30)
 
-let defIconColor = 0xA0A0A0A0
+const HIDDEN = -1
+const HEALTHY = 0
+const GOOD = 1
+const CRITICAL = 2
+const KILLED = 3
+const OFF = 4
+
+const defIconColor = 0xA0A0A0A0
 let iconColor = {
   [KILLED] = hudCoralRedColor,
   [OFF] = 0x500C0E11,

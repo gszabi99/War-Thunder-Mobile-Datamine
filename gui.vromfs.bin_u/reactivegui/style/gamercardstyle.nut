@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let avatarSize       = hdpx(96)
-let profileGap       = hdpx(45)
-let levelHolderSize  = hdpx(60)
+const avatarSize       = hdpx(96)
+const profileGap       = hdpx(45)
+const levelHolderSize  = hdpx(60)
 
 return {
   avatarSize

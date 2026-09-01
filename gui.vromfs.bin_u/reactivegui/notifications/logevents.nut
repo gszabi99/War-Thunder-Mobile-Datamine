@@ -1,29 +1,31 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { is_ios, is_android } = require("%sqstd/platform.nut")
+from "adjust" import logAdjustEvent
+from "android.account.fb" import logEventFB
+from "app" import get_cur_circuit_name
+from "blkGetters" import get_common_local_settings_blk, get_local_custom_settings_blk
+from "console" import register_command
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "json" import object_to_json_string
+from "matching.errors" import INVALID_USER_ID
+from "platform" import get_platform_string_id
+import "regexp2" as regexp2
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/platform.nut" import is_ios, is_android
+from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
+from "%appGlobals/profileStates.nut" import myUserId
+from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
+
+
 let { logEvent, setAppsFlyerCUID, setUserEmail = @(_) null } = require("appsFlyer")
-let { logAdjustEvent } = require("adjust")
-let { logEventFB } = require("android.account.fb")
 let { setBillingUUID = @(_) null } = is_ios ? require("ios.billing.appstore") : {}
-let { INVALID_USER_ID } = require("matching.errors")
-let { object_to_json_string } = require("json")
-let { get_common_local_settings_blk, get_local_custom_settings_blk } = require("blkGetters")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { getLogin = @() "" } = require("auth_wt")
 let { sha256 = @(_) "" } =  require("hash")
-let regexp2 = require("regexp2")
 let {
   logFirebaseEvent = @(_) null ,
   logFirebaseEventWithJson = @(_,__) null ,
   setFirebaseUID = @(_) null
   getFirebaseAppInstanceId = @() null
 }  = is_android ? require_optional ("android.firebase.analytics") : is_ios ? require_optional ("ios.firebase.analytics") : {}
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { myUserId } = require("%appGlobals/profileStates.nut")
-let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
-let { get_cur_circuit_name } = require("app")
-let { get_platform_string_id } = require("platform")
 
 const FIRST_LOGIN_EVENT = "first_login_event"
 const STATS_SENT = "statsSent"
@@ -47,7 +49,7 @@ function convertToSha256Email(login) {
   return login
 }
 
-let function sendFirebaseAppInstanceBq() {
+function sendFirebaseAppInstanceBq() {
   if (myUserId.get() != storedUserIdForFirebase.get()) {
     storedUserIdForFirebase.set(myUserId.get())
     sendCustomBqEvent("firebase_info_1", {

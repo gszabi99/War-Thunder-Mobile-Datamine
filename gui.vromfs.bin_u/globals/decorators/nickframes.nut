@@ -200,6 +200,9 @@ let nickFrames = {
   oni_mask_s36 = @(n) $"⌖{n}⌖"
   kunai_s36 = @(n) $"⌗{n}⌘"
   war_fan_s36 = @(n) $"⌙{n}⌚"
+  binocular_s37 = @(n) $"⌛{n}⌛"
+  propeller_s37 = @(n) $"⌜{n}⌜"
+  black_hole_s37 = @(n) $"⌝{n}⌞"
   snail_cake_bday_26 = @(n) $"⊣{n}⊤"
   medal_three_bday_26 = @(n) $"⊥{n}⊥"
 }

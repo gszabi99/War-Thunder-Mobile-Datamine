@@ -1,42 +1,43 @@
 from "%globalsDarg/darg_library.nut" import *
-let { clearTimer, setInterval } = require("dagor.workcycle")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let scrollbar = require("%rGui/components/scrollbar.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { formatText, selectorBtnW, formatters, filterFormat } = require("%rGui/news/textFormatters.nut")
-let { isNewsWndOpened, curArticleId, curArticleIdx, playerSelectedArticleId, nextArticle, prevArticle,
-  newsfeed, curArticleContent, articlesPerPage, pagesCount, curPageIdx,
-  unreadArticles, markCurArticleSeen, closeNewsWnd, curNewsStyle, fontsCfg
-} = require("%rGui/news/newsState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
-let { headerGradientWithRightBlock, headerHeightInSafeArea } = require("%rGui/components/gradientDefComps.nut")
-let { tabBgColor } = require("%rGui/style/stdColors.nut")
+from "dagor.workcycle" import clearTimer, setInterval
+from "%sqstd/string.nut" import utf8ToUpper
+import "%darg/helpers/mkFormatAst.nut" as mkFormatAst
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock, headerHeightInSafeArea
+from "%rGui/components/mkDropDownMenu.nut" import mkDropMenuBtn
+import "%rGui/components/scrollbar.nut" as scrollbar
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/navState.nut" import registerScene
+from "%rGui/news/newsState.nut" import isNewsWndOpened, curArticleId, curArticleIdx, playerSelectedArticleId,
+  nextArticle, prevArticle, newsfeed, curArticleContent, articlesPerPage, pagesCount, curPageIdx, unreadArticles,
+  markCurArticleSeen, closeNewsWnd, curNewsStyle, fontsCfg
+from "%rGui/news/textFormatters.nut" import formatText, selectorBtnW, formatters, filterFormat
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import tabBgColor
 
-let textColor = 0xFFFFFFFF
-let tagRedColor = 0xC8C80000
 
-let btnActive = 0xFFCFCFCF
-let btnHovActive = 0xFFFFFFFF
-let activeTextColor = 0xFF333333
+const textColor = 0xFFFFFFFF
+const tagRedColor = 0xC8C80000
+
+const btnActive = 0xFFCFCFCF
+const btnHovActive = 0xFFFFFFFF
+const activeTextColor = 0xFF333333
 
 let scrollHandler = ScrollHandler()
-let scrollStep = hdpx(75)
-let selectorBtnH = hdpx(110)
-let selectorBtnMinGap = hdpx(10)
+const scrollStep = hdpx(75)
+const selectorBtnH = hdpx(110)
+const selectorBtnMinGap = hdpx(10)
 let selectorBtnGap = Watched(selectorBtnMinGap)
-let selectorImgSize = hdpxi(92)
+const selectorImgSize = hdpxi(92)
 
 let scrollWatch = Watched(0)
 let moreInfoUrl = $"https://wtmobile.com/{loc("current_lang")}"
 
-let pagesStripW = hdpx(11)
-let pagesStripGap = hdpx(30)
-let pageH = hdpx(100)
+const pagesStripW = hdpx(11)
+const pagesStripGap = hdpx(30)
+const pageH = hdpx(100)
 
 function mkPage(startArticleIdx, isSelected) {
   let stateFlags = Watched(0)
@@ -74,10 +75,10 @@ function pagesStrip() {
   }
 }
 
-let newMarkH = hdpxi(28)
+const newMarkH = hdpxi(28)
 let newMarkTexOffs = [ 0, newMarkH / 2, 0, newMarkH / 10 ]
 let newMark = {
-  size  = [ SIZE_TO_CONTENT, newMarkH ]
+  size  = const [ SIZE_TO_CONTENT, newMarkH ]
   rendObj = ROBJ_9RECT
   image = Picture($"ui/gameuiskin#tag_popular.svg:{newMarkH}:{newMarkH}:P")
   screenOffs = newMarkTexOffs
@@ -92,10 +93,10 @@ let newMark = {
   }.__update(fontVeryTinyShaded)
 }
 
-let pinIconSize = hdpxi(20)
+const pinIconSize = hdpxi(20)
 let pinIcon = {
   rendObj = ROBJ_IMAGE
-  size = [pinIconSize, pinIconSize]
+  size = const [pinIconSize, pinIconSize]
   hplace = ALIGN_RIGHT
   margin = hdpx(5)
   image = Picture($"ui/gameuiskin#pin.svg:{pinIconSize}:{pinIconSize}:P")
@@ -105,7 +106,7 @@ let pinIcon = {
 
 let thumbMaskPic = Picture($"ui/gameuiskin#circle.svg:{selectorImgSize}:{selectorImgSize}:P")
 let mkThumbnailImg = @(thumb) {
-  size = [selectorImgSize, selectorImgSize]
+  size = const [selectorImgSize, selectorImgSize]
   rendObj = ROBJ_MASK
   image = thumbMaskPic
   children = {
@@ -262,7 +263,6 @@ let articleLoading = freeze({
     spinner
   ]
 })
-let mkFormatAst = require("%darg/helpers/mkFormatAst.nut")
 let mkArticleTitle = @(title) {
   behavior = Behaviors.TextArea
   rendObj = ROBJ_TEXTAREA

@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
-let { isInSquad, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
-let { getModeAddonsInfo, allBattleUnits, missingUnitResourcesByRank, maxReleasedUnitRanks
-} = require("%appGlobals/updater/gameModeAddons.nut")
-let { gameModeQueueGroups, getGameModeQueueGroup } = require("%appGlobals/gameModes/gameModes.nut")
-let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
+from "%appGlobals/gameModes/gameModes.nut" import gameModeQueueGroups, getGameModeQueueGroup
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/squadState.nut" import isInSquad, squadLeaderCampaign
+from "%appGlobals/updater/addonsState.nut" import hasAddons, unitSizes
+from "%appGlobals/updater/gameModeAddons.nut" import getModeAddonsInfo, allBattleUnits, missingUnitResourcesByRank,
+  maxReleasedUnitRanks
+from "%rGui/gameModes/gameModeState.nut" import randomBattleMode
 
 
 let EMPTY_ADDONS_INFO = freeze({ addons = [], units = [] })

@@ -50,16 +50,6 @@ class InterfaceMacro : AstStructureAnnotation {
 [structure_macro(name="implements")]
 class ImplementsMacro : AstStructureAnnotation {
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         if (length(args) != 1) {
             errors := "implements macro takes exactly one argument"
@@ -112,10 +102,9 @@ class ImplementsMacro : AstStructureAnnotation {
         }
         add_function(st._module, fn_get_i)
         
-        
         if (is_const_interface(parent)) {
             var fn_get_i_const = qmacro_method(iface_get_name_func, st) $(self : $t(st) ==const) : $t(iface_ptr) {
-                var pS = unsafe(reinterpret<$t(st)? -const>(addr(self)))
+                var pS = unsafe(addr<$t(st)? -const>(self))
                 if (pS.$f(iface_var_name) == null) {
                     pS.$f(iface_var_name) = new <$t(cls)>(pS)
                 }
@@ -143,17 +132,11 @@ class ImplementsMacro : AstStructureAnnotation {
             qmacro(@@ < (var self : $t(st)) : $t(iface_ptr) > $i(iface_get_name_func))
         )
         
-        
-        
-        
-        
-        
         var cur_ancestor = parent.parent
         while (cur_ancestor != null) {
             if (is_interface_struct(cur_ancestor)) {
                 let anc_name = string(cur_ancestor.name)
                 let anc_get_name = "get`{anc_name}"
-                
                 
                 var already_exists = false
                 for (efld in st.fields) {
@@ -164,12 +147,10 @@ class ImplementsMacro : AstStructureAnnotation {
                 }
                 if (!already_exists) {
                     
-                    
                     var anc_struct <- compiling_program() |> find_unique_structure(anc_name)
                     if (anc_struct != null) {
                         let anc_get_func = "{st.name}`{anc_get_name}"
                         var anc_ptr = qmacro_type(type<$t(anc_struct)?>)
-                        
                         
                         var fn_anc = qmacro_method(anc_get_func, st) $(var self : $t(st)) : $t(anc_ptr) {
                             return $c(iface_get_name_func)(self)
@@ -224,8 +205,6 @@ class ImplementsMacro : AstStructureAnnotation {
                             ret_type  = clone_type(cm._type.firstType)
                         } else {
                             
-                            
-                            
                             let iface_func_name = "{iface_name}`{method_name}"
                             var ifn = find_unique_function(parent._module, iface_func_name, true)
                             if (ifn == null) {
@@ -260,10 +239,6 @@ class ImplementsMacro : AstStructureAnnotation {
     }
 
     
-    
-    
-    
-    
     def override finish(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         
         var iface_name : string
@@ -280,7 +255,6 @@ class ImplementsMacro : AstStructureAnnotation {
         let missing = build_string() $(var w) {
             for (ifld in iface.fields) {
                 let ifld_name = string(ifld.name)
-                
                 
                 if (ifld_name == "__rtti" || ifld_name == "__finalize"
                         || !ifld._type.isFunction
@@ -311,7 +285,6 @@ class ImplementsMacro : AstStructureAnnotation {
 
 def private is_const_interface(st : Structure?) : bool {
     
-    
     if (st == null) return false
     for (fld in st.fields) {
         let fn = string(fld.name)
@@ -338,67 +311,23 @@ def private is_interface_struct(st : Structure?) : bool {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 [variant_macro(name="InterfaceAsIs")]
 class InterfaceAsIs : AstVariantMacro {
     
-    
-    
-    
-    
-    
 
-    
-    
-    
-    
-    
-    
     
     def override visitExprIsVariant(prog : ProgramPtr; mod : Module?; expr : ExprIsVariant?) : ExpressionPtr {
         
-        
-        
-        
         assume vtype = expr.value._type
         if (!(vtype.isPointer && vtype.firstType != null && vtype.firstType.isStructure)) return null
-        
-        
-        
         
         let iname = string(expr.name)
         var tgt = prog |> find_unique_structure(iname)
         if (tgt == null || !is_interface_struct(tgt)) return null
         
-        
-        
-        
         let getter_field = "get`{iname}"
         var st = vtype.firstType.structType
         for (fld in st.fields) {
-            
             
             if (fld.name == getter_field) return <- quote(true)
         }
@@ -406,14 +335,6 @@ class InterfaceAsIs : AstVariantMacro {
         return <- quote(false)
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
     
     def override visitExprAsVariant(prog : ProgramPtr; mod : Module?; expr : ExprAsVariant?) : ExpressionPtr {
         
@@ -428,27 +349,15 @@ class InterfaceAsIs : AstVariantMacro {
         for (fld in st.fields) {
             if (fld.name == getter_field) {
                 
-                
                 let func_name = "{st.name}`get`{iname}"
-                
-                
                 
                 return <- qmacro($c(func_name)(*$e(expr.value)))
             }
         }
         
-        
         return null
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
     
     def override visitExprSafeAsVariant(prog : ProgramPtr; mod : Module?; expr : ExprSafeAsVariant?) : ExpressionPtr {
         
@@ -464,7 +373,6 @@ class InterfaceAsIs : AstVariantMacro {
             if (fld.name == getter_field) {
                 
                 let func_name = "{st.name}`get`{iname}"
-                
                 
                 return <- qmacro($e(expr.value) != null ? $c(func_name)(*$e(expr.value)) : null)
             }

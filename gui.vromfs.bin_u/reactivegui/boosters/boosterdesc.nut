@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { addModalWindowWithHeader, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
+from "%rGui/components/currencyComp.nut" import mkCurrencyImage
+from "%rGui/components/modalWindows.nut" import addModalWindowWithHeader, removeModalWindow
 
-let boosterDescUid = "booster_desc_wnd_uid"
+
+const boosterDescUid = "booster_desc_wnd_uid"
 let close = @() removeModalWindow(boosterDescUid)
 
 let rewardInfo = @(bst) {
@@ -28,7 +29,7 @@ let rewardInfo = @(bst) {
 }
 
 let content = @(bst) {
-  size = [hdpx(1000), SIZE_TO_CONTENT]
+  size = const [hdpx(1000), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   behavior = Behaviors.Button
   onClick = close

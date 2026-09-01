@@ -2511,7 +2511,7 @@
       "minRPM": 1250.0
     },
     "mechanics": {
-      "maxBrakeForce": 230000.0,
+      "maxBrakeForce": 280000.0,
       "driveGearRadius": 0.315,
       "mainGearRatio": 1.0,
       "sideGearRatio": 6.3,

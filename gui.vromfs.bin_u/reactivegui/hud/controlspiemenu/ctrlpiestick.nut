@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkMiniStick, stickHeadSize } = require("%rGui/hud/miniStick.nut")
-let { isCtrlPieStickActive, ctrlPieStickDelta, isCtrlPieItemsEnabled } = require("%rGui/hud/controlsPieMenu/ctrlPieState.nut")
-let { STICK } = require("%rGui/hud/stickState.nut")
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
+from "%rGui/hud/controlsPieMenu/ctrlPieState.nut" import isCtrlPieStickActive, ctrlPieStickDelta, isCtrlPieItemsEnabled
+from "%rGui/hud/miniStick.nut" import mkMiniStick, stickHeadSize
+from "%rGui/hud/stickState.nut" import STICK
+from "%rGui/style/hudColors.nut" import hudWhiteColor
+
 
 let stickHeadIconSize = 2 * (stickHeadSize / 4.0 + 0.5).tointeger()
 

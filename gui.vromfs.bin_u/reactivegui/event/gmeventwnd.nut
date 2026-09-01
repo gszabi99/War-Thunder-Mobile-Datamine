@@ -2,23 +2,20 @@ from "%globalsDarg/darg_library.nut" import *
 from "eventbus" import eventbus_send
 from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
 from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
-from "%appGlobals/userstats/serverTime.nut" import serverTime
-from "%appGlobals/timeToText.nut" import secondsToHoursLoc
 from "%rGui/components/buttonStyles.nut" import defButtonMinWidth
 from "%rGui/event/gmEventState.nut" import curGmList, openedGmEventId, gmEventEndsAt
 from "%rGui/mainMenu/toBattleButton.nut" import mkToBattleButtonWithSquadManagement
 import "%rGui/queue/queuePenaltyWnd.nut" as tryOpenQueuePenaltyWnd
 import "%rGui/squad/squadPanel.nut" as squadPanel
-from "%rGui/style/gradients.nut" import simpleHorGrad
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 import "%rGui/components/panelBg.nut" as panelBg
+from "%rGui/components/timerBlock.nut" import mkTimerBlock
 
 
-let headerGap = hdpx(30)
+const headerGap = hdpx(30)
 let txtWidth = defButtonMinWidth + saBorders[0] * 2
-let txtPaddingV = hdpx(20)
+const txtPaddingV = hdpx(20)
 let txtPaddingH = saBorders[0] / 2
-let iconTimerSize = hdpxi(30)
 
 let curGameMode = Computed(@() curGmList.get()?[0])
 
@@ -53,7 +50,7 @@ let txtBlock = @() {
 
 let footer = @() {
   watch = curGameMode
-  size = [FLEX, SIZE_TO_CONTENT]
+  size = const [FLEX, SIZE_TO_CONTENT]
   valign = ALIGN_BOTTOM
   vplace = ALIGN_BOTTOM
   children = curGameMode.get() == null ? null
@@ -91,48 +88,13 @@ let footer = @() {
       ]
 }
 
-function timerBlock() {
-  let timeText = Computed(function() {
-    let timeLeft = gmEventEndsAt.get() - serverTime.get()
-    return timeLeft > 0 ? secondsToHoursLoc(timeLeft) : ""
-  })
-
-  return {
-    watch = timeText
-    pos = [-(saBorders[0]), 0]
-    children = timeText.get() == "" ? null
-      : {
-          rendObj = ROBJ_IMAGE
-          image = simpleHorGrad
-          color = 0x80000000
-          flipX = true
-          padding = [hdpx(5), saBorders[0], hdpx(5), saBorders[0]]
-          flow = FLOW_HORIZONTAL
-          valign = ALIGN_CENTER
-          gap = hdpx(10)
-          children = [
-            {
-              rendObj = ROBJ_IMAGE
-              size = iconTimerSize
-              image = Picture($"ui/gameuiskin#timer_icon.svg:{iconTimerSize}:P")
-              keepAspect = true
-            }
-            {
-              rendObj = ROBJ_TEXT
-              text = timeText.get()
-            }.__update(fontTinyAccented)
-          ]
-        }
-  }
-}
-
 let gmEventWnd = {
   size = FLEX
   padding = [0, saBordersRv[1], saBordersRv[0], saBordersRv[1]]
 
   gap = headerGap
   children = [
-    timerBlock
+    mkTimerBlock(gmEventEndsAt)
     footer
   ]
   animations = wndSwitchAnim

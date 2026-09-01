@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hoverColor, textColor } = require("%rGui/style/stdColors.nut")
+from "%rGui/style/stdColors.nut" import hoverColor, textColor
 
-let mkIconBtn = @(path, size, stateFlags, color = textColor) @() {
+
+let mkIconBtn = @(path, size, stateFlags = Watched(0), color = textColor) @() {
   watch = stateFlags
-  size = array(2, size)
+  size = size
   rendObj = ROBJ_IMAGE
   image = Picture($"{path}:{size}:{size}:P")
   color = stateFlags.get() & S_HOVER ? hoverColor : color

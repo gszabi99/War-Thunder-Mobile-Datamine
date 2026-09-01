@@ -42,6 +42,10 @@ var private seen_function_labels : table<string; uint>
 
 
 
+var private pageless_ref_modules : table<string>
+
+
+
 
 var private nosearch_symbols : table<string>
 
@@ -66,6 +70,16 @@ def module_name(mod) {
         if (mn == src) return dst
     }
     return mn
+}
+
+def public mark_module_pageless(name : string) {
+    
+    
+    pageless_ref_modules |> insert(name)
+}
+
+def has_ref_page(mod) : bool {
+    return !key_exists(pageless_ref_modules, module_name(mod))
 }
 
 def alias_label_name(td : TypeDeclPtr) {
@@ -200,7 +214,6 @@ def function_label_name(value : FunctionPtr) {
     let mn = function_short_mangled_name(value)
     let res = "function-{safe_function_name(mn)}"
     
-    
     if (group_function_overloads) {
         var is_generic = false
         for (arg in value.arguments) {
@@ -210,11 +223,8 @@ def function_label_name(value : FunctionPtr) {
             }
         }
         
-        
-        
         if (is_generic || value.flags.isClassMethod) return "{res}_{value.at.line}"
     }
-    
     
     let lower_res = to_lower(res)
     if (key_exists(seen_function_labels, lower_res)) {
@@ -263,7 +273,7 @@ def cleanup_type_short(name : string) {
     return res
 }
 
-def describe_type_short(td : TypeDeclPtr) {
+def describe_type_short(td : TypeDeclPtr) { 
     if (td == null) {
         PANIC("describe_type_short: null type")
     }
@@ -378,15 +388,20 @@ def rst_describe_function_short(func : FunctionPtr) {
         }
     }
 
-    var res = "{function_name(func)} ({join(args,"; ")})"
+    
+    var fname = function_name(func)
+    if (fname |> ends_with("_")) {
+        fname = slice(fname, 0, -1) + "\\_"
+    }
+    var res = "{fname} ({join(args,"; ")})"
     if (func.result != null && func.result.baseType != Type.tVoid) {
         res = "{res} : {describe_type_short(func.result)}"
     }
     return res
 }
 
-def describe_type(td : TypeDecl?) {
-    return build_string() $(var writer) {
+def describe_type(td : TypeDecl?) { 
+    return build_string() $(var writer) { 
         if (!empty(td.alias) && !td.isAuto && !td.isAlias) {
             write(writer, make_ref(alias_label_name(td), string(td.alias)))
             return
@@ -404,7 +419,6 @@ def describe_type(td : TypeDecl?) {
                 write(writer, "({td.alias})")
             }
         } elif (baseType == Type.tFixedArray) {
-            
             
             var elemT = clone_type(td)
             while (elemT.baseType == Type.tFixedArray && elemT.firstType != null) {
@@ -439,18 +453,24 @@ def describe_type(td : TypeDecl?) {
                 write(writer, ",")
                 write(writer, parts[2])
                 write(writer, ">")
-            } else {
+            } elif (has_ref_page(td.annotation._module)) {
                 write(writer, make_ref(handle_label_name(td.annotation), "{td.annotation.name}"))
+            } else {
+                write(writer, "{td.annotation.name}")
             }
         } elif (baseType == Type.tStructure) {
-            write(writer, make_ref(struct_label_name(td.structType), "{td.structType.name}"))
+            if (has_ref_page(td.structType._module)) {
+                write(writer, make_ref(struct_label_name(td.structType), "{td.structType.name}"))
+            } else {
+                write(writer, "{td.structType.name}")
+            }
         } elif (baseType == Type.tEnumeration || baseType == Type.tEnumeration8 || baseType == Type.tEnumeration16 || baseType == Type.tEnumeration64) {
-            write(writer, make_ref(enum_label_name(td.enumType), "{td.enumType.name}"))
+            if (has_ref_page(td.enumType._module)) {
+                write(writer, make_ref(enum_label_name(td.enumType), "{td.enumType.name}"))
+            } else {
+                write(writer, "{td.enumType.name}")
+            }
         }
-        
-        
-        
-        
         
         elif (baseType == Type.tPointer) {
             if (td.flags.smartPtr) {
@@ -575,7 +595,6 @@ def describe_type(td : TypeDecl?) {
         } else {
             write(writer, das_to_string(baseType))
         }
-        
         
         if (td.flags.ref) {
             write(writer, "\\ &")
@@ -719,26 +738,6 @@ def make_table_(tab : array<array<string>>; withHeader : bool = false) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def is_handmade(mod : Module?) {
     
     let builtins = [
@@ -863,7 +862,6 @@ def document_topic(header : string; doc_file : file; topic, content : string imp
                 got--
             }
             let expected = length(tab) - 1
-            
             
             let minLines = handmade ? expected + 1 : expected
             if (got < minLines) {
@@ -1051,8 +1049,6 @@ def document_global_constant(doc_file : file; mod : Module?; value : VariablePtr
 def private is_global_constant(value : VariablePtr) {
     if (value.flags.private_variable || !value._type.flags.constant || value.flags.bitfield_constant) return false
     
-    
-    
     return !(value.init == null)
 }
 
@@ -1234,9 +1230,6 @@ def document_struct_method(doc_file : file; mod : Module?; value; var func) {
     var args <- document_function_arguments(doc_file, argNames, argTypes, 1)
 
     
-    
-    
-    
     let hash_drop = is_static ? 0 : 1
     let mn = build_string() $(var w) {
         w |> write(fname)
@@ -1281,7 +1274,7 @@ def is_class_method(value; fld : FieldDeclaration&) {
 }
     
 
-def document_classes(doc_file : file; mods : array<Module?>) {
+def document_classes(doc_file : file; mods : array<Module?>) { 
     var any = false
     for (mod in mods) {
         if (any) break
@@ -1351,7 +1344,8 @@ def document_classes(doc_file : file; mods : array<Module?>) {
             var first = true
             var annT = new TypeDecl(baseType = Type.tStructure, structType = value)
             for_each_function(mod, "") $(func) {
-                if (func.flags.isClassMethod && func.classParent == value && func.name == value.name && !is_trivial_ctor(func)) {
+                
+                if (func.flags.isClassMethod && !func.flags.generated && func.classParent == value && func.name == value.name && !is_trivial_ctor(func)) {
                     
                     document_function(doc_file, mod, func, 0, "{value.name}-", "das:function")
                     return
@@ -1458,7 +1452,6 @@ def document_structure(doc_file : file; mod : Module?; var value : StructurePtr)
         }
     }
     
-    
     document_topic("Fields", doc_file, topic("structure", mod, string(value.name)), "struct {value.name}", tab, is_nosearch(string(value.name)))
 
     for (fld in value.fields) {
@@ -1467,7 +1460,6 @@ def document_structure(doc_file : file; mod : Module?; var value : StructurePtr)
         }
     }
 
-    
     
     for_each_function(mod, "") $(func) {
         if (!func.flags.isClassMethod || func.classParent != value
@@ -1492,7 +1484,7 @@ def document_structure(doc_file : file; mod : Module?; var value : StructurePtr)
     var annT = new TypeDecl(baseType = Type.tStructure, structType = value)
     var first = true
     for_each_function(mod, "") $(func) {
-        if (func.flags.isClassMethod && func.classParent == value && func.name == value.name && !is_trivial_ctor(func)) {
+        if (func.flags.isClassMethod && !func.flags.generated && func.classParent == value && func.name == value.name && !is_trivial_ctor(func)) {
             document_function(doc_file, mod, func, 0, "{value.name}-", "das:function")
             return
         }
@@ -1535,7 +1527,7 @@ def document_structure_annotation(doc_file : file; mod : Module?; value) {
     var props : array<array<string>>
     props |> emplace(array<string>("field", "type"))
     var annT = new TypeDecl(baseType = Type.tHandle,
-        annotation = unsafe(reinterpret<TypeAnnotation?> value))
+        annotation = unsafe(reinterpret<TypeAnnotation?>(value)))
     for_each_function(mod, "") $(func) {
         if (!func.moreFlags.propertyFunction || func.arguments |> length != 1) return
         let fna = string(func.name)
@@ -1552,7 +1544,7 @@ def document_structure_annotation(doc_file : file; mod : Module?; value) {
         fwrite(doc_file, make_table("Properties", props))
     }
 
-    var ann = unsafe(reinterpret<BasicStructureAnnotation?> value)
+    var ann = unsafe(reinterpret<BasicStructureAnnotation?>(value))
 
     var tab : array<array<string>>
     tab |> emplace(array<string>("field", "type"))
@@ -1573,7 +1565,7 @@ def document_structure_annotation(doc_file : file; mod : Module?; value) {
     document_topic("Fields", doc_file, topic("structure_annotation", mod, string(value.name)), "Annotation {value.name}", tab, is_nosearch(string(value.name)))
 }
 
-def document_structure_annotations(doc_file : file; mods : array<Module?>; var hook = DocsHook()) {
+def document_structure_annotations(doc_file : file; mods : array<Module?>; hook = DocsHook()) {
     var any = false
     for (mod in mods) {
         if (any) break
@@ -1599,7 +1591,7 @@ def document_enumeration_annotation(doc_file : file; mod : Module?; value) {
     document_topic(doc_file, topic("enumeration_macro", mod, string(value.name)), "Enumeration annotation {value.name}")
 }
 
-def document_enumeration_annotations(doc_file : file; mods : array<Module?>; var hook = DocsHook()) {
+def document_enumeration_annotations(doc_file : file; mods : array<Module?>; hook = DocsHook()) {
     var any = false
     for (mod in mods) {
         if (any) break
@@ -1626,7 +1618,7 @@ def document_function_annotation(doc_file : file; mod : Module?; value) {
     document_topic(doc_file, topic("function_annotation", mod, string(value.name)), "Function annotation {value.name}")
 }
 
-def document_function_annotations(doc_file : file; mods : array<Module?>; var hook = DocsHook()) {
+def document_function_annotations(doc_file : file; mods : array<Module?>; hook = DocsHook()) {
     var any = false
     for (mod in mods) {
         if (any) break
@@ -1652,7 +1644,7 @@ def document_annotation(doc_file : file; mod : Module?; value) {
     document_topic(doc_file, topic("annotation", mod, string(value.name)), "Annotation {value.name}")
 }
 
-def document_annotations(doc_file : file; mods : array<Module?>; var hook = DocsHook()) {
+def document_annotations(doc_file : file; mods : array<Module?>; hook = DocsHook()) {
     var any = false
     for (mod in mods) {
         if (any) break
@@ -1907,7 +1899,6 @@ def document_function(doc_file : file; mod : Module?; var func : FunctionPtr; dr
         argNames, argTypes, argInits, func.result, drop_args))
     if (skip_body) return
     
-    
     document_deprecated_unsafe(doc_file, func)
 
     var args <- document_function_arguments(doc_file, argNames, argTypes, drop_args)
@@ -1915,7 +1906,7 @@ def document_function(doc_file : file; mod : Module?; var func : FunctionPtr; dr
 }
 
 
-def document_functions(doc_file : file; mods : array<Module?>; var groups : array<DocGroup>) {
+def document_functions(doc_file : file; mods : array<Module?>; var groups : array<DocGroup>) { 
     var tab : table<Function?>
     for (grp in groups) {
         if (!empty(grp.func)) {
@@ -2086,7 +2077,6 @@ def private generate_topic_stub(var tab : table<string>; doc_file : file; topic 
 def private generate_substitute_stub(mod : Module?; substname : string) {
     var _st : FStat
     
-    
     mkdir_rec(dir_name(substname))
     fopen(substname, "wb") $(stub_file) {
         if (stub_file != null) {
@@ -2145,7 +2135,7 @@ def private generate_substitute_stub(mod : Module?; substname : string) {
 }
 
 
-def public document(name : string; var mod : Module?; fname : string; var groups : array<DocGroup>; var hook : DocsHook = DocsHook()) {
+def public document(name : string; var mod : Module?; fname : string; var groups : array<DocGroup>; hook : DocsHook = DocsHook()) {
     
     
     
@@ -2153,7 +2143,7 @@ def public document(name : string; var mod : Module?; fname : string; var groups
     documents(name, mods, fname, groups, hook)
 }
 
-def public document(name : string; var mod : Module?; fname : string; var groups : array<DocGroup>; var hook : DocsHook; nosearch : array<string>) {
+def public document(name : string; var mod : Module?; fname : string; var groups : array<DocGroup>; hook : DocsHook; nosearch : array<string>) {
     
     let mods : array<Module?> = [mod]
     documents(name, mods, fname, groups, hook, nosearch)
@@ -2166,13 +2156,13 @@ struct public DocsHook {
 }
 
 
-def public documents(name : string; mods : array<Module?>; fname : string; var groups : array<DocGroup>; var hook : DocsHook = DocsHook()) {
+def public documents(name : string; mods : array<Module?>; fname : string; var groups : array<DocGroup>; hook : DocsHook = DocsHook()) {
     
     let none : array<string>
     documents(name, mods, fname, groups, hook, none)
 }
 
-def public documents(name : string; mods : array<Module?>; fname : string; var groups : array<DocGroup>; var hook : DocsHook; nosearch : array<string>) {
+def public documents(name : string; mods : array<Module?>; fname : string; var groups : array<DocGroup>; hook : DocsHook; nosearch : array<string>) {
     
     
     clear(seen_function_labels)

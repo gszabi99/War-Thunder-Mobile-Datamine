@@ -1,30 +1,37 @@
-
-
 from "%globalsDarg/darg_library.nut" import *
-from "json" import parse_json, object_to_json_string
-from "eventbus" import eventbus_send, eventbus_subscribe
+from "adjust" import setOnlineAdjust, getAdjustAdId
+from "appsFlyer" import startAppsFlyer, enableTCFCollection, startAppsFlyerConnector
+from "auth_wt" import getCountryCode
+from "blkGetters" import get_local_custom_settings_blk
 from "console" import register_command
 from "dagor.shell" import shell_execute
 from "dagor.workcycle" import resetTimeout
-from "appsFlyer" import startAppsFlyer, enableTCFCollection, startAppsFlyerConnector
-from "adjust" import setOnlineAdjust, getAdjustAdId
-from "auth_wt" import getCountryCode
-from "blkGetters" import get_local_custom_settings_blk
-from "consent" import isConsentInited, initConsent, isConsentGiven, isVendorDataLoaded, loadVendorData, unloadVendorData,
-  getAllIABVendors, getAllGoogleVendors, getAllCustomVendors, setConsentForAll, saveConsentData,
-  getAllPurposes, getAllSpecialPurposes, getAllFeatures, hasConsentForPurpose, setConsentForPurpose,
-  hasPurposeLIT, setPurposeLIT, getVendorListByPurposeId, getVendorListBySpecialPurposeId, getVendorListByFeatureId,
-  isAbleConsentForIABVendor, hasConsentForIABVendor, setConsentForIABVendor,
-  isAbleConsentForGoogleVendor, hasConsentForGoogleVendor, setConsentForGoogleVendor,
-  isAbleLITForIABVendor, hasVendorLIT, setVendorLIT, getAllDataCategories
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "json" import parse_json, object_to_json_string
 from "%sqstd/platform.nut" import is_android, is_ios, is_pc
 from "%sqstd/underscore.nut" import isEqual
-from "%appGlobals/loginState.nut" import isReadyForTcfConsent, isTcfConsentAllowLogin, TCF_CONSENT_ACCEPTED_SAVE_ID
-from "%appGlobals/permissions.nut" import request_firebase_consent_eu_only
 from "%appGlobals/consent.nut" import isTcfConsentEnabled
+from "%appGlobals/loginState.nut" import isReadyForTcfConsent, isTcfConsentAllowLogin, TCF_CONSENT_ACCEPTED_SAVE_ID
 from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%appGlobals/permissions.nut" import request_firebase_consent_eu_only
 from "%rGui/login/stateIDFA.nut" import isIdfaDenied
 from "%rGui/style/stdAnimations.nut" import WND_REVEAL
+from "types" import String
+
+
+
+
+let { isConsentInited, initConsent, isConsentGiven, isVendorDataLoaded, loadVendorData,
+  unloadVendorData, getAllIABVendors, getAllGoogleVendors, getAllCustomVendors, setConsentForAll, saveConsentData,
+  getAllPurposes, getAllSpecialPurposes, getAllFeatures, hasConsentForPurpose, setConsentForPurpose, hasPurposeLIT,
+  setPurposeLIT, getVendorListByPurposeId, getVendorListBySpecialPurposeId, getVendorListByFeatureId,
+  isAbleConsentForIABVendor, hasConsentForIABVendor, setConsentForIABVendor, isAbleConsentForGoogleVendor,
+  hasConsentForGoogleVendor, setConsentForGoogleVendor, isAbleLITForIABVendor, hasVendorLIT, setVendorLIT,
+  getAllDataCategories } = require_optional("consent.gaijin") ?? require("consent")
+
+
+
+
 let { setCollectionEnabled = @(_) null,
       setFirebaseConsent = @(_) null } = is_android ? require("android.firebase.analytics")
     : is_ios ? require("ios.firebase.analytics")
@@ -49,7 +56,7 @@ let PURPOSES_WITH_LEGITIMATE_INTEREST = [
 ]
 
 let userLangId = loc("current_lang")
-let PRIVACY_CHOICES_SAVED_MONTHS = 13
+const PRIVACY_CHOICES_SAVED_MONTHS = 13
 
 let isOpenForProfileWnd = mkWatched(persist, "isOpenForProfileWnd", false)
 let isTcfConsentAutoSkipped = mkWatched(persist, "isTcfConsentAutoSkipped", false)
@@ -214,10 +221,13 @@ function onConsentDataSaved() {
   dataCache.clear()
 }
 
-eventbus_subscribe("consent.onSaveConsentData", function(p) {
+function onSaveConsentDataEvent(p) {
   logC($"TCF Consent onSaveConsentData ({p.success})")
   onConsentDataSaved()
-})
+}
+eventbus_subscribe("consent.gaijin.onSaveConsentData", onSaveConsentDataEvent)
+
+eventbus_subscribe("consent.onSaveConsentData", onSaveConsentDataEvent)
 
 function doOnFinish() {
   onFinishCbById?[doOnceOnFinishCbId.get()]?()
@@ -303,8 +313,8 @@ function onVendorDataLoaded(isSuccess) {
     let jsonStr = f()
     dataAvailability.append((parse_json(jsonStr) ?? []).len() || jsonStr)
   }
-  if (dataAvailability.findindex(@(v) type(v) == "string") != null) {
-    let dataMap = "|".join(dataAvailability.map(@(v) type(v) == "string" ? $"\"{v}\"" : v))
+  if (dataAvailability.findindex(@(v) v instanceof String) != null) {
+    let dataMap = "|".join(dataAvailability.map(@(v) v instanceof String ? $"\"{v}\"" : v))
     let errorStr = $"TCF Consent loaded data is incomplete: /*{getCountryCode()} {dataMap}*/"
     logC(errorStr)
     logerr(errorStr)
@@ -345,10 +355,14 @@ function onInited(isSuccess) {
   else
     onVendorDataLoaded(true)
 }
-eventbus_subscribe("consent.onLoadVendorData", function(p) {
+function onLoadVendorDataEvent(p) {
   logC($"TCF Consent onLoadVendorData ({p.success})")
   onVendorDataLoaded(p.success)
-})
+}
+
+eventbus_subscribe("consent.gaijin.onLoadVendorData", onLoadVendorDataEvent)
+
+eventbus_subscribe("consent.onLoadVendorData", onLoadVendorDataEvent)
 
 function startInit(onCloseOrErrorCbId, isForProfileWnd) {
   isOpenForProfileWnd.set(isForProfileWnd)
@@ -360,10 +374,14 @@ function startInit(onCloseOrErrorCbId, isForProfileWnd) {
   else
     onInited(true)
 }
-eventbus_subscribe("consent.onInit", function(p) {
+function onInitEvent(p) {
   logC($"TCF Consent onInit ({p.success})")
   onInited(p.success)
-})
+}
+
+eventbus_subscribe("consent.gaijin.onInit", onInitEvent)
+
+eventbus_subscribe("consent.onInit", onInitEvent)
 
 function onReadyTcf(isReady) {
   if (isReady) {

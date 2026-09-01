@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { setZoomMult } = require("controls")
-let { isInZoom, zoomMult } = require("%rGui/hudState.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { mkGamepadShortcutImage, mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { hudPearlGrayColorFade } = require("%rGui/style/hudColors.nut")
+from "controls" import setZoomMult
+from "dagor.workcycle" import resetTimeout
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkContinuousButtonParams
+from "%rGui/hudState.nut" import isInZoom, zoomMult
+from "%rGui/style/hudColors.nut" import hudPearlGrayColorFade
 
 
-let stepZoom = 0.01
+const stepZoom = 0.01
 let knobColor = hudPearlGrayColorFade
 let zoomRepeatTimes = [0.3, 0.15, 0.15, 0.07, 0.07, 0.05]
 
@@ -51,8 +51,8 @@ let mkZoomScale = @(scaleWidth, lineWidth) {
   ]
 }
 
-let zoomShortcutIncId = "ID_CHANGE_ZOOM_INC"
-let zoomShortcutDecId = "ID_CHANGE_ZOOM_DEC"
+const zoomShortcutIncId = "ID_CHANGE_ZOOM_INC"
+const zoomShortcutDecId = "ID_CHANGE_ZOOM_DEC"
 let zoomBgrImage = Picture("!ui/gameuiskin#hud_plane_slider.avif")
 
 function changeZoomValue(val) {
@@ -93,13 +93,13 @@ let btnImageZoomInc = @(scale) mkGamepadShortcutImg(zoomShortcutIncId,
   isZoomIncPushed,
   Computed(@() zoomMult.get() > 0),
   scale,
-  { hplace = ALIGN_CENTER, pos = [0, ph(45)] })
+  { hplace = ALIGN_CENTER, pos = const [0, ph(45)] })
 
 let btnImageZoomDec = @(scale) mkGamepadShortcutImg(zoomShortcutDecId,
   isZoomDecPushed,
   Computed(@() zoomMult.get() < 1),
   scale,
-  { hplace = ALIGN_CENTER, pos = [0, ph(-45)] })
+  { hplace = ALIGN_CENTER, pos = const [0, ph(-45)] })
 
 function mkZoomSliderImpl(scale) {
   let { height, scaleWidth, knobSize, knobPadding, sliderPadding, fullWidth, zoomScaleHeight, lineWidth

@@ -1,21 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_send
+from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
+from "%appGlobals/squadState.nut" import isInSquad
+from "%rGui/components/modalWindows.nut" import hasModalWindows
+from "%rGui/gameModes/gameModeState.nut" import randomBattleMode, isGameModesReceived, shouldStartNewbieSingleOnline
+from "%rGui/gameModes/newbieOfflineMissions.nut" import newbieOfflineMissions, isNextBattleNewbieOffline,
+  newbieLocalMP, startCurNewbieMission
+from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals, isMainMenuTopScene
+from "%rGui/rewards/freeRewardCampaigns.nut" import needShowTutorialAfterReward
+from "%rGui/tutorial/completedTutorials.nut" import markTutorialCompleted, mkIsTutorialCompleted
+from "%rGui/tutorial/tutorialConst.nut" import TUTORIAL_AFTER_REWARD_ID
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import setTutorialConfig, isTutorialActive, finishTutorial,
+  activeTutorialId
+from "%rGui/unit/unitPurchaseEffectScene.nut" import isPurchEffectVisible, needOpenPurchEffect, hasUnitToShow
+
+
 let logFB = log_with_prefix("[FIRST_BATTLE_TUTOR] ")
-let { register_command } = require("console")
-let { eventbus_send } = require("eventbus")
-let { deferOnce } = require("dagor.workcycle")
-let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { isInSquad } = require("%appGlobals/squadState.nut")
-let { newbieOfflineMissions, isNextBattleNewbieOffline, newbieLocalMP, startCurNewbieMission
-} = require("%rGui/gameModes/newbieOfflineMissions.nut")
-let { randomBattleMode, isGameModesReceived, shouldStartNewbieSingleOnline } = require("%rGui/gameModes/gameModeState.nut")
-let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { isInMenuNoModals, isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
-let { setTutorialConfig, isTutorialActive, finishTutorial,
-  activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { markTutorialCompleted, mkIsTutorialCompleted } = require("%rGui/tutorial/completedTutorials.nut")
-let { needShowTutorialAfterReward } = require("%rGui/rewards/freeRewardCampaigns.nut")
-let { TUTORIAL_AFTER_REWARD_ID } = require("%rGui/tutorial/tutorialConst.nut")
-let { isPurchEffectVisible, needOpenPurchEffect, hasUnitToShow } = require("%rGui/unit/unitPurchaseEffectScene.nut")
 
 
 let isFinished = mkIsTutorialCompleted(TUTORIAL_AFTER_REWARD_ID)

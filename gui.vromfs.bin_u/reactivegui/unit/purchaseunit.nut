@@ -1,18 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-
-let { playSound } = require("sound_wt")
-let { unitInProgress, buy_unit, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { curUnit, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
-let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
-let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
-let { addNewPurchasedUnit, delayedPurchaseUnitData, needSaveUnitDataForTutorial, addLastPurchasedUnit
-} = require("%rGui/unit/delayedPurchaseUnit.nut")
-let { animUnitWithLink, isBuyUnitWndOpened } = require("%rGui/unitsTree/animState.nut")
-let { openSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+from "sound_wt" import playSound
+from "%appGlobals/pServer/pServerApi.nut" import unitInProgress, buy_unit, registerHandler
+from "%appGlobals/pServer/profile.nut" import curUnit, campUnitsCfg
+from "%appGlobals/pServer/slots.nut" import isCampaignWithSlots
+from "%appGlobals/unitPresentation.nut" import getUnitPresentation
+from "%appGlobals/unitsState.nut" import setCurrentUnit
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
+from "%rGui/slotBar/slotBarState.nut" import openSelectUnitToSlotWnd
+from "%rGui/style/stdColors.nut" import userlogTextColor
+from "%rGui/unit/delayedPurchaseUnit.nut" import addNewPurchasedUnit, delayedPurchaseUnitData,
+  needSaveUnitDataForTutorial, addLastPurchasedUnit
+from "%rGui/unit/hangarUnit.nut" import setHangarUnit
+from "%rGui/unitsTree/animState.nut" import animUnitWithLink, isBuyUnitWndOpened
 
 
 registerHandler("onUnitPurchaseResult",

@@ -1,5 +1,5 @@
 
-let blinkPeriod = 1.0
+const blinkPeriod = 1.0
 
 return {
   attractColor = 0xFFFFDF20

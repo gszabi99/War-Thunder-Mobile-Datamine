@@ -1,42 +1,46 @@
+from "%globalScripts/gameRendObjs.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { hud_request_hud_tank_debuffs_state, hud_request_hud_ship_debuffs_state, hud_request_hud_crew_state } = require("hudState")
-let { on_view_replay, get_replays_list, get_replay_info } = require("replays")
-let { dynamicLoadPreview, dynamicUnloadPreview } = require("dynamicMission")
-let { get_meta_mission_info_by_name } = require("guiMission")
-let { format, split_by_chars } = require("string")
-let { is_dev_version } = require("app")
-let regexp2 = require("regexp2")
-let { deferOnce } = require("dagor.workcycle")
-let { remove_file } = require("dagor.fs")
-let DataBlock = require("DataBlock")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { genBotDecorators } = require("%appGlobals/botUtils.nut")
-let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { can_view_replays } = require("%appGlobals/permissions.nut")
-let { getMissionUnitsAndAddons } = require("%appGlobals/updater/missionUnits.nut")
-let { textButtonPrimary, textButtonInactive, iconButtonCommon } = require("%rGui/components/textButton.nut")
-let { mkFoldableList, headerGap, arrowFullSizeW } = require("%rGui/components/foldableSelector.nut")
-let { mkOptionValue, OPT_AUTO_DELETE_REPLAYS } = require("%rGui/options/guiOptions.nut")
-let { teamBlueLightColor, teamRedLightColor } = require("%rGui/style/teamColors.nut")
-let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
-let { badTextColor, premiumTextColor } = require("%rGui/style/stdColors.nut")
-let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
-let { getMissionLocName } = require("%rGui/globals/missionUtils.nut")
-let { mkBotInfo } = require("%rGui/mpStatistics/botsInfoState.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
-let { mkTooltipText } = require("%rGui/tooltip.nut")
+import "DataBlock" as DataBlock
+from "app" import is_dev_version
+from "dagor.fs" import remove_file
+from "dagor.workcycle" import deferOnce
+from "dynamicMission" import dynamicLoadPreview, dynamicUnloadPreview
+from "eventbus" import eventbus_subscribe
+from "guiMission" import get_meta_mission_info_by_name
+from "hudState" import hud_request_hud_tank_debuffs_state, hud_request_hud_ship_debuffs_state,
+  hud_request_hud_crew_state
+import "regexp2" as regexp2
+from "replays" import on_view_replay, get_replays_list, get_replay_info
+from "string" import format, split_by_chars
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/botUtils.nut" import genBotDecorators
+import "%appGlobals/decorators/avatars.nut" as getAvatarImage
+from "%appGlobals/permissions.nut" import can_view_replays
+from "%appGlobals/updater/missionUnits.nut" import getMissionUnitsAndAddons
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/foldableSelector.nut" import mkFoldableList, headerGap, arrowFullSizeW
+from "%rGui/components/infoButton.nut" import infoTooltipButton
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonInactive, iconButtonCommon
+from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicInfo
+from "%rGui/globals/missionUtils.nut" import getMissionLocName
+from "%rGui/mpStatistics/botsInfoState.nut" import mkBotInfo
+from "%rGui/options/guiOptions.nut" import mkOptionValue, OPT_AUTO_DELETE_REPLAYS
+from "%rGui/replay/hudReplayControls.nut" import startedReplayPath
+import "%rGui/squad/notAvailableForSquadMsg.nut" as notAvailableForSquadMsg
+from "%rGui/style/gamercardStyle.nut" import gamercardHeight
+from "%rGui/style/stdColors.nut" import badTextColor, premiumTextColor
+from "%rGui/style/teamColors.nut" import teamBlueLightColor, teamRedLightColor
+from "%rGui/tooltip.nut" import mkTooltipText
+from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd
+
+
 let logR = log_with_prefix("[REPLAYS] ")
-let { startedReplayPath } = require("%rGui/replay/hudReplayControls.nut")
-let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
 
 
-let START_REPLAY_EVENT = "startReplayAfterDownloadAddons"
+const START_REPLAY_EVENT = "startReplayAfterDownloadAddons"
 let isDevVersion = is_dev_version()
 let devReplayNameRegexp = regexp2(@"^\d{4}$")
 
@@ -68,17 +72,17 @@ let resultTextByStatus = {
   }
 }
 
-let rowHeight = hdpx(76)
-let mapSize = hdpx(370)
-let playerRowHeight = hdpx(60)
-let columnGap = hdpx(10)
-let avatarHeight = playerRowHeight - hdpx(2)
-let bgColor = 0xC0000000
-let cellTextColor = 0xFFFFFFFF
-let textColor = 0xFFFFFFFF
-let checkBorderColor = 0xFF9FA7AF
-let ctrlHeight = hdpx(60)
-let checkIconSize = hdpxi(40)
+const rowHeight = hdpx(76)
+const mapSize = hdpx(370)
+const playerRowHeight = hdpx(60)
+const columnGap = hdpx(10)
+const avatarHeight = playerRowHeight - hdpx(2)
+const bgColor = 0xC0000000
+const cellTextColor = 0xFFFFFFFF
+const textColor = 0xFFFFFFFF
+const checkBorderColor = 0xFF9FA7AF
+const ctrlHeight = hdpx(60)
+const checkIconSize = hdpxi(40)
 let minFoldableContentHeight = mapSize + columnGap + defButtonHeight * 2
 
 function askActivateAutoDeleteOpt(list, cb) {
@@ -332,7 +336,7 @@ function mkCheckBtn(isChecked, onClick, text, description) {
     children = [
       @() {
         watch = [stateFlags, isChecked]
-        size = [hdpx(600), SIZE_TO_CONTENT]
+        size = const [hdpx(600), SIZE_TO_CONTENT]
         behavior = Behaviors.Button
         onClick
         onElemState = @(s) stateFlags.set(s)
@@ -372,7 +376,7 @@ let replayColumnsCfg = [
 ]
 
 let mkHeaderRow = @(columnCfg) {
-  size = [FLEX, rowHeight]
+  size = const [FLEX, rowHeight]
   flow = FLOW_HORIZONTAL
   padding = [0, 0, 0, headerGap + arrowFullSizeW]
   rendObj = ROBJ_SOLID
@@ -387,7 +391,7 @@ let mkHeaderRow = @(columnCfg) {
 }
 
 let mkFoldableHeader = @(replay, columnCfg) {
-  size = [FLEX, rowHeight]
+  size = const [FLEX, rowHeight]
   flow = FLOW_HORIZONTAL
   gap = columnGap
   children = columnCfg.map(@(c) {
@@ -417,14 +421,14 @@ function mkAvatar(player) {
   return @() {
     watch = info
     onAttach = @() isBot ? null : refreshPublicInfo(userIdStr)
-    size = [avatarHeight, avatarHeight]
+    size = const [avatarHeight, avatarHeight]
     rendObj = ROBJ_IMAGE
     image = Picture($"{getAvatarImage(info.get()?.decorators.avatar)}:{avatarHeight}:{avatarHeight}:P")
   }
 }
 
 let mkPlayer = @(player, teamColor, halign) {
-  size = [FLEX, playerRowHeight]
+  size = const [FLEX, playerRowHeight]
   children = [
     {
       size = FLEX
@@ -544,7 +548,7 @@ let mkReplaysRows = @(replays, columnsCfg) @(){
         isBarOutside = true
         barStyleCtor = @(hasScroll) !hasScroll ? {}
           : {
-              pos = [columnGap, 0]
+              pos = const [columnGap, 0]
               rendObj = ROBJ_SOLID
               color = bgColor
             }

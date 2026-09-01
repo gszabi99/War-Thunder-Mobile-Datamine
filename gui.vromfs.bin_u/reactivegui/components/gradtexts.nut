@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkFontGradient } = require("%rGui/style/gradients.nut")
-let { getRomanNumeral } = require("%sqstd/math.nut")
-let { trim } = require("%sqstd/string.nut")
+from "%sqstd/math.nut" import getRomanNumeral
+from "%sqstd/string.nut" import trim
+from "%rGui/style/gradients.nut" import mkFontGradient
 
 
 let rankTextGradient = mkFontGradient(0xFFFFFFFF, 0xFF785443)

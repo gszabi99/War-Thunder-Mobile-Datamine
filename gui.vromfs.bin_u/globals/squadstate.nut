@@ -1,14 +1,15 @@
-let { Computed } = require("frp")
-let { max } = require("math")
-let { myUserId } = require("%appGlobals/profileStates.nut")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
+from "frp" import Computed
+from "math" import max
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/profileStates.nut" import myUserId
 
-let squadId = sharedWatched("squadId", @() null)
-let isInvitedToSquad = sharedWatched("isInvitedToSquad", @() {})
-let squadMembers = sharedWatched("squadMembers", @() {})
-let squadOnline = sharedWatched("squadOnline", @() {})
-let squadMembersOrder = sharedWatched("squadMembersOrder", @() [])
-let isReady = sharedWatched("squadIsReady", @() false)
+
+let squadId = hardPersistWatched("squadId", null)
+let isInvitedToSquad = hardPersistWatched("isInvitedToSquad", {})
+let squadMembers = hardPersistWatched("squadMembers", {})
+let squadOnline = hardPersistWatched("squadOnline", {})
+let squadMembersOrder = hardPersistWatched("squadMembersOrder", [])
+let isReady = hardPersistWatched("squadIsReady", false)
 let squadLen = Computed(@() squadMembers.get().len())
 let squadMyState = Computed(@() squadMembers.get()?[myUserId.get()])
 let squadLeaderState = Computed(@() squadMembers.get()?[squadId.get()])
@@ -17,8 +18,8 @@ let isInSquad = Computed(@() squadId.get() != null)
 let isSquadLeader = Computed(@() squadId.get() == myUserId.get())
 let isLeavingWillDisbandSquad = Computed(@() squadLen.get() == 1 || (squadLen.get() + isInvitedToSquad.get().len() <= 2))
 let canInviteToSquad = Computed(@() !isInSquad.get() || isSquadLeader.get())
-let myClustersRTT = sharedWatched("myClustersRTT", @() {})
-let queueDataCheckTime = sharedWatched("queueDataCheckTime", @() 0)
+let myClustersRTT = hardPersistWatched("myClustersRTT", {})
+let queueDataCheckTime = hardPersistWatched("queueDataCheckTime", 0)
 
 function getMemberMaxMRank(memberInfo, campaign, srvConfigs) {
   let unitInfos = memberInfo?.unitInfos

@@ -1,19 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { curWeaponsOrdered, curWeaponIdx, curUnit, equippedWeaponId, mkHasConflicts,
-  curMods, curSlotUnitModCostCfg, mkWeaponStates, curBeltsWeaponIdx, equippedWeaponsBySlots,
-  curWeaponBeltsOrdered, curBeltIdx, equippedBeltId, curSlotIdx, curUnseenMods,
-  slotBeltKey, slotWeaponKey
-} = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { mkLevelLock, mkNotPurchasedShade, mkModCost, mkUnseenModIndicator, mkEquippedFrame } = require("%rGui/unitMods/modsComps.nut")
-let { startCarouselAnimScroll, getCarouselPosX } = require("%rGui/unitMods/unitModsScroll.nut")
-let { selectedLineHorSolid, opacityTransition, selLineSize } = require("%rGui/components/selectedLine.nut")
-let { getWeaponShortNamesList, getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
-let { getBulletBeltImage, TOTAL_VIEW_BULLETS } = require("%appGlobals/config/bulletsPresentation.nut")
-let { modContentMargin, modW, modH, modsGap, activeColor } = require("%rGui/unitMods/unitModsConst.nut")
-let { warningTextColor, tabBgColor } = require("%rGui/style/stdColors.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%appGlobals/config/bulletsPresentation.nut" import getBulletBeltImage, TOTAL_VIEW_BULLETS
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%rGui/components/selectedLine.nut" import selectedLineHorSolid, opacityTransition, selLineSize
+from "%rGui/style/gradients.nut" import gradTexSize, mkGradientCtorRadial
+from "%rGui/style/stdColors.nut" import warningTextColor, tabBgColor
+from "%rGui/unitMods/modsComps.nut" import mkLevelLock, mkNotPurchasedShade, mkModCost, mkUnseenModIndicator,
+  mkEquippedFrame
+from "%rGui/unitMods/unitModsConst.nut" import modContentMargin, modW, modH, modsGap, activeColor
+from "%rGui/unitMods/unitModsScroll.nut" import startCarouselAnimScroll, getCarouselPosX
+from "%rGui/unitMods/unitModsSlotsState.nut" import curWeaponsOrdered, curWeaponIdx, curUnit, equippedWeaponId,
+  mkHasConflicts, curMods, curSlotUnitModCostCfg, mkWeaponStates, curBeltsWeaponIdx, equippedWeaponsBySlots,
+  curWeaponBeltsOrdered, curBeltIdx, equippedBeltId, curSlotIdx, curUnseenMods, slotBeltKey, slotWeaponKey
+from "%rGui/weaponry/weaponsVisual.nut" import getWeaponShortNamesList, getBulletBeltShortName
+
 
 let unitUpgOrPremNotInMyHangar = Computed(@() !(curUnit.get()?.name in campMyUnits.get()) && (curUnit.get()?.isPremium || curUnit.get()?.isUpgraded))
 

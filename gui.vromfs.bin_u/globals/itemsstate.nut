@@ -1,9 +1,9 @@
+from "frp" import Computed
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 
-let { Computed } = require("frp")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
 
-let SPARE = "spare"
+const SPARE = "spare"
 
 let itemsOrderFull = [
   

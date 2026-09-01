@@ -1,7 +1,10 @@
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { mkMpStatsTable, getColumnsByCampaign } = require("%rGui/mpStatistics/mpStatsTable.nut")
-let { contentHeight } = require("%rGui/debriefing/debriefingWndConsts.nut")
-let mkPlayersByTeam = require("%rGui/debriefing/mkPlayersByTeam.nut")
+from "%rGui/debriefing/debriefingWndConsts.nut" import contentHeight
+import "%rGui/debriefing/mkPlayersByTeam.nut" as mkPlayersByTeam
+from "%rGui/mpStatistics/mpStatsTable.nut" import mkMpStatsTable, getColumnsByCampaign, getScoreColumns
+from "%rGui/mpStatistics/viewProfile.nut" import SECTION_PROFILE_IDS
+
 
 const topMargin = hdpx(20)
 
@@ -19,14 +22,20 @@ function mkDebriefingWndTabMpStats(debrData, _params) {
   let isFFA = !!(gameType & (GT_FFA_DEATHMATCH | GT_FFA))
   let playersByTeamAligned = alignTeamLengths(mkPlayersByTeam(debrData))
   let tableHeight = contentHeight - topMargin
+
+  let scoreStats = getScoreColumns(campaign, mission, gameType, hudCustomRules)
+  let profileOvr = scoreStats.len() == 0 ? {}
+    : { sections = [SECTION_PROFILE_IDS.PROFILE, SECTION_PROFILE_IDS.SCORE], scoreStats }
+
   let comp = {
     size = const [sw(100), FLEX]
-    pos = [0, topMargin]
+    pos = const [0, topMargin]
     hplace = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = mkMpStatsTable(getColumnsByCampaign(campaign, mission, gameType, hudCustomRules),
       playersByTeamAligned,
-      isFFA ? tableHeight : null)
+      isFFA ? tableHeight : null,
+      profileOvr)
   }
 
   return {

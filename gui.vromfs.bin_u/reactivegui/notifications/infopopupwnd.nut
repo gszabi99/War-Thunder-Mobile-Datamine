@@ -1,21 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { doesLocTextExist } = require("dagor.localize")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { isOutOfBattleAndResults } = require("%appGlobals/clientState/clientState.nut")
-let getInfoPopupPresentation = require("%appGlobals/config/infoPopupPresentation.nut")
-let { isRandomBattleNewbie } = require("%rGui/gameModes/gameModeState.nut")
-let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-let { popupToShow, markCurPopupSeen } = require("%rGui/notifications/infoPopupState.nut")
-let { getPopupActionCfg } = require("%rGui/notifications/infoPopupActions.nut")
-
-let { removeModalWindow, addModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { msgBoxText } = require("%rGui/components/msgBox.nut")
-let { textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
+from "dagor.localize" import doesLocTextExist
+from "dagor.workcycle" import resetTimeout
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/clientState/clientState.nut" import isOutOfBattleAndResults
+import "%appGlobals/config/infoPopupPresentation.nut" as getInfoPopupPresentation
+from "%rGui/components/modalWindows.nut" import removeModalWindow, addModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
+from "%rGui/components/msgBox.nut" import msgBoxText
+from "%rGui/components/textButton.nut" import textButtonPrimary
+from "%rGui/controlsMenu/gpActBtn.nut" import EMPTY_ACTION
+from "%rGui/gameModes/gameModeState.nut" import isRandomBattleNewbie
+from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
+from "%rGui/notifications/infoPopupActions.nut" import getPopupActionCfg
+from "%rGui/notifications/infoPopupState.nut" import popupToShow, markCurPopupSeen
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
 const WND_UID = "infoPopupWnd"
@@ -55,7 +54,7 @@ function mkContent(popup) {
   local descBox = msgBoxText(desc, { size = SIZE_TO_CONTENT, maxWidth = contentWidth, halign = ALIGN_LEFT }
     .__update(fontTinyAccented))
   if (calc_comp_size(descBox)[0] >= (contentWidth * (2.0 / 3.0)))
-    descBox = msgBoxText(desc, { size = [contentWidth, SIZE_TO_CONTENT], halign = ALIGN_LEFT }
+    descBox = msgBoxText(desc, { size = const [contentWidth, SIZE_TO_CONTENT], halign = ALIGN_LEFT }
       .__update(fontTinyAccented))
   return {
     size = FLEX_H

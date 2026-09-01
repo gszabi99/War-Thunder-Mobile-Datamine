@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { deferOnce } = require("dagor.workcycle")
-let { fabs } = require("math")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { GAME_ID } = require("%appGlobals/gameIdentifiers.nut")
-let { myUserIdStr } = require("%appGlobals/profileStates.nut")
-let { presences } = require("%rGui/contacts/contactPresence.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isMatchingConnected } = require("%appGlobals/loginState.nut")
-let { mainBattleUnitName } = require("%appGlobals/clientState/missionState.nut")
+from "dagor.workcycle" import deferOnce
+from "math" import fabs
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/missionState.nut" import mainBattleUnitName
+from "%appGlobals/gameIdentifiers.nut" import GAME_ID
+from "%appGlobals/loginState.nut" import isMatchingConnected
+from "%appGlobals/profileStates.nut" import myUserIdStr
+from "%rGui/contacts/contactPresence.nut" import presences
+from "%rGui/matching/matchingApi.nut" import matchingRpcCall
 
 
 let presenceDefault = {
@@ -33,13 +33,8 @@ let presenceDiff = keepref(Computed(function(prev) {
 }))
 
 function sendPresenceDiff() {
-  if ((presenceDiff.get()?.len() ?? 0) == 0)
-    return
-  eventbus_send("matchingCall",
-    {
-      action = "mpresence.set_presence"
-      params = presenceDiff.get()
-    })
+  if ((presenceDiff.get()?.len() ?? 0) != 0)
+    matchingRpcCall("mpresence.set_presence", presenceDiff.get())
 }
 deferOnce(sendPresenceDiff)
 presenceDiff.subscribe(@(_) deferOnce(sendPresenceDiff))
@@ -55,8 +50,6 @@ function setMyPresence(diff) {
 let setBattleUnit = @(battleUnit) setMyPresence({ battleUnit })
 setBattleUnit(mainBattleUnitName.get())
 mainBattleUnitName.subscribe(setBattleUnit)
-
-eventbus_subscribe("setMyPresence", setMyPresence)
 
 return {
   setMyPresence

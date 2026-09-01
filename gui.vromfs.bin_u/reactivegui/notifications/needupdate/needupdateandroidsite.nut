@@ -1,16 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
+from "app" import get_cur_circuit_name
+from "contentUpdater" import get_all_library_versions
+from "dagor.http" import httpRequest, HTTP_SUCCESS
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_subscribe
+from "json" import parse_json
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/version_compare.nut" import check_version
+from "%appGlobals/clientState/clientState.nut" import isInBattle, isInLoadingScreen
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout
+
+
 let logUpdate = log_with_prefix("[UPDATE]: ")
-let { eventbus_subscribe } = require("eventbus")
-let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
-let { parse_json } = require("json")
-let { get_time_msec } = require("dagor.time")
-let { deferOnce } = require("dagor.workcycle")
-let { get_cur_circuit_name } = require("app")
-let { get_all_library_versions } = require("contentUpdater")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let { check_version } = require("%sqstd/version_compare.nut")
-let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
 
 
 const REQUEST_PERIOD_MSEC = 1800000

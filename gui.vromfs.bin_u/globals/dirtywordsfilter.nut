@@ -1,10 +1,11 @@
 from "%globalScripts/logs.nut" import *
 from "auth_wt" import getCountryCode
+from "eventbus" import eventbus_subscribe
 from "language" import getLocalLanguage
-let { eventbus_subscribe } = require("eventbus")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
+from "%appGlobals/loginState.nut" import isLoggedIn
 
-let path = "%globalScripts/dirtyWords"
+
+const path = "%globalScripts/dirtyWords"
 let dirtyWordsFilter = require($"{path}/dirtyWords.nut")
 let { init, continueInitAfterLogin } = dirtyWordsFilter
 

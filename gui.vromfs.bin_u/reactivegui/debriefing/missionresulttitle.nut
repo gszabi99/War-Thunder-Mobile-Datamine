@@ -1,17 +1,19 @@
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX
 
-let rowGap = hdpx(27)
-let resultLineWidth = hdpx(1450)
-let resultLineHeight = hdpx(9)
-let lineGlowHeight = 10 * resultLineHeight
+
+const rowGap = hdpx(27)
+const resultLineWidth = hdpx(1450)
+const resultLineHeight = hdpx(9)
+const lineGlowHeight = 10 * resultLineHeight
 let lineGlowWidth = (201.0 / 84.0 * lineGlowHeight).tointeger()
 
-let resultTextAnimTime = 0.6
-let glowAnimTime = 1.0
-let glowAppearAnimTime = 0.2
+const resultTextAnimTime = 0.6
+const glowAnimTime = 1.0
+const glowAppearAnimTime = 0.2
 
-let missionResultTitleAnimTime = max(resultTextAnimTime, glowAnimTime)
+const missionResultTitleAnimTime = max(resultTextAnimTime, glowAnimTime)
 
 let missionResultParamsByType = {
   victory = {
@@ -74,7 +76,7 @@ let mkMissionResultText = @(needAnim, missionResult) {
 }.__update(fontBig)
 
 let mkMissionResultLine = @(needAnim, missionResult) {
-  size = [resultLineWidth, resultLineHeight]
+  size = const [resultLineWidth, resultLineHeight]
   hplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
   image = gradTranspDoubleSideX

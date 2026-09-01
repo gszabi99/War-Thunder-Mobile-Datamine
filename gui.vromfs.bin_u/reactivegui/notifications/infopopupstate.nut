@@ -1,17 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let { register_command } = require("console")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { eventbus_send } = require("eventbus")
-let { getCountryCode } = require("auth_wt")
-let { getServerTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
-let { campConfigs, curCampaign, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
+from "auth_wt" import getCountryCode
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_send
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
+from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign, firstLoginTime
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/userstats/serverTime.nut" import getServerTime, isServerTimeValid
+from "types" import Integer
 
 
 const SAVE_ID = "infoPopups"
-let REPEAT_SHOW_TIME_SPREAD = 28 * 24 * 3600 
+const REPEAT_SHOW_TIME_SPREAD = 28 * 24 * 3600 
 let infoPopupsCfg = Computed(@() campConfigs.get()?.infoPopups ?? [])
 let popupToShow = Watched(null)
 
@@ -24,7 +25,7 @@ let getNextTime = @(curNextTime, newTime) newTime <= 0 ? curNextTime
   : curNextTime <= 0 ? newTime
   : min(curNextTime, newTime)
 
-let getSavedPopup = @(cfg, id) type(cfg?[id]) != "integer"
+let getSavedPopup = @(cfg, id) !(cfg?[id] instanceof Integer)
   ? (cfg?[id] ?? { lastTime = 0, count = 0 })
   : { lastTime = cfg[id], count = 1 }
 
@@ -93,7 +94,7 @@ function markCurPopupSeen() {
   let prevCount = getSavedShowCount(savedPopup, timeRange)
   let saveIdBlk = blk.addBlock(SAVE_ID)
 
-  if (type(saveIdBlk?[id]) == "integer")
+  if (saveIdBlk?[id] instanceof Integer)
     saveIdBlk[id] = null
 
   let savedBlk = saveIdBlk.addBlock(id)

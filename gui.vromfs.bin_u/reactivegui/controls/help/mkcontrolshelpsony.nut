@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/components/screenHintsLib.nut" import mkScreenHints
-from "%rGui/controls/controlsPkg.nut" import mkSizeByParent, mkLines,
-  mergeWithDefaults, bgFinalWidth, bgFinalHeight, borderOffs, mkHintsContent
+from "%rGui/controls/controlsPkg.nut" import mkSizeByParent, mkLines, mergeWithDefaults, bgFinalWidth, bgFinalHeight,
+  borderOffs, mkHintsContent
 
 
-let bgImage = "!ui/images/controller/controller_dualshock4.avif"
-let right = 800
+const bgImage = "!ui/images/controller/controller_dualshock4.avif"
+const right = 800
 let left = borderOffs
 
 

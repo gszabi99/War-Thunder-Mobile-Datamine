@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { curCampaign, purchasesCount, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { unitRewardTypes } = require("%appGlobals/rewardType.nut")
-let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
-let { platformPurchaseInProgress, isGoodsOnlyInternalPurchase } = require("%rGui/shop/platformGoods.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
-let { PURCHASING, DELAYED } = require("%rGui/shop/goodsStates.nut")
-let { isEmptyByRType } = require("%rGui/rewards/rewardViewInfo.nut")
+from "%appGlobals/pServer/campaign.nut" import curCampaign, purchasesCount, todayPurchasesCount
+from "%appGlobals/pServer/pServerApi.nut" import shopPurchaseInProgress
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/rewardType.nut" import unitRewardTypes
+from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, getDay, dayOffset
+from "%rGui/rewards/rewardViewInfo.nut" import isEmptyByRType
+from "%rGui/shop/goodsStates.nut" import PURCHASING, DELAYED
+from "%rGui/shop/platformGoods.nut" import platformPurchaseInProgress, isGoodsOnlyInternalPurchase
+from "%rGui/shop/shopState.nut" import shopGoods
 
 
 let activeOffersByGoods = Computed(function() {

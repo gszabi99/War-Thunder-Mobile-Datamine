@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { btnBgStyle } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { mkRingGradientLazy } = require("%rGui/style/gradients.nut")
+from "%rGui/hud/hudTouchButtonStyle.nut" import btnBgStyle
+from "%rGui/style/gradients.nut" import mkRingGradientLazy
+
 
 let gradient = mkRingGradientLazy(50, 10, 20)
 

@@ -1,20 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
+from "blkGetters" import get_unittags_blk
+from "contentUpdater" import get_addons_size_async, get_units_size_async, get_all_addons_from_yup_async
+from "dagor.system" import DBGLEVEL
+from "eventbus" import eventbus_subscribe
+from "nestdb" import ndbWrite
+from "%sqstd/datablock.nut" import eachBlock
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/loginState.nut" import isGameUpdatedOnLogin, isReadyToFullLoad
+from "%appGlobals/updater/addonsState.nut" import addonsSizes, isAddonsSizesActual, unitSizes, isUnitSizesActual,
+  yupAddons, allAddons, UNIT_SIZES_NDB, UNIT_SIZES_ACTUAL_NDB, UNIT_SIZES_EVENT_ID
+
+
 let logA = log_with_prefix("[ADDONS_INFO] ")
-let { eventbus_subscribe } = require("eventbus")
-let { DBGLEVEL } = require("dagor.system")
-let { get_addons_size_async, get_units_size_async, get_all_addons_from_yup_async
-} = require("contentUpdater")
-let { get_unittags_blk } = require("blkGetters")
-let { ndbWrite } = require("nestdb")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let { addonsSizes, isAddonsSizesActual, unitSizes, isUnitSizesActual, yupAddons, allAddons,
-  UNIT_SIZES_NDB, UNIT_SIZES_ACTUAL_NDB, UNIT_SIZES_EVENT_ID
-} = require("%appGlobals/updater/addonsState.nut")
-let { isGameUpdatedOnLogin, isReadyToFullLoad } = require("%appGlobals/loginState.nut")
 
 
-let MB = 1 << 20
+const MB = 1 << 20
 let toMB = @(b) (b + (MB / 2)) / MB
 
 let needRequestAddonsSizes = keepref(Computed(@() isReadyToFullLoad.get() && !isAddonsSizesActual.get() && yupAddons.get() != null))

@@ -1,19 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { tabExtraWidth } = require("%rGui/components/tabs.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
+from "%rGui/components/tabs.nut" import tabExtraWidth
+from "%rGui/style/gamercardStyle.nut" import gamercardHeight
+from "%rGui/style/stdColors.nut" import selectColor
 
 
 let tabContentMargin = [hdpx(10), hdpx(20)]
 
-let modH = hdpx(130)
-let modW = hdpx(302)
+const modH = hdpx(130)
+const modW = hdpx(302)
 
-let blocksLineSize = hdpx(4)
-let blocksPadding = hdpx(30)
+const blocksLineSize = hdpx(4)
+const blocksPadding = hdpx(30)
 
 let knobSize = evenPx(40)
-let contentGamercardGap = hdpx(24)
+const contentGamercardGap = hdpx(24)
 
 return {
   tabH = modH
@@ -45,12 +45,12 @@ return {
     tank = {
       img = "selected_icon_tank.svg"
       imgOutline = "selected_icon_tank_outline.svg"
-      size = [hdpxi(95), hdpxi(41)]
+      size = const [hdpxi(95), hdpxi(41)]
     }
     ship = {
       img = "selected_icon.svg"
       imgOutline = "selected_icon_outline.svg"
-      size = [hdpxi(44), hdpxi(51)]
+      size = const [hdpxi(44), hdpxi(51)]
     }
   }
 

@@ -1,4 +1,4 @@
-let MAIN_EVENT_ID = "main"
+const MAIN_EVENT_ID = "main"
 
 
 return {

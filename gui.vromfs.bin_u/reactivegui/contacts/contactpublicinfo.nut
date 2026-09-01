@@ -1,12 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let logP = log_with_prefix("[PUBLIC_INFO] ")
-let { get_time_msec } = require("dagor.time")
-let { deferOnce } = require("dagor.workcycle")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { contactsRequest, contactsRegisterHandler, canRequestToContacts } = require("%rGui/contacts/contactsState.nut")
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import deferOnce
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%rGui/contacts/contactsState.nut" import contactsRequest, contactsRegisterHandler, canRequestToContacts
 
-let AGEING_TIME_MSEC = 600000
-let maxUidInRequest = 100
+
+let logP = log_with_prefix("[PUBLIC_INFO] ")
+
+const AGEING_TIME_MSEC = 600000
+const maxUidInRequest = 100
 let allPublicInfo = hardPersistWatched("allPublicInfo", {})
 let delayedUids = mkWatched(persist, "delayedUids", {})
 let inProgressUids = Watched({})

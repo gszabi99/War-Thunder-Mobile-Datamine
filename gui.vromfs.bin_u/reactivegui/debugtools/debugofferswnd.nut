@@ -1,28 +1,27 @@
 from "%globalsDarg/darg_library.nut" import *
-let { screenlog } = require("dagor.debug")
-let { set_clipboard_text } = require("dagor.clipboard")
-let { object_to_json_string } = require("json")
-let { tostring_r } = require("%sqstd/string.nut")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { getRomanNumeral } = require("%sqstd/math.nut")
-let { set_purch_player_type, check_new_offer, debug_offer_generation_stats, shift_all_offers_time,
-  generate_fixed_type_offer, registerHandler, debug_offer_possible_units
-} = require("%appGlobals/pServer/pServerApi.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { closeButton } = require("%rGui/components/debugWnd.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
-let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
+from "dagor.clipboard" import set_clipboard_text
+from "dagor.debug" import screenlog
+from "json" import object_to_json_string
+from "%sqstd/math.nut" import getRomanNumeral
+from "%sqstd/string.nut" import tostring_r
+from "%sqstd/underscore.nut" import arrayByRows
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import set_purch_player_type, check_new_offer, debug_offer_generation_stats,
+  shift_all_offers_time, generate_fixed_type_offer, registerHandler, debug_offer_possible_units
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/components/debugWnd.nut" import closeButton
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/textButton.nut" import textButtonCommon
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 
 
-let wndWidth = hdpx(1500)
-let gap = hdpx(10)
+const wndWidth = hdpx(1500)
+const gap = hdpx(10)
 
-let wndUid = "debugOffersWnd"
+const wndUid = "debugOffersWnd"
 let close = @() removeModalWindow(wndUid)
 
 registerHandler("closeOfferWndOnSuccess",
@@ -190,7 +189,7 @@ return @() addModalWindow({
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   children = {
-    size = [wndWidth + 2 * gap, sh(90)]
+    size = const [wndWidth + 2 * gap, sh(90)]
     stopMouse = true
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER

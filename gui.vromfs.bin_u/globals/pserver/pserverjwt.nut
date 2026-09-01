@@ -1,12 +1,13 @@
-
 from "%globalScripts/logs.nut" import *
-let { object_to_json_string } = require("json")
-let io = require("io")
-let { decode } = require("jwt")
-let profilePublicKey = require("%appGlobals/profilePublicKey.nut")
+import "io" as io
+from "json" import object_to_json_string
+from "jwt" import decode
+import "%appGlobals/profilePublicKey.nut" as profilePublicKey
+from "types" import String
+
 
 function decodeJwtAndHandleErrors(data) {
-  let jwt = type(data) == "string" ? data : data?.jwt ?? ""
+  let jwt = data instanceof String ? data : data?.jwt ?? ""
   let jwtDecoded = decode(jwt, profilePublicKey)
 
   let { payload = null } = jwtDecoded
@@ -28,7 +29,8 @@ function saveJwtResultToJson(jwt, payload, fileName) {
   file = io.file(fileName, "wt+")
   file.writestring(jwt)
   file.close()
-  console_print($"Saved jwt to {fileName}")
+  log($"Saved jwt to {fileName}")
+  console_print($"Saved jwt to {fileName}") 
 }
 
 return {

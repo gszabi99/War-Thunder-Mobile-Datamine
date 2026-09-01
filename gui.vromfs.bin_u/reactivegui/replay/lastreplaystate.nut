@@ -1,8 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
+from "replays" import is_replay_present, on_save_replay, is_replay_playing
+from "%appGlobals/clientState/clientState.nut" import isInBattle, isInLoadingScreen
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+
+
 let logR = log_with_prefix("[REPLAY] ")
-let { is_replay_present, on_save_replay, is_replay_playing } = require("replays")
-let { isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 
 let isReplaySaved = mkWatched(persist, "isSaved", false)
 let needSkipSaveReplay = mkWatched(persist, "needSkipSaveReplay", false)

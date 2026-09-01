@@ -1,12 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%appGlobals/permissions.nut" import can_skip_consent
+from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
+from "%rGui/notifications/consentFirebase/consentComps.nut" import mkContent, mkLinkText
+from "%rGui/notifications/consentFirebase/consentState.nut" import needOpenConsentWnd, isOpenedPartners,
+  isOpenedManage, defaultPointsTable, applyConsent, savedPoints, isConsentAcceptedOnce, setupAnalytics
+
+
 let logC = log_with_prefix("[consent] ")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { can_skip_consent } = require("%appGlobals/permissions.nut")
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { needOpenConsentWnd, isOpenedPartners, isOpenedManage,
-  defaultPointsTable, applyConsent, savedPoints, isConsentAcceptedOnce, setupAnalytics} = require("%rGui/notifications/consentFirebase/consentState.nut")
-let { mkContent, mkLinkText } = require("%rGui/notifications/consentFirebase/consentComps.nut")
 
 function close() {
   if (!isConsentAcceptedOnce.get()) {

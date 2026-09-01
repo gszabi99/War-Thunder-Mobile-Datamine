@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { chosenTitle } = require("%rGui/decorators/decoratorState.nut")
+from "%rGui/decorators/decoratorState.nut" import chosenTitle
 
-let defMarkSize = hdpxi(30)
+
+const defMarkSize = hdpxi(30)
 
 let mkTitle = @(ovr = {}) @() chosenTitle.get()
   ? {

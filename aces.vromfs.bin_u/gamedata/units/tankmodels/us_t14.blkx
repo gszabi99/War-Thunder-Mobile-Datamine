@@ -1974,8 +1974,8 @@
     },
     "tracks": {
       "animationMultiplier": -0.63,
-      "height": 0.055,
-      "width": 0.66,
+      "height": 0.065,
+      "width": 0.59,
       "fricSideRotAlternative": [
         5.0,
         0.0,
@@ -1997,7 +1997,7 @@
       "driveGearRadius": 0.339,
       "mainGearRatio": 3.35,
       "sideGearRatio": 3.56,
-      "alternativeGearControl": 2.0,
+      "alternativeGearControl": 1.0,
       "gearRatios": {
         "ratio": [
           -5.64,

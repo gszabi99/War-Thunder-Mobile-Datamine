@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { lerpClamped } = require("%sqstd/math.nut")
-let { isGamepad, isKeyboard } = require("%appGlobals/activeControls.nut")
-let isScriptsLoading = require("%rGui/isScriptsLoading.nut")
+from "%sqstd/math.nut" import lerpClamped
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%appGlobals/activeControls.nut" import isGamepad, isKeyboard
+import "%rGui/isScriptsLoading.nut" as isScriptsLoading
+
 
 let isMoveByKeys = Computed(@() isGamepad.get() || isKeyboard.get())
 
@@ -172,8 +173,8 @@ function doubleSidePannableAreaCtor(width, height, gradientOffsetX, gradientOffs
   if (gradientOffsetX[0] < hdpx(3) || gradientOffsetX[1] < hdpx(3) || gradientOffsetY[0] < hdpx(3) || gradientOffsetY[1] < hdpx(3))
     logerr("gradientOffsetX in doubleSidePannableAreaCtor is too small")
   gradientOffsetY = gradientOffsetY ?? gradientOffsetX
-  let scaleMulX = 0.1
-  let scaleMulY = 0.1
+  const scaleMulX = 0.1
+  const scaleMulY = 0.1
   let pageMask = mkBitmapPictureLazyCached((width * scaleMulX + 0.5).tointeger(), (height * scaleMulY + 0.5).tointeger(),
     "doubleSidePannableAreaCtor",
     function(params, bmp) {

@@ -1,4 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "types" import Integer
 
 
 
@@ -41,9 +45,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 
 
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { get_time_msec } = require("dagor.time")
-let { register_command } = require("console")
+
 
 
 const WND_UID = "tutorial_wnd"
@@ -115,7 +117,7 @@ function goToStep(idxOrId) {
   if (tutorialConfig == null)
     return
   let { steps = [] } = tutorialConfig
-  let idx = type(idxOrId) == "integer" ? idxOrId
+  let idx = idxOrId instanceof Integer ? idxOrId
     : (steps.findindex(@(s) s?.id == idxOrId) ?? -1)
   if (!tryCall(steps?[stepIdx.get()].onFinish, "onFinish"))
     return

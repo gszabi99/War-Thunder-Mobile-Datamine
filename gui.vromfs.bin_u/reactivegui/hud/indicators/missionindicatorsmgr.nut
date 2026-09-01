@@ -1,8 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
+from "eventbus" import eventbus_subscribe
+from "%rGui/hud/indicators/hudIndicatorsState.nut" import addHudIndicator, removeHudIndicatorByParams, INDICATOR_TYPE
+from "%rGui/style/teamColors.nut" import teamBlueColor, teamRedColor
+
+
 let logI = log_with_prefix("[INDICATORS] ")
-let { eventbus_subscribe } = require("eventbus")
-let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
-let { addHudIndicator, removeHudIndicatorByParams, INDICATOR_TYPE } = require("%rGui/hud/indicators/hudIndicatorsState.nut")
 let { PLAYER_MISSION_ICON } = INDICATOR_TYPE
 
 eventbus_subscribe("addIconToUnit", function(params) {

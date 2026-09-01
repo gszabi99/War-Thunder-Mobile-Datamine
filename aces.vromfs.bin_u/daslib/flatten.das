@@ -21,7 +21,6 @@ require daslib/ast
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/rtti
-require strings
 require daslib/flatten_opt
 
 
@@ -52,6 +51,7 @@ let private STD_WHITELIST : table<string> <- {
     "sin", "cos", "tan", "asin", "acos", "atan", "atan2", "sincos",
     "radians", "degrees",   
     "dot", "cross", "length", "normalize", "distance", "reflect", "refract",
+    "hmin", "hmax", "hadd",   
     "lerp", "mix", "step", "smooth_step", "rcp", "mad",
     "float2", "float3", "float4", "int2", "int3", "int4", "uint2", "uint3", "uint4"
 }
@@ -141,17 +141,6 @@ def private contains(a : array<string>; s : string) : bool {
         if (x == s) return true
     }
     return false
-}
-
-
-
-
-def private simple_name(fullname : string) : string {
-    let t1 = find(fullname, 96, 0)
-    if (t1 < 0) return fullname
-    let t2 = find(fullname, 96, t1 + 1)
-    let endp = t2 < 0 ? length(fullname) : t2
-    return slice(fullname, t1 + 1, endp)
 }
 
 def private p_and(a, b : ExpressionPtr) : ExpressionPtr {
@@ -263,7 +252,7 @@ def private inline_call(var ctx : FlatCtx?; call : ExprCall?; structPred : Expre
 
 
 
-def private lift_expr(var ctx : FlatCtx?; e : ExpressionPtr; structPred : ExpressionPtr; var out : array<ExpressionPtr>) : ExpressionPtr {
+def private lift_expr(var ctx : FlatCtx?; e : ExpressionPtr; structPred : ExpressionPtr; var out : array<ExpressionPtr>) : ExpressionPtr {   
     if (e == null) return null
     if (e is ExprCall) {
         let c = e as ExprCall
@@ -364,6 +353,14 @@ def private lift_expr(var ctx : FlatCtx?; e : ExpressionPtr; structPred : Expres
         }
         return n
     }
+    if (e is ExprMakeArray) {
+        var n = clone_expression(e)
+        var o = n as ExprMakeArray
+        for (vi in range(length(o.values))) {
+            o.values[vi] = lift_expr(ctx, o.values[vi], structPred, out)
+        }
+        return n
+    }
     
     if (e is ExprRef2Value) {
         var n = clone_expression(e)
@@ -404,20 +401,20 @@ def private lower_branch(var ctx : FlatCtx?; br : ExpressionPtr; structPred : Ex
 def private lower_loop_exit(var ctx : FlatCtx?; structPred : ExpressionPtr; var out : array<ExpressionPtr>; isBreak : bool) {
     if (empty(ctx.loopMasks)) {
         ctx.ok = false
-        ctx.err = "flatten: internal error — {isBreak ? "break" : "continue"} outside a flattened loop"
+        ctx.err = "flatten: internal error - {isBreak ? "break" : "continue"} outside a flattened loop"
         return
     }
     let lm = ctx.loopMasks[length(ctx.loopMasks) - 1]
     let nm = isBreak ? lm.loopLive : lm.iterLive
     if (nm == "") {
         ctx.ok = false
-        ctx.err = "flatten: internal error — {isBreak ? "break" : "continue"} mask was not allocated"
+        ctx.err = "flatten: internal error - {isBreak ? "break" : "continue"} mask was not allocated"
         return
     }
     emit_narrow(out, nm, live_pred(ctx, structPred, nm))
 }
 
-def private lower_stmt(var ctx : FlatCtx?; stmt : ExpressionPtr; structPred : ExpressionPtr; var out : array<ExpressionPtr>) {
+def private lower_stmt(var ctx : FlatCtx?; stmt : ExpressionPtr; structPred : ExpressionPtr; var out : array<ExpressionPtr>) {   
     if (stmt is ExprReturn) {
         let r = stmt as ExprReturn
         if (ctx.hasRet && r.subexpr != null) {
@@ -605,7 +602,7 @@ def private for_source_substs(var ctx : FlatCtx?; src : Expression?; at : LineIn
 
 
 
-def private lower_for(var ctx : FlatCtx?; efor : ExprFor?; structPred : ExpressionPtr; var out : array<ExpressionPtr>) {
+def private lower_for(var ctx : FlatCtx?; efor : ExprFor?; structPred : ExpressionPtr; var out : array<ExpressionPtr>) {   
     let nIter = length(efor.iterators)
     if (nIter == 0 || length(efor.sources) != nIter) {
         ctx.ok = false
@@ -753,6 +750,12 @@ def public flatten_expand_lerp : bool {
 }
 
 [macro_function]
+def public flatten_hadd_pack_pairs : bool {
+    
+    return compiling_program()._options |> find_arg("_flatten_hadd_pack_pairs") ?as tBool ?? false
+}
+
+[macro_function]
 def public flatten_fold(var func : FunctionPtr; no_fast_math : bool = false; expand_lerp : bool = false) : bool {
     
     
@@ -777,11 +780,17 @@ def public flatten_optimize(var func : FunctionPtr; barriers : table<string>; no
 }
 
 [macro_function]
-def public flatten_fuse(var func : FunctionPtr; no_fast_math : bool = false) : bool {
+def public flatten_pack(var func : FunctionPtr; no_fast_math : bool = false) : bool {
     
     
     
-    return fuse_body(func, no_fast_math)
+    return pack_map_reduce(func, no_fast_math)
+}
+
+[macro_function]
+def public flatten_fuse(var func : FunctionPtr; no_fast_math : bool = false; hadd_min_width : int = 3) : bool {
+    
+    return fuse_body(func, no_fast_math, hadd_min_width)
 }
 
 def public flatten_opt_residuals(var func : FunctionPtr; no_fast_math : bool = false) : array<string> {
@@ -821,9 +830,9 @@ def private verify_flat(var twin : FunctionPtr) : string {
     }
     var msg = ""
     if (v.sawBranch) {
-        msg = "flatten: internal error — a branch (if/else) survived lowering in '{twin.name}'"
+        msg = "flatten: internal error - a branch (if/else) survived lowering in '{twin.name}'"
     } elif (v.sawCall) {
-        msg = "flatten: internal error — user call '{v.callName}' survived lowering in '{twin.name}'"
+        msg = "flatten: internal error - user call '{v.callName}' survived lowering in '{twin.name}'"
     }
     unsafe {
         delete v
@@ -872,7 +881,7 @@ class private FoldResidualVisitor : AstVisitor {
     }
     def override preVisitExprSwizzle(var expr : ExprSwizzle?) : void {
         if (is_unfolded_swizzle_lanes(expr)) {
-            found |> push("an un-folded swizzle over decomposable lanes ('ctor(…).mask' should re-pack)")
+            found |> push("an un-folded swizzle over decomposable lanes ('ctor(...).mask' should re-pack)")
         }
     }
 }
@@ -929,7 +938,6 @@ class FlattenAnnotation : AstFunctionAnnotation {
                        args, progArgs : AnnotationArgumentList; var errors : das_string;
                        var astChanged : bool&) : bool {
         
-        
         if (is_in_lint_check()) return true
         let ph = get_flatten_phase(func)
         if (ph == PHASE_DONE) return true
@@ -939,8 +947,6 @@ class FlattenAnnotation : AstFunctionAnnotation {
             return false
         }
         if (ph != PHASE_LOWERED && ph != PHASE_FOLDED && ph != PHASE_OPTIMIZED && ph != PHASE_FUSED) {
-            
-            
             
             var ctx = flatten_function(twin, STD_WHITELIST, get_flatten_max_unroll(func))
             if (!ctx.ok) {
@@ -953,16 +959,12 @@ class FlattenAnnotation : AstFunctionAnnotation {
         }
         if (ph == PHASE_LOWERED || ph == PHASE_FOLDED) {
             
-            
-            
             let folded = flatten_fold(twin, flatten_no_fast_math(), flatten_expand_lerp())
             set_flatten_phase(func, PHASE_FOLDED)
             if (folded) {
                 astChanged = true
                 return true
             }
-            
-            
             
             set_flatten_phase(func, PHASE_OPTIMIZED)
             if (flatten_optimize(twin, FLATTEN_BARRIERS, flatten_no_fast_math(), flatten_log_cse())) {
@@ -972,10 +974,8 @@ class FlattenAnnotation : AstFunctionAnnotation {
         }
         if (get_flatten_phase(func) == PHASE_OPTIMIZED || get_flatten_phase(func) == PHASE_FUSED) {
             
-            
-            
             set_flatten_phase(func, PHASE_FUSED)
-            if (flatten_fuse(twin, flatten_no_fast_math())) {
+            if (flatten_fuse(twin, flatten_no_fast_math(), flatten_hadd_pack_pairs() ? 2 : 3)) {
                 astChanged = true
                 return true
             }

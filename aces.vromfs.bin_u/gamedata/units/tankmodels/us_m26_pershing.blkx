@@ -1892,14 +1892,14 @@
       "sideGearRatio": 1.0,
       "gearRatios": {
         "ratio": [
-          -0.83,
+          -0.756,
           -1.513,
           0.0,
           2.0,
           1.0,
-          0.599,
+          0.714,
           0.428,
-          0.31,
+          0.336,
           0.244
         ]
       }
@@ -1911,8 +1911,8 @@
         0.1
       ],
       "defaultGearRadius": 0.32,
-      "frontBackGearRadius": 0.252,
-      "topGearRadius": 0.15,
+      "frontBackGearRadius": 0.33,
+      "topGearRadius": 0.185,
       "defaultDampeningForce": [
         150000.0,
         150000.0

@@ -1,18 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let mkContactRow = require("%rGui/contacts/mkContactRow.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { topAreaSize, gradientHeightBottom } = require("%rGui/options/mkOptionsScene.nut")
-let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
-let mkContactsOrder = require("%rGui/contacts/mkContactsOrder.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow
+import "%rGui/contacts/mkContactRow.nut" as mkContactRow
+import "%rGui/contacts/mkContactsOrder.nut" as mkContactsOrder
+from "%rGui/options/mkOptionsScene.nut" import topAreaSize, gradientHeightBottom
 
 
-let gap = hdpx(24)
+const gap = hdpx(24)
 
 let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100) - topAreaSize - defButtonHeight - gap * 2,
   [gap, gradientHeightBottom])
 
-function contactsList(uidsList, playerSelectedUserId, responseAction) {
+function contactsList(uidsList, playerSelectedUserId, responseAction, leftContent = null) {
   let ordered = mkContactsOrder(uidsList)
   let scrollHandler = ScrollHandler()
   return {
@@ -27,26 +27,31 @@ function contactsList(uidsList, playerSelectedUserId, responseAction) {
             .map(@(uid, idx) mkContactRow(uid, idx,
               Computed(@() playerSelectedUserId.get() == uid),
               @() playerSelectedUserId.set(uid),
-              responseAction?(uid)))
+              responseAction?(uid),
+              leftContent?(uid)))
         }, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
       mkScrollArrow(scrollHandler, MR_B)
     ]
   }
 }
 
-let noContactsMsg = {
+let mkNoContactsMsg = @(text) {
+  rendObj = ROBJ_TEXT
   hplace = ALIGN_CENTER
-  rendObj = ROBJ_TEXT,
-  text = loc("contacts/list_empty")
+  text
 }.__update(fontSmall)
 
-function contactsBlock(uidsList, playerSelectedUserId, responseAction) {
+function contactsBlock(uidsList, playerSelectedUserId, responseAction, emptyText = null, leftContent = null) {
   let hasContacts = Computed(@() uidsList.get().len() != 0)
+  let emptyMsg = emptyText == null
+    ? mkNoContactsMsg(loc("contacts/list_empty"))
+    : mkNoContactsMsg(emptyText)
   return @() {
     watch = hasContacts
     size = FLEX
-    children = !hasContacts.get() ? noContactsMsg
-      : contactsList(uidsList, playerSelectedUserId, responseAction)
+    children = !hasContacts.get()
+      ? emptyMsg
+      : contactsList(uidsList, playerSelectedUserId, responseAction, leftContent)
   }
 }
 
@@ -66,7 +71,7 @@ let buttons = @(selectedUserId, mkContactActions) @() {
 let playerSelectedUserId = mkWatched(persist, "selectedUserId")
 
 
-function mkContactListScene(uidsList, mkContactActions, responseAction = null) {
+function mkContactListScene(uidsList, mkContactActions, responseAction = null, emptyText = null, leftContent = null) {
   let selectedUserId = Computed(@() playerSelectedUserId.get() in uidsList.get()
     ? playerSelectedUserId.get()
     : null)
@@ -76,13 +81,14 @@ function mkContactListScene(uidsList, mkContactActions, responseAction = null) {
     flow = FLOW_VERTICAL
     gap
     children = [
-      contactsBlock(uidsList, playerSelectedUserId, responseAction)
+      contactsBlock(uidsList, playerSelectedUserId, responseAction, emptyText, leftContent)
       buttons(selectedUserId, mkContactActions)
     ]
   }
 }
 
 return {
-  mkContactListScene,
+  mkContactListScene
   contactsBlock
+  mkNoContactsMsg
 }

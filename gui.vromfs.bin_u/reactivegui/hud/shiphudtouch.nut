@@ -1,16 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
-let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
-let hudBottomCenter = require("%rGui/hud/hudBottomCenter.nut")
-let { shipSight } = require("%rGui/hud/sight.nut")
-let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
-let { startActionBarUpdate, stopActionBarUpdate } = require("%rGui/hud/actionBar/actionBarState.nut")
-let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
-let { threatRocketsBlock } = require("%rGui/hud/hudThreatRocketsBlock.nut")
-let { isInStrategyMode } = require("%rGui/hudState.nut")
-let strategyHud = require("%rGui/hud/strategyMode/strategyHud.nut")
-let { hitIndicator } = require("%rGui/hud/shipHitIndicator.nut")
+from "%rGui/hud/actionBar/actionBarState.nut" import startActionBarUpdate, stopActionBarUpdate
+import "%rGui/hud/hudBottomCenter.nut" as hudBottomCenter
+from "%rGui/hud/hudThreatRocketsBlock.nut" import threatRocketsBlock
+import "%rGui/hud/hudTimersBlock.nut" as hudTimersBlock
+import "%rGui/hud/hudTopMainLog.nut" as hudTopMainLog
+from "%rGui/hud/shipHitIndicator.nut" import hitIndicator
+from "%rGui/hud/sight.nut" import shipSight
+import "%rGui/hud/strategyMode/strategyHud.nut" as strategyHud
+from "%rGui/hud/weaponryBlockImpl.nut" import currentWeaponNameText
+from "%rGui/hudState.nut" import isInStrategyMode
+import "%rGui/hudTuning/hudTuningElems.nut" as hudTuningElems
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/hudHints/killerInfo.nut" import hudKillerInfo
+
 
 return @() {
   watch = isInStrategyMode
@@ -33,6 +35,7 @@ return @() {
         shipSight
         hitIndicator
         currentWeaponNameText
+        hudKillerInfo
       ]
       animations = wndSwitchAnim
     }

@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { selectedLineVertSolid, opacityTransition, selLineSize } = require("%rGui/components/selectedLine.nut")
-let { selectColor, tabBgColor } = require("%rGui/style/stdColors.nut")
-let { simpleHorGradInv } = require("%rGui/style/gradients.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+from "%rGui/components/selectedLine.nut" import selectedLineVertSolid, opacityTransition, selLineSize
+from "%rGui/style/gradients.nut" import simpleHorGradInv
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import selectColor, tabBgColor
 
-let tabsGap = hdpx(10)
+
+const tabsGap = hdpx(10)
 let tabExtraWidth = selLineSize
 
 let bgColor = tabBgColor

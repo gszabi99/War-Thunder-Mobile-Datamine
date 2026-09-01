@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hoverColor } = require("%rGui/style/stdColors.nut")
+from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset
+from "%rGui/style/stdColors.nut" import hoverColor
+
 
 let framedBtnSize = [evenPx(100), evenPx(100)]
-let borderWidth = hdpx(2)
-let imageSizeDecrease = borderWidth * 6
-let bgColor = 0x60000000
-let borderColor = 0xFFDEDEDE
-let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
+const borderWidth = hdpx(2)
+const imageSizeDecrease = borderWidth * 6
+const bgColor = 0x60000000
+const borderColor = 0xFFDEDEDE
 
 let mkIconImage = @(image, imageSize, sf) {
   size = imageSize

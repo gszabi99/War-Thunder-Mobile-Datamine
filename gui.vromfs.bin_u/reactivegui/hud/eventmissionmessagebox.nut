@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ctfFlagPreset } = require("%appGlobals/clientState/missionState.nut")
-let { getCtfFlagPresentation } = require("%appGlobals/config/hudCustomRulesPresentation.nut")
-let { teamRedColor } = require("%rGui/style/teamColors.nut")
-let { mkGradientBlock, defBgColor } = require("%rGui/hudHints/hintCtors.nut")
-let { isFlagStolen } = require("%rGui/hud/missionScoreState.nut")
+from "%appGlobals/clientState/missionState.nut" import ctfFlagPreset
+from "%appGlobals/config/hudCustomRulesPresentation.nut" import getCtfFlagPresentation
+from "%rGui/hud/missionScoreState.nut" import isFlagStolen
+from "%rGui/hudHints/hintCtors.nut" import mkGradientBlock, defBgColor
+from "%rGui/style/teamColors.nut" import teamRedColor
 
 
 let msgBlock = @() @() {

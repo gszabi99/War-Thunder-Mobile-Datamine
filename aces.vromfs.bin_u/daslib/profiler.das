@@ -16,7 +16,6 @@ module profiler shared private
 require daslib/debugger
 require daslib/fio
 require strings
-require uriparser
 require daslib/ast
 
 struct PerfNode {
@@ -78,12 +77,6 @@ def convert_ns_to_unit(time : int64; to : string) {
 
 def parse_profiler_args() : ProfilerConfig {
     
-    
-    
-    
-    
-    
-    
     var cfg = default<ProfilerConfig>
     var force_thread_local = -1
     var args <- get_command_line_arguments()
@@ -142,12 +135,6 @@ def public set_enable_profiler_log(ctxId : uint64, enabled : bool) {
 
 class ProfilerBaseAgent : DapiDebugAgent {
     
-    
-    
-    
-    
-    
-    
     use_thread_local : bool = true
     instrumented : table<uint64>
 
@@ -191,7 +178,7 @@ class PerformanceProfilerAgent : ProfilerBaseAgent {
         time_unit = cfg.time_unit
         if (report_memory) {
             unsafe {
-                self.onInstrumentFunction = reinterpret<function<(var agent : DapiDebugAgent; var ctx : Context; fn : SimFunction?; entering : bool; userData : uint64) : void>> self.onInstrumentFunctionWithMemory
+                self.onInstrumentFunction = reinterpret<function<(var agent : DapiDebugAgent; var ctx : Context; fn : SimFunction?; entering : bool; userData : uint64) : void>>(self.onInstrumentFunctionWithMemory)
             }
         }
         write("[")
@@ -208,8 +195,6 @@ class PerformanceProfilerAgent : ProfilerBaseAgent {
         if (!isProfileable(ctx)) return
         let tid = intptr(unsafe(addr(ctx)))
         events[tid].enabled = !manual
-        
-        
         
         ensure_instrumented(ctx)
     }
@@ -421,9 +406,6 @@ struct LeakContext {
 }
 
 class MemoryLeakProfilerAgent : ProfilerBaseAgent {
-    
-    
-    
     
     ctxs : table<uint64; LeakContext>
     out : FILE const?

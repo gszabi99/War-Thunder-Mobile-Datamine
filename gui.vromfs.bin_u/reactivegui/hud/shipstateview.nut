@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { speed, portSideMachine, sideboardSideMachine } = require("%rGui/hud/shipState.nut")
+from "%globalsDarg/fontScale.nut" import getScaledFont
+from "%rGui/hud/shipState.nut" import speed, portSideMachine, sideboardSideMachine
+
 
 const IS_STOPPED_STEP = 3
 

@@ -1,8 +1,10 @@
 from "%globalScripts/logs.nut" import *
-let { crc32 } =  require("hash")
-let { isNamePassing, clearExcessiveWhitespace } = require("%appGlobals/dirtyWordsFilter.nut")
+from "hash" import crc32
+from "%appGlobals/dirtyWordsFilter.nut" import isNamePassing, clearExcessiveWhitespace
+from "types" import String
 
-let NAMES_CACHE_MAX_LEN = 1000
+
+const NAMES_CACHE_MAX_LEN = 1000
 let namesCache = {}
 
 
@@ -15,7 +17,7 @@ function removePlatformPostfix(nameReal) {
 let mkCensoredName = @(uncensoredName) $"Player_{crc32(uncensoredName)}"
 
 function getPlayerName(nameReal, myUsernameReal = "", myUsername = "") {
-  if (type(nameReal) != "string" || nameReal == "")
+  if (!(nameReal instanceof String) || nameReal == "")
     return ""
 
   if (nameReal == myUsernameReal && myUsername != "")

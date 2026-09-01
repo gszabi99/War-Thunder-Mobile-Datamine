@@ -1,9 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBgImageWithFallback } = require("%globalsDarg/components/mkAnimBg.nut")
+from "%globalsDarg/components/mkAnimBg.nut" import mkBgImageWithFallback
+import "complex_ship_1.nut" as mkLayersComplexShip1
+import "loading_new_year_2026.nut" as mkLayersNewYear2026
+import "loading_valentines_day_2026.nut" as mkLayersValentinesDay2026
+
+
 let { parse_unix_time = @(_) 0 } = require_optional("dagor.iso8601") 
-let mkLayersComplexShip1 = require("complex_ship_1.nut")
-let mkLayersNewYear2026 = require("loading_new_year_2026.nut")
-let mkLayersValentinesDay2026 = require("loading_valentines_day_2026.nut")
 
 
 let mkSingleImageLayers = @(image) [{
@@ -289,7 +291,7 @@ let screensList = {
   }
   major_s36_thunder_blossom = {
     camp = [ "tanks" ]
-    weight = 2.0
+    weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_39.avif")
     timeRange = {
       season = "season"
@@ -333,8 +335,17 @@ let screensList = {
   }
   simple_airplane_9 = {
     camp = [ "air" ]
-    weight = 2.0
+    weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_a_9.avif")
+  }
+  major_s37_final_frontier = {
+    camp = [ "air" ]
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_a_10_s37.avif")
+    timeRange = {
+      season = "season"
+      seasonIdx = 37
+    }
   }
 }.map(@(v) "timeRange" not in v ? v :
   v.__merge({timeRange = parseTime(v.timeRange)}))

@@ -1,24 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { resetTimeout } = require("dagor.workcycle")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { register_command } = require("console")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
-let { isGuestLogin, renewGuestRegistrationTags, needVerifyEmail, openVerifyEmail
-} = require("%rGui/account/emailRegistrationState.nut")
-let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
-let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "dagor.workcycle" import resetTimeout
+from "eventbus" import eventbus_send
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/profile.nut" import playerLevelInfo
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/account/emailRegistrationState.nut" import isGuestLogin, renewGuestRegistrationTags, needVerifyEmail,
+  openVerifyEmail
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
+from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
 
 
-let GUEST_MSG_UID = "guestEmailRegistration"
-let VERIFY_MSG_UID = "verifyEmail"
-let ONLINE_BATTLES_TO_VERIFY = 10
-let NOTIFY_PERIOD = 604800 
+const GUEST_MSG_UID = "guestEmailRegistration"
+const VERIFY_MSG_UID = "verifyEmail"
+const ONLINE_BATTLES_TO_VERIFY = 10
+const NOTIFY_PERIOD = 604800 
 
 let isGuestMsgShowed = hardPersistWatched("isGuestMsgShowed", false)
 let hasEnoughOnlineBattles = Computed(@()

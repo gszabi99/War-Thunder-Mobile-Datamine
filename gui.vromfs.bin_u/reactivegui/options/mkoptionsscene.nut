@@ -1,23 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { contentOffset, minContentOffset, contentWidth, tabW } = require("%rGui/options/optionsStyle.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { tabExtraWidth } = require("%rGui/components/tabs.nut")
+from "%appGlobals/loginState.nut" import isAuthorized
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/gradientDefComps.nut" import headerGradientBg
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
+from "%rGui/components/tabs.nut" import tabExtraWidth
+from "%rGui/navState.nut" import registerScene
+import "%rGui/options/mkChildrenOptions.nut" as mkChildrenOptions
+import "%rGui/options/mkOption.nut" as mkOption
+import "%rGui/options/mkOptionsTabs.nut" as mkOptionsTabs
+from "%rGui/options/optionsStyle.nut" import contentOffset, minContentOffset, contentWidth, tabW
+from "%rGui/style/backgrounds.nut" import bgShadedDark
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
-let { registerScene } = require("%rGui/navState.nut")
-let { isAuthorized } = require("%appGlobals/loginState.nut")
-let mkOption = require("%rGui/options/mkOption.nut")
-let mkOptionsTabs = require("%rGui/options/mkOptionsTabs.nut")
-let mkChildrenOptions = require("%rGui/options/mkChildrenOptions.nut")
-let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
 
-
-let backButtonHeight = hdpx(60)
-let gapBackButton = hdpx(50)
-let pageBlocksGap = hdpx(30)
+const backButtonHeight = hdpx(60)
+const gapBackButton = hdpx(50)
+const pageBlocksGap = hdpx(30)
 let topAreaSize = saBorders[1] + backButtonHeight + gapBackButton
 let gradientHeightBottom = saBorders[1]
 let gradientHeightTop = min(topAreaSize, gradientHeightBottom)

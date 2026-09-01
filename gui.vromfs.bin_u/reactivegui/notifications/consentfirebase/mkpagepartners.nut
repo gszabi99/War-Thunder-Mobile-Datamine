@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { isOpenedPartners, getPartnersList } = require("%rGui/notifications/consentFirebase/consentState.nut")
-let { mkContent, mkLinkText, gapAfterPoint } = require("%rGui/notifications/consentFirebase/consentComps.nut")
+from "eventbus" import eventbus_send
+from "%rGui/notifications/consentFirebase/consentComps.nut" import mkContent, mkLinkText, gapAfterPoint
+from "%rGui/notifications/consentFirebase/consentState.nut" import isOpenedPartners, getPartnersList
+
 
 let close = @() isOpenedPartners.set(false)
 

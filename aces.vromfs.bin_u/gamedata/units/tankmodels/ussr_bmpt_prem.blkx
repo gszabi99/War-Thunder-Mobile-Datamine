@@ -1584,14 +1584,14 @@
       },
       {
         "name": [
-          "ammo_turret_05_dm",
-          "ammo_turret_06_dm",
-          "ammo_turret_07_dm",
-          "ammo_turret_10_dm",
-          "ammo_turret_11_dm",
-          "ammo_turret_12_dm",
-          "ammo_turret_13_dm",
-          "ammo_turret_14_dm",
+          "ammo_turret_15_dm",
+          "ammo_turret_15_dm",
+          "ammo_turret_15_dm",
+          "ammo_turret_15_dm",
+          "ammo_turret_15_dm",
+          "ammo_turret_15_dm",
+          "ammo_turret_15_dm",
+          "ammo_turret_15_dm",
           "ammo_turret_15_dm"
         ],
         "onHit": [

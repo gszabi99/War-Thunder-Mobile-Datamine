@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let modalPopupWnd = require("%rGui/components/modalPopupWnd.nut")
+import "%rGui/components/modalPopupWnd.nut" as modalPopupWnd
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 
-let defColor = 0xFFFFFFFF
-let primaryColor = 0xD0000000
-let secondaryColor = 0xFFE1E1E1
+
+const defColor = 0xFFFFFFFF
+const primaryColor = 0xD0000000
+const secondaryColor = 0xFFE1E1E1
 
 const OPTIONS_UID = "select_options"
 let closeOptions = @() modalPopupWnd.remove(OPTIONS_UID)

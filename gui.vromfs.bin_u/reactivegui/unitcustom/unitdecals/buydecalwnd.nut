@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { buy_decal, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { PURCH_SRC_DECALS, PURCH_TYPE_DECAL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { availableDecals, decalsCfg } = require("%rGui/unitCustom/unitDecals/unitDecalsState.nut")
-let { isCustomizationWndAttached } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { mkDecalIcon } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
+from "%appGlobals/pServer/pServerApi.nut" import buy_decal, registerHandler
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_DECALS, PURCH_TYPE_DECAL, mkBqPurchaseInfo
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
+from "%rGui/unitCustom/unitDecals/unitDecalsComps.nut" import mkDecalIcon
+from "%rGui/unitCustom/unitDecals/unitDecalsState.nut" import availableDecals, decalsCfg
+from "%rGui/unitDetails/unitDetailsState.nut" import isCustomizationWndAttached
 
 
 let decalName = mkWatched(persist, "decalName", null)

@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { isAuthorized } = require("%appGlobals/loginState.nut")
-let { screensList } = require("%globalsDarg/loading/loadingScreensCfg.nut")
-let { curSceneBg, curSceneBgFallback } = require("%rGui/navState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { mkAnimBgWithGyro } = require("%rGui/loading/mkAnimBgWithGyro.nut")
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/loginState.nut" import isAuthorized
+from "%globalsDarg/loading/loadingScreensCfg.nut" import screensList
+from "%rGui/loading/mkAnimBgWithGyro.nut" import mkAnimBgWithGyro
+from "%rGui/navState.nut" import curSceneBg, curSceneBgFallback
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "types" import String
 
 
 let scenesList = []
@@ -44,12 +45,12 @@ let behindScene = {
   ]
 }
 
-let getIdx = @(componentOrId) type(componentOrId) == "string"
+let getIdx = @(componentOrId) componentOrId instanceof String
   ? scenesList.findindex(@(v) v.id == componentOrId)
   : scenesList.findindex(@(v) v.scene == componentOrId)
 
 function addBehindScene(component, onClearScenes = null, uid = null) {
-  local id = type(uid) == "string" ? uid : null
+  local id = uid instanceof String ? uid : null
   let idx = getIdx(id ?? component)
   if (idx != null)
     scenesList.remove(idx)

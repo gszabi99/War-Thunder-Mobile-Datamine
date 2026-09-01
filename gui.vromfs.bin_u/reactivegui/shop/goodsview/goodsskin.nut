@@ -1,23 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } =  require("math")
-let { getUnitPresentation, getUnitClassFontIcon, getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
-let { getGoodsAsOfferIcon } = require("%appGlobals/config/goodsPresentation.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { G_SKIN } = require("%appGlobals/rewardType.nut")
-let { mkGoodsWrap, borderBg, mkPricePlate, mkGoodsCommonParts,
-  goodsSmallSize, goodsBgH, underConstructionBg, mkEndTime,
-  limitFontGrad, mkBorderByCurrency, mkBgImg
-} = require("%rGui/shop/goodsView/sharedParts.nut")
-let { mkGradRank, mkGradGlowText } = require("%rGui/components/gradTexts.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { ALL_PURCHASED, NOT_READY } = require("%rGui/shop/goodsStates.nut")
+from "math" import round
+from "%appGlobals/config/goodsPresentation.nut" import getGoodsAsOfferIcon
+from "%appGlobals/config/skinPresentation.nut" import getSkinPresentation
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/rewardType.nut" import G_SKIN
+from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitClassFontIcon, getUnitName
+from "%rGui/components/gradTexts.nut" import mkGradRank, mkGradGlowText
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/shop/goodsStates.nut" import ALL_PURCHASED, NOT_READY
+from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, borderBg, mkPricePlate, mkGoodsCommonParts,
+  goodsSmallSize, goodsBgH, underConstructionBg, mkEndTime, limitFontGrad, mkBorderByCurrency, mkBgImg
 
 
 let skinSize =  (0.5 * goodsBgH).tointeger()
 let skinBorderRadius = round(skinSize * 0.2).tointeger()
-let skinBorderWidth = hdpxi(3)
+const skinBorderWidth = hdpxi(3)
 let headerPadding = const [hdpx(15), hdpx(34), 0, hdpx(34)]
 let headerWidth = goodsSmallSize[0] - headerPadding[1] - headerPadding[3]
 let lockIconSize = const [hdpxi(37),hdpxi(48)]
@@ -133,7 +131,7 @@ function mkGoodsSkin(goods, onClick, state, animParams, addChildren) {
   let bg = mkBg(unit)
   let header = mkHeader(unit)
   let mRankText = mkMRank(Computed(@() serverConfigs.get()?.allUnits[unitName].mRank ?? 1))
-  let endTimeText = mkEndTime(goods, { pos = [hdpx(-50), 0] })
+  let endTimeText = mkEndTime(goods, { pos = const [hdpx(-50), 0] })
   return mkGoodsWrap(
     goods,
     @() isPurchased.get() ? null

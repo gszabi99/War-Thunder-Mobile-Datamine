@@ -1,46 +1,45 @@
 from "%globalsDarg/darg_library.nut" import *
-let { object_to_json_string } = require("json")
-let { command } = require("console")
-let { set_clipboard_text } = require("dagor.clipboard")
-let { screenlog } = require("dagor.debug")
-let { defer } = require("dagor.workcycle")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { reset_profile, reset_profile_with_stats, unlock_all_units, add_currency_no_popup,
-  add_premium, reset_scheduled_reward_timers, upgrade_unit, downgrade_unit, registerHandler,
-  royal_beta_units_unlock, add_all_skins_for_unit, shift_all_personal_goods_time,
-  check_purchases_debug, add_subscription_time, unlock_all_unreleased_units
-} = require("%appGlobals/pServer/pServerApi.nut")
-let { resetUserstatAppData, allowOpenUnlock } = require("%rGui/unlocks/unlocks.nut")
-let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { makeVertScroll, makeSideScroll } = require("%rGui/components/scrollbar.nut")
-let { closeButton } = require("%rGui/components/debugWnd.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { textInput } = require("%rGui/components/textInput.nut")
-let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { isTutorialMissionsDebug } = require("%rGui/tutorial/tutorialMissions.nut")
-let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
-let debugGameModesWnd = require("%rGui/debugTools/debugGameModesWnd.nut")
-let { randomBattleMode, forceNewbieModeIdx } = require("%rGui/gameModes/gameModeState.nut")
-let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let debugOffersWnd = require("%rGui/debugTools/debugOffersWnd.nut")
-let debugUnlocks = require("%rGui/debugTools/debugUnlocks.nut")
-let { mainHangarUnitName } = require("%rGui/unit/hangarUnit.nut")
-let { startDebugNewbieMission, startLocalMultiplayerMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
-let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
-let { currencyOrder, getDbgCurrencyCount, balance } = require("%appGlobals/currenciesState.nut")
-let { canBattleWithoutAddons } = require("%appGlobals/clientState/clientState.nut")
-let debugPermissionsWnd = require("%rGui/debugTools/debugPermissionsWnd.nut")
-let { removeAddonsForCampaign } = require("%rGui/updater/updaterState.nut")
+from "console" import command
+from "dagor.clipboard" import set_clipboard_text
+from "dagor.debug" import screenlog
+from "dagor.workcycle" import defer
+from "json" import object_to_json_string
+from "%sqstd/underscore.nut" import arrayByRows
+from "%appGlobals/clientState/clientState.nut" import canBattleWithoutAddons
+from "%appGlobals/currenciesState.nut" import currencyOrder, getDbgCurrencyCount, balance
+from "%appGlobals/customSettings.nut" import resetCustomSettings
+from "%appGlobals/gameModes/newbieGameModesConfig.nut" import newbieGameModesConfig
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import reset_profile, reset_profile_with_stats, unlock_all_units,
+  add_currency_no_popup, add_premium, reset_scheduled_reward_timers, upgrade_unit, downgrade_unit, registerHandler,
+  royal_beta_units_unlock, add_all_skins_for_unit, shift_all_personal_goods_time, check_purchases_debug,
+  add_subscription_time, unlock_all_unreleased_units, debug_skip_event_delay
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/debugWnd.nut" import closeButton
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText
+from "%rGui/components/scrollbar.nut" import makeVertScroll, makeSideScroll
+from "%rGui/components/textButton.nut" import textButtonCommon
+from "%rGui/components/textInput.nut" import textInput
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/debriefing/debriefingState.nut" import debriefingData
+import "%rGui/debugTools/debugGameModesWnd.nut" as debugGameModesWnd
+import "%rGui/debugTools/debugOffersWnd.nut" as debugOffersWnd
+import "%rGui/debugTools/debugPermissionsWnd.nut" as debugPermissionsWnd
+import "%rGui/debugTools/debugUnlocks.nut" as debugUnlocks
+from "%rGui/gameModes/gameModeState.nut" import randomBattleMode, forceNewbieModeIdx
+from "%rGui/gameModes/newbieOfflineMissions.nut" import startDebugNewbieMission, startLocalMultiplayerMission
+import "%rGui/squad/notAvailableForSquadMsg.nut" as notAvailableForSquadMsg
+from "%rGui/tutorial/tutorialMissions.nut" import isTutorialMissionsDebug
+from "%rGui/unit/hangarUnit.nut" import mainHangarUnitName
+from "%rGui/unlocks/unlocks.nut" import resetUserstatAppData, allowOpenUnlock
+from "%rGui/updater/updaterState.nut" import removeAddonsForCampaign
 
 
-let wndWidth = hdpx(1500)
-let gap = hdpx(10)
+const wndWidth = hdpx(1500)
+const gap = hdpx(10)
 
-let wndUid = "debugCommandsWnd"
+const wndUid = "debugCommandsWnd"
 let close = @() removeModalWindow(wndUid)
 
 registerHandler("sceenlogResult", @(res) screenlog(res?.error == null ? "SUCCESS!" : "ERROR"))
@@ -116,6 +115,8 @@ let commandsList = [].extend(
         return dlog("Debriefing data copied to clipboard") 
       }
     }
+    { label = "debug_skip_event_delay",
+      func = withClose(@() debug_skip_event_delay(curCampaign.get(), "consolePrintResult")) }
     { label = "debug_game_modes", func = withClose(debugGameModesWnd) }
     { label = "debug_offers", func = withClose(debugOffersWnd) }
     { label = "debug_unlocks", func = withClose(debugUnlocks) }
@@ -195,7 +196,7 @@ function consoleExecute() {
 
 let consoleTextInput = {
   size = FLEX_H
-  padding = [0, gap, hdpx(50), gap]
+  padding = const [0, gap, hdpx(50), gap]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   children = [
@@ -213,7 +214,7 @@ return @() addModalWindow({
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   children = {
-    size = [wndWidth + 2 * gap, sh(90)]
+    size = const [wndWidth + 2 * gap, sh(90)]
     stopMouse = true
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER

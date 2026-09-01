@@ -1736,9 +1736,9 @@
   "class_tags": {},
   "VehiclePhys": {
     "Mass": {
-      "Empty": 14200.0,
+      "Empty": 14000.0,
       "Fuel": 500.0,
-      "TakeOff": 14700.0,
+      "TakeOff": 14500.0,
       "momentOfInertia": [
         2.5,
         2.5,
@@ -1774,24 +1774,24 @@
     },
     "engine": {
       "horsePowers": 270.0,
-      "maxRPM": 3200.0,
+      "maxRPM": 3300.0,
       "minRPM": 400.0
     },
     "mechanics": {
       "maxBrakeForce": 60480.0,
       "driveGearRadius": 0.268,
-      "mainGearRatio": 1.94,
-      "sideGearRatio": 2.774,
+      "mainGearRatio": 7.87,
+      "sideGearRatio": 1.0,
       "alternativeGearControl": 4.0,
       "gearRatios": {
         "ratio": [
-          -8.714,
+          -6.25,
           0.0,
-          8.714,
-          3.812,
-          2.259,
-          1.452,
-          1.0
+          5.95,
+          2.68,
+          1.58,
+          1.0,
+          0.698
         ]
       }
     },

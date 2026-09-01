@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { Indicator } = require("wt.behaviors")
-let { crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/sight.nut")
-let { crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
-let { canShowRadar } = require("%rGui/hudTuning/hudTuningState.nut")
-let { areSightHidden } = require("%rGui/hudState.nut")
-let { defBgColor, mkGradientBlock } = require("%rGui/hudHints/hintCtors.nut")
+from "math" import round
+from "wt.behaviors" import Indicator
+from "%rGui/hud/commonSight.nut" import crosshairSimpleSize
+from "%rGui/hud/sight.nut" import crosshairLineWidth, crosshairLineHeight
+from "%rGui/hudHints/hintCtors.nut" import defBgColor, mkGradientBlock
+from "%rGui/hudState.nut" import areSightHidden
+from "%rGui/hudTuning/hudTuningState.nut" import canShowRadar
 
 
 let AirTutorialVideoH = min((saSize[1] * 0.95).tointeger(), (9.0 / 16.0 * saSize[0]).tointeger())
@@ -13,25 +13,25 @@ let AirTutorialVideoW = (AirTutorialVideoH * (16.0 / 9)).tointeger()
 
 let swipeImgW = hdpx(200).tointeger()
 let swipeImgH = round(swipeImgW / (41.0 / 43)).tointeger()
-let swipeAnimOffset = hdpx(200)
-let swipeAnimTime = 3.0
-let imgSize = hdpxi(100)
+const swipeAnimOffset = hdpx(200)
+const swipeAnimTime = 3.0
+const imgSize = hdpxi(100)
 let halfCrosshairLineHeight = (0.5 * crosshairLineHeight).tointeger()
 let sizeAim = [crosshairLineWidth, crosshairLineHeight]
 let sizeAimRv = [sizeAim[1], sizeAim[0]]
-let red = 0xffff0000
-let green = 0xff00ff00
+const red = 0xffff0000
+const green = 0xff00ff00
 
 let cfgMovCursor = [
-  { pos = [0, 0], easing = InQuad },
-  { time = 0.4, pos = [hdpxi(50), 0] },
-  { pos = [hdpxi(150), hdpxi(40)] },
-  { pos = [hdpxi(100), hdpxi(100)] },
-  { pos = [hdpxi(50), hdpxi(80)] },
-  { pos = [0, hdpxi(60)] },
-  { pos = [hdpxi(-50), hdpxi(30)] },
-  { pos = [hdpxi(-100), hdpxi(10)], easing = OutQuad },
-  { time = 0.5, pos = [0, 0], onExit = "restartAnim" },
+  { pos = const [0, 0], easing = InQuad },
+  { time = 0.4, pos = const [hdpxi(50), 0] },
+  { pos = const [hdpxi(150), hdpxi(40)] },
+  { pos = const [hdpxi(100), hdpxi(100)] },
+  { pos = const [hdpxi(50), hdpxi(80)] },
+  { pos = const [0, hdpxi(60)] },
+  { pos = const [hdpxi(-50), hdpxi(30)] },
+  { pos = const [hdpxi(-100), hdpxi(10)], easing = OutQuad },
+  { time = 0.5, pos = const [0, 0], onExit = "restartAnim" },
 ]
 
 let changePosImg = function(){
@@ -83,7 +83,7 @@ let img_swipe_to_rotate_cam_air = @(_) {
       animations = changePosImg()
     }
     {
-      size = [ imgSize, imgSize ]
+      size = const [ imgSize, imgSize ]
       pos = [-(imgSize/2).tointeger(), 0]
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#mouse_pointer_air.svg:{imgSize}:{imgSize}:P")
@@ -143,20 +143,20 @@ let air_tutorial_shooting_moving_target = @(_) {
   }
 }
 
-let pauseFirstTime = 0.5
-let pauseSecondTime = 3.0
-let animTime = 0.5
+const pauseFirstTime = 0.5
+const pauseSecondTime = 3.0
+const animTime = 0.5
 let offset = [hdpx(159), 0]
 
 let air_tutorial_forestall_crosshair_gif = @(_) {
   size = SIZE_TO_CONTENT
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  pos = [0, -hdpx(250)]
+  pos = const [0, -hdpx(250)]
   children = mkGradientBlock(defBgColor, [
         {
           size = hdpx(30)
-          pos = [hdpx(80), 0]
+          pos = const [hdpx(80), 0]
           hplace = ALIGN_CENTER
           vplace = ALIGN_CENTER
           rendObj = ROBJ_IMAGE
@@ -164,7 +164,7 @@ let air_tutorial_forestall_crosshair_gif = @(_) {
         }
         {
           size = hdpx(40)
-          pos = [-hdpx(80), 0]
+          pos = const [-hdpx(80), 0]
           hplace = ALIGN_CENTER
           vplace = ALIGN_CENTER
           rendObj = ROBJ_IMAGE

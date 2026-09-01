@@ -3252,7 +3252,14 @@
           "iconType": "rocket_20kg_group",
           "name": "us_5_in_hvar",
           "reqModification": "blbc_mk1",
-          "ShowNodes": {},
+          "ShowNodes": {
+            "node": [
+              "pylon_rocket1",
+              "pylon_rocket2",
+              "pylon_rocket3",
+              "pylon_rocket4"
+            ]
+          },
           "Weapon": [
             {
               "trigger": "rockets",
@@ -3321,7 +3328,14 @@
           "iconType": "rocket_20kg_group",
           "name": "us_5_in_hvar",
           "reqModification": "blbc_mk1",
-          "ShowNodes": {},
+          "ShowNodes": {
+            "node": [
+              "pylon_rocket5",
+              "pylon_rocket6",
+              "pylon_rocket7",
+              "pylon_rocket8"
+            ]
+          },
           "Weapon": [
             {
               "trigger": "rockets",

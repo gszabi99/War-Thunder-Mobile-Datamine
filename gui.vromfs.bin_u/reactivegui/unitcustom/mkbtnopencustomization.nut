@@ -1,17 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
-let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
-let { openUnitCustom } = require("%rGui/unitCustom/unitCustomState.nut")
-let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
-let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { unseenDecals } = require("%rGui/unitCustom/unitDecals/unseenDecals.nut")
+from "eventbus" import eventbus_subscribe
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/updater/addonsState.nut" import unitSizes
+from "%rGui/components/textButton.nut" import mkCustomButton, buttonStyles, mergeStyles
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/unitCustom/unitCustomState.nut" import openUnitCustom
+from "%rGui/unitCustom/unitDecals/unseenDecals.nut" import unseenDecals
+from "%rGui/unitCustom/unitSkins/unseenSkins.nut" import unseenSkins
+from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd
 
 
-let iconSize = hdpxi(60)
+const iconSize = hdpxi(60)
 
 let customizationBtnContent = {
   valign = ALIGN_CENTER

@@ -1,46 +1,46 @@
 from "%globalsDarg/darg_library.nut" import *
-let { defer } = require("dagor.workcycle")
-let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { G_LOOTBOX, G_CURRENCY } = require("%appGlobals/rewardType.nut")
-let { registerScene, setSceneBgFallback, setSceneBg } = require("%rGui/navState.nut")
-let { GPT_LOOTBOX, previewType, previewGoods, closeGoodsPreview, openPreviewCount
-} = require("%rGui/shop/goodsPreviewState.nut")
-let { purchasesCount, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
-let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { GOLD, WP } = require("%appGlobals/currenciesState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { getLootboxName, getLootboxPreviewBg } = require("%appGlobals/config/lootboxPresentation.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { mkPreviewHeader, mkTimeBlockCentered, mkPriceBlockCentered, opacityAnims, ANIM_SKIP, ANIM_SKIP_DELAY
-} = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { lootboxImageWithTimer, lootboxContentBlock, mkJackpotProgress
-} = require("%rGui/shop/lootboxPreviewContent.nut")
-let { getStepsToNextFixed } = require("%rGui/shop/lootboxPreviewState.nut")
-let mkGiftSchRewardBtn = require("%rGui/shop/goodsPreview/mkGiftSchRewardBtn.nut")
-let { schRewards } = require("%rGui/shop/schRewardsState.nut")
-let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
-let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { getAllLootboxRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+from "dagor.workcycle" import defer
+from "%sqstd/underscore.nut" import prevIfEqual
+from "%appGlobals/config/lootboxPresentation.nut" import getLootboxName, getLootboxPreviewBg
+from "%appGlobals/currenciesState.nut" import commonCurrencies
+from "%appGlobals/pServer/campaign.nut" import purchasesCount, todayPurchasesCount
+from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/rewardType.nut" import G_LOOTBOX, G_CURRENCY
+from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, getDay, dayOffset
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/gradientDefComps.nut" import doubleSideGradient
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
+from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
+from "%rGui/navState.nut" import registerScene, setSceneBgFallback, setSceneBg
+from "%rGui/rewards/rewardViewInfo.nut" import getAllLootboxRewardsViewInfo
+from "%rGui/shop/goodsPreview/goodsPreviewPkg.nut" import mkPreviewHeader, mkTimeBlockCentered, mkPriceBlockCentered,
+  opacityAnims, ANIM_SKIP, ANIM_SKIP_DELAY
+import "%rGui/shop/goodsPreview/mkGiftSchRewardBtn.nut" as mkGiftSchRewardBtn
+from "%rGui/shop/goodsPreviewState.nut" import GPT_LOOTBOX, previewType, previewGoods, closeGoodsPreview,
+  openPreviewCount
+from "%rGui/shop/lootboxPreviewContent.nut" import lootboxImageWithTimer, lootboxContentBlock, mkJackpotProgress
+from "%rGui/shop/lootboxPreviewState.nut" import getStepsToNextFixed
+from "%rGui/shop/schRewardsState.nut" import schRewards
+from "%rGui/style/gradients.nut" import simpleHorGrad
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
-let wndHeaderHeight = hdpx(110)
-let contentGap = hdpx(30)
+
+const wndHeaderHeight = hdpx(110)
+const contentGap = hdpx(30)
 let wndContentHeight = saSize[1] - wndHeaderHeight - contentGap
 let contentGradientSize = [contentGap, saBorders[1]]
 let rewardsBlockWidth = saSize[0] - hdpx(650)
-let btnW = hdpx(300)
-let gapBtn = hdpx(20)
+const btnW = hdpx(300)
+const gapBtn = hdpx(20)
 
 
-let aTimeHeaderStart = 0.5
-let aTimePriceStart = aTimeHeaderStart + 0.1
+const aTimeHeaderStart = 0.5
+const aTimePriceStart = aTimeHeaderStart + 0.1
 
-let countPurchases = 10
+const countPurchases = 10
 
 let skipAnimsOnce = Watched(false)
 
@@ -56,12 +56,12 @@ function balanceButtons() {
   let { currencyId = "" } = previewGoods.get()?.price
   let currencyIds = { [currencyId] = true }
   if (lootbox.get() != null)
-    foreach (r in getAllLootboxRewardsViewInfo(lootbox.get()))
-      if (r.rType == G_CURRENCY)
-        currencyIds[currencyToFullId.get()?[r.id] ?? r.id] <- true
+    foreach (r in getAllLootboxRewardsViewInfo(lootbox.get())) {
+      let cId = currencyToFullId.get()?[r.id] ?? r.id
+      if (r.rType == G_CURRENCY && !commonCurrencies.keys().contains(cId))
+        currencyIds[cId] <- true
+    }
   currencyIds.$rawdelete("")
-  currencyIds.$rawdelete(GOLD)
-  currencyIds.$rawdelete(WP)
   return {
     watch = [previewGoods, lootbox, currencyToFullId]
     pos = [saBorders[0], 0]
@@ -70,7 +70,8 @@ function balanceButtons() {
     image = simpleHorGrad
     color = 0x70000000
     hplace = ALIGN_RIGHT
-    children = currencyIds.len() == 0 ? null : mkCurrenciesBtns(currencyIds.keys())
+    children = currencyIds.len() == 0 ? null
+      : mkCurrenciesBtns(currencyIds.keys(), null, {size = SIZE_TO_CONTENT})
     animations = opacityAnims(1, aTimePriceStart + 0.5)
   }
 }
@@ -140,7 +141,7 @@ let content = @() {
             mkTimeBlockCentered(aTimePriceStart)
             { size = const [0, hdpx(10)] }
             doubleSideGradient.__merge({
-              size = [btnW * 2 + gapBtn, SIZE_TO_CONTENT]
+              size = const [btnW * 2 + gapBtn, SIZE_TO_CONTENT]
               flow = FLOW_HORIZONTAL
               gap = gapBtn
               halign = ALIGN_CENTER
@@ -185,7 +186,7 @@ let previewWnd = @() {
   animations = wndSwitchAnim
 }
 
-let sceneId = "goodsLootboxPreviewWnd"
+const sceneId = "goodsLootboxPreviewWnd"
 registerScene(sceneId, previewWnd, closeGoodsPreview, openCount)
 setSceneBgFallback(sceneId, "ui/images/event_bg.avif")
 setSceneBg(sceneId, bgImage.get().bg, bgImage.get()?.bgColor)

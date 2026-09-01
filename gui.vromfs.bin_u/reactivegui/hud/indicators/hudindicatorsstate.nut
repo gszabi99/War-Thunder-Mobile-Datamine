@@ -1,20 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { sqrt, pow, fabs } = require("math")
-let { get_time_msec } = require("dagor.time")
-let { setTimeout, setInterval, clearTimer } = require("dagor.workcycle")
-let { register_command } = require("console")
-let { get_mplayer_by_id, get_mplayers_list, GET_MPLAYERS_LIST } = require("mission")
-let { getPlayerWorldPos } = require("guiTacticalMap")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { isInBattle, localMPlayerId, localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
-let { unitType } = require("%rGui/hudState.nut")
-let { INDICATOR_TYPE, indicatorTypes } = require("%rGui/hud/indicators/hudIndicatorTypes.nut")
-let { getTitleShowDist } = require("%rGui/hud/indicators/playerIndicator.nut")
-let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout, setInterval, clearTimer
+from "guiTacticalMap" import getPlayerWorldPos
+from "math" import sqrt, pow, fabs
+from "mission" import get_mplayer_by_id, get_mplayers_list, GET_MPLAYERS_LIST
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle, localMPlayerId, localMPlayerTeam
+from "%appGlobals/unitTags.nut" import getUnitType
+from "%rGui/hud/indicators/hudIndicatorTypes.nut" import INDICATOR_TYPE, indicatorTypes
+from "%rGui/hud/indicators/playerIndicator.nut" import getTitleShowDist
+from "%rGui/hudState.nut" import unitType
+from "%rGui/style/teamColors.nut" import teamBlueColor, teamRedColor
 
-let TRACKED_PLAYERS_INFO_UPDATE_INTERVAL_SEC = 0.5
-let FAR_DISTANCE_METERS = 100000.0
+
+const TRACKED_PLAYERS_INFO_UPDATE_INTERVAL_SEC = 0.5
+const FAR_DISTANCE_METERS = 100000.0
 
 let isHudIndicatorsAttached = Watched(false)
 let hudIndicatorsState = mkWatched(persist, "hudIndicatorsState", {})

@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { obstacleIsNear, distanceToObstacle } = require("%rGui/hud/shipState.nut")
-let { abs } = require("%sqstd/math.nut")
-let { register_command } = require("console")
-let { registerHintCreator } = require("%rGui/hudHints/hintCtors.nut")
-let { addEvent, removeEvent } = require("%rGui/hudHints/warningHintLogState.nut")
+from "console" import register_command
+from "dagor.workcycle" import setInterval, clearTimer
+from "%sqstd/math.nut" import abs
+from "%rGui/hud/shipState.nut" import obstacleIsNear, distanceToObstacle
+from "%rGui/hudHints/hintCtors.nut" import registerHintCreator
+from "%rGui/hudHints/warningHintLogState.nut" import addEvent, removeEvent
 
 
-let HINT_TYPE = "obstacleWarning"
-let alertDMColor = Color(221, 17, 17)
+const HINT_TYPE = "obstacleWarning"
+const alertDMColor = Color(221, 17, 17)
 
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let isDebugDistance = mkWatched(persist, "debugDistance", false)

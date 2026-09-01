@@ -1,35 +1,64 @@
 from "%globalsDarg/darg_library.nut" import *
-let { toIntegerSafe } = require("%sqstd/string.nut")
-let { mapPointsPresentations } = require("%appGlobals/config/mapPointsPresentation.nut")
-let { isCurPresetChanged, closeEventMapEditor, saveCurrentPreset, addOrEditPoint, selectedBgElemIdx,
-  isHeaderOptionsOpen, selectedPointId, setByHistory, curHistoryIdx, deleteElement,
-  isEditAllowed, presetPointSize, needUseAutoSave, tuningPoints, tuningBgElems,
-  historyMapElements, selectElem, defaultPointSize, changeCurPresetField, presetGridSize,
-  ELEM_POINT, ELEM_BG, addBgElement, editBgElement, selectedElem, copyElement
-} = require("%rGui/debugTools/debugMapPoints/mapEditorState.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { removeModalWindow, addModalWindowWithHeader } = require("%rGui/components/modalWindows.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { optionsBtnGap, btnBgColorDefault, btnBgColorPositive, btnBgColorNegative, btnBgColorDisabled,
-  btnImgColor, btnImgColorDisabled, defaultBgElemSize, optionBtnSize
-} = require("%rGui/debugTools/debugMapPoints/mapEditorConsts.nut")
-let { mkOptionBtnImg, mkOptionBtn, mkTextOptionBtn, btnWithActivity, mkTextInputField, mkText,
-  mkFramedText, modalBg, mkTextOptionBtnNoUpper
-} = require("%rGui/debugTools/debugMapPoints/mapEditorComps.nut")
-let { mkBgCollectionChoice } = require("%rGui/debugTools/debugMapPoints/bgCollectionChoice.nut")
+from "%sqstd/string.nut" import toIntegerSafe
+from "%appGlobals/config/mapPointsPresentation.nut" import mapPointsPresentations, getDefaultPointSize, defaultPointView
+from "%rGui/components/modalWindows.nut" import removeModalWindow, addModalWindowWithHeader
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/debugTools/debugMapPoints/bgCollectionChoice.nut" import mkBgCollectionChoice
+from "%rGui/debugTools/debugMapPoints/mapEditorComps.nut" import mkOptionBtnImg, mkOptionBtn, mkTextOptionBtn,
+  btnWithActivity, mkTextInputField, mkText, mkFramedText, modalBg, mkTextOptionBtnNoUpper
+from "%rGui/debugTools/debugMapPoints/mapEditorConsts.nut" import optionsBtnGap, btnBgColorDefault,
+  btnBgColorPositive, btnBgColorNegative, btnBgColorDisabled, btnImgColor, btnImgColorDisabled, defaultBgElemSize,
+  optionBtnSize
+from "%rGui/debugTools/debugMapPoints/mapEditorState.nut" import isCurPageChanged, closeEventMapEditor,
+  saveCurrentPage, addOrEditPoint, selectedBgElemIdx, isHeaderOptionsOpen, selectedPointId, setByHistory, curHistoryIdx,
+  deleteElement, isEditAllowed, needUseAutoSave, tuningPoints, tuningBgElems, historyMapElements,
+  selectElem, changeCurPageField, pageGridSize, pageLineSectionLen, pageRoundedDashes, pageLineType, pageLineWidth, ELEM_POINT, ELEM_BG, addBgElement, editBgElement,
+  selectedElem, copyElement, curEventNodeViews, pagePointSizes
+from "%rGui/event/treeEvent/treeEventUtils.nut" import lineTypes, LINE_SOLID
 
 
-let POINTS_SIZE_SETTING_WND = "pointsSizeSettingsWnd"
-let GRID_SIZE_SETTING_WND = "gridSizeSettingsWnd"
-let ADD_POINT_WND = "addPointWnd"
-let POINT_EDIT_WND = "pointEditWnd"
-let SELECT_POINT_VIEW_WND = "selectPointViewWnd"
+const TYPE_SIZES_SETTING_WND = "typeSizesSettingsWnd"
+const GRID_SIZE_SETTING_WND = "gridSizeSettingsWnd"
+const LINE_SETTING_WND = "lineSettingsWnd"
+const LINE_DASH_SETTING_WND = "lineDashSettingsWnd"
+const LINE_TYPE_SETTING_WND = "lineTypeSettingsWnd"
+const LINE_WIDTH_SETTING_WND = "lineWidthSettingsWnd"
+const ADD_POINT_WND = "addPointWnd"
+const POINT_EDIT_WND = "pointEditWnd"
+const SELECT_POINT_VIEW_WND = "selectPointViewWnd"
 
-let SETTING_WND = "settingsWnd"
-let ADD_BG_ELEMENT_WND = "addBgElementWnd"
-let EDIT_BG_ELEMENT_WND = "editBgElementWnd"
+const SETTING_WND = "settingsWnd"
+const ADD_BG_ELEMENT_WND = "addBgElementWnd"
+const EDIT_BG_ELEMENT_WND = "editBgElementWnd"
 
-let defaultPointView = "mapMark"
+let effectiveView = @(id, view, nodeViews) view != "" ? view : (nodeViews?[id] ?? defaultPointView)
+
+const viewIconSize = hdpxi(50)
+function mkViewBtn(viewKey, onClick, ovr = {}) {
+  let icon = mapPointsPresentations?[viewKey].unlocked
+
+  return mkTextOptionBtnNoUpper(viewKey, onClick, {
+    flow = FLOW_HORIZONTAL
+    halign = ALIGN_LEFT
+    valign = ALIGN_CENTER
+    gap = hdpx(15)
+    padding = hdpx(15)
+    children = [
+      icon == null ? null : {
+        size = viewIconSize
+        rendObj = ROBJ_IMAGE
+        image = Picture($"{icon.image}:{viewIconSize}:P")
+        color = icon.color
+        keepAspect = true
+      }
+      {
+        rendObj = ROBJ_TEXT
+        text = viewKey
+      }.__update(fontTinyAccented)
+    ]
+  }.__update(ovr))
+}
 
 let bgElemIdField = Watched("")
 let bgElemImgField = Watched("")
@@ -40,11 +69,12 @@ let bgRotateElemField = Watched("")
 let pointIdField = Watched("")
 let pointViewField = Watched(defaultPointView)
 
-let pointSizeField = Watched("")
 let gridSizeField = Watched("")
+let lineWidthField = Watched("")
+let lineSectionLenField = Watched("")
 
 function askSaveAndClose() {
-  if (!isCurPresetChanged.get()) {
+  if (!isCurPageChanged.get()) {
     closeEventMapEditor()
     return
   }
@@ -58,7 +88,7 @@ function askSaveAndClose() {
         styleId = "PRIMARY"
         isDefault = true
         function cb() {
-          saveCurrentPreset()
+          saveCurrentPage()
           closeEventMapEditor()
         }
       }
@@ -72,14 +102,14 @@ function clearOrFillFields(id = "", view = defaultPointView) {
 }
 
 let selectPointViewContent = @() modalBg.__merge({ 
-  size = [hdpx(600), hdpx(900)]
+  size = const [hdpx(600), hdpx(900)]
   children = makeVertScroll({
     size = FLEX_H
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(20)
     children = mapPointsPresentations.keys().sort()
-      .map(@(v) mkTextOptionBtnNoUpper(v,
+      .map(@(v) mkViewBtn(v,
         function() {
           pointViewField.set(v)
           removeModalWindow(SELECT_POINT_VIEW_WND)
@@ -104,14 +134,15 @@ function onAddPoint(id, view) {
   removeModalWindow(ADD_POINT_WND)
 }
 
-function onEditPoint(id, view) {
-  addOrEditPoint(id, view)
+function onEditPoint(id, view, nodeViews) {
+  let auto = nodeViews?[id] ?? defaultPointView
+  addOrEditPoint(id, view == auto ? "" : view)
   removeModalWindow(POINT_EDIT_WND)
 }
 
 let addPointContent = @() modalBg.__merge({
   watch = pointViewField
-  size = [hdpx(600), SIZE_TO_CONTENT]
+  size = const [hdpx(600), SIZE_TO_CONTENT]
   function onAttach() {
     clearOrFillFields()
     set_kb_focus(pointIdField)
@@ -121,38 +152,56 @@ let addPointContent = @() modalBg.__merge({
     mkTextInputField(pointIdField, "Set point ID",
       { onReturn = @() onAddPoint(pointIdField.get(), pointViewField.get()) })
     mkText("Point View:")
-    mkTextOptionBtnNoUpper(pointViewField.get(), openPointViewChoice)
+    mkViewBtn(pointViewField.get(), openPointViewChoice)
     mkTextOptionBtn("ADD",
       @() onAddPoint(pointIdField.get(), pointViewField.get()))
   ]
 })
 
-let pointsSizeSettingContent = modalBg.__merge({
-  onAttach = @() pointSizeField.set(presetPointSize.get().tostring())
-  children = [
-    mkText("Points size:")
-    mkTextInputField(pointSizeField, "Set points size", { inputType = "num" })
+let typeSizeFields = mapPointsPresentations.keys().sort().reduce(@(res, k) res.$rawset(k, Watched("")), {})
+let typeSizesSettingContent = modalBg.__merge({
+  size = const [hdpx(500), SIZE_TO_CONTENT]
+  flow = FLOW_VERTICAL
+  gap = hdpx(10)
+  function onAttach() {
+    let sizes = pagePointSizes.get()
+    foreach (k, f in typeSizeFields)
+      f.set((sizes?[k] ?? getDefaultPointSize(k)).tostring())
+  }
+  children = mapPointsPresentations.keys().sort().map(@(k) {
+    size = FLEX_H
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(10)
+    valign = ALIGN_CENTER
+    children = [
+      mkText(k)
+      mkTextInputField(typeSizeFields[k], "size px", { inputType = "num" })
+    ]
+  }).append(
     mkTextOptionBtn("SAVE",
       function() {
-        changeCurPresetField("pointSize", pointSizeField.get() == "" ? defaultPointSize : pointSizeField.get().tointeger())
-        removeModalWindow(POINTS_SIZE_SETTING_WND)
-      })
-  ]
+        let sizes = {}
+        foreach (k, f in typeSizeFields)
+          if (f.get() != "")
+            sizes[k] <- f.get().tointeger()
+        changeCurPageField("pointSizes", sizes)
+        removeModalWindow(TYPE_SIZES_SETTING_WND)
+      }))
 })
 
 let pointEditContent = @() modalBg.__merge({
   watch = pointViewField
   key = POINT_EDIT_WND
-  size = [hdpx(600), SIZE_TO_CONTENT]
+  size = const [hdpx(600), SIZE_TO_CONTENT]
   function onAttach() {
     let curPoint = tuningPoints.get()?[selectedPointId.get()] ?? {}
-    let { view = defaultPointView } = curPoint
-    clearOrFillFields(selectedPointId.get(), view)
+    let { view = "" } = curPoint
+    clearOrFillFields(selectedPointId.get(), effectiveView(selectedPointId.get(), view, curEventNodeViews.get()))
   }
   children = [
     mkText("Point View:")
-    mkTextOptionBtnNoUpper(pointViewField.get(), openPointViewChoice)
-    mkTextOptionBtn("SAVE", @() onEditPoint(pointIdField.get(), pointViewField.get()))
+    mkViewBtn(pointViewField.get(), openPointViewChoice)
+    mkTextOptionBtn("SAVE", @() onEditPoint(pointIdField.get(), pointViewField.get(), curEventNodeViews.get()))
   ]
 })
 
@@ -194,7 +243,7 @@ function onEditBgElem() {
 }
 
 let editBgElemContent = modalBg.__merge({
-  size = [hdpx(600), SIZE_TO_CONTENT]
+  size = const [hdpx(600), SIZE_TO_CONTENT]
   function onAttach() {
     let { id = "", img = "", size = [], rotate = 0 } = tuningBgElems.get()?[selectedBgElemIdx.get()]
     bgElemIdField.set(id)
@@ -221,7 +270,7 @@ let editBgElemContent = modalBg.__merge({
 let toggleBtn = @() {
   watch = isHeaderOptionsOpen
   hplace = ALIGN_LEFT
-  pos = [sw(50), 0]
+  pos = const [sw(50), 0]
   children = mkOptionBtn("ui/gameuiskin#hud_tank_arrow_segment.svg",
     @() isHeaderOptionsOpen.set(!isHeaderOptionsOpen.get()),
     isHeaderOptionsOpen.get() ? "hudTuning/toggle/desc/hide" : "hudTuning/toggle/desc/show",
@@ -233,13 +282,13 @@ let toggleBtn = @() {
 }
 
 let exitBtn = @() {
-  watch = isCurPresetChanged
+  watch = isCurPageChanged
   children = mkOptionBtn("ui/gameuiskin#icon_exit.svg", askSaveAndClose, "hudTuning/exit/desc",
-    { color = isCurPresetChanged.get() ? btnBgColorNegative : btnBgColorPositive })
+    { color = isCurPageChanged.get() ? btnBgColorNegative : btnBgColorPositive })
 }
 
-let saveBtn = btnWithActivity(isCurPresetChanged, "ui/gameuiskin#icon_save.svg",
-  saveCurrentPreset, "hudTuning/save/desc")
+let saveBtn = btnWithActivity(isCurPageChanged, "ui/gameuiskin#icon_save.svg",
+  saveCurrentPage, "hudTuning/save/desc")
 
 let copyElemBtn = @() {
   watch = selectedElem
@@ -284,29 +333,94 @@ let addPointBtn = mkOptionBtn("ui/gameuiskin#icon_hud_flag.svg",
   "Add point")
 
 let gridSizeSettingContent = @() modalBg.__merge({
-  onAttach = @() gridSizeField.set(presetGridSize.get().tostring())
+  onAttach = @() gridSizeField.set(pageGridSize.get().tostring())
   children = [
     mkText("Grid size:")
     mkTextInputField(gridSizeField, "Set grid size", { inputType = "num" })
     mkTextOptionBtn("SAVE",
       function() {
         if (gridSizeField.get() != "")
-          changeCurPresetField("gridSize", gridSizeField.get().tointeger())
+          changeCurPageField("gridSize", gridSizeField.get().tointeger())
         removeModalWindow(GRID_SIZE_SETTING_WND)
       })
   ]
 })
 
-let settingContent = @() modalBg.__merge({
-  size = [hdpx(500), SIZE_TO_CONTENT]
+let lineDashSettingContent = @() modalBg.__merge({
+  onAttach = @() lineSectionLenField.set(pageLineSectionLen.get().tostring())
+  children = [
+    mkText("Dash section length (smaller = more dashes):")
+    mkTextInputField(lineSectionLenField, "Set dash section length", { inputType = "num" })
+    mkTextOptionBtn("SAVE",
+      function() {
+        if (lineSectionLenField.get() != "")
+          changeCurPageField("lineSectionLen", lineSectionLenField.get().tointeger())
+        removeModalWindow(LINE_DASH_SETTING_WND)
+      })
+  ]
+})
+
+let lineTypeSettingContent = @() modalBg.__merge({
+  size = const [hdpx(500), SIZE_TO_CONTENT]
+  flow = FLOW_VERTICAL
+  gap = hdpx(20)
+  children = lineTypes.map(@(t) mkTextOptionBtn(t,
+    function() {
+      changeCurPageField("lineType", t)
+      removeModalWindow(LINE_TYPE_SETTING_WND)
+    },
+    { size = [FLEX, optionBtnSize] }))
+})
+
+let lineWidthSettingContent = @() modalBg.__merge({
+  onAttach = @() lineWidthField.set(pageLineWidth.get().tostring())
+  children = [
+    mkText("Line width (px):")
+    mkTextInputField(lineWidthField, "Set line width", { inputType = "num" })
+    mkTextOptionBtn("SAVE",
+      function() {
+        if (lineWidthField.get() != "")
+          changeCurPageField("lineWidth", lineWidthField.get().tointeger())
+        removeModalWindow(LINE_WIDTH_SETTING_WND)
+      })
+  ]
+})
+
+let lineSettingContent = @() modalBg.__merge({
+  watch = pageLineType
+  size = const [hdpx(500), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   gap = hdpx(20)
   children = [
-    mkTextOptionBtn("points size",
-      @() addModalWindowWithHeader(POINTS_SIZE_SETTING_WND, "Change points size", pointsSizeSettingContent),
+    mkTextOptionBtn("Line type",
+      @() addModalWindowWithHeader(LINE_TYPE_SETTING_WND, "Select line type", lineTypeSettingContent),
+      { size = [FLEX, optionBtnSize] })
+    pageLineType.get() == LINE_SOLID ? null
+      : mkTextOptionBtn("Line dashes",
+          @() addModalWindowWithHeader(LINE_DASH_SETTING_WND, "Change line dash frequency", lineDashSettingContent),
+          { size = [FLEX, optionBtnSize] })
+    mkTextOptionBtn("Line ends: round / square",
+      @() changeCurPageField("roundedDashes", !pageRoundedDashes.get()),
+      { size = [FLEX, optionBtnSize] })
+    mkTextOptionBtn("Line width",
+      @() addModalWindowWithHeader(LINE_WIDTH_SETTING_WND, "Change line width", lineWidthSettingContent),
+      { size = [FLEX, optionBtnSize] })
+  ]
+})
+
+let settingContent = @() modalBg.__merge({
+  size = const [hdpx(500), SIZE_TO_CONTENT]
+  flow = FLOW_VERTICAL
+  gap = hdpx(20)
+  children = [
+    mkTextOptionBtn("type sizes",
+      @() addModalWindowWithHeader(TYPE_SIZES_SETTING_WND, "Marker size per type", typeSizesSettingContent),
       { size = [FLEX, optionBtnSize] })
     mkTextOptionBtn("grid size",
       @() addModalWindowWithHeader(GRID_SIZE_SETTING_WND, "Change grid size", gridSizeSettingContent),
+      { size = [FLEX, optionBtnSize] })
+    mkTextOptionBtn("line settings",
+      @() addModalWindowWithHeader(LINE_SETTING_WND, "Line settings", lineSettingContent),
       { size = [FLEX, optionBtnSize] })
   ]
 })

@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM
+
 
 let bpCardStyle = REWARD_STYLE_MEDIUM
 let bpCardPadding = [hdpx(20), hdpx(20)]
-let bpCardGap = hdpx(12)
+const bpCardGap = hdpx(12)
 let bpCardFooterHeight = evenPx(50)
 
 return {

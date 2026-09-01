@@ -1,15 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { Indicator } = require("wt.behaviors")
-let { hasTarget, aircraftCrosshairColor, areSightHidden
-} = require("%rGui/hudState.nut")
-let { targetUnitName } = require("hudIndicators")
-let { startCrosshairAnimationTime, pointCrosshairScreenPosition, crosshairDestinationScreenPosition
-} = require("%rGui/hud/commonState.nut")
-let { TargetLockTime } = require("%rGui/hud/airState.nut")
-let { targetName, mkTargetSelectionData } = require("%rGui/hud/targetSelectionProgress.nut")
-let { currentAircraftCtrlType, currentFixedAimCursor } = require("%rGui/options/options/airControlsOptions.nut")
-let { currentCrosshairIconCfg } = require("%rGui/options/options/crosshairOptions.nut")
-let { elementBlinks } = require("%rGui/tutorial/hudElementBlink.nut")
+from "hudIndicators" import targetUnitName
+from "wt.behaviors" import Indicator
+from "%rGui/hud/airState.nut" import TargetLockTime
+from "%rGui/hud/commonState.nut" import startCrosshairAnimationTime, pointCrosshairScreenPosition,
+  crosshairDestinationScreenPosition
+from "%rGui/hud/targetSelectionProgress.nut" import targetName, mkTargetSelectionData
+from "%rGui/hudState.nut" import hasTarget, aircraftCrosshairColor, areSightHidden
+from "%rGui/options/options/airControlsOptions.nut" import currentFixedAimCursor
+from "%rGui/options/options/crosshairOptions.nut" import currentCrosshairIconCfg
+from "%rGui/tutorial/hudElementBlink.nut" import elementBlinks
 
 
 let airGunDirectionSize = oddPx(58)
@@ -17,7 +16,7 @@ let fixedAirGunDirectionSize = oddPx(11)
 let isSightAttached = Watched(false)
 let needSightBlink = keepref(Computed(@() isSightAttached.get() && (elementBlinks.get()?.crosshair ?? false)))
 let needDestinationBlink = keepref(Computed(@() isSightAttached.get() && (elementBlinks.get()?.mouseAim ?? false)))
-let airDestinationOpacity = 0.45
+const airDestinationOpacity = 0.45
 let hasTargetName = Computed(@() hasTarget.get() && targetUnitName.get() != null && targetUnitName.get() != "")
 
 
@@ -101,16 +100,14 @@ let airDestination = mkCrosshairIcon("mouse_pointer_air.svg", airGunDirectionSiz
 let fixedAirDestination = mkCrosshairIcon("point_center_air.svg", fixedAirGunDirectionSize)
 
 let aircraftSight = @() {
-  watch = [areSightHidden, currentAircraftCtrlType, currentFixedAimCursor]
+  watch = [areSightHidden, currentFixedAimCursor]
   size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = areSightHidden.get() ? null
     : [
         airCrosshair
-        currentAircraftCtrlType.get() != "mouse_aim" ? null
-          : currentFixedAimCursor.get() ? fixedAirDestination
-          : airDestination
+        currentFixedAimCursor.get() ? fixedAirDestination : airDestination
         airTarget
       ]
 }

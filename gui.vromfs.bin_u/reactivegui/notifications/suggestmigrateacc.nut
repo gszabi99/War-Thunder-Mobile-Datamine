@@ -1,26 +1,26 @@
 ﻿from "%globalsDarg/darg_library.nut" import *
+from "android.billing.googleplay" import getCountryCode
+from "android.platform" import isDownloadedFromGooglePlay
 from "app" import get_base_game_version_str
 from "eventbus" import eventbus_send
-from "android.platform" import isDownloadedFromGooglePlay
-from "android.billing.googleplay" import getCountryCode
+from "%sqstd/globalState.nut" import hardPersistWatched
 from "%sqstd/string.nut" import utf8ToUpper
 from "%sqstd/version_compare.nut" import check_version
-from "%sqstd/globalState.nut" import hardPersistWatched
-from "%appGlobals/permissions.nut" import external_gp_build_released
-from "%appGlobals/curCircuitOverride.nut" import isExternalOperator
 from "%appGlobals/clientState/clientState.nut" import isInMenu, isOutOfBattleAndResults
+from "%appGlobals/curCircuitOverride.nut" import isExternalOperator
 from "%appGlobals/pServer/pServerApi.nut" import registerHandler, get_migrate_acc_info, migAccInfoInProgress
-from "%rGui/navState.nut" import registerScene
-from "%rGui/style/stdColors.nut" import locColorTable
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
-from "%rGui/style/backgrounds.nut" import bgShaded
-from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader, wndHeaderHeight
-from "%rGui/components/closeWndBtn.nut" import closeWndBtn
-from "%rGui/components/textButton.nut" import textButtonBattle
-from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
-from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
-from "%rGui/account/linkEmailForGaijinLogin.nut" import canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin
+from "%appGlobals/permissions.nut" import external_gp_build_released
 from "%rGui/account/emailRegistrationState.nut" import canUpgradeGuestAccountToGaijinID, openGuestEmailRegistration
+from "%rGui/account/linkEmailForGaijinLogin.nut" import canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin
+from "%rGui/components/closeWndBtn.nut" import closeWndBtn
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader, wndHeaderHeight
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
+from "%rGui/components/textButton.nut" import textButtonBattle
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import locColorTable
 
 
 const INCOMPATIBLE_FROM_VERSION = "1.26.0.0"
@@ -30,14 +30,14 @@ local info = null
 
 let wndW = min(hdpx(1782), saSize[0])
 let wndH = min(hdpx(972),  saSize[1])
-let wndPadW = hdpx(90)
-let wndPadH = hdpx(50)
+const wndPadW = hdpx(90)
+const wndPadH = hdpx(50)
 let contentW = wndW - (2 * wndPadW)
-let parGap = hdpx(40)
-let advGap = hdpx(30)
-let urlColor = 0xFF17C0FC
-let urlHoverColor = 0xFF84E0FA
-let urlLineWidth = hdpxi(1)
+const parGap = hdpx(40)
+const advGap = hdpx(30)
+const urlColor = 0xFF17C0FC
+const urlHoverColor = 0xFF84E0FA
+const urlLineWidth = hdpxi(1)
 
 let isSuggested = hardPersistWatched("suggestMigrateAcc.isSuggested", false)
 let shouldsuggestMigrateAcc = keepref(Computed(@() external_gp_build_released.get() && !isExternalOperator()
@@ -166,7 +166,7 @@ function mkUrlLink(text, action) {
     onElemState = @(sf) stateFlags.set(sf)
     onClick = action
     children = {
-      size = [flex(), urlLineWidth]
+      size = const [flex(), urlLineWidth]
       vplace = ALIGN_BOTTOM
       rendObj = ROBJ_SOLID
       color = (stateFlags.get() & S_HOVER) ? urlHoverColor : urlColor
@@ -188,7 +188,7 @@ let mkContentWnd = @() modalWndBg.__merge({
     }
     {
       size = flex()
-      padding = [wndPadH, wndPadW]
+      padding = const [wndPadH, wndPadW]
       flow = FLOW_VERTICAL
       children = [
         {
@@ -197,7 +197,7 @@ let mkContentWnd = @() modalWndBg.__merge({
           gap = hdpx(70)
           children = [
             mkTextarea(utf8ToUpper(info?.subtitle ?? ""),
-              { size = [flex(), SIZE_TO_CONTENT], halign = ALIGN_CENTER }.__update(fontBoldSmall))
+              { size = const [flex(), SIZE_TO_CONTENT], halign = ALIGN_CENTER }.__update(fontBoldSmall))
             {
               size = [flex(), SIZE_TO_CONTENT]
               margin = [0, 0, hdpx(30), 0]
@@ -206,7 +206,7 @@ let mkContentWnd = @() modalWndBg.__merge({
               children = mkParComps()
             }
             {
-              size = [flex(), SIZE_TO_CONTENT]
+              size = const [flex(), SIZE_TO_CONTENT]
               flow = FLOW_HORIZONTAL
               gap = advGap
               children = mkAdvComps()
@@ -214,7 +214,7 @@ let mkContentWnd = @() modalWndBg.__merge({
           ]
         }
         {
-          size = [flex(), SIZE_TO_CONTENT]
+          size = const [flex(), SIZE_TO_CONTENT]
           vplace = ALIGN_BOTTOM
           valign = ALIGN_CENTER
           flow = FLOW_HORIZONTAL
@@ -255,6 +255,6 @@ let mkScene = @() bgShaded.__merge({
   children = wndComp
 })
 
-let alwaysOnTop = true
+const alwaysOnTop = true
 let canClear = @() canClose
 registerScene("suggestMigrateAcc", mkScene, close, needSuggestMigrateAcc, alwaysOnTop, canClear)

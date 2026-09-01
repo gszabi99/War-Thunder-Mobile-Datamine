@@ -1,14 +1,15 @@
+from "%globalScripts/weaponConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { getBulletNameByType, getBulletCountByType, getNextBulletType, getCurrentBulletType, changeBulletType
-} = require("vehicleModel")
-let { eventbus_subscribe } = require("eventbus")
-let { setTimeout, deferOnce } = require("dagor.workcycle")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { ceil } = require("%sqstd/math.nut")
-let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { calcBulletStep } = require("%rGui/bullets/calcBullets.nut")
-let { playerUnitName, isUnitDelayed, isVisibleOnHud } = require("%rGui/hudState.nut")
-let { primaryAction, primaryExtraAction, secondaryAction, specAction } = require("%rGui/hud/actionBar/actionBarState.nut")
+from "dagor.workcycle" import setTimeout, deferOnce
+from "eventbus" import eventbus_subscribe
+from "vehicleModel" import getBulletNameByType, getBulletCountByType, getNextBulletType, getCurrentBulletType,
+  changeBulletType
+from "%sqstd/math.nut" import ceil
+from "%sqstd/underscore.nut" import isEqual
+from "%rGui/bullets/calcBullets.nut" import calcBulletStep
+from "%rGui/hud/actionBar/actionBarState.nut" import primaryAction, primaryExtraAction, secondaryAction, specAction
+from "%rGui/hudState.nut" import playerUnitName, isUnitDelayed, isVisibleOnHud
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitBulletsChoice
 
 
 let nextBulletIdx = Watched(getNextBulletType(TRIGGER_GROUP_PRIMARY))
@@ -146,7 +147,7 @@ specAction.subscribe(function(_) {
   updateAllBulletsCount()
 })
 
-let MAX_BULLETS = 2
+const MAX_BULLETS = 2
 function toggleNextBullet() {
   for (local offset = 1; offset < MAX_BULLETS; offset++) {
     let idx = (nextBulletIdx.get() + offset) % MAX_BULLETS

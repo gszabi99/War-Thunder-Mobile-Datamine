@@ -1,22 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { reorderList, applyCtrlType, isChooseMovementControlsOpened, isChooseWalkerMovementControlsOpened, getCurCtrlTypeW,
-  closeChooseMovementControls } = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
-let { textButtonPrimary, buttonStyles } = require("%rGui/components/textButton.nut")
-let { groundMoveCtrlTypesList, ctrlTypeToString } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let controlsTypesButton = require("%rGui/options/chooseMovementControls/controlsTypesButton.nut")
-let controlsTypesAnimsCtors = require("%rGui/options/chooseMovementControls/controlsTypesAnims.nut")
-let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
+from "%rGui/components/textButton.nut" import textButtonPrimary, buttonStyles
+from "%rGui/navState.nut" import registerScene
+from "%rGui/options/chooseMovementControls/chooseMovementControlsState.nut" import reorderList, applyCtrlType,
+  isChooseMovementControlsOpened, isChooseWalkerMovementControlsOpened, getCurCtrlTypeW, closeChooseMovementControls
+import "%rGui/options/chooseMovementControls/controlsTypesAnims.nut" as controlsTypesAnimsCtors
+import "%rGui/options/chooseMovementControls/controlsTypesButton.nut" as controlsTypesButton
+from "%rGui/options/chooseMovementControls/groundMoveControlType.nut" import groundMoveCtrlTypesList, ctrlTypeToString
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
 let isWndOpened = Computed(@() isChooseMovementControlsOpened.get() || isChooseWalkerMovementControlsOpened.get())
-let defaultValue = "stick_static"
+const defaultValue = "stick_static"
 let btnW = evenPx(380)
-let btnH = hdpx(510)
-let btnGap = hdpxi(30)
+const btnH = hdpx(510)
+const btnGap = hdpxi(30)
 let contentWidth = ((btnW + btnGap) * groundMoveCtrlTypesList.len()) - btnGap
 
 let selectedValue = Watched("")

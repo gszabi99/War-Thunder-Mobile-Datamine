@@ -2173,7 +2173,7 @@
       "fricSideRotAlternative": [
         5.0,
         0.0,
-        1.1,
+        1.0,
         0.3
       ]
     },
@@ -2182,7 +2182,7 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 720.0,
+      "horsePowers": 680.0,
       "maxRPM": 2400.0,
       "minRPM": 600.0
     },
@@ -2191,7 +2191,7 @@
       "driveGearRadius": 0.33,
       "mainGearRatio": 7.4,
       "sideGearRatio": 1.0,
-      "alternativeGearControl": 1.0,
+      "alternativeGearControl": 1.5,
       "gearRatios": {
         "ratio": [
           -0.62,

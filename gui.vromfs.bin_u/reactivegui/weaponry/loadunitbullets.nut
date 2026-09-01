@@ -1,20 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { Point2 } = require("dagor.math")
-let { getUnitFileName } = require("vehicleModel")
-let { getUnitTagsCfg, getUnitType } = require("%appGlobals/unitTags.nut")
-let { AIR } = require("%appGlobals/unitConst.nut")
-let { eachBlock, isDataBlock, blkOptFromPath } = require("%sqstd/datablock.nut")
-let { isReadyToFullLoad, isLoginRequired } = require("%appGlobals/loginState.nut")
+from "dagor.math" import Point2
+from "vehicleModel" import getUnitFileName
+from "%sqstd/datablock.nut" import eachBlock, isDataBlock, blkOptFromPath
+from "%appGlobals/loginState.nut" import isReadyToFullLoad, isLoginRequired
+from "%appGlobals/unitConst.nut" import AIR
+from "%appGlobals/unitTags.nut" import getUnitTagsCfg, getUnitType
 
-let WT_GUNS = "guns"
-let WT_SMOKE = "smoke"
-let WT_COUNTERMEASURES = "countermeasures"
-let WT_FLARES = "flares"
-let WT_AAM = "aam" 
-let WT_AGM = "agm" 
-let WT_ROCKETS = "rockets"
-let WT_BOMBS = "bombs"
-let WT_TORPEDO = "torpedoes"
+
+const WT_GUNS = "guns"
+const WT_SMOKE = "smoke"
+const WT_COUNTERMEASURES = "countermeasures"
+const WT_FLARES = "flares"
+const WT_AAM = "aam" 
+const WT_AGM = "agm" 
+const WT_ROCKETS = "rockets"
+const WT_BOMBS = "bombs"
+const WT_TORPEDO = "torpedoes"
 
 let allCustomBulletParams = [
   "explosiveType", "explosiveMass", "explodeTreshold", "speed", "ricochetPreset", "mass", "mass_lbs",

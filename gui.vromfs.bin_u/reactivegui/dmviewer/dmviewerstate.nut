@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { register_command } = require("console")
-let { hangar_enable_controls, hangar_focus_model, hangar_set_dm_viewer_mode,
-  DM_VIEWER_NONE, DM_VIEWER_ARMOR, DM_VIEWER_XRAY
-} = require("hangar")
-let { set_dm_viewer_pointer_screenpos } = require("hangarEventCommand")
-let { deferOnce } = require("dagor.workcycle")
-let { allow_dm_viewer } = require("%appGlobals/permissions.nut")
-let { needCursorForActiveInputDevice } = require("%appGlobals/activeControls.nut")
-let { isHangarUnitLoaded, hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
-let { getDmViewerUnitData, dmViewerUnitDataVer, clearDmViewerUnitDataCollection
-} = require("%rGui/dmViewer/unitDataCollection.nut")
+from "console" import register_command
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_send
+from "hangar" import hangar_enable_controls, hangar_focus_model, hangar_set_dm_viewer_mode, DM_VIEWER_NONE,
+  DM_VIEWER_ARMOR, DM_VIEWER_XRAY
+from "hangarEventCommand" import set_dm_viewer_pointer_screenpos
+from "%appGlobals/activeControls.nut" import needCursorForActiveInputDevice
+from "%appGlobals/permissions.nut" import allow_dm_viewer
+from "%rGui/dmViewer/unitDataCollection.nut" import getDmViewerUnitData, dmViewerUnitDataVer,
+  clearDmViewerUnitDataCollection
+from "%rGui/unit/hangarUnit.nut" import isHangarUnitLoaded, hasHangarUnitResources
+
 
 let dmViewerMode = mkWatched(persist, "dmViewerMode", DM_VIEWER_NONE)
 let dmViewerUnitReady = mkWatched(persist, "dmViewerUnitReady", false)
@@ -57,8 +57,8 @@ dmViewerMode.subscribe(function(v) {
 })
 updateUnitReady()
 
-let screenMaxX = sw(100) - 1
-let screenMaxY = sh(100) - 1
+const screenMaxX = sw(100) - 1
+const screenMaxY = sh(100) - 1
 let onPointerScreenCoordsChange = @(_) set_dm_viewer_pointer_screenpos(
   clamp(pointerScreenX.get(), 0, screenMaxX),
   clamp(pointerScreenY.get(), 0, screenMaxY))

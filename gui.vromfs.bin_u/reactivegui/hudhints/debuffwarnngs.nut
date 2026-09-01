@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { addEvent, removeEvent } = require("%rGui/hudHints/warningHintLogState.nut")
-let { hasDebuffFire, hasDebuffFlooding, hasDebuffGuns, hasDebuffEngines, hasDebuffMoveControl, hasDebuffTorpedoes
-} = require("%rGui/hud/shipState.nut")
-let tankState = require("%rGui/hud/tankState.nut")
-let { isUnitDelayed } = require("%rGui/hudState.nut")
-let { hudUnitType } = require("%rGui/hudStateExt.nut")
-let { SAILBOAT } = require("%appGlobals/unitConst.nut")
+from "%appGlobals/unitConst.nut" import SAILBOAT
+from "%rGui/hud/shipState.nut" import hasDebuffFire, hasDebuffFlooding, hasDebuffGuns, hasDebuffEngines,
+  hasDebuffMoveControl, hasDebuffTorpedoes
+import "%rGui/hud/tankState.nut" as tankState
+from "%rGui/hudHints/warningHintLogState.nut" import addEvent, removeEvent
+from "%rGui/hudState.nut" import isUnitDelayed
+from "%rGui/hudStateExt.nut" import hudUnitType
+
 
 let excludedForSailBoat = [
   "hud_debuff_engine"

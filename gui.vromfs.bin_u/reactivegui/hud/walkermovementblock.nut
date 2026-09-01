@@ -1,29 +1,31 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%rGui/controls/shortcutConsts.nut" import *
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { lerpClamped } = require("%sqstd/math.nut")
-let { setVirtualAxisValue } = require("controls")
-let { dfAnimBottomLeft } = require("%rGui/style/unitDelayAnims.nut")
-let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { getHeroWalkerMaxSpeedBySteps } = require("hudState")
-let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
-let { playerUnitName, isUnitDelayed } = require("%rGui/hudState.nut")
-let { speed } = require("%rGui/hud/tankState.nut")
-let { playSound } = require("sound_wt")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn2step, mkMoveVertBtn, mkMoveVertBtnAnimBg, mkMoveVertBtnOutline,
-  mkMoveVertBtnCorner, mkStopBtn, arrowsVerSize, outlineColorDef, fillMoveColorDef } = require("%rGui/components/movementArrows.nut")
-let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
-let { currentWalkerMoveCtrlType } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
-let { hudWhiteColor, hudTransparentColor } = require("%rGui/style/hudColors.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "controls" import setVirtualAxisValue
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "hapticVibration" import registerHapticPattern, playHapticPattern
+from "hudState" import getHeroWalkerMaxSpeedBySteps
+from "sound_wt" import playSound
+from "%sqstd/math.nut" import lerpClamped
+from "%globalScripts/controls/shortcutActions.nut" import setShortcutOn, setShortcutOff
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/components/movementArrows.nut" import mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn2step, mkMoveVertBtn,
+  mkMoveVertBtnAnimBg, mkMoveVertBtnOutline, mkMoveVertBtnCorner, mkStopBtn, arrowsVerSize, outlineColorDef,
+  fillMoveColorDef
+from "%rGui/controls/disabledControls.nut" import mkIsControlDisabled
+from "%rGui/hud/tankState.nut" import speed
+from "%rGui/hudState.nut" import playerUnitName, isUnitDelayed
+from "%rGui/options/chooseMovementControls/groundMoveControlType.nut" import currentWalkerMoveCtrlType
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudTransparentColor
+from "%rGui/style/unitDelayAnims.nut" import dfAnimBottomLeft
+
 
 let HAPT_FORWARD = registerHapticPattern("Forward",
   { time = 0.0, intensity = 0.5, sharpness = 0.9, duration = 0.0, attack = 0.0, release = 0.0 })
 let HAPT_BACKWARD = registerHapticPattern("Backward",
   { time = 0.0, intensity = 0.5, sharpness = 0.8, duration = 0.0, attack = 0.0, release = 0.0 })
-let delayHigh = 0.25
-let delayLow = 0.5
-let delayReverse = 3
+const delayHigh = 0.25
+const delayLow = 0.5
+const delayReverse = 3
 
 const CRUISE_CONTROL_UNDEF = -2
 const CRUISE_CONTROL_R = -1
@@ -191,7 +193,7 @@ let forwardArrow = @(verSize) mkEngineBtn(false, "walker_throttle_rangeMax", ver
   ])
 
 function movementBlock(scale) {
-  let steeringAxis = "walker_steering"
+  const steeringAxis = "walker_steering"
 
   let leftArrow = mkMoveLeftBtn(mkSteerParams($"{steeringAxis}_rangeMax", steeringAxis, scale))
   let rightArrow = mkMoveRightBtn(mkSteerParams($"{steeringAxis}_rangeMin", steeringAxis, scale))

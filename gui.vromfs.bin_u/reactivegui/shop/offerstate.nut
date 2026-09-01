@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
-let { platformOffer, platformPurchaseInProgress, isGoodsOnlyInternalPurchase } = require("%rGui/shop/platformGoods.nut")
-let { check_new_offer, shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { activeOffers, curCampaign, isAnyCampaignSelected } = require("%appGlobals/pServer/campaign.nut")
-let { PURCHASING, DELAYED } = require("%rGui/shop/goodsStates.nut")
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import deferOnce
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import activeOffers, curCampaign, isAnyCampaignSelected
+from "%appGlobals/pServer/pServerApi.nut" import check_new_offer, shopPurchaseInProgress
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid, getServerTime
+from "%rGui/shop/goodsStates.nut" import PURCHASING, DELAYED
+from "%rGui/shop/platformGoods.nut" import platformOffer, platformPurchaseInProgress, isGoodsOnlyInternalPurchase
 
 
 const REQUEST_TIMEOUT_MSEC = 300000 

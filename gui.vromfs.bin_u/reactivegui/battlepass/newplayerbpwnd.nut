@@ -1,35 +1,35 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { getNewbieBPPresentation } = require("%appGlobals/config/passPresentation.nut")
-let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { registerScene, setSceneBg } = require("%rGui/navState.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { mkNPPaidStageList, mkNPFreeStageList, winsCount, closeNPWnd, isNPWndOpened,
-selectedStage, receiveNPRewards, isNPRewardsInProgress, isNPActive, npPassGoods, nbpSeasonEndTime, sendNpBqEvent
-} = require("%rGui/battlePass/newPlayerBpState.nut")
-let { getRewardPlateSize, mkRewardPlate, REWARD_STYLE_MEDIUM  } = require("%rGui/rewards/rewardPlateComp.nut")
-let { bpCardStyle, bpCardPadding, bpCardHeight, bpCardMargin} = require("%rGui/battlePass/bpCardsStyle.nut")
-let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { bgCard, hoverCard, cardBorder, cardContent } = require("%rGui/battlePass/passRewardsListComp.nut")
-let bpProgressBarSimple = require("%rGui/battlePass/bpProgressBarSimple.nut")
-let { textButtonPricePurchase } = require("%rGui/components/textButton.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { purchaseGoods } = require("%rGui/shop/purchaseGoods.nut")
-let { toBattleButtonForRandomBattles } = require("%rGui/mainMenu/toBattleButton.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { buyPlatformGoods, platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
-let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
-let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/passPresentation.nut" import getNewbieBPPresentation
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import shopPurchaseInProgress
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle, bpCardPadding, bpCardHeight, bpCardMargin
+import "%rGui/battlePass/bpProgressBarSimple.nut" as bpProgressBarSimple
+from "%rGui/battlePass/newPlayerBpState.nut" import mkNPPaidStageList, mkNPFreeStageList, winsCount, closeNPWnd,
+  isNPWndOpened, selectedStage, receiveNPRewards, isNPRewardsInProgress, isNPActive, npPassGoods, nbpSeasonEndTime,
+  sendNpBqEvent
+from "%rGui/battlePass/passRewardsListComp.nut" import bgCard, hoverCard, cardBorder, cardContent
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonPricePurchase
+from "%rGui/mainMenu/toBattleButton.nut" import toBattleButtonForRandomBattles
+from "%rGui/navState.nut" import registerScene, setSceneBg
+from "%rGui/rewards/rewardPlateComp.nut" import getRewardPlateSize, mkRewardPlate, REWARD_STYLE_MEDIUM
+from "%rGui/shop/platformGoods.nut" import buyPlatformGoods, platformPurchaseInProgress
+from "%rGui/shop/purchaseGoods.nut" import purchaseGoods
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/gradients.nut" import mkColoredGradientY
+from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
+from "%rGui/unlocks/userstat.nut" import registerUnlocksSceneToUpdate
 
 
-let fontIconPreview = "⌡"
+const fontIconPreview = "⌡"
 let bgCardGray = mkColoredGradientY(0xFFB4B4B4, 0xFF767676)
 
 let passCardSize = [hdpx(300), bpCardHeight*2 + hdpx(20)]
@@ -83,7 +83,7 @@ function buyButton(goods) {
       {
         hotkeys = ["^J:X"]
         ovr = {
-          size = [hdpx(280), hdpx(100)]
+          size = const [hdpx(280), hdpx(100)]
           minWidth = hdpx(280)
         }
       }
@@ -101,7 +101,7 @@ let passCard = @() {
   padding = hdpx(10)
   children = [
     {
-      size = [hdpx(280), hdpx(100)]
+      size = const [hdpx(280), hdpx(100)]
       rendObj = ROBJ_SOLID
       color = 0x90000000
       hplace = ALIGN_CENTER
@@ -115,7 +115,7 @@ let passCard = @() {
       }.__update(fontMedium)
     }
     {
-      size = [hdpx(100), hdpx(100)]
+      size = const [hdpx(100), hdpx(100)]
       rendObj = ROBJ_IMAGE
       color = 0x90000000
       image = Picture($"ui/gameuiskin#bp_progress_icon.svg:{hdpx(100)}:{hdpx(100)}:P")
@@ -135,7 +135,7 @@ let passCard = @() {
 }
 
 let previewComp = @(viewInfo) viewInfo?.rType != "unit" ? null : {
-  size = [hdpx(80), hdpx(80)]
+  size = const [hdpx(80), hdpx(80)]
   margin = hdpx(10)
   rendObj = ROBJ_SOLID
   behavior = Behaviors.Button
@@ -289,7 +289,7 @@ let wnd = bgShaded.__merge({
   ]
 })
 
-let sceneId = "newPlayerBpScene"
+const sceneId = "newPlayerBpScene"
 registerScene(sceneId, wnd, closeNPWnd, isNPWndOpened)
 setSceneBg(sceneId, getNewbieBPPresentation(curCampaign.get()).bg)
 curCampaign.subscribe(@(v) setSceneBg(sceneId, getNewbieBPPresentation(v).bg))

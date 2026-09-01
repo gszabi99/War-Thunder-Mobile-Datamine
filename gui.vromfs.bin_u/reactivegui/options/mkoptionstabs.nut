@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { tabW, tabH, tabPadding } = require("%rGui/options/optionsStyle.nut")
-let { mkTabs } = require("%rGui/components/tabs.nut")
-let { mkUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
-let { SEEN } = require("%rGui/unseenPriority.nut")
+from "%rGui/components/tabs.nut" import mkTabs
+from "%rGui/components/unseenMark.nut" import mkUnseenMark, unseenSize
+from "%rGui/options/optionsStyle.nut" import tabW, tabH, tabPadding
+from "%rGui/unseenPriority.nut" import SEEN
 
-let iconSizeDef = hdpxi(80)
 
-let textColor = 0xFFFFFFFF
+const iconSizeDef = hdpxi(80)
+
+const textColor = 0xFFFFFFFF
 
 function mkTabImage(image, imageSizeMul, imageTabOffset) {
   let h = (iconSizeDef * imageSizeMul + 0.5).tointeger()
@@ -42,7 +43,7 @@ let mkImage = @(image, imageSizeMul, imageTabOffset) function() {
     watchesList.append(imageTabOffset)
 
   return {
-    padding = [0, hdpx(15)]
+    padding = const [0, hdpx(15)]
     watch = watchesList
     vplace = ALIGN_CENTER
     children = imageTab == null ? null : mkTabImage(imageTab, imageTabSizeMul, imageTabOffsetVal)

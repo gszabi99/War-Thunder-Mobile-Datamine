@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { allSpecialEvents } = require("%rGui/event/eventState.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { mkPlateText, mkPlateTextTimer, mkUnitBg, mkUnitImage
-} = require("%rGui/unit/components/unitPlateComp.nut")
-let { getRewardPlateSize, REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/event/eventState.nut" import allSpecialEvents
+from "%rGui/rewards/rewardStyles.nut" import getRewardPlateSize, REWARD_STYLE_TINY
+from "%rGui/unit/components/unitPlateComp.nut" import mkPlateText, mkPlateTextTimer, mkUnitBg, mkUnitImage
 
-let padding = hdpx(5)
-let iconSize = hdpxi(90)
+
+const padding = hdpx(5)
+const iconSize = hdpxi(90)
 
 function calcMaxTextWidth(slots, styles) {
   let size = getRewardPlateSize(slots, styles)
@@ -31,7 +31,7 @@ let mkBattleModCommonText = @(battleMod, _, __) {
 let mkBattleModCommonImage = @(battleMod, styles, slots = 1) {
   size = getRewardPlateSize(slots, styles)
   children = {
-    size = [iconSize, iconSize]
+    size = const [iconSize, iconSize]
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
     rendObj = ROBJ_IMAGE

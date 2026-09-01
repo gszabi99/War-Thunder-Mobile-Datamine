@@ -1,17 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { abs } = require("math")
-let { transformInProgress, applyTransformProgress, tuningPoints, tuningBgElems, selectedElem,
-  ELEM_POINT, ELEM_BG, ELEM_LINE, ELEM_MIDPOINT, selectElem, getElemKey, presetLines,
-  presetMapSize, isShiftPressed, selectedLineIdx, selectedLineMidpoints, scalableETypes
-} = require("%rGui/debugTools/debugMapPoints/mapEditorState.nut")
-let { INC_AREA, START_MOVE_TIME_MSEC, MOVE_MIN_THRESHOLD } = require("%rGui/debugTools/debugMapPoints/mapEditorConsts.nut")
-let { shiftActions } = require("%rGui/debugTools/debugMapPoints/comboActions.nut")
-let { getClosestSegment, mkLineSplinePoints } = require("%rGui/event/treeEvent/segmentMath.nut")
+from "dagor.time" import get_time_msec
+from "math" import abs
+from "%rGui/debugTools/debugMapPoints/comboActions.nut" import shiftActions
+from "%rGui/debugTools/debugMapPoints/mapEditorConsts.nut" import INC_AREA, START_MOVE_TIME_MSEC, MOVE_MIN_THRESHOLD
+from "%rGui/debugTools/debugMapPoints/mapEditorState.nut" import transformInProgress, applyTransformProgress,
+  tuningPoints, tuningBgElems, selectedElem, ELEM_POINT, ELEM_BG, ELEM_LINE, ELEM_MIDPOINT, selectElem, getElemKey,
+  pageLines, pageMapSize, isShiftPressed, selectedLineIdx, selectedLineMidpoints, scalableETypes
+from "%rGui/event/treeEvent/segmentMath.nut" import getClosestSegment, mkLineSplinePoints
 
 
-let M_DEFAULT = ""
-let M_SCALE = "scale"
+const M_DEFAULT = ""
+const M_SCALE = "scale"
 
 let pointer = Watched(null)
 let emptyAABB = { l = 0, t = 0, r = 0, b = 0 }
@@ -30,7 +29,7 @@ let moveAabb = @(aabb, offsetX, offsetY) {
 
 let relHitInfo = {
   [ELEM_LINE] = function getHitInfoLine(id, x, y, incSize) {
-    let line = presetLines.get()?[id]
+    let line = pageLines.get()?[id]
     if (line == null)
       return null
 
@@ -56,7 +55,7 @@ function findElemInScene(x, y, isNext, isFit = @(_) true) {
     selectedLineMidpoints.get().map(@(_, i) { id = i, eType = ELEM_MIDPOINT, subId = selectedLineIdx.get() })
     tuningPoints.get().reduce(@(acc, _, id) acc.append({ id, eType = ELEM_POINT }), []),
     tuningBgElems.get().map(@(_, i) { id = i, eType = ELEM_BG }),
-    presetLines.get().map(@(_, i) { id = i, eType = ELEM_LINE }))
+    pageLines.get().map(@(_, i) { id = i, eType = ELEM_LINE }))
 
   let prevId = selectedElem.get()?.id
   let prevEType = selectedElem.get()?.eType
@@ -64,7 +63,7 @@ function findElemInScene(x, y, isNext, isFit = @(_) true) {
   let prevIdx = prevId == null || !isNext ? -1
     : list.findindex(@(c) c.id == prevId && c.eType == prevEType && c?.subId == prevSubId) ?? -1
   let total = list.len()
-  let [relX, relY, incSize] = getMapRelCoords(mapAabb, presetMapSize.get(), x, y)
+  let [relX, relY, incSize] = getMapRelCoords(mapAabb, pageMapSize.get(), x, y)
 
   local resByInc = null
   for (local i = prevIdx + 1; i <= prevIdx + total; i++) {
@@ -113,7 +112,7 @@ function getAabbIfHit(elem, x, y) {
   let mapAabb = gui_scene.getCompAABBbyKey("mapEditorMap")
   if (mapAabb == null)
     return null
-  let [relX, relY, incSize] = getMapRelCoords(mapAabb, presetMapSize.get(), x, y)
+  let [relX, relY, incSize] = getMapRelCoords(mapAabb, pageMapSize.get(), x, y)
   let { aabb = null } = relHitInfo[eType](id, relX, relY, incSize)
   return aabb
 }
@@ -122,7 +121,7 @@ function getCurMapRelCoords(x, y) {
   let mapAabb = gui_scene.getCompAABBbyKey("mapEditorMap")
   if (mapAabb == null)
     return [0, 0, 0]
-  return getMapRelCoords(mapAabb, presetMapSize.get(), x, y)
+  return getMapRelCoords(mapAabb, pageMapSize.get(), x, y)
 }
 
 let updateTransform = {

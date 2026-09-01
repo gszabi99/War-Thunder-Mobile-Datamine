@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { eventbus_send } = require("eventbus")
-let { frnd } = require("dagor.random")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
-let { isLoginStarted, isLoggedIn } = require("%appGlobals/loginState.nut")
-let { isInMenu, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
+from "dagor.random" import frnd
+from "dagor.time" import get_time_msec
+from "eventbus" import eventbus_send
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/clientState/clientState.nut" import isInMenu, isInDebriefing
+from "%appGlobals/loginState.nut" import isLoginStarted, isLoggedIn
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout
+from "%appGlobals/userstats/serverTime.nut" import serverTime, isServerTimeValid
 
 
 const MAX_DELAY = 30 
@@ -55,7 +55,7 @@ function startRelogin() {
   wasDelayedOnce.set(false)
   if (isInDebriefing.get())
     needReopenDebriefing.set(true)
-  eventbus_send("relogin")
+  eventbus_send("login.startRelogin")
 }
 
 needReloginRightNow.subscribe(function(_) {

@@ -1,31 +1,32 @@
 from "%globalsDarg/darg_library.nut" import *
-let { WARBOND, NYBOND, APRILBOND } = require("%appGlobals/currenciesState.nut")
-let { opacityAnims, aTimeInfoItem } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { REWARD_STYLE_SMALL, mkRewardPlate, mkRewardReceivedMark } = require("%rGui/rewards/rewardPlateComp.nut")
-let { mkIcon } = require("%rGui/unit/components/unitPlateComp.nut")
-let { openRewardsList } = require("%rGui/quests/questsState.nut")
-let { mkGlare } = require("%rGui/components/glare.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
-let { isSingleViewInfoRewardEmpty, getUnlockRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
-let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
-let { COMMON } = require("%rGui/components/buttonStyles.nut")
-let { G_UNIT, G_STAT_ADD } = require("%appGlobals/rewardType.nut")
+from "%appGlobals/currenciesState.nut" import WARBOND, NYBOND, APRILBOND
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/rewardType.nut" import G_UNIT, G_STAT_ADD
+from "%rGui/components/buttonStyles.nut" import COMMON
+from "%rGui/components/glare.nut" import mkGlare
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/textButton.nut" import mkCustomButton, mergeStyles
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/quests/questsState.nut" import openRewardsList
+from "%rGui/rewards/rewardPlateComp.nut" import REWARD_STYLE_SMALL, mkRewardPlate, mkRewardReceivedMark
+from "%rGui/rewards/rewardStyles.nut" import getRewardPlateSize
+from "%rGui/rewards/rewardViewInfo.nut" import isSingleViewInfoRewardEmpty, getUnlockRewardsViewInfo,
+  sortRewardsViewInfo
+from "%rGui/shop/goodsPreview/goodsPreviewPkg.nut" import opacityAnims, aTimeInfoItem
+from "%rGui/unit/components/unitPlateComp.nut" import mkIcon
+from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
 
 
 let rStyleDefault = REWARD_STYLE_SMALL
 let questItemsGap = rStyleDefault.boxGap
 let rewardsBtnSize = rStyleDefault.boxSize
 let progressBarRewardSize = rewardsBtnSize
-let statusIconSize = hdpxi(30)
-let bgColor = 0x80000000
-let REWARD_INTERVAL = 0.1
-let REWARDS_PREVIEW_SLOTS = 3
+const statusIconSize = hdpxi(30)
+const bgColor = 0x80000000
+const REWARD_INTERVAL = 0.1
+const REWARDS_PREVIEW_SLOTS = 3
 
-let aTimeStatsRotate = 1.0
+const aTimeStatsRotate = 1.0
 let statsAnimation = {
   prop = AnimProp.rotate, from = 0, to = 10,
   duration = aTimeStatsRotate, trigger = "eventProgressStats", easing = Shake6

@@ -1,18 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { startswith } = require("string")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
-let { btnA, clickButtons, EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
+from "string" import startswith
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%appGlobals/clientState/hudState.nut" import isHudAttached
+from "%rGui/components/modalWindows.nut" import hasModalWindows
+from "%rGui/controlsMenu/gamepadImgByKey.nut" import mkBtnImageComp
+from "%rGui/controlsMenu/gpActBtn.nut" import btnA, clickButtons, EMPTY_ACTION
+from "types" import String
+
+
 let { cursorPresent, cursorOverStickScroll, cursorOverClickable, hoveredClickableInfo } = gui_scene
-let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
-let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
 
 
 let font = fontTiny
 let height = font.fontSize.tointeger()
-let padding = hdpx(5)
-let gap = hdpx(25)
-let textGap = hdpx(5)
+const padding = hdpx(5)
+const gap = hdpx(25)
+const textGap = hdpx(5)
 
 let navState = { value = [] }
 let getNavState = @(_ = null) navState.value
@@ -85,7 +88,7 @@ let joyAHint = Computed(function() {
   local hotkeyAText = defaultJoyAHint
   if (!isGamepad.get())
     return hotkeyAText
-  if (type(hoveredClickableInfo.get()) == "string")
+  if (hoveredClickableInfo.get() instanceof String)
     return hoveredClickableInfo.get()
   if (hoveredClickableInfo.get()?.skipDescription ?? false)
     return null
@@ -93,7 +96,7 @@ let joyAHint = Computed(function() {
   foreach (k in getNavState(navStateGen.get()))
     if (isActivateKey(k)) {
       let { description = null } = k
-      if (description == null || type(description) == "string")
+      if (description == null || description instanceof String)
         hotkeyAText = description
     }
   return hotkeyAText

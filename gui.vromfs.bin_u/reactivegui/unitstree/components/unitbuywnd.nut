@@ -1,10 +1,10 @@
-
 from "%globalsDarg/darg_library.nut" import *
-let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { mkTreeNodesUnitPlateBuy } = require("%rGui/unitsTree/components/unitPlateNodeComp.nut")
-let { AIR } = require("%appGlobals/unitConst.nut")
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg
+from "%appGlobals/unitConst.nut" import AIR
+from "%appGlobals/unitPresentation.nut" import getUnitPresentation
+from "%rGui/style/stdColors.nut" import userlogTextColor
+from "%rGui/unitsTree/components/unitPlateNodeComp.nut" import mkTreeNodesUnitPlateBuy
+
 
 function purchUnitContent(unitId){
   let unit = campUnitsCfg.get()?[unitId]

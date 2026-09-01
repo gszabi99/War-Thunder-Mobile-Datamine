@@ -2623,14 +2623,6 @@
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "poqmulusdxlbcrtr5vhrptyjcgnk4csq-bori"
   },
-  "ussr_text_silny": {
-    "category": "ussr",
-    "aspect_ratio": 1.0,
-    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
-    "lod0": "du2bieozf5zuctbpjmuclsxg2vb2rhsi-bgqi",
-    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
-    "lod1": "uownmpucrfrichd2seexvxnlf4fxe7ld-ngq"
-  },
   "admiral_seal_decal": {
     "category": "special",
     "aspect_ratio": 1.0,
@@ -2718,5 +2710,13 @@
     "lod0": "ov4cbe5nvrrnwrzzew62ub2rgmoqyic7-eo2i",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "w57n4egqlqkczj673fh7t3nxx6rjabrw-bjhq"
+  },
+  "final_frontier_decal": {
+    "category": "common",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "xviupiv2puiuw63pufziv6jxvxnjvj2q-ecoi",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "ri7qnsjtkepmv6p7ssxjl6dlbcfusbh6-bfgq"
   }
 }

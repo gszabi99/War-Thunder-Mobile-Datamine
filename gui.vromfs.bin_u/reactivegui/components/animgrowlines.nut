@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { sqrt, lerp } = require("%sqstd/math.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
+from "dagor.time" import get_time_msec
+from "%sqstd/math.nut" import sqrt, lerp
+from "%rGui/style/stdColors.nut" import selectColor
+
 
 function mkAnimGrowLines(cfg, ovr = {}) {
   let { start, end, drawers } = cfg

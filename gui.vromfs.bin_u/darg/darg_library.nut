@@ -5,6 +5,7 @@ from "%sqstd/functools.nut" import Set
 from "%sqstd/string.nut" import tostring_r
 from "math" import min
 from "daRg" import sh, sw, calc_comp_size, gui_scene, Color, flex
+from "types" import Array, Function
 
 
 
@@ -15,7 +16,7 @@ function watchElemState(builder, params={}) {
   return function() {
     let desc = builder(stateFlags.get())
     local watch = desc?.watch ?? []
-    if (type(watch) != "array")
+    if (!(watch instanceof Array))
       watch = [watch]
     desc.watch <- [stateFlags].extend(watch)
     desc.onElemState <- onElemState
@@ -26,10 +27,112 @@ function watchElemState(builder, params={}) {
 
 
 
-function isDargComponent(comp) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function mkKeyedList(params) {
+  let {source, mkItem, keyOf = @(v) v.id} = params
+  let containerProps = params?.containerProps ?? const {}
+  foreach (k in ["watch", "onAttach", "onDetach", "children"])
+    assert(k not in containerProps, @() $"mkKeyedList: '{k}' is owned by the helper; put it on a wrapping element")
+
+  let cache = {} 
+
+  function ensure(item) {
+    let id = keyOf(item)
+    assert(id != null, "mkKeyedList: key returned null; keys must be stable non-null ids")
+    if (id not in cache)
+      cache[id] <- mkItem(item)
+    return id
+  }
+
+  function sync(items) { 
+    let seen = {}
+    foreach (item in items ?? const [])
+      seen[ensure(item)] <- true
+    foreach (id in cache.keys())
+      if (id not in seen)
+        cache.rawdelete(id)
+  }
+
+  sync(source.get()) 
+
+  let onAttach = function() {
+    source.subscribe(sync)
+    sync(source.get()) 
+  }
+
+  let onDetach = @() source.unsubscribe(sync)
+
+  return @() containerProps.__merge({
+    watch = source
+    onAttach
+    onDetach
+    children = (source.get() ?? const []).map(@(item) cache[ensure(item)])
+  })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function mkAsyncImage(picture, placeholder, imageProps = {}) {
+  assert("children" not in imageProps,
+    "mkAsyncImage: 'children' holds the placeholder; wrap the image if you need more")
+
+  
+  let imageLoading = Watched(picture != null && picture.prefetch())
+
+  local watch = imageProps?.watch ?? []
+  if (!(watch instanceof Array))
+    watch = [watch]
+  local behavior = imageProps?.behavior ?? []
+  if (!(behavior instanceof Array))
+    behavior = [behavior]
+
+  return @() imageProps.__merge({
+    rendObj = ROBJ_IMAGE
+    image = picture
+    imageLoading
+    behavior = [Behaviors.ImageLoadState].extend(behavior)
+    watch = [imageLoading].extend(watch)
+    children = imageLoading.get() ? placeholder : null
+  })
+}
+
+
+
+
+function isDargComponent(comp): bool {
 
   local c = comp
-  if (type(c) == "function") {
+  if (c instanceof Function) {
     let info = c.getfuncinfos()
     if (info?.parameters && info.parameters.len() > 1)
       return false
@@ -72,7 +175,7 @@ function wrap(elems, params=wrapParams) {
   let height = params?.height ?? SIZE_TO_CONTENT
   let width = params?.width ?? SIZE_TO_CONTENT
   let dimensionLim = isFlowHor ? width : height
-  assert(type(elems)=="array", "elems should be array")
+  assert(elems instanceof Array, "elems should be array")
   assert(type(dimensionLim) in {float=1,integer=1}, @() "can't flow over {0} non numeric type".subst(isFlowHor ? "width" :"height"))
   let hgap = params?.hGap ?? wrapParams?.hGap
   let vgap = params?.vGap ?? wrapParams?.vGap
@@ -136,7 +239,7 @@ function dump_observables() {
 }
 
 let colorPart = @(value) min(255, (value + 0.5).tointeger())
-function [pure] mul_color(color, mult, alpha_mult=1) {
+function [pure] mul_color(color: int, mult: number, alpha_mult: number=1) {
   return Color(  colorPart(((color >> 16) & 0xff) * mult),
                  colorPart(((color >>  8) & 0xff) * mult),
                  colorPart((color & 0xff) * mult),
@@ -188,6 +291,8 @@ return freeze(darg.__merge({
   hdpx
   hdpxi
   watchElemState
+  mkKeyedList
+  mkAsyncImage
   isDargComponent
   fsh
   Behaviors

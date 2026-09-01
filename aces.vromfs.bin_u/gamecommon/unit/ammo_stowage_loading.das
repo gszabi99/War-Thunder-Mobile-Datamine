@@ -26,9 +26,9 @@ def push_stowage(var v : tuple<
                    ammo_stowages__powderMassToSplash : AmmoStowageMassToSplashList;
                    ammo_stowages__clustersRange : IPoint2List;
                    ammo_stowages__weaponTriggersRange : IPoint2List;
-                   ammo_stowage__weaponTriggers : IntList;
+                   ammo_stowage__weaponTriggers : IntList const;
                    ammo_stowages__weaponAmmoRange : IPoint2List;
-                   ammo_stowage__weaponAmmoCount : IntList;
+                   ammo_stowage__weaponAmmoCount : IntList const;
                    ammo_stowages__restoreTimers : Point4List
                    >) : int
   let stowage_id = v.ammo_stowages__state |> length()
@@ -134,10 +134,10 @@ def push_cluster(cluster_type : int; cluster_stage : int; def_cluster : DefaultA
                    ammo_clusters__wreckageRange : IPoint2List;
                    ammo_clusters__relatedPartsRange : IPoint2List;
                    ammo_clusters__weaponTriggersRange : IPoint2List;
-                   ammo_cluster__weaponTriggers : IntList;
+                   ammo_cluster__weaponTriggers : IntList const;
                    ammo_stowage__wreckageIds : IntList;
                    ammo_stowage__relatedPartsIds : PartIdList;
-                   ammo_slots__state : UInt32List;
+                   ammo_slots__state : UInt32List const;
                    ammo_clusters__ammoShare : IPoint4List
                    >) : int
   let cluster_id = v.ammo_clusters__typeAndStage |> length()
@@ -188,6 +188,7 @@ def load_cluster_params(blk : DataBlock&; var unit : Unit?;
   blk |> read_flag(ammo_clusters__state, AmmoClusterState.EXPLOSION_FATAL, "fatalExplosion")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState.DESTROYED_DM_BLOCKS_SHOOT, "dstrElevatorDisablesShooting")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState.RESTORE_AFTER_DEAD, "restoreAfterDead", true)
+  blk |> read_flag(ammo_clusters__state, AmmoClusterState.DISABLE_BALANCING, "disableBalancing", false)
   ammo_clusters__reloadTimeMult = blk |> datablock_getReal("reloadTimeMult", ammo_clusters__reloadTimeMult)
   ammo_clusters__splashConstraints.x = blk |> datablock_getReal("splashRadiusConstraint", ammo_clusters__splashConstraints.x)
   ammo_clusters__splashConstraints.y = blk |> datablock_getReal("splashDamageConstraint", ammo_clusters__splashConstraints.y)
@@ -260,12 +261,13 @@ def load_cluster_params(blk : DataBlock&; var unit : Unit?;
 [with_bundle(v)]
 def load_cluster(blk : DataBlock&; var unit : Unit?;
                  stowage_id : int; cluster_id : int; var num_ammo : int&;
+                 distribute_residue_in_cluster : bool;
 
                  var v : tuple<
                    ammo_stowage__ammoState : uint;
                    ammo_stowage__partIdRemap : IPoint4List;
 
-                   ammo_clusters__typeAndStage : UInt16List;
+                   ammo_clusters__typeAndStage : UInt16List const;
                    ammo_clusters__state : UInt32List;
                    ammo_clusters__explosionEvtId : IntList;
                    ammo_clusters__fireEvtId : IntList;
@@ -384,13 +386,50 @@ def load_cluster(blk : DataBlock&; var unit : Unit?;
       logerr("unit {unit.props.fileName}: geometry node for part {slot_blk.blockName} not found")
   v.ammo_clusters__slotsRange[cluster_id].y = v.ammo_slots__state |> length()
 
-  if num_ammo > 0 && num_undistributed_slots > 0
+  if distribute_residue_in_cluster && num_ammo > 0 && num_undistributed_slots > 0
     let num_ammo_per_slot = num_ammo / num_undistributed_slots
     let residue_ammo = num_ammo % num_undistributed_slots
+    var slot_no = 0
     for i in v.ammo_clusters__slotsRange[cluster_id].x..v.ammo_clusters__slotsRange[cluster_id].y
       if v.ammo_slots__numAmmo[i].y == 0
-        v.ammo_slots__numAmmo[i].y = i < residue_ammo ? num_ammo_per_slot + 1 : num_ammo_per_slot
+        v.ammo_slots__numAmmo[i].y = slot_no < residue_ammo ? num_ammo_per_slot + 1 : num_ammo_per_slot
+        slot_no++
     num_ammo = 0
+
+
+[with_bundle(v)]
+def distribute_residue_ammo_in_stowage(stowage_id : int; cluster_type : int; var num_ammo : int&;
+                                       var v : tuple<
+                                         ammo_stowages__clustersRange : IPoint2List const;
+                                         ammo_clusters__typeAndStage : UInt16List const;
+                                         ammo_clusters__slotsRange : IPoint2List const;
+                                         ammo_slots__numAmmo : IPoint2List
+                                         >) : void
+  if num_ammo <= 0
+    return
+
+  let clusters_range = v.ammo_stowages__clustersRange[stowage_id]
+  var num_undistributed_slots = 0
+  for cluster_id in clusters_range.x..clusters_range.y
+    if get_ammo_cluster_type(cluster_id, v) != cluster_type
+      continue
+    for i in v.ammo_clusters__slotsRange[cluster_id].x..v.ammo_clusters__slotsRange[cluster_id].y
+      if v.ammo_slots__numAmmo[i].y == 0
+        num_undistributed_slots++
+  if num_undistributed_slots == 0
+    return
+
+  let num_ammo_per_slot = num_ammo / num_undistributed_slots
+  let residue_ammo = num_ammo % num_undistributed_slots
+  var slot_no = 0
+  for cluster_id in clusters_range.x..clusters_range.y
+    if get_ammo_cluster_type(cluster_id, v) != cluster_type
+      continue
+    for i in v.ammo_clusters__slotsRange[cluster_id].x..v.ammo_clusters__slotsRange[cluster_id].y
+      if v.ammo_slots__numAmmo[i].y == 0
+        v.ammo_slots__numAmmo[i].y = slot_no < residue_ammo ? num_ammo_per_slot + 1 : num_ammo_per_slot
+        slot_no++
+  num_ammo = 0
 
 
 def load_cluster_stage(cluster_blk : DataBlock&) : int
@@ -436,8 +475,8 @@ def add_stowage_weapon_ammo(weapon_idx : int; trigger_id : int; stowage_id : int
 [with_bundle(v)]
 def fill_stowage_weapon_ammo_entries(weap : WeaponController const?; stowage_id : int;
                                      var v : tuple<
-                                       ammo_stowages__weaponTriggersRange : IPoint2List;
-                                       ammo_stowage__weaponTriggers : IntList;
+                                       ammo_stowages__weaponTriggersRange : IPoint2List const;
+                                       ammo_stowage__weaponTriggers : IntList const;
                                        ammo_stowages__weaponAmmoRange : IPoint2List;
                                        ammo_stowage__weaponAmmoIds : IntList;
                                        ammo_stowage__weaponAmmoTriggers : IntList;
@@ -770,13 +809,16 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
           has_charges = true
 
         
-        load_cluster(cluster_blk, unit, stowage_id, cluster_id, num_ammo_for_cluster_type[cluster_type]) <| v
+        load_cluster(cluster_blk, unit, stowage_id, cluster_id, num_ammo_for_cluster_type[cluster_type], false) <| v
         v.ammo_clusters__entityMunition[cluster_id] := stowage_blk |> datablock_getStr("entityMunition", stowage_munition)
 
         if (get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState.AUTO_LOAD))
           set_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.HAS_AUTO_LOAD, true)
 
       v.ammo_stowages__clustersRange[stowage_id].y = v.ammo_clusters__state |> length()
+
+      for cluster_type in 0..int(AmmoClusterType.NUM_TYPES)
+        distribute_residue_ammo_in_stowage(stowage_id, cluster_type, num_ammo_for_cluster_type[cluster_type]) <| v
 
     load_successful = true
 
@@ -838,13 +880,13 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
       if params.shells_blk != null
         var num_shells = params.numAmmo
         let cluster_id = push_cluster(int(AmmoClusterType.SHELLS), load_cluster_stage(*params.shells_blk), def_cluster) <| v
-        load_cluster(*params.shells_blk, unit, params.stowageId, cluster_id, num_shells) <| v
+        load_cluster(*params.shells_blk, unit, params.stowageId, cluster_id, num_shells, true) <| v
         if num_shells > 0
           logerr("unit {model_name} : not enough free slots to distribute residue shells, {num_shells} remaining")
       if params.charges_blk != null
         var num_charges = params.numAmmo
         let cluster_id = push_cluster(int(AmmoClusterType.CHARGES), load_cluster_stage(*params.charges_blk), def_cluster) <| v
-        load_cluster(*params.charges_blk, unit, params.stowageId, cluster_id, num_charges) <| v
+        load_cluster(*params.charges_blk, unit, params.stowageId, cluster_id, num_charges, true) <| v
         if num_charges > 0
           logerr("unit {model_name} : not enough free slots to distribute residue charges, {num_charges} remaining")
       v.ammo_stowages__clustersRange[params.stowageId].y = v.ammo_clusters__state |> length()

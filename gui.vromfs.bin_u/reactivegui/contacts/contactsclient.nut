@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { setTimeout } = require("dagor.workcycle")
-let { register_command } = require("console")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let charClientEventExt = require("%rGui/charClientEventExt.nut")
+from "console" import register_command
+from "dagor.workcycle" import setTimeout
+from "%sqstd/globalState.nut" import hardPersistWatched
+import "%appGlobals/charClientEventExt.nut" as charClientEventExt
+
 
 let debugDelay = keepref(hardPersistWatched("contacts.debugDelay", 0.0))
 

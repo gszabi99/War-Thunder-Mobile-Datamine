@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
-let { eventbus_send } = require("eventbus")
+from "eventbus" import eventbus_send
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/textButton.nut" import textButtonCommon
+from "%rGui/decorators/decoratorState.nut" import myNameWithFrame
 
-let { myNameWithFrame } = require("%rGui/decorators/decoratorState.nut")
 
 let changeNameScene = {
   size = FLEX

@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let APPEAR = 0.1
-let HIDE = 0.2
-let MOVE_DOWN = 0.2
-let STAY_DOWN = 0.2
-let MOVE_UP = 0.4
-let FULL = MOVE_DOWN + STAY_DOWN + MOVE_UP
-let SHOW = FULL - APPEAR
+const APPEAR = 0.1
+const HIDE = 0.2
+const MOVE_DOWN = 0.2
+const STAY_DOWN = 0.2
+const MOVE_UP = 0.4
+const FULL = MOVE_DOWN + STAY_DOWN + MOVE_UP
+const SHOW = FULL - APPEAR
 
 let downOffset = [0, hdpx(60)]
 let topScale = [0.5, 0.5]

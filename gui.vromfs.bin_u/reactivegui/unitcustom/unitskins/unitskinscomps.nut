@@ -1,68 +1,66 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/config/skins/skinTags.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { round } = require("math")
+from "%globalsDarg/darg_library.nut" import *
+from "math" import round
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/lootboxPresentation.nut" import getLootboxName
+from "%appGlobals/config/skinPresentation.nut" import getSkinPresentation
+from "%appGlobals/pServer/campaign.nut" import purchasesCount, todayPurchasesCount, goodsLimitReset
+from "%appGlobals/pServer/pServerApi.nut" import buy_unit_skin, enable_unit_skin, skinsInProgress
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/rewardType.nut" import G_SKIN, G_LOOTBOX
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, dayOffset
+from "%rGui/battlePass/battlePassState.nut" import bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock,
+  battlePassGoods
+from "%rGui/battlePass/passState.nut" import BATTLE_PASS
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkCurrencyImage
+from "%rGui/components/gradientDefComps.nut" import doubleSideGradient
+import "%rGui/components/listbox.nut" as listbox
+from "%rGui/components/pannableArea.nut" import horizontalPannableAreaCtor
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonPricePurchase
+from "%rGui/components/unseenMark.nut" import mkPriorityUnseenMarkWatch
+from "%rGui/event/eventLocName.nut" import mkEventLocComp
+from "%rGui/event/eventLootboxes.nut" import eventLootboxesRaw
+from "%rGui/event/eventState.nut" import MAIN_EVENT_ID
+import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
+from "%rGui/notifications/logEvents.nut" import sendTelemetrySavedEvent
+from "%rGui/rewards/lootboxesRewards.nut" import findLootboxWithReward
+from "%rGui/rewards/unlockRewards.nut" import findUnlockWithReward
+from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, openMainSeasonScene, PASS_SCENE, LOOTBOX_TAB,
+  openShopByGoods
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_SKINS, PURCH_TYPE_SKIN, mkBqPurchaseInfo
+from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
+from "%rGui/shop/goodsUtils.nut" import chooseBetterGoods, canPurchaseGoods
+from "%rGui/shop/lootboxPreviewState.nut" import openEventWndLootbox
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
+from "%rGui/shop/shopState.nut" import shopGoods
+from "%rGui/style/stdColors.nut" import userlogTextColor, markTextColor, selectColor, hoverColor
+from "%rGui/unit/unitSettings.nut" import mkIsAutoSkin, mkSkinCustomTags
+from "%rGui/unitCustom/unitCustomComps.nut" import mkGradText, mkIcon, iconSize
+import "%rGui/unitCustom/unitSkins/changeSkinTagWnd.nut" as changeSkinTagWnd
+from "%rGui/unitCustom/unitSkins/unitSkinsState.nut" import unitSkins, selectedSkin, currentSkin, availableSkins,
+  selectedSkinCfg, hasTagsChoice
+from "%rGui/unitCustom/unitSkins/unseenSkins.nut" import unseenSkins, markAllUnitSkinsSeen, markSkinSeen
+from "%rGui/unitDetails/unitDetailsState.nut" import baseUnit, unitToShow, isOwnUnit
 
-let { buy_unit_skin, enable_unit_skin, skinsInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
-let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { purchasesCount, todayPurchasesCount, goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
-let { serverTimeDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
-let { G_SKIN, G_LOOTBOX } = require("%appGlobals/rewardType.nut")
 
-let { unseenSkins, markAllUnitSkinsSeen, markSkinSeen } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
-let { PURCH_SRC_SKINS, PURCH_TYPE_SKIN, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { mkGradText, mkIcon, iconSize } = require("%rGui/unitCustom/unitCustomComps.nut")
-let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
-let { bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock, battlePassGoods
-} = require("%rGui/battlePass/battlePassState.nut")
-let { unitSkins, selectedSkin, currentSkin, availableSkins, selectedSkinCfg, hasTagsChoice
-} = require("%rGui/unitCustom/unitSkins/unitSkinsState.nut")
-let { MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
-let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
-let { mkEventLocComp } = require("%rGui/event/eventLocName.nut")
-let { baseUnit, unitToShow, isOwnUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { mkCurrencyComp, mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let changeSkinTagWnd = require("%rGui/unitCustom/unitSkins/changeSkinTagWnd.nut")
-let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkIsAutoSkin, mkSkinCustomTags } = require("%rGui/unit/unitSettings.nut")
-let { sendTelemetrySavedEvent } = require("%rGui/notifications/logEvents.nut")
-let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
-let { userlogTextColor, markTextColor, selectColor, hoverColor } = require("%rGui/style/stdColors.nut")
-let { findLootboxWithReward } = require("%rGui/rewards/lootboxesRewards.nut")
-let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
-let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
-let { findUnlockWithReward } = require("%rGui/rewards/unlockRewards.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
-let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
-let listbox = require("%rGui/components/listbox.nut")
-let { BATTLE_PASS } = require("%rGui/battlePass/passState.nut")
-let { openSeasonScene, openMainSeasonScene, PASS_SCENE, LOOTBOX_TAB, openShopByGoods
-} = require("%rGui/seasonScene/seasonSceneState.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { chooseBetterGoods, canPurchaseGoods } = require("%rGui/shop/goodsUtils.nut")
-
-
-let telemetrySaveId = "DefaultSkinWasReplaced"
-let SKINS_IN_ROW = 4
-let SKINS_IN_ROW_TAGS = 3.4
-let skinSize = hdpxi(100)
+const telemetrySaveId = "DefaultSkinWasReplaced"
+const SKINS_IN_ROW = 4
+const SKINS_IN_ROW_TAGS = 3.4
+const skinSize = hdpxi(100)
 let skinBorderRadius = round(skinSize * 0.2).tointeger()
 let skinGap = evenPx(15)
-let tagNameSize = hdpx(170)
-let skinsRowPadding = hdpx(20)
+const tagNameSize = hdpx(170)
+const skinsRowPadding = hdpx(20)
 let skinsRowWidth = skinSize * SKINS_IN_ROW + skinGap * (SKINS_IN_ROW - 1)
 let rowHeight = skinSize + skinGap
-let aTimeSelected = 0.2
-let rowBgEvenColor = 0xB3000000
-let rowBgOddColor = 0x70000000
+const aTimeSelected = 0.2
+const rowBgEvenColor = 0xB3000000
+const rowBgOddColor = 0x70000000
 
 let skinsPannable = horizontalPannableAreaCtor(skinsRowWidth + skinSize + skinsRowPadding * 2, [skinsRowPadding, skinsRowPadding])
 let skinsPannableWithTags = horizontalPannableAreaCtor(
@@ -77,7 +75,7 @@ let mkTankRow = @(rowIdx, text, content, ovr = {}) {
   gap = skinGap
   children = [
     {
-      size = [tagNameSize, FLEX]
+      size = const [tagNameSize, FLEX]
       valign = ALIGN_CENTER
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
@@ -214,7 +212,7 @@ function autoSkinRow() {
     list = [false, true]
     setValue = setAutoSkin
     mkContentCtor = @(v, _, _) {
-      size = [FLEX, hdpx(70)]
+      size = const [FLEX, hdpx(70)]
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       rendObj = ROBJ_TEXTAREA
@@ -225,7 +223,7 @@ function autoSkinRow() {
   }).__update({ vplace = ALIGN_CENTER })
 
   return mkTankRow(tankTagsOrder.len(), loc("skins/autoselect"), content,
-    { size = [pw(100), SIZE_TO_CONTENT], padding = skinsRowPadding })
+    { size = const [pw(100), SIZE_TO_CONTENT], padding = skinsRowPadding })
 }
 
 function skinsBlockWithTags() {
@@ -246,7 +244,7 @@ function skinsBlockWithTags() {
   })
 
   return {
-    size = [pw(100), SIZE_TO_CONTENT]
+    size = const [pw(100), SIZE_TO_CONTENT]
     key = {}
     flow = FLOW_VERTICAL
     onDetach = @() markAllUnitSkinsSeen(baseUnit.get()?.name)
@@ -270,10 +268,10 @@ function skinsBlockWithTags() {
 
 let skinsBlockNoTags = @() {
   key = "skinsBlockNoTags"
-  size = [pw(100), skinSize + 2 * skinsRowPadding]
+  size = const [pw(100), skinSize + 2 * skinsRowPadding]
   onDetach = @() markAllUnitSkinsSeen(baseUnit.get()?.name)
   rendObj = ROBJ_SOLID
-  padding = [0, skinsRowPadding]
+  padding = const [0, skinsRowPadding]
   color = rowBgEvenColor
   children = skinsPannable(
     @() {

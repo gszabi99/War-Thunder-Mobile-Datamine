@@ -1,353 +1,411 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { resetTimeout } = require("dagor.workcycle")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-
-let { registerScene } = require("%rGui/navState.nut")
-let { isTreeEventWndOpened, closeTreeEventWnd, openedTreeEventId, presetBgElems, closeSubPreset,
-  presetBackground, presetMapSize, presetPointSize, selectedPointId, curEventEndsAt, getUnlocksCurrencies,
-  presetGridSize, curGmList, presetLines, curEventUnlocks, presetPoints, isSubPresetOpened,
-  getFirstOrCurSubPreset, presetUnlocksComplete
-} = require("%rGui/event/treeEvent/treeEventState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
-let squadPanel = require("%rGui/squad/squadPanel.nut")
-let { infoEllipseButton } = require("%rGui/components/infoButton.nut")
-let { openNewsWndTagged } = require("%rGui/news/newsState.nut")
-let mapNet = require("%rGui/event/treeEvent/mapNet.nut")
-let { mkTimeUntil } = require("%rGui/quests/questsPkg.nut")
-let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
-let { mkLineCmds, mkLineCmdsOutline, mkLinePresetColor, mkPoint, mkBgElement, mkQuestInfoWnd
-} = require("%rGui/event/treeEvent/treeEventComps.nut")
-let { mkCustomButton } = require("%rGui/components/textButton.nut")
-let { CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
-let { unseenLootboxes, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
-let { openSeasonScene, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
-let { eventLootboxesRaw, orderLootboxesBySlot } = require("%rGui/event/eventLootboxes.nut")
-let { subPresetContainer } = require("%rGui/event/treeEvent/treeEventSubPreset/subPresetContainer.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
+from "dagor.workcycle" import deferOnce
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+import "%rGui/event/treeEvent/mapNet.nut" as mapNet
+from "%rGui/event/treeEvent/treeEventComps.nut" import lineTypeCtors, LINE_DASHED, mkLinePresetColor,
+  mkPoint, mkBgElement, mkNodeMarkerPreview, buildLineSpline, splineCenter, resolveNodeView
+from "%appGlobals/config/mapPointsPresentation.nut" import getPointLineStartOffset
+from "%rGui/event/treeEvent/treeEventNodeInfo.nut" import mkNodeInfoWnd
+from "%rGui/event/treeEvent/treeEventState.nut" import openedTreeEventId, curEventMapNodes,
+  curPageBgElems, curPageBackground, curPageMapSize, selectedPointId, curPagePoints, nodeViews,
+  curPageGridSize, curPageLines, curPageLineSectionLen, curPageRoundedDashes, curPageLineType, curPageLineWidth,
+  nodeStatusKind, pagesList, curPage, curPageResolved, NODE_LOCKED, NODE_RECEIVED,
+  curEventUnlocks
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/components/tabs.nut" import tabExtraWidth
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/animGrowLines.nut" import mkAnimGrowLines, mkAGLinesCfgOrdered
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/gradientDefComps.nut" import headerHeightInSafeArea, headerMargin
+import "%rGui/options/mkOptionsTabs.nut" as mkOptionsTabs
+from "%rGui/options/optionsStyle.nut" import tabW
+from "%rGui/event/eventState.nut" import eventSeason
 
 
-let lootboxIconSize = CS_INCREASED_ICON.iconSize
-let gapSectionsWnd = hdpx(20)
-let headerGap = hdpx(30)
-let gamercardHeight = hdpx(70)
-let footerHeight = gamercardHeight + defButtonHeight + gapSectionsWnd
-let bgMapWidth = saSize[0]
-let bgMapHeight = saSize[1] - (saBorders[1] + headerGap + footerHeight)
+const backButtonHeight = hdpx(60)
+const gapBackButton = hdpx(50)
+const pageBlocksGap = hdpx(30)
+const lineLockSize = hdpxi(32)
+const topAreaSize = saBorders[1] + backButtonHeight + gapBackButton
+const seasonHeaderHeight = headerHeightInSafeArea + headerMargin
+const gradientHeightBottom = saBorders[1]
 
-let bgTexOffs = [178, 130, 227, 127]
-let bgScreenOffs = bgTexOffs.map(@(v) hdpx(v))
+const NODE_FOCUS_WND_UID = "tree_event_node_focus"
 
-let delayToLoadBgElems = 0.2
+let defBgMapImage = "ui/gameuiskin#icon_primary_attention.svg"
+let defBgMapOffs = [0, 0, 0, 0]
+let tabsAreaWidth = tabW + hdpx(25)
+let connectorWndGap = hdpx(60)
 
-let isShowSubPresetAllowed = Watched(false)
+let modalOverlayShadeColor = 0xC0020B19
+let contentOverlayShadeColor = 0x73020B19
+
+let nodeInfoWndKey = {}
+let nodeInfoWndPadding = [saBordersRv[0] + seasonHeaderHeight, saBordersRv[1], saBordersRv[0], saBordersRv[1]]
+let selBoxes = Watched(null)
+
+let focusedNodeId = Computed(function() {
+  let id = selectedPointId.get()
+  return (id != null && id in curEventMapNodes.get()) ? id : null
+})
+
+function refreshFocusBoxes(id) {
+  let boxes = {
+    nodeBox = gui_scene.getCompAABBbyKey(id)
+    wndBox = gui_scene.getCompAABBbyKey(nodeInfoWndKey)
+  }
+  if (!isEqual(boxes, selBoxes.get()))
+    selBoxes.set(boxes)
+}
+
+let doRefreshFocusBoxes = @() refreshFocusBoxes(focusedNodeId.get())
+let scheduleFocusRefresh = @() focusedNodeId.get() != null ? deferOnce(doRefreshFocusBoxes) : null
+
+let boxEdges = @(b) [
+  [b.l, b.t, b.r, b.t],
+  [b.r, b.t, b.r, b.b],
+  [b.r, b.b, b.l, b.b],
+  [b.l, b.b, b.l, b.t],
+]
+
+function mkOrthoConnector(nodeBox, wndBox, startOffset) {
+  let ncy = 0.5 * (nodeBox.t + nodeBox.b)
+  let startX = nodeBox.l + startOffset * (nodeBox.r - nodeBox.l)
+  let endX = wndBox.r
+
+  if (ncy >= wndBox.t && ncy <= wndBox.b)
+    return [[startX, ncy, endX, ncy]]
+
+  let wcy = 0.5 * (wndBox.t + wndBox.b)
+  let turnX = clamp(endX + connectorWndGap, min(startX, endX), max(startX, endX))
+  return [
+    [startX, ncy, turnX, ncy],
+    [turnX, ncy, turnX, wcy],
+    [turnX, wcy, endX, wcy],
+  ]
+}
+
+function mkFocusLines(nodeBox, wndBox, startOffset) {
+  let lines = []
+  foreach (seg in mkOrthoConnector(nodeBox, wndBox, startOffset))
+    lines.append([seg])
+  lines.append(boxEdges(wndBox))
+  return mkAnimGrowLines(mkAGLinesCfgOrdered(lines, hdpx(3000)))
+}
+
+let focusGeom = Computed(function() {
+  let boxes = selBoxes.get()
+  let nodeBox = boxes?.nodeBox
+  let wndBox = boxes?.wndBox
+  return { nodeBox, wndBox, showNode = nodeBox != null && wndBox != null }
+})
+
+let focusedNodeEffView = Computed(function() {
+  let id = focusedNodeId.get()
+  return resolveNodeView(id, curPagePoints.get()?[id].view ?? "", nodeViews.get())
+})
+
+let focusedNodeLineStartOffset = Computed(@() getPointLineStartOffset(focusedNodeEffView.get()))
+
+function focusLines() {
+  let { nodeBox, wndBox, showNode } = focusGeom.get()
+  return {
+    watch = [focusGeom, focusedNodeLineStartOffset]
+    size = FLEX
+    children = showNode ? mkFocusLines(nodeBox, wndBox, focusedNodeLineStartOffset.get()) : null
+  }
+}
+
+function nodeInfoBlock() {
+  let id = focusedNodeId.get()
+  let node = id != null ? curEventMapNodes.get()?[id] : null
+  return {
+    watch = [focusedNodeId, curEventMapNodes]
+    size = FLEX
+    padding = nodeInfoWndPadding
+    vplace = ALIGN_BOTTOM
+    halign = ALIGN_LEFT
+    children = node == null
+      ? null
+      : {
+          key = nodeInfoWndKey
+          size = SIZE_TO_CONTENT
+          onAttach = scheduleFocusRefresh
+          children = mkNodeInfoWnd(id, node)
+        }
+  }
+}
+
+function nodeFocusContent() {
+  let watch = [focusedNodeId, curEventMapNodes, focusGeom, nodeStatusKind, focusedNodeEffView]
+  let id = focusedNodeId.get()
+  let node = id != null ? curEventMapNodes.get()?[id] : null
+  if (node == null)
+    return { watch, size = FLEX }
+
+  let effView = focusedNodeEffView.get()
+  let curKind = nodeStatusKind.get()?[id]
+  let isCompleted = curKind == NODE_RECEIVED
+  let { nodeBox, showNode } = focusGeom.get()
+  return {
+    watch
+    size = FLEX
+    children = [
+      {
+        size = FLEX
+        rendObj = ROBJ_SOLID
+        color = modalOverlayShadeColor
+        animations = wndSwitchAnim
+      }
+      !showNode ? null : mkNodeMarkerPreview(node, effView, nodeBox, isCompleted)
+      focusLines
+      nodeInfoBlock
+    ]
+  }
+}
+
+let openNodeFocus = @() addModalWindow({
+  key = NODE_FOCUS_WND_UID
+  size = FLEX
+  children = nodeFocusContent
+  onClick = @() selectedPointId.set(null)
+})
+
+focusedNodeId.subscribe(function(v) {
+  selBoxes.set(null)
+  if (v == null) {
+    removeModalWindow(NODE_FOCUS_WND_UID)
+    return
+  }
+  openNodeFocus()
+})
+
+foreach (w in [nodeStatusKind, curEventUnlocks])
+  w.subscribe(@(_) scheduleFocusRefresh())
+
+if (focusedNodeId.get() != null)
+  openNodeFocus()
 
 let mapPoints = @() {
-  watch = [presetPoints, presetPointSize]
+  watch = curPagePoints
   size = FLEX
-  children = presetPoints.get().reduce(@(acc, value, id) acc.append(mkPoint(value.__merge({ id }), presetPointSize.get())), [])
+  children = curPagePoints.get().reduce(@(acc, value, id) acc.append(mkPoint(value.__merge({ id }))), [])
 }
 
 let bgElementsOnTop = @() {
-  watch = presetBgElems
+  watch = curPageBgElems
   size = FLEX
-  children = presetBgElems.get()
+  children = curPageBgElems.get()
     .filter(@(v) !!v?.isOnTop)
     .map(mkBgElement)
 }
 
 let bgElements = @() {
-  watch = presetBgElems
+  watch = curPageBgElems
   size = FLEX
-  children = presetBgElems.get()
+  children = curPageBgElems.get()
     .filter(@(v) !v?.isOnTop)
     .map(mkBgElement)
 }
 
-let mapContentAnims = [
-  { prop = AnimProp.opacity, from = 0.01, to = 0.01, play = true,
-    duration = delayToLoadBgElems
-  }
-  { prop = AnimProp.opacity, from = 0.01, to = 1.0, easing = InQuad, play = true,
-    duration = 0.3, delay = delayToLoadBgElems,
-  }
-]
-
 let mapBackground = @() {
-  watch = presetBackground
+  watch = curPageBackground
   size = FLEX
-  children = presetBackground.get() == "" ? null
+  children = curPageBackground.get() == "" ? null
     : {
         size = FLEX
         behavior = Behaviors.Button
         onClick = @() selectedPointId.set(null)
         rendObj = ROBJ_IMAGE
-        image = Picture($"{presetBackground.get()}:0:P")
+        image = Picture($"{curPageBackground.get()}:0:P")
         keepAspect = true
       }
 }
 
-function mapLines() {
-  let commands = []
-  let points = presetPoints.get()
-  let size = presetMapSize.get()
+let curPageLineSplines = Computed(function() {
+  let points = curPagePoints.get()
+  return curPageLines.get().map(@(line) { line, spline = buildLineSpline(line, points) })
+})
 
-  foreach (line in presetLines.get()) {
-    commands.append(mkLinePresetColor(line.to, presetUnlocksComplete.get()))
-    commands.extend(mkLineCmds(line, points, size))
-  }
+function mapLines() {
+  let mkCommands = lineTypeCtors?[curPageLineType.get()] ?? lineTypeCtors[LINE_DASHED]
 
   return {
-    watch = [presetLines, presetPoints, presetMapSize, presetUnlocksComplete]
+    watch = [curPageLineSplines, curPageMapSize, nodeStatusKind, curPageLineSectionLen,
+      curPageRoundedDashes, curPageLineType, curPageLineWidth]
     size = FLEX
     rendObj = ROBJ_VECTOR_CANVAS
-    commands = mkLineCmdsOutline(commands)
+    commands = mkCommands(curPageLineSplines.get(), {
+      size = curPageMapSize.get()
+      width = curPageLineWidth.get()
+      sectionLen = curPageLineSectionLen.get()
+      rounded = curPageRoundedDashes.get()
+      points = curPagePoints.get()
+      colorOf = @(line) mkLinePresetColor(line.from, line.to, nodeStatusKind.get())
+    })
   }
 }
 
-let scrollHandler = ScrollHandler()
+function mapLineLocks() {
+  let kinds = nodeStatusKind.get()
 
-function scrollToCurSubPreset() {
-  let preset = presetBgElems.get()
-    .findvalue(@(v) v.id == getFirstOrCurSubPreset())
-  let { pos = [0, 0], size = 0 } = preset
-  scrollHandler.scrollToX(hdpxi(pos[0]) - hdpxi(size[0]/2))
-  scrollHandler.scrollToY(hdpxi(pos[1]))
-}
+  let poses = []
+  foreach (ls in curPageLineSplines.get()) {
+    let { line } = ls
+    if ((kinds?[line.from] ?? NODE_LOCKED) != NODE_LOCKED || (kinds?[line.to] ?? NODE_LOCKED) != NODE_LOCKED)
+      continue
+    let center = splineCenter(ls.spline)
+    if (center == null)
+      continue
+    poses.append([hdpx(center[0]) - lineLockSize / 2, hdpx(center[1]) - lineLockSize / 2])
+  }
 
-let mapInsideBg = @() {
-  watch = openedTreeEventId
-  size = FLEX
-  rendObj = ROBJ_9RECT
-  texOffs = bgTexOffs
-  screenOffs = [0, 0, 0, 0]
-  image = Picture(getEventPresentation(openedTreeEventId.get())?.bgMapImage ?? "ui/gameuiskin#icon_primary_attention.svg")
-}
-
-function mapContainer() {
-  let mapSize = presetMapSize.get().map(hdpx)
   return {
-    key = presetMapSize
-    size = [bgMapWidth, bgMapHeight]
+    watch = [nodeStatusKind, curPageLineSplines]
+    size = FLEX
+    children = poses.map(@(pos) {
+      pos
+      size = lineLockSize
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#lock_icon.svg:{lineLockSize}:P")
+      keepAspect = true
+      color = 0xFFA0A0A0
+    })
+  }
+}
+
+let mapScrollHandler = ScrollHandler()
+let tabsScrollHandler = ScrollHandler()
+
+function mapContainer(viewportSize) {
+  let mapSize = curPageMapSize.get().map(hdpx)
+  return {
+    key = curPageMapSize
+    size = viewportSize
     clipChildren = true
     children = {
       size = FLEX
       behavior = [Behaviors.Pannable, Behaviors.ScrollEvent],
       touchMarginPriority = TOUCH_BACKGROUND
-      scrollHandler = scrollHandler
-      onAttach = scrollToCurSubPreset
+      scrollHandler = mapScrollHandler
       skipDirPadNav = true
       xmbNode = XmbContainer()
-      children = @() {
-        watch = presetMapSize
+      children = {
         size = mapSize
-        children = [
-          mapInsideBg
-          {
-            size = FLEX
-            children = [
-              mapBackground
-              bgElements
-              mapNet(presetMapSize, presetGridSize, presetBgElems)
-              bgElementsOnTop
-              mapLines
-              mapPoints
-            ]
-            animations = mapContentAnims
-          }
-        ]
+        children = {
+          size = FLEX
+          children = [
+            mapBackground
+            bgElements
+            mapNet(curPageMapSize, curPageGridSize, curPageBgElems)
+            bgElementsOnTop
+            mapLines
+            mapLineLocks
+            mapPoints
+          ]
+        }
       }
     }
   }
 }
 
-let mkCurrencies = @() {
-  watch = [curEventUnlocks, serverConfigs]
-  children = curEventUnlocks.get().len() == 0 ? null
-    : {
-      rendObj = ROBJ_9RECT
-      image = gradTranspDoubleSideX
-      color = 0x70000000
-      children = mkCurrenciesBtns(getUnlocksCurrencies(curEventUnlocks.get(), serverConfigs.get()))
-        .__update({ size = SIZE_TO_CONTENT })
-    }
-}
-
-let eventGamercard = {
-  size = [saSize[0], gamercardHeight]
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = headerGap
-  children = [
-    @() {
-      watch = isSubPresetOpened
-      children = backButton(@() isSubPresetOpened.get() ? closeSubPreset() : closeTreeEventWnd())
-    }
-    @() {
-      watch = openedTreeEventId
-      flow = FLOW_HORIZONTAL
-      gap = headerGap
-      children = [
-        {
-          rendObj = ROBJ_TEXT
-          valign = ALIGN_CENTER
-          text = loc($"events/name/{openedTreeEventId.get()}")
-        }.__update(fontBig)
-        infoEllipseButton(@() openNewsWndTagged(openedTreeEventId.get()))
-      ]
-    }
-    { size = FLEX }
-    mkCurrencies
-  ]
-}
-
-let lootboxBtn = mkCustomButton({
-  key = "lootbox"
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  flow = FLOW_HORIZONTAL
-  gap = gapSectionsWnd
-  children = [
-    {
-      size = [lootboxIconSize, lootboxIconSize]
-      rendObj = ROBJ_IMAGE
-      keepAspect = true
-      image = Picture($"ui/gameuiskin#events_chest_icon.svg:{lootboxIconSize}:{lootboxIconSize}:P") 
-    }
-    {
-      maxWidth = hdpx(250)
-      rendObj = ROBJ_TEXTAREA
-      behavior = Behaviors.TextArea
-      halign = ALIGN_CENTER
-      text = utf8ToUpper(loc("events/lootboxBtn"))
-    }.__update(fontTinyAccentedShaded)
-  ]
-}, @() openSeasonScene(openedTreeEventId.get(), LOOTBOX_TAB))
-
-let curEventLootboxes = Computed(@()
-  orderLootboxesBySlot(eventLootboxesRaw.get().filter(@(v) (v?.meta.event_id ?? MAIN_EVENT_ID) == openedTreeEventId.get())))
-
-let needShowUnseenMark = Computed(function(){
-  foreach(lb in curEventLootboxes.get())
-    if(lb.name in unseenLootboxes.get()?[openedTreeEventId.get()])
-      return true
-  return false
-})
-
-let footer = {
-  size = [FLEX, defButtonHeight]
-  valign = ALIGN_BOTTOM
-  children = [
-    @() {
-      watch = eventLootboxesRaw
-      children = [
-        eventLootboxesRaw.get().findvalue(@(v) (v?.meta.event_id) == openedTreeEventId.get()) != null
-          ? lootboxBtn
-          : null
-        @() {
-          watch = needShowUnseenMark
-          padding = hdpx(7)
-          hplace = ALIGN_RIGHT
-          children = needShowUnseenMark.get() ? priorityUnseenMark : null
-        }
-      ]
-    }
-    {
-      hplace = ALIGN_CENTER
-      children = squadPanel
-    }
-    @() {
-      hplace = ALIGN_RIGHT
-      halign = ALIGN_RIGHT
-      valign = ALIGN_BOTTOM
-      flow = FLOW_HORIZONTAL
-      gap = hdpx(30)
-      children = [
-        @() {
-          watch = [serverTime, curEventEndsAt]
-          halign = ALIGN_CENTER
-          valign = ALIGN_BOTTOM
-          children = !curEventEndsAt.get() || (curEventEndsAt.get() - serverTime.get() < 0) ? null
-            : mkTimeUntil(secondsToHoursLoc(curEventEndsAt.get() - serverTime.get()),
-                "quests/untilTheEnd",
-                { key = "event_time", margin = const [hdpx(20), 0, hdpx(60), 0] }.__update(fontTinyAccented))
-        }
-        mkToBattleButtonWithSquadManagement(
-          function() {
-            if (curGmList.get().len() == 0)
-              return
-            sendNewbieBqEvent("pressToBattleEventButton", { status = "online_battle", params = openedTreeEventId.get() })
-            let modeId = curGmList.get()[0].gameModeId
-            if (tryOpenQueuePenaltyWnd(curGmList.get()[0].campaign, curGmList.get()[0], { id = "queueToGameMode", modeId }))
-              return
-            eventbus_send("queueToGameMode", { modeId })
-          },
-          Computed(@() curGmList.get()?[0]))
-      ]
-    }
-  ]
-}
-
-let allowSubPreset = @() isShowSubPresetAllowed.set(true)
-
-let treeEventWnd = @() {
-  watch = openedTreeEventId
-  key = {}
+let mkTabLabel = @(page) {
   size = FLEX
-  rendObj = ROBJ_IMAGE
-  image = Picture(getEventPresentation(openedTreeEventId.get()).bg)
-  onAttach = @() resetTimeout(delayToLoadBgElems, allowSubPreset)
-  onDetach = @() isShowSubPresetAllowed.set(false)
-  children = [
-    {
-      pos = [0, headerGap]
-      size = [bgMapWidth + bgScreenOffs[1] + bgScreenOffs[3], bgMapHeight + bgScreenOffs[0] + bgScreenOffs[2]]
-      rendObj = ROBJ_9RECT
-      texOffs = bgTexOffs
-      screenOffs = bgScreenOffs
-      image = Picture(getEventPresentation(openedTreeEventId.get())?.bgMapImage ?? "ui/gameuiskin#icon_primary_attention.svg")
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_CENTER
-      padding = bgScreenOffs
-      children = mapContainer
-    }
-    @() {
-      watch = [isSubPresetOpened, isShowSubPresetAllowed]
-      size = FLEX
-      padding = saBordersRv
-      children = isSubPresetOpened.get() && isShowSubPresetAllowed.get() ? subPresetContainer : null
-    }
-    {
-      size = FLEX
-      padding = saBordersRv
-      flow = FLOW_VERTICAL
-      children = [
-        eventGamercard
-        { size = FLEX }
-        footer
-      ]
-    }
-    @() {
-      watch = selectedPointId
-      hplace = ALIGN_RIGHT
-      vplace = ALIGN_BOTTOM
-      children = selectedPointId.get() != null ? mkQuestInfoWnd(selectedPointId.get()) : null
-    }
-  ]
-  animations = wndSwitchAnim
+  halign = ALIGN_RIGHT
+  valign = ALIGN_TOP
+  children = {
+    size = FLEX_H
+    rendObj = ROBJ_TEXTAREA
+    behavior = [Behaviors.TextArea, Behaviors.Marquee]
+    halign = ALIGN_RIGHT
+    color = 0xFFFFFFFF
+    text = loc("mainmenu/page", { page })
+  }.__update(fontTinyAccented)
 }
 
-let sceneId = "treeEventWnd"
-registerScene(sceneId, treeEventWnd, closeTreeEventWnd, isTreeEventWndOpened)
-registerUnlocksSceneToUpdate(sceneId)
+let mkTabsVerticalPannableArea = verticalPannableAreaCtor(
+  sh(100) - topAreaSize + pageBlocksGap,
+  [pageBlocksGap, gradientHeightBottom])
+
+function mkTabIndexBridge(pages, pageId, resolvedPageId) {
+  let toIdx = @(page) max(0, pages.get().findindex(@(p) p == page) ?? 0)
+  let tabIdx = Watched(toIdx(resolvedPageId.get()))
+  tabIdx.subscribe(function(i) {
+    let page = pages.get()?[i]
+    if (page != null)
+      pageId.set(page)
+  })
+  resolvedPageId.subscribe(@(page) tabIdx.set(toIdx(page)))
+  return tabIdx
+}
+let curTabIdx = mkTabIndexBridge(pagesList, curPage, curPageResolved)
+
+let tabsList = @(tabs) mkTabsVerticalPannableArea(
+    mkOptionsTabs(tabs, curTabIdx),
+    { size = [tabsAreaWidth, sh(100) - topAreaSize] },
+    { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler = tabsScrollHandler }
+  )
+
+let bgMap = Computed(@() getEventPresentation(openedTreeEventId.get())?.bgMap)
+
+function treeEventMapWnd() {
+  if (openedTreeEventId.get() == null)
+    return { watch = openedTreeEventId }
+  let hasTabs = pagesList.get().len() > 1
+  let mapBlock = curPageMapSize.get().map(hdpx)
+  let cfg = bgMap.get()
+  let eventPres = getEventPresentation(eventSeason.get())
+  let texOffs = cfg?.offs ?? defBgMapOffs
+  let screenOffs = texOffs.map(hdpx)
+  let bgScreenSize = [mapBlock[0] + screenOffs[1] + screenOffs[3], mapBlock[1] + screenOffs[0] + screenOffs[2]]
+  let tabsColRight = saBorders[0] - tabExtraWidth + tabsAreaWidth
+  let mapPos = [hasTabs ? tabsColRight / 2 : 0, 0]
+
+  return {
+    watch = [openedTreeEventId, bgMap, pagesList, curPageMapSize, eventSeason]
+    size = FLEX
+    behavior = Behaviors.Button
+    onClick = @() selectedPointId.set(null)
+    onDetach = @() selectedPointId.set(null)
+    children = [
+      {
+        size = FLEX
+        rendObj = ROBJ_SOLID
+        color = contentOverlayShadeColor
+      }
+      {
+        size = bgScreenSize
+        rendObj = ROBJ_9RECT
+        texOffs
+        screenOffs
+        image = Picture($"{cfg?.image ?? defBgMapImage}:0:P")
+        hplace = ALIGN_CENTER
+        pos = mapPos
+        vplace = ALIGN_CENTER
+        padding = screenOffs
+      }
+      {
+        size = bgScreenSize
+        hplace = ALIGN_CENTER
+        pos = mapPos
+        vplace = ALIGN_CENTER
+        padding = screenOffs
+        children = mapContainer(mapBlock)
+      }
+      !hasTabs ? null
+        : {
+            size = [saSize[0] + tabExtraWidth, FLEX]
+            pos = [saBorders[0] - tabExtraWidth, 0]
+            flow = FLOW_HORIZONTAL
+            children = tabsList(pagesList.get().map(@(p) {
+              image = eventPres.image
+              tabContent = mkTabLabel(p)
+            }))
+          }
+    ]
+    animations = wndSwitchAnim
+  }
+}
+
+return { treeEventMapWnd, contentOverlayShadeColor }

@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { deferOnce } = require("dagor.workcycle")
-let { openMsgBox, closeMsgBox, defaultBtnsCfg } = require("%rGui/components/msgBox.nut")
-let { modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let msgBoxError = require("%rGui/components/msgBoxError.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
-let openMsgAccStatus = require("%rGui/components/openMsgAccStatus.nut")
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/clientState/hudState.nut" import isHudAttached
+from "%rGui/components/modalWindows.nut" import hasModalWindows
+from "%rGui/components/modalWnd.nut" import modalWndHeaderWithClose
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox, defaultBtnsCfg
+import "%rGui/components/msgBoxError.nut" as msgBoxError
+import "%rGui/components/openMsgAccStatus.nut" as openMsgAccStatus
+
 
 let persistMsgBoxes = hardPersistWatched("persistMsgBoxes", [])
 

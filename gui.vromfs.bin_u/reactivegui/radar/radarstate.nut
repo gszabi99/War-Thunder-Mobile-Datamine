@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let interopGen = require("%rGui/interopGen.nut")
-let { registerInteropFunc } = require("%globalsDarg/interop.nut")
+from "%globalsDarg/interop.nut" import registerInteropFunc
+import "%rGui/interopGen.nut" as interopGen
+
 
 let radarState = {
   IsRadarVisible = Watched(false)

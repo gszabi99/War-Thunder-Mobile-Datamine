@@ -1,27 +1,30 @@
-
 from "%globalsDarg/darg_library.nut" import *
-let { startSound, playSound, stopSound } = require("sound_wt")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let DataBlock  = require("DataBlock")
-let { eventbus_send } = require("eventbus")
-let { inspectorToggle } = require("%darg/helpers/inspector.nut")
-let { register_command } = require("console")
-let { round } =  require("math")
-let { format } =  require("string")
-let { hexStringToInt } = require("%sqstd/string.nut")
-let { allPermissions, dbgPermissions } = require("%appGlobals/permissions.nut")
-let { localizeAddons } = require("%appGlobals/updater/addons.nut")
-let { debugDirtyWordsFilter } = require("%appGlobals/dirtyWordsFilter.nut")
-let { balance } = require("%appGlobals/currenciesState.nut")
-let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
+import "DataBlock" as DataBlock
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "math" import round
+from "sound_wt" import startSound, playSound, stopSound
+from "string" import format
+from "%sqstd/string.nut" import hexStringToInt
+from "%darg/helpers/inspector.nut" import inspectorToggle
+from "%appGlobals/currenciesState.nut" import balance
+from "%appGlobals/dirtyWordsFilter.nut" import debugDirtyWordsFilter
+from "%appGlobals/pServer/profileSeasons.nut" import curSeasons
+from "%appGlobals/permissions.nut" import allPermissions, dbgPermissions
+from "%appGlobals/updater/addons.nut" import localizeAddons
+from "types" import String, Float, Integer
+
+
+
 
 
 register_command(@() inspectorToggle(), "ui.inspector")
 
 register_command(function(colorStr, multiplier) {
-  if (type(colorStr) != "string" || (colorStr.len() != 8 && colorStr.len() != 6))
+  if (!(colorStr instanceof String) || (colorStr.len() != 8 && colorStr.len() != 6))
     return log("first param must be string with len 6 or 8")
-  if ((type(multiplier) != "float" && type(multiplier) != "integer") || multiplier < 0)
+  if ((!(multiplier instanceof Float) && !(multiplier instanceof Integer)) || multiplier < 0)
     return log("second param must be numeric > 0")
 
   let colorInt = hexStringToInt(colorStr)
@@ -60,7 +63,7 @@ register_command(@() printSorted(curSeasons.get().map(@(s) s.idx)), "debug.curre
 register_command(@() printSorted(curSeasons.get().filter(@(s) s.isActive).map(@(s) s.idx)), "debug.current_seasons")
 
 register_command(function() {
-    let fileName = "localCustomSettings.blk"
+    const fileName = "localCustomSettings.blk"
     let blk = get_local_custom_settings_blk()
     blk.saveToTextFile(fileName)
     console_print($"Saved to: {fileName}")

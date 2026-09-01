@@ -1,14 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { TouchAreaOutButton } = require("wt.behaviors")
-let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { touchButtonSize, imageColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { mkGamepadShortcutImage, mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { isInZoom, unitType } = require("%rGui/hudState.nut")
-let { currentAircraftCtrlType, curFreeCamByTouchOption } = require("%rGui/options/options/airControlsOptions.nut")
-let { AIR } = require("%appGlobals/unitConst.nut")
-let { hudPearlGrayColor, hudLightBlackColor } = require("%rGui/style/hudColors.nut")
+from "wt.behaviors" import TouchAreaOutButton
+from "%globalScripts/controls/shortcutActions.nut" import setShortcutOn, setShortcutOff
+from "%appGlobals/unitConst.nut" import AIR
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkContinuousButtonParams
+from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize, imageColor
+from "%rGui/hudState.nut" import isInZoom, unitType
+from "%rGui/options/options/airControlsOptions.nut" import currentAircraftCtrlType, curFreeCamByTouchOption
+from "%rGui/style/hudColors.nut" import hudPearlGrayColor, hudLightBlackColor
 
-let borderWidth = hdpxi(1)
+
+const borderWidth = hdpxi(1)
 let colorActive = imageColor
 let colorInactive = hudPearlGrayColor
 let imgSizeBase = (touchButtonSize * 0.8  + 0.5).tointeger()
@@ -45,7 +46,7 @@ let mkCameraButton = @(shortcutId, image) function(scale) {
         color = isActive(stateFlags.get()) ? colorActive : colorInactive
       }
       mkGamepadShortcutImage(shortcutId,
-        { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-50)] },
+        { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(-50)] },
         scale)
     ]
   })

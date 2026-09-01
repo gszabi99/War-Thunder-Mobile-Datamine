@@ -1,26 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
+from "app" import get_cur_circuit_name
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "dagor.http" import httpRequest, HTTP_SUCCESS
+from "dagor.iso8601" import parse_unix_time
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout, clearTimer
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "json" import parse_json
+from "math" import ceil
+import "utf8" as utf8
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/platform.nut" import platformId
+from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath, getBlkValueByPath
+from "%appGlobals/loginState.nut" import isLoggedIn, isOnlineSettingsAvailable
+from "%appGlobals/pServer/campaign.nut" import sharedStats
+from "%rGui/components/modalWindows.nut" import hasModalWindows
+from "%rGui/mainMenu/mainMenuState.nut" import isMainMenuAttached
+from "types" import Integer, String
 
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { ceil } = require("math")
-let utf8 = require("utf8")
-let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
-let { parse_unix_time } = require("dagor.iso8601")
-let { get_time_msec } = require("dagor.time")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { parse_json } = require("json")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { register_command } = require("console")
-let { get_cur_circuit_name } = require("app")
-let { platformId } = require("%sqstd/platform.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isLoggedIn, isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
-let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
-let { sharedStats } = require("%appGlobals/pServer/campaign.nut")
-let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
+
 let logN = log_with_prefix("[NEWSFEED] ")
 
-let newsFontId = "NEWS_FONT_ID"
+const newsFontId = "NEWS_FONT_ID"
 const NEWSFEED_RECEIVED = "NewsFeedReceived"
 const ARTICLE_RECEIVED = "NewsArticleReceived"
 const SEEN_SAVE_ID = "news/lastSeenId"
@@ -195,11 +197,11 @@ let sortNewsfeed = @(a, b) b.pinned <=> a.pinned
 
 function mkInfo(v) {
   let { id = null, date = null, title = "", thumb = null, pinned = 0, tags = [] } = v
-  if (type(id) != "integer") {
+  if (!(id instanceof Integer)) {
     logerr($"Bad newsfeed id type: {type(id)}  (id = {id})")
     return null
   }
-  let iDate = type(date) == "string" ? (parse_unix_time(date) ?? -1) : -1
+  let iDate = date instanceof String ? (parse_unix_time(date) ?? -1) : -1
   local shortTitle = v?.titleshort ?? "undefined"
   if (shortTitle == "undefined" || utf8(shortTitle).charCount() > 50)
     shortTitle = null

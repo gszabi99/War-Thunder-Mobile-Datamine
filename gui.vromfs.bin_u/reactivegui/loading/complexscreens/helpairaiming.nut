@@ -1,16 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkScreenHints } = require("%rGui/components/screenHintsLib.nut")
-let { teamRedColor } = require("%rGui/style/teamColors.nut")
+from "%rGui/components/screenHintsLib.nut" import mkScreenHints
+from "%rGui/style/teamColors.nut" import teamRedColor
 
-let bgImage = "ui/images/help/help_air_aiming.avif"
+
+const bgImage = "ui/images/help/help_air_aiming.avif"
 let bgSize = [3282, 1041]
 
-let targetLockY = 696
-let forestallY = 240
-let crosshairY = 381
+const targetLockY = 696
+const forestallY = 240
+const crosshairY = 381
 
-let rightColX = 2000
-let rightColPxW = hdpx(600)
+const rightColX = 2000
+const rightColPxW = hdpx(600)
 
 let mkSizeByParent = @(size) [pw(100.0 * size[0] / bgSize[0]), ph(100.0 * size[1] / bgSize[1])]
 let mkLines = @(lines) lines.map(@(v, i) 100.0 * v / bgSize[i % 2])
@@ -54,7 +55,7 @@ let bgItems = [
   enemyUnitLabel.__merge({
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    pos = [pw(-8.8), ph(-40.0)]
+    pos = const [pw(-8.8), ph(-40.0)]
   })
 ]
 
@@ -78,7 +79,7 @@ let hints = [
       .__update({ color = 0xFFFFFF00 })
     lines = mkLines([1687, forestallY, rightColX, forestallY])
     needTgtPoint = false
-    blockOvr = { vplace = ALIGN_BOTTOM, pos = [0, hdpx(27)] }
+    blockOvr = { vplace = ALIGN_BOTTOM, pos = const [0, hdpx(27)] }
   }
   {
     content = mkTextareaTabular(loc("controls/help/crosshairs"), rightColPxW)
@@ -95,7 +96,7 @@ function makeScreen() {
     color = 0xFF000000
     children = {
       size = [sw(100), sw(100).tofloat() / bgSize[0] * bgSize[1]]
-      pos = [0, -sh(1.5)]
+      pos = const [0, -sh(1.5)]
       rendObj = ROBJ_IMAGE
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER

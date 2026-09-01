@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { sqrt, pow, fabs, sin, cos, atan2, PI } = require("math")
-let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { STICK } = require("%rGui/hud/stickState.nut")
-let { hudWhiteColor, hudBlackColor } = require("%rGui/style/hudColors.nut")
+from "math" import sqrt, pow, fabs, sin, cos, atan2, PI
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%rGui/controlsMenu/gamepadImgByKey.nut" import mkBtnImageComp
+from "%rGui/hud/stickState.nut" import STICK
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudBlackColor
 
-let RAD_TO_DEG = 180.0 / PI
-let DEG_TO_RAD = PI / 180.0
-let textureHoleWidth = 0.54
+
+const RAD_TO_DEG = 180.0 / PI
+const DEG_TO_RAD = PI / 180.0
+const textureHoleWidth = 0.54
 
 let isPieMenuActive = Watched(false)
 
@@ -133,7 +134,7 @@ function mkPieMenu(menuCfg, selIdx, params = defaultPieMenuParams) {
     size = FLEX
     children = !isGamepad.get() ? null : mkBtnImageComp(
       pieActiveStick == STICK.LEFT ? "J:L.Thumb.hv" : "J:R.Thumb.hv", hdpxi(50)
-    ).__update({vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(0), ph(14)]})
+    ).__update({vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(0), ph(14)]})
     transform = { scale = selIdx.get() > -1 ? [0.8, 0.8] : [1.0, 1.0] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
   }

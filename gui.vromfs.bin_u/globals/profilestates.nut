@@ -1,10 +1,10 @@
+from "frp" import Computed
+from "matching.errors" import INVALID_USER_ID
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/clientState/initialState.nut" import isOfflineMenu
 
-let { INVALID_USER_ID } = require("matching.errors")
-let { Computed } = require("frp")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
-let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
 
-let myInfo = sharedWatched("myInfo", @() {
+let myInfo = hardPersistWatched("myInfo", {
   name = isOfflineMenu ? "Offline mode" : ""
   realName = isOfflineMenu ? "Offline mode" : ""
   userId = INVALID_USER_ID

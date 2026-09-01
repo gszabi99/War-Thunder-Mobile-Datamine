@@ -1,43 +1,41 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { Z_ORDER, mkLBPos, mkLTPos, mkRBPos, mkRTPos, mkCTPos } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
-let { optDoubleCourseGuns } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
-let { aircraftMovement, aircraftIndicators, aircraftMovementEditView, aircraftIndicatorsEditView,
-  aircraftMoveStick, aircraftMoveSecondaryStick, aircraftMoveStickView, aircraftMoveArrows,
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%rGui/components/movementArrows.nut" import moveArrowsAirView
+from "%rGui/hud/actionBar/actionBarState.nut" import curActionBarTypes
+from "%rGui/hud/airMap.nut" import airMapEditView, airMap
+from "%rGui/hud/airState.nut" import Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun, isActiveTurretCamera,
+  hasBombs, RocketsState, hasRockets, TorpedoesState, hasTorpedos, isTorpedoReady, hasFlare, HasBooster
+from "%rGui/hud/aircraftMovementBlock.nut" import aircraftMovement, aircraftIndicators, aircraftMovementEditView,
+  aircraftIndicatorsEditView, aircraftMoveStick, aircraftMoveSecondaryStick, aircraftMoveStickView, aircraftMoveArrows,
   isAircraftMoveArrowsAvailable, brakeButton, brakeButtonEditView
-} = require("%rGui/hud/aircraftMovementBlock.nut")
-let { radarHudCtor, radarHudEditView } = require("%rGui/radar/radar.nut")
-let { raceForceCannotShoot, notGtRace } = require("%rGui/missionState.nut")
-let { voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
-} = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
-let { ctrlPieStickBlock, ctrlPieStickView } = require("%rGui/hud/controlsPieMenu/ctrlPieStick.nut")
-let { isCtrlPieAvailable } = require("%rGui/hud/controlsPieMenu/ctrlPieState.nut")
-let { isCameraPieAvailable } = require("%rGui/hud/cameraPieMenu/cameraPieState.nut")
-let { cameraPieStickBlock, cameraPieStickView } = require("%rGui/hud/cameraPieMenu/cameraPieStick.nut")
-let { bombPieStickBlockCtor, bombPieStickView } = require("%rGui/hud/buttons/bombPieStick.nut")
-let { airMapEditView, airMap } = require("%rGui/hud/airMap.nut")
-let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
-let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
-let { mkTacticalMapForHud, tacticalMapEditView } = require("%rGui/hud/components/tacticalMap.nut")
-let { mkFreeCameraButton, mkViewBackButton } = require("%rGui/hud/buttons/cameraButtons.nut")
-let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
-let { mkMyPlace, mkMyPlaceUi, mkAirMyScores, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
-let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut")
-let { xrayModel, dmModules, xrayModelEditView, dmModulesEditView, xrayDollSize } = require("%rGui/hud/aircraftStateModule.nut")
-let { mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle, mkCircleBtnPlaneEditView, mkCirclePlaneTurretsGuns,
-  bigButtonSize, bigButtonImgSize, mkCircleZoomCtor, mkCircleWeaponryItemCtor, mkCircleLockBtn, mkBigCirclePlaneBtnEditView, airButtonSize,
-  buttonAirImgSize, mkCircleSecondaryGuns, mkBoosterCtorBtn, boosterBtnEditView
-} = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
-let flaresButton = require("%rGui/hud/buttons/flaresButton.nut")
-let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun, isActiveTurretCamera, hasBombs,
-  RocketsState, hasRockets, TorpedoesState, hasTorpedos, isTorpedoReady, hasFlare, HasBooster
-} = require("%rGui/hud/airState.nut")
-let { mkSimpleSquareButton, mkSquareButtonEditView } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
-let { mkZoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
-let { moveArrowsAirView } = require("%rGui/components/movementArrows.nut")
-let { shouldShowRadar, shouldShowAirTacticalMap } = require("%rGui/hudTuning/hudTuningState.nut")
-let { curActionBarTypes } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
+from "%rGui/hud/aircraftStateModule.nut" import xrayModel, dmModules, xrayModelEditView, dmModulesEditView, xrayDollSize
+from "%rGui/hud/buttons/bombPieStick.nut" import bombPieStickBlockCtor, bombPieStickView
+from "%rGui/hud/buttons/cameraButtons.nut" import mkFreeCameraButton, mkViewBackButton
+from "%rGui/hud/buttons/circleTouchHudButtons.nut" import mkCirclePlaneCourseGuns, mkCirclePlaneCourseGunsSingle,
+  mkCircleBtnPlaneEditView, mkCirclePlaneTurretsGuns, bigButtonSize, bigButtonImgSize, mkCircleZoomCtor,
+  mkCircleWeaponryItemCtor, mkCircleLockBtn, mkBigCirclePlaneBtnEditView, airButtonSize, buttonAirImgSize,
+  mkCircleSecondaryGuns, mkBoosterCtorBtn, boosterBtnEditView
+import "%rGui/hud/buttons/flaresButton.nut" as flaresButton
+from "%rGui/hud/buttons/squareTouchHudButtons.nut" import mkSimpleSquareButton, mkSquareButtonEditView
+from "%rGui/hud/cameraPieMenu/cameraPieState.nut" import isCameraPieAvailable
+from "%rGui/hud/cameraPieMenu/cameraPieStick.nut" import cameraPieStickBlock, cameraPieStickView
+from "%rGui/hud/components/tacticalMap.nut" import mkTacticalMapForHud, tacticalMapEditView
+from "%rGui/hud/controlsPieMenu/ctrlPieState.nut" import isCtrlPieAvailable
+from "%rGui/hud/controlsPieMenu/ctrlPieStick.nut" import ctrlPieStickBlock, ctrlPieStickView
+from "%rGui/hud/hitCamera/hitCamera.nut" import hitCamera, hitCameraCommonEditView
+from "%rGui/hud/myScores.nut" import mkMyPlace, mkMyPlaceUi, mkAirMyScores, mkMyScoresUi
+from "%rGui/hud/scoreBoard.nut" import scoreBoardType, scoreBoardCfgByType
+from "%rGui/hud/voiceMsg/voiceMsgStick.nut" import voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
+from "%rGui/hud/zoomSlider.nut" import mkZoomSlider, zoomSliderEditView
+from "%rGui/hudState.nut" import isPlayingReplay
+import "%rGui/hudTuning/cfg/cfgHudCommon.nut" as cfgHudCommon
+from "%rGui/hudTuning/cfg/cfgOptions.nut" import optDoubleCourseGuns
+from "%rGui/hudTuning/cfg/hudTuningPkg.nut" import Z_ORDER, mkLBPos, mkLTPos, mkRBPos, mkRTPos, mkCTPos
+import "%rGui/hudTuning/cfg/initHudTuningCfg.nut" as initHudTuningCfg
+from "%rGui/hudTuning/hudTuningState.nut" import shouldShowRadar, shouldShowAirTacticalMap
+import "%rGui/hudTuning/squareBtnEditView.nut" as mkSquareBtnEditView
+from "%rGui/missionState.nut" import raceForceCannotShoot, notGtRace
+from "%rGui/radar/radar.nut" import radarHudCtor, radarHudEditView
 
 
 let returnToShipShortcutIds = {
@@ -49,7 +47,7 @@ let returnToShipShortcutIds = {
 
 let hasMyScores = Computed(@() scoreBoardCfgByType?[scoreBoardType.get()].addMyScores)
 
-return cfgHudCommon.__merge({
+return cfgHudCommon.__merge(initHudTuningCfg({
 
   zoomSlider = {
     ctor = mkZoomSlider
@@ -364,4 +362,4 @@ return cfgHudCommon.__merge({
   }
 
   chatLogAndKillLog = cfgHudCommon.chatLogAndKillLog.__merge({ defTransform = mkLTPos([hdpx(220), hdpx(320)]) })
-})
+}))

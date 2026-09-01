@@ -1,18 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { SHIP } = require("%appGlobals/unitConst.nut")
-let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON } = require("%rGui/hud/actionBar/actionType.nut")
-let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
-let cfgHudCommonNaval = require("%rGui/hudTuning/cfg/cfgHudCommonNaval.nut")
-let { Z_ORDER, mkRBPos, mkLBPos } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
-let { optBulletsRight } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
-let shipMovementBlock = require("%rGui/hud/shipMovementBlock.nut")
-let { moveArrowsViewWithMode } = require("%rGui/components/movementArrows.nut")
-let { voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
-} = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
-let { mkCircleZoomCtor, mkBigCircleBtnEditView } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
-let { mkBroadsideButtonCtor, mkBroadsideButtonEditView } = require("%rGui/hud/buttons/sailboatGuns.nut")
-let { mkDollCtor, mkDollEditView, mkCrewHealthCtor, mkCrewHealthEditView, mkSailboatDebuffs, sailboatDebuffsEditView
-} = require("%rGui/hud/shipStateModule.nut")
+from "%appGlobals/unitConst.nut" import SHIP
+from "%rGui/components/movementArrows.nut" import moveArrowsViewWithMode
+from "%rGui/hud/actionBar/actionType.nut" import AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON
+from "%rGui/hud/buttons/circleTouchHudButtons.nut" import mkCircleZoomCtor, mkBigCircleBtnEditView
+from "%rGui/hud/buttons/sailboatGuns.nut" import mkBroadsideButtonCtor, mkBroadsideButtonEditView
+import "%rGui/hud/shipMovementBlock.nut" as shipMovementBlock
+from "%rGui/hud/shipStateModule.nut" import mkDollCtor, mkDollEditView, mkCrewHealthCtor, mkCrewHealthEditView,
+  mkSailboatDebuffs, sailboatDebuffsEditView
+from "%rGui/hud/voiceMsg/voiceMsgStick.nut" import voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
+import "%rGui/hudTuning/cfg/cfgHudCommon.nut" as cfgHudCommon
+import "%rGui/hudTuning/cfg/cfgHudCommonNaval.nut" as cfgHudCommonNaval
+from "%rGui/hudTuning/cfg/cfgOptions.nut" import optBulletsRight
+from "%rGui/hudTuning/cfg/hudTuningPkg.nut" import Z_ORDER, mkRBPos, mkLBPos
+import "%rGui/hudTuning/cfg/initHudTuningCfg.nut" as initHudTuningCfg
 
 
 let debuffPosX = clamp(saSize[0] / 2 - hdpx(460), hdpx(420), hdpx(540))
@@ -21,7 +21,7 @@ let healthImageWidth = shHud(20)
 let healthImageHeight = (71.0 / 200.0 * healthImageWidth).tointeger()
 let healthSize = [healthImageWidth, healthImageHeight]
 
-return cfgHudCommon.__merge(cfgHudCommonNaval, {
+return cfgHudCommon.__merge(cfgHudCommonNaval, initHudTuningCfg({
   zoom = {
     ctor = mkCircleZoomCtor("ui/gameuiskin#hud_consumable_pirate_zoom_out.svg",
       "ui/gameuiskin#hud_consumable_pirate_zoom.svg", 1.2)
@@ -83,4 +83,4 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     editView = mkCrewHealthEditView(healthSize, false)
     hideForDelayed = false
   }
-})
+}))

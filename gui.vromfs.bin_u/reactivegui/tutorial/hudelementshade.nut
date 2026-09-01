@@ -1,14 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { getBox, incBoxSize, createHighlight, findGoodArrowPos, sizePosToBox
-} = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
-let { lightCtor, darkCtor, pointerArrow, mkPointerArrow } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let { register_command } = require("console")
-let { getNativeElementBoxes } = require("hudSelectionShade")
-let { elements, sizeIncDef, pushedArrowColor } = require("%rGui/tutorial/hudElementsCfg.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+from "console" import register_command
+from "dagor.workcycle" import setInterval, clearTimer
+from "eventbus" import eventbus_subscribe
+from "hudSelectionShade" import getNativeElementBoxes
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%rGui/tutorial/hudElementsCfg.nut" import elements, sizeIncDef, pushedArrowColor
+from "%rGui/tutorial/tutorialWnd/tutorialUtils.nut" import getBox, incBoxSize, createHighlight, findGoodArrowPos,
+  sizePosToBox
+from "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" import lightCtor, darkCtor, pointerArrow, mkPointerArrow
+from "types" import String
+
 
 let isHudShadeAtached = Watched(false)
 let lastShadeEvent = mkWatched(persist, "lastShadeEvent", null)
@@ -17,8 +19,8 @@ let isHudShadeActive = Computed(@() isHudShadeAtached.get() && (lastShadeEvent.g
 eventbus_subscribe("hudElementSelectionShade", @(ev) lastShadeEvent.set(ev))
 isInBattle.subscribe(@(_) lastShadeEvent.set(null))
 
-let staticUpdateInterval = 0.5
-let dynamicUpdateInterval = 0.02
+const staticUpdateInterval = 0.5
+const dynamicUpdateInterval = 0.02
 
 let updateInterval = keepref(Computed(@() !isHudShadeActive.get() ? 0
   : (lastShadeEvent.get()?.hasNativeElements ?? false) ? dynamicUpdateInterval
@@ -102,7 +104,7 @@ let hudElementShade = @() {
 }
 
 register_command(function(ids) {
-  if (type(ids) == "string")
+  if (ids instanceof String)
     ids = [ids]
   let elems = []
   foreach (id in ids) {

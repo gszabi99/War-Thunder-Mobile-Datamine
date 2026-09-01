@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { activeControlsType } = require("%appGlobals/activeControls.nut")
-let { register_command } = require("console")
-let { eventbus_subscribe } = require("eventbus")
-let { DEV_MOUSE, DEV_KBD, DEV_GAMEPAD, DEV_TOUCH, get_last_used_device_mask
-} = require("lastInputMonitor")
-let { is_pc, is_nswitch } = require("%sqstd/platform.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+from "console" import register_command
+from "eventbus" import eventbus_subscribe
+from "lastInputMonitor" import DEV_MOUSE, DEV_KBD, DEV_GAMEPAD, DEV_TOUCH, get_last_used_device_mask
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/platform.nut" import is_pc, is_nswitch
+from "%appGlobals/activeControls.nut" import activeControlsType
+
 
 let defControlsType = is_nswitch ? DEV_GAMEPAD
   : is_pc ? DEV_MOUSE

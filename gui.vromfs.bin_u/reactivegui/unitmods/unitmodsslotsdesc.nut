@@ -1,15 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { format } = require("string")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { commonTextColor, badTextColor } = require("%rGui/style/stdColors.nut")
-let { getBulletBeltFullName, getWeaponFullName, getBulletBeltDesc } = require("%rGui/weaponry/weaponsVisual.nut")
-let { getTntEquivalentMass } = require("%rGui/weaponry/weaponryStatsCalculations.nut")
-let { getMassText, getMassLbsText, getSpeedText, getSpeedRangeText, getHeightRangeText, getDistanceText
-} = require("%rGui/measureUnits.nut")
+from "string" import format
+from "%sqstd/underscore.nut" import isEqual
+from "%rGui/measureUnits.nut" import getMassText, getMassLbsText, getSpeedText, getSpeedRangeText, getHeightRangeText,
+  getDistanceText
+from "%rGui/style/stdColors.nut" import commonTextColor, badTextColor
+from "%rGui/weaponry/weaponryStatsCalculations.nut" import getTntEquivalentMass
+from "%rGui/weaponry/weaponsVisual.nut" import getBulletBeltFullName, getWeaponFullName, getBulletBeltDesc
 
 
-let headerColor = 0xFFFFFFFF
-let infoGap = hdpxi(10)
+const headerColor = 0xFFFFFFFF
+const infoGap = hdpxi(10)
 
 let rowCfgDefaults = freeze({
   getHeader = @(_w) ""

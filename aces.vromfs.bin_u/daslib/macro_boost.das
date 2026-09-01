@@ -23,9 +23,6 @@ def public macro_verify(expr : bool; prog : ProgramPtr; at : LineInfo; message :
 [tag_function_macro(tag="macro_verify_tag")]
 class MacroVerifyMacro : AstFunctionAnnotation {
     
-    
-    
-    
     def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
         
         var res = qmacro_block() {
@@ -49,7 +46,7 @@ class CaptureBlock : AstVisitor {
         let vptr = expr.variable
         if (!(scope |> key_exists(vptr))) {
             unsafe {
-                captured[vptr] = reinterpret<ExprVar?> expr
+                captured[vptr] = reinterpret<ExprVar?>(expr)
             }
         }
     }
@@ -93,9 +90,9 @@ class ColletFinally : AstVisitor {
     def override preVisitExprBlock(blk : ExprBlock?) : void {
         unsafe {
             if (!empty(blk.finalList)) {
-                blocks |> insert(reinterpret<ExprBlock?> blk)
+                blocks |> insert(reinterpret<ExprBlock?>(blk))
             } elif (alwaysFor && blk.blockFlags.forLoop) {
-                blocks |> insert(reinterpret<ExprBlock?> blk)
+                blocks |> insert(reinterpret<ExprBlock?>(blk))
             }
         }
     }
@@ -150,17 +147,12 @@ def public collect_labels(expr : ExpressionPtr) {
 [macro_function]
 def public has_sideeffects(expr : Expression?) : bool {
     
-    
-    
-    
-    
-    
-    
     if (expr == null || expr.flags.noSideEffects
             || expr is ExprVar
             || expr is ExprConstInt || expr is ExprConstInt8 || expr is ExprConstInt16
             || expr is ExprConstInt64 || expr is ExprConstUInt || expr is ExprConstUInt8
             || expr is ExprConstUInt16 || expr is ExprConstUInt64 || expr is ExprConstFloat
+            || expr is ExprConstFloat16
             || expr is ExprConstDouble || expr is ExprConstBool || expr is ExprConstString
             || expr is ExprConstPtr || expr is ExprConstRange || expr is ExprConstURange
             || expr is ExprConstRange64 || expr is ExprConstURange64
@@ -217,21 +209,6 @@ def public has_sideeffects(expr : Expression?) : bool {
         return false
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     if (expr is ExprOp1) {
         let e1 = expr as ExprOp1
         
@@ -269,7 +246,6 @@ def public has_sideeffects(expr : Expression?) : bool {
 [macro_function]
 def private func_has_sideeffects(f : Function?) : bool {
     
-    
     return (f == null || !f.flags.builtIn
         || f.flags.knownSideEffects || f.flags.unsafeOperation)
 }
@@ -277,13 +253,11 @@ def private func_has_sideeffects(f : Function?) : bool {
 [macro_function]
 def private is_safe_op1(op : das_string) : bool {
     
-    
     return op == "-" || op == "!" || op == "~" || op == "+"
 }
 
 [macro_function]
 def private is_safe_op2(op : das_string) : bool {
-    
     
     return (op == "+" || op == "-" || op == "*"
         || op == "==" || op == "!=" || op == "<" || op == "<=" || op == ">" || op == ">="
@@ -294,15 +268,11 @@ def private is_safe_op2(op : das_string) : bool {
 [macro_function]
 def private is_mutation_op1(op : das_string) : bool {
     
-    
-    
-    
     return op == "++" || op == "--" || op == "+++" || op == "---"
 }
 
 [macro_function]
 def private is_mutation_op2(op : das_string) : bool {
-    
     
     return (op == "+=" || op == "-=" || op == "*=" || op == "/=" || op == "%="
         || op == "&=" || op == "|=" || op == "^="

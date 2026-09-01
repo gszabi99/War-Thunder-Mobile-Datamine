@@ -1,22 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { lerp } = require("%sqstd/math.nut")
-let { gradRadial, mkRingGradientLazy } = require("%rGui/style/gradients.nut")
-let { ANIM_SKIP } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { mkLensFlareCutRadiusLeft, lensLine } = require("%rGui/style/lensFlare.nut")
+from "%sqstd/math.nut" import lerp
+from "%rGui/shop/goodsPreview/goodsPreviewPkg.nut" import ANIM_SKIP
+from "%rGui/style/gradients.nut" import gradRadial, mkRingGradientLazy
+from "%rGui/style/lensFlare.nut" import mkLensFlareCutRadiusLeft, lensLine
 
 
-let aTimeFlareStart = 0.1
-let aTimeFlareAppear = 0.1
-let aTimeFlareMoveHalf = 0.5
-let aTimeFlareMiddle = aTimeFlareStart + aTimeFlareMoveHalf
-let aTimeFlareFull = aTimeFlareStart + 2 * aTimeFlareMoveHalf
-let aTimeFlareFadeStart = aTimeFlareMiddle - 0.3
-let aTimeFlareFadeEnd = aTimeFlareFull - 0.1
+const aTimeFlareStart = 0.1
+const aTimeFlareAppear = 0.1
+const aTimeFlareMoveHalf = 0.5
+const aTimeFlareMiddle = aTimeFlareStart + aTimeFlareMoveHalf
+const aTimeFlareFull = aTimeFlareStart + 2 * aTimeFlareMoveHalf
+const aTimeFlareFadeStart = aTimeFlareMiddle - 0.3
+const aTimeFlareFadeEnd = aTimeFlareFull - 0.1
 
-let scaleFlareColor = 0x00151730
-let lensStarOppositeColor = 0x00072232
-let lensStarReflColor = 0x001670A8
-let lensStarGlow = 0x00072232
+const scaleFlareColor = 0x00151730
+const lensStarOppositeColor = 0x00072232
+const lensStarReflColor = 0x001670A8
+const lensStarGlow = 0x00072232
 
 let gradRing = mkRingGradientLazy(50, 3, 6)
 
@@ -47,9 +47,9 @@ let flareTranslateXAnim = @(offsetStart, offsetEnd) [
     duration = aTimeFlareMoveHalf, delay = aTimeFlareStart + aTimeFlareMoveHalf, trigger = ANIM_SKIP }
 ]
 
-let scalesCount = 3
-let scalesMul = 0.4
-let scalesColorMul = 0.35
+const scalesCount = 3
+const scalesMul = 0.4
+const scalesColorMul = 0.35
 function lensScaleCircles(size1, size2, x1, xFinal) {
   let res = []
   local colorMul = 1.0
@@ -191,7 +191,7 @@ let lensStarOpposite = @(moveAnim) {
 let lensFlareOppositeLeftImage = mkLensFlareCutRadiusLeft(50, 10, 23, 100, 18, 10)
 let lensFlareOppositeLeft = @(ovr = {}) {
   size = const [hdpx(500), hdpx(1000)]
-  pos = [pw(-50), 0]
+  pos = const [pw(-50), 0]
   hplace = ALIGN_RIGHT
   rendObj = ROBJ_IMAGE
   image = lensFlareOppositeLeftImage()
@@ -205,7 +205,7 @@ let lensStarOppositeGlowAndLine = @(moveAnim) {
     mkLensGlow(2 * lensStarH)
     mkLensLine(hdpx(3000), mul_color(lensStarReflColor, 0.5))
     lensFlareOppositeLeft
-    lensFlareOppositeLeft({ flipX = true, pos = [pw(50), 0], hplace = ALIGN_LEFT })
+    lensFlareOppositeLeft({ flipX = true, pos = const [pw(50), 0], hplace = ALIGN_LEFT })
   ]
   opacity = 0.0
   transform = {}

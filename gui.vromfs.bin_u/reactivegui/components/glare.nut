@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX
 
-let defGlareHeight = ph(160)
+
+const defGlareHeight = ph(160)
 let defGlareWidth = hdpx(64)
 let defTranslateXMult = 3
 let glareAnimDuration = 0.4

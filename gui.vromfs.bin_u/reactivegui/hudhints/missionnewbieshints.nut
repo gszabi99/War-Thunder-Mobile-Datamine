@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { isInFlight } = require("%rGui/globalState.nut")
-let { removeHudElementPointer } = require("%rGui/tutorial/hudElementPointers.nut")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { register_command } = require("console")
-let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
-let { get_time_msec } = require("dagor.time")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "eventbus" import eventbus_send
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/clientState/hudState.nut" import isHudAttached
+from "%rGui/globalState.nut" import isInFlight
+from "%rGui/tutorial/hudElementPointers.nut" import removeHudElementPointer
+
 
 enum CFG_TYPES {
   MISSION_START

@@ -32,6 +32,7 @@
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_medium",
   "asmCaptureDuration": 6.0,
+  "enemyAsmCaptureMult": 1.2,
   "explosionFx": "explosion_ship_large",
   "smokeScreenActivateTime": 2.0,
   "smokeScreenEffectTime": 30.0,

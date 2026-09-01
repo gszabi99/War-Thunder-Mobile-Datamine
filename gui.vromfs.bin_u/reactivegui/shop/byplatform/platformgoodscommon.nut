@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+
 
 let showRestorePurchasesDoneMsg = @()
   openFMsgBox({ text = loc("msg/restorePurchasesDone") })

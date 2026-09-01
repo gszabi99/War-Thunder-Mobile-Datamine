@@ -1,19 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-from "math" import abs, clamp, pow, sqrt
 from "dagor.time" import get_time_msec
+from "math" import abs, clamp, pow, sqrt
 from "wt.behaviors" import HangarCameraControl
 from "%appGlobals/activeControls.nut" import needCursorForActiveInputDevice
 from "%rGui/cursor.nut" import needShowCursor
 from "%rGui/dmViewer/protectionAnalysisState.nut" import targetScreenX, targetScreenY, doFire
 
-let DEV_ID_MOUSE = 2
-let DEV_ID_GAMEPAD = 3
-let DEV_ID_MOUSE_KEY = 4
-let MOUSE_DRAG_THRESHOLD_PX = hdpx(2)
-let TAP_THRESHOLD_PX = hdpx(64)
-let SHORT_TAP_MSEC = 300
 
-let halfScreenW = sw(50)
+const DEV_ID_MOUSE = 2
+const DEV_ID_GAMEPAD = 3
+const DEV_ID_MOUSE_KEY = 4
+const MOUSE_DRAG_THRESHOLD_PX = hdpx(2)
+const TAP_THRESHOLD_PX = hdpx(64)
+const SHORT_TAP_MSEC = 300
+
+const halfScreenW = sw(50)
 
 let defProcessorState = {
   devId = null

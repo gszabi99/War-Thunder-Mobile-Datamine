@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { DM_VIEWER_ARMOR, hangar_get_dm_viewer_parts_count } = require("hangar")
-let { dmViewerMode, dmViewerUnitReady } = require("%rGui/dmViewer/dmViewerState.nut")
-let { toggleSubscription, mkDmViewerHint, mkHintTitle, mkHintDescText, accentColor, mkUnitStatusText
-} = require("%rGui/dmViewer/dmViewerPkg.nut")
-let { collectArmorClassToSteelMuls } = require("%rGui/dmViewer/modeXrayUtils.nut")
+from "hangar" import DM_VIEWER_ARMOR, hangar_get_dm_viewer_parts_count
+from "math" import round
+from "%rGui/dmViewer/dmViewerPkg.nut" import toggleSubscription, mkDmViewerHint, mkHintTitle, mkHintDescText,
+  accentColor, mkUnitStatusText
+from "%rGui/dmViewer/dmViewerState.nut" import dmViewerMode, dmViewerUnitReady
+from "%rGui/dmViewer/modeXrayUtils.nut" import collectArmorClassToSteelMuls
 
-let absoluteArmorThreshold = 500
-let relativeArmorThreshold = 5.0
+
+const absoluteArmorThreshold = 500
+const relativeArmorThreshold = 5.0
 let armorClassToSteel = {}
 
 let isModeActive = keepref(Computed(@() dmViewerMode.get() == DM_VIEWER_ARMOR))

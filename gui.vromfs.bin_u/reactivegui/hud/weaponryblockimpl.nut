@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { currentHoldWeaponName } = require("%rGui/hud/currentWeaponsStates.nut")
-let { scopeSize } = require("%rGui/hud/commonSight.nut")
-let { hudOceanMistColor } = require("%rGui/style/hudColors.nut")
+from "dagor.workcycle" import resetTimeout
+from "%rGui/hud/commonSight.nut" import scopeSize
+from "%rGui/hud/currentWeaponsStates.nut" import currentHoldWeaponName
+from "%rGui/style/hudColors.nut" import hudOceanMistColor
+
 
 let halfScopeHeight = scopeSize[1] / 2
 

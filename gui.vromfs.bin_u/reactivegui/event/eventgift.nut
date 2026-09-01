@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { is_ios } = require("%sqstd/platform.nut")
-let { allow_event_gift_on_ios } = require("%appGlobals/permissions.nut")
-let { getGiftPresentation, availableGifts } = require("%appGlobals/config/eventsGiftPresentation.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { specialEvents } = require("%rGui/event/eventState.nut")
-let { offerH } = require("%rGui/shop/goodsView/sharedParts.nut")
+from "eventbus" import eventbus_send
+from "%sqstd/platform.nut" import is_ios
+from "%appGlobals/config/eventsGiftPresentation.nut" import getGiftPresentation, availableGifts
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/permissions.nut" import allow_event_gift_on_ios
+from "%rGui/event/eventState.nut" import specialEvents
+from "%rGui/shop/goodsView/sharedParts.nut" import offerH
 
 
-let eventGiftGap = hdpx(25)
+const eventGiftGap = hdpx(25)
 let boxSize = [offerH, offerH]
 let tagSize = [hdpxi(50), hdpxi(50)]
 let campaignGiftImg = {
@@ -38,7 +38,7 @@ function mkGiftBtn(eventId) {
       @() {
         watch = curCampaign
         size = tagSize
-        pos = [-hdpx(10), hdpx(25)]
+        pos = const [-hdpx(10), hdpx(25)]
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#{campaignGiftImg[curCampaign.get()]}.avif:{tagSize[0]}:{tagSize[1]}:P")
         keepAspect = KEEP_ASPECT_FIT

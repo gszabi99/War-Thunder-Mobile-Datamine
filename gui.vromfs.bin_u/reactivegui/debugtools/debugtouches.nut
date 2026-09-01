@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { OPT_SHOW_TOUCHES_ENABLED, getOptValue } = require("%rGui/options/guiOptions.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%rGui/options/guiOptions.nut" import OPT_SHOW_TOUCHES_ENABLED, getOptValue
+
 
 let isDebugTouchesActive = hardPersistWatched("isDebugTouchesActive",
   getOptValue(OPT_SHOW_TOUCHES_ENABLED) ?? false)

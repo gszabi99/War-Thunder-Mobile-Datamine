@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { get_per_machine_custom_blk } = require("blkGetters")
-let { register_command } = require("console")
-let { eventbus_send } = require("eventbus")
-let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { allowLimitedDownload, isDownloadPausedByConnection, isDownloadPaused } = require("%rGui/updater/updaterState.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
+from "blkGetters" import get_per_machine_custom_blk
+from "console" import register_command
+from "dagor.workcycle" import resetTimeout
+from "eventbus" import eventbus_send
+from "%appGlobals/clientState/clientState.nut" import isInMenu
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/updater/updaterState.nut" import allowLimitedDownload, isDownloadPausedByConnection, isDownloadPaused
 
-let SAVE_ID = "isLimitedDownloadAsked"
+
+const SAVE_ID = "isLimitedDownloadAsked"
 let isAsked = Watched(get_per_machine_custom_blk()?[SAVE_ID] ?? false)
 
 isAsked.subscribe(function(v) {

@@ -1,8 +1,10 @@
+from "%globalScripts/gameRendObjs.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { get_game_params_blk } = require("blkGetters")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { isInZoom } = require("%rGui/hudState.nut")
-let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+from "blkGetters" import get_game_params_blk
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderColor
+from "%rGui/hudState.nut" import isInZoom
+
 
 let NEED_SHOW_POSE_INDICATOR = get_game_params_blk()?.unitPoseIndicator.enableHud ?? false
 

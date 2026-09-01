@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gradTranspDoubleSideX, mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { mkAdsButton } = require("%rGui/components/adsButton.nut")
-let { mkDebriefingStats } = require("%rGui/debriefing/mkDebriefingStats.nut")
-let { mkMissionResultTitle, missionResultTitleAnimTime } = require("%rGui/debriefing/missionResultTitle.nut")
-let achievementsBlock = require("%rGui/debriefing/achievementsBlock.nut")
-let { mkTotalRewardCountsScores } = require("%rGui/debriefing/totalRewardCounts.nut")
+from "%rGui/components/adsButton.nut" import mkAdsButton
+import "%rGui/debriefing/achievementsBlock.nut" as achievementsBlock
+from "%rGui/debriefing/missionResultTitle.nut" import mkMissionResultTitle, missionResultTitleAnimTime
+from "%rGui/debriefing/mkDebriefingStats.nut" import mkDebriefingStats
+from "%rGui/debriefing/totalRewardCounts.nut" import mkTotalRewardCountsScores
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, mkColoredGradientY
 
-let rewardsAnimStartTime = 0.5
+
+const rewardsAnimStartTime = 0.5
 
 let scoreBgPanel = {
   rendObj = ROBJ_IMAGE
@@ -61,7 +62,7 @@ function mkDebriefingWndTabScores(debrData, _params) {
               ]
             }
             {
-              size = [hdpx(1000), hdpx(9)]
+              size = const [hdpx(1000), hdpx(9)]
               hplace = ALIGN_CENTER
               rendObj = ROBJ_IMAGE
               image = gradTranspDoubleSideX

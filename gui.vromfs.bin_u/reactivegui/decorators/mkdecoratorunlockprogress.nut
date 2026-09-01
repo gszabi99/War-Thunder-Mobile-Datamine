@@ -1,15 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { activeUnlocks, unlockInProgress, receiveUnlockRewards } = require("%rGui/unlocks/unlocks.nut")
-let { mkQuestBar } = require("%rGui/quests/questBar.nut")
-let { findUnlockWithReward } = require("%rGui/rewards/unlockRewards.nut")
-let { G_DECORATOR } = require("%appGlobals/rewardType.nut")
-let { questsBySection, questsCfg, getStarsTotalNonUpdatable } = require("%rGui/quests/questsState.nut")
-let { textButtonInactive, textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { sendBqQuestsTask } = require("%rGui/quests/bqQuests.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/rewardType.nut" import G_DECORATOR
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonInactive, textButtonPrimary
+from "%rGui/quests/bqQuests.nut" import sendBqQuestsTask
+from "%rGui/quests/questBar.nut" import mkQuestBar
+from "%rGui/quests/questsState.nut" import questsBySection, questsCfg, getStarsTotalNonUpdatable
+from "%rGui/rewards/unlockRewards.nut" import findUnlockWithReward
+from "%rGui/unlocks/unlocks.nut" import activeUnlocks, unlockInProgress, receiveUnlockRewards
+
 
 let btnStyleSound = { ovr = { sound = { click  = "meta_get_unlock" } } }
 

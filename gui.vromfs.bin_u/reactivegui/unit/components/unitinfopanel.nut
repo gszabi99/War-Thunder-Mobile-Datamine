@@ -1,44 +1,46 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round, abs } = require("math")
-let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { getUnitName, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
-let { mkUnitLevelBlock, levelHolderSize } = require("%rGui/unit/components/unitLevelComp.nut")
-let { mkCurrencyImage, mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let panelBg = require("%rGui/components/panelBg.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { mkUnitStatsCompShort, mkUnitStatsCompFull, armorProtectionPercentageColors,
-  avgShellPenetrationMmByRank, addedFromSlot } = require("%rGui/unit/unitStats.nut")
-let { attrPresets, hasSlotAttrPreset, slotAttrPreset } = require("%rGui/attributes/attrState.nut")
-let { mkUnitBonuses, mkUnitDailyLimit, mkBonusTiny, bonusTinySize } = require("%rGui/unit/components/unitInfoComps.nut")
-let { premiumTextColor } = require("%rGui/style/stdColors.nut")
-let { itemsCfgByCampaignOrdered } = require("%appGlobals/itemsState.nut")
-let { getUnitTagsShop, getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { TANK } = require("%appGlobals/unitConst.nut")
-let { mkGradRank } = require("%rGui/components/gradTexts.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { curCampaignSlots } = require("%appGlobals/pServer/slots.nut")
-let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
-let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
-let { mkFlagImage } = require("%rGui/unit/components/unitPlateComp.nut")
+from "math" import round, abs
+from "%appGlobals/itemsState.nut" import itemsCfgByCampaignOrdered
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/slots.nut" import curCampaignSlots
+from "%appGlobals/unitConst.nut" import TANK
+from "%appGlobals/unitPresentation.nut" import getUnitName, getUnitClassFontIcon
+from "%appGlobals/unitTags.nut" import getUnitTagsShop, getUnitTagsCfg
+from "%rGui/attributes/attrState.nut" import attrPresets, hasSlotAttrPreset, slotAttrPreset
+from "%rGui/components/currencyComp.nut" import mkCurrencyImage, mkCurrencyComp
+from "%rGui/components/currencyStyles.nut" import CS_COMMON
+from "%rGui/components/gradTexts.nut" import mkGradRank
+import "%rGui/components/panelBg.nut" as panelBg
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/style/stdColors.nut" import premiumTextColor
+from "%rGui/unit/components/unitInfoComps.nut" import mkUnitBonuses, mkUnitDailyLimit, mkBonusTiny, bonusTinySize
+from "%rGui/unit/components/unitLevelComp.nut" import mkUnitLevelBlock, levelHolderSize
+from "%rGui/unit/components/unitPlateComp.nut" import mkFlagImage
+from "%rGui/unit/hangarUnit.nut" import hangarUnit
+from "%rGui/unit/unitItemAccess.nut" import isItemAllowedForUnit
+from "%rGui/unit/unitStats.nut" import mkUnitStatsCompShort, mkUnitStatsCompFull, armorProtectionPercentageColors,
+  avgShellPenetrationMmByRank, addedFromSlot
+from "%rGui/unit/unitUtils.nut" import getUnitAnyPrice
+from "%rGui/unit/unitsDiscountState.nut" import unitDiscounts
+from "types" import Integer, Float, Array
 
-let statsWidth = hdpx(495)
-let textColor = 0xFFFFFFFF
-let progressBgColor = 0xFF606060
-let progressFgColor = 0xFFFFFFFF
-let progressFgPositiveColor = 0xFF7BAFFF
-let progressFgNegativeColor = 0xFFFF0202
-let progressBorderW = hdpx(2)
-let progressHt = hdpx(5) + 2 * progressBorderW
-let statsGap = hdpx(5)
-let statsInsideGap = hdpx(2)
 
-let diffAnimDelay = 0.5
-let diffAnimTime = 0.5
+const statsWidth = hdpx(495)
+const textColor = 0xFFFFFFFF
+const progressBgColor = 0xFF606060
+const progressFgColor = 0xFFFFFFFF
+const progressFgPositiveColor = 0xFF7BAFFF
+const progressFgNegativeColor = 0xFFFF0202
+const progressBorderW = hdpx(2)
+const progressHt = hdpx(5) + 2 * progressBorderW
+const statsGap = hdpx(5)
+const statsInsideGap = hdpx(2)
+
+const diffAnimDelay = 0.5
+const diffAnimTime = 0.5
 
 let scrollHandlerInfoPanel = ScrollHandler()
 
@@ -54,11 +56,11 @@ let mkTextArea = @(override = {}) {
   rendObj = ROBJ_TEXTAREA
 }.__update(fontVeryTinyAccented, override)
 
-let inlineIconSize = hdpxi(40)
+const inlineIconSize = hdpxi(40)
 let mkInlineCurrencyIcon = @(currencyId) {
-  size = [ inlineIconSize, FLEX ]
+  size = const [ inlineIconSize, FLEX ]
   valign = ALIGN_CENTER
-  children = mkCurrencyImage(currencyId, inlineIconSize, {pos = [ -hdpx(15), ph(8) ]})
+  children = mkCurrencyImage(currencyId, inlineIconSize, {pos = const [ -hdpx(15), ph(8) ]})
 }
 
 function mkUnitTitle(unit, override = {}, textOverride = {}, imgOverride = {}) {
@@ -138,7 +140,7 @@ function mkStatRow(data, prevProgress) {
       progress == null ? null
         : {
             key = $"{uid}{progress}"
-            size = [FLEX, progressHt]
+            size = const [FLEX, progressHt]
             padding = progressBorderW
             rendObj = ROBJ_BOX
             fillColor = progressBgColor
@@ -173,16 +175,16 @@ let unitStatsBlock = @(unitStats, prevStats) function() {
     return res
   }, {})
   return {
-    size = [statsWidth, SIZE_TO_CONTENT]
+    size = const [statsWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     gap = statsGap
     children = unitStats.map(@(s) mkStatRow(s, prev?[s.uid]))
   }
 }
 
-let armorIconSize = hdpxi(23)
+const armorIconSize = hdpxi(23)
 let armorIconView = @(image) {
-  size = [armorIconSize, armorIconSize]
+  size = const [armorIconSize, armorIconSize]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#{image}.svg:{armorIconSize}:{armorIconSize}:P")
 }
@@ -234,7 +236,7 @@ function mkArmorRow(id, percentValsP3, avgShellPenetration, width) {
   if (needLabels) {
     let totalBars = cfg.len()
     let totalW = width - 2 * progressBorderW
-    let minGap = hdpx(10)
+    const minGap = hdpx(10)
     foreach (idx, v in cfg) {
       let barW = round(v.get() * totalW)
       let barX = cfg.reduce(@(sum, vv, i) (i < idx) ? (sum + vv.barW) : sum, 0)
@@ -272,7 +274,7 @@ function mkArmorRow(id, percentValsP3, avgShellPenetration, width) {
       mkArmorText(needLabels, id)
       !needLabels ? null : {
         size = FLEX_H
-        padding = [ 0, progressBorderW ]
+        padding = const [ 0, progressBorderW ]
         children = cfg.map(@(v) v.labelElem)
       }
       {
@@ -297,8 +299,8 @@ function unitArmorBlock(unit, needLabels) {
     ? avgShellPenetrationMmByRank?[unit.mRank - 1]
     : null
   return {
-    size = [statsWidth, SIZE_TO_CONTENT]
-    margin = [ statsGap, 0, 0, 0 ]
+    size = const [statsWidth, SIZE_TO_CONTENT]
+    margin = const [ statsGap, 0, 0, 0 ]
     gap = statsGap
     flow = FLOW_VERTICAL
     children = [ "armorThicknessFront", "armorThicknessSide" ]
@@ -317,8 +319,8 @@ function unitPriceBlock(unit) {
   return @() price.get()?.price
     ? {
       watch = [serverConfigs, campMyUnits, price]
-      size = [statsWidth, SIZE_TO_CONTENT]
-      margin = [statsGap, 0, 0, 0]
+      size = const [statsWidth, SIZE_TO_CONTENT]
+      margin = const [statsGap, 0, 0, 0]
       flow = FLOW_HORIZONTAL
       children = [
         mkText({ text = loc("unitsTree/purchasePrice"), size = FLEX_H })
@@ -352,8 +354,8 @@ let mkConsumableRow = @(id, value) {
 }
 
 let unitConsumablesBlock = @(unit, itemsList) {
-  size = [statsWidth, SIZE_TO_CONTENT]
-  margin = [ statsGap, 0, 0, 0 ]
+  size = const [statsWidth, SIZE_TO_CONTENT]
+  margin = const [ statsGap, 0, 0, 0 ]
   gap = statsGap + statsInsideGap + progressHt
   flow = FLOW_VERTICAL
   children = itemsList
@@ -363,7 +365,7 @@ let unitConsumablesBlock = @(unit, itemsList) {
 }
 
 let unitClassBlock = @(unit) {
-  size = [statsWidth, SIZE_TO_CONTENT]
+  size = const [statsWidth, SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   children = [
@@ -402,7 +404,7 @@ function unitMRankBlock(unit) {
   let countryId = getUnitTagsCfg(name)?.operatorCountry ?? country
 
   return {
-    size = [statsWidth, SIZE_TO_CONTENT]
+    size = const [statsWidth, SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     children = [
@@ -427,7 +429,7 @@ function unitMRankBlock(unit) {
 let unitRewardsBlock = @(unit, title) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
-  size = [ statsWidth, hdpx(40) ]
+  size = const [ statsWidth, hdpx(40) ]
   children = [
     {
       margin = const [ 0, hdpx(10), 0, 0 ]
@@ -445,7 +447,7 @@ let unitRewardsBlock = @(unit, title) {
 let unitRewardsDailyBlock = @(unit, title) unit?.dailyGoldLimit == 0 ? null : {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
-  size = [ statsWidth, hdpx(40) ]
+  size = const [ statsWidth, hdpx(40) ]
   children =  [
     {
       margin = const [ 0, hdpx(10), 0, 0 ]
@@ -467,7 +469,7 @@ let unitHeaderBlock = @(unit, unitTitleCtor) @(){
   children = [
     {
       margin =[hdpx(5), 0, 0, levelHolderSize]
-      pos = [0, -hdpx(20)]
+      pos = const [0, -hdpx(20)]
       children = unitTitleCtor(unit)
     }
     mkUnitLevelBlock(unit)
@@ -492,13 +494,13 @@ let mkAttrPreset = @(unit) Computed(@() hasSlotAttrPreset.get()
   ? attrPresets.get()?[slotAttrPreset.get()]
   : attrPresets.get()?[unit.get()?.attrPreset])
 
-let isNumeric = @(v) type(v) == "integer" || type(v) == "float"
+let isNumeric = @(v) v instanceof Integer || v instanceof Float
 let notNumericToZero = @(v) isNumeric(v) ? v : 0
 
 function calcPadding(c) {
   let { padding = 0 } = c
   return isNumeric(padding) ? padding * 2
-    : type(padding) == "array" ? notNumericToZero(padding?[1]) + notNumericToZero(padding?[3] ?? padding?[1])
+    : padding instanceof Array ? notNumericToZero(padding?[1]) + notNumericToZero(padding?[3] ?? padding?[1])
     : 0
 }
 
@@ -575,7 +577,7 @@ function unitInfoPanelFull(unit = hangarUnit, ovr = {}) {
     lastUnitStats = unitStats
 
     return {
-      watch = [ unit, itemsCfgByCampaignOrdered, attrPreset, attrLevels ]
+      watch = [ unit, itemsCfgByCampaignOrdered, attrPreset, attrLevels, campConfigs ]
       size = FLEX_V
       children = unit.get() == null ? null
         : makeVertScroll(

@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { premiumTextColor } = require("%rGui/style/stdColors.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { round_by_value } = require("%sqstd/math.nut")
-let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
+from "%sqstd/math.nut" import round_by_value
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, getDay, dayOffset
+from "%rGui/components/currencyComp.nut" import mkCurrencyImage
+from "%rGui/style/stdColors.nut" import premiumTextColor
 
-let bonusTinySize = hdpxi(28)
+
+const bonusTinySize = hdpxi(28)
 
 let mkBonusCtor = @(fontStyle, iconSize) function bonusCtor(bonus, currencyId, isPremium, hasSlots) {
   let battleReward = round_by_value(bonus, 0.1)

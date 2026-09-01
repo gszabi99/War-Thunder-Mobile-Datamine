@@ -1,15 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { Indicator } = require("wt.behaviors")
-let { get_mission_time } = require("mission")
-let { eventbus_subscribe } = require("eventbus")
-let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { hasTarget } = require("%rGui/hudState.nut")
-let { targetUnitName } = require("hudIndicators")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
+from "eventbus" import eventbus_subscribe
+from "hudIndicators" import targetUnitName
+from "mission" import get_mission_time
+from "wt.behaviors" import Indicator
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%rGui/hud/hudTouchButtonStyle.nut" import getSvgImage
+from "%rGui/hudState.nut" import hasTarget
+from "%rGui/style/hudColors.nut" import hudWhiteColor
+
 
 let color = hudWhiteColor
-let cooldownColor = 0xFFB0B0B0
+const cooldownColor = 0xFFB0B0B0
 
 let defTransform = {}
 let cooldownEndTime = Watched(0.0)
@@ -19,8 +20,8 @@ let showTargetName = Watched(false)
 let asmCaptureEndTime = Watched(0.0)
 let asmCaptureTime = Watched(0.0)
 
-let TARGET_UPSCALE = 0.3
-let targetSize = hdpx(16)
+const TARGET_UPSCALE = 0.3
+const targetSize = hdpx(16)
 let targetImage = getSvgImage("target_lock_corner", targetSize)
 let targetOffset = [0, - hdpx(20)]
 
@@ -156,7 +157,7 @@ let targetSelectionProgress = @() {
 }
 
 let cornerSize = [hdpx(75), hdpx(35)]
-let travel = hdpx(30)
+const travel = hdpx(30)
 let mkItem = @(key, hplace, vplace, from, duration, commands) {
   key
   rendObj = ROBJ_VECTOR_CANVAS

@@ -1,5 +1,6 @@
-let { getCurrentLanguage } = require("dagor.localize")
-let { getDecimalFormat, getShortTextFromNum } = require("%sqstd/textFormatByLang.nut")
+from "dagor.localize" import getCurrentLanguage
+from "%sqstd/textFormatByLang.nut" import getDecimalFormat, getShortTextFromNum
+
 
 return {
   decimalFormat = getDecimalFormat(getCurrentLanguage())

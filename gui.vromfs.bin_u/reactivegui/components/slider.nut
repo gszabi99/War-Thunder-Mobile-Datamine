@@ -1,30 +1,31 @@
 from "%globalsDarg/darg_library.nut" import *
-let { playSound } = require("sound_wt")
-let { lerpClamped } = require("%sqstd/math.nut")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
-let { selectColor } = require("%rGui/style/stdColors.nut")
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setInterval, clearTimer
+from "sound_wt" import playSound
+from "%sqstd/math.nut" import lerpClamped
+from "%rGui/style/stdColors.nut" import selectColor
 
-let textColor = 0xFFFFFFFF
-let borderColor = 0xFF9FA7AF
-let inactiveColor = 0x30303030
-let sliderBgColor = 0xFF000000
+
+const textColor = 0xFFFFFFFF
+const borderColor = 0xFF9FA7AF
+const inactiveColor = 0x30303030
+const sliderBgColor = 0xFF000000
 let sliderValueSound = @() playSound("choose")
 
 let knobSize = evenPx(68)
 let sliderH = evenPx(80)
 let sliderVisibleH = evenPx(12)
-let sliderW = hdpx(750)
-let sliderBlockH = hdpx(160)
+const sliderW = hdpx(750)
+const sliderBlockH = hdpx(160)
 let sliderBtnSize = evenPx(100)
 let iconSize = evenPx(34)
 let sliderGap = sliderBtnSize / 2
-let firstTick = 0.3
-let btnRepeatTick = 0.025
+const firstTick = 0.3
+const btnRepeatTick = 0.025
 let btnRepeatTime = [firstTick, 0.25, 0.2, 0.15, 0.1, 0.075, 0.05, btnRepeatTick]
 let maxValueWidth = calc_str_box("288% ", fontSmall)[0]
 
-let transTime = 0.05
+const transTime = 0.05
 let transEasing = InOutQuad
 
 let mkSliderKnob = @(relValue, stateFlags, fullW, ovr = {}) @() {

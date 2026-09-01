@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
+from "controlsOptions" import reset_gui_options
+from "soundOptions" import reset_volumes
+from "%appGlobals/clientState/clientState.nut" import isDownloadedFromSite
+from "%appGlobals/permissions.nut" import allow_apk_update
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/debugTools/debugTouches.nut" import isDebugTouchesActive
+from "%rGui/options/guiOptions.nut" import OPT_SHOW_TOUCHES_ENABLED, mkOptionValue, optionsVersion
+from "%rGui/options/options/gameAutoUpdateOption.nut" import isGameAutoUpdateEnabled, gameAutoUpdateList
 
-let { isDownloadedFromSite } = require("%appGlobals/clientState/clientState.nut")
-let { isDebugTouchesActive } = require("%rGui/debugTools/debugTouches.nut")
-let { OPT_SHOW_TOUCHES_ENABLED, mkOptionValue, optionsVersion } = require("%rGui/options/guiOptions.nut")
-let { isGameAutoUpdateEnabled, gameAutoUpdateList } = require("%rGui/options/options/gameAutoUpdateOption.nut")
-let { allow_apk_update } = require("%appGlobals/permissions.nut")
-let { reset_gui_options } = require("controlsOptions")
-let { reset_volumes } = require("soundOptions")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
 
 let autoUpdateSetting = {
   locId = "options/autoUpdate"

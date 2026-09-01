@@ -1,12 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
-let { mkCurrencyFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
-let { mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, borderBg, mkSlotBgImg, goodsSmallSize, mkGoodsImg, mkCurrencyAmountTitle,
-   mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg,
-   mkGoodsLimitAndEndTime, mkBorderByCurrency
-} = require("%rGui/shop/goodsView/sharedParts.nut")
+import "%appGlobals/config/currencyGoodsPresentation.nut" as getCurrencyGoodsPresentation
+from "%appGlobals/pServer/seasonCurrencies.nut" import mkCurrencyFullId
+from "%appGlobals/rewardType.nut" import G_CURRENCY
+from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, borderBg, mkSlotBgImg, goodsSmallSize, mkGoodsImg,
+  mkCurrencyAmountTitle, mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg,
+  mkGoodsLimitAndEndTime, mkBorderByCurrency
+from "%rGui/style/gradients.nut" import mkFontGradient
 
 
 let titleFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFFFFFFF, 11, 6, 2)

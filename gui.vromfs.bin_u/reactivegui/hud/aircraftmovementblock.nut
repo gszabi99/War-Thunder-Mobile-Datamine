@@ -1,59 +1,58 @@
 from "%globalsDarg/darg_library.nut" import *
-let { format } = require("string")
-let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
-let { TouchScreenSteeringStick } = require("wt.behaviors")
-let { setAxisValue, setVirtualAxisValue, setVirtualAxesAim,
-  setVirtualAxesAileronsAssist, setVirtualAxesDirectControl
-} = require("controls")
-let { Point3 } = require("dagor.math")
-let { fabs, lerp, floor } = require("%sqstd/math.nut")
-let { TIME_MINUTE_IN_SECONDS } = require("%sqstd/time.nut")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { getScaledFont, prettyScaleForSmallNumberCharVariants } = require("%globalsDarg/fontScale.nut")
-let { TemperatureState } = require("%globalScripts/sharedEnums.nut")
-let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround, isActiveTurretCamera,
-  wheelBrake, hasFuel, Fuel, FuelState, HasExternalFuel, ExternalFuel
-} = require("%rGui/hud/airState.nut")
-let { getSvgImage, borderColor, btnBgStyle } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
-let axisListener = require("%rGui/controls/axisListener.nut")
-let shortcutsMap = require("%rGui/controls/shortcutsMap.nut")
+from "controls" import setAxisValue, setVirtualAxisValue, setVirtualAxesAim, setVirtualAxesAileronsAssist,
+  setVirtualAxesDirectControl
+from "dagor.math" import Point3
+from "dagor.workcycle" import resetTimeout, clearTimer, setInterval
+from "eventbus" import eventbus_subscribe, send
+from "hapticVibration" import registerHapticPattern, playHapticPattern
+from "hudAircraftStates" import MechState, get_gears_current_state
+from "string" import format
+from "wt.behaviors" import TouchScreenSteeringStick, TouchScreenStick
+from "%sqstd/math.nut" import fabs, lerp, floor
+from "%sqstd/time.nut" import TIME_MINUTE_IN_SECONDS
+from "%globalScripts/controls/shortcutActions.nut" import setShortcutOn, setShortcutOff
+from "%globalScripts/sharedEnums.nut" import TemperatureState
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/clientState/respawnStateBase.nut" import isRespawnStarted
+from "%appGlobals/unitConst.nut" import AIR
+from "%globalsDarg/fontScale.nut" import getScaledFont, prettyScaleForSmallNumberCharVariants
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/components/movementArrows.nut" import mkAirMoveLeftBtn, mkAirMoveRightBtn, mkAltMoveVertBtn, mkAltMoveBg,
+  fullSizeAirBase
+import "%rGui/controls/axisListener.nut" as axisListener
+from "%rGui/controls/axisToHotkey.nut" import axisMinToHotkey, axisMaxToHotkey
+from "%rGui/controls/disabledControls.nut" import mkIsControlDisabled
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkContinuousButtonParams
+import "%rGui/controls/shortcutsMap.nut" as shortcutsMap
+from "%rGui/controlsMenu/gamepadImgByKey.nut" import mkBtnImageComp
+from "%rGui/hud/airState.nut" import Trt0, IsTrtWep0, Spd, DistanceToGround, IsSpdCritical, IsOnGround,
+  isActiveTurretCamera, wheelBrake, hasFuel, Fuel, FuelState, HasExternalFuel, ExternalFuel
+from "%rGui/hud/hudTouchButtonStyle.nut" import getSvgImage, borderColor, btnBgStyle
+from "%rGui/hud/pieMenu.nut" import isPieMenuActive
+from "%rGui/hudState.nut" import playerUnitName, unitType, isPlayingReplay
+from "%rGui/options/options/airControlsOptions.nut" import currentControlByGyroAimMode,
+  currentControlByGyroDirectControl, currentControlByGyroModeAileronsDeadZone,
+  currentControlByGyroModeAileronsSensitivity, currentControlByGyroModeElevatorDeadZone,
+  currentControlByGyroModeElevatorSensitivity, currentAircraftCtrlType, currentAdditionalFlyControls,
+  currentThrottleStick
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudCoralRedColor, hudRedColor, hudPearlGrayColor,
+  hudTransparentColor
+
+
 let { ailerons, mouse_aim_x, mouse_aim_y, throttle_axis, rudder, elevator, turret_x, turret_y} = shortcutsMap.gamepadAxes
-let { axisMinToHotkey, axisMaxToHotkey } = require("%rGui/controls/axisToHotkey.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
-let { playerUnitName, unitType, isPlayingReplay } = require("%rGui/hudState.nut")
-let { AIR } = require("%appGlobals/unitConst.nut")
-let { currentControlByGyroAimMode, currentControlByGyroDirectControl,
-  currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity,
-  currentControlByGyroModeElevatorDeadZone, currentControlByGyroModeElevatorSensitivity,
-  currentAircraftCtrlType, currentThrottleStick, currentAdditionalFlyControls
-} = require("%rGui/options/options/airControlsOptions.nut")
-let { set_mouse_aim } = require("controlsOptions")
-let { isRespawnStarted } = require("%appGlobals/clientState/respawnStateBase.nut")
-let { mkAirMoveLeftBtn, mkAirMoveRightBtn, mkAltMoveVertBtn, mkAltMoveBg, fullSizeAirBase
-} = require("%rGui/components/movementArrows.nut")
-let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
-let { mkGamepadShortcutImage, mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
 
-let { eventbus_subscribe, send } = require("eventbus")
-let { MechState, get_gears_current_state} = require("hudAircraftStates")
 let { ON } = MechState
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
-let { hudWhiteColor, hudCoralRedColor, hudRedColor, hudPearlGrayColor, hudTransparentColor
-} = require("%rGui/style/hudColors.nut")
 
-let maxThrottle = 100
-let stepThrottle = 5
-let wepAxisValue = 1.1 
-let sliderWepValue = -3 * stepThrottle
+const maxThrottle = 100
+const stepThrottle = 5
+const wepAxisValue = 1.1 
+const sliderWepValue = -3 * stepThrottle
 let sliderValue = Watched(maxThrottle)
-let throttleAxisUpdateTick = 0.05
-let maxThrottleChangeSpeed = 50
-let throttleDeadZone = 0.7
-let throttlePerTick = throttleAxisUpdateTick * maxThrottleChangeSpeed
+const throttleAxisUpdateTick = 0.05
+const maxThrottleChangeSpeed = 50
+const throttleDeadZone = 0.7
+const throttlePerTick = throttleAxisUpdateTick * maxThrottleChangeSpeed
 
 let redColor = hudCoralRedColor
 let neutralColor = hudWhiteColor
@@ -79,11 +78,11 @@ function getSizes(scale) {
   }
 }
 
-let idleTimeForThrottleOpacity = 5
+const idleTimeForThrottleOpacity = 5
 let needOpacityThrottle = Watched(false)
 let makeOpacityThrottle = @() needOpacityThrottle.set(true)
 let showModelName = Watched(false)
-let SHOW_MODEL_NAME_TIMEOUT = 7.0
+const SHOW_MODEL_NAME_TIMEOUT = 7.0
 let isThrottleDisabled = mkIsControlDisabled("throttle")
 
 let throttleAxisVal = Watched(0)
@@ -125,9 +124,9 @@ let percentText = loc("measureUnits/percent")
 
 let HAPT_THROTTLE = registerHapticPattern("ThrottleChange", { time = 0.0, intensity = 0.5, sharpness = 0.4, duration = 0.2, attack = 0.08, release = 1.0 })
 
-let throttleHitThreshold = 90
-let throttleHintMaxCount = 5
-let throttleHintDelay = 20
+const throttleHitThreshold = 90
+const throttleHintMaxCount = 5
+const throttleHintDelay = 20
 let throttleHintCount = Watched(0)
 
 isInBattle.subscribe(@(_) throttleHintCount.set(0))
@@ -174,11 +173,11 @@ function mkGamepadHotkey(hotkey, isVisible, isActive, ovr) {
 let btnImageThrottleInc = mkGamepadHotkey(axisMinToHotkey(throttle_axis),
   Computed(@() sliderValue.get() > sliderWepValue),
   Computed(@() isThrottleAxisActive.get() && throttleAxisVal.get() > 0),
-  { pos = [pw(50), 0] })
+  { pos = const [pw(50), 0] })
 let btnImageThrottleDec = mkGamepadHotkey(axisMaxToHotkey(throttle_axis),
   Computed(@() sliderValue.get() < maxThrottle),
   Computed(@() isThrottleAxisActive.get() && throttleAxisVal.get() < 0),
-  { vplace = ALIGN_BOTTOM, pos = [pw(50), 0] })
+  { vplace = ALIGN_BOTTOM, pos = const [pw(50), 0] })
 
 let isStateVisible = @(state) state == ON
 
@@ -484,10 +483,10 @@ let imuAxesListenerAim = axisListener( makeGravityListenerMap(setVirtualAxesAimV
 let imuAxesListenerAleronsAssist = axisListener( makeGravityListenerMap(setVirtualAxesAileronsAssistValueFromGravity) )
 let imuAxesListenerDirectControl = axisListener( makeGravityListenerMap(setVirtualAxesDirectControlValuesFromGravity) )
 
-let stickZoneSize = hdpx(280)
-let bgRadius = hdpx(140)
-let imgBgSize = 2 * bgRadius
-let stickSize = hdpx(100)
+const stickZoneSize = hdpx(280)
+const bgRadius = hdpx(140)
+const imgBgSize = 2 * bgRadius
+const stickSize = hdpx(100)
 
 let imgBg = @(size) {
   size = [size, size]
@@ -527,22 +526,17 @@ function aircraftMoveStickBase(scale) {
     behavior = TouchScreenSteeringStick
     size = FLEX
     touchStickAction = {
-      horizontal = "ailerons"
-      vertical = "elevator"
+      horizontal = "mouse_aim_x"
+      vertical = "mouse_aim_y"
     }
     isForAircraft = true
     invertedX=true
     maxValueRadius
     useCenteringOnTouchBegin = currentAircraftCtrlType.get() == "stick"
 
-    function onAttach() {
-      set_mouse_aim(false)
-    }
     function onDetach() {
-      setVirtualAxisValue("elevator", 0)
-      setVirtualAxisValue("ailerons", 0)
-      if (!isInBattle.get())
-        set_mouse_aim(true)
+      setVirtualAxisValue("mouse_aim_x", 0)
+      setVirtualAxisValue("mouse_aim_y", 0)
     }
     children = [
       imgBgComp
@@ -567,58 +561,25 @@ function aircraftMoveSecondaryStickBase(scale) {
     watch = currentAircraftCtrlType
     key = currentAircraftCtrlType
     size = FLEX
-    behavior = TouchScreenSteeringStick
-    touchStickAction = {
-      horizontal = "rudder"
-      vertical = "throttle"
-    }
-    isForAircraft = true
-    invertedX=true
+    behavior = TouchScreenStick
     maxValueRadius
     useCenteringOnTouchBegin = currentAircraftCtrlType.get() == "stick"
 
-    function onAttach() {
-      set_mouse_aim(false)
+    onChange = function(v) {
+      setVirtualAxisValue("ailerons", -v.x)
+      if (currentThrottleStick.get())
+        setThrottleAxisVal(v.y)
     }
-    function onDetach() {
-      setVirtualAxisValue("rudder", 0)
-      setVirtualAxisValue("throttle", 0)
-      if (!isInBattle.get())
-        set_mouse_aim(true)
+    function onTouchEnd() {
+      setVirtualAxisValue("ailerons", 0)
+      if (currentThrottleStick.get())
+        setThrottleAxisVal(0)
     }
-    children = [
-      imgBgComp
-      imgStick
-    ]
-  }
-}
 
-function aircraftMoveRudderStickBase(scale) {
-  let imgStick = mkImgStick(scale)
-  let imgBgComp = mkImgBgComp(scale)
-  let maxValueRadius = scaleEven(bgRadius, scale)
-  return @() {
-    watch = currentAircraftCtrlType
-    key = currentAircraftCtrlType
-    size = FLEX
-    behavior = TouchScreenSteeringStick
-    touchStickAction = {
-      horizontal = "rudder"
-      vertical = "climb"
-    }
-    isForAircraft = true
-    invertedX=true
-    maxValueRadius
-    useCenteringOnTouchBegin = currentAircraftCtrlType.get() == "stick"
-
-    function onAttach() {
-      set_mouse_aim(false)
-    }
     function onDetach() {
-      setVirtualAxisValue("rudder", 0)
-      setVirtualAxisValue("climb", 0)
-      if (!isInBattle.get())
-        set_mouse_aim(true)
+      setVirtualAxisValue("ailerons", 0)
+      if (currentThrottleStick.get())
+        setThrottleAxisVal(0)
     }
     children = [
       imgBgComp
@@ -628,15 +589,15 @@ function aircraftMoveRudderStickBase(scale) {
 }
 
 let aircraftMoveSecondaryStick = @(scale) @() {
-  watch = [currentAircraftCtrlType, currentThrottleStick]
+  watch = currentAircraftCtrlType
   size = array(2, scaleEven(stickZoneSize, scale))
-  children = currentAircraftCtrlType.get() != "stick" && currentAircraftCtrlType.get() != "stick_static" ? null
-    : currentThrottleStick.get() ? aircraftMoveSecondaryStickBase(scale)
-    : aircraftMoveRudderStickBase(scale)
+  children = currentAircraftCtrlType.get() == "stick" || currentAircraftCtrlType.get() == "stick_static"
+    ? aircraftMoveSecondaryStickBase(scale)
+    : null
 }
 
 let aircraftMoveStickView = {
-  size = [stickZoneSize, stickZoneSize]
+  size = const [stickZoneSize, stickZoneSize]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = [
@@ -883,7 +844,7 @@ let mkVerticalArrow = @(id, isControlDisabled, verSize, upDirection, vplace) mkA
               vplace = ALIGN_CENTER
               flipY = upDirection
             }
-            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(50)] }, verSize)
+            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(50)] }, verSize)
           ]
     }
   })

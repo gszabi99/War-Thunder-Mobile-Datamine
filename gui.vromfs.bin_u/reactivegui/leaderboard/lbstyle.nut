@@ -1,18 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { REWARD_STYLE_TINY } = require("%rGui/rewards/rewardStyles.nut")
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_TINY
+from "%rGui/style/gamercardStyle.nut" import gamercardHeight
+
 
 let lbHeaderHeight = gamercardHeight
-let lbFooterHeight = hdpx(60)
-let lbVGap = hdpx(10)
-let lbTableBorderWidth = hdpxi(4)
+const lbFooterHeight = hdpx(60)
+const lbVGap = hdpx(10)
+const lbTableBorderWidth = hdpxi(4)
 let lbHeaderRowHeight = evenPx(60)
 let lbRowHeight = evenPx(60)
 let lbDotsRowHeight = lbRowHeight / 2
 let lbTableHeightBase = saSize[1] - lbHeaderHeight - lbFooterHeight - 2 * lbVGap
 let lbPageRows = (lbTableHeightBase - lbHeaderRowHeight - lbTableBorderWidth - lbDotsRowHeight).tointeger() / lbRowHeight -1
 let lbTableHeight = lbHeaderRowHeight + lbTableBorderWidth + lbDotsRowHeight + (lbPageRows + 1) * lbRowHeight
-let lbTabIconSize = hdpxi(60)
+const lbTabIconSize = hdpxi(60)
 
 let rewardStyle = clone REWARD_STYLE_TINY
 let lbRewardsPerRow = isWidescreen ? 6 : 5
@@ -33,10 +34,10 @@ let prizeIcons = [
   "leaderboard_trophy_06.avif"
 ]
 
-let rowBgOddColor = 0x60000000
-let rowBgEvenColor = 0x60141414
-let rowBgMyOddColor = 0x600A2630
-let rowBgMyEvenColor = 0x60104051
+const rowBgOddColor = 0x60000000
+const rowBgEvenColor = 0x60141414
+const rowBgMyOddColor = 0x600A2630
+const rowBgMyEvenColor = 0x60104051
 
 return {
   rowBgOddColor

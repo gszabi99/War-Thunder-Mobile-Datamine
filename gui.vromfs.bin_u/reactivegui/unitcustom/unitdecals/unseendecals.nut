@@ -1,15 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { register_command } = require("console")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-let { isLoggedIn, isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
-let { availableDecals, userDecals } = require("%rGui/unitCustom/unitDecals/unitDecalsState.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import isDataBlock, eachParam
+from "%appGlobals/loginState.nut" import isLoggedIn, isSettingsAvailable
+from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, getDay, dayOffset
+from "%rGui/unitCustom/unitDecals/unitDecalsState.nut" import availableDecals, userDecals
 
 
-let SEEN_DECALS = "seenDecals"
-let maxDayShowingUnseenMark = 14
+const SEEN_DECALS = "seenDecals"
+const maxDayShowingUnseenMark = 14
 let seenDecals = Watched({})
 
 let unseenDecals = Computed(function() {

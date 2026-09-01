@@ -1,24 +1,25 @@
 from "%globalScripts/logs.nut" import *
-let { loc, doesLocTextExist } = require("dagor.localize")
-let { get_settings_blk } = require("blkGetters")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let { startswith, endswith } = require("string")
-let { unique } = require("%sqstd/underscore.nut")
-let { toIntegerSafe } = require("%sqstd/string.nut")
-let { getRomanNumeral } = require("%sqstd/math.nut")
+from "blkGetters" import get_settings_blk
+from "dagor.localize" import loc, doesLocTextExist
+from "string" import startswith, endswith
+from "%sqstd/datablock.nut" import eachBlock
+from "%sqstd/math.nut" import getRomanNumeral
+from "%sqstd/string.nut" import toIntegerSafe
+from "%sqstd/underscore.nut" import unique
+from "types" import String, Integer
 
 
-let PKG_NAVAL  = "pkg_naval"
-let PKG_NAVAL_HQ = "pkg_naval_hq"
-let PKG_GROUND = "pkg_ground"
-let PKG_GROUND_HQ = "pkg_ground_hq"
-let PKG_LVL_AIR_LOCATIONS = "pkg_lvl_air_locations"
-let PKG_COMMON = "pkg_common"
-let PKG_COMMON_HQ = "pkg_common_hq"
-let PKG_DEV = "pkg_dev"
+const PKG_NAVAL  = "pkg_naval"
+const PKG_NAVAL_HQ = "pkg_naval_hq"
+const PKG_GROUND = "pkg_ground"
+const PKG_GROUND_HQ = "pkg_ground_hq"
+const PKG_LVL_AIR_LOCATIONS = "pkg_lvl_air_locations"
+const PKG_COMMON = "pkg_common"
+const PKG_COMMON_HQ = "pkg_common_hq"
+const PKG_DEV = "pkg_dev"
 
-let MB = 1 << 20
-let nbsp = "\u00A0" 
+const MB = 1 << 20
+const nbsp = "\u00A0" 
 let comma = loc("ui/comma")
 
 let initialAddonsByCamp = {} 
@@ -97,7 +98,7 @@ if (addonsBlk != null) {
         continue
       }
 
-      if (type(campaign) != "string") {
+      if (!(campaign instanceof String)) {
         logerr($"Invalid type of required field in addon/conditions for '{addon}': campaign = {campaign}")
         continue
       }
@@ -109,7 +110,7 @@ if (addonsBlk != null) {
       if (isCoopNewbie)
         appendAddonByKey(coopNewbieByCampaign, campaign)
 
-      if (type(mRank) != "integer") {
+      if (!(mRank instanceof Integer)) {
         if (isDownloadLast)
           appendAddonByKey(latestDownloadAddonsByCamp, campaign)
         else if (!isSoloNewbie)

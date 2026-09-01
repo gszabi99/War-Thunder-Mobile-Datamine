@@ -1,19 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { unit, unitMods, curModId, mkCurUnitModCostComp, iconCfg, isOwn, slotModKey
-} = require("%rGui/unitMods/unitModsState.nut")
-let { unseenCampUnitMods, markUnitModsSeen } = require("%rGui/unitMods/unseenMods.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { mkLevelLock, mkNotPurchasedShade, mkModImage, mkEquippedFrame, mkUnseenModIndicator
-} = require("%rGui/unitMods/modsComps.nut")
-let { startCarouselAnimScroll, carouselScrollHandler, getCarouselPosX } = require("%rGui/unitMods/unitModsScroll.nut")
-let { modH, modW, modsGap, activeColor, modContentMargin } = require("%rGui/unitMods/unitModsConst.nut")
-let { selectedLineHorSolid, opacityTransition } = require("%rGui/components/selectedLine.nut")
-let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/currencyStyles.nut" import CS_SMALL
+from "%rGui/components/selectedLine.nut" import selectedLineHorSolid, opacityTransition
+from "%rGui/style/gradients.nut" import gradTexSize, mkGradientCtorRadial
+from "%rGui/unitMods/modsComps.nut" import mkLevelLock, mkNotPurchasedShade, mkModImage, mkEquippedFrame,
+  mkUnseenModIndicator
+from "%rGui/unitMods/unitModsConst.nut" import modH, modW, modsGap, activeColor, modContentMargin
+from "%rGui/unitMods/unitModsScroll.nut" import startCarouselAnimScroll, carouselScrollHandler, getCarouselPosX
+from "%rGui/unitMods/unitModsState.nut" import unit, unitMods, curModId, mkCurUnitModCostComp, iconCfg, isOwn,
+  slotModKey
+from "%rGui/unitMods/unseenMods.nut" import unseenCampUnitMods, markUnitModsSeen
 
 
-let bgColor = 0x990C1113
+const bgColor = 0x990C1113
 let contentMargin = [hdpx(10), hdpx(15)]
 
 let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,

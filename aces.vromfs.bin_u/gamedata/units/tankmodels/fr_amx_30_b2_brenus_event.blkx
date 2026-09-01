@@ -2727,7 +2727,7 @@
       "driveGearRadius": 0.33,
       "mainGearRatio": 7.4,
       "sideGearRatio": 1.0,
-      "neutralGearRatio": 10.0,
+      "neutralGearRatio": 7.4,
       "alternativeGearControl": 3.0,
       "gearRatios": {
         "ratio": [

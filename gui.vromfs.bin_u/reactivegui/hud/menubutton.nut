@@ -1,9 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { touchMenuButtonSize, getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { get_settings_blk } = require("blkGetters")
+from "blkGetters" import get_settings_blk
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadHotkey
+from "%rGui/hud/hudTouchButtonStyle.nut" import touchMenuButtonSize, getSvgImage
 
 
 function mkMenuButton(scale = 1.0, ovr = {}) {

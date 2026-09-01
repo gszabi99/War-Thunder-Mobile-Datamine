@@ -2,13 +2,13 @@ from "%globalsDarg/darg_library.nut" import *
 from "math" import round, min
 from "%rGui/unit/components/unitPlateComp.nut" import mkFlagImageWithoutGrad
 
-let bgImage = "ui/images/help/help_event_walkers.avif"
+const bgImage = "ui/images/help/help_event_walkers.avif"
 let bgTexSize = [3282, 1041]
 
 let bgImgRatio = 1.0 * bgTexSize[0] / bgTexSize[1]
-let scrRatio = sw(100) / sh(100)
-let minScrRatioForFullImage = 2340.0 / 1080
-let minFitImgRatio = 2.0
+const scrRatio = sw(100) / sh(100)
+const minScrRatioForFullImage = 2340.0 / 1080
+const minFitImgRatio = 2.0
 let bgImgW = scrRatio >= minScrRatioForFullImage ? sw(100)
   : min(sh(100) * minScrRatioForFullImage, sw(100) / minFitImgRatio * bgImgRatio)
 
@@ -18,16 +18,16 @@ let bgSizeMul = 1.0 * bgImgW / bgTexSize[0]
 let bgTexPx = @(s) round(bgSizeMul * s).tointeger()
 let sizeByBgTexSize = @(size) size.map(bgTexPx)
 
-let uPosL = 1190
-let uPosR = 2090
-let uPosT = 30
-let uPosB = 520
+const uPosL = 1190
+const uPosR = 2090
+const uPosT = 30
+const uPosB = 520
 
 let units = [
-  { pos = [uPosL, uPosT], unitName = "ussr_sht_1", country = "country_ussr", weapons = 2 }
-  { pos = [uPosR, uPosT], unitName = "cn_victor", country = "country_china", weapons = 2 }
-  { pos = [uPosL, uPosB], unitName = "germ_trixter", country = "country_germany", weapons = 2 }
-  { pos = [uPosR, uPosB], unitName = "us_bulldog", country = "country_usa", weapons = 3 }
+  { pos = const [uPosL, uPosT], unitName = "ussr_sht_1", country = "country_ussr", weapons = 2 }
+  { pos = const [uPosR, uPosT], unitName = "cn_victor", country = "country_china", weapons = 2 }
+  { pos = const [uPosL, uPosB], unitName = "germ_trixter", country = "country_germany", weapons = 2 }
+  { pos = const [uPosR, uPosB], unitName = "us_bulldog", country = "country_usa", weapons = 3 }
 ]
 
 let getSmallestFontSize = @(listId) fontsLists[listId].map(@(v) v.fontSize).reduce(@(a, b) min(a, b))
@@ -172,7 +172,7 @@ function makeScreen() {
     color = 0xFF000000
     children = {
       size = bgImgSize
-      pos = [0, -sh(1.5)]
+      pos = const [0, -sh(1.5)]
       rendObj = ROBJ_IMAGE
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER

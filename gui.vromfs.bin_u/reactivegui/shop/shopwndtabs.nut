@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkTabs } = require("%rGui/components/tabs.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { onTabChange } = require("%rGui/shop/shopState.nut")
-let { iconSize, iconMarginW, tabW, tabH } = require("%rGui/shop/shopWndConst.nut")
+from "%rGui/components/tabs.nut" import mkTabs
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/shop/shopState.nut" import onTabChange
+from "%rGui/shop/shopWndConst.nut" import iconSize, iconMarginW, tabW, tabH
 
 
 function tabData(tab, campaign, hasUnseenGoodsByCategory, curTabId) {
@@ -11,7 +11,7 @@ function tabData(tab, campaign, hasUnseenGoodsByCategory, curTabId) {
   return {
     id
     size = FLEX_H
-    override = { size = [tabW, SIZE_TO_CONTENT] }
+    override = { size = [tabW, SIZE_TO_CONTENT], key = $"shop_tab_{id}" } 
     content = {
       size = [FLEX, tabH]
       children = [

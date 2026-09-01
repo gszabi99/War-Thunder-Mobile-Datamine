@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { RANK, NAME, SHIP_RATING, TANKS_RATING, WP_RATING, AIR_RATING, KILL, KILL_SHIPS, KILL_TANKS, KILL_AIR,
-  WIN, BATTLES, PRIZE, INDEX, LOG_TIME, WIN_SINGLE
-} = require("%rGui/leaderboard/lbCategory.nut")
-let { lbTabIconSize } = require("%rGui/leaderboard/lbStyle.nut")
+from "%rGui/leaderboard/lbCategory.nut" import RANK, NAME, SHIP_RATING, TANKS_RATING, WP_RATING, AIR_RATING, KILL,
+  KILL_SHIPS, KILL_TANKS, KILL_AIR, WIN, BATTLES, PRIZE, INDEX, LOG_TIME, WIN_SINGLE
+from "%rGui/leaderboard/lbStyle.nut" import lbTabIconSize
+
+
 let { ships, tanks, air } = require("%appGlobals/config/campaignPresentation.nut").campaignPresentations
 
 let lbCfgOrdered = [

@@ -1,16 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { set_chat_handler, chat_set_mode, CHAT_MODE_ALL } = require("chat")
-let { get_mission_time, get_mplayer_by_name } = require("mission")
-let { INVALID_USER_ID } = require("matching.errors")
-let { allow_chat } = require("%appGlobals/permissions.nut")
-let { myUserId } = require("%appGlobals/profileStates.nut")
-let { checkPhrase } = require("%appGlobals/dirtyWordsFilter.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { myBlacklistUids } = require("%rGui/contacts/contactLists.nut")
-let { MAX_LOG_SIZE, CMD_MSG_PREFIX, chatCmdHandlers, chatModes, curChatMode, curChatInput, chatLog
-} = require("%rGui/chat/mpChatState.nut")
+from "chat" import set_chat_handler, chat_set_mode, CHAT_MODE_ALL
+from "matching.errors" import INVALID_USER_ID
+from "mission" import get_mission_time, get_mplayer_by_name
+from "%appGlobals/dirtyWordsFilter.nut" import checkPhrase
+from "%appGlobals/permissions.nut" import allow_chat
+from "%appGlobals/profileStates.nut" import myUserId
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/chat/mpChatState.nut" import MAX_LOG_SIZE, CMD_MSG_PREFIX, chatCmdHandlers, chatModes, curChatMode,
+  curChatInput, chatLog
+from "%rGui/contacts/contactLists.nut" import myBlacklistUids
 
-let MP_TEAM_NEUTRAL = 0
+
+const MP_TEAM_NEUTRAL = 0
 
 function onIncomingMessage(sender, msg, _enemy, mode, isAutomatic, _complaints) {
   let isCmdMessage = msg.startswith(CMD_MSG_PREFIX)

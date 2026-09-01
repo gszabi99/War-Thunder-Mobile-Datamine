@@ -1,23 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { eventbus_subscribe } = require("eventbus")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { getEpPresentation } = require("%appGlobals/config/passPresentation.nut")
-let { activeUnlocks, unlockInProgress, batchReceiveRewards, buyUnlock, getUnlockPrice
-} = require("%rGui/unlocks/unlocks.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
-let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { shopGoodsToRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { allSpecialEvents } = require("%rGui/event/eventState.nut")
-let { fillViewInfo, gatherUnlockStageInfo } = require("%rGui/battlePass/passStatePkg.nut")
+from "console" import register_command
+from "eventbus" import eventbus_subscribe
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+from "%appGlobals/config/passPresentation.nut" import getEpPresentation
+from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
+from "%appGlobals/pServer/profileSeasons.nut" import curSeasons
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/battlePass/passStatePkg.nut" import fillViewInfo, gatherUnlockStageInfo
+from "%rGui/event/eventState.nut" import allSpecialEvents
+from "%rGui/rewards/rewardViewInfo.nut" import shopGoodsToRewardsViewInfo
+from "%rGui/shop/shopState.nut" import shopGoods
+from "%rGui/unlocks/unlocks.nut" import activeUnlocks, unlockInProgress, batchReceiveRewards, buyUnlock, getUnlockPrice
 
 
-let EVENT_PASS = "event_pass"
-let EVENTPASS_POINTS = "eventpass_points_for_stages"
+const EVENT_PASS = "event_pass"
+const EVENTPASS_POINTS = "eventpass_points_for_stages"
 let curEventId = mkWatched(persist, "curEventId", "")
 
 let eventPassTables = Computed(function() {
@@ -39,9 +38,9 @@ let epProgressUnlockId = Computed(@() activeUnlocks.get().findvalue(@(unlock)
 let epSeasonEndTime = Computed(@() curOpenEventPass.get()?.endsAt ?? 0)
 let eventTitle = Computed(@() getEventPresentation(curEventId.get()).locId)
 
-let EP_NONE = "none"
-let EP_COMMON = "common"
-let EP_VIP = "vip"
+const EP_NONE = "none"
+const EP_COMMON = "common"
+const EP_VIP = "vip"
 
 let epPresentation = {
   [EP_NONE] = {

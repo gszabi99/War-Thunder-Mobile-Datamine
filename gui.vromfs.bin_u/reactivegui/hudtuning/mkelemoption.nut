@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { optionWidth } = require("%rGui/hudTuning/hudTuningConsts.nut")
-let listbox = require("%rGui/components/listbox.nut")
-let { sliderWithButtons, sliderValueSound, sliderH, sliderBtnSize, sliderGap
-} = require("%rGui/components/slider.nut")
-let { infoGreyButton, infoTooltipButton } = require("%rGui/components/infoButton.nut")
+from "%rGui/components/infoButton.nut" import infoGreyButton, infoTooltipButton
+import "%rGui/components/listbox.nut" as listbox
+from "%rGui/components/slider.nut" import sliderWithButtons, sliderValueSound, sliderH, sliderBtnSize, sliderGap
+from "%rGui/hudTuning/hudTuningConsts.nut" import optionWidth
+from "types" import Function
 
 
-let columnsMin = 1
-let columnsMax = 5
+const columnsMin = 1
+const columnsMax = 5
 
-let checkBoxIconSize = hdpxi(60)
+const checkBoxIconSize = hdpxi(60)
 
 function mkHeader(header, child) {
   if (header == "")
@@ -39,7 +39,7 @@ function mkHeader(header, child) {
 
 let mkTooltipContentCtor = @(title, desc) @() "\n".concat(
   colorize("@darken", title),
-  type(desc) == "function" ? desc() : desc
+  desc instanceof Function ? desc() : desc
 )
 
 let optBlock = @(header, content, openInfo, desc, locId, ovr = {}) {

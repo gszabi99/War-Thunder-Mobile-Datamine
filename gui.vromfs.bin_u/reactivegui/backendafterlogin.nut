@@ -1,0 +1,28 @@
+let { get_settings_blk } = require("blkGetters")
+
+require("%rGui/topMenuButtonsActions.nut")
+
+require("%rGui/missions/missionsUtils.nut")
+require("%rGui/matchingRooms/sessionLobby.nut")
+require("%rGui/matchingRooms/roomInfo.nut")
+require("%rGui/flightMenu/flightMenuActions.nut")
+require("%rGui/respawn/respawn.nut")
+
+require("%rGui/debriefing/debriefingModal.nut")
+require("%rGui/hud/hudEventManager.nut")
+
+require("%appGlobals/clientState/updateClientStates.nut")
+require("%rGui/matching/webRpcMessages.nut")
+require("%rGui/battleData/battleData.nut") 
+require("%rGui/battleData/genDefaultBattleData.nut")
+require("%rGui/pServer/profileRefresh.nut")
+require("%rGui/mpStatistics/mpStatisticsHandler.nut")
+require("%rGui/missions/missionStart.nut")
+require("%rGui/debriefing/battleResultBq.nut")
+require("%rGui/matching/queueToGameMode.nut")
+require("%rGui/matching/clustersList.nut")
+require("%rGui/matching/queuesClient.nut")
+require("%rGui/matching/queueStats.nut")
+if (!(get_settings_blk()?.debug.skipPopups ?? false))
+  require("%rGui/matchingRooms/sessionReconnect.nut")
+require("%rGui/hud/hud.nut")

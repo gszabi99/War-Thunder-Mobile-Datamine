@@ -1,4 +1,5 @@
-let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
+from "hapticVibration" import registerHapticPattern, playHapticPattern
+
 
 return {
   playHapticPattern

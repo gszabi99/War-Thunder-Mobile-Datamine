@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { userstatRequest, userstatRegisterHandler } = require("%rGui/unlocks/userstat.nut")
-let { APP_ID } = require("app")
-let { getPlayerTokenGlobal } = require("auth_wt")
+from "app" import APP_ID
+from "auth_wt" import getPlayerTokenGlobal
+from "dagor.time" import get_time_msec
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%rGui/unlocks/userstat.nut" import userstatRequest, userstatRegisterHandler
 
-let AGEING_TIME_MSEC = 600000
+
+const AGEING_TIME_MSEC = 600000
 let allUserStatInfo = hardPersistWatched("allUserStatInfo", {})
 let inProgressUids = Watched({})
 

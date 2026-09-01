@@ -1,37 +1,37 @@
 from "%globalsDarg/darg_library.nut" import *
+from "dagor.time" import get_time_msec
+from "math" import fabs
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/timers.nut" import debounce
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/loginState.nut" import isMatchingOnline, isContactsLoggedIn
+from "%rGui/matching/matchingApi.nut" import matching_subscribe
+from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/profileStates.nut" import myUserId, myUserRealName
+import "%appGlobals/squadState.nut" as squadState
+from "%rGui/contacts/contact.nut" import allContacts, validateNickNames, getContactNick, updateContact
+from "%rGui/contacts/contactLists.nut" import myBlacklistUids
+from "%rGui/contacts/contactPresence.nut" import onlineStatus, isContactOnline, updateSquadPresences
+from "%rGui/contacts/contactPublicInfo.nut" import deactualizePublicInfos
+from "%rGui/gameModes/gameModeState.nut" import maxSquadSize
+from "%rGui/invitations/invitationsState.nut" import pushNotification, removeNotifyById, subscribeGroup
+from "%rGui/matching/matchingApi.nut" import matchingRpcCall, matchingRpcRegisterHandler, matchingCallRpcHandler,
+  matchingCallRpcHandlerDeffered
+import "%rGui/notifications/negativeBalanceWarning.nut" as showNegativeBalanceWarning
+
+
 let logS = log_with_prefix("[SQUAD] ")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { fabs } = require("math")
-let { OK } = require("matching.errors")
-let { get_time_msec } = require("dagor.time")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { debounce } = require("%sqstd/timers.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { myUserId, myUserRealName } = require("%appGlobals/profileStates.nut")
-let { isMatchingOnline, isContactsLoggedIn } = require("%appGlobals/loginState.nut")
-let { pushNotification, removeNotifyById, subscribeGroup
-} = require("%rGui/invitations/invitationsState.nut")
-let { myBlacklistUids } = require("%rGui/contacts/contactLists.nut")
-let { allContacts, validateNickNames, getContactNick, updateContact } = require("%rGui/contacts/contact.nut")
-let { deactualizePublicInfos } = require("%rGui/contacts/contactPublicInfo.nut")
-let { onlineStatus, isContactOnline, updateSquadPresences } = require("%rGui/contacts/contactPresence.nut")
-let squadState = require("%appGlobals/squadState.nut")
 let { squadId, isReady, isInSquad, isSquadLeader, isInvitedToSquad, squadMembers, squadMyState,
   squadLeaderCampaign, squadMembersOrder, squadOnline, squadLeaderQueueDataCheckTime
 } = squadState
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { maxSquadSize } = require("%rGui/gameModes/gameModeState.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let matching = require("%appGlobals/matching_api.nut")
-let showNegativeBalanceWarning = require("%rGui/notifications/negativeBalanceWarning.nut")
 
 
 const INVITE_ACTION_ID = "squad_invite_action"
 const LOG_ERROR = "squad.logError"
 const LOG = "squad.log"
 const SHOW_ERROR = "squad.showError"
-const SHOW_MSG = "squad.showMessage"
 
 let delayedInvites = mkWatched(persist, "delayedInvites", {})
 let userInProgress = Watched({})
@@ -71,10 +71,6 @@ squadMembers.subscribe(function (members) {
 
 let getSquadInviteUid = @(inviterSquadId) $"squad_invite_{inviterSquadId}"
 
-let callCb = @(cb, result) type(cb) == "string" ? eventbus_send(cb, result)
-  : "id" in cb ? eventbus_send(cb.id, { context = cb, result })
-  : null
-
 function isFloatEqual(a, b, eps = 1e-6) {
   let absSum = fabs(a) + fabs(b)
   return absSum < eps ? true : fabs(a - b) < eps * absSum
@@ -82,22 +78,18 @@ function isFloatEqual(a, b, eps = 1e-6) {
 let isEqualWithFloat = @(v1, v2) isEqual(v1, v2, { float = isFloatEqual })
 
 function logSquadError(resp) {
-  if (resp?.error == OK)
+  if ("error" not in resp)
     return false
-  logS("Squad request error: ", resp)
+  logS("Squad request error: ", resp?.error_id ?? resp.error)
   return true
 }
 
-eventbus_subscribe(LOG_ERROR, @(msg) logSquadError(msg.result))
-eventbus_subscribe(LOG, @(msg) logS(msg))
-eventbus_subscribe(SHOW_ERROR, function(msg) {
-  if (logSquadError(msg.result))
-    openFMsgBox({ text = loc($"error/{msg.result?.error_id ?? ""}") })
+matchingRpcRegisterHandler(LOG_ERROR, logSquadError)
+matchingRpcRegisterHandler(LOG, @(result) logS(result))
+matchingRpcRegisterHandler(SHOW_ERROR, function(result) {
+  if (logSquadError(result))
+    openFMsgBox({ text = loc($"error/{result?.error_id ?? result.error}") })
 })
-eventbus_subscribe(SHOW_MSG, @(msg) openFMsgBox({ text = msg.context.text }))
-
-let matchingCall = @(action, params = null, cb = LOG_ERROR)
-  eventbus_send("matchingCall", { action, params, cb })
 
 function setOnlineBySquad(uid, online) {
   if (squadOnline.get()?[uid] != online)
@@ -117,7 +109,7 @@ let updateMyData = debounce(function updateMyDataImpl() {
   let needSend = myDataLocal.get().findindex(@(value, key) !isEqualWithFloat(myDataRemote.get()?[key], value)) != null
   if (needSend) {
     logS("update my data: ", myDataLocal.get())
-    matchingCall("msquad.set_member_data", myDataLocal.get())
+    matchingRpcCall("msquad.set_member_data", myDataLocal.get(), LOG_ERROR)
   }
 }, 0.1)
 
@@ -128,7 +120,7 @@ squadLeaderQueueDataCheckTime.subscribe(function(_) {
   if (!isInSquad.get() || isSquadLeader.get() || squadJoinTime.get() + 1000 > get_time_msec())
     return
   logS("update my data by squad leader queueData request: ", myDataLocal.get())
-  matchingCall("msquad.set_member_data", myDataLocal.get())
+  matchingRpcCall("msquad.set_member_data", myDataLocal.get(), LOG_ERROR)
 })
 
 function linkVarToMsquad(name, var) {
@@ -183,13 +175,13 @@ function addInvited(userId) {
 
 function checkDisbandEmptySquad() {
   if (squadMembers.get().len() == 1 && !isInvitedToSquad.get().len())
-    matchingCall("msquad.disband_squad")
+    matchingRpcCall("msquad.disband_squad", null, LOG_ERROR)
 }
 
 function revokeSquadInvite(userId) {
   if (!removeInvitedSquadmate(userId))
     return
-  matchingCall("msquad.revoke_invite", { userId })
+  matchingRpcCall("msquad.revoke_invite", { userId }, LOG_ERROR)
   checkDisbandEmptySquad()
 }
 
@@ -198,22 +190,21 @@ function revokeAllSquadInvites() {
     revokeSquadInvite(uid)
 }
 
-eventbus_subscribe("squad.onLeaveSquad", function(msg) {
-  let { result, context = null } = msg
+matchingRpcRegisterHandler("squad.onLeaveSquad", function(result, context) {
   reset()
-  callCb(context?.cbExt, result)
+  matchingCallRpcHandler(context.cbExt, result)
 })
 
 function leaveSquad(cbExt = null) {
   if (!isInSquad.get()) {
-    callCb(cbExt, {})
+    matchingCallRpcHandlerDeffered(cbExt, {})
     return
   }
 
   if (isSquadLeader.get() && squadMembers.get().len() == 1)
     revokeAllSquadInvites()
 
-  matchingCall("msquad.leave_squad", null, { id = "squad.onLeaveSquad", cbExt })
+  matchingRpcCall("msquad.leave_squad", null, { id = "squad.onLeaveSquad", cbExt })
 }
 
 function applyRemoteDataToSquadMember(uid, msquad_data) {
@@ -239,14 +230,13 @@ function applyRemoteDataToSquadMember(uid, msquad_data) {
     setSelfRemoteData(data)
 }
 
-eventbus_subscribe("squad.onGetMemberData", function(msg) {
-  let { result, context = null } = msg
-  if (!logSquadError(result) && context?.userId != null)
+matchingRpcRegisterHandler("squad.onGetMemberData", function(result, context) {
+  if (!logSquadError(result))
     applyRemoteDataToSquadMember(context.userId, result)
 })
 
 let requestMemberData = @(userId)
-  matchingCall("msquad.get_member_data", { userId }, { id = "squad.onGetMemberData", userId })
+  matchingRpcCall("msquad.get_member_data", { userId }, { id = "squad.onGetMemberData", userId })
 
 function updateSquadInfo(squad_info) {
   if (squadId.get() != squad_info.id)
@@ -274,7 +264,7 @@ function addInvite(inviterUid) {
 
   if (inviterUid.tostring() in myBlacklistUids.get()) {
     logS("got squad invite from blacklisted user ", inviterUid)
-    matchingCall("msquad.reject_invite", { squadId = inviterUid })
+    matchingRpcCall("msquad.reject_invite", { squadId = inviterUid }, LOG_ERROR)
     return
   }
 
@@ -324,21 +314,19 @@ function onInviteNotify(invite_info) {
 }
 
 let inviteToSquadImpl = @(userId)
-  matchingCall("msquad.invite_player", { userId }, SHOW_ERROR)
+  matchingRpcCall("msquad.invite_player", { userId }, SHOW_ERROR)
 
-eventbus_subscribe("squads.onInviteListReady", function(msg) {
-  let { context } = msg
+matchingRpcRegisterHandler("squads.onInviteListReady", function(_, context) {
   foreach(sender in context.invites)
     addInvite(sender)
 })
 
-eventbus_subscribe("squad.onGetInfo", function(msg) {
-  let { result, context = null } = msg
+matchingRpcRegisterHandler("squad.onGetInfo", function(result, context) {
   if (logSquadError(result)) {
     if (result?.error_id == "NOT_SQUAD_MEMBER")
       squadId.set(null)
     delayedInvites.set({})
-    callCb(context?.cbExt, result)
+    matchingCallRpcHandler(context.cbExt, result)
     return
   }
 
@@ -355,32 +343,30 @@ eventbus_subscribe("squad.onGetInfo", function(msg) {
     inviteToSquadImpl(userId)
   delayedInvites.set({})
 
-  callCb(context?.cbExt, result)
+  matchingCallRpcHandler(context.cbExt, result)
 })
 
 let fetchSquadInfo = @(cbExt = null)
-  matchingCall("msquad.get_info", null, { id = "squad.onGetInfo", cbExt })
+  matchingRpcCall("msquad.get_info", null, { id = "squad.onGetInfo", cbExt })
 
-eventbus_subscribe("squad.onAcceptInvite", function(msg) {
-  let { result, context = null } = msg
+matchingRpcRegisterHandler("squad.onAcceptInvite", function(result, context) {
   if (logSquadError(result)) {
-    let errId = result?.error_id ?? ""
+    let errId = result?.error_id ?? result.error
     openFMsgBox({
       text = loc($"squad/nonAccepted/{errId}",
         ": ".concat(loc("squad/inviteError"), errId))
     })
     return
   }
-  if ("squadId" in context)
-    squadId.set(context.squadId)
+  squadId.set(context.squadId)
   fetchSquadInfo()
 })
 
 let acceptInviteImpl = @(sqId)
-  matchingCall("msquad.accept_invite", { squadId = sqId }, { id = "squad.onAcceptInvite", squadId = sqId })
+  matchingRpcCall("msquad.accept_invite", { squadId = sqId }, { id = "squad.onAcceptInvite", squadId = sqId })
 
-eventbus_subscribe("squad.acceptInviteAfterLeave", function(msg) {
-  let { notify } = msg.context
+matchingRpcRegisterHandler("squad.acceptInviteAfterLeave", function(_, context) {
+  let { notify } = context
   logS("Accept invite after leave previous squad ", notify.playerUid)
   acceptInviteImpl(notify.playerUid)
   removeNotifyById(notify.id)
@@ -390,7 +376,7 @@ subscribeFMsgBtns({
   function squadInviteNotifyReject(notify) {
     logS("Reject invite ", notify.playerUid)
     removeNotifyById(notify.id)
-    matchingCall("msquad.reject_invite", { squadId = notify.playerUid })
+    matchingRpcCall("msquad.reject_invite", { squadId = notify.playerUid }, LOG_ERROR)
   }
 })
 
@@ -414,7 +400,7 @@ subscribeGroup(INVITE_ACTION_ID, {
     })
   }
 
-  onRemove = @(notify) matchingCall("msquad.reject_invite", { squadId = notify.playerUid })
+  onRemove = @(notify) matchingRpcCall("msquad.reject_invite", { squadId = notify.playerUid }, LOG_ERROR)
 })
 
 function addMember(member) {
@@ -450,7 +436,7 @@ function removeMember(member) {
 
 subscribeFMsgBtns({
   leaveSquad = @(p) leaveSquad(p.cb)
-  dismissSquadMember = @(p) matchingCall("msquad.dismiss_member", p)
+  dismissSquadMember = @(p) matchingRpcCall("msquad.dismiss_member", p, LOG_ERROR)
 })
 
 let leaveSquadMessage = @(cb = null) openFMsgBox({
@@ -478,20 +464,19 @@ function dismissAllOfflineSquadmates() {
     return
   foreach (userId, _ in squadMembers.get())
     if (!isContactOnline(userId.tostring(), onlineStatus.get()))
-      matchingCall("msquad.dismiss_member", { userId })
+      matchingRpcCall("msquad.dismiss_member", { userId }, LOG_ERROR)
 }
 
-eventbus_subscribe("squad.onTransferSquad", function(msg) {
-  let { result, context } = msg
+matchingRpcRegisterHandler("squad.onTransferSquad", function(result, context) {
   if (!logSquadError(result))
     squadId.set(context.userId)
 })
 
 let transferSquad = @(userId)
-  matchingCall("msquad.transfer_squad", { userId }, { id = "squad.onTransferSquad", userId })
+  matchingRpcCall("msquad.transfer_squad", { userId }, { id = "squad.onTransferSquad", userId })
 
-eventbus_subscribe("squad.onCreate", function(msg) {
-  if (logSquadError(msg.result))
+matchingRpcRegisterHandler("squad.onCreate", function(result) {
+  if (logSquadError(result))
     delayedInvites.set({})
   else
     fetchSquadInfo()
@@ -499,7 +484,7 @@ eventbus_subscribe("squad.onCreate", function(msg) {
 
 function createSquad() {
   if (!isInSquad.get())
-    matchingCall("msquad.create_squad", null, "squad.onCreate")
+    matchingRpcCall("msquad.create_squad", null, "squad.onCreate")
 }
 
 function inviteToSquad(userId) {
@@ -622,9 +607,8 @@ let msubscribes = {
   }
 }
 
-foreach (ev, handler in msubscribes) {
-  matching.matching_subscribe(ev, handler)
-}
+foreach (ev, handler in msubscribes)
+  matching_subscribe(ev, handler)
 
 canFetchSquad.subscribe(function(v) {
   reset()

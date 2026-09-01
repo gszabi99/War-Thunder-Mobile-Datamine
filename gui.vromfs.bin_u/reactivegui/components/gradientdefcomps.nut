@@ -1,15 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gradTranspDoubleSideX, gradDoubleTexOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset, simpleHorGrad
+
 
 let headerRowHeight = evenPx(60)
-let headerGradientPaddingY = hdpxi(20)
+const headerGradientPaddingY = hdpxi(20)
 let headerHeightInSafeArea = headerRowHeight + headerGradientPaddingY
-let headerMargin = hdpx(20)
+const headerMargin = hdpx(20)
 
-let doubleSideGradientPaddingX = hdpx(100)
-let doubleSideGradientPaddingY = hdpx(20)
+const doubleSideGradientPaddingX = hdpx(100)
+const doubleSideGradientPaddingY = hdpx(20)
 let doubleSideGradient = {
-  padding = [doubleSideGradientPaddingY, doubleSideGradientPaddingX]
+  padding = const [doubleSideGradientPaddingY, doubleSideGradientPaddingX]
   rendObj = ROBJ_9RECT
   image = gradTranspDoubleSideX
   texOffs = [0, gradDoubleTexOffset]
@@ -19,8 +20,8 @@ let doubleSideGradient = {
 
 let headerGradientBg = @(children, ovr = {}) {
   size = [SIZE_TO_CONTENT, headerHeightInSafeArea]
-  margin = [0, 0, headerMargin, 0]
-  padding = [0, 0, headerGradientPaddingY, 0]
+  margin = const [0, 0, headerMargin, 0]
+  padding = const [0, 0, headerGradientPaddingY, 0]
   valign = ALIGN_CENTER
   children = {
     size = [SIZE_TO_CONTENT, headerRowHeight + 2 * headerGradientPaddingY]
@@ -39,8 +40,8 @@ let headerGradientBg = @(children, ovr = {}) {
 
 let headerGradientWithRightBlock = @(leftChildren, rightChildren, ovr = {}) {
   size = [FLEX, headerHeightInSafeArea]
-  margin = [0, 0, headerMargin, 0]
-  padding = [0, 0, headerGradientPaddingY, 0]
+  margin = const [0, 0, headerMargin, 0]
+  padding = const [0, 0, headerGradientPaddingY, 0]
   valign = ALIGN_CENTER
   children = [
     headerGradientBg(leftChildren, { margin = 0, vplace = ALIGN_TOP })

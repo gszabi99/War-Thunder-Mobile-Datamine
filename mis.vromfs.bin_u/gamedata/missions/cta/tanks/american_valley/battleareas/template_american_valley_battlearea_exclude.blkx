@@ -1,0 +1,204 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "area_squad": {
+      "name": "battlearea_exclude_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1210.25,
+          116.25,
+          2032.15
+        ]
+      ],
+      "props": {
+        "squad_members": "battlearea_exclude_01"
+      }
+    }
+  },
+  "areas": {
+    "battlearea_exclude_01": {
+      "type": "Polygon",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1406.68,
+          49.2,
+          1563.23
+        ]
+      ],
+      "topY": 128.7,
+      "polygonPoint": [
+        [
+          1629.4,
+          49.25,
+          1316.7
+        ],
+        [
+          1649.6,
+          49.25,
+          1428.35
+        ],
+        [
+          1611.65,
+          49.2,
+          1519.85
+        ],
+        [
+          1555.05,
+          68.05,
+          1566.25
+        ],
+        [
+          1488.95,
+          49.2,
+          1723.0
+        ],
+        [
+          1456.75,
+          49.2,
+          1746.75
+        ],
+        [
+          1379.35,
+          49.3,
+          1856.65
+        ],
+        [
+          1304.85,
+          49.25,
+          1926.3
+        ],
+        [
+          1210.15,
+          49.45,
+          1898.25
+        ],
+        [
+          1190.9,
+          49.3,
+          1791.2
+        ],
+        [
+          1155.35,
+          61.9,
+          1663.45
+        ],
+        [
+          1180.6,
+          78.85,
+          1530.75
+        ],
+        [
+          1171.4,
+          62.55,
+          1436.6
+        ],
+        [
+          1276.7,
+          76.6,
+          1327.75
+        ],
+        [
+          1401.8,
+          58.05,
+          1223.4
+        ],
+        [
+          1461.15,
+          57.3,
+          1193.4
+        ],
+        [
+          1647.1,
+          49.2,
+          1272.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      },
+      {
+        "enabled": false
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

@@ -1,33 +1,33 @@
 from "%globalsDarg/darg_library.nut" import *
-let { defer } = require("dagor.workcycle")
-let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { squadMembers, isInvitedToSquad, squadId, squadLeaderCampaign, isSquadLeader,
+from "dagor.workcycle" import defer
+from "%darg/helpers/bitmap.nut" import mkBitmapPicture
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/profileStates.nut" import myUserId
+from "%appGlobals/squadState.nut" import squadMembers, isInvitedToSquad, squadId, squadLeaderCampaign, isSquadLeader,
   squadLeaderReadyCheckTime
-} = require("%appGlobals/squadState.nut")
-let { Contact } = require("%rGui/contacts/contact.nut")
-let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
-let { mkContactOnlineStatus } = require("%rGui/contacts/contactPresence.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { myUserId } = require("%appGlobals/profileStates.nut")
-let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
-let { gap, contactNameBlock, contactAvatar, contactLevelBlock } = require("%rGui/contacts/contactInfoPkg.nut")
-let { offlineColor, leaderColor, memberNotReadyColor, memberReadyColor } = require("%rGui/style/stdColors.nut")
-let { unitPlateSmall, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
-let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { mkContactActionBtn } = require("%rGui/contacts/mkContactActionBtn.nut")
-let { REVOKE_INVITE, REMOVE_FROM_SQUAD, PROMOTE_TO_LEADER, LEAVE_SQUAD } = require("%rGui/contacts/contactActions.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
-let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let { mkGradientCtorDoubleSideX, gradTexSize } = require("%rGui/style/gradients.nut")
+from "%appGlobals/unitPresentation.nut" import getUnitPresentation
+from "%rGui/components/animGrowLines.nut" import mkAnimGrowLines, mkAGLinesCfgOrdered
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/spinner.nut" import mkSpinner
+from "%rGui/contacts/contact.nut" import Contact
+from "%rGui/contacts/contactActions.nut" import REVOKE_INVITE, REMOVE_FROM_SQUAD, PROMOTE_TO_LEADER, LEAVE_SQUAD
+from "%rGui/contacts/contactInfoPkg.nut" import gap, contactNameBlock, contactAvatar, contactLevelBlock
+from "%rGui/contacts/contactPresence.nut" import mkContactOnlineStatus
+from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicInfo
+from "%rGui/contacts/mkContactActionBtn.nut" import mkContactActionBtn
+from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideX, gradTexSize
+from "%rGui/style/stdColors.nut" import offlineColor, leaderColor, memberNotReadyColor, memberReadyColor
+from "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" import mkCutBg
+from "%rGui/unit/components/unitPlateComp.nut" import unitPlateSmall, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo
+from "types" import String
 
 
-let WND_UID = "squad_member_info_wnd"
+const WND_UID = "squad_member_info_wnd"
 
-let avatarSize = hdpxi(200)
-let wndGap = hdpx(24)
-let statusSize = hdpxi(25)
+const avatarSize = hdpxi(200)
+const wndGap = hdpx(24)
+const statusSize = hdpxi(25)
 let headerWidth = unitPlateSmall[0] * 4 + wndGap * 3
 let wndHSize = unitPlateSmall[1] + wndGap * 2 + defButtonHeight * 2
 
@@ -80,9 +80,9 @@ let mkStatusRow = @(icon, iconColor, text, ovr = {}) {
   flow = FLOW_HORIZONTAL
   gap = hdpx(5)
   children = [
-    type(icon) != "string" ? icon
+    !(icon instanceof String) ? icon
       : {
-          size = [statusSize, statusSize]
+          size = const [statusSize, statusSize]
           rendObj = ROBJ_IMAGE
           image = Picture($"ui/gameuiskin#{icon}:{statusSize}:{statusSize}:P")
           color = iconColor ?? 0xFFFFFFFF
@@ -169,7 +169,7 @@ function buttons(uid) {
 }
 
 let separator = {
-  size = [FLEX, hdpxi(2)]
+  size = const [FLEX, hdpxi(2)]
   rendObj = ROBJ_IMAGE
   image = lineGradientHor
 }
@@ -189,7 +189,7 @@ function memberInfo(uid) {
     children = [
       contactAvatar(info.get(), avatarSize)
       contactNameBlock(contact.get(), info.get(), [status, battleStatus, contactLevelBlock(info.get(), { valign = ALIGN_BOTTOM })])
-        .__update({ size = [FLEX, avatarSize] })
+        .__update({ size = const [FLEX, avatarSize] })
       buttons(uid)
     ]
   }

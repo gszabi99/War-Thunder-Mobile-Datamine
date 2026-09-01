@@ -1,12 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "language" import getLocalLanguage, getSpeechLanguage, setSpeechLanguage
+from "nestdb" import ndbRead, ndbExists
 from "soundOptions" import set_option_speech_country_type, get_option_speech_country_type, UNIT_LANG, GAME_LANG
-
-let { getLocalLanguage, getSpeechLanguage, setSpeechLanguage } = require("language")
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { ndbRead, ndbExists } = require("nestdb")
-let { has_extended_sound } = require("%appGlobals/permissions.nut")
-let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
+from "%appGlobals/loginState.nut" import isSettingsAvailable
+from "%appGlobals/permissions.nut" import has_extended_sound
 
 
 const NDB_ID = "language.localizationInfo"
@@ -43,6 +42,7 @@ let optLangByUnit = {
 
 let optLangVoice = {
   locId = "options/speech_country_list"
+  description = loc("options/speech_country_list_description")
   ctrlType = OCT_LIST
   value = languageVoice
   list = Watched([])

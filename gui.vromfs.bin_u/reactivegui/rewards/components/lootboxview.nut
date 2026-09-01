@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "math" import round
-from "%appGlobals/config/lootboxPresentation.nut" import getLootboxImage, lootboxLayers,
-  getEventLootboxSizeMul, getEventLootboxShiftPos
+from "%appGlobals/config/lootboxPresentation.nut" import getLootboxImage, lootboxLayers, getEventLootboxSizeMul,
+  getEventLootboxShiftPos
 
 
 let lootboxFallbackPicture = Picture("ui/gameuiskin#daily_box_small.avif:0:P")

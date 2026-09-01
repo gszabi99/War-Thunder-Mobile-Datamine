@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let utf8 = require("utf8")
-let regexp2 = require("regexp2")
-let { utf8ToLower } = require("%sqstd/string.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
+import "regexp2" as regexp2
+import "utf8" as utf8
+from "%sqstd/string.nut" import utf8ToLower
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/unitPresentation.nut" import getUnitPresentation
+
 
 let reUnitLocNameSeparators = regexp2("".concat(@"[ \-_/.()", nbsp, "]"))
 let translit = { cyr = "авекмнорстх", lat = "abekmhopctx" }

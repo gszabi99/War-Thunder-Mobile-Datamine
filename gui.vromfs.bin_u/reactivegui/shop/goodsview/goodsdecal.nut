@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { ALL_PURCHASED } = require("%rGui/shop/goodsStates.nut")
-let { mkDecalIcon } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
-let { mkGoodsWrap, mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsLimitAndEndTime, mkSlotBgImg,
-  mkBgParticles, goodsSmallSize, goodsBgH, mkBorderByCurrency, borderBg, goodsH, limitFontGrad, titlePadding
-} = require("%rGui/shop/goodsView/sharedParts.nut")
-let { mkGradText } = require("%rGui/components/gradTexts.nut")
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/components/gradTexts.nut" import mkGradText
+from "%rGui/shop/goodsStates.nut" import ALL_PURCHASED
+from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, mkPricePlate, mkGoodsCommonParts, underConstructionBg,
+  mkGoodsLimitAndEndTime, mkSlotBgImg, mkBgParticles, goodsSmallSize, goodsBgH, mkBorderByCurrency, borderBg, goodsH,
+  limitFontGrad, titlePadding
+from "%rGui/unitCustom/unitDecals/unitDecalsComps.nut" import mkDecalIcon
+
 
 let decalSize = (goodsH * 0.9 + 0.5).tointeger()
 let getLocNameDecal = @(goods) $"{loc("reward/decal")} {loc($"decals/{goods.rewards?[0].id ?? goods.id}")}"

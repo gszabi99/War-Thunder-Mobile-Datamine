@@ -1,11 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "dagor.debug" import screenlog
+from "dagor.http" import httpRequest, HTTP_SUCCESS, HTTP_FAILED, HTTP_ABORTED
+from "json" import parse_json
+from "%rGui/feedback/logFileAttachment.nut" import getLogFileData
+from "%rGui/feedback/supportState.nut" import zendeskApiUploadsUrl, zendeskApiRequestsUrl
+
+
 let logZ = log_with_prefix("[ZENDESK] ")
-let { parse_json } = require("json")
-let { register_command } = require("console")
-let { screenlog } = require("dagor.debug")
-let { httpRequest, HTTP_SUCCESS, HTTP_FAILED, HTTP_ABORTED } = require("dagor.http")
-let { zendeskApiUploadsUrl, zendeskApiRequestsUrl } = require("%rGui/feedback/supportState.nut")
-let { getLogFileData } = require("%rGui/feedback/logFileAttachment.nut")
 
 
 

@@ -2740,6 +2740,62 @@
         "triggerId": "flagReturn",
         "num": 5
       }
+    },
+    {
+      "id": "ciws_rocket_interception",
+      "type": "streak",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "isAfterFlight": false,
+      "showInHUD": false,
+      "isMultiStage": true,
+      "wpA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "userstat_stat_id": "ciws_rocket_interception",
+      "stage": {
+        "param": 1,
+        "amount_exp": 0,
+        "amount_warpoints": 0
+      },
+      "mode": {
+        "type": "shellInterception",
+        "num": 100,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "interceptedShellType",
+            "weapon": [
+              "rocket",
+              "agm",
+              "aam",
+              "sam"
+            ]
+          },
+          {
+            "type": "offenderIsCiws"
+          }
+        ]
+      }
     }
   ]
 }

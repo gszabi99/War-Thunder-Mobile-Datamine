@@ -1,19 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { register_command } = require("console")
-let { eventbus_send } = require("eventbus")
-let { openMsgBox, msgBoxText, closeMsgBox } = require("%rGui/components/msgBox.nut")
-let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { allPenalties } = require("%appGlobals/userPenalties.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/clientState/clientState.nut" import isInLoadingScreen
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/userPenalties.nut" import allPenalties
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText, closeMsgBox
+from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import isTutorialActive
 
-let PENALTY_KEY = "DECALS_DISABLE"
-let isOriginalDecals = "USEROPT_IS_ORIGINAL_DECALS"
+
+const PENALTY_KEY = "DECALS_DISABLE"
+const isOriginalDecals = "USEROPT_IS_ORIGINAL_DECALS"
 let isDecalsPenaltyShowed = hardPersistWatched("isDecalsPenaltyShowed", false)
 let decalsPenalty = keepref(Computed(@() allPenalties.get()?[PENALTY_KEY] ?? 0))
 

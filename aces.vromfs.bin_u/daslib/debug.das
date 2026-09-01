@@ -32,7 +32,6 @@ require daslib/apply_in_context
 require daslib/jobque_boost
 require daslib/strings_boost
 require daslib/dap
-require daslib/algorithm
 require daslib/debug_eval
 
 
@@ -262,7 +261,7 @@ class DAWalker : DapiDataWalker {
 
     def override canVisitArray(ps : void?; ti : TypeInfo) : bool {
         
-        let arr = unsafe(reinterpret<DapiArray?> ps)
+        let arr = unsafe(reinterpret<DapiArray?>(ps))
         return arr.size <= uint64(maxChildrenCount)
     }
 
@@ -338,7 +337,7 @@ class DAWalker : DapiDataWalker {
 
     def override canVisitTable(ps : void?; ti : TypeInfo) : bool {
         
-        let pa = unsafe(reinterpret<DapiTable?> ps)
+        let pa = unsafe(reinterpret<DapiTable?>(ps))
         return pa.size <= uint64(maxChildrenCount)
     }
 
@@ -707,7 +706,6 @@ class private DAStackWalker : DapiStackWalker {
 
     def override onCallAOT(pp : Prologue; fileName : string#) : void {
         
-        
         let n = length(ctx.stack)
         if (n > 0) {
             ctx.stack[n - 1].name = pp.info != null ? "def {pp.info.name} [AOT]" : "def [AOT]"
@@ -730,7 +728,6 @@ class private DAStackWalker : DapiStackWalker {
 
     def override onCallAt(pp : Prologue; info : FuncInfo; at : LineInfo) : void {
         
-        
         let n = length(ctx.stack)
         if (n > 0) {
             ctx.stack[n - 1].name = "def {info.name}"
@@ -741,7 +738,6 @@ class private DAStackWalker : DapiStackWalker {
     }
 
     def override onCall(pp : Prologue; info : FuncInfo) : void {
-        
         
         let n = length(ctx.stack)
         if (n > 0) {
@@ -756,7 +752,7 @@ class private DAStackWalker : DapiStackWalker {
         let isBlock = (iblock & 1ul) != 0ul
         let funcInfo = isBlock ? default<FuncInfo?> : pp.info
         ctx.stack |> emplace(DAStackFrame(
-            func = unsafe(reinterpret<FuncInfo?> funcInfo),
+            func = unsafe(reinterpret<FuncInfo?>(funcInfo)),
             isBlock = isBlock, spAddr = intptr(sp)))
     }
 
@@ -793,7 +789,7 @@ class private DAStackWalker : DapiStackWalker {
         if (stackLen > 0) {
             var frame & = unsafe(ctx.stack[stackLen - 1])
             let ti = type_info(vinfo)
-            var variable = DAVariable(uid = frame.varId++, name = vinfo.name, _type = describe(ti), address = ti.isRef ? intptr(unsafe(reinterpret<void?> arg)) : 0ul, size = ti.size, typeInfo = ti, rawValue = arg)
+            var variable = DAVariable(uid = frame.varId++, name = vinfo.name, _type = describe(ti), address = ti.isRef ? intptr(unsafe(reinterpret<void?>(arg))) : 0ul, size = ti.size, typeInfo = ti, rawValue = arg)
             if (ti != null) {
                 dataWalker->startWalk(frame, variable) $ {
                     make_data_walker(dataWalker) $(adapter) {
@@ -1165,8 +1161,6 @@ class private DAgent : DapiDebugAgent {
         if (at.fileInfo == null || server == null) return
 
         
-            
-            
 
         if (ctx.category.debugger_attached) {
             addContext(ctx)
@@ -1309,7 +1303,7 @@ class private DAgent : DapiDebugAgent {
                         return
                     }
                 }
-                frame.state |> emplace <| (uid = STATE_VARS + uint64(length(frame.state)), name = category, vars = [ variable])
+                frame.state |> emplace <| (uid = STATE_VARS + uint64(long_length(frame.state)), name = category, vars = [ variable])
             }
         })
     }
@@ -1438,15 +1432,11 @@ class private DAgent : DapiDebugAgent {
 
     def override onCreateContext(var ctx : Context) : void {
         
-        
-        
         addContext(ctx)
         invalidateBreakpoints(ctx)
     }
 
     def override onDestroyContext(var ctx : Context) : void {
-        
-        
         
         removeContext(ctx)
         invalidateBreakpoints(ctx)
@@ -1485,8 +1475,6 @@ class private DAgent : DapiDebugAgent {
     }
 
     def addContext(var ctx : Context) : bool {
-        
-        
         
         let idx = getContextIdx(ctx)
         if (idx >= 0) return false
@@ -1545,7 +1533,7 @@ class private DAServer : Server {
 
     def DAServer {
         
-        Server`Server(cast<Server> self)
+        Server`Server(cast<Server>(self))
     }
 
     def override onError(msg : string; code : int) {
@@ -1679,7 +1667,6 @@ class private DAServer : Server {
 
     def reqInitialize(seq : double; command : string; arguments : JsonValue?) {
         
-        
         var inscope res = Capabilities(
                                 supportsConfigurationDoneRequest = true,
                                 supportsRestartRequest = false,
@@ -1759,7 +1746,6 @@ class private DAServer : Server {
     }
 
     def reqDisconnect(seq : double; command : string; data : JsonValue?) {
-        
         
         sendSuccessResponse(seq, command, null)
         for (ctx in agent.contexts) {
@@ -1871,8 +1857,8 @@ class private DAServer : Server {
                 hex = to_uint64(parts[1], true)
                 let size = to_int(parts[2])
                 unsafe {
-                    var ctxPtr = reinterpret<Context?> ctxHex
-                    let ptr = reinterpret<void?> hex
+                    var ctxPtr = reinterpret<Context?>(ctxHex)
+                    let ptr = reinterpret<void?>(hex)
                     setId = set_hw_breakpoint(*ctxPtr, ptr, clamp(size, 1, 8), true)
                 }
                 if (setId != -1) {
@@ -2169,7 +2155,7 @@ class private DAServer : Server {
                         ctxData.stack[frame] |> iter_top_child_var() $(child) {
                             if (child.typeInfo != null) {
                                 let tInfo & = unsafe(*child.typeInfo)
-                                vars |> emplace(child.name, Result(tinfo = tInfo, value = child.rawValue, data = unsafe(reinterpret<void?> child.address)))
+                                vars |> emplace(child.name, Result(tinfo = tInfo, value = child.rawValue, data = unsafe(reinterpret<void?>(child.address))))
                             }
                         }
                         --frame
@@ -2200,7 +2186,6 @@ class private DAServer : Server {
 
     def log(msg : string) {
         
-        
         if (is_connected()) {
             sendOutput("console", "{msg}\n")
         }
@@ -2225,8 +2210,6 @@ class private DAServer : Server {
 
     def sendSuccessResponseStr(id : double; command : string; body : string) {
         
-        
-        
         sendRawDataStr("\{\"request_seq\":{id}, \"type\":\"response\", \"body\":{body}, \"command\":\"{command}\", \"success\":true\}", true)
     }
 
@@ -2239,9 +2222,8 @@ class private DAServer : Server {
             log("<------\n{packStr}")
         }
         
-        
         unsafe {
-            send(reinterpret<uint8?> packStr, length(packStr))
+            send(reinterpret<uint8?>(packStr), length(packStr))
             delete data
         }
     }
@@ -2253,9 +2235,8 @@ class private DAServer : Server {
             log("<------\n{packStr}")
         }
         
-        
         unsafe {
-            send(reinterpret<uint8?> packStr, length(packStr))
+            send(reinterpret<uint8?>(packStr), length(packStr))
         }
     }
 
@@ -2285,11 +2266,11 @@ class private EvalWalker : DapiStackWalker {
     def override onArgument(info : FuncInfo; index : int; vinfo : VarInfo; arg : float4) : void {
         
         if (vinfo.flags.refType) {
-            let parg = unsafe(reinterpret<void?> arg)
-            *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} & = * reinterpret<{describe(type_info(vinfo))}?> {parg}ul // ref argument\n")
+            let parg = unsafe(reinterpret<void?>(arg))
+            *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} & = * reinterpret<{describe(type_info(vinfo))}?>({parg}ul) // ref argument\n")
         } elif (vinfo.dimSize > 0u) {
-            let parg = unsafe(reinterpret<void?> arg)
-            *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} = * reinterpret<{describe(type_info(vinfo))}?> {parg}ul // ref argument\n")
+            let parg = unsafe(reinterpret<void?>(arg))
+            *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} = * reinterpret<{describe(type_info(vinfo))}?>({parg}ul) // ref argument\n")
         } else {
             *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} = ")
             if (vinfo.basicType == Type.tString) {
@@ -2309,15 +2290,15 @@ class private EvalWalker : DapiStackWalker {
             if (arg != null) {
                 if (vinfo.flags.ref) {
                     unsafe {
-                        let pref = unsafe(reinterpret<void ??> arg)
+                        let pref = unsafe(reinterpret<void ??>(arg))
                         var cvinfo = vinfo
                         cvinfo.flags.ref = false
-                        *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} = * reinterpret<{describe(type_info(cvinfo))}?> {*pref}ul // already ref\n")
+                        *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} = * reinterpret<{describe(type_info(cvinfo))}?>({*pref}ul) // already ref\n")
                     }
                 } elif (vinfo.dimSize > 0u) {
-                    *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} = * reinterpret<{describe(type_info(vinfo))}?> {arg}ul\n")
+                    *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} = * reinterpret<{describe(type_info(vinfo))}?>({arg}ul)\n")
                 } else {
-                    *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} & = * reinterpret<{describe(type_info(vinfo))}?> {arg}ul\n")
+                    *W |> write("\t\tlet {vinfo.name} : {describe(type_info(vinfo))} & = * reinterpret<{describe(type_info(vinfo))}?>({arg}ul)\n")
                 }
             }
         }

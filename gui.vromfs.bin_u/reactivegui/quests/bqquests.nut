@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { EVENT_TAB, PERSONAL_TAB } = require("%rGui/unlocks/unlocksConst.nut")
-let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
-let { balance } = require("%appGlobals/currenciesState.nut")
-let { hasStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
+from "%appGlobals/config/rewardStatsPresentation.nut" import hasStatsImage
+from "%appGlobals/currenciesState.nut" import balance
+from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
+from "%rGui/unlocks/unlocksConst.nut" import EVENT_TAB, PERSONAL_TAB
+from "%rGui/unlocks/userstat.nut" import userstatStatsTables
+
 
 
 

@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { modeArmorComps } = require("%rGui/dmViewer/modeArmor.nut")
-let { modeXrayComps } = require("%rGui/dmViewer/modeXray.nut")
+from "%rGui/dmViewer/modeArmor.nut" import modeArmorComps
+from "%rGui/dmViewer/modeXray.nut" import modeXrayComps
+
 
 return [].extend(modeArmorComps, modeXrayComps)

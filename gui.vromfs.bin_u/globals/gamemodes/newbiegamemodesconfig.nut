@@ -1,4 +1,5 @@
-let { campaignPresentations } = require("%appGlobals/config/campaignPresentation.nut")
+from "%appGlobals/config/campaignPresentation.nut" import campaignPresentations
+
 
 let newbieGameModesConfig = {
   tanks = [

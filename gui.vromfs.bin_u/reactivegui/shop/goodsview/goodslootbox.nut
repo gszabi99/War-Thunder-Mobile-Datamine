@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
-let { mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, borderBg, mkSlotBgImg, goodsSmallSize, mkSquareIconBtn, mkGoodsTimeLeftText, mkBgImg,
-   mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles, underConstructionBg, mkOfferCommonParts,
-   mkGoodsLimitText, mkBorderByCurrency, mkCurrencyAmountTitle, mkOfferWrap, mkOfferTexts, offerW, offerH
-} = require("%rGui/shop/goodsView/sharedParts.nut")
-let { getLootboxName, customGoodsLootboxScale } = require("%appGlobals/config/lootboxPresentation.nut")
-let { mkLootboxImage } = require("%rGui/rewards/components/lootboxView.nut")
-let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
-let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
+from "%appGlobals/config/lootboxPresentation.nut" import getLootboxName, customGoodsLootboxScale
+from "%appGlobals/rewardType.nut" import G_LOOTBOX
+from "%rGui/components/gradTexts.nut" import mkGradGlowText
+from "%rGui/rewards/components/lootboxView.nut" import mkLootboxImage
+from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
+from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, borderBg, mkSlotBgImg, goodsSmallSize,
+  mkSquareIconBtn, mkGoodsTimeLeftText, mkBgImg, mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles,
+  underConstructionBg, mkOfferCommonParts, mkGoodsLimitText, mkBorderByCurrency, mkCurrencyAmountTitle, mkOfferWrap,
+  mkOfferTexts, offerW, offerH
+from "%rGui/style/gradients.nut" import mkFontGradient
 
 
 let titleFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFE0E0E0, 11, 6, 2)
 let lootboxIconSize = (goodsSmallSize[0] * 0.65).tointeger()
 let offerLootboxIconSize = offerW
-let fonticonPreview = "⌡"
-let contentMargin = hdpx(20)
+const fonticonPreview = "⌡"
+const contentMargin = hdpx(20)
 let textMargin = [hdpx(15), contentMargin]
 
 let bgHiglight = {
@@ -83,6 +83,7 @@ function mkOfferLootbox(goods, onClick, state) {
   let { isShowDebugOnly = false } = goods
   let { lootboxId } = getGoodsLootbox(goods)
   let bgParticles = mkBgParticles([offerW, offerH])
+  let offerTexts = mkOfferTexts(getLocNameLootbox(goods), goods)
   return mkOfferWrap(onClick,
     @(sf) [
       mkBgImg("ui/gameuiskin#offer_bg_blue.avif")
@@ -92,7 +93,7 @@ function mkOfferLootbox(goods, onClick, state) {
       sf & S_HOVER ? bgHiglight : null
       lootboxId == null ? null : mkLootboxImage(lootboxId, offerLootboxIconSize, 0.5)
         .__update({ hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, offerH * 0.05] })
-      mkOfferTexts(getLocNameLootbox(goods), goods)
+      offerTexts
     ].extend(mkOfferCommonParts(goods, state)))
 }
 

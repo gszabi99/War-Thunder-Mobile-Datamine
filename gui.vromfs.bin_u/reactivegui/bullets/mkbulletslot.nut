@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getBulletImage, getBulletTypeIcon } = require("%appGlobals/config/bulletsPresentation.nut")
-let { getAmmoTypeShortText, getAmmoNameShortText } = require("%rGui/weaponry/weaponsVisual.nut")
+from "%appGlobals/config/bulletsPresentation.nut" import getBulletImage, getBulletTypeIcon
+from "%rGui/weaponry/weaponsVisual.nut" import getAmmoTypeShortText, getAmmoNameShortText
 
-let ICON_SIZE = hdpxi(60)
-let headerHeight = hdpxi(98)
+
+const ICON_SIZE = hdpxi(60)
+const headerHeight = hdpxi(98)
 let bulletIconSize = [hdpxi(214), headerHeight]
 
 function getSlotNumber(chosenBulletsList, id, sIdx) {
@@ -71,7 +72,7 @@ function mkBulletSlot(chosenBullets, bSet, bInfoFromUnitTags, ovrBulletImage = {
         size = [hdpx(130), headerHeight]
         children = [
           {
-            size = [ICON_SIZE,ICON_SIZE]
+            size = const [ICON_SIZE,ICON_SIZE]
             rendObj = ROBJ_IMAGE
             vplace = ALIGN_CENTER
             image = Picture($"{icon}:{ICON_SIZE}:{ICON_SIZE}:P")

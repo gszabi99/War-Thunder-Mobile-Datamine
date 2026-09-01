@@ -1,43 +1,43 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopCommon.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { register_command } = require("console")
-let { getCountryCode } = require("auth_wt")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
-let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-let { orderByItems } = require("%appGlobals/itemsState.nut")
-let { getServerTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
-let { serverTimeDay } = require("%appGlobals/userstats/serverTimeDay.nut")
-let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
-let { campConfigs, curCampaign, todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
-let { can_debug_shop, allow_subscriptions } = require("%appGlobals/permissions.nut")
-let { WP, GOLD, PLATINUM, commonCurrencies } = require("%appGlobals/currenciesState.nut")
-let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { G_PREMIUM, G_ITEM, G_CURRENCY } = require("%appGlobals/rewardType.nut")
-let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
-let { sendBqEventOnOpenCurrencyShop } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward, schRewards
-} = require("%rGui/shop/schRewardsState.nut")
-let { platformGoods, platformSubs } = require("%rGui/shop/platformGoods.nut")
-let { personalGoodsByShopCategory, personalGoodsUnseenIds, markPersonalGoodsSeen, resetSeenPersonalGoods,
-  personalGoodsSoonByShopCategory, activePersonalGoods, personalGoodsCfg
-} = require("%rGui/shop/personalGoodsState.nut")
-let { shopGoodsToRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
+from "auth_wt" import getCountryCode
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import isDataBlock, eachParam
+from "%sqstd/time.nut" import TIME_DAY_IN_SECONDS
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInDebriefing
+from "%appGlobals/clientState/initialState.nut" import isOfflineMenu
+from "%appGlobals/currenciesState.nut" import WP, GOLD, PLATINUM, commonCurrencies
+from "%appGlobals/itemsState.nut" import orderByItems
+from "%appGlobals/loginState.nut" import isSettingsAvailable
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign, todayPurchasesCount
+from "%appGlobals/pServer/seasonCurrencies.nut" import sortByCurrencyId
+from "%appGlobals/permissions.nut" import can_debug_shop, allow_subscriptions
+from "%appGlobals/rewardType.nut" import G_PREMIUM, G_ITEM, G_CURRENCY
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/userstats/serverTime.nut" import getServerTime, isServerTimeValid
+from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay
+import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
+from "%rGui/rewards/rewardViewInfo.nut" import shopGoodsToRewardsViewInfo, sortRewardsViewInfo
+from "%rGui/shop/bqPurchaseInfo.nut" import sendBqEventOnOpenCurrencyShop
+from "%rGui/shop/personalGoodsState.nut" import personalGoodsByShopCategory, personalGoodsUnseenIds,
+  markPersonalGoodsSeen, resetSeenPersonalGoods, personalGoodsSoonByShopCategory, activePersonalGoods, personalGoodsCfg
+from "%rGui/shop/platformGoods.nut" import platformGoods, platformSubs
+from "%rGui/shop/schRewardsState.nut" import actualSchRewardByCategory, actualSchRewards, lastAppliedSchReward,
+  schRewards
 
 
-let SEEN_GOODS = "shopSeenGoods_v2"
-let UNMARK_SEEN_COUNTERS = "unmarkSeenCounters"
-let EXPIRATION_DAYS = 28
+const SEEN_GOODS = "shopSeenGoods_v2"
+const UNMARK_SEEN_COUNTERS = "unmarkSeenCounters"
+const EXPIRATION_DAYS = 28
 
 let pageScrollHandler = ScrollHandler()
 
+let isShopAttached = mkWatched(persist, "isShopAttached", false)
 let shopOpenCount = mkWatched(persist, "shopOpenCount", {}) 
 let shopCurCategories = mkWatched(persist, "shopCurCategories", {}) 
 
@@ -629,6 +629,7 @@ return {
   openShopWndByGoods
   closeShopWnd
   isShopOpened
+  isShopAttached
   shopOpenCount
 
   curCategoryId
@@ -667,6 +668,7 @@ return {
   soonGoodsByShop
   soonPersonalGoodsByShop
   personalGoodsByShop
+  actualSchRewardByCategory
   curShopGoodsByCategory
   curShopSoonGoodsByCategory
   curShopSoonPGoodsByCategory

@@ -1,23 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { format } = require("string")
-let { register_command, command } = require("console")
-let { object_to_json_string } = require("json")
-let { get_unittags_blk } = require("blkGetters")
-let { file } = require("io")
-let { getUnitFileName } = require("vehicleModel")
-let { DM_VIEWER_NONE, DM_VIEWER_XRAY } = require("hangar")
-let { mkpath, file_exists } = require("dagor.fs")
-let { get_time_msec } = require("dagor.time")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getUnitCfgByTagName } = require("%appGlobals/pServer/unitCfgByTagName.nut")
-let { getPartType } = require("%globalScripts/modeXrayLib.nut")
-let { dmViewerMode, isDebugBatchExportProcess } = require("%rGui/dmViewer/dmViewerState.nut")
-let { mkUnitDataForXray, mkPartTooltipInfo } = require("%rGui/dmViewer/modeXray.nut")
+from "blkGetters" import get_unittags_blk
+from "console" import register_command, command
+from "dagor.fs" import mkpath, file_exists
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setInterval, clearTimer
+from "hangar" import DM_VIEWER_NONE, DM_VIEWER_XRAY
+from "io" import file
+from "json" import object_to_json_string
+from "string" import format
+from "vehicleModel" import getUnitFileName
+from "%sqstd/datablock.nut" import eachBlock
+from "%globalScripts/modeXrayLib.nut" import getPartType
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/pServer/unitCfgByTagName.nut" import getUnitCfgByTagName
+from "%rGui/dmViewer/dmViewerState.nut" import dmViewerMode, isDebugBatchExportProcess
+from "%rGui/dmViewer/modeXray.nut" import mkUnitDataForXray, mkPartTooltipInfo
 
-let progressId = "unitsXray"
+
+const progressId = "unitsXray"
 local loadAllItemsProgress = null
 let onFinishActions = []
 
@@ -126,7 +127,7 @@ function exportXrayPartsDescs(nullOrPartIdWhitelist = null, nullOrUnitIdWhitelis
     isDebugBatchExportProcess.set(false)
     dmViewerMode.set(DM_VIEWER_NONE)
 
-    let filePath = "export/unitsXray.json"
+    const filePath = "export/unitsXray.json"
     mkpath(filePath)
     let fp = file(filePath, "wt+")
     fp.writestring(object_to_json_string(res, true))

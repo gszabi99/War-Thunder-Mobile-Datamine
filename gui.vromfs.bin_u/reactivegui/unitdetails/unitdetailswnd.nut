@@ -1,46 +1,43 @@
 from "%globalsDarg/darg_library.nut" import *
-let { HangarCameraControl } = require("wt.behaviors")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { unitInfoPanelFull, statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
-let panelBg = require("%rGui/components/panelBg.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
-let { can_debug_units } = require("%appGlobals/permissions.nut")
-let { startTestFlight } = require("%rGui/gameModes/startOfflineMode.nut")
-let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { mkLeftBlockUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
-let { hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
-let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
-let { btnOpenUnitAttrBig } = require("%rGui/attributes/unitAttr/btnOpenUnitAttr.nut")
-let mkBtnOpenCustomization = require("%rGui/unitCustom/mkBtnOpenCustomization.nut")
-let { closeUnitDetailsWnd, baseUnit, unitToShow, isWindowAttached,
+from "wt.behaviors" import HangarCameraControl
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/permissions.nut" import can_debug_units
+from "%rGui/attributes/attrState.nut" import hasSlotAttrPreset
+from "%rGui/attributes/unitAttr/btnOpenUnitAttr.nut" import mkBtnOpenUnitAttr
+from "%rGui/components/buttonStyles.nut" import defButtonMinWidth, defButtonHeight
+import "%rGui/components/panelBg.nut" as panelBg
+from "%rGui/components/textButton.nut" import textButtonCommon
+import "%rGui/dmViewer/dmViewerBgComps.nut" as dmViewerBgComps
+import "%rGui/dmViewer/dmViewerHintComps.nut" as dmViewerHintComps
+from "%rGui/dmViewer/dmViewerState.nut" import clearDmViewerUnitDataCollection
+import "%rGui/dmViewer/mkBtnOpenProtectionAnalysis.nut" as mkBtnOpenProtectionAnalysis
+import "%rGui/dmViewer/mkDmViewerSwitchComp.nut" as mkDmViewerSwitchComp
+from "%rGui/gameModes/startOfflineMode.nut" import startTestFlight
+from "%rGui/mainMenu/gamercard.nut" import mkLeftBlockUnitCampaign
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/unit/components/unitInfoPanel.nut" import unitInfoPanelFull, statsWidth
+from "%rGui/unit/hangarUnit.nut" import hasHangarUnitResources
+import "%rGui/unit/mkUnitPkgDownloadInfo.nut" as mkUnitPkgDownloadInfo
+import "%rGui/unitCustom/mkBtnOpenCustomization.nut" as mkBtnOpenCustomization
+from "%rGui/unitDetails/unitDetailsState.nut" import closeUnitDetailsWnd, baseUnit, unitToShow, isWindowAttached,
   unitDetailsOpenCount
-} = require("%rGui/unitDetails/unitDetailsState.nut")
-let { hasSlotAttrPreset } = require("%rGui/attributes/attrState.nut")
-let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
-let { hasAlwaysModsBtnByCamp } = require("%rGui/unitMods/unitModsConst.nut")
-let { defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { clearDmViewerUnitDataCollection } = require("%rGui/dmViewer/dmViewerState.nut")
-let dmViewerBgComps = require("%rGui/dmViewer/dmViewerBgComps.nut")
-let dmViewerHintComps = require("%rGui/dmViewer/dmViewerHintComps.nut")
-let mkDmViewerSwitchComp = require("%rGui/dmViewer/mkDmViewerSwitchComp.nut")
-let mkBtnOpenProtectionAnalysis = require("%rGui/dmViewer/mkBtnOpenProtectionAnalysis.nut")
-let { mkBtnOpenUnitMastery } = require("%rGui/unitMastery/btnOpenUnitMastery.nut")
+from "%rGui/unitMastery/btnOpenUnitMastery.nut" import mkBtnOpenUnitMastery
+import "%rGui/unitMods/btnOpenUnitMods.nut" as btnOpenUnitMods
 
 
-let buttonsGap = hdpx(40)
 let infoPanelOffsetY = panelBg.padding
-let frameButtonIconSize = hdpxi(50)
-let frameButtonGap = hdpx(5)
+const frameButtonIconSize = hdpxi(50)
+const frameButtonGap = hdpx(5)
 
 let openCount = Computed(@() baseUnit.get() != null ? unitDetailsOpenCount.get() : 0)
 
 let leftBtnSizeWithRewardBtn = [defButtonMinWidth + frameButtonIconSize * 2 + frameButtonGap * 2, defButtonHeight]
 
-let defaultInfoPanelTopPad = hdpx(100)
+const defaultInfoPanelTopPad = hdpx(100)
 let infoPanelTopPadByCampaign = {
   tanks = 0
 }
@@ -104,21 +101,12 @@ function buttonsBlock() {
       isOwnUnitPreview ? mkBtnOpenUnitMastery(baseUnit, { ovr = { size = leftBtnSizeWithRewardBtn }})
         : null
       testDriveButton
-      !isOwnUnitPreview && !hasAlwaysModsBtnByCamp?[curCampaign.get()] ? null
-        : {
-            size = FLEX_H
-            flow = FLOW_HORIZONTAL
-            gap = buttonsGap
-            vplace = ALIGN_BOTTOM
-            valign = ALIGN_BOTTOM
-            children = hasSlotAttrPreset.get()
-              ? btnOpenUnitMods(baseUnit, {
-                  hotkeys = ["^J:Y"]
-                  ovr = { size = leftBtnSizeWithRewardBtn }
-                })
-              : isOwnUnitPreview ? btnOpenUnitAttrBig
-              : null
-          }
+      btnOpenUnitMods(baseUnit, {
+        hotkeys = ["^J:Y"]
+        ovr = { size = leftBtnSizeWithRewardBtn }
+      })
+      !hasSlotAttrPreset.get() && isOwnUnitPreview ? mkBtnOpenUnitAttr({ovr = { size = leftBtnSizeWithRewardBtn } })
+        : null
       btnOpenUnitCustomization
     ]
   }

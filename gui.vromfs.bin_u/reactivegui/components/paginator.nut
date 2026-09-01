@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { localPlayerColor, hoverColor } = require("%rGui/style/stdColors.nut")
+from "%rGui/style/stdColors.nut" import localPlayerColor, hoverColor
 
-let defPageColor = 0xFFC0C0C0
+
+const defPageColor = 0xFFC0C0C0
 let pageHeight = evenPx(60)
-let pageGap = hdpx(20)
+const pageGap = hdpx(20)
 
 let transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
 

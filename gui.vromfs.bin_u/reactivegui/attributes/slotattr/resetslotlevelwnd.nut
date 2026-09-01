@@ -1,29 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import slotInProgress, reset_slot_skills, registerHandler
+from "%rGui/attributes/slotAttr/slotAttrState.nut" import isOpenedSlotResetWnd, attrSlotIdx, slotLevelResetPrice,
+  slotSkillsResetPrice, isResetSlotLevelAllowed, isResetSlotSkillsAllowed, resetSlotSelectionData
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, CS_COMMON
+from "%rGui/components/gradTexts.nut" import mkGradText
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/textButton.nut" import buttonsHGap, mkCustomButton, buttonStyles, mergeStyles
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_RESET_SLOT_LEVEL, PURCH_TYPE_RESET_SLOT_LEVEL, mkBqPurchaseInfo
 from "%rGui/shop/goodsView/sharedParts.nut" import pricePlateH, mkBgParticles, mkSlotBgImg
-
-let { slotInProgress, reset_slot_skills, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-
-let { isOpenedSlotResetWnd, attrSlotIdx, slotLevelResetPrice, slotSkillsResetPrice,
-  isResetSlotLevelAllowed, isResetSlotSkillsAllowed, resetSlotSelectionData
-} = require("%rGui/attributes/slotAttr/slotAttrState.nut")
-let { buttonsHGap, mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { mkCurrencyComp, CS_COMMON } = require("%rGui/components/currencyComp.nut")
-let { selectColor, textColor, userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { mkGradText } = require("%rGui/components/gradTexts.nut")
-let { mkFontGradient } = require("%rGui/style/gradients.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
-let { PURCH_SRC_RESET_SLOT_LEVEL, PURCH_TYPE_RESET_SLOT_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/gradients.nut" import mkFontGradient
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import selectColor, textColor, userlogTextColor
 
 
-let WND_UID = "resetSlotLevelWnd"
+const WND_UID = "resetSlotLevelWnd"
 let blockSize = [hdpx(500), hdpx(280)]
-let imgSize = hdpx(150)
+const imgSize = hdpx(150)
 let textGradient = mkFontGradient(textColor, selectColor, 11, 6, 2)
 
 let close = @() isOpenedSlotResetWnd.set(false)

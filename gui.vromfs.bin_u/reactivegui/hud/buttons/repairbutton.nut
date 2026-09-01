@@ -1,28 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
-let { playSound } = require("sound_wt")
-let { playHapticPattern } = require("hapticVibration")
-let { TouchScreenButton } = require("wt.behaviors")
-let { activateActionBarAction } = require("hudActionBar")
-let { repairAssistAllow } = require("%rGui/hudState.nut")
-let { round } = require("math")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { isAvailableActionItem, mkActionItemProgressByWatches, mkActionItemCount,
-  countHeightUnderActionItem, mkActionItemBorder, abShortcutImageOvr
-} = require("%rGui/hud/buttons/actionButtonComps.nut")
-let { touchButtonSize, borderWidth, imageColor, imageDisabledColor
-} = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { mkActionGlare, mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
-let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
-let { HAPT_REPAIR } = require("%rGui/hud/hudHaptic.nut")
-let { updateActionBarDelayed, actionBarItems, emptyActionItem, actionItemsInCd
-} = require("%rGui/hud/actionBar/actionBarState.nut")
-let { AB_TOOLKIT_WITH_MEDICAL, AB_TOOLKIT, AB_MEDICALKIT } = require("%rGui/hud/actionBar/actionType.nut")
-let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
-let { hudBlackColor } = require("%rGui/style/hudColors.nut")
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "hapticVibration" import playHapticPattern
+from "hudActionBar" import activateActionBarAction
+from "math" import round
+from "sound_wt" import playSound
+from "wt.behaviors" import TouchScreenButton
+from "%rGui/controls/disabledControls.nut" import mkIsControlDisabled
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadHotkey, mkGamepadShortcutImage
+from "%rGui/hud/actionBar/actionBarState.nut" import updateActionBarDelayed, actionBarItems, emptyActionItem,
+  actionItemsInCd
+from "%rGui/hud/actionBar/actionType.nut" import AB_TOOLKIT_WITH_MEDICAL, AB_TOOLKIT, AB_MEDICALKIT
+from "%rGui/hud/buttons/actionButtonComps.nut" import isAvailableActionItem, mkActionItemProgressByWatches,
+  mkActionItemCount, countHeightUnderActionItem, mkActionItemBorder, abShortcutImageOvr
+from "%rGui/hud/hudHaptic.nut" import HAPT_REPAIR
+from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize, borderWidth, imageColor, imageDisabledColor
+from "%rGui/hud/weaponsButtonsAnimations.nut" import mkActionGlare, mkConsumableSpend
+from "%rGui/hudHints/commonHintLogState.nut" import addCommonHint
+from "%rGui/hudState.nut" import repairAssistAllow
+from "%rGui/style/hudColors.nut" import hudBlackColor
 
 
-let SPLIT_HOLD_TIME = 0.3
+const SPLIT_HOLD_TIME = 0.3
 let touchMargin = sh(2.5).tointeger()
 
 let iconByAType = {
@@ -91,6 +89,7 @@ function mkSlaveButton(aType, box, hoverAType, stateFlagsBase, borderW) {
   let stateFlags = Computed(@() hoverAType.get() == aType ? stateFlagsBase.get() : 0)
   let actionItem = Computed(@() actionBarItems.get()?[aType])
   let isAvailable = Computed(@() actionItem.get() != null && isAvailableActionItem(actionItem.get()))
+  let isUnavailable = Computed(@() !isAvailable.get())
   let isVisible = Computed(@() actionItem.get() != null)
   let size = [box.r - box.l, box.b - box.t]
   let bg = mkBlackBg(box, borderW)
@@ -102,7 +101,7 @@ function mkSlaveButton(aType, box, hoverAType, stateFlagsBase, borderW) {
         children = [
           bg
           mkActionItemProgressByWatches(actionItem, isAvailable, size[0])
-          mkActionItemBorder(borderW, stateFlags, Computed(@() !isAvailable.get()))
+          mkActionItemBorder(borderW, stateFlags, isUnavailable)
           @() {
             watch = isAvailable
             rendObj = ROBJ_IMAGE
@@ -123,6 +122,7 @@ function tankRrepairButtonCtor(scale) {
   let shortcutId = Computed(@() getTankActionBarShortcut(actionItem.get()))
   let isDisabled = mkIsControlDisabled(shortcutId)
   let isAvailable = Computed(@() actionItem.get() != null && !isDisabled.get() && isAvailableActionItem(actionItem.get()))
+  let isUnavailable = Computed(@() !isAvailable.get())
   let point = Watched(null)
   let isHold = Watched(false)
   let hasMedical = Computed(@() (actionBarItems.get()?[AB_MEDICALKIT].count ?? 0) > 0)
@@ -156,8 +156,9 @@ function tankRrepairButtonCtor(scale) {
     return bestDistance <= touchMargin ? res : null
   })
   let stateFlagsMain = Computed(@() hoverAType.get() == AB_TOOLKIT_WITH_MEDICAL ? stateFlags.get() : 0)
+  let slaveButtons = smallButtons.map(@(c) mkSlaveButton(c.aType, c.box, hoverAType, stateFlags, borderW))
   let markHold = @() isHold.set(true)
-  let function onActionClick(actionType) {
+  function onActionClick(actionType) {
     let action = actionBarItems.get()?[actionType]
     if (action == null)
       return
@@ -198,10 +199,10 @@ function tankRrepairButtonCtor(scale) {
                     watch = hasSmallButtons
                     size = [btnSize, btnSize]
                     children = [ blackBg ]
-                      .extend(smallButtons.map(@(c) mkSlaveButton(c.aType, c.box, hoverAType, stateFlags, borderW)))
+                      .extend(slaveButtons)
                   }
               mkActionItemProgressByWatches(actionItem, isAvailable, btnSize)
-              mkActionItemBorder(borderW, stateFlagsMain, Computed(@() !isAvailable.get()))
+              mkActionItemBorder(borderW, stateFlagsMain, isUnavailable)
               @() {
                 watch = [isAvailable, btnImage, repairAssistAllow]
                 rendObj = ROBJ_IMAGE

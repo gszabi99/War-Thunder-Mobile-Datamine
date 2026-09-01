@@ -1,16 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
-from "%rGui/style/backgrounds.nut" import bgShaded
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkStatusContent
 from "%rGui/notifications/consentTcf/consentTcfState.nut" import isOpenedConsentTcfWnd, isConsentInitializing,
   isVendorDataLoading, isLoadError, isOpenedPartners, isOpenedPartnersExt, isOpenedManage, showPurposeInfo,
   totalPartners, doSkipClose
-from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkStatusContent
 import "%rGui/notifications/consentTcf/mkPageIntro.nut" as mkPageIntro
-import "%rGui/notifications/consentTcf/mkPagePartners.nut" as mkPagePartners
 import "%rGui/notifications/consentTcf/mkPageManage.nut" as mkPageManage
-import "%rGui/notifications/consentTcf/mkPagePurpose.nut" as mkPagePurpose
+import "%rGui/notifications/consentTcf/mkPagePartners.nut" as mkPagePartners
 import "%rGui/notifications/consentTcf/mkPagePartnersExt.nut" as mkPagePartnersExt
+import "%rGui/notifications/consentTcf/mkPagePurpose.nut" as mkPagePurpose
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+
 
 const key = "consentTcf"
 

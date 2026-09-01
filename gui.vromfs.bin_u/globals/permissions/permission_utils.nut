@@ -1,8 +1,8 @@
+from "dagor.debug" import logerr
+from "jwt" import decode
 
-let { decode } = require("jwt")
-let { logerr } = require("dagor.debug")
 
-let permissionsPublicKey = @"
+const permissionsPublicKey = @"
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDq1fQVfvjjJaxYIGzYZ/SI89kY
 +7wTCbMROLlRUHMwWDq/358LzKaFZI+8yOikE2c3Bn/qcvVUHtDGYSLc3GqDRwNl
 ZrWrbasCa6rnb+Qki2o6XLaHylMEPYlOOpY8dvI9DZNtGs4en7B++9usmI7nSkBV

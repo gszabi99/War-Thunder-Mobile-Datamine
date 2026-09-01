@@ -1,45 +1,40 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { can_debug_configs, can_debug_missions, can_use_debug_console, can_view_replays, can_write_replays,
-  has_offline_battle_access
-} = require("%appGlobals/permissions.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { openDebugProfileWnd } = require("%rGui/debugTools/debugProfileWnd.nut")
-let { openDebugConfigWnd } = require("%rGui/debugTools/debugConfigsWnd.nut")
-let debugShopWnd = require("%rGui/debugTools/debugShopWnd.nut")
-let openDebugCommandsWnd = require("%rGui/debugTools/debugCommandsWnd.nut")
-let debugQuirrelConsoleWnd = require("%rGui/debugTools/debugQuirrelConsoleWnd.nut")
-let optionsScene = require("%rGui/options/optionsScene.nut")
-let debugGameModes = require("%rGui/gameModes/debugGameModes.nut")
-let chooseBenchmarkWnd = require("%rGui/mainMenu/chooseBenchmarkWnd.nut")
-let { accountOptionsScene, setCurTabId } = require("%rGui/options/accountOptionsScene.nut")
-let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
-let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
-let { openNewsWnd, isFeedReceived } = require("%rGui/news/newsState.nut")
-let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
-let { startTestFlight, startTestFlightByName } = require("%rGui/gameModes/startOfflineMode.nut")
-let { isLoginAwardOpened, canShowLoginAwards } = require("%rGui/unlocks/loginAwardState.nut")
-let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
-let { startTutor, firstBattleTutor } = require("%rGui/tutorial/tutorialMissions.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
-let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
-let { openBugReport } = require("%rGui/feedback/bugReport.nut")
-let { openOfflineBattleMenu } = require("%rGui/gameModes/offlineBattlesState.nut")
-let { start_hangar_challenge } = require("guiHangarChallenge")
+from "eventbus" import eventbus_subscribe
+from "%sqstd/underscore.nut" import arrayByRows
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%appGlobals/clientState/initialState.nut" import isOfflineMenu
+from "%appGlobals/permissions.nut" import can_debug_configs, can_debug_missions, can_use_debug_console,
+  can_view_replays, can_write_replays, has_offline_battle_access
+from "%rGui/components/msgBox.nut" import openMsgBox
+import "%rGui/controls/help/controlsHelpWnd.nut" as controlsHelpWnd
+import "%rGui/debugTools/debugCommandsWnd.nut" as openDebugCommandsWnd
+from "%rGui/debugTools/debugConfigsWnd.nut" import openDebugConfigWnd
+from "%rGui/debugTools/debugProfileWnd.nut" import openDebugProfileWnd
+import "%rGui/debugTools/debugQuirrelConsoleWnd.nut" as debugQuirrelConsoleWnd
+import "%rGui/debugTools/debugShopWnd.nut" as debugShopWnd
+from "%rGui/feedback/bugReport.nut" import openBugReport
+import "%rGui/gameModes/debugGameModes.nut" as debugGameModes
+from "%rGui/gameModes/offlineBattlesState.nut" import openOfflineBattleMenu
+from "%rGui/gameModes/startOfflineMode.nut" import startTestFlight, startTestFlightByName
+import "%rGui/mainMenu/chooseBenchmarkWnd.nut" as chooseBenchmarkWnd
+from "%rGui/news/newsState.nut" import openNewsWnd, isFeedReceived
+from "%rGui/options/accountOptionsScene.nut" import accountOptionsScene, setCurTabId
+import "%rGui/options/optionsScene.nut" as optionsScene
+from "%rGui/replay/lastReplayState.nut" import hasUnsavedReplay
+import "%rGui/replay/saveReplayWindow.nut" as saveReplayWindow
+import "%rGui/squad/notAvailableForSquadMsg.nut" as notAvailableForSquadMsg
+from "%rGui/tutorial/tutorialMissions.nut" import startTutor, firstBattleTutor
+from "%rGui/unit/hangarUnit.nut" import hangarUnit
+from "%rGui/unlocks/loginAwardState.nut" import isLoginAwardOpened, canShowLoginAwards
+from "%rGui/unlocks/userstat.nut" import isUserstatMissingData
 
 
-let TF_SHIP_TUNE_MISSION = "testFlight_ship_tuning_tfs"
-let TF_SHIP_VS_PLANES_MISSION = "testFlight_ship_aaa_vs_planes"
-let TEST_AIR_BATTLE_MISSION = "abandoned_factory_single_AD"
-let TEST_AIR_BATTLE_UNIT = "fw_190a_1"
+const TF_SHIP_TUNE_MISSION = "testFlight_ship_tuning_tfs"
+const TF_SHIP_VS_PLANES_MISSION = "testFlight_ship_aaa_vs_planes"
+const TEST_AIR_BATTLE_MISSION = "abandoned_factory_single_AD"
+const TEST_AIR_BATTLE_UNIT = "fw_190a_1"
 
-let MAX_ROWS_COUNT = 11
-
-let hangarChallengeMissionName = "gamedata/missions/singlemissions/challenges/tank/hangar_challenge_tank_diff1.blk"
+const MAX_ROWS_COUNT = 11
 
 let openConfirmationTutorialMsg = @() openMsgBox({
   text = loc("tutorial/startConfirmation")
@@ -77,10 +72,6 @@ let TF_SHIP_TUNE = {
       { id = "cancel", isCancel = true }
     ]
   })
-}
-let TEST_CHALLENGES = {
-  name = "Start Hangar Challenge"
-  cb = @() start_hangar_challenge(hangarChallengeMissionName)
 }
 let TEST_AIR_BATTLE = {
   name = "Test Air Battle"
@@ -182,9 +173,7 @@ function getDevButtons() {
     return res
 
   if (can_debug_missions.get())
-    res.append(TEST_FLIGHT, TF_SHIP_TUNE,
-      curCampaign.get() == "tanks" ? TEST_CHALLENGES : null,
-      TEST_AIR_BATTLE, BENCHMARK, DEBUG_EVENTS)
+    res.append(TEST_FLIGHT, TF_SHIP_TUNE, TEST_AIR_BATTLE, BENCHMARK, DEBUG_EVENTS)
   else if (isOfflineMenu)
     res.append(TEST_FLIGHT, BENCHMARK)
   if (can_debug_configs.get())

@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%globalsDarg/interop.nut" import registerInteropFunc
+import "%rGui/interopGen.nut" as interopGen
+from "%rGui/radar/radarState.nut" import showRadarOverMap, IsRadarVisible
 
-let interopGen = require("%rGui/interopGen.nut")
-let { showRadarOverMap, IsRadarVisible } = require("%rGui/radar/radarState.nut")
-let { registerInteropFunc } = require("%globalsDarg/interop.nut")
 
 let compassState = {
   CompassValue = Watched(0)

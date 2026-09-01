@@ -1,14 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { LOGIN_UPDATER_EVENT_ID, isAuthAndUpdated, isLoginStarted
-} = require("%appGlobals/loginState.nut")
-let { UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS, UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH,
-  UPDATER_CHECKING, UPDATER_DOWNLOADING, UPDATER_PURIFYING, UPDATER_ERROR
-} = require("contentUpdater")
-let { register_command } = require("console")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { rnd_int } = require("dagor.random")
-let { chooseRandom } = require("%sqstd/rand.nut")
+from "console" import register_command
+from "contentUpdater" import UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
+  UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH, UPDATER_CHECKING, UPDATER_DOWNLOADING, UPDATER_PURIFYING, UPDATER_ERROR
+from "dagor.random" import rnd_int
+from "dagor.workcycle" import setInterval, clearTimer
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "%sqstd/rand.nut" import chooseRandom
+from "%appGlobals/loginState.nut" import LOGIN_UPDATER_EVENT_ID, isAuthAndUpdated, isLoginStarted
+
 
 let updaterState = Watched(null)
 let isDebugMode = mkWatched(persist, "isDebugMode", false)

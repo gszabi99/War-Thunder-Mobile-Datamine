@@ -1,19 +1,21 @@
+from "%globalScripts/gameRendObjs.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { defer } = require("dagor.workcycle")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { isHcRender, shouldShowHc, isHcUnitHit, hcUnitType, hcFadeTime, hcResult, hcRelativeHealth
-} = require("%rGui/hud/hitCamera/hitCameraState.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { hitCameraRenderSize, hitResultStyle } = require("%rGui/hud/hitCamera/hitCameraConfig.nut")
-let hitCameraDmgPanel = require("%rGui/hud/hitCamera/hitCameraDmgPanel.nut")
-let hitCameraDebuffs = require("%rGui/hud/hitCamera/hitCameraDebuffs.nut")
-let { hitCameraResultPlate, hitResultPlateHeight } = require("%rGui/hud/hitCamera/hitCameraResultPlate.nut")
-let { gradCircularSqCorners, gradCircCornerOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { hudTransparentBlackColor } = require("%rGui/style/hudColors.nut")
+from "dagor.workcycle" import defer
+from "%sqstd/string.nut" import utf8ToUpper
+from "%globalsDarg/fontScale.nut" import getScaledFont
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/hud/hitCamera/hitCameraConfig.nut" import hitCameraRenderSize, hitResultStyle
+import "%rGui/hud/hitCamera/hitCameraDebuffs.nut" as hitCameraDebuffs
+import "%rGui/hud/hitCamera/hitCameraDmgPanel.nut" as hitCameraDmgPanel
+from "%rGui/hud/hitCamera/hitCameraResultPlate.nut" import hitCameraResultPlate, hitResultPlateHeight
+from "%rGui/hud/hitCamera/hitCameraState.nut" import isHcRender, shouldShowHc, isHcUnitHit, hcUnitType, hcFadeTime,
+  hcResult, hcRelativeHealth
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderColor
+from "%rGui/style/gradients.nut" import gradCircularSqCorners, gradCircCornerOffset, simpleHorGrad
+from "%rGui/style/hudColors.nut" import hudTransparentBlackColor
 
-let maxResultTextWidth = hdpx(330)
+
+const maxResultTextWidth = hdpx(330)
 let needShow = Watched(shouldShowHc.get())
 
 

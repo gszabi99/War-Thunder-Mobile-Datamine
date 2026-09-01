@@ -2316,8 +2316,8 @@
     },
     "tracks": {
       "animationMultiplier": 0.62,
-      "height": 0.055,
-      "width": 0.5,
+      "height": 0.06,
+      "width": 0.55,
       "fricSideRotAlternative": [
         5.0,
         0.0,
@@ -2338,7 +2338,7 @@
       "maxBrakeForce": 124000.0,
       "driveGearRadius": 0.34,
       "mainGearRatio": 4.03,
-      "sideGearRatio": 2.74,
+      "sideGearRatio": 2.34,
       "alternativeGearControl": 1.0,
       "gearRatios": {
         "ratio": [

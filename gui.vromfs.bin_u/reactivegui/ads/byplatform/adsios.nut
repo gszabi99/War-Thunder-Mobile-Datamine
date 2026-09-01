@@ -1,23 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let logA = log_with_prefix("[ADS] ")
-let { eventbus_subscribe } = require("eventbus")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { parse_json, object_to_json_string } = require("json")
-let { DBGLEVEL } = require("dagor.system")
-let { is_ios } = require("%sqstd/platform.nut")
-let { rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT, RETRY_INC_TIMEOUT,
-  providerPriorities, onShowAds, openAdsPreloader, isOpenedAdsPreloaderWnd, closeAdsPreloader,
+from "dagor.system" import DBGLEVEL
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "eventbus" import eventbus_subscribe
+from "json" import parse_json, object_to_json_string
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/platform.nut" import is_ios
+from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
+from "%rGui/ads/adsInternalState.nut" import rewardInfo, giveReward, onFinishShowAds, RETRY_LOAD_TIMEOUT,
+  RETRY_INC_TIMEOUT, providerPriorities, onShowAds, openAdsPreloader, isOpenedAdsPreloaderWnd, closeAdsPreloader,
   hasAdsPreloadError, adsPreloadParams, failedProviders, isShowStarted
-} = require("%rGui/ads/adsInternalState.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+from "%rGui/notifications/logEvents.nut" import logFirebaseEventWithJson
+from "types" import Integer
+
+
+let logA = log_with_prefix("[ADS] ")
 let ads = is_ios ? require("ios.ads") : require("%rGui/ads/byPlatform/adsIosDbg.nut")
 let sendAdsBqEvent = is_ios ? require("%rGui/ads/sendAdsBqEvent.nut") : @(_, __, ___ = null) null
-let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_OK, ADS_STATUS_FAIL_IN_QUEUE_SKIP,
   setTestingMode, isAdsInited, getProvidersStatus, addProviderInitWithPriority, setPriorityForProvider,
   isAdsLoaded, loadAds, showAds, setTimeout
 } = ads
-let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
 
 
 let isInited = Watched(isAdsInited())
@@ -66,17 +68,21 @@ function initProviders() {
       setPriorityForProvider(id, -1) 
 
   foreach (id, p in providers)
-    if (id in initedProviders)
+    if (id in initedProviders) {
       setPriorityForProvider(id, p.priority)
-    else
-      addProviderInitWithPriority(id, p.key, p.priority)
+    } else {
+      
+      let initParams = p?.key && p.key != "" ? p.key : object_to_json_string(p.params)
+      addProviderInitWithPriority(id, initParams, p.priority)
+    }
+
 }
 initProviders()
 providerPriorities.subscribe(@(_) initProviders())
 
 let statusNames = {}
 foreach(id, val in ads)
-  if (type(val) != "integer")
+  if (!(val instanceof Integer))
     continue
   else if (id.startswith("ADS_STATUS_"))
     statusNames[val] <- id

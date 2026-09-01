@@ -1,12 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let { register_command } = require("console")
-let { round } =  require("math")
-let { setDrawNativeAirCrosshair, setDrawNativeHitIndicator } = require("hudState")
-let interopGet = require("%rGui/interopGen.nut")
-let { battleUnitName } = require("%appGlobals/clientState/clientState.nut")
-let { DM_TEST_EMPTY } = require("crosshair")
-let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
+from "console" import register_command
+from "crosshair" import DM_TEST_EMPTY
+from "hudState" import setDrawNativeAirCrosshair, setDrawNativeHitIndicator
+from "math" import round
+import "%globalScripts/isAppLoaded.nut" as isAppLoaded
+from "%appGlobals/clientState/clientState.nut" import battleUnitName
+import "%rGui/interopGen.nut" as interopGet
+from "types" import String
+
 
 let hudStateNative = {
   playerUnitName = ""
@@ -64,7 +66,7 @@ let nativeToUnitType = {
 
 let nativeUnitType = hudStateNative.unitType
 let unitType = Computed(@(prev) nativeToUnitType?[nativeUnitType.get()]
-  ?? (type(prev) == "string" ? prev : null))
+  ?? (prev instanceof String ? prev : null))
 
 let isUnitDelayedNative = hudStateNative.isUnitDelayed
 let forceDelayed = mkWatched(persist, "forceDelayed", false)
@@ -77,8 +79,8 @@ hudStateNative.playerUnitName.subscribe(@(v) (v ?? "") != "" ? battleUnitName.se
 
 isUnitDelayed.subscribe(@(v) v ? null : anim_start("unitDelayFinished"))
 
-let HM_COMMON = 0x001
-let HM_MANUAL_ANTIAIR = 0x002
+const HM_COMMON = 0x001
+const HM_MANUAL_ANTIAIR = 0x002
 
 let isInAntiairMode = hudStateNative.isInAntiairMode
 let hudMode = Computed(@() isInAntiairMode.get() ? HM_MANUAL_ANTIAIR : HM_COMMON)

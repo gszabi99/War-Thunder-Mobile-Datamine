@@ -1,8 +1,8 @@
+from "%sqstd/globalState.nut" import hardPersistWatched
 
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
 
-let rights = sharedWatched("rights", @() {})
-let rightsError = sharedWatched("rightsError", @() null)
+let rights = hardPersistWatched("rights", {})
+let rightsError = hardPersistWatched("rightsError", null)
 
 return {
   rights

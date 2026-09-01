@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { parse_json } = require("json")
-let { register_command } = require("console")
-let { eventbus_subscribe } = require("eventbus")
-let { getAppsFlyerDeepLink, clearAppsFlyerDeepLink, triggerAppsFlyerDeepLink } = require("appsFlyer")
-let { curCampaign, campaignsList, isAnyCampaignSelected, setCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { apply_deeplink_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
+from "appsFlyer" import getAppsFlyerDeepLink, clearAppsFlyerDeepLink, triggerAppsFlyerDeepLink
+from "console" import register_command
+from "eventbus" import eventbus_subscribe
+from "json" import parse_json
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import curCampaign, campaignsList, isAnyCampaignSelected, setCampaign
+from "%appGlobals/pServer/pServerApi.nut" import apply_deeplink_reward, registerHandler
+
 
 let savedDeepLink = Watched(null)
 let hasSavedDeepLink = Computed(@() savedDeepLink.get() != null)

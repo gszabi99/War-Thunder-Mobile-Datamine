@@ -1,18 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
+from "dagor.time" import get_time_msec
+from "eventbus" import eventbus_subscribe
+from "%sqstd/time.nut" import secondsToTimeSimpleString
+from "%sqstd/underscore.nut" import isEqual
+from "%globalScripts/timers.nut" import mkCountdownTimerSec
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/unitConst.nut" import SHIP, BOAT, SUBMARINE
+from "%rGui/hud/crewState.nut" import crewState, crewDriverState, crewGunnerState, crewLoaderState
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/hudHints/commonHintLogState.nut" import modifyOrAddEvent
+from "%rGui/hudState.nut" import unitType
 
-let { eventbus_subscribe } = require("eventbus")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
-let { get_time_msec } = require("dagor.time")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { crewState, crewDriverState, crewGunnerState, crewLoaderState } = require("%rGui/hud/crewState.nut")
-let { mkCountdownTimerSec } = require("%globalScripts/timers.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { modifyOrAddEvent } = require("%rGui/hudHints/commonHintLogState.nut")
-let { unitType } = require("%rGui/hudState.nut")
-let { SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
 
-let REPAIR_SHOW_TIME_THRESHOLD = 0.5
-let winkFast = 1.5
+const REPAIR_SHOW_TIME_THRESHOLD = 0.5
+const winkFast = 1.5
 
 let activeTimers = mkWatched(persist, "activeTimers", {}) 
 let timersVisibility = Computed(function(prev) {
@@ -67,14 +68,14 @@ let onRepair = @(data) activeTimers.mutate(function onRepairImpl(actTimers) {
     winkPeriod = isPrepare ? winkFast : 0
   })
 })
-eventbus_subscribe("TankDebuffs:Repair", onRepair)
-eventbus_subscribe("ShipDebuffs:Repair", onRepair)
+subscribeHudEvent("TankDebuffs:Repair", onRepair)
+subscribeHudEvent("ShipDebuffs:Repair", onRepair)
 
-let function repairMessage(val) {
+function repairMessage(val) {
   if (unitType.get() == SHIP || unitType.get() == BOAT || unitType.get() == SUBMARINE)
     return
 
-  let msgId = "MSG_EVENT_HINT"
+  const msgId = "MSG_EVENT_HINT"
   modifyOrAddEvent({
     id = msgId
     hType = "simpleTextTiny"
@@ -86,7 +87,7 @@ let function repairMessage(val) {
 getTimerCountdownSec("repair_auto_status").subscribe(repairMessage)
 getTimerCountdownSec("repair_status").subscribe(repairMessage)
 
-eventbus_subscribe("ShipDebuffs:Extinguish", @(data) activeTimers.mutate(function onExtinguish(actTimers) {
+subscribeHudEvent("ShipDebuffs:Extinguish", @(data) activeTimers.mutate(function onExtinguish(actTimers) {
   let { state, time = 0 } = data
   if (state == "notInExtinguish" || time <= 0)
     deleteF(actTimers, "extinguish_status")
@@ -94,7 +95,7 @@ eventbus_subscribe("ShipDebuffs:Extinguish", @(data) activeTimers.mutate(functio
     actTimers.extinguish_status <- mkTimer(time, { needCountdown = true })
 }))
 
-eventbus_subscribe("ShipDebuffs:CancelExtinguish", @(data) onCancelAction("extinguish_status", data?.time ?? 0))
+subscribeHudEvent("ShipDebuffs:CancelExtinguish", @(data) onCancelAction("extinguish_status", data?.time ?? 0))
 
 let onMoveCooldown = @(data) activeTimers.mutate(function onMoveCooldownImpl(actTimers) {
   let { time = 0 } = data
@@ -104,9 +105,9 @@ let onMoveCooldown = @(data) activeTimers.mutate(function onMoveCooldownImpl(act
     actTimers.move_cooldown_status <- mkTimer(time, { isForward = false })
 })
 eventbus_subscribe("TankDebuffs:MoveCooldown", onMoveCooldown)
-eventbus_subscribe("ShipDebuffs:Cooldown", onMoveCooldown)
+subscribeHudEvent("ShipDebuffs:Cooldown", onMoveCooldown)
 
-eventbus_subscribe("ShipDebuffs:RepairBreaches", @(data) activeTimers.mutate(function onRepairBreaches(actTimers) {
+subscribeHudEvent("ShipDebuffs:RepairBreaches", @(data) activeTimers.mutate(function onRepairBreaches(actTimers) {
   let { state, time = 0 } = data
   if (time <= 0 || state == "notInRepair") {
     deleteF(actTimers, "unwatering_status")
@@ -118,7 +119,7 @@ eventbus_subscribe("ShipDebuffs:RepairBreaches", @(data) activeTimers.mutate(fun
   actTimers[timerId] <- mkTimer(time, { needCountdown = true })
 }))
 
-eventbus_subscribe("ShipDebuffs:CancelRepairBreaches", @(data) onCancelAction(
+subscribeHudEvent("ShipDebuffs:CancelRepairBreaches", @(data) onCancelAction(
   "unwatering_status" in activeTimers.get() ? "unwatering_status" : "repair_breaches_status",
   data?.time ?? 0))
 
@@ -133,7 +134,7 @@ let onRearm = @(data) activeTimers.mutate(function onRearmImpl(actTimers) {
   }
 })
 eventbus_subscribe("TankDebuffs:Rearm", onRearm)
-eventbus_subscribe("ShipDebuffs:Rearm", onRearm)
+subscribeHudEvent("ShipDebuffs:Rearm", onRearm)
 
 eventbus_subscribe("TankDebuffs:Replenish", @(data) activeTimers.mutate(function onReplenish(actTimers) {
   let { isReplenishActive = false, periodTime = 0, currentLoadTime = 0 } = data
@@ -178,8 +179,8 @@ crewDriverState.subscribe(@(data) onCrewMemberState("driver_status", data))
 crewGunnerState.subscribe(@(data) onCrewMemberState("gunner_status", data))
 crewLoaderState.subscribe(@(data) onCrewMemberState("loader_status", data))
 
-eventbus_subscribe("LocalPlayerDead", clearTimers)
-eventbus_subscribe("MissionResult", clearTimers)
+subscribeHudEvent("LocalPlayerDead", clearTimers)
+subscribeHudEvent("MissionResult", clearTimers)
 isInBattle.subscribe(@(_) clearTimers(null))
 
 return {

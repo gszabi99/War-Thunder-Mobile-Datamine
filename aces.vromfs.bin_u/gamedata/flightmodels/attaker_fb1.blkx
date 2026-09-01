@@ -1,7 +1,7 @@
 {
   "model": "attaker_fb1",
   "fmFile": "fm/attaker_fb1.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "useTouchTargeting": true,
   "gearSinkRangeLR": 0.186,
   "gearSinkRangeC": 0.099,

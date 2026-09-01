@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/legal.nut" import PRIVACY_POLICY_URL
+from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkStatusContent, mkManageButtons,
+  mkTextarea, mkTextareaWithLinks, mkLink, openUrl, separatorLine, gapAbove, gapBelow, fadedAndMinor, fontMinor
 from "%rGui/notifications/consentTcf/consentTcfState.nut" import showPurposeInfo, isOpenedManage, isOpenedPartnersExt,
-  getPurposesList, getSpecialPurposesList, getFeaturesList,
-  debugShowIds, PRIVACY_CHOICES_SAVED_MONTHS
-from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkStatusContent, mkManageButtons, mkTextarea,
-  mkTextareaWithLinks, mkLink, openUrl, separatorLine, gapAbove, gapBelow, fadedAndMinor, fontMinor
+  getPurposesList, getSpecialPurposesList, getFeaturesList, debugShowIds, PRIVACY_CHOICES_SAVED_MONTHS
 from "%rGui/notifications/consentTcf/mkExpandableSwitch.nut" import mkExpandableSwitch, mkSwitch, mkExpandable
+
 
 const BQ_WND_ID = "consentManage"
 

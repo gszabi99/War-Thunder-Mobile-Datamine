@@ -1,4 +1,5 @@
-let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
+from "%appGlobals/unitTags.nut" import getUnitTagsCfg
+
 
 let mkUnitData = @(id) {
   name = id

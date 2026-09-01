@@ -1,21 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round, round_by_value, lerpClamped, abs } = require("%sqstd/math.nut")
-let { getUnitType, getUnitTagsShop } = require("%appGlobals/unitTags.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { applyAttrLevels } = require("%rGui/attributes/attrValues.nut")
-let { TANK, SHIP, SUBMARINE, AIR } = require("%appGlobals/unitConst.nut")
-let { loadUnitWeaponSlots, loadUnitTorpedoSeriesDuration } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { getWeaponShortNameWithCount, getWeaponTypeName } = require("%rGui/weaponry/weaponsVisual.nut")
-let { getSpeedText } = require("%rGui/measureUnits.nut")
-let { format } = require("string")
+from "string" import format
+from "%sqstd/math.nut" import round, round_by_value, lerpClamped, abs
+from "%appGlobals/unitConst.nut" import TANK, SHIP, SUBMARINE, AIR
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/unitTags.nut" import getUnitType, getUnitTagsShop
+from "%rGui/attributes/attrValues.nut" import applyAttrLevels
+from "%rGui/measureUnits.nut" import getSpeedText
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitWeaponSlots, loadUnitTorpedoSeriesDuration
+from "%rGui/weaponry/weaponsVisual.nut" import getWeaponShortNameWithCount, getWeaponTypeName
+from "types" import Integer, Float
 
-let aircraftMark = "▭"
-let cannonMark = "⋖"
 
-let goodPenetrationColor = 0xFF64B140
-let normalPenetrationColor = 0xFFFFD966
-let badPenetrationColor = 0xFFE06666
-let addedFromSlot = 0xFF65BC82
+const aircraftMark = "▭"
+const cannonMark = "⋖"
+
+const goodPenetrationColor = 0xFF64B140
+const normalPenetrationColor = 0xFFFFD966
+const badPenetrationColor = 0xFFE06666
+const addedFromSlot = 0xFF65BC82
 
 let armorProtectionPercentageColors = [
   goodPenetrationColor,
@@ -454,7 +456,7 @@ function getAirGunName(s, u, isFullName = true) {
     return ""
   let bSet = weapon.bulletSets[weapon.bulletSets.keys()[0]]
   let totalWeapByCaliberAndType = getTotalWeaponAmountByCaliberAndType(loadUnitWeaponSlots(u.name), bSet.caliber, s.type)
-  let withAnyCount = true
+  const withAnyCount = true
   return isFullName ? getWeaponShortNameWithCount(weapon, bSet, withAnyCount, "weapons/counter/right/short")
     : $"{format(loc("caliber/mm"), bSet.caliber)} {format(loc("weapons/counter/right/short"), totalWeapByCaliberAndType)}"
 }
@@ -490,7 +492,7 @@ let mkAirSecondaryWeapon = @(id) mkStat(id, {
   isAvailable = @(_) true
 }, AIR)
 
-let fullGunWeaponId = "fullGunWeapon"
+const fullGunWeaponId = "fullGunWeapon"
 let mkAirFullGunWeapon = @(id) mkStat(id, {
   id = fullGunWeaponId
   secondaryId = id
@@ -727,7 +729,7 @@ function appendStatValue(res, stat, shopCfg) {
   if (!stat.isAvailable(shopCfg))
     return null
   let value = stat.getValue(shopCfg)
-  if (type(value) != "integer" && type(value) != "float")
+  if (!(value instanceof Integer) && !(value instanceof Float))
     return null
   res[stat.id] <- (res?[stat.id] ?? []).append(value)
   return value

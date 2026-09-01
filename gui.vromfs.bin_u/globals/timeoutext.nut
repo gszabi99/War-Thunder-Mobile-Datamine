@@ -1,9 +1,10 @@
 from "%globalScripts/logs.nut" import *
-from "dagor.workcycle" import resetTimeout, clearTimer, hasTimer, deferOnce
 from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, clearTimer, hasTimer, deferOnce
 from "%appGlobals/windowState.nut" import windowActive
 
-let CLEAR_AFTER_COUNT = 20
+
+const CLEAR_AFTER_COUNT = 20
 
 let timers = {}
 local resetCount = 0

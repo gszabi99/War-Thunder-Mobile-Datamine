@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { OPT_HUD_RELOAD_STYLE, mkOptionValue } = require("%rGui/options/guiOptions.nut")
+from "%rGui/options/guiOptions.nut" import OPT_HUD_RELOAD_STYLE, mkOptionValue
+
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 

@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { curTipInfo, enableTipsUpdate, disableTipsUpdate, GLOBAL_LOADING_TIP_BIT
-} = require("%globalsDarg/loading/loadingTips.nut")
-let { unitTypeFontIcons, unitTypeColors } = require("%appGlobals/unitPresentation.nut")
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%appGlobals/unitPresentation.nut" import unitTypeFontIcons, unitTypeColors
+from "%globalsDarg/loading/loadingTips.nut" import curTipInfo, enableTipsUpdate, disableTipsUpdate,
+  GLOBAL_LOADING_TIP_BIT
+
 
 let unitTypeWeights = {
   [BIT_TANK] = 100,
@@ -12,16 +13,16 @@ let unitTypeWeights = {
   [GLOBAL_LOADING_TIP_BIT] = 15,
 }
 
-let iconColorDefault = 0xFF808080
-let textColor = 0xFFE0E0E0
+const iconColorDefault = 0xFF808080
+const textColor = 0xFFE0E0E0
 
-let gradTexSize = 64
+const gradTexSize = 64
 let gradDoubleTexOffset = (0.5 * gradTexSize).tointeger() - 2
 
 let mkWhite = @(part) part + (part << 8) + (part << 16) + (part << 24)
 let gradTranspDobuleSideX = mkBitmapPictureLazy(gradTexSize, 4, function(params, bmp) {
   let { w, h } = params
-  let middle = 0.4
+  const middle = 0.4
   for (local x = 0; x < w; x++) {
     let rel = x.tofloat() / (w - 1)
     let v = rel < middle ? rel / middle
@@ -54,10 +55,10 @@ function loadingTip() {
 }
 
 let gradientLoadingTip = @() {
-  size = [hdpx(1200), SIZE_TO_CONTENT]
+  size = const [hdpx(1200), SIZE_TO_CONTENT]
   hplace = ALIGN_CENTER
   vplace = ALIGN_BOTTOM
-  padding = [hdpx(20), hdpx(100)]
+  padding = const [hdpx(20), hdpx(100)]
   rendObj = ROBJ_9RECT
   image = gradTranspDobuleSideX()
   texOffs = [0, gradDoubleTexOffset]

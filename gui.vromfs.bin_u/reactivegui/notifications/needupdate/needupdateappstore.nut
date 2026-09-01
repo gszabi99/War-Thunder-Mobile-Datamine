@@ -1,9 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
+from "contentUpdater" import get_all_library_versions
+from "dagor.system" import DBGLEVEL
+from "%sqstd/version_compare.nut" import check_version
+from "%rGui/appStoreVersion.nut" import appStoreProdVersion
+
+
 let logUpdate = log_with_prefix("[UPDATE]: ")
-let { get_all_library_versions } = require("contentUpdater")
-let { check_version } = require("%sqstd/version_compare.nut")
-let { appStoreProdVersion } = require("%rGui/appStoreVersion.nut")
-let { DBGLEVEL } = require("dagor.system")
 
 
 let needSuggestToUpdate = Computed(function() {

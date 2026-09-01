@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let ALIGN_C = 0
-let ALIGN_L = 0x01
-let ALIGN_R = 0x02
-let ALIGN_T = 0x04
-let ALIGN_B = 0x08
+const ALIGN_C = 0
+const ALIGN_L = 0x01
+const ALIGN_R = 0x02
+const ALIGN_T = 0x04
+const ALIGN_B = 0x08
 
 let fontsList = [
   { id = "tiny", font = fontVeryVeryTinyShaded }

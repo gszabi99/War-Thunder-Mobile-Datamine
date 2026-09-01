@@ -9,7 +9,6 @@ module async_boost shared private
 
 
 
-require strings
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/macro_boost
@@ -48,11 +47,6 @@ def public await(var a : iterator<bool>) : bool {
 [tag_function_macro(tag="await_coroutine_tag")]
 class AwaitCoroutineMacro : AstFunctionAnnotation {
     
-    
-    
-    
-    
-    
     def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
         let iname = make_unique_private_name("_await_coroutine", call.at)
         var res = qmacro_block() {
@@ -67,9 +61,6 @@ class AwaitCoroutineMacro : AstFunctionAnnotation {
 
 [function_macro(name="async")]
 class AsyncMacro : AstFunctionAnnotation {
-    
-    
-    
     
     [unused_argument(group, args)] def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         if (func.result.baseType == Type.autoinfer) {

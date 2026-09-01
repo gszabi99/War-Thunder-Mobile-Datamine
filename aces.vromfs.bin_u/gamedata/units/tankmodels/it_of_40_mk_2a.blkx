@@ -2193,9 +2193,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 42500.0,
+      "Empty": 43800.0,
       "Fuel": 500.0,
-      "TakeOff": 43000.0,
+      "TakeOff": 44300.0,
       "momentOfInertia": [
         2.5,
         2.5,
@@ -2239,7 +2239,7 @@
       "maxBrakeForce": 172000.0,
       "driveGearRadius": 0.33,
       "mainGearRatio": 1.0,
-      "sideGearRatio": 4.2,
+      "sideGearRatio": 4.55,
       "neutralGearRatio": 10.0,
       "alternativeGearControl": 3.0,
       "gearRatios": {

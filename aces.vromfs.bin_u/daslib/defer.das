@@ -19,12 +19,6 @@ require daslib/macro_boost
 [tag_function(defer_tag), unused_argument(blk)]
 def public defer(blk : block<() : void>) {
     
-    
-    
-    
-    
-    
-    
     pass
 }
 

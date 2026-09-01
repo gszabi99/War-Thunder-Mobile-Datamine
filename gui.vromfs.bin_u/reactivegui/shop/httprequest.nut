@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { parse_json } = require("json")
-let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
-let { getPlayerTokenGlobal } = require("auth_wt")
+from "auth_wt" import getPlayerTokenGlobal
+from "dagor.http" import httpRequest, HTTP_SUCCESS
+from "json" import parse_json
+
 
 let hasLog = {}
 function logByUrlOnce(url, text) {

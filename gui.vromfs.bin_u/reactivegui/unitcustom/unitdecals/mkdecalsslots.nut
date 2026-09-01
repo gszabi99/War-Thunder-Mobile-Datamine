@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkDecalSlot, commonBgColor, decalsGap } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
+from "%rGui/unitCustom/unitDecals/unitDecalsComps.nut" import mkDecalSlot, commonBgColor, decalsGap
 
 
 return @(decalsSlots, selectedSlotId, editingDecalId, onClick) @() {

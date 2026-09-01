@@ -1,16 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { eventbus_send } = require("eventbus")
-let { setTimeout } = require("dagor.workcycle")
-let ads = require("android.ads")
-let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_NOT_INITED, ADS_STATUS_DISMISS, ADS_STATUS_OK,
-  CONSENT_REQUEST_NOT_REQUIRED, CONSENT_REQUEST_OBTAINED, CONSENT_REQUEST_REQUIRED
-} = ads
-let { object_to_json_string } = require("json")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { debugAdsWndParams } = require("%rGui/ads/adsInternalState.nut")
+import "android.ads" as ads
+from "console" import register_command
+from "dagor.workcycle" import setTimeout
+from "eventbus" import eventbus_send
+from "json" import object_to_json_string
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
+from "%rGui/ads/adsInternalState.nut" import debugAdsWndParams
 
+
+let ump = require_optional("consent.googleump")
+let { CONSENT_REQUEST_NOT_REQUIRED, CONSENT_REQUEST_OBTAINED, CONSENT_REQUEST_REQUIRED, CONSENT_REQUEST_UNKNOWN } = ump ?? ads
+let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_NOT_INITED, ADS_STATUS_DISMISS, ADS_STATUS_OK
+} = ads
 
 let debugAdsInited = persist("debugAdsInited", @() {})
 let debugConsentRequired = hardPersistWatched("adsAndroid.debugConsentRequired", false)
@@ -35,7 +37,7 @@ let mkConsentResult = @() {
     : CONSENT_REQUEST_OBTAINED
   canRequest = !debugConsentRequired.get() || debugConsentApprove.get()
   canShowPrivacy = true
-  errorCode = ""
+  errorCode = 0
 }
 
 let sendConsentResult = @(eventId)
@@ -43,8 +45,8 @@ let sendConsentResult = @(eventId)
 
 let requestConsent = @(showIfRequire)
   showIfRequire && debugConsentRequired.get() && debugConsentApprove.get() == null
-    ? showConsent("android.ads.onConsentRequest")
-    : sendConsentResult("android.ads.onConsentRequest")
+    ? showConsent("consent.googleump.onConsentRequest")
+    : sendConsentResult("consent.googleump.onConsentRequest")
 
 subscribeFMsgBtns({
   function adsAndroid_cancelConsent(eventId) {
@@ -111,5 +113,9 @@ return ads.__merge({
     })
   }
   requestConsent
-  showConsent = @() showConsent("android.ads.onShowConsent")
+  showConsent = @() showConsent("consent.googleump.onConsentShow")
+  CONSENT_REQUEST_NOT_REQUIRED
+  CONSENT_REQUEST_OBTAINED
+  CONSENT_REQUEST_REQUIRED
+  CONSENT_REQUEST_UNKNOWN
 })

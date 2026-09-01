@@ -1,51 +1,52 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%rGui/hudTuning/hudTuningConsts.nut" import *
-let { get_time_speed, get_replay_info, is_replay_paused, get_replay_anchors,
-  move_to_anchor, is_anchor_loading, getFreeCameraMaxSpeed, setFreeCameraMaxSpeed,
-  getFreeCameraInertia, setFreeCameraInertia } = require("replays")
-let { get_mission_time, get_mplayers_list, GET_MPLAYERS_LIST } = require("mission")
-let { getSpectatorTargetId, switchSpectatorTargetById } = require("guiSpectator")
-let { is_replay_markers_enabled } = require("hudState")
-let { eventbus_subscribe } = require("eventbus")
-let { register_command } = require("console")
-let { abs, round } = require("math")
-let { format } =  require("string")
-let { resetTimeout, setInterval, clearTimer } = require("dagor.workcycle")
-let { TouchScreenStick } = require("wt.behaviors")
-let { Point2 } = require("dagor.math")
-let { setVirtualAxisValue } = require("controls")
-let { mkContinuousButtonParams } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { getUnitName, unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
-let { can_use_freecam_in_replay } = require("%appGlobals/permissions.nut")
-let { isHudVisible } = require("%appGlobals/clientState/clientState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { genBotDecorators } = require("%appGlobals/botUtils.nut")
-let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { textColor, selectColor, premiumTextColor, collectibleTextColor } = require("%rGui/style/stdColors.nut")
-let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
-let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
-let { curUnitHudTuning } = require("%rGui/hudTuning/hudTuningBattleState.nut")
-let { isReplayPlayerOptionsOpen } = require("%rGui/cursorSharedStates.nut")
-let { opacityTransition } = require("%rGui/components/selectedLine.nut")
-let { mkBotInfo } = require("%rGui/mpStatistics/botsInfoState.nut")
-let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
-let { simpleHorGradInv } = require("%rGui/style/gradients.nut")
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
-let { mkButtonHoldTooltip } = require("%rGui/tooltip.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
-let cfgHudReplay = require("%rGui/hudTuning/cfg/cfgHudReplay.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "controls" import setVirtualAxisValue
+from "dagor.math" import Point2
+from "dagor.workcycle" import resetTimeout, setInterval, clearTimer
+from "guiSpectator" import getSpectatorTargetId, switchSpectatorTargetById
+from "hudState" import is_replay_markers_enabled
+from "math" import abs, round
+from "mission" import get_mission_time, get_mplayers_list, GET_MPLAYERS_LIST
+from "replays" import get_time_speed, get_replay_info, is_replay_paused, get_replay_anchors, move_to_anchor,
+  is_anchor_loading, getFreeCameraMaxSpeed, setFreeCameraMaxSpeed, getFreeCameraInertia, setFreeCameraInertia,
+  setFreeCameraRestrictByBattleArea
+from "string" import format
+from "wt.behaviors" import TouchScreenStick
+from "%sqstd/string.nut" import utf8ToUpper
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%appGlobals/botUtils.nut" import genBotDecorators
+from "%appGlobals/clientState/clientState.nut" import isHudVisible
+import "%appGlobals/decorators/avatars.nut" as getAvatarImage
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/permissions.nut" import can_use_freecam_in_replay
+from "%appGlobals/unitPresentation.nut" import getUnitName, unitClassFontIcons
+from "%appGlobals/unitTags.nut" import getUnitTagsCfg
+from "%rGui/components/gradTexts.nut" import mkGradRankSmall
+from "%rGui/components/selectedLine.nut" import opacityTransition
+from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicInfo
+from "%rGui/controls/shortcutSimpleComps.nut" import mkContinuousButtonParams
+from "%rGui/cursorSharedStates.nut" import isReplayPlayerOptionsOpen
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/hudState.nut" import isPlayingReplay
+import "%rGui/hudTuning/cfg/cfgHudReplay.nut" as cfgHudReplay
+from "%rGui/hudTuning/hudTuningBattleState.nut" import curUnitHudTuning
+from "%rGui/mpStatistics/botsInfoState.nut" import mkBotInfo
+from "%rGui/style/gradients.nut" import simpleHorGradInv
+from "%rGui/style/hudColors.nut" import hudWhiteColor
+from "%rGui/style/stdColors.nut" import textColor, selectColor, premiumTextColor, collectibleTextColor
+from "%rGui/style/teamColors.nut" import teamBlueLightColor, teamRedLightColor, mySquadLightColor
+from "%rGui/tooltip.nut" import mkButtonHoldTooltip
+from "types" import Array
 
 
-let optImgSize = hdpx(50)
-let optBtnSize = hdpx(80)
-let optBtnGap = hdpx(20)
+const optImgSize = hdpx(50)
+const optBtnSize = hdpx(80)
+const optBtnGap = hdpx(20)
 
-let TIME_TO_UPDATE_CONTROLLS = 0.5
-let limitDistanceStick = hdpx(20)
-let stickRadius = sw(100)
+const TIME_TO_UPDATE_CONTROLLS = 0.5
+const limitDistanceStick = hdpx(20)
+const stickRadius = sw(100)
 
 let stickZoneSize = evenPx(380)
 let bgRadius = evenPx(160)
@@ -53,28 +54,28 @@ let zoneToBgRadius = bgRadius.tofloat() / stickZoneSize
 let imgBgSize = 2 * bgRadius
 let moveStickTouchZone = imgBgSize * 2
 let stickSize = shHud(11)
-let vertCamBtnGap = hdpx(20)
+const vertCamBtnGap = hdpx(20)
 let sliderWidth = saBorders[0] * 2
-let camSliderThumbH = hdpx(60)
-let camSpeedDefault = 500
-let camSpeedMin = 10
-let camSpeedMax = 2000
-let camInertiaMin = 0.001
-let camInertiaMax = 1.0
-let camInertiaDefault = 0.5
+const camSliderThumbH = hdpx(60)
+const camSpeedDefault = 500
+const camSpeedMin = 10
+const camSpeedMax = 2000
+const camInertiaMin = 0.001
+const camInertiaMax = 1.0
+const camInertiaDefault = 0.5
 let inertiaSliderW = stickZoneSize
-let camInertiaSliderScale = 1000
+const camInertiaSliderScale = 1000
 
-let bgColor = 0xC0000000
-let cellTextColor = 0xFFFFFFFF
-let unitDeadTextColor = 0x28282828
-let knobSliderColor = 0x80808080
+const bgColor = 0xC0000000
+const cellTextColor = 0xFFFFFFFF
+const unitDeadTextColor = 0x28282828
+const knobSliderColor = 0x80808080
 
-let rowHeight = hdpx(68)
-let rowWidth = hdpx(400)
-let avatarHeight = rowHeight - hdpx(2)
-let squadLabelWidth = hdpx(34)
-let squadLabelHeight = hdpx(41)
+const rowHeight = hdpx(68)
+const rowWidth = hdpx(400)
+const avatarHeight = rowHeight - hdpx(2)
+const squadLabelWidth = hdpx(34)
+const squadLabelHeight = hdpx(41)
 
 let startedReplayPath = mkWatched(persist, "startedReplayPath", "")
 
@@ -255,6 +256,7 @@ function updateControls() {
   if (can_use_freecam_in_replay.get() && isFreeCameraOptActive.get()
       && freeCameraInertia >= 0 && freeCameraInertia != camInertia.get())
     camInertia.set(freeCameraInertia)
+  setFreeCameraRestrictByBattleArea(can_use_freecam_in_replay.get() && isFreeCameraOptActive.get())
 }
 
 function initReplay() {
@@ -373,7 +375,7 @@ function mkOptBtn(opt, onClick, ovr = {}) {
 
 function handleOptClick(opt) {
   let { shortcutId, isActive = null, cb = null, action = null, dependentShortcut = null } = opt
-  let hasDifferentShortcuts = type(shortcutId) == "array"
+  let hasDifferentShortcuts = shortcutId instanceof Array
 
   if (isActive != null)
     isActive.set(!isActive.get())
@@ -428,7 +430,7 @@ function mkVertCamBtn(vertValue, text) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
-    size = [sw(20), FLEX]
+    size = const [sw(20), FLEX]
     behavior = Behaviors.Button
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -572,7 +574,7 @@ let inertiaSlider = mkCamSlider({
 
 let replayProgressBar = @() {
   watch = [replayTimeProgress, replayAnchors, replayTimeTotal]
-  size = [FLEX, hdpx(10)]
+  size = const [FLEX, hdpx(10)]
   rendObj = ROBJ_BOX
   fillColor = textColor
   children = [
@@ -595,7 +597,7 @@ let replayProgressBar = @() {
 function mkSquadLabel(player, color) {
   let res = {
     rendObj = ROBJ_BOX
-    size = [squadLabelWidth, FLEX]
+    size = const [squadLabelWidth, FLEX]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
   }
@@ -605,7 +607,7 @@ function mkSquadLabel(player, color) {
     children = [
       {
         rendObj = ROBJ_IMAGE
-        size = [squadLabelWidth, squadLabelHeight]
+        size = const [squadLabelWidth, squadLabelHeight]
         image = Picture($"ui/gameuiskin#icon_leaderboard_squad.svg:{squadLabelWidth}:{squadLabelHeight}:P")
       }
       {
@@ -670,7 +672,7 @@ function mkAvatar(player) {
   return @() {
     watch = info
     onAttach = @() isBot ? null : refreshPublicInfo(userIdStr)
-    size = [avatarHeight, avatarHeight]
+    size = const [avatarHeight, avatarHeight]
     rendObj = ROBJ_IMAGE
     image = Picture($"{getAvatarImage(info.get()?.decorators.avatar)}:{avatarHeight}:{avatarHeight}:P")
   }
@@ -700,7 +702,7 @@ function mkPlayer(player, teamColor, halign) {
   ]
 
   return {
-    size = [FLEX, rowHeight]
+    size = const [FLEX, rowHeight]
     children = [
       @() {
         watch = isSelected
@@ -973,7 +975,7 @@ isPlayingReplay.subscribe(function(v) {
 })
 if (isPlayingReplay.get())
   initReplay()
-eventbus_subscribe("WatchedHeroChanged", @(_) selectedPlayerIdx.set(getSpectatorTargetId()))
+subscribeHudEvent("WatchedHeroChanged", @(_) selectedPlayerIdx.set(getSpectatorTargetId()))
 
 register_command(@() isReplaysManageButtonOn.set(!isReplaysManageButtonOn.get()), "ui.hideReplaysManageButtons")
 

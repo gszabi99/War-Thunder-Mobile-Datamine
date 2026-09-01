@@ -1,5 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "types" import Integer
+
 
 let presences = hardPersistWatched("contactPresence", {})
 let squadStatus = hardPersistWatched("contactSquadStatus", {})
@@ -35,7 +37,7 @@ function updatePresences(newPresences) {
 onlineStatusBase.whiteListMutatorClosure(updatePresences)
 
 function isContactOnline(userId, onlineStatusVal) {
-  let uid = type(userId) == "integer" ? userId.tostring() : userId
+  let uid = userId instanceof Integer ? userId.tostring() : userId
   return onlineStatusVal?[uid] == true
 }
 

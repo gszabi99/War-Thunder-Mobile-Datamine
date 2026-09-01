@@ -1,20 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { register_command } = require("console")
-let { deferOnce } = require("dagor.workcycle")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-
-let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { add_slot_attributes, slotInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { balance, SLOT_EXP_TANKS, SLOT_EXP_AIR } = require("%appGlobals/currenciesState.nut")
-let { selectedSlotIdx, slotMaxLevel } = require("%rGui/slotBar/slotBarState.nut")
-let { selAttributes, curCategoryId, attrPresets,
-  calcStatus, sumCost, MAX_AVAIL_STATUS
-} = require("%rGui/attributes/attrState.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import isDataBlock, eachParam
+from "%appGlobals/currenciesState.nut" import balance, SLOT_EXP_TANKS, SLOT_EXP_AIR
+from "%appGlobals/loginState.nut" import isSettingsAvailable
+from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import add_slot_attributes, slotInProgress
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%rGui/attributes/attrState.nut" import selAttributes, curCategoryId, attrPresets, calcStatus, sumCost,
+  MAX_AVAIL_STATUS
+from "%rGui/slotBar/slotBarState.nut" import selectedSlotIdx, slotMaxLevel
 
 
 let slotExpByCamp = {
@@ -28,7 +26,9 @@ let isOpenedSlotExpWnd = mkWatched(persist, "isOpenedSlotExpWnd", false)
 let isOpenedSlotResetWnd = mkWatched(persist, "isOpenedSlotResetWnd", false)
 let resetSlotSelectionData = mkWatched(persist, "resetSlotSelectionData", null)
 
-let SEEN_SLOT_ATTRIBUTES = "seenSlotAttributes"
+let isApplyBtnAttached = mkWatched(persist, "isApplyBtnIsAttached", false)
+
+const SEEN_SLOT_ATTRIBUTES = "seenSlotAttributes"
 let seenSlotAttributes = mkWatched(persist, SEEN_SLOT_ATTRIBUTES, {})
 
 let attrSlotData = Computed(function() {
@@ -253,6 +253,8 @@ return {
   resetSlotSelectionData
   isOpenedSlotSelection = Computed(@() resetSlotSelectionData.get() != null)
   attrSlotIdx = selectedSlotIdx
+
+  isApplyBtnAttached
 
   slotLevelResetPrice
   slotSkillsResetPrice

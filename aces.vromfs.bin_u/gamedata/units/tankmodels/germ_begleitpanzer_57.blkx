@@ -3417,7 +3417,6 @@
       ]
     },
     "ammo2": {
-      "removeLoadedAmmo": false,
       "weaponTrigger": "gunner2",
       "fatalFire": true,
       "fatalExplosion": true,

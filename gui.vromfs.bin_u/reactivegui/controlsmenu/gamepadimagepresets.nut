@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let defHeightMul = 1.35
+const defHeightMul = 1.35
 let commonHeightMuls = {
   BTN_A = 1
   BTN_A_PRESSED = 1

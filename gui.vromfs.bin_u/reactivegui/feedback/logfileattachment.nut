@@ -1,7 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
+from "dagor.system" import DBGLEVEL
+from "io" import file
+
+
 let logL = log_with_prefix("[LOGFILE] ")
-let { file } = require("io")
-let { DBGLEVEL } = require("dagor.system")
 let { get_log_filename = @() "" } = require("dagor.debug")
 
 let xorMask = [
@@ -16,8 +18,8 @@ let xorMask = [
 ]
 
 let LOG_XOR_BLOCK_SIZE = xorMask.len()
-let LOG_START_BLOCKS = 8192
-let LOG_END_BLOCKS = 16384
+const LOG_START_BLOCKS = 8192
+const LOG_END_BLOCKS = 16384
 
 function applyXorMask(contentBlob) {
   local maskIdx = 0

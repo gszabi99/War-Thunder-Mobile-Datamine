@@ -1,13 +1,13 @@
-let { Computed } = require("frp")
+from "frp" import Computed
+from "%sqstd/globalState.nut" import hardPersistWatched
 
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
 
-let hudCustomRules = sharedWatched("hudCustomRules", @() {})
+let hudCustomRules = hardPersistWatched("hudCustomRules", {})
 
 return {
-  battleCampaign = sharedWatched("battleCampaign", @() "")
-  battleUnitClasses = sharedWatched("battleUnitClasses", @() {})
-  mainBattleUnitName = sharedWatched("mainBattleUnitName", @() null)
+  battleCampaign = hardPersistWatched("battleCampaign", "")
+  battleUnitClasses = hardPersistWatched("battleUnitClasses", {})
+  mainBattleUnitName = hardPersistWatched("mainBattleUnitName", null)
 
   hudCustomRules
   ctfFlagPreset = Computed(@() hudCustomRules.get()?.ctfFlagPreset ?? "")

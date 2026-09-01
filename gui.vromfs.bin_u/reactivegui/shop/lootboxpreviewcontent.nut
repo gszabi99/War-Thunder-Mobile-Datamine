@@ -1,58 +1,58 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
-let { roundToDigits, ceil, round_by_value } = require("%sqstd/math.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
-let { mkLootboxImageWithSlotScale } = require("%rGui/rewards/components/lootboxView.nut")
-let { getAllLootboxRewardsViewInfo, getLootboxRewardsViewInfo, fillRewardsCounts, NO_DROP_LIMIT,
-  getLootboxOpenRewardViewInfo, isSingleViewInfoRewardEmpty
-} = require("%rGui/rewards/rewardViewInfo.nut")
-let { mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon, mkReceivedCounter,
-  mkRewardLocked, mkRewardSearchPlate, mkRewardDisabledBkg, mkRewardUnitFlag
-} = require("%rGui/rewards/rewardPlateComp.nut")
-let { REWARD_STYLE_TINY_SMALL_GAP, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, progressBarHeight
-} = require("%rGui/rewards/rewardStyles.nut")
-let { mkLootboxChancesComp, mkIsLootboxChancesInProgress } = require("%rGui/rewards/lootboxRewardChances.nut")
-let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { lootboxInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { eventSeason, bestCampLevel, curEventLootboxes } = require("%rGui/event/eventState.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
-let { schRewards } = require("%rGui/shop/schRewardsState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { premiumTextColor } = require("%rGui/style/stdColors.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { mkButtonHoldTooltip  } = require("%rGui/tooltip.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { getStepsToNextFixed, openLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let currencyStyles = require("%rGui/components/currencyStyles.nut")
+from "%sqstd/math.nut" import roundToDigits, ceil, round_by_value
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import prevIfEqual
+from "%appGlobals/config/boostersPresentation.nut" import getBoosterIcon
+from "%appGlobals/config/lootboxPresentation.nut" import getLootboxName
+from "%appGlobals/pServer/pServerApi.nut" import lootboxInProgress
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/buttonStyles.nut" import PRIMARY
+from "%rGui/components/currencyComp.nut" import mkCurrencyImage
+import "%rGui/components/currencyStyles.nut" as currencyStyles
+from "%rGui/components/gradTexts.nut" import mkGradGlowText
+from "%rGui/components/spinner.nut" import mkSpinner
+from "%rGui/components/textButton.nut" import mkCustomButton, mergeStyles
+from "%rGui/event/eventState.nut" import eventSeason, bestCampLevel, curEventLootboxes
+from "%rGui/rewards/components/lootboxView.nut" import mkLootboxImageWithSlotScale
+from "%rGui/rewards/lootboxRewardChances.nut" import mkLootboxChancesComp, mkIsLootboxChancesInProgress
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon,
+  mkReceivedCounter, mkRewardLocked, mkRewardSearchPlate, mkRewardDisabledBkg, mkRewardUnitFlag
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_TINY_SMALL_GAP, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
+  progressBarHeight
+from "%rGui/rewards/rewardViewInfo.nut" import getAllLootboxRewardsViewInfo, getLootboxRewardsViewInfo,
+  fillRewardsCounts, NO_DROP_LIMIT, getLootboxOpenRewardViewInfo, isSingleViewInfoRewardEmpty
+from "%rGui/shop/lootboxPreviewState.nut" import getStepsToNextFixed, openLootboxPreview
+from "%rGui/shop/schRewardsState.nut" import schRewards
+from "%rGui/style/gradients.nut" import mkFontGradient
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import premiumTextColor
+from "%rGui/textFormatByLang.nut" import decimalFormat
+from "%rGui/tooltip.nut" import mkButtonHoldTooltip
+from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
+
+
 let { CS_COMMON } = currencyStyles
-let { mkGradGlowText } = require("%rGui/components/gradTexts.nut")
-let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
-let { PRIMARY } = require("%rGui/components/buttonStyles.nut")
-let { mkFontGradient } = require("%rGui/style/gradients.nut")
 
 
 let titleFontGrad = mkFontGradient(0xFFFBF1B9, 0xFFCE733B, 11, 6, 2)
 
 let lootboxImageSize = [hdpxi(580), hdpxi(320)]
-let blueprintSize = hdpxi(30)
+const blueprintSize = hdpxi(30)
 
-let tooltipTextGap = hdpx(5)
-let jpBarHeight = hdpx(10)
-let jpBorderWidth = hdpx(1)
-let jpBgColor = 0x80000000
+const tooltipTextGap = hdpx(5)
+const jpBarHeight = hdpx(10)
+const jpBorderWidth = hdpx(1)
+const jpBgColor = 0x80000000
 let jpBarColor = premiumTextColor
-let smallChestIconSize = hdpxi(40)
-let nestedBgColor = 0x70000000
+const smallChestIconSize = hdpxi(40)
+const nestedBgColor = 0x70000000
 
 let spinner = mkSpinner(hdpx(100))
 
@@ -138,7 +138,7 @@ function lootboxImageWithTimer(lootbox, lootboxAmount = null) {
       lootboxAmount == null ? null
         : mkGradGlowText(loc("ui/count", { count = lootboxAmount }), fontWtExtraLarge, titleFontGrad)
           .__update({
-            pos = [pw(-10), ph(15)]
+            pos = const [pw(-10), ph(15)]
             vplace = ALIGN_BOTTOM
             hplace = ALIGN_RIGHT
           })
@@ -172,7 +172,7 @@ let chancePartCtors = {
   blueprint = @(sr, chances, _)
     mkChanceRow(sr.count, chances.percents?[sr.id] ?? 0,
       {
-        size = [blueprintSize, blueprintSize]
+        size = const [blueprintSize, blueprintSize]
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/unitskin#blueprint_default_small.avif:{blueprintSize}:{blueprintSize}:P")
         transform = { rotate = -10 }
@@ -516,7 +516,7 @@ let mkStyleComp = @(width, r1, r2, r3, lootboxes) Computed(function() {
   return REWARD_STYLE_TINY_SMALL_GAP
 })
 
-let function lootboxContentBlock(lootbox, width, ovr = {}) {
+function lootboxContentBlock(lootbox, width, ovr = {}) {
   let allRewards = Computed(@(prev) prevIfEqual(prev,
     lootbox.get() == null ? []
       : fillRewardsCounts(getAllLootboxRewardsViewInfo(lootbox.get()), servProfile.get(), serverConfigs.get())))
@@ -597,7 +597,7 @@ let mkRow = @(children) {
 }
 
 let smallChestIcon = {
-  size = [smallChestIconSize, smallChestIconSize]
+  size = const [smallChestIconSize, smallChestIconSize]
   rendObj = ROBJ_IMAGE
   keepAspect = KEEP_ASPECT_FIT
   image = Picture($"ui/gameuiskin#events_chest_icon.svg:{smallChestIconSize}:{smallChestIconSize}:P")
@@ -605,12 +605,12 @@ let smallChestIcon = {
 
 function mkJackpotProgressBar(stepsFinished, stepsToNext, ovr = {}) {
   if (stepsToNext - stepsFinished <= 0)
-    return { size = [FLEX, jpBarHeight] }
+    return { size = const [FLEX, jpBarHeight] }
   let questCompletion = stepsFinished.tofloat() / stepsToNext
 
   return {
     rendObj = ROBJ_BOX
-    size = [FLEX, jpBarHeight]
+    size = const [FLEX, jpBarHeight]
     fillColor = jpBgColor
     borderWidth = jpBorderWidth
     borderColor = jpBarColor

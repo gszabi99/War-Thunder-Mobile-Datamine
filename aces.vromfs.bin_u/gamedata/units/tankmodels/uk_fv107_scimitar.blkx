@@ -2100,11 +2100,11 @@
       "type": "petrol"
     },
     "mechanics": {
-      "maxBrakeForce": 115000.0,
+      "maxBrakeForce": 40000.0,
       "driveGearRadius": 0.21,
       "mainGearRatio": 1.29,
-      "sideGearRatio": 2.58,
-      "neutralGearRatio": 10.0,
+      "sideGearRatio": 2.41,
+      "neutralGearRatio": 18.0,
       "alternativeGearControl": 10.0,
       "gearRatios": {
         "ratio": [
@@ -2136,8 +2136,8 @@
       "frontBackGearRadius": 0.228,
       "topGearRadius": 0.12,
       "defaultDampeningForce": [
-        120000.0,
-        120000.0
+        40000.0,
+        40000.0
       ],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,

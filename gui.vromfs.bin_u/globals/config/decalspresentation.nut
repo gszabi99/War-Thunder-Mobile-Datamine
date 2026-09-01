@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
+
 let categoryDecalsLoc = {
   china = "country_china"
   france = "country_france"

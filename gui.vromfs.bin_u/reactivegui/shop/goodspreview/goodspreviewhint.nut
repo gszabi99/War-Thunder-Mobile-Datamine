@@ -1,20 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { G_CURRENCY, G_ITEM, G_DECAL, G_SKIN, G_DECORATOR } = require("%appGlobals/rewardType.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
-let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
-let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
-let { mkDecalIcon } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
-let { eventSeason } = require("%rGui/event/eventState.nut")
-let { getMainEventLoc } = require("%rGui/event/eventLocName.nut")
+from "%appGlobals/config/skinPresentation.nut" import getSkinPresentation
+import "%appGlobals/decorators/avatars.nut" as getAvatarImage
+from "%appGlobals/decorators/nickFrames.nut" import frameNick
+from "%appGlobals/rewardType.nut" import G_CURRENCY, G_ITEM, G_DECAL, G_SKIN, G_DECORATOR
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/decorators/decoratorState.nut" import allDecorators
+from "%rGui/event/eventLocName.nut" import getMainEventLoc
+from "%rGui/event/eventState.nut" import eventSeason
+from "%rGui/style/gradients.nut" import simpleHorGrad
+from "%rGui/unitCustom/unitDecals/unitDecalsComps.nut" import mkDecalIcon
 
 
-let hintPadding = hdpx(10)
+const hintPadding = hdpx(10)
 let decalIconSize = [hdpxi(600), hdpxi(300)]
-let avatarSize = hdpxi(250)
-let skinIconSize = hdpxi(100)
+const avatarSize = hdpxi(250)
+const skinIconSize = hdpxi(100)
 let skinBorderRadius = (skinIconSize * 0.2 + 0.5).tointeger()
 
 let activeRewardInfo = Watched(null)

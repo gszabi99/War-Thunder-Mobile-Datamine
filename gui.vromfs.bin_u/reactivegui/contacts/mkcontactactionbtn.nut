@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { textButtonMultiline, mergeStyles, mkCustomButton, mkImageTextContent } = require("%rGui/components/textButton.nut")
-let { COMMON, PRIMARY, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { CS_COMMON } = require("%rGui/components/currencyComp.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
-let { friendsUids } = require("%rGui/contacts/contactLists.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/buttonStyles.nut" import COMMON, PRIMARY, defButtonHeight, defButtonMinWidth
+from "%rGui/components/currencyComp.nut" import CS_COMMON
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/textButton.nut" import textButtonMultiline, mergeStyles, mkCustomButton, mkImageTextContent
+from "%rGui/contacts/contactLists.nut" import friendsUids
+
 
 let neverInProgress = Watched(false)
 

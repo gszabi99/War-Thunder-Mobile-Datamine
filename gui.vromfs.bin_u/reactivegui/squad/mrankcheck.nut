@@ -1,22 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { isInSquad, isSquadLeader, squadLeaderMRankCheckTime, squadMembers,
+from "dagor.workcycle" import resetTimeout
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/math.nut" import getRomanNumeral
+from "%appGlobals/clientState/clientState.nut" import isInDebriefing, isInBattle, isInLoadingScreen
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/profileStates.nut" import myUserId
+from "%appGlobals/squadState.nut" import isInSquad, isSquadLeader, squadLeaderMRankCheckTime, squadMembers,
   squadLeaderCampaign, squadLeaderState, getMemberMaxMRank
-} = require("%appGlobals/squadState.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let setReady = require("%rGui/squad/setReady.nut")
-let { isInDebriefing, isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let { isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
-let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { myUserId } = require("%appGlobals/profileStates.nut")
-let { subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
-let { getRomanNumeral } = require("%sqstd/math.nut")
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
+from "%rGui/debriefing/debriefingState.nut" import isDebriefingAnimFinished
+import "%rGui/squad/setReady.nut" as setReady
 
-let MSG_UID = "mRankCheck"
-let CAN_REPEAT_SEC = 15
+
+const MSG_UID = "mRankCheck"
+const CAN_REPEAT_SEC = 15
 let mRankCheckTime = hardPersistWatched("mRankCheckTime", 0)
 let isMRankCheckSuspended = Watched(false)
 isInSquad.subscribe(@(_) mRankCheckTime.set(isSquadLeader.get() ? 0 : serverTime.get()))

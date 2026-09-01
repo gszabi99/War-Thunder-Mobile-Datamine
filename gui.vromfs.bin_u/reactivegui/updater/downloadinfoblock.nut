@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { wantStartDownloadAddons, openDownloadAddonsWnd, downloadAddonsStr, isDownloadPaused,
-  updaterError, progressPercent, isDownloadPausedByConnection, isStageDownloading
-} = require("%rGui/updater/updaterState.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
+from "%rGui/updater/updaterState.nut" import wantStartDownloadAddons, openDownloadAddonsWnd, downloadAddonsStr,
+  isDownloadPaused, updaterError, progressPercent, isDownloadPausedByConnection, isStageDownloading
+
 
 let blockSize = [hdpx(550), evenPx(95)]
-let padding = hdpx(10)
+const padding = hdpx(10)
 let progressSize = blockSize[1] - 2 * padding
-let checkingColor = 0x80808080
+const checkingColor = 0x80808080
 
 let progress = @() {
   watch = [progressPercent, isStageDownloading]

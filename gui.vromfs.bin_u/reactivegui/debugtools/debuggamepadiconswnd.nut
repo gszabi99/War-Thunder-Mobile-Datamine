@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let presets = require("%rGui/controlsMenu/gamepadImagePresets.nut")
+from "console" import register_command
+from "%sqstd/underscore.nut" import arrayByRows
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+import "%rGui/controlsMenu/gamepadImagePresets.nut" as presets
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 
-let wndUid = "debugGamepadIconsWnd"
-let wndPadding = hdpxi(30)
+
+const wndUid = "debugGamepadIconsWnd"
+const wndPadding = hdpxi(30)
 let isOpened = mkWatched(persist, "isOpened", false)
 let close = @() isOpened.set(false)
 

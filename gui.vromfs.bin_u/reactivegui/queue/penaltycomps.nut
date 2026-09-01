@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
-let { hasPenaltyStatus } = require("%rGui/mainMenu/penaltyState.nut")
-let { isOfflineBattlesActive } = require("%rGui/gameModes/offlineBattlesState.nut")
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%rGui/gameModes/gameModeState.nut" import randomBattleMode
+from "%rGui/gameModes/offlineBattlesState.nut" import isOfflineBattlesActive
+from "%rGui/mainMenu/penaltyState.nut" import hasPenaltyStatus
 
 
 let battleBtnCampaign = Computed(@() randomBattleMode.get()?.campaign)
 
-let timerSize = hdpxi(40)
+const timerSize = hdpxi(40)
 let penaltyTimerIcon = @(rawCampaign = null, penaltyId = "") function() {
   let res = { watch = [hasPenaltyStatus, battleBtnCampaign, isOfflineBattlesActive] }
   if (isOfflineBattlesActive.get())
@@ -22,7 +22,7 @@ let penaltyTimerIcon = @(rawCampaign = null, penaltyId = "") function() {
   let hasPenalty = hasPenaltyStatus.get()?[actPenaltyId] ?? false
   return !hasPenalty ? res
     : res.__update({
-        size = [timerSize, timerSize]
+        size = const [timerSize, timerSize]
         margin = const [hdpx(8), hdpx(16)]
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#timer_icon.svg:{timerSize}:{timerSize}:P")

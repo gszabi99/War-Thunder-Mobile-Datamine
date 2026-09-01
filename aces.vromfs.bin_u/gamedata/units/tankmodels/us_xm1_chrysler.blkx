@@ -2236,9 +2236,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 51600.0,
+      "Empty": 51140.0,
       "Fuel": 1020.0,
-      "TakeOff": 52620.0,
+      "TakeOff": 52160.0,
       "momentOfInertia": [
         2.5,
         2.5,

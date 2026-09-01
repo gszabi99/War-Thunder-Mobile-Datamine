@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkTextarea, gapAbove, gapAboveAndBelow,
+  fadedAndMinor
 from "%rGui/notifications/consentTcf/consentTcfState.nut" import showPurposeInfo
-from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkTextarea, gapAbove, gapAboveAndBelow, fadedAndMinor
+
 
 let quitPurpose = @() showPurposeInfo.set(null)
 

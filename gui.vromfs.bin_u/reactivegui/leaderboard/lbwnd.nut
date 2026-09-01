@@ -1,47 +1,47 @@
 from "%globalsDarg/darg_library.nut" import *
-let { registerScene } = require("%rGui/navState.nut")
-let { isEventActive } = require("%rGui/event/eventState.nut")
-let { curLbId, curLbData, curLbSelfRow, curLbErrName, curLbCfg, isLbWndOpened,
-  isRefreshLbEnabled, lbPage, lbMyPage, lbLastPage, lbTotalPlaces, isLbRequestInProgress,
-  minRatingBattles, bestBattlesCount, hasBestBattles, isLbBestBattlesOpened
-} = require("%rGui/leaderboard/lbState.nut")
-let { hasCurLbRewards, curLbRewards, curLbTimeRange } = require("%rGui/leaderboard/lbRewardsState.nut")
-let { lbCfgOrdered } = require("%rGui/leaderboard/lbConfig.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
-let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
-let { actualizeStats } = require("%rGui/unlocks/userstat.nut")
-let { secondsToHoursLoc, parseUnixTimeCached } = require("%appGlobals/timeToText.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { modalWndBg, modalWndHeaderBg } = require("%rGui/components/modalWnd.nut")
-let { localPlayerColor, selectColor } = require("%rGui/style/stdColors.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { mkPaginator } = require("%rGui/components/paginator.nut")
-let { spinner, spinnerOpacityAnim } = require("%rGui/components/spinner.nut")
-let { mkPlaceIconSmall } = require("%rGui/components/playerPlaceIcon.nut")
-let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
+from "%appGlobals/decorators/nickFrames.nut" import frameNick
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/profileStates.nut" import myUserName, myUserRealName
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc, parseUnixTimeCached
+from "%appGlobals/user/nickTools.nut" import getPlayerName
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderBg
+from "%rGui/components/paginator.nut" import mkPaginator
+from "%rGui/components/playerPlaceIcon.nut" import mkPlaceIconSmall
+from "%rGui/components/spinner.nut" import spinner, spinnerOpacityAnim
+from "%rGui/components/textButton.nut" import mkCustomButton, buttonStyles, mergeStyles
+from "%rGui/contacts/contactInfoPkg.nut" import contactNameBlock, contactAvatar
+from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicInfo
+from "%rGui/controls/tabs.nut" import mkTab
+from "%rGui/event/eventState.nut" import isEventActive
+from "%rGui/leaderboard/lbCategory.nut" import RANK, NAME, PRIZE
+from "%rGui/leaderboard/lbConfig.nut" import lbCfgOrdered
+import "%rGui/leaderboard/lbRewardsBlock.nut" as lbRewardsBlock
+from "%rGui/leaderboard/lbRewardsState.nut" import hasCurLbRewards, curLbRewards, curLbTimeRange
+from "%rGui/leaderboard/lbState.nut" import curLbId, curLbData, curLbSelfRow, curLbErrName, curLbCfg, isLbWndOpened,
+  isRefreshLbEnabled, lbPage, lbMyPage, lbLastPage, lbTotalPlaces, isLbRequestInProgress, minRatingBattles,
+  bestBattlesCount, hasBestBattles, isLbBestBattlesOpened
+from "%rGui/leaderboard/lbStyle.nut" import lbHeaderHeight, lbTableHeight, lbVGap, lbHeaderRowHeight, lbRowHeight,
+  lbDotsRowHeight, lbTableBorderWidth, lbPageRows, rowBgOddColor, rowBgEvenColor, prizeIcons, lbRewardsBlockWidth,
+  lbTabIconSize
+from "%rGui/leaderboard/mkLbHeaderRow.nut" import mkLbHeaderRow, headerIconHeight
+from "%rGui/mpStatistics/viewProfile.nut" import viewProfile
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import localPlayerColor, selectColor
+from "%rGui/unlocks/userstat.nut" import actualizeStats
+
+
 let { COMMON, defButtonHeight } = buttonStyles
-let { lbHeaderHeight, lbTableHeight, lbVGap, lbHeaderRowHeight, lbRowHeight, lbDotsRowHeight,
-  lbTableBorderWidth, lbPageRows, rowBgOddColor, rowBgEvenColor,
-  prizeIcons, lbRewardsBlockWidth, lbTabIconSize
-} = require("%rGui/leaderboard/lbStyle.nut")
-let { RANK, NAME, PRIZE } = require("%rGui/leaderboard/lbCategory.nut")
-let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
-let { contactNameBlock, contactAvatar } = require("%rGui/contacts/contactInfoPkg.nut")
-let { mkLbHeaderRow, headerIconHeight } = require("%rGui/leaderboard/mkLbHeaderRow.nut")
-let lbRewardsBlock = require("%rGui/leaderboard/lbRewardsBlock.nut")
-let { mkTab } = require("%rGui/controls/tabs.nut")
-let { viewProfile } = require("%rGui/mpStatistics/viewProfile.nut")
-let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
 
 let rankCellWidth = lbHeaderRowHeight * (isWidescreen ? 2.5 : 2.0)
 let nameWidth = calc_str_box("WWWWWWWWWWWWWWWWWW", isWidescreen ? fontTinyShaded : fontVeryTinyShaded)[0]
-let nameGap = hdpx(10)
-let premIconSize = hdpx(50)
+const nameGap = hdpx(10)
+const premIconSize = hdpx(50)
 let nameCellWidth = lbRowHeight + nameGap + nameWidth + premIconSize
-let defTxtColor = 0xFFD8D8D8
+const defTxtColor = 0xFFD8D8D8
 
 let close = @() isLbWndOpened.set(false)
 

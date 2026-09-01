@@ -2035,8 +2035,8 @@
     "suspension": {
       "suspensionOffsets": [
         -0.18,
-        -0.15,
-        0.12
+        -0.16,
+        0.11
       ],
       "defaultGearRadius": 0.25,
       "topGearRadius": 0.13,

@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { fabs } = require("math")
-let { get_time_msec } = require("dagor.time")
-let { resetTimeout, defer, setInterval, clearTimer } = require("dagor.workcycle")
-let { flagTreeOffset } = require("%rGui/unitsTree/unitsTreeComps.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { mkScrollArrow, scrollArrowImageVerySmall } = require("%rGui/components/scrollArrows.nut")
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, defer, setInterval, clearTimer
+from "math" import fabs
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageVerySmall
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/unitsTree/unitsTreeComps.nut" import flagTreeOffset
 
 
-let SCROLL_DELAY = 1.5
+const SCROLL_DELAY = 1.5
 
 let scrollHandler = ScrollHandler()
 let nodeToScroll = Watched(null)
 let scrollPos = Computed(@() [ scrollHandler.elem?.getScrollOffsX() ?? 0, scrollHandler.elem?.getScrollOffsY() ?? 0 ])
 
 local animScrollCfg = null
-let aTimeScroll = 0.5
-let minScrollSpeed = hdpx(1000)
+const aTimeScroll = 0.5
+const minScrollSpeed = hdpx(1000)
 
 
 function updateAnimScroll() {
@@ -64,7 +64,7 @@ function scrollForward() {
 
 let unseenArrowsBlockCtor = @(needShowL, needShowR, ovr = {}) {
   size = FLEX_H
-  pos = [0, hdpx(17)]
+  pos = const [0, hdpx(17)]
   children = [
     @() {
       watch = needShowL
@@ -73,7 +73,7 @@ let unseenArrowsBlockCtor = @(needShowL, needShowR, ovr = {}) {
       children = !needShowL.get() ? null : [
         {
           hplace = ALIGN_LEFT
-          pos = [0, -hdpx(20)]
+          pos = const [0, -hdpx(20)]
           children = priorityUnseenMark
         }
         mkScrollArrow(scrollHandler, MR_L, scrollArrowImageVerySmall)
@@ -86,7 +86,7 @@ let unseenArrowsBlockCtor = @(needShowL, needShowR, ovr = {}) {
       children = !needShowR.get() ? null : [
         {
           hplace = ALIGN_RIGHT
-          pos = [0, -hdpx(20)]
+          pos = const [0, -hdpx(20)]
           children = priorityUnseenMark
         }
         mkScrollArrow(scrollHandler, MR_R, scrollArrowImageVerySmall)

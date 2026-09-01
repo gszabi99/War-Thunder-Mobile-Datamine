@@ -1,9 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { premium, subscriptions } = require("%appGlobals/pServer/campaign.nut")
-let dailyCounter = require("%appGlobals/pServer/dailyCounter.nut")
-let { serverTime, isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
+from "%appGlobals/pServer/campaign.nut" import premium, subscriptions
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/userstats/serverTime.nut" import serverTime, isServerTimeValid, getServerTime
 
 
 let havePremiumDeprecated = Watched(false)
@@ -13,8 +12,6 @@ let hasVip = Computed(@() (subscriptions.get()?.vip.isActive ?? false) || "vip" 
 let hasPrem = Computed(@() (subscriptions.get()?.premium.isActive ?? false) || "premium" in activeInternalSubs.get())
 let hasPremiumSubs = Computed(@() hasPrem.get() || hasVip.get())
 let havePremium = Computed(@() havePremiumDeprecated.get() || hasPremiumSubs.get())
-let hasPremDailyBonus = Computed(@() (dailyCounter.get()?.daily_prem_gold ?? 0) == 0)
-let canReceivePremDailyBonus = Computed(@() hasPremDailyBonus.get() && hasPremiumSubs.get())
 let vipBonuses = Computed(@() hasVip.get() ? serverConfigs.get()?.gameProfile.vipBonuses : null)
 let isSubsWasActive = Computed(@() (subscriptions.get()?.vip.history.len() ?? 0) > 0
   || (subscriptions.get()?.premium.history.len() ?? 0) > 0)
@@ -82,7 +79,5 @@ return {
   hasPremiumSubs
   hasPrem
   hasVip
-  hasPremDailyBonus
   vipBonuses
-  canReceivePremDailyBonus
 }

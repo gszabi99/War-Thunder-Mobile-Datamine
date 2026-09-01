@@ -1,11 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
+from "dagor.workcycle" import deferOnce
+from "%sqstd/frp.nut" import ComputedImmediate
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/loginState.nut" import isAuthorized
+from "types" import Bool
+
+
 let logNS = log_with_prefix("[NAV_STATE] ")
-let { deferOnce } = require("dagor.workcycle")
-let { ComputedImmediate } = require("%sqstd/frp.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { isAuthorized } = require("%appGlobals/loginState.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
 
 let scenes = {} 
 let scenesVersion = Watched(0)
@@ -86,7 +89,7 @@ function registerScene(id, scene, onClearScenes = null, openedCounterWatch = nul
   if (openedCounterWatch == null)
     return
 
-  let isOpenedWatch = ComputedImmediate(@() type(openedCounterWatch.get()) == "bool" ? openedCounterWatch.get()
+  let isOpenedWatch = ComputedImmediate(@() openedCounterWatch.get() instanceof Bool ? openedCounterWatch.get()
     : openedCounterWatch.get() > 0)
   let isOpened = scenesOrderSaved.get().indexof(id) != null
 

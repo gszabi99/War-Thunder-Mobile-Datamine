@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
+from "dagor.time" import get_time_msec
 
-let MAX_WAIT_MSEC = 1000
+
+const MAX_WAIT_MSEC = 1000
 
 function mkPictureWaiter(images, isLoaded) {
   let pictures = images.map(@(img) img instanceof Picture ? img : Picture(img))
@@ -18,7 +19,7 @@ function mkPictureWaiter(images, isLoaded) {
     }
 
     children = pictures.map(@(p, i) {
-      size = [1, 1]
+      size = const [1, 1]
       pos = [0, i]
       rendObj = ROBJ_IMAGE
       color = 0x01010101

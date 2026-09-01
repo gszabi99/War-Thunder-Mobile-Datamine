@@ -1,9 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-
-let { eventbus_subscribe } = require("eventbus")
-let hudTutorElemsCtors = require("%rGui/tutorial/hudTutorElemsCtors.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { register_command } = require("console")
+from "console" import register_command
+from "eventbus" import eventbus_subscribe
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+import "%rGui/tutorial/hudTutorElemsCtors.nut" as hudTutorElemsCtors
 
 
 let hudTutorElemsState = mkWatched(persist, "hudTutorElemsState", {})

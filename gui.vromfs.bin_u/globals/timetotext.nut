@@ -1,8 +1,9 @@
-let { loc } = require("dagor.localize")
-let { parse_unix_time } = require("dagor.iso8601")
-let { fabs } = require("math")
-let { format } =  require("string")
-let { secondsToTimeFormatString, roundTime } = require("%sqstd/time.nut")
+from "dagor.iso8601" import parse_unix_time
+from "dagor.localize" import loc
+from "math" import fabs
+from "string" import format
+from "%sqstd/time.nut" import secondsToTimeFormatString, roundTime
+
 
 let timeSubst = [ "days", "hours", "minutes", "seconds" ].map(@(v) [ v, loc($"measureUnits/{v}") ]).totable()
 let secondsToTimeAbbrString = @(t) secondsToTimeFormatString(t < 3600 ? t : (t / 60 * 60)).subst(timeSubst)

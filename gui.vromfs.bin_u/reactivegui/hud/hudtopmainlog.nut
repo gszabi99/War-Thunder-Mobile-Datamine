@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let hudDamageLog = require("%rGui/hud/hudDamageLog.nut")
-let { mainHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
-let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
-let { lqTexturesWarningBattle } = require("%rGui/hudHints/lqTexturesWarning.nut")
+from "%rGui/hud/hudConfigParameters.nut" import getHudConfigParameter
+import "%rGui/hud/hudDamageLog.nut" as hudDamageLog
+from "%rGui/hudHints/hintBlocks.nut" import mainHintsBlock
+from "%rGui/hudHints/lqTexturesWarning.nut" import lqTexturesWarningBattle
+
 
 let hudTopMainLog = @() {
   hplace = ALIGN_CENTER

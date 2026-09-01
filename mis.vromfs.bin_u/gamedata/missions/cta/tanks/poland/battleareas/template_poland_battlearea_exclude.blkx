@@ -1,0 +1,482 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "area_squad": {
+      "name": "battlearea_exclude_squad",
+      "tm": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          2071.2,
+          138.701,
+          2893.4
+        ]
+      ],
+      "props": {
+        "squad_members": [
+          "battlearea_exclude_01",
+          "battlearea_exclude_02",
+          "battlearea_exclude_03",
+          "battlearea_exclude_04",
+          "battlearea_exclude_05",
+          "battlearea_exclude_06",
+          "battlearea_exclude_07",
+          "battlearea_exclude_08",
+          "battlearea_exclude_09",
+          "battlearea_exclude_10",
+          "battlearea_exclude_11",
+          "battlearea_exclude_12",
+          "battlearea_exclude_13",
+          "battlearea_exclude_14"
+        ]
+      }
+    }
+  },
+  "areas": {
+    "battlearea_exclude_02": {
+      "type": "Box",
+      "tm": [
+        [
+          8.95034,
+          0.0,
+          -0.944183
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          2.93746,
+          0.0,
+          27.8455
+        ],
+        [
+          1961.8,
+          3.80001,
+          2023.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_03": {
+      "type": "Box",
+      "tm": [
+        [
+          9.40606,
+          0.0,
+          -1.33267
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          3.85774,
+          0.0,
+          27.2281
+        ],
+        [
+          1840.95,
+          3.79988,
+          2155.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_04": {
+      "type": "Box",
+      "tm": [
+        [
+          -1.29581,
+          0.0,
+          -9.41121
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          27.243,
+          0.0,
+          -3.75104
+        ],
+        [
+          1832.55,
+          3.79988,
+          2165.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_05": {
+      "type": "Box",
+      "tm": [
+        [
+          8.91261,
+          0.0,
+          -1.25115
+        ],
+        [
+          0.0,
+          10.0,
+          0.0
+        ],
+        [
+          3.89247,
+          0.0,
+          27.7281
+        ],
+        [
+          1984.5,
+          3.80002,
+          1932.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_06": {
+      "type": "Box",
+      "tm": [
+        [
+          8.90128,
+          0.0,
+          -1.32936
+        ],
+        [
+          0.0,
+          8.5,
+          0.0
+        ],
+        [
+          4.13578,
+          0.0,
+          27.6929
+        ],
+        [
+          1978.4,
+          3.80001,
+          1894.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_07": {
+      "type": "Box",
+      "tm": [
+        [
+          8.90128,
+          0.0,
+          -1.32936
+        ],
+        [
+          0.0,
+          8.5,
+          0.0
+        ],
+        [
+          4.13578,
+          0.0,
+          27.6929
+        ],
+        [
+          2042.7,
+          3.80002,
+          1884.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_08": {
+      "type": "Box",
+      "tm": [
+        [
+          8.90128,
+          0.0,
+          -1.32936
+        ],
+        [
+          0.0,
+          8.5,
+          0.0
+        ],
+        [
+          4.13578,
+          0.0,
+          27.6929
+        ],
+        [
+          2048.75,
+          3.80002,
+          1923.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_09": {
+      "type": "Box",
+      "tm": [
+        [
+          8.90128,
+          0.0,
+          -1.32936
+        ],
+        [
+          0.0,
+          8.5,
+          0.0
+        ],
+        [
+          4.13578,
+          0.0,
+          27.6929
+        ],
+        [
+          2078.6,
+          3.80002,
+          1900.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_10": {
+      "type": "Box",
+      "tm": [
+        [
+          8.90128,
+          0.0,
+          -1.32936
+        ],
+        [
+          0.0,
+          8.5,
+          0.0
+        ],
+        [
+          4.13578,
+          0.0,
+          27.6929
+        ],
+        [
+          2072.85,
+          3.80001,
+          1863.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_11": {
+      "type": "Box",
+      "tm": [
+        [
+          1.26206,
+          0.0,
+          8.91107
+        ],
+        [
+          0.0,
+          8.5,
+          0.0
+        ],
+        [
+          -25.7431,
+          0.0,
+          3.64594
+        ],
+        [
+          2032.8,
+          3.80002,
+          1875.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_12": {
+      "type": "Box",
+      "tm": [
+        [
+          1.26206,
+          0.0,
+          8.91107
+        ],
+        [
+          0.0,
+          8.5,
+          0.0
+        ],
+        [
+          -25.7431,
+          0.0,
+          3.64594
+        ],
+        [
+          1987.6,
+          3.80002,
+          1883.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_13": {
+      "type": "Box",
+      "tm": [
+        [
+          1.26206,
+          0.0,
+          8.91107
+        ],
+        [
+          0.0,
+          8.0,
+          0.0
+        ],
+        [
+          -23.7629,
+          0.0,
+          3.36548
+        ],
+        [
+          1993.25,
+          3.80002,
+          1941.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_14": {
+      "type": "Box",
+      "tm": [
+        [
+          1.26206,
+          0.0,
+          8.91107
+        ],
+        [
+          0.0,
+          8.5,
+          0.0
+        ],
+        [
+          -23.7629,
+          0.0,
+          3.36548
+        ],
+        [
+          2038.4,
+          3.80002,
+          1934.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_exclude_01": {
+      "type": "Box",
+      "tm": [
+        [
+          4.12354,
+          0.0,
+          -7.99978
+        ],
+        [
+          0.0,
+          8.5,
+          0.0
+        ],
+        [
+          24.8882,
+          0.0,
+          12.8288
+        ],
+        [
+          1821.4,
+          3.80002,
+          1985.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      },
+      {
+        "enabled": false
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

@@ -1,28 +1,29 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { round } =  require("math")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { getTextScaleToFitWidth } = require("%rGui/globals/fontUtils.nut")
-let { hcResult } = require("%rGui/hud/hitCamera/hitCameraState.nut")
-let { hitCameraWidth, hitResultStyle } = require("%rGui/hud/hitCamera/hitCameraConfig.nut")
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
+from "math" import round
+from "%sqstd/string.nut" import utf8ToUpper
+from "%globalsDarg/fontScale.nut" import getScaledFont
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/globals/fontUtils.nut" import getTextScaleToFitWidth
+from "%rGui/hud/hitCamera/hitCameraConfig.nut" import hitCameraWidth, hitResultStyle
+from "%rGui/hud/hitCamera/hitCameraState.nut" import hcResult
+from "%rGui/style/hudColors.nut" import hudWhiteColor
+
 
 let hitResultPlateHeight = evenPx(72)
-let hitResultPlateHPad = hdpxi(15)
+const hitResultPlateHPad = hdpxi(15)
 let hitResultPlateContentW = hitCameraWidth - (2 * hitResultPlateHPad)
-let animTimeResultTitle = 0.2
+const animTimeResultTitle = 0.2
 
-let blinkImgTexSize = hdpx(16)
-let blinkOpacity = 0.75
-let animTimeBlinkFull = 0.3
-let animTimeBlinkFullOpaque = 0.5 * animTimeBlinkFull
+const blinkImgTexSize = hdpx(16)
+const blinkOpacity = 0.75
+const animTimeBlinkFull = 0.3
+const animTimeBlinkFullOpaque = 0.5 * animTimeBlinkFull
 
 let hcResultLocId = Computed(@() hcResult.get()?.locId ?? "")
 let hcResultStyleId = Computed(@() hcResult.get()?.styleId ?? "")
 
 let resultBlink = {
-  pos = [pw(-20), 0]
+  pos = const [pw(-20), 0]
   size = const [pw(110), hdpx(10)]
   vplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE

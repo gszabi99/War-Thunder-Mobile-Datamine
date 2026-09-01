@@ -1,27 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { get_mplayer_by_id } = require("mission")
-let { get_game_params_blk } = require("blkGetters")
-let { TouchCameraControl } = require("wt.behaviors")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
-let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
-let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
-let { isGtBattleRoyale } = require("%rGui/missionState.nut")
-let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
-let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
-let { switchSpectatorTarget, getSpectatorTargetId } = require("guiSpectator")
-let { tacticalMap } = require("%rGui/hud/components/tacticalMap.nut")
-let { scoreBoardType, scoreBoardCfgByType, needScoreBoard } = require("%rGui/hud/scoreBoard.nut")
-let { capZonesList } = require("%rGui/hud/capZones/capZones.nut")
-let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
-let { isInSpectatorMode, isPlayingReplay } = require("%rGui/hudState.nut")
-let { mkMyPlaceUi, mkMyScoresUi, isPlaceVisible, isScoreVisible } = require("%rGui/hud/myScores.nut")
-let { playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
-let { hudWhiteColor, hudGraphiteColor, hudCharcoalColor, hudPearlGrayColor, hudAshGrayColor
-} = require("%rGui/style/hudColors.nut")
-let { spawnScoreBalance } = require("%rGui/respawn/spawnScore.nut")
+from "blkGetters" import get_game_params_blk
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "guiSpectator" import switchSpectatorTarget, getSpectatorTargetId
+from "mission" import get_mplayer_by_id
+from "wt.behaviors" import TouchCameraControl
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%appGlobals/clientState/clientState.nut" import localMPlayerTeam
+from "%appGlobals/clientState/hudState.nut" import isHudAttached
+from "%appGlobals/clientState/missionState.nut" import battleCampaign
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%rGui/components/playerPlaceIcon.nut" import playerPlaceIconSize
+from "%rGui/hud/capZones/capZones.nut" import capZonesList
+from "%rGui/hud/components/tacticalMap.nut" import tacticalMap
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+import "%rGui/hud/hudTopMainLog.nut" as hudTopMainLog
+from "%rGui/hud/menuButton.nut" import mkMenuButton
+from "%rGui/hud/myScores.nut" import mkMyPlaceUi, mkMyScoresUi, isPlaceVisible, isScoreVisible
+from "%rGui/hud/scoreBoard.nut" import scoreBoardType, scoreBoardCfgByType, needScoreBoard
+from "%rGui/hudState.nut" import isInSpectatorMode, isPlayingReplay
+from "%rGui/missionState.nut" import isGtBattleRoyale
+from "%rGui/respawn/spawnScore.nut" import spawnScoreBalance
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudGraphiteColor, hudCharcoalColor, hudPearlGrayColor,
+  hudAshGrayColor
+from "%rGui/style/teamColors.nut" import teamBlueColor, teamRedColor
 
 
 let bgButtonColor = hudGraphiteColor
@@ -31,16 +32,16 @@ let borderColorPushed = hudAshGrayColor
 let textColor = hudPearlGrayColor
 let textColorPushed = hudAshGrayColor
 
-let buttonHeight = hdpx(82)
+const buttonHeight = hdpx(82)
 let buttonWidth = (1.5 * buttonHeight).tointeger()
 let buttonImageSize = (0.9 * buttonHeight).tointeger()
-let gap = hdpx(40)
+const gap = hdpx(40)
 
 let isAttached = Watched(false)
 let needShowTapHint = mkWatched(persist, "needShowTapHint", true)
 
 let watchedHeroId = mkWatched(persist, "watchedHeroId", -1)
-eventbus_subscribe("WatchedHeroChanged", @(_) watchedHeroId.set(getSpectatorTargetId()))
+subscribeHudEvent("WatchedHeroChanged", @(_) watchedHeroId.set(getSpectatorTargetId()))
 eventbus_subscribe("toggleMpstatscreen", @(_) isInSpectatorMode.get() && !isPlayingReplay.get() ? needShowTapHint.set(false) : null)
 
 let watchedHero = Computed(@() isAttached.get() ? get_mplayer_by_id(watchedHeroId.get()) : null)
@@ -102,10 +103,10 @@ let returnToHangarButton = @() {
   behavior = Behaviors.Button
   cameraControl = true
   watch = returnBtnSf
-  size = [SIZE_TO_CONTENT, buttonHeight]
+  size = const [SIZE_TO_CONTENT, buttonHeight]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  padding = [0, gap]
+  padding = const [0, gap]
   rendObj = ROBJ_BOX
   fillColor = isActive(returnBtnSf.get()) ? bgButtonColorPushed
     : bgButtonColor

@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { is_ios, is_pc } = require("%sqstd/platform.nut")
-let { buttonsHGap, mkCustomButton, mkButtonTextMultiline, mergeStyles
-} = require("%rGui/components/textButton.nut")
-let { PRIMARY } = require("%rGui/components/buttonStyles.nut")
+from "console" import register_command
+from "%sqstd/platform.nut" import is_ios, is_pc
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/buttonStyles.nut" import PRIMARY
+from "%rGui/components/textButton.nut" import buttonsHGap, mkCustomButton, mkButtonTextMultiline, mergeStyles
+
 
 let debugSignedIn = Watched(false)
 

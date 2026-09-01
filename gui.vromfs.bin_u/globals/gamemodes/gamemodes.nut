@@ -1,12 +1,12 @@
 from "%globalScripts/logs.nut" import *
 from "frp" import Computed, Watched
+from "%sqstd/globalState.nut" import hardPersistWatched
 from "%sqstd/underscore.nut" import getSubArray
-import "%globalScripts/sharedWatched.nut" as sharedWatched
-from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid, getServerTime
 from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid, getServerTime
 
 
-let gameModesRaw = sharedWatched("gameModesRaw", @() {}, 10) 
+let gameModesRaw = hardPersistWatched("gameModesRaw", {})
 let endedModes = Watched({})
 
 function updateEndTime() {

@@ -1,32 +1,24 @@
-from "%scripts/dagui_natives.nut" import run_reactive_gui, get_cur_circuit_name
-from "%scripts/dagui_library.nut" import *
-from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
-from "frp" import warn_on_deprecated_methods,
-  this_subscriber_call_may_take_up_to_usec, get_slow_subscriber_threshold_usec
-from "dagor.system" import DBGLEVEL
+#default:forbid-root-table
 
-let { get_time_msec, ref_time_ticks } = require("dagor.time")
+from "%scripts/dagui_library.nut" import dlog, mkWatched, log
+from "dagor.random" import set_rnd_seed
+from "dagor.system" import DBGLEVEL
+from "dagor.time" import get_time_msec, ref_time_ticks
+from "frp" import warn_on_deprecated_methods
+from "dagui" import run_reactive_gui
+
+
 let startLoadTime = get_time_msec()
-let { g_listener_priority } = require("%scripts/g_listener_priority.nut")
-let { set_rnd_seed } = require("dagor.random")
-let { eventbus_subscribe } = require("eventbus")
-let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 
 
 
 warn_on_deprecated_methods(DBGLEVEL > 0)
-clear_vm_entity_systems()
-start_es_loading()
 
-require("%appGlobals/frpDebug.nut")
 require("%globalScripts/ui_globals.nut")
-require("%appGlobals/sqevents.nut")
 require("%globalScripts/debugTools/matchingErrorDebug.nut")
 
 require("%globalScripts/version.nut")
-require("%scripts/clientState/errorHandling.nut")
 
-let { is_pc } = require("%sqstd/platform.nut")
 
 
 
@@ -34,121 +26,17 @@ set_rnd_seed(ref_time_ticks())
 
 
 
-let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-subscriptions.setDefaultPriority(g_listener_priority.DEFAULT)
-
-require("%scripts/debugTools/dbgToString.nut")
-require("%scripts/util.nut")
-
-require("%scripts/options/optionsExtNames.nut")
-require("login/initLoginWTM.nut")
-require("%scripts/pServer/profileServerClient.nut")
-require("%appGlobals/pServer/pServerApi.nut") 
-require("%scripts/currencies.nut")
-require("%scripts/matching/rpcCall.nut")
-
-
-require("%scripts/urlType.nut")
-require("%scripts/url.nut")
-require("%scripts/clientState/localProfile.nut")
-require("%scripts/language.nut")
 require("%scripts/loadRootScreen.nut")
-require("%scripts/clientState/keyboardState.nut")
 
-  
 require("%scripts/loading.nut")
-require("%scripts/webRPC.nut")
-require("%scripts/debugTools/dbgUtils.nut")
-require("%scripts/debugTools/dbgWindowResolution.nut")
 
-  
-require("%scripts/login/updateRights.nut")
-require("%scripts/debugTools/dbgDedicLogerrs.nut")
-require("%scripts/debugTools/dbgQConsole.nut")
-require("%scripts/matching/gameModesUpdate.nut")
-require("utils/restartGame.nut")
 require("%sqstd/regScriptProfiler.nut")("dagui", dlog) 
-require("bqQueue.nut")
-require("battlePerfstats.nut")
-require("updaterStateSync.nut")
-  
-
-let { sendLoadingStageBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-
-end_es_loading()
 
 
 let isLoadedOnce = keepref(mkWatched(persist, "isLoadedOnce", false))
 if (!isLoadedOnce.get()) {
   isLoadedOnce.set(true)
-  sendLoadingStageBqEvent("main_loaded")
-
   run_reactive_gui()
 }
 
-
-
-
-
-
-local isFullScriptsLoaded = false
-
-function loadScriptsAfterLoginOnceImpl() {
-  if (isFullScriptsLoaded)
-    return
-  isFullScriptsLoaded = true
-  let t = get_time_msec()
-  log("LOAD MAIN SCRIPTS AFTER LOGIN")
-  require("%scripts/onScriptLoadAfterLogin.nut")
-  log($"DaGui scripts load after login {get_time_msec() - t} msec")
-}
-
-function loadScriptsAfterLoginOnce() {
-  if (isFullScriptsLoaded)
-    return
-  start_es_loading()
-  loadScriptsAfterLoginOnceImpl()
-  end_es_loading()
-}
-
-
-
-
-if (is_pc && get_cur_circuit_name().indexof("production") == null
-  && getSystemConfigOption("debug/netLogerr") == null)
-    setSystemConfigOption("debug/netLogerr", true)
-
-let { isReadyToFullLoad, isLoginRequired } = require("%appGlobals/loginState.nut")
-
 log($"DaGui scripts load before login {get_time_msec() - startLoadTime} msec")
-
-if (isReadyToFullLoad.get() || !isLoginRequired.get())
-  loadScriptsAfterLoginOnce()
-isReadyToFullLoad.subscribe(function(v) {
-  if (!v)
-    return
-  this_subscriber_call_may_take_up_to_usec(100 * get_slow_subscriber_threshold_usec())
-  loadScriptsAfterLoginOnce()
-})
-isLoginRequired.subscribe(@(v) v ? null : loadScriptsAfterLoginOnce())
-
-
-let { defer } = require("dagor.workcycle")
-let { reloadDargUiScript } = require("reactiveGuiCommand")
-eventbus_subscribe("reloadDargVM", function(v) {
-  log("Request reloadDargVM: ", v?.msg)
-  defer(@() reloadDargUiScript(false))
-})
-
-let { registerMplayerCallbacks } = require("mplayer_callbacks")
-let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
-let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
-let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
-eventbus_subscribe("register_mplayer_callbacks",
-  @(_) registerMplayerCallbacks({
-    frameNick = @(nick, frameId) frameNick(getPlayerName(nick, myUserRealName.get(), myUserName.get()), frameId)
-  }))
-
-let { squadMembers } = require("%appGlobals/squadState.nut")
-let { registerRespondent } = require("scriptRespondent")
-registerRespondent("is_in_my_squad", @(userId, _checkAutosquad = true) userId in squadMembers.get())

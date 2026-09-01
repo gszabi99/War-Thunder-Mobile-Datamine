@@ -1,17 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
+from "types" import String
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/user/nickTools.nut" import getPlayerName
+from "%rGui/matching/matchingApi.nut" import matchingRpcCall, matchingRpcRegisterHandler, matchingCallRpcHandler,
+  matchingCallRpcHandlerDeffered
 
-const NAME_CB_ID = "contacts.onReceiveNicknames"
-let invalidNickName = "????????"
+
+const invalidNickName = "????????"
 let allContacts = hardPersistWatched("allContacts", {})
 
 let isValidUserIdNick = @(userId)
   (allContacts.get()?[userId.tostring()].realnick ?? invalidNickName) != invalidNickName
 
 function Contact(userId) {
-  if (type(userId) != "string")
+  if (!(userId instanceof String))
     userId = userId.tostring()
   return Computed(@() allContacts.get()?[userId])
 }
@@ -35,7 +37,7 @@ function updateContact(userId, name = invalidNickName) {
 }
 
 function updateContactNames(names) {
-  let filtered = names.filter(@(userId, name) type(userId) == "string" && allContacts.get()?[userId].realnick != name)
+  let filtered = names.filter(@(userId, name) userId instanceof String && allContacts.get()?[userId].realnick != name)
   if (filtered.len() == 0)
     return
   allContacts.mutate(function(v) {
@@ -51,28 +53,7 @@ allContacts.whiteListMutatorClosure(updateContactNames)
 
 let getContactNick = @(contact) getPlayerName(contact?.realnick ?? invalidNickName)
 
-let callCb = @(cb, result) type(cb) == "string" ? eventbus_send(cb, result)
-  : "id" in cb ? eventbus_send(cb.id, { context = cb, result })
-  : null
-
 let requestedUids = {}
-
-eventbus_subscribe(NAME_CB_ID, function(msg) {
-  let { result, context } = msg
-  let { uids, onFinish } = context
-  let changeList = {} 
-  foreach (uid in uids) {
-    let userId = uid.tostring()
-    let name = result?.result[userId]
-    if (name)
-      changeList[userId] <- name
-    if (uid in requestedUids)
-      requestedUids.$rawdelete(uid)
-  }
-
-  updateContactNames(changeList)
-  callCb(onFinish, result)
-})
 
 
 function validateNickNames(allUids, onFinish = null) {
@@ -86,21 +67,30 @@ function validateNickNames(allUids, onFinish = null) {
   }
 
   if (!uids.len()) {
-    callCb(onFinish, {})
+    matchingCallRpcHandlerDeffered(onFinish, {})
     return
   }
 
-  eventbus_send("matchingCall",
-    {
-      action = "mproxy.nick_server_request"
-      params = { ids = uids.map(@(u) u.tointeger()) }
-      cb = {
-        id = NAME_CB_ID
-        uids
-        onFinish
-      }
-    })
+  matchingRpcCall("mproxy.nick_server_request",
+    { ids = uids.map(@(u) u.tointeger()) },
+    { id = "onReceiveNicknames", uids, onFinish })
 }
+
+matchingRpcRegisterHandler("onReceiveNicknames", function(result, context) {
+  let { uids, onFinish } = context
+  let changeList = {} 
+  foreach (uid in uids) {
+    let userId = uid.tostring()
+    let name = result?.result[userId]
+    if (name)
+      changeList[userId] <- name
+    if (uid in requestedUids)
+      requestedUids.$rawdelete(uid)
+  }
+
+  updateContactNames(changeList)
+  matchingCallRpcHandler(onFinish, result)
+})
 
 return {
   allContacts

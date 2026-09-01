@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
-let { canBuyUnits } = require("%appGlobals/unitsState.nut")
-let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
+from "dagor.workcycle" import deferOnce
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/unitsState.nut" import canBuyUnits
+from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid, getServerTime
+
 
 let unitDiscounts = Watched({})
 
@@ -12,7 +13,7 @@ function isTimeInRange(timeRange, time) {
   return (start <= time && (end <= 0 || end >= time))
 }
 
-let maxTime = 0x7FFFFFFFFFFFFFFF
+const maxTime = 0x7FFFFFFFFFFFFFFF
 
 function updateActualDiscounts() {
   if (!isServerTimeValid.get())

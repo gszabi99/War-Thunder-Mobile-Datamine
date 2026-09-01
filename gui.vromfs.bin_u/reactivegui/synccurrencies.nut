@@ -1,16 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { resetTimeout } = require("dagor.workcycle")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
-let { currencySeasons, currencyToFullIdOnlyActive } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { balance } = require("%appGlobals/currenciesState.nut")
-let { registerHandler, process_currency_write_off } = require("%appGlobals/pServer/pServerApi.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/underscore.nut" import prevIfEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/config/currencyPresentation.nut" import getBaseCurrency
+from "%appGlobals/currenciesState.nut" import balance
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/pServerApi.nut" import registerHandler, process_currency_write_off
+from "%appGlobals/pServer/seasonCurrencies.nut" import currencySeasons, currencyToFullIdOnlyActive
 
-let RETRY_MSEC = 60000
+
+const RETRY_MSEC = 60000
 let lastRequestMsec = hardPersistWatched("lastRequestMsec", -RETRY_MSEC)
 let canRequestByTimeout = Watched(true)
 

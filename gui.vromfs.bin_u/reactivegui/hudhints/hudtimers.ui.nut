@@ -1,16 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let { register_command } = require("console")
-let { lerp, lerpClamped } = require("%sqstd/math.nut")
-let { chooseRandom } = require("%sqstd/rand.nut")
-let { activeTimers, timersVisibility, removeTimer, getTimerCountdownSec } = require("%rGui/hudHints/hudTimersState.nut")
-let { get_time_msec } = require("dagor.time")
-let { playerUnitName } = require("%rGui/hudState.nut")
-let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { setTimeout } = require("dagor.workcycle")
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout
+from "%sqstd/math.nut" import lerp, lerpClamped
+from "%sqstd/rand.nut" import chooseRandom
+from "%appGlobals/unitTags.nut" import getUnitType
+from "%rGui/hudHints/hudTimersState.nut" import activeTimers, timersVisibility, removeTimer, getTimerCountdownSec
+from "%rGui/hudState.nut" import playerUnitName
 
-let grey = 0xFF787878
-let darkRed = 0xFFDD1111
+
+const grey = 0xFF787878
+const darkRed = 0xFFDD1111
 
 let timerSize = hdpx(64).tointeger()
 let icoSize = hdpx(38).tointeger()

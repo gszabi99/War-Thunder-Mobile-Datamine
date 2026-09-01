@@ -1,27 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { eventbus_subscribe } = require("eventbus")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { activeUnlocks, unlockInProgress, batchReceiveRewards, buyUnlock, getUnlockPrice
-} = require("%rGui/unlocks/unlocks.nut")
-let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
-let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { shopGoodsToRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { fillViewInfo, gatherUnlockStageInfo } = require("%rGui/battlePass/passStatePkg.nut")
+from "console" import register_command
+from "eventbus" import eventbus_subscribe
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
+from "%appGlobals/pServer/profileSeasons.nut" import curSeasons
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/battlePass/passStatePkg.nut" import fillViewInfo, gatherUnlockStageInfo
+from "%rGui/rewards/rewardViewInfo.nut" import shopGoodsToRewardsViewInfo
+from "%rGui/shop/shopState.nut" import shopGoods
+from "%rGui/unlocks/unlocks.nut" import activeUnlocks, unlockInProgress, batchReceiveRewards, buyUnlock, getUnlockPrice
+from "%rGui/unlocks/userstat.nut" import userstatStatsTables
 
 
-let BP_GOODS_ID = "battle_pass"
-let BP_PROGRESS_UNLOCK_ID = "battlepass_points_to_progress"
+const BP_GOODS_ID = "battle_pass"
+const BP_PROGRESS_UNLOCK_ID = "battlepass_points_to_progress"
 
-let BP_NONE = "none"
-let BP_COMMON = "common"
-let BP_VIP = "vip"
+const BP_NONE = "none"
+const BP_COMMON = "common"
+const BP_VIP = "vip"
 
-let BP_MAX_LEVELS_TO_ADD = 10
+const BP_MAX_LEVELS_TO_ADD = 10
 
 let bpPresentation = {
   [BP_NONE] = {

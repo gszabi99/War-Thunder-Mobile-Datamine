@@ -1,14 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-
-let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { isInRespawn } = require("%appGlobals/clientState/respawnStateBase.nut")
-let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { mkWeaponPreset, mkChosenBelts } = require("%rGui/unit/unitSettings.nut")
-let { mkWeaponBelts, isBeltWeapon, getEquippedBelt, mkWeaponStates, calcOverloadInfo
-} = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { getEqippedWithoutOverload, getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
-let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
-let { selSlot, curUnitsAvgCostWp } = require("%rGui/respawn/respawnState.nut")
+from "%appGlobals/clientState/respawnStateBase.nut" import isInRespawn
+from "%appGlobals/unitTags.nut" import getUnitTagsCfg
+from "%rGui/respawn/playerActivity.nut" import sendPlayerActivityToServer
+from "%rGui/respawn/respawnState.nut" import selSlot, curUnitsAvgCostWp
+from "%rGui/unit/unitSettings.nut" import mkWeaponPreset, mkChosenBelts
+from "%rGui/unitMods/equippedSecondaryWeapons.nut" import getEqippedWithoutOverload, getEquippedWeapon
+from "%rGui/unitMods/unitModsSlotsState.nut" import mkWeaponBelts, isBeltWeapon, getEquippedBelt, mkWeaponStates,
+  calcOverloadInfo
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitWeaponSlots
 
 
 let selectedBeltWeaponId = Watched(null)

@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { format } = require("string")
-let mkTextRow = require("%darg/helpers/mkTextRow.nut")
-let { curSlotIdx, curWeapon, equippedWeaponsBySlots, equipCurWeapon, equipWeaponListWithMirrors
-  mirrorIdx, equipCurWeaponToWings, curUnit } = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
-let { getWeaponFullName } = require("%rGui/weaponry/weaponsVisual.nut")
-let { mkSlotWeaponDesc } = require("%rGui/unitMods/unitModsSlotsDesc.nut")
-let { markTextColor, warningTextColor, textColor } = require("%rGui/style/stdColors.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-let { weaponSize, imgSize} = require("%rGui/respawn/respawnComps.nut")
+from "string" import format
+import "%darg/helpers/mkTextRow.nut" as mkTextRow
+from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText
+from "%rGui/respawn/respawnComps.nut" import weaponSize, imgSize
+from "%rGui/style/stdColors.nut" import markTextColor, warningTextColor, textColor
+from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
+from "%rGui/unitMods/unitModsSlotsDesc.nut" import mkSlotWeaponDesc
+from "%rGui/unitMods/unitModsSlotsState.nut" import curSlotIdx, curWeapon, equippedWeaponsBySlots, equipCurWeapon,
+  equipWeaponListWithMirrors, mirrorIdx, equipCurWeaponToWings, curUnit
+from "%rGui/weaponry/weaponsVisual.nut" import getWeaponFullName
 
 
 let weaponCardsGap = evenPx(60)
-let borderWidth = hdpxi(3)
-let cardTextMargin = hdpx(6)
+const borderWidth = hdpxi(3)
+const cardTextMargin = hdpx(6)
 let cardMargin = [hdpx(10), 0]
-let tooltipWidth = hdpx(600)
+const tooltipWidth = hdpx(600)
 let caliberTriggers = ["additional gun", "machine gun", "cannon", "gunner"]
 
 let mkText = @(text) msgBoxText(text, { size = FLEX_H, color = textColor })
@@ -75,13 +75,13 @@ function mkWeaponCard(headerText, weapon, borderColor, txtColor) {
               { size = FLEX_H,
                 halign = ALIGN_LEFT,
                 valign = ALIGN_TOP,
-                margin = [0, 0, 0, cardTextMargin]
+                margin = const [0, 0, 0, cardTextMargin]
               }).__update(fontVeryTinyShaded)
           !wCount ? null : msgBoxText(colorize(txtColor ?? borderColor, wCount),
             { size = FLEX,
               halign = ALIGN_RIGHT,
               valign = ALIGN_BOTTOM,
-              margin = [0, cardTextMargin, 0, 0]
+              margin = const [0, cardTextMargin, 0, 0]
             }).__update(fontVeryTinyShaded)
         ]
       }

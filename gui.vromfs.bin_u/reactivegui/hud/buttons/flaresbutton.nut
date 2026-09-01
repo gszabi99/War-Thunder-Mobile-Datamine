@@ -1,35 +1,32 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { get_mission_time } = require("mission")
-let { playHapticPattern } = require("hapticVibration")
-let { TouchScreenButton } = require("wt.behaviors")
-let { PI, cos, sin, abs } = require("%sqstd/math.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
-let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { FlaresState, IsPeriodicFlaresEnabled } = require("%rGui/hud/airState.nut")
-let { imageColor, imageDisabledColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { hudWhiteColor, hudLightBlackColor, hudSmokyGreyColor, hudDarkGrayColor
-} = require("%rGui/style/hudColors.nut")
-let { airButtonSize, buttonImgSize, isWeaponAvailable, getWeapStateFlags, mkBtnBg,
-  mkCircleProgressBgWeapon, mkBorderPlane, mkBtnImage, mkCountTextLeft, mkCircleGlare
-} = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
-let { defShortcutOvr }  = require("%rGui/hud/buttons/hudButtonsPkg.nut")
-let { markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
-} = require("%rGui/hud/currentWeaponsStates.nut")
-let { getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT } = require("%rGui/options/guiOptions.nut")
-let { HAPT_SHOOT_ITEM } = require("%rGui/hud/hudHaptic.nut")
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "hapticVibration" import playHapticPattern
+from "mission" import get_mission_time
+from "wt.behaviors" import TouchScreenButton
+from "%sqstd/math.nut" import PI, cos, sin, abs
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%rGui/controls/disabledControls.nut" import mkIsControlDisabled
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkGamepadHotkey
+from "%rGui/hud/airState.nut" import FlaresState, IsPeriodicFlaresEnabled
+from "%rGui/hud/buttons/circleTouchHudButtons.nut" import airButtonSize, buttonImgSize, isWeaponAvailable,
+  getWeapStateFlags, mkBtnBg, mkCircleProgressBgWeapon, mkBorderPlane, mkBtnImage, mkCountTextLeft, mkCircleGlare
+from "%rGui/hud/buttons/hudButtonsPkg.nut" import defShortcutOvr
+from "%rGui/hud/currentWeaponsStates.nut" import markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
+from "%rGui/hud/hudHaptic.nut" import HAPT_SHOOT_ITEM
+from "%rGui/hud/hudTouchButtonStyle.nut" import imageColor, imageDisabledColor
+from "%rGui/options/guiOptions.nut" import getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudLightBlackColor, hudSmokyGreyColor, hudDarkGrayColor
 
 
-let shortcutId = "ID_COUNTERMEASURES_FLARES"
-let periodicShortcutId = "ID_TOGGLE_PERIODIC_FLARES"
+const shortcutId = "ID_COUNTERMEASURES_FLARES"
+const periodicShortcutId = "ID_TOGGLE_PERIODIC_FLARES"
 
-let flaresImg = "ui/gameuiskin#hud_ltc.svg"
+const flaresImg = "ui/gameuiskin#hud_ltc.svg"
 let disabledColor = hudSmokyGreyColor
 let bgColor = hudDarkGrayColor
 
-let EXPAND_HOLD_TIME = 0.3
-let btnAngle = -0.33 * PI
+const EXPAND_HOLD_TIME = 0.3
+const btnAngle = -0.33 * PI
 let distanceBetweenButtons = 0.2 * airButtonSize
 let repeatSize = 0.4 * airButtonSize
 let touchMargin = sh(2.5).tointeger()
@@ -120,7 +117,7 @@ function flaresButtonCtor(scale) {
   let stateFlagsPeriodic = Computed(@() hoverScId.get() == periodicShortcutId ? stateFlags.get() : 0)
 
   let markHold = @() isHold.set(true)
-  let function onActionClick(scId) {
+  function onActionClick(scId) {
     if (scId == null)
       return
     if (IsPeriodicFlaresEnabled.get()) {

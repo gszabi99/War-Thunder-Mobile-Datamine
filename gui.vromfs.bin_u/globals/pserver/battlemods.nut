@@ -1,10 +1,11 @@
 from "%globalScripts/logs.nut" import *
-let { Watched, Computed } = require("frp")
-let { isEqual } = require("%sqstd/underscore.nut")
-let servProfile = require("servProfile.nut")
-let { serverConfigs } = require("servConfigs.nut")
-let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
-let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
+from "frp" import Watched, Computed
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout
+from "%appGlobals/userstats/serverTime.nut" import serverTime, isServerTimeValid
+from "servConfigs.nut" import serverConfigs
+import "servProfile.nut" as servProfile
+
 
 let activeBattleMods = Watched({})
 let blockedResearchByBattleMods = Watched({})

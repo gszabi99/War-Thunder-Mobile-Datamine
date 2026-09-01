@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { timeToDeath } = require("%rGui/hud/shipState.nut")
-let { registerHintCreator } = require("%rGui/hudHints/hintCtors.nut")
-let { addEvent, removeEvent } = require("%rGui/hudHints/warningHintLogState.nut")
-let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
+from "%appGlobals/timeToText.nut" import secondsToTimeAbbrString
+from "%rGui/hud/shipState.nut" import timeToDeath
+from "%rGui/hudHints/hintCtors.nut" import registerHintCreator
+from "%rGui/hudHints/warningHintLogState.nut" import addEvent, removeEvent
 
-let HINT_TYPE = "deathTimer"
-let alert = Color(221, 17, 17)
+
+const HINT_TYPE = "deathTimer"
+const alert = Color(221, 17, 17)
 let showTimeToDeath = keepref(Computed(@() timeToDeath.get() > 0))
 
 registerHintCreator(HINT_TYPE, @(_, __) @() {

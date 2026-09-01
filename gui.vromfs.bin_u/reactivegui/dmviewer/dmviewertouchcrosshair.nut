@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { needDmViewerCrosshair, pointerScreenX, pointerScreenY } = require("%rGui/dmViewer/dmViewerState.nut")
+from "%rGui/dmViewer/dmViewerState.nut" import needDmViewerCrosshair, pointerScreenX, pointerScreenY
+
 
 let CROSSHAIR_SIZE = evenPx(40)
 let CROSSHAIR_LINE_WIDTH = evenPx(4)

@@ -1,26 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
 from "math" import ceil
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
-let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
-let { getWeaponShortNamesList, getBulletBeltShortName, getAmmoNameShortText
-} = require("%rGui/weaponry/weaponsVisual.nut")
+from "%rGui/components/scrollbar.nut" import makeSideScroll
+from "%rGui/weaponry/weaponsVisual.nut" import getWeaponShortNamesList, getBulletBeltShortName, getAmmoNameShortText
 
-let levelUnlockLineTime = 0.5
-let levelUnlockLinesTotalTimeMax = 1.0
-let itemBlinkTime = 0.5
-let lockedOpacity = 0.35
 
-let iconSize = hdpxi(24)
-let labelPadLeft = iconSize + hdpx(12)
+const levelUnlockLineTime = 0.5
+const levelUnlockLinesTotalTimeMax = 1.0
+const itemBlinkTime = 0.5
+const lockedOpacity = 0.35
 
-let checkMarkSize = hdpxi(42)
-let checkMarkBlinkScale = 2.0
-let checkMarkBlinkTime = 0.5
+const iconSize = hdpxi(24)
+const labelPadLeft = iconSize + hdpx(12)
 
-let itemW = hdpx(350)
-let itemH = hdpx(40)
-let itemsGap = hdpx(10)
-let itemBlinkScale = 1.2
+const checkMarkSize = hdpxi(42)
+const checkMarkBlinkScale = 2.0
+const checkMarkBlinkTime = 0.5
+
+const itemW = hdpx(350)
+const itemH = hdpx(40)
+const itemsGap = hdpx(10)
+const itemBlinkScale = 1.2
 
 let getLevelUnlockLineAnimTime = @(count) count == 0 ? 0
   : min(levelUnlockLineTime, levelUnlockLinesTotalTimeMax / count)
@@ -43,8 +43,8 @@ let mkLevelUnlockLinesContainer = @(children) {
 
 let checkMarkBase = {
   hplace = ALIGN_RIGHT
-  pos = [0.2 * checkMarkSize, 0]
-  size = [checkMarkSize, checkMarkSize]
+  pos = const [0.2 * checkMarkSize, 0]
+  size = const [checkMarkSize, checkMarkSize]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#check.svg:{checkMarkSize}:{checkMarkSize}:P")
   keepAspect = true
@@ -84,7 +84,7 @@ function mkLineAnimProps(isUnlocked, delay) {
 let mkLabel = @(text, isUnlocked) {
   maxWidth = itemW - labelPadLeft - (isUnlocked ? checkMarkSize : 0)
   vplace = ALIGN_CENTER
-  margin = [0, 0, 0, labelPadLeft]
+  margin = const [0, 0, 0, labelPadLeft]
   rendObj = ROBJ_TEXT
   text
   color = 0xFFFFFFF
@@ -96,7 +96,7 @@ let mkLabel = @(text, isUnlocked) {
 
 
 let mkIcon = @(path) {
-  size = [iconSize, iconSize]
+  size = const [iconSize, iconSize]
   margin = const [0, hdpx(5)]
   rendObj = ROBJ_IMAGE
   image = Picture($"{path}:{iconSize}:{iconSize}:P")
@@ -112,7 +112,7 @@ let mkFontIcon = @(text) {
 }.__update(fontTiny)
 
 let mkLevelUnlockLine = @(isUnlocked, unlockDelay, iconComp, labelText) {
-  size = [ itemW, itemH ]
+  size = const [ itemW, itemH ]
   valign = ALIGN_CENTER
   children = [
     mkCheckMark(isUnlocked, unlockDelay)

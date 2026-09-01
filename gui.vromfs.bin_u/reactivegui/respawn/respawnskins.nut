@@ -1,18 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { mkIcon } = require("%rGui/unitCustom/unitCustomComps.nut")
-let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
-let { respawnUnitInfo, respawnUnitSkins } = require("%appGlobals/clientState/respawnStateBase.nut")
-let { isAutoSkin } = require("%rGui/unit/unitSettings.nut")
-let { chooseAutoSkin, respawnSlots, selSlot, selectedSkins } = require("%rGui/respawn/respawnState.nut")
-let { curLevelTags } = require("%rGui/unitCustom/unitSkins/levelSkinTags.nut")
-let { selectColor, hoverColor } = require("%rGui/style/stdColors.nut")
+from "math" import round
+from "%appGlobals/clientState/respawnStateBase.nut" import respawnUnitInfo, respawnUnitSkins
+from "%appGlobals/config/skinPresentation.nut" import getSkinPresentation
+from "%rGui/respawn/respawnState.nut" import chooseAutoSkin, respawnSlots, selSlot, selectedSkins
+from "%rGui/style/stdColors.nut" import selectColor, hoverColor
+from "%rGui/unit/unitSettings.nut" import isAutoSkin
+from "%rGui/unitCustom/unitCustomComps.nut" import mkIcon
+from "%rGui/unitCustom/unitSkins/levelSkinTags.nut" import curLevelTags
 
 
-let skinSize = hdpxi(90)
+const skinSize = hdpxi(90)
 let skinBorderRadius = round(skinSize * 0.2).tointeger()
-let skinGap = hdpx(16)
-let aTimeSelected = 0.2
+const skinGap = hdpx(16)
+const aTimeSelected = 0.2
 
 let unitName = Computed(@() selSlot.get()?.name)
 
@@ -31,13 +31,13 @@ respawnUnitSkins.subscribe(function(_) {
   refreshCurUnitAutoSkin()
 })
 
-let function skinBtn(skin) {
+function skinBtn(skin) {
   let stateFlags = Watched(0)
   let isSelected = Computed(@() (selectedSkins.get()?[unitName.get()] ?? selSlot.get()?.skin ?? "") == skin)
 
   return @() {
     watch = [stateFlags, unitName]
-    size = [skinSize, skinSize]
+    size = const [skinSize, skinSize]
     rendObj = ROBJ_BOX
     fillColor = 0xFFFFFFFF
     borderRadius = skinBorderRadius

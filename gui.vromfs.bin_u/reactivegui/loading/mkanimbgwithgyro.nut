@@ -2,8 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/platform.nut" import is_pc
 from "%appGlobals/activeControls.nut" import isGamepad
 from "%globalsDarg/components/mkAnimBg.nut" import mkAnimBg, leftShade, rightShade
-from "%rGui/controls/shortcutConsts.nut" import GRAVITY_AXIS_Y, JOY_XBOX_REAL_AXIS_R_THUMB_H
 import "%rGui/controls/axisListener.nut" as axisListener
+from "%rGui/controls/shortcutConsts.nut" import GRAVITY_AXIS_Y, JOY_XBOX_REAL_AXIS_R_THUMB_H
+
 
 let axisV = Watched(0)
 let gyroListener = axisListener({ [GRAVITY_AXIS_Y] = @(v) axisV.set(v) })

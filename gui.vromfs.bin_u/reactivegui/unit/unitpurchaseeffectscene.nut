@@ -1,22 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { hide_unit, show_unit, play_fx_on_unit,
-  enable_scene_camera, disable_scene_camera, reset_camera_pos_dir,
-} = require("hangar")
-let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { registerScene, scenesOrder } = require("%rGui/navState.nut")
-let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
-let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-let { hangarUnit, setHangarUnit, isHangarUnitLoaded } = require("%rGui/unit/hangarUnit.nut")
-let { playSound } = require("sound_wt")
-let { Point3 } = require("dagor.math")
-let { TANK, AIR } = require("%appGlobals/unitConst.nut")
-let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { purchaseEffectText } = require("%rGui/unit/purchaseEffectText.nut")
-let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
+from "console" import register_command
+from "dagor.math" import Point3
+from "dagor.workcycle" import resetTimeout, clearTimer, deferOnce
+from "hangar" import hide_unit, show_unit, play_fx_on_unit, enable_scene_camera, disable_scene_camera,
+  reset_camera_pos_dir
+from "sound_wt" import playSound
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/unitConst.nut" import TANK, AIR
+from "%appGlobals/unitTags.nut" import getUnitType
+from "%rGui/components/modalWindows.nut" import hideModals, unhideModals
+from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
+from "%rGui/navState.nut" import registerScene, scenesOrder
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import isTutorialActive
+from "%rGui/unit/hangarUnit.nut" import hangarUnit, setHangarUnit, isHangarUnitLoaded
+from "%rGui/unit/purchaseEffectText.nut" import purchaseEffectText
 
-let TIME_TO_AUTO_CLOSE = 10.0
+
+const TIME_TO_AUTO_CLOSE = 10.0
 
 let unitToShow = mkWatched(persist, "unit", null)
 let hasLvlUpScene = Computed(@() scenesOrder.get().findindex(@(v) v == "levelUpWnd") != null)

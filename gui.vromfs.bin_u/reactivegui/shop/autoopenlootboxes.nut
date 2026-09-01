@@ -1,15 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { lootboxInProgress, open_lootbox_several, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { deferOnce, resetTimeout } = require("dagor.workcycle")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { unseenPurchasesExt, isShowUnseenDelayed } = require("%rGui/shop/unseenPurchasesState.nut")
-let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let lootboxOpenRouletteConfig = require("%rGui/shop/lootboxOpenRouletteConfig.nut")
+from "dagor.workcycle" import deferOnce, resetTimeout
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/pServerApi.nut" import lootboxInProgress, open_lootbox_several, registerHandler
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+import "%rGui/shop/lootboxOpenRouletteConfig.nut" as lootboxOpenRouletteConfig
+from "%rGui/shop/unseenPurchasesState.nut" import unseenPurchasesExt, isShowUnseenDelayed
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import isTutorialActive
 
-let ERROR_UPDATE_DELAY = 60
+
+const ERROR_UPDATE_DELAY = 60
 let wasErrorSoon = Watched(false)
 
 let lootboxes = Computed(function() {

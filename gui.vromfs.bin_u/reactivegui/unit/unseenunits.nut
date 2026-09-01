@@ -1,17 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { eachParam, isDataBlock, blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
-let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
-let { getServerTime } = require("%appGlobals/userstats/serverTime.nut")
-let { register_command } = require("console")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import eachParam, isDataBlock, blk2SquirrelObjNoArrays
+from "%sqstd/time.nut" import TIME_DAY_IN_SECONDS
+import "%appGlobals/getTagsUnitName.nut" as getTagsUnitName
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg, campMyUnits
+from "%appGlobals/userstats/serverTime.nut" import getServerTime
 
-let SEEN_UNIT = "seenUnit"
-let SEEN_UNIT_VERSION_KEY = "seenUnitVersion"
-let ACTUAL_VERSION = 3
+
+const SEEN_UNIT = "seenUnit"
+const SEEN_UNIT_VERSION_KEY = "seenUnitVersion"
+const ACTUAL_VERSION = 3
 let seenUnits = mkWatched(persist, "seenUnits", {})
 let justReceivedUnseen = mkWatched(persist, "justReceivedUnseen", {})
 let maxTimeShowingUnseenMark = TIME_DAY_IN_SECONDS * 14

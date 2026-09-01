@@ -1,14 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
-let { mkGradientBlock } = require("%rGui/hudHints/hintCtors.nut")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "%appGlobals/updater/addonsState.nut" import hasAddons
+from "%rGui/hudHints/hintCtors.nut" import mkGradientBlock
+
 
 let textSize = calc_str_box(loc("updater/lqTexturesWarning"), fontSmall)
-let bgColor = 0x80000000
-let DELAY = 1.5
-let BLINK = 0.5
-let SHOW = 2.0
-let HIDE = 5.5
+const bgColor = 0x80000000
+const DELAY = 1.5
+const BLINK = 0.5
+const SHOW = 2.0
+const HIDE = 5.5
 
 let notUploadedHqTextures = Computed(@() hasAddons.get()?.pkg_secondary_hq == false)
 let showWarningInHangar = Watched(false)
@@ -39,7 +40,7 @@ function lqTexturesWarning(wasShown, showWarning) {
     hplace = ALIGN_CENTER
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    pos = [0, sh(15)]
+    pos = const [0, sh(15)]
     children = !showWarning.get() || wasShown.get() ? null
       : mkGradientBlock(
         bgColor

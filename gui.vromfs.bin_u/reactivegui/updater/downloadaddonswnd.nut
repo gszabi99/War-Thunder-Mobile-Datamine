@@ -1,24 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkProgressStatusText, mkProgressbar, progressbarGap } = require("%globalsDarg/loading/loadingProgressbar.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { downloadWndParams, closeDownloadAddonsWnd, wantStartDownloadAddons, isDownloadPaused, downloadAddonsStr,
-  totalSizeBytes, downloadState, updaterError, progressPercent, allowLimitedDownload,
-  isDownloadPausedByConnection, isDownloadInProgress, isStageDownloading
-} = require("%rGui/updater/updaterState.nut")
-let { loadingAnimBg, gradientLoadingTip } = require("%rGui/loading/loadingScreen.nut")
-let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { addFpsLimit, removeFpsLimit } = require("%rGui/guiFpsLimit.nut")
-let { getDownloadInfoText } = require("%globalsDarg/updaterUtils.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { translucentIconButton } = require("%rGui/components/translucentButton.nut")
-let { horizontalToggleWithLabel } = require("%rGui/components/toggle.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
+from "%globalsDarg/components/titleLogo.nut" import mkTitleLogo
+from "%globalsDarg/loading/loadingProgressbar.nut" import mkProgressStatusText, mkProgressbar, progressbarGap
+from "%globalsDarg/updaterUtils.nut" import getDownloadInfoText
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/toggle.nut" import horizontalToggleWithLabel
+from "%rGui/components/translucentButton.nut" import translucentIconButton
+from "%rGui/guiFpsLimit.nut" import addFpsLimit, removeFpsLimit
+from "%rGui/loading/loadingScreen.nut" import loadingAnimBg, gradientLoadingTip
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/updater/updaterState.nut" import downloadWndParams, closeDownloadAddonsWnd, wantStartDownloadAddons,
+  isDownloadPaused, downloadAddonsStr, totalSizeBytes, downloadState, updaterError, progressPercent,
+  allowLimitedDownload, isDownloadPausedByConnection, isDownloadInProgress, isStageDownloading
 
-let wndUid = "downloadAddonsWnd"
+
+const wndUid = "downloadAddonsWnd"
 let spinnerSize = hdpx(100).tointeger()
-let downloadingColor = 0xFFE8E8E8
-let checkingColor = 0x80808080
+const downloadingColor = 0xFFE8E8E8
+const checkingColor = 0x80808080
 
 let progressPercentInt = Computed(@() progressPercent.get() ?? 0)
 
@@ -67,7 +67,7 @@ let mkHeaderLeft = @() {
   ]
 }
 
-let tip = gradientLoadingTip.__merge({ pos = [0, sh(-15)] })
+let tip = gradientLoadingTip.__merge({ pos = const [0, sh(-15)] })
 
 let openLimitConnectionMsgBox = @() openMsgBox({
   text = loc("msg/allowMobileNetworkDownload")

@@ -26,6 +26,7 @@ module toml shared public
 
 
 
+require math
 require strings
 require daslib/strings_boost
 require daslib/utf8_utils
@@ -224,8 +225,7 @@ def private read_basic_string(data : array<uint8>&; var st : LexState&; var err 
     return ""
 }
 
-def private read_ml_basic_string(data : array<uint8>&; var st : LexState&; var err : string&) : string {
-    
+def private read_ml_basic_string(data : array<uint8>&; var st : LexState&; var err : string&) : string {  
     
     if (st.pos < st.n && int(data[st.pos]) == '\r' && st.pos + 1 < st.n && int(data[st.pos + 1]) == '\n') {
         advance(data, st); advance(data, st)
@@ -261,7 +261,6 @@ def private read_ml_basic_string(data : array<uint8>&; var st : LexState&; var e
                     look++
                 }
                 if (look < st.n && (int(data[look]) == '\n' || int(data[look]) == '\r')) {
-                    
                     
                     advance(data, st)  
                     while (st.pos < st.n) {
@@ -398,7 +397,6 @@ def private looks_like_time(data : array<uint8>&; pos : int) : bool {
 
 def private read_datetime(data : array<uint8>&; var st : LexState&; allow_time : bool) : string {
     
-    
     var buf : array<uint8>
     buf |> reserve(40)
     let n = st.n
@@ -510,10 +508,6 @@ def private parse_int_prefixed(rest : string; radix : int; var err : string&) : 
 
 def private rewind_to_bare(data : array<uint8>&; var st : LexState&; start_pos, start_line, start_row : int; var out : TomlTokenAt&) : void {
     
-    
-    
-    
-    
     st.pos = start_pos
     st.line = start_line
     st.row = start_row
@@ -527,18 +521,7 @@ def private rewind_to_bare(data : array<uint8>&; var st : LexState&; start_pos, 
     out = TomlTokenAt(value = TomlToken(_bare = bs), line = start_line, row = start_row)
 }
 
-def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&; var out : TomlTokenAt&) : bool {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&; var out : TomlTokenAt&) : bool {  
     
     let start_line = st.line
     let start_row = st.row
@@ -554,11 +537,8 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
             return true
         }
         
-        
-        
-        
         if (st.pos < n && int(data[st.pos]) == ':') {
-            out = TomlTokenAt(value = TomlToken(_error = "':' after date '{s}' — expected 'T' or space before the time at {start_line}:{start_row}"), line = start_line, row = start_row)
+            out = TomlTokenAt(value = TomlToken(_error = "':' after date '{s}' - expected 'T' or space before the time at {start_line}:{start_row}"), line = start_line, row = start_row)
             return true
         }
         out = TomlTokenAt(value = TomlToken(_datetime = s), line = start_line, row = start_row)
@@ -635,10 +615,6 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
             advance(data, st); advance(data, st)
             var tail : array<uint8>
             
-            
-            
-            
-            
             while (st.pos < n) {
                 let c = int(data[st.pos])
                 if (is_hex(c)) {
@@ -678,8 +654,6 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
             return true
         }
     }
-    
-    
     
     var saw_digit = false
     while (st.pos < n) {
@@ -742,7 +716,6 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
             advance(data, st)
         }
         
-        
         var exp_saw_digit = false
         while (st.pos < n) {
             let c = int(data[st.pos])
@@ -774,9 +747,6 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
         return true
     }
     
-    
-    
-    
     if (st.pos < n && is_bare_char(int(data[st.pos]))) {
         rewind_to_bare(data, st, start_pos, start_line, start_row, out)
         return true
@@ -790,7 +760,7 @@ def private classify_number_or_datetime(data : array<uint8>&; var st : LexState&
     return true
 }
 
-def private next_token(data : array<uint8>&; var st : LexState&; var out : TomlTokenAt&) : bool {
+def private next_token(data : array<uint8>&; var st : LexState&; var out : TomlTokenAt&) : bool {  
     
     while (st.pos < st.n) {
         let c = int(data[st.pos])
@@ -865,8 +835,6 @@ def private next_token(data : array<uint8>&; var st : LexState&; var out : TomlT
     if (is_number(c) || c == '+' || c == '-'
             || (c == 'i' && starts_with_at(data, st.pos, "inf"))
             || (c == 'n' && starts_with_at(data, st.pos, "nan"))) {
-        
-        
         
         if (c == '+' || c == '-') {
             let nx = peek(data, st, 1)
@@ -958,7 +926,6 @@ def private get_array(var v : JsonValue?) : array<JsonValue?>& {
 
 def private ensure_table(var parent : JsonValue?; key : string; var err : string&; at_line, at_row : int) : JsonValue? {
     
-    
     var tab & = get_object(parent)
     if (key_exists(tab, key)) {
         var child : JsonValue? = tab[key]
@@ -1019,12 +986,6 @@ def private parse_key_path(var ts : TomlTokenStream&; var out : array<string>&; 
 }
 
 def private extract_key_segment(tk : TomlTokenAt; var out : array<string>&; var err : string&) : bool {
-    
-    
-    
-    
-    
-    
     
     if (tk.value is _bare) {
         out |> push(tk.value as _bare)
@@ -1120,9 +1081,6 @@ def private parse_inline_array(var ts : TomlTokenStream&; var err : string&) : J
 
 def private parse_inline_table(var ts : TomlTokenStream&; var err : string&) : JsonValue? {
     
-    
-    
-    
     var tab : table<string; JsonValue?>
     var root : JsonValue? = JV(tab)
     var inline_closed_local : table<uint64>
@@ -1204,24 +1162,15 @@ struct private TomlState {
     
     dotted_keyed : table<string>
     
-    
-    
-    
     inline_closed : table<uint64>
 }
 
 def private jvkey(p : JsonValue?) : uint64 {
     
-    
-    
-    
     return intptr(unsafe(reinterpret<void?>(p)))
 }
 
 def private mark_inline_subtree(var closed : table<uint64>&; v : JsonValue?) : void {
-    
-    
-    
     
     if (v == null || !(v.value is _object)) return
     let k = jvkey(v)
@@ -1251,8 +1200,6 @@ def private path_key(path : array<string>) : string {
 
 def private resolve_header(var state : TomlState&; path : array<string>; is_array_of_tables : bool; var err : string&; at_line, at_row : int) : JsonValue? {
     
-    
-    
     var cur = state.root
     let n = length(path)
     for (i in range(n - 1)) {
@@ -1266,11 +1213,10 @@ def private resolve_header(var state : TomlState&; path : array<string>; is_arra
             }
             
             if (existing.value is _object && key_exists(state.inline_closed, jvkey(existing))) {
-                err = "cannot open header [{path |> join(".")}] — '{key}' is an inline table (closed) at {at_line}:{at_row}"
+                err = "cannot open header [{path |> join(".")}] - '{key}' is an inline table (closed) at {at_line}:{at_row}"
                 return null
             }
             if (existing.value is _array) {
-                
                 
                 var arr & = get_array(existing)                    
                 if (empty(arr)) {
@@ -1305,7 +1251,7 @@ def private resolve_header(var state : TomlState&; path : array<string>; is_arra
         }
         
         if (key_exists(state.inline_closed, jvkey(existing))) {
-            err = "cannot open header [{path |> join(".")}] — '{leaf}' is an inline table (closed) at {at_line}:{at_row}"
+            err = "cannot open header [{path |> join(".")}] - '{leaf}' is an inline table (closed) at {at_line}:{at_row}"
             return null
         }
         let pk = path_key(path)
@@ -1314,10 +1260,8 @@ def private resolve_header(var state : TomlState&; path : array<string>; is_arra
             return null
         }
         
-        
-        
         if (key_exists(state.dotted_keyed, pk)) {
-            err = "cannot open header [{path |> join(".")}] — table already implicitly defined by dotted key at {at_line}:{at_row}"
+            err = "cannot open header [{path |> join(".")}] - table already implicitly defined by dotted key at {at_line}:{at_row}"
             return null
         }
         state.explicitly_defined |> insert(pk)
@@ -1331,13 +1275,6 @@ def private resolve_header(var state : TomlState&; path : array<string>; is_arra
 }
 
 def private apply_keyval(var state : TomlState&; var current : JsonValue?; path : array<string>; var v : JsonValue?; var err : string&; at_line, at_row : int) : bool {
-    
-    
-    
-    
-    
-    
-    
     
     var holder = current
     let n = length(path)
@@ -1378,7 +1315,7 @@ def private apply_keyval(var state : TomlState&; var current : JsonValue?; path 
     return true
 }
 
-def public read_toml(text : string implicit; var error : string&) : JsonValue? {
+def public read_toml(text : string implicit; var error : string&) : JsonValue? {  
     
     
     
@@ -1481,4 +1418,247 @@ def public read_toml(text : string implicit; var error : string&) : JsonValue? {
         }
     }
     return state.root
+}
+
+
+
+
+
+def private write_toml_string(var writer : StringBuilderWriter; s : string) {
+    
+    write_char(writer, '"')
+    peek_data(s) $(bytes) {
+        for (b in bytes) {
+            let c = int(b)
+            if (c == '"') {
+                write(writer, "\\\"")
+            } elif (c == '\\') {
+                write(writer, "\\\\")
+            } elif (c == 8) {
+                write(writer, "\\b")
+            } elif (c == 9) {
+                write(writer, "\\t")
+            } elif (c == 10) {
+                write(writer, "\\n")
+            } elif (c == 12) {
+                write(writer, "\\f")
+            } elif (c == 13) {
+                write(writer, "\\r")
+            } elif (c < 32 || c == 127) {
+                let hi = (c >> 4) & 15
+                let lo = c & 15
+                write(writer, "\\u00")
+                write_char(writer, hi < 10 ? '0' + hi : 'a' + hi - 10)
+                write_char(writer, lo < 10 ? '0' + lo : 'a' + lo - 10)
+            } else {
+                write_char(writer, c)
+            }
+        }
+    }
+    write_char(writer, '"')
+}
+
+def private write_toml_key(var writer : StringBuilderWriter; k : string) {
+    var bare = !empty(k)
+    peek_data(k) $(bytes) {
+        for (b in bytes) {
+            if (!is_bare_char(int(b))) {
+                bare = false
+            }
+        }
+    }
+    if (bare) {
+        write(writer, k)
+    } else {
+        write_toml_string(writer, k)
+    }
+}
+
+def private write_section_header(var writer : StringBuilderWriter; path : array<string>; dbl : bool) {
+    write(writer, dbl ? "[[" : "[")
+    for (i in range(length(path))) {
+        if (i > 0) {
+            write_char(writer, '.')
+        }
+        write_toml_key(writer, path[i])
+    }
+    write(writer, dbl ? "]]\n" : "]\n")
+}
+
+def private write_toml_float(var writer : StringBuilderWriter; v : double) {
+    if (is_nan(v)) {
+        write(writer, "nan")
+    } elif (v == DBL_POS_INF) {
+        write(writer, "inf")
+    } elif (v == DBL_NEG_INF) {
+        write(writer, "-inf")
+    } elif (v != 0.0lf && (abs(v) < 1e-4lf || abs(v) >= 1e17lf)) {
+        
+        var m = fmt(":.17e", v)
+        let e = find(m, "e")
+        if (e > 0) {
+            var mant = slice(m, 0, e) |> rtrim("0")
+            if (mant |> ends_with(".")) {
+                mant += "0"
+            }
+            m = mant + slice(m, e)
+        }
+        write(writer, m)
+    } else {
+        
+        let base = fmt(":.17f", v) |> rtrim("0")
+        write(writer, base)
+        if (base |> ends_with(".")) {
+            write_char(writer, '0')
+        }
+    }
+}
+
+def private is_table_array(v : JsonValue?) : bool {
+    if (v == null || !(v.value is _array) || empty(v.value as _array)) {
+        return false
+    }
+    for (e in v.value as _array) {
+        if (e == null || !(e.value is _object)) {
+            return false
+        }
+    }
+    return true
+}
+
+def private sorted_keys(tab : table<string; JsonValue?>) : array<string> {
+    var ks : array<string>
+    ks |> reserve(length(tab))
+    for (k in keys(tab)) {
+        ks |> push(k)
+    }
+    ks |> sort() $(a, b) => a < b
+    return <- ks
+}
+
+def private write_toml_inline(var writer : StringBuilderWriter; v : JsonValue?; var path : array<string>; var error : string&) : bool {
+    if (v == null || v.value is _null) {
+        error = "TOML has no null: key '{join(path, ".")}'"
+        return false
+    }
+    if (v.value is _string) {
+        write_toml_string(writer, v.value as _string)
+    } elif (v.value is _longint) {
+        write(writer, v.value as _longint)
+    } elif (v.value is _number) {
+        write_toml_float(writer, v.value as _number)
+    } elif (v.value is _bool) {
+        write(writer, (v.value as _bool) ? "true" : "false")
+    } elif (v.value is _array) {
+        write_char(writer, '[')
+        var idx = 0
+        path |> push("")
+        for (e in v.value as _array) {
+            if (idx > 0) {
+                write(writer, ", ")
+            }
+            path[length(path) - 1] = "{idx}"
+            if (!write_toml_inline(writer, e, path, error)) {
+                return false
+            }
+            idx++
+        }
+        path |> pop()
+        write_char(writer, ']')
+    } elif (v.value is _object) {
+        write_char(writer, '{')
+        var first = true
+        path |> push("")
+        for (k in sorted_keys(v.value as _object)) {
+            write(writer, first ? " " : ", ")
+            first = false
+            write_toml_key(writer, k)
+            write(writer, " = ")
+            path[length(path) - 1] = k
+            if (!write_toml_inline(writer, (v.value as _object)?[k] ?? null, path, error)) {
+                return false
+            }
+        }
+        path |> pop()
+        write(writer, first ? "}" : " }")
+    } else {
+        error = "unsupported value at '{join(path, ".")}'"
+        return false
+    }
+    return true
+}
+
+def private write_toml_table(var writer : StringBuilderWriter; tab : table<string; JsonValue?>; var path : array<string>; var error : string&; var wrote : bool&) : bool {
+    let ks <- sorted_keys(tab)
+    for (k in ks) {
+        let e = tab?[k] ?? null
+        continue if ((e != null && (e.value is _object)) || is_table_array(e))
+        write_toml_key(writer, k)
+        write(writer, " = ")
+        path |> push(k)
+        if (!write_toml_inline(writer, e, path, error)) {
+            return false
+        }
+        path |> pop()
+        write_char(writer, '\n')
+        wrote = true
+    }
+    for (k in ks) {
+        let e = tab?[k] ?? null
+        if (e == null || !(e.value is _object)) {
+            continue
+        }
+        path |> push(k)
+        if (wrote) {
+            write_char(writer, '\n')
+        }
+        write_section_header(writer, path, false)
+        wrote = true
+        if (!write_toml_table(writer, e.value as _object, path, error, wrote)) {
+            return false
+        }
+        path |> pop()
+    }
+    for (k in ks) {
+        let e = tab?[k] ?? null
+        continue if (!is_table_array(e))
+        path |> push(k)
+        for (el in e.value as _array) {
+            if (wrote) {
+                write_char(writer, '\n')
+            }
+            write_section_header(writer, path, true)
+            wrote = true
+            if (!write_toml_table(writer, el.value as _object, path, error, wrote)) {
+                return false
+            }
+        }
+        path |> pop()
+    }
+    return true
+}
+
+[temp_string_result]
+def public write_toml(root : JsonValue?; var error : string&) : string {
+    
+    
+    
+    error = ""
+    if (root == null || !(root.value is _object)) {
+        error = "TOML document must be a table"
+        return ""
+    }
+    var ok = true
+    let st = build_string() $(var writer) {
+        var path : array<string>
+        var wrote = false
+        ok = write_toml_table(writer, root.value as _object, path, error, wrote)
+    }
+    return ok ? st : ""
+}
+
+def public write_toml(root : JsonValue?) : string {
+    
+    var err = ""
+    return write_toml(root, err)
 }

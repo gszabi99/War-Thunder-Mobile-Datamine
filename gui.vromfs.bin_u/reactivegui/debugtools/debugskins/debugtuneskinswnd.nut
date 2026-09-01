@@ -1,28 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { eventbus_send } = require("eventbus")
-let { register_command } = require("console")
-let { deferOnce } = require("dagor.workcycle")
-let { object_to_json_string } = require("json")
-let io = require("io")
-let { get_settings_blk } = require("blkGetters")
-let { HangarCameraControl } = require("wt.behaviors")
-let { arrayByRows, deep_clone } = require("%sqstd/underscore.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { hangarUnitName, hangarUnitSkin, setHangarUnitWithSkin } = require("%rGui/unit/hangarUnit.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let chooseSkinsUnitTypeWnd = require("%rGui/debugTools/debugSkins/chooseSkinsUnitTypeWnd.nut")
-let chooseByNameWnd = require("%rGui/debugTools/debugSkins/chooseByNameWnd.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { imageBtn, framedImageBtn } = require("%rGui/components/imageButton.nut")
-let { unitSkinView, unknownSkinPreset } = require("%appGlobals/config/skinPresentation.nut")
-let skinViewPresets = require("%appGlobals/config/skins/skinViewPresets.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
+from "blkGetters" import get_settings_blk
+from "console" import register_command
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_send
+import "io" as io
+from "json" import object_to_json_string
+from "math" import round
+from "wt.behaviors" import HangarCameraControl
+from "%sqstd/underscore.nut" import arrayByRows, deep_clone
+from "%appGlobals/config/skinPresentation.nut" import unitSkinView, unknownSkinPreset
+import "%appGlobals/config/skins/skinViewPresets.nut" as skinViewPresets
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/unitTags.nut" import getUnitType
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/imageButton.nut" import imageBtn, framedImageBtn
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
+import "%rGui/debugTools/debugSkins/chooseByNameWnd.nut" as chooseByNameWnd
+import "%rGui/debugTools/debugSkins/chooseSkinsUnitTypeWnd.nut" as chooseSkinsUnitTypeWnd
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/unit/hangarUnit.nut" import hangarUnitName, hangarUnitSkin, setHangarUnitWithSkin
 
 
 const SAVE_PATH = "../../skyquake/prog/scripts/wtm/globals/config/skins/unitSkinView.nut"
@@ -37,14 +37,14 @@ let selTag = Watched(null)
 let selPreset = Watched(null)
 let hasViewChanges = Watched(false) 
 
-let wndHeaderHeight = hdpx(60)
-let presetColumns = 5
-let presetSize = hdpxi(110)
+const wndHeaderHeight = hdpx(60)
+const presetColumns = 5
+const presetSize = hdpxi(110)
 let presetBorderSize = round(presetSize*0.2).tointeger()
-let presetGap = hdpx(20)
-let selectedColor = 0x8052C4E4
+const presetGap = hdpx(20)
+const selectedColor = 0x8052C4E4
 let checkSize = [hdpxi(50), hdpxi(25)]
-let underlineSize = hdpx(5)
+const underlineSize = hdpx(5)
 
 let close = @() isOpened.set(false)
 
@@ -99,7 +99,7 @@ function setPresetForOneUnit(skinsView, preset, curUnitName, curUnitSkin) {
 }
 
 let wndHeader = @(children) {
-  size = [FLEX, wndHeaderHeight]
+  size = const [FLEX, wndHeaderHeight]
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(15)
@@ -202,8 +202,8 @@ function mkTagButton(tag) {
   let isSelected = Computed(@() selTag.get() == tag)
   let underline = @() {
     watch = isSelected
-    size = [FLEX, underlineSize]
-    pos = [0, underlineSize]
+    size = const [FLEX, underlineSize]
+    pos = const [0, underlineSize]
     vplace = ALIGN_BOTTOM
     rendObj = ROBJ_SOLID
     color = isSelected.get() ? 0xFFFFFFFF : 0
@@ -265,14 +265,14 @@ let defaultForSkinMark = @(isDefaultForSkin) @()
         color = 0xFFFFFFFF
       }
 
-let function presetBtn(preset, isCurrentForUnit, isDefaultForSkin) {
+function presetBtn(preset, isCurrentForUnit, isDefaultForSkin) {
   let stateFlags = Watched(0)
   let { id, image } = preset
   let isSelected = Computed(@() selPreset.get()?.id == id)
   return @() {
     watch = stateFlags
     key = preset
-    size = [presetSize, presetSize]
+    size = const [presetSize, presetSize]
     rendObj = ROBJ_BOX
     fillColor = 0xFFFFFFFF
     borderRadius = presetBorderSize
@@ -310,7 +310,7 @@ let presetsList = @(curSkinUnitPreset, curSkinDefaultPreset) function() {
     size = FLEX_V
     children = makeVertScroll(
       {
-        padding = [0, presetGap, 0, 0]
+        padding = const [0, presetGap, 0, 0]
         flow = FLOW_VERTICAL
         gap = presetGap
         children = arrayByRows(presets, presetColumns).map(@(column) {
@@ -323,19 +323,19 @@ let presetsList = @(curSkinUnitPreset, curSkinDefaultPreset) function() {
   }
 }
 
-let function presetView(preset, curSkinUnitPreset, curSkinDefaultPreset) {
+function presetView(preset, curSkinUnitPreset, curSkinDefaultPreset) {
   let { id, image } = preset
   let isCurrentForUnit = Computed(@() curSkinUnitPreset.get()?.id == id)
   let isDefaultForSkin = Computed(@() curSkinDefaultPreset.get()?.id == id)
   return {
-    size = [presetSize, presetSize]
+    size = const [presetSize, presetSize]
     rendObj = ROBJ_BOX
     fillColor = 0xFFFFFFFF
     borderRadius = presetBorderSize
     image = Picture($"ui/gameuiskin#{image}:{presetSize}:{presetSize}:P")
     children = [
       {
-        size = [presetSize, presetSize]
+        size = const [presetSize, presetSize]
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#{image}:{presetSize}:{presetSize}:P")
       }

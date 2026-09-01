@@ -1,31 +1,31 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { playSound } = require("sound_wt")
-let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
-let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { playerExpColor, unitExpColor, slotExpColor } = require("%rGui/components/levelBlockPkg.nut")
-let { mkCurrencyComp, mkExp, CS_COMMON, CS_SMALL } = require("%rGui/components/currencyComp.nut")
-let { premiumTextColor, badTextColor } = require("%rGui/style/stdColors.nut")
-let mkTryPremiumButton = require("%rGui/debriefing/tryPremiumButton.nut")
-let { getBestUnitName, getUnit, getUnitRewards, getSlotExpByUnit
-} = require("%rGui/debriefing/debrUtils.nut")
+from "math" import round
+from "sound_wt" import playSound
+from "%appGlobals/config/boostersPresentation.nut" import getBoosterIcon
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/config/subsPresentation.nut" import mkSubsIcon
+from "%appGlobals/currenciesState.nut" import WP, GOLD
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkExp, CS_COMMON, CS_SMALL
+from "%rGui/components/levelBlockPkg.nut" import playerExpColor, unitExpColor, slotExpColor
+from "%rGui/debriefing/debrUtils.nut" import getBestUnitName, getUnit, getUnitRewards, getSlotExpByUnit
+import "%rGui/debriefing/tryPremiumButton.nut" as mkTryPremiumButton
+from "%rGui/style/stdColors.nut" import premiumTextColor, badTextColor
+from "%rGui/textFormatByLang.nut" import decimalFormat
 
-let REWARDS_SCORES = "wp"
-let REWARDS_CAMPAIGN = "campaign"
-let REWARDS_UNIT = "unit"
-let REWARDS_SLOT = "slot"
+
+const REWARDS_SCORES = "wp"
+const REWARDS_CAMPAIGN = "campaign"
+const REWARDS_UNIT = "unit"
+const REWARDS_SLOT = "slot"
 
 let fontCommon = fontTinyAccented
 let fontTotal = fontSmallAccented
 
-let rowHeight = hdpx(35)
-let specialRowHeight = hdpx(45)
+const rowHeight = hdpx(35)
+const specialRowHeight = hdpx(45)
 
-let rewardAnimTime = 0.5
-let deltaStartTimeRewards = rewardAnimTime / 2
+const rewardAnimTime = 0.5
+const deltaStartTimeRewards = rewardAnimTime / 2
 
 let getIsPremiumIncludedWp  = @(debrData) (debrData?.premiumBonus.wpMul  ?? 1.0) > 1.0 || debrData?.subsBonuses != null
 let getIsPremiumIncludedExp = @(debrData) (debrData?.premiumBonus.expMul ?? 1.0) > 1.0 || debrData?.subsBonuses != null
@@ -45,7 +45,6 @@ let rewardsInfoCfg = {
     getBasic = @(debrData) (debrData?.reward.playerWp.baseWp ?? 0)
       + (debrData?.reward.playerWp.misStatusWp ?? 0)
       + (debrData?.reward.playerWp.bonusWp ?? 0)
-    getDailyBonus = @(debrData) debrData?.reward.playerWp.dailyBonusWp ?? 0
     getBooster = @(debrData) debrData?.reward.playerWp.boosterWp ?? 0
     getStreaks = @(debrData) debrData?.reward.playerWp.streaksWp ?? 0
     getIsPremiumIncluded = getIsPremiumIncludedWp
@@ -93,7 +92,6 @@ let rewardsInfoCfg = {
     getBasic = @(debrData) (debrData?.reward.playerExp.baseExp ?? 0)
       + (debrData?.reward.playerExp.misStatusExp ?? 0)
       + (debrData?.reward.playerExp.bonusExp ?? 0)
-    getDailyBonus = @(debrData) debrData?.reward.playerExp.dailyBonusExp ?? 0
     getBooster = @(debrData) debrData?.reward.playerExp.boosterExp ?? 0
     getStreaks = @(_debrData) 0
     getIsPremiumIncluded = getIsPremiumIncludedExp
@@ -119,7 +117,6 @@ let rewardsInfoCfg = {
       let { baseExp = 0, misStatusExp = 0, bonusExp = 0 } = getUnitRewards(getBestUnitName(debrData), debrData)?.exp
       return baseExp + misStatusExp + bonusExp
     }
-    getDailyBonus = @(debrData) getUnitRewards(getBestUnitName(debrData), debrData)?.exp.dailyBonusExp ?? 0
     getBooster = @(debrData) getUnitRewards(getBestUnitName(debrData), debrData)?.exp.boosterExp ?? 0
     getStreaks = @(_debrData) 0
     getIsPremiumIncluded = getIsPremiumIncludedExp
@@ -160,7 +157,6 @@ let unitOrSlotRewardsCfg = {
     let { baseExp = 0, misStatusExp = 0, bonusExp = 0 } = getUnitOrSlotRewardsExp(unit, debrData)
     return baseExp + misStatusExp + bonusExp
   }
-  getDailyBonus = @(debrData, unit) getUnitOrSlotRewardsExp(unit, debrData)?.dailyBonusExp ?? 0
   getBooster = @(debrData, unit) getUnitOrSlotRewardsExp(unit, debrData)?.boosterExp ?? 0
   getStreaks = @(_debrData) 0
   getIsPremiumIncluded = getIsPremiumIncludedExp
@@ -208,7 +204,7 @@ let unitOrSlotRewardsCfg = {
 
 function getRewardsInfoUnit(preset, debrData, unit) {
   let isSlot = unit?.isSlot ?? false
-  let { getHasUnitProgress, getBasic, getBooster, getStreaks, getDailyBonus, getTotalWithAds,
+  let { getHasUnitProgress, getBasic, getBooster, getStreaks, getTotalWithAds,
     getIsPremiumIncluded, getTotalWithoutPremium, getTotalWithPremium, getTotalGoldWithPremium,
     getTotalGoldWithoutPremium, getTotalGoldWithAds
   } = unitOrSlotRewardsCfg
@@ -223,7 +219,6 @@ function getRewardsInfoUnit(preset, debrData, unit) {
   let totalWithPremRaw = getTotalWithPremium(debrData, unit)
   let totalWithPrem = totalWithPremRaw > total ? totalWithPremRaw : 0
   let streaks = getStreaks(debrData)
-  let dailyBonus = getDailyBonus(debrData, unit)
   let totalWithAds = !isAdsBonusApplied(debrData) ? 0 : getTotalWithAds(debrData, unit)
   return {
     isSlot,
@@ -232,7 +227,6 @@ function getRewardsInfoUnit(preset, debrData, unit) {
     basic
     booster
     streaks
-    dailyBonus
     total
     totalWithPrem
     totalWithAds
@@ -243,15 +237,15 @@ function getRewardsInfoUnit(preset, debrData, unit) {
 }
 
 function getRewardsInfo(preset, debrData) {
-  let { getHasProgress, getBasic, getBooster, getStreaks, getDailyBonus,
-    getIsPremiumIncluded, getTotalWithoutPremium, getTotalWithPremium, getTotalWithAds
-    getTotalGoldWithoutPremium = null, getTotalGoldWithPremium = null, getTotalGoldWithAds = null } = rewardsInfoCfg[preset]
+  let { getHasProgress, getBasic, getBooster, getStreaks, getIsPremiumIncluded, getTotalWithoutPremium,
+    getTotalWithPremium, getTotalWithAds, getTotalGoldWithoutPremium = null, getTotalGoldWithPremium = null,
+    getTotalGoldWithAds = null
+  } = rewardsInfoCfg[preset]
   let hasProgress = getHasProgress(debrData)
   let basic = hasProgress ? getBasic(debrData) : 0
   let booster = hasProgress ? getBooster(debrData) : 0
   let streaks = hasProgress ? getStreaks(debrData) : 0
   let isPremiumIncluded = getIsPremiumIncluded(debrData)
-  let dailyBonus = hasProgress ? getDailyBonus(debrData) : 0
   let total = hasProgress ? getTotalWithoutPremium(debrData) : 0
   let totalWithPremRaw = hasProgress ? getTotalWithPremium(debrData) : 0
   let totalWithPrem = totalWithPremRaw > total ? totalWithPremRaw : 0
@@ -265,7 +259,6 @@ function getRewardsInfo(preset, debrData) {
     basic
     booster
     streaks
-    dailyBonus
     total
     totalWithPrem
     totalGoldWithPremium
@@ -275,7 +268,7 @@ function getRewardsInfo(preset, debrData) {
   }
 }
 
-let labelIconSize = hdpxi(45)
+const labelIconSize = hdpxi(45)
 let mkLabelIcon = @(path, w, h) {
   size = [w, h]
   rendObj = ROBJ_IMAGE
@@ -360,13 +353,6 @@ let cfgRowBasic = {
   getLabelIcon = @(_ri) null
 }
 
-let cfgRowDailyBonus = {
-  needShow = @(ri) ri.dailyBonus != 0
-  getVal = @(ri) ri.dailyBonus
-  getLabelText = @(_ri) loc("debriefing/rewards/daily")
-  getLabelIcon = @(_ri) null
-}
-
 let cfgRowBooster = {
   needShow = @(ri) ri.booster != 0
   getVal = @(ri) ri.booster
@@ -412,7 +398,6 @@ let rewardRowsCfg = {
   [REWARDS_SCORES] = @(isAdsBefore) [
     cfgRowGold.__merge(ovrCtorGold)
     cfgRowBasic.__merge(ovrCtorWp)
-    cfgRowDailyBonus.__merge(ovrCtorWp)
     cfgRowBooster.__merge(ovrCtorWp)
     cfgRowStreaks.__merge(ovrCtorWp)
     cfgRowTotal.__merge(ovrCtorWpTotal)
@@ -421,7 +406,6 @@ let rewardRowsCfg = {
   ],
   [REWARDS_CAMPAIGN] = @(isAdsBefore) [
     cfgRowBasic.__merge(ovrCtorExpPlayer)
-    cfgRowDailyBonus.__merge(ovrCtorExpPlayer)
     cfgRowBooster.__merge(ovrCtorExpPlayer)
     cfgRowTotal.__merge(ovrCtorExpPlayerTotal)
     !isAdsBefore ? cfgRowTotalWithPrem.__merge(ovrCtorExpPlayerTotal) : cfgRowWithAds.__merge(ovrCtorExpPlayerTotal)
@@ -430,7 +414,6 @@ let rewardRowsCfg = {
   [REWARDS_UNIT] = @(isAdsBefore) [
     cfgRowGold.__merge(ovrCtorGoldUnit)
     cfgRowBasic.__merge(ovrCtorExpUnit)
-    cfgRowDailyBonus.__merge(ovrCtorExpUnit)
     cfgRowBooster.__merge(ovrCtorExpUnit)
     cfgRowTotal.__merge(ovrCtorExpUnitTotal)
     !isAdsBefore ? cfgRowTotalWithPrem.__merge(ovrCtorExpUnitTotalPrem) : cfgRowWithAds.__merge(ovrCtorExpUnitTotalAds)
@@ -473,7 +456,7 @@ let mkRewardLabel = @(text, icon, cfg) {
   ]
 }
 
-let strikeThroughLineWidth = hdpx(4)
+const strikeThroughLineWidth = hdpx(4)
 let strikeThroughLine = {
   size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS

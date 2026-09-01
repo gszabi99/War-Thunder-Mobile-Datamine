@@ -897,13 +897,18 @@
             "name": "germ_leopard_2a4",
             "weight": 1.0,
             "country": "germany"
+          },
+          {
+            "name": "cn_ztz_99",
+            "weight": 1.0,
+            "country": "china"
           }
         ]
       },
       {
         "range": [
           13,
-          50
+          13
         ],
         "tank": [
           {
@@ -920,6 +925,49 @@
             "name": "germ_leopard_2a4m_can",
             "weight": 1.0,
             "country": "germany"
+          },
+          {
+            "name": "uk_challenger_II",
+            "weight": 1.0,
+            "country": "britain"
+          },
+          {
+            "name": "jp_type_90",
+            "weight": 1.0,
+            "country": "japan"
+          }
+        ]
+      },
+      {
+        "range": [
+          14,
+          50
+        ],
+        "tank": [
+          {
+            "name": "ussr_t_72b3_arena_m",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "us_m1a2_sep_abrams",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "germ_leopard_2a5",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "cn_wz_1001",
+            "weight": 1.0,
+            "country": "china"
+          },
+          {
+            "name": "jp_type_10",
+            "weight": 1.0,
+            "country": "japan"
           }
         ]
       }

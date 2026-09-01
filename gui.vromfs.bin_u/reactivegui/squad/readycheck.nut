@@ -1,23 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { isInSquad, squadId, isSquadLeader, squadLeaderReadyCheckTime, squadMembers } = require("%appGlobals/squadState.nut")
-let setReady = require("%rGui/squad/setReady.nut")
-let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { isInDebriefing, isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let { isDebriefingAnimFinished } = require("%rGui/debriefing/debriefingState.nut")
-let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
-let { curUnits } = require("%appGlobals/pServer/profile.nut")
-let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
-let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
-let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
-let { battleBtnCampaign, penaltyTimerIcon } = require("%rGui/queue/penaltyComps.nut")
-let { randomBattleMode } = require("%rGui/gameModes/gameModeState.nut")
+from "dagor.workcycle" import resetTimeout
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/clientState/clientState.nut" import isInDebriefing, isInBattle, isInLoadingScreen
+from "%appGlobals/pServer/pServerApi.nut" import registerHandler
+from "%appGlobals/pServer/profile.nut" import curUnits
+from "%appGlobals/squadState.nut" import isInSquad, squadId, isSquadLeader, squadLeaderReadyCheckTime, squadMembers
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
+from "%rGui/debriefing/debriefingState.nut" import isDebriefingAnimFinished
+from "%rGui/gameModes/gameModeState.nut" import randomBattleMode
+from "%rGui/queue/penaltyComps.nut" import battleBtnCampaign, penaltyTimerIcon
+import "%rGui/queue/queuePenaltyWnd.nut" as tryOpenQueuePenaltyWnd
+import "%rGui/shop/missingPremiumAccWnd.nut" as showNoPremMessageIfNeed
+import "%rGui/shop/offerMissingUnitItemsMessage.nut" as offerMissingUnitItemsMessage
+import "%rGui/squad/setReady.nut" as setReady
 
 
-let MSG_UID = "readyCheck"
-let CAN_REPEAT_SEC = 15
+const MSG_UID = "readyCheck"
+const CAN_REPEAT_SEC = 15
 let readyCheckTime = hardPersistWatched("readyCheckTime", 0)
 let isReadyCheckSuspended = Watched(false)
 let needReadyCheckButton = Computed(@() isSquadLeader.get()
@@ -56,7 +56,7 @@ let onSquadReady = @() showNoPremMessageIfNeed(@()
   offerMissingUnitItemsMessage(curUnits.get(), @() applyReadyCheckResult(true), null, @() applyReadyCheckResult(false)))
 let onSquadNotReady = @() applyReadyCheckResult(false)
 
-let cbReadyCheckId = "onResetPenaltyReadyCheck"
+const cbReadyCheckId = "onResetPenaltyReadyCheck"
 registerHandler(cbReadyCheckId, @(res) res?.error == null ? onSquadReady() : null)
 
 function showReadyCheck() {

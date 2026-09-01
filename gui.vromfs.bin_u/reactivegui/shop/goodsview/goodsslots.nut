@@ -1,20 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
-let { getLocNameDefault } = require("%rGui/shop/goodsView/goodsDefault.nut")
-let { txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsLimitAndEndTime,
-  goodsH, goodsSmallSize, goodsBgH, mkBgImg, mkBgParticles, borderBg,
-  mkSquareIconBtn, skipPurchasedPlate, purchasedPlate, mkCanPurchase, goodsW, mkCanShowTimeProgress
-} = require("%rGui/shop/goodsView/sharedParts.nut")
-let { getGoodsIcon } = require("%appGlobals/config/goodsPresentation.nut")
-let { todayPurchasesCount } = require("%appGlobals/pServer/campaign.nut")
-let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
+from "%appGlobals/config/goodsPresentation.nut" import getGoodsIcon
+from "%appGlobals/pServer/campaign.nut" import todayPurchasesCount
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, getDay, dayOffset
+from "%rGui/rewards/rewardViewInfo.nut" import isRewardEmpty
+from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
+from "%rGui/shop/goodsView/goodsDefault.nut" import getLocNameDefault
+from "%rGui/shop/goodsView/sharedParts.nut" import txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg,
+  mkGoodsLimitAndEndTime, goodsH, goodsSmallSize, goodsBgH, mkBgImg, mkBgParticles, borderBg, mkSquareIconBtn,
+  skipPurchasedPlate, purchasedPlate, mkCanPurchase, goodsW, mkCanShowTimeProgress
+from "%rGui/style/backgrounds.nut" import bgShaded
 
 
-let fontIconPreview = "⌡"
+const fontIconPreview = "⌡"
 let bgSize = [goodsSmallSize[0], goodsBgH]
 let iconSize = [goodsSmallSize[0] - hdpxi(40), (goodsBgH * 0.9 + 0.5).tointeger()]
 

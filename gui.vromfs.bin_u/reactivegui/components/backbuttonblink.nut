@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { register_command } = require("console")
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "dagor.workcycle" import setInterval, clearTimer
+from "eventbus" import eventbus_send
 
-let BLINK = 0.3
-let PAUSE = 0.1
-let NEWBIE_BLINK = "newbieBackButtonBlink"
+
+const BLINK = 0.3
+const PAUSE = 0.1
+const NEWBIE_BLINK = "newbieBackButtonBlink"
 
 let blinkAnimation = [
   {

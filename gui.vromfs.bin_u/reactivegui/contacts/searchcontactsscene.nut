@@ -1,25 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { searchContactsResult, isSearchInProgress, searchContacts, searchedNick, clearSearchData
-} = require("%rGui/contacts/contactsState.nut")
-let { floatingTextInput } = require("%rGui/components/textInput.nut")
-let { spinner, spinnerOpacityAnim } = require("%rGui/components/spinner.nut")
-let { closeWndBtn } = require("%rGui/components/closeWndBtn.nut")
-let mkContactRow = require("%rGui/contacts/mkContactRow.nut")
-let { mkContactActionBtnPrimary, mkContactActionBtn } = require("%rGui/contacts/mkContactActionBtn.nut")
-let { INVITE_TO_FRIENDS, CANCEL_INVITE, ADD_TO_BLACKLIST, REMOVE_FROM_BLACKLIST, INVITE_TO_SQUAD, PROFILE_VIEW
-} = require("%rGui/contacts/contactActions.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow } = require("%rGui/components/scrollArrows.nut")
-let { topAreaSize, gradientHeightBottom } = require("%rGui/options/mkOptionsScene.nut")
-let { tabBgColor } = require("%rGui/style/stdColors.nut")
+from "dagor.workcycle" import resetTimeout
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/closeWndBtn.nut" import closeWndBtn
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow
+from "%rGui/components/spinner.nut" import spinner, spinnerOpacityAnim
+from "%rGui/components/textInput.nut" import floatingTextInput
+from "%rGui/contacts/contactActions.nut" import INVITE_TO_FRIENDS, CANCEL_INVITE, ADD_TO_BLACKLIST,
+  REMOVE_FROM_BLACKLIST, INVITE_TO_SQUAD, PROFILE_VIEW
+from "%rGui/contacts/contactsState.nut" import searchContactsResult, isSearchInProgress, searchContacts, searchedNick,
+  clearSearchData
+from "%rGui/contacts/mkContactActionBtn.nut" import mkContactActionBtnPrimary, mkContactActionBtn
+import "%rGui/contacts/mkContactRow.nut" as mkContactRow
+from "%rGui/options/mkOptionsScene.nut" import topAreaSize, gradientHeightBottom
+from "%rGui/style/stdColors.nut" import tabBgColor
 
-let searchIconSize = hdpxi(40)
-let gap = hdpx(24)
-let textInputHeight = hdpx(60)
 
-let onChangeDelay = 0.8 
+const searchIconSize = hdpxi(40)
+const gap = hdpx(24)
+const textInputHeight = hdpx(60)
+
+const onChangeDelay = 0.8 
 let searchName = Watched("")
 let playerSelectedUserId = mkWatched(persist, "playerSelectedUserId", null)
 let selectedUserId = Computed(@() playerSelectedUserId.get() in searchContactsResult.get()
@@ -36,14 +37,14 @@ function startSearch() {
 searchName.subscribe(@(_) resetTimeout(onChangeDelay, startSearch))
 
 let searchIcon = {
-  size = [searchIconSize, searchIconSize]
+  size = const [searchIconSize, searchIconSize]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#btn_search.svg:{searchIconSize}:{searchIconSize}:P")
   color = 0xFFFFFFFF
 }
 
 let nameInput = floatingTextInput(searchName, {
-  ovr = { size = [FLEX, textInputHeight] }
+  ovr = { size = const [FLEX, textInputHeight] }
   onReturn = startSearch
   mkEditContent = @(_, inputComp) {
     size = FLEX
@@ -58,7 +59,7 @@ let nameInput = floatingTextInput(searchName, {
 })
 
 let resetBtn = {
-  size = [textInputHeight, textInputHeight]
+  size = const [textInputHeight, textInputHeight]
   rendObj = ROBJ_SOLID
   color = tabBgColor
   children = closeWndBtn(
@@ -70,7 +71,7 @@ let resetBtn = {
 }
 
 let searchBlock = {
-  size = [FLEX, textInputHeight]
+  size = const [FLEX, textInputHeight]
   flow = FLOW_HORIZONTAL
   gap
   children = [
@@ -79,7 +80,7 @@ let searchBlock = {
   ]
 }
 
-let pannableTopOffset = gap
+const pannableTopOffset = gap
 let mkVerticalPannableArea = verticalPannableAreaCtor(sh(100) - topAreaSize - textInputHeight - defButtonHeight - gap * 2,
   [pannableTopOffset, gradientHeightBottom])
 let scrollHandler = ScrollHandler()

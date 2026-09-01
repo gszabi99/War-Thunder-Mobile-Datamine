@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkPieMenu, defaultPieMenuParams } = require("%rGui/hud/pieMenu.nut")
-let { cameraPieCfg, isCameraPieStickActive, cameraPieSelectedIdx } = require("%rGui/hud/cameraPieMenu/cameraPieState.nut")
-let { STICK } = require("%rGui/hud/stickState.nut")
+from "%rGui/hud/cameraPieMenu/cameraPieState.nut" import cameraPieCfg, isCameraPieStickActive, cameraPieSelectedIdx
+from "%rGui/hud/pieMenu.nut" import mkPieMenu, defaultPieMenuParams
+from "%rGui/hud/stickState.nut" import STICK
+
 
 let cameraMsgPieComp = mkPieMenu(cameraPieCfg, cameraPieSelectedIdx,
   defaultPieMenuParams.__merge({ pieIconSizeMul = 0.4, pieActiveStick = STICK.RIGHT }))

@@ -1,22 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { get_settings_blk } = require("blkGetters")
-let { get_maximum_frames_per_second, should_notify_about_restart,
-  get_default_graphics_preset, is_metalfx_upscale_supported, is_arm_asr_supported,
-  is_fxaa_high_broken, supports_deferred_msaa, hdr_available
-} = require("graphicsOptions")
-let { inline_raytracing_available, get_user_system_info } = require("sysinfo")
-let { OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING, OPT_GRAPHICS_SCENE_RESOLUTION, OPT_AA, OPT_HDR, mkOptionValue
-} = require("%rGui/options/guiOptions.nut")
-let mkOptionDescFromValsList = require("%rGui/options/mkOptionDescFromValsList.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
-let { allow_hdr_on_ios } = require("%appGlobals/permissions.nut")
-let { hasHdrScreen } = require("android.platform")
+import "DataBlock" as DataBlock
+from "android.platform" import hasHdrScreen
+from "blkGetters" import get_settings_blk
+from "eventbus" import eventbus_subscribe
+from "graphicsOptions" import get_maximum_frames_per_second, should_notify_about_restart, get_default_graphics_preset,
+  is_metalfx_upscale_supported, is_arm_asr_supported, is_fxaa_high_broken, supports_deferred_msaa, hdr_available
+from "sysinfo" import inline_raytracing_available, get_user_system_info
+from "%sqstd/datablock.nut" import isDataBlock
+from "%sqstd/platform.nut" import is_pc, is_android, is_ios
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%appGlobals/permissions.nut" import allow_hdr_on_ios
+from "%rGui/options/guiOptions.nut" import OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING,
+  OPT_GRAPHICS_SCENE_RESOLUTION, OPT_AA, OPT_HDR, mkOptionValue
+import "%rGui/options/mkOptionDescFromValsList.nut" as mkOptionDescFromValsList
+
 
 let qualitiesListDev = ["movie"]
-let minMemory = 4096
+const minMemory = 4096
 let qualitiesList = (get_settings_blk()?.graphics.forceLowPreset ?? false) ? ["low"]
   : (is_android && (get_user_system_info()?.physicalMemory ?? minMemory) < minMemory) ? ["low", "medium"]
   : ["low", "medium", "high", "max"].extend(is_pc ? qualitiesListDev : [])
@@ -30,9 +31,18 @@ let resolutionList = (get_settings_blk()?.graphics.forceLowPreset ?? false) ? ["
 
 let validateResolution = @(q) resolutionList.contains(q) ? q : resolutionList[0]
 
+
+
+
+let presetsBlk = (is_android || is_pc) ? (get_settings_blk()?.android_presets) : get_settings_blk()?.ios_presets
+let graphicsBlk = isDataBlock(presetsBlk?.graphics) ? presetsBlk?.graphics :  DataBlock()
+function getQualityIndex(quality) {
+  return (presetsBlk != null) ? (presetsBlk % "presetNames").findindex(@(name) name == quality) ?? 0 : 0
+}
+
 function getResolutionByQuality(quality) {
-  let graphicsPresets = (is_android || is_pc) ? (get_settings_blk()?.android_presets) : get_settings_blk()?.ios_presets
-  return validateResolution(graphicsPresets?[quality].graphics.sceneResolutionPreset ?? "medium")
+  let presetId = getQualityIndex(quality)
+  return validateResolution((graphicsBlk % "sceneResolutionPreset")?[presetId] ?? "medium")
 }
 
 let resolutionValue = mkOptionValue(OPT_GRAPHICS_SCENE_RESOLUTION,
@@ -58,8 +68,8 @@ let aaList = ["low_fxaa"]
 
 let validateAA = @(a) aaList.contains(a) ? a : aaList[0]
 function getAAByQuality(quality) {
-  let graphicsPresets = (is_android || is_pc) ? (get_settings_blk()?.android_presets) : get_settings_blk()?.ios_presets
-  return validateAA(graphicsPresets?[quality].graphics.defaultPresetAA ?? aaList[0])
+  let presetId = getQualityIndex(quality)
+  return validateAA((graphicsBlk % "defaultPresetAA")?[presetId] ?? aaList[0])
 }
 let aaValue = mkOptionValue(OPT_AA, getAAByQuality(get_default_graphics_preset()), validateAA)
 

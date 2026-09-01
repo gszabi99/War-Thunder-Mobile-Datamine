@@ -1,7 +1,8 @@
 from "%globalScripts/logs.nut" import *
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+
 
 function mkResearchingUnitForBattleData() {
   let { unitsResearch = {} } = servProfile.get()

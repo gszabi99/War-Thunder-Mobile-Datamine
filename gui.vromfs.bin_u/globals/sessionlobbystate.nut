@@ -1,6 +1,6 @@
+from "frp" import Computed
+from "%sqstd/globalState.nut" import hardPersistWatched
 
-let { Computed } = require("frp")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
 
 let lobbyStates = {
   NOT_IN_ROOM             = 0
@@ -17,7 +17,7 @@ let lobbyStates = {
   IN_DEBRIEFING           = 11
 }
 
-let sessionLobbyStatus = sharedWatched("sessionLobbyStatus", @() lobbyStates.NOT_IN_ROOM)
+let sessionLobbyStatus = hardPersistWatched("sessionLobbyStatus", lobbyStates.NOT_IN_ROOM)
 
 let notInJoiningGameStatuses = [
  lobbyStates.NOT_IN_ROOM

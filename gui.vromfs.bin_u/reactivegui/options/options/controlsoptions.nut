@@ -1,19 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { eventbus_send } = require("eventbus")
-let { DBGLEVEL } = require("dagor.system")
-let { defer } = require("dagor.workcycle")
-let { set_camera_sens, set_camera_rotation_assist } = require("controlsOptions")
-let { setHapticIntensity, ON_SHOOT, ON_HERO_GET_SHOT, ON_COLLISION, useGamepadHaptic } = require("hapticVibration")
-let { get_option_multiplier, set_option_multiplier, OPTION_FREE_CAMERA_INERTIA } = require("gameOptions")
-let { isOnlineSettingsAvailable, isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { hasGamepadConnected } = require("%rGui/controlsMenu/gamepadVendor.nut")
-let { OPT_HAPTIC_INTENSITY, OPT_HAPTIC_INTENSITY_ON_SHOOT, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT,
-  OPT_HAPTIC_INTENSITY_ON_COLLISION, OPT_CAMERA_ROTATION_ASSIST, mkOptionValue, OPT_GAMEPAD_VIBRATION
-} = require("%rGui/options/guiOptions.nut")
-let { openTuningRecommended } = require("%rGui/hudTuning/hudTuningState.nut")
-let { openVoiceMsgPieEditor } = require("%rGui/hud/voiceMsg/voiceMsgPieEditor.nut")
-let { hudReloadStyleOption } = require("%rGui/options/options/hudStyleOptions.nut")
+from "controlsOptions" import set_camera_sens, set_camera_rotation_assist
+from "dagor.system" import DBGLEVEL
+from "dagor.workcycle" import defer
+from "eventbus" import eventbus_send
+from "gameOptions" import get_option_multiplier, set_option_multiplier, OPTION_FREE_CAMERA_INERTIA
+from "hapticVibration" import setHapticIntensity, ON_SHOOT, ON_HERO_GET_SHOT, ON_COLLISION, useGamepadHaptic
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable, isSettingsAvailable
+from "%rGui/controlsMenu/gamepadVendor.nut" import hasGamepadConnected
+from "%rGui/hud/voiceMsg/voiceMsgPieEditor.nut" import openVoiceMsgPieEditor
+from "%rGui/hudTuning/hudTuningState.nut" import openTuningRecommended
+from "%rGui/options/guiOptions.nut" import OPT_HAPTIC_INTENSITY, OPT_HAPTIC_INTENSITY_ON_SHOOT,
+  OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT, OPT_HAPTIC_INTENSITY_ON_COLLISION, OPT_CAMERA_ROTATION_ASSIST, mkOptionValue,
+  OPT_GAMEPAD_VIBRATION
+from "%rGui/options/options/hudStyleOptions.nut" import hudReloadStyleOption
+
 
 function cameraSenseSlider(camType, locId, optId, defVal = 1.0, minVal = 0.03, maxVal = 5.97, stepVal = 0.0297) {
   let value = mkOptionValue(optId, defVal)

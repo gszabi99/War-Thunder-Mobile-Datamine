@@ -1,61 +1,60 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
-let { round } =  require("math")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { AIR, TANK } = require("%appGlobals/unitConst.nut")
-let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
-let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
-let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { mkCurrencyFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getUnitName, getUnitClassFontIcon, getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
-let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
-let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { getStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
-let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
-let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
-let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
-let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
-let { getGoodsAsOfferIcon } = require("%appGlobals/config/goodsPresentation.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { getDecalPresentation } = require("%appGlobals/config/decalsPresentation.nut")
-let { mkLootboxImage } = require("%rGui/rewards/components/lootboxView.nut")
-let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
-let { REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
+from "math" import round
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/battleModPresentation.nut" import getBattleModPresentation
+from "%appGlobals/config/boostersPresentation.nut" import getBoosterIcon
+import "%appGlobals/config/currencyGoodsPresentation.nut" as getCurrencyGoodsPresentation
+from "%appGlobals/config/currencyPresentation.nut" import getCurrencyBigIcon
+from "%appGlobals/config/decalsPresentation.nut" import getDecalPresentation
+from "%appGlobals/config/goodsPresentation.nut" import getGoodsAsOfferIcon
+from "%appGlobals/config/rewardStatsPresentation.nut" import getStatsImage
+from "%appGlobals/config/skinPresentation.nut" import getSkinPresentation
+from "%appGlobals/currenciesState.nut" import EVENT_KEY, PLATINUM, GOLD, WARBOND
+import "%appGlobals/decorators/avatars.nut" as getAvatarImage
+from "%appGlobals/decorators/nickFrames.nut" import frameNick
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/seasonCurrencies.nut" import mkCurrencyFullId
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/unitConst.nut" import AIR, TANK
+from "%appGlobals/unitPresentation.nut" import getUnitName, getUnitClassFontIcon, getUnitPresentation
+from "%appGlobals/unitTags.nut" import getUnitTagsCfg
+from "%rGui/components/currencyComp.nut" import mkCurrencyImage
+from "%rGui/components/discountTag.nut" import discountTag
+from "%rGui/components/glare.nut" import withGlareEffect
+from "%rGui/components/gradTexts.nut" import mkGradRankSmall
+from "%rGui/decorators/decoratorState.nut" import allDecorators
+from "%rGui/globals/fontUtils.nut" import getFontToFitWidth
+from "%rGui/rewards/battleModComp.nut" import mkBattleModEventUnitText, mkBattleModRewardUnitImage,
+  mkBattleModCommonText, mkBattleModCommonImage
+from "%rGui/rewards/components/lootboxView.nut" import mkLootboxImage
+from "%rGui/rewards/components/mkRewardSlider.nut" import mkRewardSlider
+from "%rGui/rewards/rewardPrizeView.nut" import openRewardPrizeView
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
   getRewardPlateSize, progressBarHeight, rewardTicketDefaultSlots
-} = require("%rGui/rewards/rewardStyles.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { mkUnitBg, mkUnitImage, mkPlateText, maxFlagSizeWithoutGrad } = require("%rGui/unit/components/unitPlateComp.nut")
-let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
-let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
-let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
-let { mkBattleModEventUnitText, mkBattleModRewardUnitImage, mkBattleModCommonText,
-  mkBattleModCommonImage } = require("%rGui/rewards/battleModComp.nut")
-let { NO_DROP_LIMIT, shopGoodsToRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { mkRewardSlider } = require("%rGui/rewards/components/mkRewardSlider.nut")
-let { openRewardPrizeView } = require("%rGui/rewards/rewardPrizeView.nut")
-let { allShopGoods } = require("%rGui/shop/shopState.nut")
-let { calculateNewGoodsDiscount } = require("%rGui/shop/discounts.nut")
-let { discountTag } = require("%rGui/components/discountTag.nut")
-let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
-let { SGT_UNIT, getGoodsType } = require("%rGui/shop/shopCommon.nut")
-let { mkBgImg, mkFitCenterImg, offerPad } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { withGlareEffect } = require("%rGui/components/glare.nut")
-let { mkDecalIcon } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
+from "%rGui/rewards/rewardViewInfo.nut" import NO_DROP_LIMIT, shopGoodsToRewardsViewInfo, sortRewardsViewInfo
+from "%rGui/shop/discounts.nut" import calculateNewGoodsDiscount
+from "%rGui/shop/goodsUtils.nut" import getBestUnitByGoods
+from "%rGui/shop/goodsView/sharedParts.nut" import mkBgImg, mkFitCenterImg, offerPad
+from "%rGui/shop/offerByGoodsState.nut" import activeOffersByGoods
+from "%rGui/shop/shopCommon.nut" import SGT_UNIT, getGoodsType
+from "%rGui/shop/shopState.nut" import allShopGoods
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/textFormatByLang.nut" import decimalFormat, shortTextFromNum
+from "%rGui/unit/components/unitPlateComp.nut" import mkUnitBg, mkUnitImage, mkPlateText, maxFlagSizeWithoutGrad
+from "%rGui/unitCustom/unitDecals/unitDecalsComps.nut" import mkDecalIcon
 
 
 let currenciesOnOfferBanner = [PLATINUM, EVENT_KEY, GOLD, WARBOND]
-let glareWidth = sh(8)
-let commonOfferCurrencyIconSize = hdpxi(160)
-let smallOfferCurrencyIconSize = hdpxi(100)
+const glareWidth = sh(8)
+const commonOfferCurrencyIconSize = hdpxi(160)
+const smallOfferCurrencyIconSize = hdpxi(100)
 let textPadding = [0, hdpx(5)]
-let cornerIconMargin = hdpx(5)
+const cornerIconMargin = hdpx(5)
 let fontLabelBig = fontSmall
-let transparentBlackColor = 0x80000000
-let rewardPlateBorderWidth = hdpx(3)
+const transparentBlackColor = 0x80000000
+const rewardPlateBorderWidth = hdpx(3)
 
 let iconBase = {
   hplace = ALIGN_CENTER
@@ -246,7 +245,7 @@ function mkRewardReceivedMark(rStyle, ovr = {}) {
     color = transparentBlackColor
     children = {
       size = [iconSize, iconSize]
-      pos = [hdpx(10), -hdpx(10)]
+      pos = const [hdpx(10), -hdpx(10)]
       rendObj = ROBJ_IMAGE
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
@@ -278,7 +277,7 @@ function mkUnitNameText(unitNameLoc, size, rStyle) {
 let mkTrashIcon = @(size) {
   rendObj = ROBJ_IMAGE
   size = [size, size]
-  pos = [ rewardPlateBorderWidth * 2, rewardPlateBorderWidth * 2 ]
+  pos = const [ rewardPlateBorderWidth * 2, rewardPlateBorderWidth * 2 ]
   image = Picture($"ui/gameuiskin#btn_trash.svg:{size}:{size}:P")
   color = 0xFFFF231E
   keepAspect = true
@@ -395,7 +394,7 @@ let mkDecoratorIconTitle = @(decoratorId, rStyle, size) decoratorFontIconBase.__
     text = loc($"title/{decoratorId}")
   },
   getFontToFitWidth({ rendObj = ROBJ_TEXT, text = loc($"title/{decoratorId}") }.__update(fontLabelBig),
-    size[0] - textPadding[1] * 2, [rStyle.textStyle, fontLabelBig]))
+    size[0] - textPadding[1] * 2, [rStyle.textStyleSmall, rStyle.textStyle, fontLabelBig]))
 
 let mkDecoratorIconNickFrame = @(decoratorId, rStyle, size) decoratorFontIconBase.__merge({
   pos = [ 0, rStyle.iconShiftY ]
@@ -594,7 +593,7 @@ function mkUnitTextsImpl(r, rStyle, isUpgraded) {
       children = [
         {
           size = FLEX_H
-          pos = [0, hdpx(3)]
+          pos = const [0, hdpx(3)]
           flow = FLOW_VERTICAL
           halign = ALIGN_RIGHT
           children = [
@@ -675,7 +674,7 @@ function mkRewardPlateBlueprintTexts(r, rStyle) {
         padding = const [0, hdpx(5)]
         children = [
           unitRank.get()
-            ? mkGradRankSmall(unitRank.get()).__update({ fontSize = rStyle.textStyle.fontSize, pos = [0, hdpx(5)] })
+            ? mkGradRankSmall(unitRank.get()).__update({ fontSize = rStyle.textStyle.fontSize, pos = const [0, hdpx(5)] })
             : null
           mkProgressBarText(r, rStyle)
         ]
@@ -735,7 +734,7 @@ let mkDiscountOfferWrap = @(content, size) bgShaded.__merge({
 let mkDiscountOfferTag = @(discount) discountTag(discount, {
   hplace = ALIGN_LEFT
   vplace = ALIGN_TOP
-  pos = [0, 0]
+  pos = const [0, 0]
   size = const [hdpx(93), hdpx(46)]
 }, { pos = null }.__update(fontTinyAccented))
 
@@ -1012,7 +1011,7 @@ function mkRewardFlagSize(rStyle) {
   return [w, h]
 }
 
-let function mkRewardUnitFlag(unit, rStyle) {
+function mkRewardUnitFlag(unit, rStyle) {
   let operatorCountry = getUnitTagsCfg(unit.name)?.operatorCountry
   if (operatorCountry == "")
     return null

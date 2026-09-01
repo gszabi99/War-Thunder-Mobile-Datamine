@@ -1,19 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { eventbus_subscribe } = require("eventbus")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { activeUnlocks, receiveUnlockRewards, unlockInProgress, getRelativeStageData
-} = require("%rGui/unlocks/unlocks.nut")
-let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-let { deferOnce } = require("dagor.workcycle")
-let { isAdsAvailable, showAdsForReward } = require("%rGui/ads/adsState.nut")
-let { completeAnimDelay, moveCardsFullTime, moveCardsHalfTime, FULL_DAYS
-} = require("%rGui/unlocks/loginAwardPlaces.nut")
-let { delayUnseedPurchaseShow } = require("%rGui/shop/unseenPurchasesState.nut")
-let { userstatRegisterExecutor } = require("%rGui/unlocks/userstat.nut")
-let { hasVip } = require("%rGui/state/profilePremium.nut")
+from "console" import register_command
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_subscribe
+from "%sqstd/underscore.nut" import isEqual
+from "%rGui/ads/adsState.nut" import isAdsAvailable, showAdsForReward
+from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
+from "%rGui/shop/unseenPurchasesState.nut" import delayUnseedPurchaseShow
+from "%rGui/state/profilePremium.nut" import hasVip
+from "%rGui/unlocks/loginAwardPlaces.nut" import completeAnimDelay, moveCardsFullTime, moveCardsHalfTime, FULL_DAYS
+from "%rGui/unlocks/unlocks.nut" import activeUnlocks, receiveUnlockRewards, unlockInProgress, getRelativeStageData
+from "%rGui/unlocks/userstat.nut" import userstatRegisterExecutor
 
-let showUnseenAfterAnimDelay = 0.2
+
+const showUnseenAfterAnimDelay = 0.2
 
 const LOGIN_UNLOCK_ID = "every_day_award"
 let loginAwardUnlock = Computed(@() activeUnlocks.get()?[LOGIN_UNLOCK_ID])

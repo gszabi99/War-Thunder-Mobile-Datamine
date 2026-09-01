@@ -1,0 +1,244 @@
+{
+  "z_far": [
+    35000.0,
+    50000.0
+  ],
+  "numBorderCellsXPos": [
+    0,
+    0
+  ],
+  "numBorderCellsXNeg": [
+    0,
+    0
+  ],
+  "numBorderCellsZPos": [
+    0,
+    0
+  ],
+  "numBorderCellsZNeg": [
+    0,
+    0
+  ],
+  "gridSteps": [
+    [
+      2000.0,
+      2000.0
+    ],
+    [
+      2048.0,
+      2048.0
+    ],
+    [
+      3250.0,
+      3250.0
+    ]
+  ],
+  "vsmAngleThreshold": [
+    0.0,
+    20.0
+  ],
+  "wind_scale": 1.2,
+  "max_wind_strength": 6.5,
+  "water_level": [
+    0.0,
+    0.0
+  ],
+  "riMinSizeForReflections": 1000.0,
+  "enableApex": false,
+  "mandatoryLandquality": 1,
+  "customMapBackColorInBriefing": "#FF18212A",
+  "customMapBackColor": "#7F0C1015",
+  "mapCoord0": [
+    -32768.0,
+    -32768.0
+  ],
+  "mapCoord1": [
+    32768.0,
+    32768.0
+  ],
+  "aiMapCoord0": [
+    -32768.0,
+    -32768.0
+  ],
+  "aiMapCoord1": [
+    32768.0,
+    32768.0
+  ],
+  "minAreaSize": [
+    12000.0,
+    12000.0
+  ],
+  "weatherPreset": "gameData/environments/weather_preset_1.blk",
+  "weatherTypes": "gameData/environments/weather_types.blk",
+  "heli_ground_effect": "sand",
+  "average_ground_level": 0.0,
+  "lastclip_horizon": true,
+  "soundAmbientPath": "sounds/ambient",
+  "soundAmbientPathStudio": "aircraft/ambient",
+  "soundAmbientEvent": "global_amb_desert",
+  "windDir": [
+    0.4,
+    0.5
+  ],
+  "layeredFogDensityMul": 0.7,
+  "shader_vars": {
+    "shore__waves_dist": [
+      -80.0,
+      110.0,
+      0.0,
+      200.0
+    ],
+    "shore_amplitude_to_length": [
+      180.0,
+      100.0
+    ],
+    "shore_artistic_max_wave_height": 1.0,
+    "shore_depth_scale": 0.07,
+    "max_river_width": [
+      0.0,
+      500.0
+    ],
+    "ocean_density": [
+      0.4,
+      0.5
+    ],
+    "river_density": [
+      2.0,
+      0.5
+    ],
+    "water_color_noise_size": [
+      1737.0,
+      1337.0
+    ],
+    "parallax_shadow_strength": 7.0,
+    "parallax_shadow_length": 2.0,
+    "land_bump_scale": -1.0,
+    "specular_detect_land_color": [
+      1.0,
+      0.2,
+      0.2,
+      0.35
+    ],
+    "translucency_detection_hardness": 1.0,
+    "dust_color": [
+      0.19,
+      0.12,
+      0.045,
+      0.9
+    ],
+    "dust_params": [
+      0.7,
+      0.8,
+      1.0,
+      0.3
+    ],
+    "dust_params2": [
+      3.0,
+      0.75,
+      0.8,
+      1.2
+    ],
+    "mud_color": [
+      0.1,
+      0.05,
+      0.01,
+      0.7
+    ],
+    "ocean0": [
+      [
+        0.394,
+        0.482,
+        0.375,
+        0.0
+      ],
+      [
+        0.149,
+        0.208,
+        0.494,
+        0.0
+      ]
+    ],
+    "ocean1": [
+      [
+        0.345,
+        0.484,
+        0.459,
+        0.0
+      ],
+      [
+        0.149,
+        0.208,
+        0.494,
+        0.0
+      ]
+    ],
+    "water_aces_params": [
+      0.15,
+      0.2,
+      1.0,
+      0.0
+    ],
+    "river0": [
+      0.5,
+      0.35,
+      0.12,
+      0.0
+    ],
+    "river1": [
+      0.36,
+      0.41,
+      0.17,
+      0.0
+    ]
+  },
+  "render": {
+    "lmesh": true,
+    "onlyUnderwaterLmesh": false,
+    "riExtraMinSizeForReflection": 100.0,
+    "riExToHeightmap": true
+  },
+  "clipmap": {
+    "texelSize": 0.1
+  },
+  "stars": {
+    "latitude": 34.0,
+    "longitude": 10.0,
+    "year": 1943,
+    "month": 4,
+    "day": 17
+  },
+  "earth": {
+    "earthWorldEnabled": true,
+    "earthWorldMin": [
+      -65536.0,
+      -65536.0
+    ],
+    "earthWorldMax": [
+      65536.0,
+      65536.0
+    ]
+  },
+  "micro_details": {
+    "micro_detail": [
+      "microdetail_stone_a_tex_n*",
+      "microdetail_sand_c_tex_n*",
+      "microdetail_sand_a_tex_n*",
+      "microdetail_soil_a_tex_n*",
+      "microdetail_sand_a_tex_n*",
+      "microdetail_mud_a_tex_n*",
+      "microdetail_soil_b_tex_n*",
+      "microdetail_sand_a_tex_n*",
+      "microdetail_wood_b_tex_n*",
+      "microdetail_metal_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_generic_granules_a_tex_n*"
+    ],
+    "land_micro_details_uv_scale": 0.52
+  },
+  "waterStub": {
+    "enable": true
+  },
+  "technicsSkins": {
+    "groundSkin": "sand"
+  }
+}

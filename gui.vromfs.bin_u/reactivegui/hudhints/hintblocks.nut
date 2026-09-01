@@ -1,23 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let mainHintLogState = require("%rGui/hudHints/mainHintLogState.nut")
-let warningHintLogState = require("%rGui/hudHints/warningHintLogState.nut")
-let logerrLogState = require("%rGui/hudHints/logerrLogState.nut")
-let killLogState = require("%rGui/hudHints/killLogState.nut")
+from "math" import round
+from "%appGlobals/profileStates.nut" import myUserName
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderColor
+import "%rGui/hudHints/commonHintLogState.nut" as commonHintLogState
+from "%rGui/hudHints/hintCtors.nut" import hintCtors, defaultHintCtor
+import "%rGui/hudHints/killLogState.nut" as killLogState
+import "%rGui/hudHints/logerrLogState.nut" as logerrLogState
+import "%rGui/hudHints/mainHintLogState.nut" as mainHintLogState
+import "%rGui/hudHints/resultsHintLogState.nut" as resultsHintLogState
+import "%rGui/hudHints/warningHintLogState.nut" as warningHintLogState
+from "%rGui/hudState.nut" import areHintsHidden
+from "%rGui/hudTuning/cfg/cfgOptions.nut" import getElemFont, getTextWidth
+from "%rGui/hudTuning/hudTuningBattleState.nut" import curUnitHudTuningOptions
+from "%rGui/style/stdColors.nut" import localPlayerColor
+from "%rGui/style/teamColors.nut" import teamBlueLightColor, teamRedLightColor
+
+
 let { maxKillLogEvents } = killLogState
-let commonHintLogState = require("%rGui/hudHints/commonHintLogState.nut")
-let resultsHintLogState = require("%rGui/hudHints/resultsHintLogState.nut")
-let { hintCtors, defaultHintCtor } = require("%rGui/hudHints/hintCtors.nut")
-let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { myUserName } = require("%appGlobals/profileStates.nut")
-let { localPlayerColor } = require("%rGui/style/stdColors.nut")
-let { teamBlueLightColor, teamRedLightColor } = require("%rGui/style/teamColors.nut")
-let { areHintsHidden } = require("%rGui/hudState.nut")
-let { getElemFont, getTextWidth } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
-let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
 
 
-let maxChatLogWidth = hdpx(600)
+const maxChatLogWidth = hdpx(600)
 
 let getChatFont = @(o) getElemFont(o, "chatLogAndKillLog")
 let getChatWidth = @(o) round(maxChatLogWidth * getTextWidth(o, "chatLogAndKillLog")).tointeger()
@@ -32,7 +34,7 @@ let textsForLoggerEditView = @(userName) [
   $"{colorize(teamBlueLightColor, loc("coop/Bot92"))}{colon} {loc("voice_message_attack_enemy_base_1")}",
 ]
 
-let hintsGapBase = hdpx(10)
+const hintsGapBase = hdpx(10)
 
 let mkTextLogger = @(text) {
   size = FLEX_H

@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
-let { gamepadShortcuts, allShortcutsUp, getGamepadKeys } = require("%rGui/controls/shortcutsMap.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%globalsDarg/fontScale.nut" import getScaledFont
+from "%rGui/controls/shortcutsMap.nut" import gamepadShortcuts, allShortcutsUp, getGamepadKeys
+from "%rGui/controlsMenu/gamepadImgByKey.nut" import mkBtnImageComp
 
-let defBtnHeight = hdpxi(50)
+
+const defBtnHeight = hdpxi(50)
 
 const combinationButton = "J:LB"
 let combBtnInfo = resolve_button(combinationButton)

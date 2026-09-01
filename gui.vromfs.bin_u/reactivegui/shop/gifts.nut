@@ -1,23 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
+from "app" import get_cur_circuit_name
+from "auth_wt" import get_user_info
+from "blkGetters" import get_network_block
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, setInterval, clearTimer
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/time.nut" import minutesToSeconds, secondsToMilliseconds
+from "%appGlobals/clientState/clientState.nut" import isInDebriefing
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/pServerApi.nut" import check_purchases
+from "%appGlobals/queueState.nut" import isInQueue
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText
+from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
+from "%rGui/shop/httpRequest.nut" import requestData
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import isTutorialActive
+
+
 let logG = log_with_prefix("[GIFTS] ")
-let { get_time_msec } = require("dagor.time")
-let { resetTimeout, setInterval, clearTimer } = require("dagor.workcycle")
-let { register_command } = require("console")
-let { get_cur_circuit_name } = require("app")
-let { get_network_block } = require("blkGetters")
-let { get_user_info } = require("auth_wt")
-let { minutesToSeconds, secondsToMilliseconds } = require("%sqstd/time.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { isInQueue } = require("%appGlobals/queueState.nut")
-let { check_purchases } = require("%appGlobals/pServer/pServerApi.nut")
-let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
-let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { requestData } = require("%rGui/shop/httpRequest.nut")
 
 
 let INTERVAL_BETWEEN_REQUESTS_SEC = minutesToSeconds(30)
@@ -25,7 +27,7 @@ let INTERVAL_BETWEEN_REQUESTS_MSEC = secondsToMilliseconds(INTERVAL_BETWEEN_REQU
 
 const NO_ANSWER_TIMEOUT_SEC = 60
 
-let giftSize = hdpx(150)
+const giftSize = hdpx(150)
 
 enum GIFT_ACTION {
   INFO = "info"
@@ -133,7 +135,7 @@ let showGiftWnd = @() !needShow.get() ? null
       margin = const [hdpx(32), 0, 0, 0]
       children = [
         {
-          size = [giftSize, giftSize]
+          size = const [giftSize, giftSize]
           rendObj = ROBJ_IMAGE
           image = Picture($"ui/gameuiskin#icon_gift.avif:{giftSize}:{giftSize}:P")
           keepAspect = true

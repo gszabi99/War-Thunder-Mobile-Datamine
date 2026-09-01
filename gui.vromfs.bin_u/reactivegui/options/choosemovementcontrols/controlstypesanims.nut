@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let mkStickWidgetComps = require("%rGui/options/chooseMovementControls/mkStickWidgetComps.nut")
-let mkArrowsWidgetComps = require("%rGui/options/chooseMovementControls/mkArrowsWidgetComps.nut")
+from "math" import round
+import "%rGui/options/chooseMovementControls/mkArrowsWidgetComps.nut" as mkArrowsWidgetComps
+import "%rGui/options/chooseMovementControls/mkStickWidgetComps.nut" as mkStickWidgetComps
+
 
 let animSize = evenPx(380)
 let canvasHalfSize = 0.5 * animSize
@@ -12,7 +13,7 @@ let fingerW = round(hdpx(0.87 * animSize))
 let fingerH = round(fingerW * 0.92)
 let fingerX = round(fingerW * -0.38)
 let fingerY = round(fingerH * 0.19)
-let fingerOpacity = 0.4
+const fingerOpacity = 0.4
 
 let { stickBgComp, stickHeadComp } = mkStickWidgetComps(stickSize)
 let { arrowsWidgetComp, arrowsWidgetParts } = mkArrowsWidgetComps(arrowsSize)
@@ -23,11 +24,11 @@ enum GESTURE {
   SLIDE
 }
 
-let timePause = 1.0
-let timeAppear = 0.5
-let timeDisappear = timeAppear
-let timeSlide = 0.25
-let timeLongTap = 1.5
+const timePause = 1.0
+const timeAppear = 0.5
+const timeDisappear = timeAppear
+const timeSlide = 0.25
+const timeLongTap = 1.5
 let timeHoldByGeature = {
   [GESTURE.TAP] = 0,
   [GESTURE.HOLD] = timeLongTap,

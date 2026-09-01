@@ -1,17 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/config/bulletsPresentation.nut" import getBulletImage, getBulletTypeIcon
+from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%rGui/components/foldableSelector.nut" import mkFoldableSelector, mkListItem
 from "%rGui/components/gradTexts.nut" import mkGradRank, mkGradRankLarge
-from "%rGui/unit/components/unitPlateComp.nut" import mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitInfo
-from "%rGui/weaponry/weaponsVisual.nut" import getAmmoNameShortText, getAmmoTypeShortText
-from "%rGui/unitMods/modsComps.nut" import mkBulletTypeIcon
 from "%rGui/dmViewer/protectionAnalysisState.nut" import isProtectionAnalysisActive
+from "%rGui/unit/components/unitPlateComp.nut" import mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitInfo
+from "%rGui/unitMods/modsComps.nut" import mkBulletTypeIcon
+from "%rGui/weaponry/weaponsVisual.nut" import getAmmoNameShortText, getAmmoTypeShortText
 
-let itemSize = hdpx(120)
-let slotWidth = hdpx(248)
-let flagSize = hdpx(68)
-let flagSizeHeader = hdpx(54)
+
+const itemSize = hdpx(120)
+const slotWidth = hdpx(248)
+const flagSize = hdpx(68)
+const flagSizeHeader = hdpx(54)
 
 let mkText = @(text, ovr = {}) {
   rendObj = ROBJ_TEXT
@@ -38,7 +39,7 @@ let mkImage = @(w, h, imgPath, ovr = {}) {
 let mkFlagImage = @(countryId, sz) mkImage(sz, sz, $"ui/gameuiskin#{countryId}.svg:{sz}:{sz}:P")
 
 let mkUnitPlate = @(unit, isSelectedW) {
-  size = [slotWidth, itemSize]
+  size = const [slotWidth, itemSize]
   children = [
     mkUnitBg(unit)
     mkUnitSelectedGlow(unit, isSelectedW)
@@ -55,7 +56,7 @@ function mkBulletPlate(bData) {
   let ammoTypeName = getAmmoTypeShortText(bSet?.bullets[0] ?? "")
   let iconBulletType = getBulletTypeIcon(icon, bSet)
   return {
-    size = [slotWidth, itemSize]
+    size = const [slotWidth, itemSize]
     children = [
       mkImage(slotWidth, itemSize, imageBulletName, { imageHalign = ALIGN_LEFT })
       mkBulletTypeIcon(iconBulletType, ammoTypeName)

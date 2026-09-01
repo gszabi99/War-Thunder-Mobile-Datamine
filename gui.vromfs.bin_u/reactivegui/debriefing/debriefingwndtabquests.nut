@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { contentHeight } = require("%rGui/debriefing/debriefingWndConsts.nut")
-let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
-let mkDebrQuestsProgress = require("%rGui/debriefing/mkDebrQuestsProgress.nut")
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/debriefing/debriefingWndConsts.nut" import contentHeight
+from "%rGui/debriefing/missionResultTitle.nut" import mkMissionResultTitle
+import "%rGui/debriefing/mkDebrQuestsProgress.nut" as mkDebrQuestsProgress
 
-let questsAnimStartTime = 0.0
+
+const questsAnimStartTime = 0.0
 
 let pageContentHeight = contentHeight - hdpx(120)
 let contentGradientSize = [ hdpx(20), hdpx(50) ]

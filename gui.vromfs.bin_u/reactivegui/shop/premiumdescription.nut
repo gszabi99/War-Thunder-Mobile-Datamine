@@ -1,18 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/style/backgrounds.nut" import bgShadedDark
+from "%rGui/style/gamercardStyle.nut" import gamercardHeight
+from "%rGui/style/gradients.nut" import gradDoubleTexOffset
 
 
-let premDescWndUid = "prem_desc_wnd_uid"
+const premDescWndUid = "prem_desc_wnd_uid"
 
 let isPremiumDescriptionWndVisible = Watched(false)
-let premiumDescriptionWidth = sw(70)
+const premiumDescriptionWidth = sw(70)
 
 let premiumBonusesCfg = Computed(@() serverConfigs.get()?.gameProfile.premiumBonuses)
 let bonusMultText = @(v) $"{v}x"
@@ -37,7 +37,7 @@ let premiumDescription = {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   halign = ALIGN_CENTER
-  size = [ premiumDescriptionWidth, SIZE_TO_CONTENT ]
+  size = const [ premiumDescriptionWidth, SIZE_TO_CONTENT ]
   children = [
     modalWndHeader(loc("charServer/entitlement/PremiumAccount"))
     {

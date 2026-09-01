@@ -1,45 +1,44 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { playSound } = require("sound_wt")
-
-let { btnTextDec, btnTextInc, mkIconBtn, btnBg, slider, mkSliderKnob, mkSliderOnChangeSound
-} = require("%rGui/components/slider.nut")
-let { textColor, badTextColor, hoverColor, selectColor } = require("%rGui/style/stdColors.nut")
-let { getSpCostText, setAttribute } = require("%rGui/attributes/attrState.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { gradTranspDoubleSideX, mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
+from "dagor.time" import get_time_msec
+from "sound_wt" import playSound
+from "%rGui/attributes/attrState.nut" import getSpCostText, setAttribute
+from "%rGui/components/currencyComp.nut" import mkCurrencyImage
+from "%rGui/components/slider.nut" import btnTextDec, btnTextInc, mkIconBtn, btnBg, slider, mkSliderKnob,
+  mkSliderOnChangeSound
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, mkColoredGradientY
+from "%rGui/style/stdColors.nut" import textColor, badTextColor, hoverColor, selectColor
 
 
 let progressBtnSize = evenPx(72)
-let progressBtnGap = hdpx(30)
-let rowHeight = hdpx(100)
-let costColW = hdpx(55)
+const progressBtnGap = hdpx(30)
+const rowHeight = hdpx(100)
+const costColW = hdpx(55)
 let rowsPosPadL = progressBtnSize + progressBtnGap
 let rowsPosPadR = rowsPosPadL + progressBtnGap + costColW
 let knobWidth = evenPx(13)
 let knobHeight = evenPx(31)
 let sliderTouchableHeight = knobHeight + hdpx(44)
 let cellH = evenPx(21)
-let cellGap = hdpx(5)
-let infoImgSize = hdpxi(30)
-let pageWidth = hdpx(855)
-let sliderWidth = pageWidth * 0.6
+const cellGap = hdpx(5)
+const infoImgSize = hdpxi(30)
+const pageWidth = hdpx(855)
+const sliderWidth = pageWidth * 0.6
 
 let cellColorFilled = selectColor
-let cellColorNew    = 0xFFBCD5FF
-let cellColorCanBuy = 0xFF53688C
-let cellColorEmpty  = 0x00000000
+const cellColorNew    = 0xFFBCD5FF
+const cellColorCanBuy = 0xFF53688C
+const cellColorEmpty  = 0x00000000
 
-let newValueColor = cellColorNew
+const newValueColor = cellColorNew
 
-let glareWidth = hdpx(32)
-let incBtnAnimDuration = 0.3
-let incBtnAnimRepeat = 2
+const glareWidth = hdpx(32)
+const incBtnAnimDuration = 0.3
+const incBtnAnimRepeat = 2
 
 let startIncBtnGlare = @() anim_start("incBtnGlareAnim")
 
-let boost_cooldown = 500
+const boost_cooldown = 500
 local lastClickTime = 0
 
 let progressBtnBase = {
@@ -153,7 +152,7 @@ let mkRowValue = @(curValueData, selValueData) {
 }
 
 let mkNextIncCost = @(nextIncCost, canInc, totalSp) {
-  size = [costColW, SIZE_TO_CONTENT]
+  size = const [costColW, SIZE_TO_CONTENT]
   children = @() totalSp.get() > 0
     ? txt({
         watch = [totalSp, nextIncCost, canInc]
@@ -267,7 +266,7 @@ function mkProgressBarIndicators(minLevel, selLevel, maxLevel, totalLevels, onCh
 }
 
 let mkRowProgressBar = @(minLevel, selLevel, maxLevel, totalLevels, onChangeValue) {
-  size = [sliderWidth, SIZE_TO_CONTENT]
+  size = const [sliderWidth, SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   gap = cellGap
   children = mkProgressBarIndicators(minLevel, selLevel, maxLevel, totalLevels, onChangeValue)

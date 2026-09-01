@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { openUnitModsWnd, mkMods } = require("%rGui/unitMods/unitModsState.nut")
-let { unseenCampUnitMods } = require("%rGui/unitMods/unseenMods.nut")
-let { mkUnseenUnitBullets } = require("%rGui/unitMods/unseenBullets.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { mkCustomButton, buttonStyles, mergeStyles, textButtonUnseenMargin } = require("%rGui/components/textButton.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { contentMargin } = require("%rGui/attributes/attrWndTabs.nut")
-let { isHangarUnitHasWeaponSlots, openUnitModsSlotsWnd, mkListUnseenMods } = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/attributes/attrWndTabs.nut" import contentMargin
+from "%rGui/components/textButton.nut" import mkCustomButton, buttonStyles, mergeStyles, textButtonUnseenMargin
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/unit/hangarUnit.nut" import hangarUnitName
+from "%rGui/unitMods/unitModsSlotsState.nut" import isHangarUnitHasWeaponSlots, openUnitModsSlotsWnd, mkListUnseenMods
+from "%rGui/unitMods/unitModsState.nut" import openUnitModsWnd, mkMods
+from "%rGui/unitMods/unseenBullets.nut" import mkUnseenUnitBullets
+from "%rGui/unitMods/unseenMods.nut" import unseenCampUnitMods
 
 
-let arsenalIconSize = hdpxi(80)
+const arsenalIconSize = hdpxi(80)
 
 let mkArsenalBtnContent = {
   valign = ALIGN_CENTER
@@ -18,7 +18,7 @@ let mkArsenalBtnContent = {
   gap = hdpx(20)
   children = [
     {
-      size = [arsenalIconSize, arsenalIconSize]
+      size = const [arsenalIconSize, arsenalIconSize]
       rendObj = ROBJ_IMAGE
       keepAspect = KEEP_ASPECT_FILL
       image = Picture("ui/gameuiskin#arsenal.svg")

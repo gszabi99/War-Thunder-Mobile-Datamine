@@ -1,24 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
-let { backButtonHeight } = require("%rGui/components/backButton.nut")
-let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/backButton.nut" import backButtonHeight
+from "%rGui/components/buttonStyles.nut" import defButtonMinWidth, defButtonHeight
+from "%rGui/components/gradientDefComps.nut" import doubleSideGradient
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/style/gradients.nut" import mkColoredGradientY
+from "%rGui/style/stdColors.nut" import selectColor
 
 
-let iconSize = hdpxi(34)
-let margin = hdpx(10)
-let commonBgGradColor = 0x990C1113
+const iconSize = hdpxi(34)
+const margin = hdpx(10)
+const commonBgGradColor = 0x990C1113
 let secondaryGradColor = selectColor
-let sectionBtnHeight = hdpx(80)
-let sectionBtnMaxWidth = hdpx(300)
-let sectionBtnGap = hdpx(10)
-let lineWidth = hdpx(5)
+const sectionBtnHeight = hdpx(80)
+const sectionBtnMaxWidth = hdpx(300)
+const sectionBtnGap = hdpx(10)
+const lineWidth = hdpx(5)
 let collapseBtnSize = [sectionBtnHeight, sectionBtnHeight]
 let bgGradient = mkColoredGradientY(commonBgGradColor, secondaryGradColor, 12)
-let gamercardPadding = hdpx(10)
+const gamercardPadding = hdpx(10)
 let gamercardHeight = backButtonHeight + gamercardPadding * 2
 
 let unseenMark = {
@@ -61,8 +61,8 @@ let toggleSectionBtn = @(isExpanded) {
   size = collapseBtnSize
   rendObj = ROBJ_BOX
   borderColor = secondaryGradColor
-  borderWidth = [lineWidth, lineWidth, 0, lineWidth]
-  padding = [lineWidth, lineWidth, 0, lineWidth]
+  borderWidth = const [lineWidth, lineWidth, 0, lineWidth]
+  padding = const [lineWidth, lineWidth, 0, lineWidth]
   children = @() {
     watch = isExpanded
     size = FLEX
@@ -78,7 +78,7 @@ let toggleSectionBtn = @(isExpanded) {
 }
 
 let mkSectionBtn = @(id, onClick, isSelected, hasUnseenContent) {
-  size = [FLEX, sectionBtnHeight]
+  size = const [FLEX, sectionBtnHeight]
   maxWidth = sectionBtnMaxWidth
   behavior = Behaviors.Button
   onClick
@@ -99,7 +99,7 @@ let mkSectionBtn = @(id, onClick, isSelected, hasUnseenContent) {
     }
     {
       size = FLEX
-      margin = [0, sectionBtnGap / 2]
+      margin = const [0, sectionBtnGap / 2]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = {
@@ -119,8 +119,8 @@ let mkSectionTabs = @(sections, isExpanded, hasUnseenBySection, curSectionId = W
   gap = sectionBtnGap
   rendObj = ROBJ_BOX
   borderColor = secondaryGradColor
-  borderWidth = [0, 0, lineWidth, 0]
-  padding = [0, 0, lineWidth, 0]
+  borderWidth = const [0, 0, lineWidth, 0]
+  padding = const [0, 0, lineWidth, 0]
   children = [toggleSectionBtn(isExpanded)].extend(sections.map(@(id)
     mkSectionBtn(id, @() onSectionChange(id), Computed(@() curSectionId.get() == id), hasUnseenBySection?[id] ?? false)))
 }

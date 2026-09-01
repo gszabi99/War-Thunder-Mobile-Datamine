@@ -1,9 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { mkButtonHoldTooltip } = require("%rGui/tooltip.nut")
-let { textInput } = require("%rGui/components/textInput.nut")
-let { optionBtnSize, imgSize, btnBgColorDefault, btnBgColorDisabled, btnImgColor, btnImgColorDisabled
-} = require("%rGui/debugTools/debugMapPoints/mapEditorConsts.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/textInput.nut" import textInput
+from "%rGui/debugTools/debugMapPoints/mapEditorConsts.nut" import optionBtnSize, imgSize, btnBgColorDefault,
+  btnBgColorDisabled, btnImgColor, btnImgColorDisabled
+from "%rGui/tooltip.nut" import mkButtonHoldTooltip
+from "types" import String
+
 
 let mkOptionBtnImg = @(image, ovr = {}) {
   size = [imgSize, imgSize]
@@ -17,7 +19,7 @@ let mkOptionBtnImg = @(image, ovr = {}) {
 
 function mkOptionBtn(image, onClick, description, ovr = {}) {
   let stateFlags = Watched(0)
-  let children = type(image) == "string" ? mkOptionBtnImg(image) : image
+  let children = image instanceof String ? mkOptionBtnImg(image) : image
   let key = {}
   return @() {
     key
@@ -75,7 +77,9 @@ let mkInactiveOptionBtn = @(image, onClick, description)
 
 let btnWithActivity = @(isActive, image, onClick, description) @() {
   watch = isActive
-  children = (isActive.get() ? mkOptionBtn : mkInactiveOptionBtn)(image, onClick, description)
+  children = isActive.get()
+    ? mkOptionBtn(image, onClick, description)
+    : mkInactiveOptionBtn(image, @() null, description)
 }
 
 let mkTextInputField = @(textWatch, nameText, options = {}) textInput(textWatch, {
@@ -88,6 +92,13 @@ let mkTextInputField = @(textWatch, nameText, options = {}) textInput(textWatch,
 
 let mkText = @(text, ovr = {}) {
   rendObj = ROBJ_TEXT
+  text
+}.__update(fontTinyAccented, ovr)
+
+let mkTextArea = @(text, ovr = {}) {
+  size = FLEX_H
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
   text
 }.__update(fontTinyAccented, ovr)
 
@@ -120,6 +131,7 @@ return {
   btnWithActivity
   mkTextInputField
   mkFramedText
+  mkTextArea
   mkText
   modalBg
 }

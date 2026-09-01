@@ -1,21 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "dagor.random" import rnd_float, frnd
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import clearTimer, setTimeout, setInterval, resetTimeout
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/underscore.nut" import isEqual
+import "%appGlobals/charClientEventExt.nut" as charClientEventExt
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/clientState/languageState.nut" import currentSteamLanguage
+from "%appGlobals/curCircuitOverride.nut" import addPublisherToHeaders
+from "%appGlobals/loginState.nut" import isProfileReceived, isMatchingConnected
+from "%rGui/matching/matchingApi.nut" import mnGenericSubscribe
+from "%appGlobals/timeToText.nut" import parseUnixTimeCached
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/userstats/serverTime.nut" import serverTime, isServerTimeValid
+from "%rGui/navState.nut" import scenesOrder
+
+
 let logU = log_with_prefix("[userstat] ")
-let { register_command } = require("console")
-let { clearTimer, setTimeout, setInterval, resetTimeout } = require("dagor.workcycle")
-let { rnd_float, frnd } = require("dagor.random")
-let { get_time_msec } = require("dagor.time")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
-let { addPublisherToHeaders } = require("%appGlobals/curCircuitOverride.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { parseUnixTimeCached } = require("%appGlobals/timeToText.nut")
-let { currentSteamLanguage } = require("%appGlobals/clientState/languageState.nut")
-let { isProfileReceived, isMatchingConnected } = require("%appGlobals/loginState.nut")
-let { mnGenericSubscribe } = require("%appGlobals/matching_api.nut")
-let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
-let charClientEventExt = require("%rGui/charClientEventExt.nut")
-let { scenesOrder } = require("%rGui/navState.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 
@@ -213,6 +215,7 @@ let tablesActivityOvr = Watched({})
 let getStatsActualTimeLeft = @() (userstatStats.get()?.timestamp ?? 0) + STATS_ACTUAL_TIMEOUT - serverTime.get()
 let isStatsActualByTime = Watched(getStatsActualTimeLeft() > 0)
 userstatStats.subscribe(function(_) {
+  isStatsActualByBattle.set(true)
   let timeLeft = getStatsActualTimeLeft()
   isStatsActualByTime.set(timeLeft > 0)
   if (timeLeft > 0)

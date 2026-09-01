@@ -1,14 +1,15 @@
+from "%globalScripts/weaponConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { getBorderCommand, COMMADN_STATE } = require("%rGui/components/translucentButton.nut")
-let { borderColor, borderWidth } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { tacticalMapSize } = require("%rGui/hud/components/tacticalMap.nut")
-let radarState = require("%rGui/radar/radarState.nut")
-let { TrackerVisible } = require("%rGui/rocketAim/rocketAamAimState.nut")
-let { unlockGuidedTargets, activateTargetLock } = require("guiRadar")
+from "guiRadar" import unlockGuidedTargets, activateTargetLock
+from "%rGui/components/translucentButton.nut" import getBorderCommand, COMMADN_STATE
+from "%rGui/hud/components/tacticalMap.nut" import tacticalMapSize
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderColor, borderWidth
+import "%rGui/radar/radarState.nut" as radarState
+from "%rGui/rocketAim/rocketAamAimState.nut" import TrackerVisible
 
 
-let imgMultiplier = 0.75
-let btnGap = hdpx(8)
+const imgMultiplier = 0.75
+const btnGap = hdpx(8)
 
 let toggleBtnH = tacticalMapSize[1] / 5
 let toggleBtnW = toggleBtnH * 1.08
@@ -17,8 +18,8 @@ let toggleActiveBtnH = toggleBtnW
 let toggleActiveBtnW = toggleActiveBtnH * 1.14
 
 let defImageSize = (imgMultiplier * toggleBtnH).tointeger()
-let imgMap = "ui/gameuiskin#hud_switcher_map.svg"
-let imgRadar = "ui/gameuiskin#hud_switcher_radar.svg"
+const imgMap = "ui/gameuiskin#hud_switcher_map.svg"
+const imgRadar = "ui/gameuiskin#hud_switcher_radar.svg"
 
 let mkImg = @(image, size) {
   rendObj = ROBJ_IMAGE

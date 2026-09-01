@@ -1,26 +1,27 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } =  require("math")
-let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { SHIP, BOAT, TANK, SAILBOAT } = require("%appGlobals/unitConst.nut")
-let { hcUnitType, hcDamageStatus, hcDmgPartsInfo, isHcUnitKilled, hcRelativeHealth
-} = require("%rGui/hud/hitCamera/hitCameraState.nut")
-let { hudUnitType } = require("%rGui/hudStateExt.nut")
-let { isTargetRepair, targetHp } = require("%rGui/hud/shipState.nut")
-let { hudWhiteColor, hudBlackColor, hudCoralRedColor } = require("%rGui/style/hudColors.nut")
+from "math" import round
+from "%appGlobals/unitConst.nut" import SHIP, BOAT, TANK, SAILBOAT
+from "%globalsDarg/fontScale.nut" import getScaledFont
+from "%rGui/hud/hitCamera/hitCameraState.nut" import hcUnitType, hcDamageStatus, hcDmgPartsInfo, isHcUnitKilled,
+  hcRelativeHealth
+from "%rGui/hud/shipState.nut" import isTargetRepair, targetHp
+from "%rGui/hudStateExt.nut" import hudUnitType
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudBlackColor, hudCoralRedColor
+
 
 let iconBgSizeBase = evenPx(44)
 let iconSizeBase = evenPx(30)
 let bigIconSizeBase = evenPx(40)
 
-let HIDDEN = -1
-let NONE = 0
-let MINOR = 1
-let MODERATE = 2
-let MAJOR = 3
-let CRITICAL = 4
-let FATAL = 5
-let BROKEN = 6
-let KILLED = 7
+const HIDDEN = -1
+const NONE = 0
+const MINOR = 1
+const MODERATE = 2
+const MAJOR = 3
+const CRITICAL = 4
+const FATAL = 5
+const BROKEN = 6
+const KILLED = 7
 
 let colors = {
   [NONE] = 0xFF728188,

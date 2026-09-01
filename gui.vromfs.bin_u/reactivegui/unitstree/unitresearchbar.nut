@@ -1,14 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
-let { progressbarAnimDuration, progressbarAnimDurationShort } = require("%rGui/unitsTree/components/unitPlateAnimations.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/unit/components/unitPlateComp.nut" import unitPlateTiny
+from "%rGui/unitsTree/components/unitPlateAnimations.nut" import progressbarAnimDuration, progressbarAnimDurationShort
 
-let plateBarHeight = hdpx(10)
-let bgColor = 0x80000000
-let expColor = 0xFFE86C00
-let blueprintBarColor = 0xFF3384C4
+
+const plateBarHeight = hdpx(10)
+const bgColor = 0x80000000
+const expColor = 0xFFE86C00
+const blueprintBarColor = 0xFF3384C4
 
 let mkAnimatedBar = @(completion, color, isShaded = false, duration = 0.5, durationShort = 0.2) [
   {
@@ -41,7 +42,7 @@ function mkPlateExpBar(researchStatus, ovr = {}) {
     return null
   return {
     rendObj = ROBJ_SOLID
-    size = [pw(100), plateBarHeight]
+    size = const [pw(100), plateBarHeight]
     vplace = ALIGN_BOTTOM
     color = bgColor
     children = mkAnimatedBar(max(0.01, exp.tofloat() / reqExp), expColor, !isCurrent)
@@ -56,9 +57,9 @@ function mkPlateBlueprintBar(unit, ovr = {}) {
     : {
       watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, campMyUnits]
       rendObj = ROBJ_SOLID
-      size = [pw(100), plateBarHeight]
+      size = const [pw(100), plateBarHeight]
       vplace = ALIGN_BOTTOM
-      pos = [0, plateBarHeight]
+      pos = const [0, plateBarHeight]
       color = bgColor
       children = mkAnimatedBar(max(0.01, curBluebrintsCount.get().tofloat() / reqBluebrintsCount.get()), blueprintBarColor, false)
     }.__update(ovr)

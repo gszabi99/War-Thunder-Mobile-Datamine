@@ -43,13 +43,6 @@ def private container_kind(atNode : ExprAt?) : string {
 
 def private is_lvalue_chain(e : ExpressionPtr) : bool {
     
-    
-    
-    
-    
-    
-    
-    
     return false if (e == null)
     return true if (e is ExprVar)
     return is_lvalue_chain((e as ExprField).value) if (e is ExprField)
@@ -59,10 +52,6 @@ def private is_lvalue_chain(e : ExpressionPtr) : bool {
 
 [call_macro(name="with_")]
 class private WithMacro : AstCallMacro {
-    
-    
-    
-    
     
     def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : ExpressionPtr {
         macro_verify(length(call.arguments) >= 2, prog, call.at,
@@ -95,18 +84,11 @@ class private WithMacro : AstCallMacro {
         macro_verify(tableCount <= 1, prog, call.at,
             "with_ allows at most one table-keyed arg per call (got {tableCount}); a 2nd table lookup could rehash and invalidate the first pinned entry")
         
-        
-        
-        
         let mblk = blockArg as ExprMakeBlock
         let userBlock = mblk._block as ExprBlock
         let userArgCount = length(userBlock.arguments)
         var rewrittenBlock : ExprMakeBlock?
         var rewrittenInner : ExprBlock?
-        
-        
-        
-        
         
         if (userArgCount == 0) {
             macro_verify(containerCount == 1, prog, call.at,
@@ -124,8 +106,6 @@ class private WithMacro : AstCallMacro {
                 newBlock.list |> emplace_new(clone_expression(st))
             }
             
-            
-            
             for (st in userBlock.finalList) {
                 newBlock.finalList |> emplace_new(clone_expression(st))
             }
@@ -137,9 +117,6 @@ class private WithMacro : AstCallMacro {
             rewrittenBlock = clone_expression(mblk) as ExprMakeBlock
             rewrittenInner = rewrittenBlock._block as ExprBlock
             
-            
-            
-            
             rewrittenInner.returnType = new TypeDecl(at = userBlock.at, baseType = Type.tVoid)
             for (i in range(containerCount)) {
                 var arg = rewrittenInner.arguments[i]
@@ -149,19 +126,6 @@ class private WithMacro : AstCallMacro {
                 arg._type.flags.removeConstant = true
             }
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         var preStmts : array<ExpressionPtr>
         var lockStmts : array<ExpressionPtr>
@@ -174,7 +138,6 @@ class private WithMacro : AstCallMacro {
         for (i in range(containerCount)) {
             let ai = call.arguments[i] as ExprAt
             let ki = container_kind(ai)
-            
             
             let cName = make_unique_private_name("__with_c_{i}", call.at)
             preStmts |> push <| qmacro_expr() {
@@ -206,16 +169,11 @@ class private WithMacro : AstCallMacro {
         let unlockN = length(unlockStmts)
         var unlocksReversed <- [for (i in range(unlockN)); unlockStmts[unlockN - 1 - i]]
         
-        
-        
         var invokeCall = new ExprInvoke(at = call.at, name := "invoke")
         invokeCall.arguments |> emplace_new(rewrittenBlock)
         for (r in argRefs) {
             invokeCall.arguments |> emplace_new(r)
         }
-        
-        
-        
         
         var blk = new ExprBlock(at = call.at,
             returnType = new TypeDecl(at = call.at, baseType = Type.tVoid))

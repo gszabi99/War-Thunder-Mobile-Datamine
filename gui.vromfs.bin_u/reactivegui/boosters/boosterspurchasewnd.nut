@@ -1,32 +1,38 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { isOpenedBoosterWnd } = require("%rGui/boosters/boostersState.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { gamercardBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { infoCommonButton } = require("%rGui/components/infoButton.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { mkColoredGradientY, simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let boosterDesc = require("%rGui/boosters/boosterDesc.nut")
-let { PURCH_SRC_BOOSTERS, PURCH_TYPE_BOOSTERS, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let purchaseBooster = require("%rGui/boosters/purchaseBooster.nut")
-let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { boosterInProgress, toggle_booster_activation } = require("%appGlobals/pServer/pServerApi.nut")
-let { hoverColor, warningTextColor } = require("%rGui/style/stdColors.nut")
-let { textButtonPricePurchase } = require("%rGui/components/textButton.nut")
-let { mkBgParticles, tinyLimitReachedPlate } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/boostersPresentation.nut" import getBoosterIcon
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/pServerApi.nut" import boosterInProgress, toggle_booster_activation
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+import "%rGui/boosters/boosterDesc.nut" as boosterDesc
+from "%rGui/boosters/boostersState.nut" import isOpenedBoosterWnd
+import "%rGui/boosters/purchaseBooster.nut" as purchaseBooster
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
+from "%rGui/components/infoButton.nut" import infoCommonButton
+from "%rGui/components/spinner.nut" import mkWaitDimmingSpinner
+from "%rGui/components/textButton.nut" import textButtonPricePurchase
+from "%rGui/mainMenu/gamercard.nut" import gamercardBalanceBtns
+from "%rGui/navState.nut" import registerScene
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_BOOSTERS, PURCH_TYPE_BOOSTERS, mkBqPurchaseInfo
+from "%rGui/shop/goodsView/sharedParts.nut" import mkBgParticles, tinyLimitReachedPlate
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/gradients.nut" import mkColoredGradientY, simpleHorGrad
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import hoverColor, warningTextColor
+
 
 let close = @() isOpenedBoosterWnd.set(false)
 
-let checkBoxIconSize = hdpxi(72)
-let bgSize = [hdpxi(370), hdpxi(412)]
-let boosterSize = hdpxi(230)
+const cardWidth = hdpxi(370)
+const cardPadding = hdpx(10)
+const checkBoxIconSize = hdpxi(72)
+const bgSize = [cardWidth, hdpxi(412)]
+const boosterSize = hdpxi(230)
+const infoBtnSize = evenPx(60)
+const cardHeaderMaxHeight = evenPx(90)
+const titleWidth = cardWidth - infoBtnSize - cardPadding * 2 - hdpx(16)
 
 let priceBgGrad = mkColoredGradientY(0xFF72A0D0, 0xFF588090, 12)
 
@@ -85,13 +91,13 @@ let gamercardPannel = headerGradientWithRightBlock(
 let infoBtn = @(id) infoCommonButton(
   @() boosterDesc(id),
   {
-    size = [evenPx(60), evenPx(60)]
+    size = [infoBtnSize, infoBtnSize]
     hplace = ALIGN_LEFT
   }
 )
 
 let cardTitle = @(id) {
-  size = FLEX_H
+  size = [titleWidth, SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_LEFT
@@ -99,21 +105,27 @@ let cardTitle = @(id) {
   text = utf8ToUpper(loc($"boosters/{id}"))
 }.__update(fontVeryTinyAccentedShaded)
 
-let cardHeader = @(id) {
-  size = FLEX_H
-  padding = hdpx(10)
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = hdpx(16)
-  children = [
-    infoBtn(id)
-    {
-      size = FLEX_H
-      maxHeight = evenPx(60)
-      children = cardTitle(id)
-    }
-  ]
-}
+let cardHeader = memoize(function(id) {
+  let title = cardTitle(id)
+  if (calc_content_size(title)[1] > cardHeaderMaxHeight)
+    title.__update(fontVeryVeryTinyAccentedShaded)
+
+  return {
+    size = FLEX_H
+    padding = cardPadding
+    flow = FLOW_HORIZONTAL
+    valign = ALIGN_CENTER
+    gap = hdpx(16)
+    children = [
+      infoBtn(id)
+      {
+        size = FLEX_H
+        maxHeight = cardHeaderMaxHeight
+        children = title
+      }
+    ]
+  }
+})
 
 let boosterSlot = @(bst, count, sf) {
   rendObj = ROBJ_SOLID
@@ -140,15 +152,15 @@ let boosterSlot = @(bst, count, sf) {
           gap = hdpx(20)
           children = [
             {
-              size = [boosterSize, boosterSize]
+              size = const [boosterSize, boosterSize]
               rendObj = ROBJ_IMAGE
               hplace = ALIGN_CENTER
               image = Picture($"{getBoosterIcon(bst.id)}:{boosterSize}:{boosterSize}:P")
             }
             {
-              size = [SIZE_TO_CONTENT, boosterSize]
+              size = const [SIZE_TO_CONTENT, boosterSize]
               hplace = ALIGN_RIGHT
-              pos = [-hdpx(20), -hdpx(12)]
+              pos = const [-hdpx(20), -hdpx(12)]
               rendObj = ROBJ_TEXT
               text = bst.battles.tostring().replace("0", "O")
               color = 0xFFC0C0C0
@@ -162,9 +174,9 @@ let boosterSlot = @(bst, count, sf) {
           flow = FLOW_VERTICAL
           image = simpleHorGrad
           color = 0x80000000
-          padding = hdpx(10)
+          padding = cardPadding
           children = {
-            size = [FLEX, SIZE_TO_CONTENT]
+            size = const [FLEX, SIZE_TO_CONTENT]
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             color = (bst?.limit ?? 0) <= 0 || bst.limit > count ? 0xFFFFFFFF
@@ -186,7 +198,7 @@ let boosterSlot = @(bst, count, sf) {
 let textBase = @(battlesLeft) {
   rendObj = ROBJ_TEXT
   size = FLEX_H
-  padding = [0, hdpx(10)]
+  padding = const [0, cardPadding]
   halign = ALIGN_CENTER
   behavior = Behaviors.Marquee
   delay = defMarqueeDelay
@@ -206,7 +218,7 @@ let battlesLeftTitle = @(sf, battlesLeft, isDisabled) {
     })
 }
 
-let function boosterCard(bst) {
+function boosterCard(bst) {
   let stateFlags = Watched(0)
   let cbStateFlags = Watched(0)
   let isDisabled = Computed(@() servProfile.get()?.boosters[bst.id].isDisabled ?? false)
@@ -258,7 +270,7 @@ let function boosterCard(bst) {
             borderColor = battlesLeft.get() > 0 && (cbStateFlags.get() & S_HOVER) ? hoverColor : 0xFF9FA7AF
             borderWidth = hdpx(3)
             fillColor = 0x88000000
-            padding = hasSpinner.get() ? null : [0,0,hdpx(10),hdpx(10)]
+            padding = hasSpinner.get() ? null : [0,0, cardPadding, cardPadding]
             valign = ALIGN_CENTER
             halign = ALIGN_CENTER
             children = hasSpinner.get() ? mkWaitDimmingSpinner(hasSpinner, hdpxi(50))

@@ -1,15 +1,15 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%rGui/hudTuning/hudTuningConsts.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { abs } = require("%sqstd/math.nut")
-let { cfgByUnitTypeOrdered } = require("%rGui/hudTuning/cfgByUnitType.nut")
-let { tuningUnitType, transformInProgress, isElemHold, applyTransformProgress, selectedId,
-  isAllElemsOptionsOpened
-} = require("%rGui/hudTuning/hudTuningState.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "dagor.time" import get_time_msec
+from "%sqstd/math.nut" import abs
+from "%rGui/hudTuning/cfgByUnitType.nut" import cfgByUnitTypeOrdered
+from "%rGui/hudTuning/hudTuningState.nut" import tuningUnitType, transformInProgress, isElemHold,
+  applyTransformProgress, selectedId, isAllElemsOptionsOpened
 
-let INC_AREA = sh(2)
-let START_MOVE_TIME_MSEC = 300
-let MOVE_MIN_THRESHOLD = sh(1) 
+
+const INC_AREA = sh(2)
+const START_MOVE_TIME_MSEC = 300
+const MOVE_MIN_THRESHOLD = sh(1) 
 let pointer = Watched(null)
 
 let isHit = @(aabb, x, y) aabb.l <= x && aabb.r >= x && aabb.t <= y && aabb.b >= y

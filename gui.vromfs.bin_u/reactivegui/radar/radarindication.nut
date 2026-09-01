@@ -1,11 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let dasRadarIndication = load_das("%rGui/radar/radarIndication.das")
-let { forestall, IsForestallVisible, SelectedTargetBlinking, selectedTarget, IsRadarHudVisible} = require("%rGui/radar/radarState.nut")
-let { fabs, sqrt } = require("%sqstd/math.nut")
+from "%sqstd/math.nut" import fabs, sqrt
+from "%rGui/radar/radarState.nut" import forestall, IsForestallVisible, SelectedTargetBlinking, selectedTarget,
+  IsRadarHudVisible
 
-let radarIndicationColor = 0xFF00FF00
+
+let dasRadarIndication = load_das("%rGui/radar/radarIndication.das")
+
+const radarIndicationColor = 0xFF00FF00
 let frameTrigger = {}
-let forestallRadius = hdpx(15)
+const forestallRadius = hdpx(15)
 
 SelectedTargetBlinking.subscribe(@(v) v ? anim_start(frameTrigger) : anim_request_stop(frameTrigger))
 
@@ -57,13 +60,13 @@ function getForestallTargetLineCoords() {
 }
 
 function forestallTgtLine(color) {
-  let w = sw(100)
-  let h = sh(100)
+  const w = sw(100)
+  const h = sh(100)
 
   return {
     color
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [w, h]
+    size = const [w, h]
     lineWidth = hdpx(2)
     opacity = 0.8
     behavior = Behaviors.RtPropUpdate
@@ -81,7 +84,7 @@ function forestallTgtLine(color) {
 }
 
 let forestallTargetLine = @() {
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     pos = [-saBorders[0], -saBorders[1]]
     children = forestallTgtLine(radarIndicationColor)
 }
@@ -89,7 +92,7 @@ let forestallTargetLine = @() {
 let forestallVisible = @(color) {
   rendObj = ROBJ_VECTOR_CANVAS
   color
-  size = [2 * forestallRadius, 2 * forestallRadius]
+  size = const [2 * forestallRadius, 2 * forestallRadius]
   lineWidth = hdpx(2)
   animations = [{ prop = AnimProp.opacity, from = 0.2, to = 1, duration = 0.5, play = SelectedTargetBlinking.get(), loop = true, easing = InOutSine, trigger = frameTrigger }]
   fillColor = 0

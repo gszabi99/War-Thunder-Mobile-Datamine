@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { hudRedColor } = require("%rGui/style/hudColors.nut")
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderColor
+from "%rGui/style/hudColors.nut" import hudRedColor
 
-let debufBlinkTime = 0.7
+
+const debufBlinkTime = 0.7
 let debuffColor = hudRedColor
-let debuffBlinkColor = 0xFFE28010 
+const debuffBlinkColor = 0xFFE28010 
 
 let debuffAnims = [
   { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.3, easing = OutQuad, play = true }

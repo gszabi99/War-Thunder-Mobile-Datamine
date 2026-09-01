@@ -1,10 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round, sqrt } = require("math")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { mkLevelBg, mkProgressLevelBg, unitExpColor, levelProgressBorderWidth,
+from "math" import round, sqrt
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%rGui/components/levelBlockPkg.nut" import mkLevelBg, mkProgressLevelBg, unitExpColor, levelProgressBorderWidth,
   levelProgressBarHeight, maxLevelStarChar
-} = require("%rGui/components/levelBlockPkg.nut")
-let { mkMasteryTierColorIcon } = require("%rGui/components/masteryTierComp.nut")
+from "%rGui/components/masteryTierComp.nut" import mkMasteryTierColorIcon
 
 
 let levelHolderSize = evenPx(84)

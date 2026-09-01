@@ -41,11 +41,6 @@
     "startSpeed": 0.0,
     "startPropulsionDelay": 0.1,
     "useStartSpeed": true,
-    "autoaimEnabled": false,
-    "aaMaxAimAngle": 0.0,
-    "aaSpeedPrediction": 0.0,
-    "aaAccelPrediction": 0.0,
-    "aaAngleCorrection": 0.0,
     "relativeVelHitShift": [
       300.0,
       1000.0

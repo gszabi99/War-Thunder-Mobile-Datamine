@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let STREAK_SIZE = 90
+
+const STREAK_SIZE = 90
 
 let mkSizeByParent = @(size) [
   pw(100.0 * size[0] / STREAK_SIZE),

@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { Point2 } = require("dagor.math")
-let { fabs } = require("math")
-let { cameraGetZoom, cameraSetZoom, cameraAddOffset } = require("guiStrategyMode")
-let { pathSelectPoint, pathSelectZone, pathRefreshUi } = require("%rGui/hud/strategyMode/strategyPathView.nut")
-let { optMoveCameraByDrag } = require("%rGui/hud/strategyMode/strategyState.nut")
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
+from "dagor.math" import Point2
+from "guiStrategyMode" import cameraGetZoom, cameraSetZoom, cameraAddOffset
+from "math" import fabs
+from "%rGui/hud/strategyMode/strategyPathView.nut" import pathSelectPoint, pathSelectZone, pathRefreshUi
+from "%rGui/hud/strategyMode/strategyState.nut" import optMoveCameraByDrag
+from "%rGui/style/hudColors.nut" import hudWhiteColor
+
 
 const zoomMin = 0.1
 const zoomMax = 1.0

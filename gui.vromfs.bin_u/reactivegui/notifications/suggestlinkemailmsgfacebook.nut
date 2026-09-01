@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { curLoginType, LT_FACEBOOK, authTags } = require("%appGlobals/loginState.nut")
-let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
-let { resetTimeout } = require("dagor.workcycle")
-let { register_command } = require("console")
-let { isOutOfBattleAndResults } = require("%appGlobals/clientState/clientState.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { eventbus_send } = require("eventbus")
-let { LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { accountLink } = require("%rGui/contacts/contactLists.nut")
-let { isContactsReceived } = require("%rGui/contacts/contactsState.nut")
-let { activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
+from "console" import register_command
+from "dagor.workcycle" import resetTimeout
+from "eventbus" import eventbus_send
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/clientState/clientState.nut" import isOutOfBattleAndResults
+from "%appGlobals/commonUrl.nut" import LINK_TO_GAIJIN_ACCOUNT_URL
+from "%appGlobals/loginState.nut" import curLoginType, LT_FACEBOOK, authTags
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
+from "%rGui/contacts/contactLists.nut" import accountLink
+from "%rGui/contacts/contactsState.nut" import isContactsReceived
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import activeTutorialId
 
 
 

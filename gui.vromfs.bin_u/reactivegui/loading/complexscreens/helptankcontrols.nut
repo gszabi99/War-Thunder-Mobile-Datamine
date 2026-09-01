@@ -1,14 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkScreenHints } = require("%rGui/components/screenHintsLib.nut")
-let { teamRedColor } = require("%rGui/style/teamColors.nut")
-let mkStickWidgetComps = require("%rGui/options/chooseMovementControls/mkStickWidgetComps.nut")
-let { crosshairNoPenetrationColor, crosshairPropablePenetrationColor, crosshairPenetrationColor
-} = require("%rGui/hud/commonSight.nut")
+from "%rGui/components/screenHintsLib.nut" import mkScreenHints
+from "%rGui/hud/commonSight.nut" import crosshairNoPenetrationColor, crosshairPropablePenetrationColor,
+  crosshairPenetrationColor
+import "%rGui/options/chooseMovementControls/mkStickWidgetComps.nut" as mkStickWidgetComps
+from "%rGui/style/teamColors.nut" import teamRedColor
 
-let bgImage = "ui/images/help/help_tank_control3.avif"
+
+const bgImage = "ui/images/help/help_tank_control3.avif"
 let bgSize = [3282, 1041]
 
-let sightY = 406
+const sightY = 406
 let penetrationColors =
   [crosshairPenetrationColor, crosshairPropablePenetrationColor, crosshairNoPenetrationColor]
 
@@ -31,16 +32,16 @@ let mkTextarea = @(text, maxWidth) {
   text
 }.__update(fontTiny)
 
-let pointCrosshairSize = hdpxi(10)
+const pointCrosshairSize = hdpxi(10)
 let pointCrosshair = {
-  size = [pointCrosshairSize, pointCrosshairSize]
+  size = const [pointCrosshairSize, pointCrosshairSize]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#sight_point.svg:{pointCrosshairSize}:{pointCrosshairSize}:P")
   color = 0xFFFFFFFF
 }
 
-let crosshairSize = hdpxi(30)
-let crosshairLineW = hdpxi(2)
+const crosshairSize = hdpxi(30)
+const crosshairLineW = hdpxi(2)
 let crosshairH = {
   size = crosshairSize
   rendObj = ROBJ_VECTOR_CANVAS
@@ -94,10 +95,10 @@ let enemyUnitLabel = {
   ]
 }
 
-let pointerMoveArrowW = hdpxi(60)
-let pointerMoveArrowH = hdpxi(21)
+const pointerMoveArrowW = hdpxi(60)
+const pointerMoveArrowH = hdpxi(21)
 let pointerMoveArrow = {
-  size = [pointerMoveArrowW, pointerMoveArrowH]
+  size = const [pointerMoveArrowW, pointerMoveArrowH]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#help_arrow.svg:{pointerMoveArrowW}:{pointerMoveArrowH}:P")
   color = 0xFFD2D2D2
@@ -108,27 +109,27 @@ let bgItems = [
   pointerMoveArrow.__merge({
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    pos = [pw(13.1), ph(-11.2)]
+    pos = const [pw(13.1), ph(-11.2)]
   })
   pointCrosshair.__merge({
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    pos = [pw(10.9), ph(-11)]
+    pos = const [pw(10.9), ph(-11)]
   })
   crosshairH.__merge({
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    pos = [pw(15.3), ph(-11)]
+    pos = const [pw(15.3), ph(-11)]
   })
   stickWidgetComp.__merge({
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    pos = [pw(-34.7), ph(16)]
+    pos = const [pw(-34.7), ph(16)]
   })
   enemyUnitLabel.__merge({
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    pos = [pw(17.2), ph(-34)]
+    pos = const [pw(17.2), ph(-34)]
   })
 ]
 
@@ -169,7 +170,7 @@ function makeScreen() {
     color = 0xFF000000
     children = {
       size = [sw(100), sw(100).tofloat() / bgSize[0] * bgSize[1]]
-      pos = [0, -sh(1.5)]
+      pos = const [0, -sh(1.5)]
       rendObj = ROBJ_IMAGE
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER

@@ -1,14 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
+from "dagor.workcycle" import resetTimeout
+from "types" import Integer, Float, Array
 
-let fallbackLoadingImage = "!ui/title.avif"
 
-let shadePw = 33.3
-let defAnimTime = 15.0
+const fallbackLoadingImage = "!ui/title.avif"
+
+const shadePw = 33.3
+const defAnimTime = 15.0
 let animBgSizePx = [2700, 1080]
 
-let isNumeric = @(v) type(v) == "integer" || type(v) == "float"
-let toSize = @(sizePx) type(sizePx) != "array" ? sizePx
+let isNumeric = @(v) v instanceof Integer || v instanceof Float
+let toSize = @(sizePx) !(sizePx instanceof Array) ? sizePx
   : [ isNumeric(sizePx[0]) ? pw(100.0 * sizePx[0].tofloat() / animBgSizePx[0]) : sizePx[0],
       isNumeric(sizePx[1]) ? ph(100.0 * sizePx[1].tofloat() / animBgSizePx[1]) : sizePx[1] ]
 
@@ -56,12 +58,12 @@ function mkAnimBgLayer(layerCfg, animTime = defAnimTime) {
 
 let leftShade = {
   size = [pw(shadePw), FLEX]
-  pos = [pw(-0.5 * shadePw), 0]
+  pos = const [pw(-0.5 * shadePw), 0]
   rendObj = ROBJ_IMAGE
   image = Picture("!ui/gameuiskin#debriefing_bg_grad@@ss.avif")
   color = 0xFF000000
 }
-let rightShade = leftShade.__merge({ pos = [pw(100.0 - 0.5 * shadePw), 0] })
+let rightShade = leftShade.__merge({ pos = const [pw(100.0 - 0.5 * shadePw), 0] })
 
 let mkAnimBg = @(layersCfg, animTime = defAnimTime) {
   key = layersCfg

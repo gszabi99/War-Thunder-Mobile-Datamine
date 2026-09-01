@@ -1,22 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "dagor.workcycle" import deferOnce, resetTimeout
+from "%appGlobals/clientState/initialState.nut" import shouldDisableMenu
+from "%appGlobals/clientState/respawnStateBase.nut" import isInRespawn, isRespawnStarted, respawnsLeft,
+  respawnsTotalInitial
+from "%appGlobals/squadState.nut" import isInSquad
+from "%rGui/bullets/bulletsConst.nut" import BS_UNLOCKED
+from "%rGui/components/modalWindows.nut" import MWP_ALWAYS_TOP
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/respawn/bulletsChoiceState.nut" import chosenBullets, bulletsStatus
+from "%rGui/respawn/playerActivity.nut" import sendPlayerActivityToServer
+from "%rGui/respawn/respawnChooseBulletWnd.nut" import showRespChooseWnd, curSlotName, applyBullet
+from "%rGui/respawn/respawnComps.nut" import bulletsLegend, headerMargin, gap
+from "%rGui/respawn/respawnState.nut" import selSlot, respawnSlots
+from "%rGui/tutorial/completedTutorials.nut" import markTutorialCompleted, mkIsTutorialCompleted
+from "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" import lightCtor
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import setTutorialConfig, isTutorialActive, finishTutorial,
+  activeTutorialId, nextStep
+
+
 let logFB = log_with_prefix("[FIRST_BATTLE_TUTOR] ")
-let { deferOnce, resetTimeout } = require("dagor.workcycle")
-let { register_command } = require("console")
-let { shouldDisableMenu } = require("%appGlobals/clientState/initialState.nut")
-let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId, nextStep
-} = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { markTutorialCompleted, mkIsTutorialCompleted } = require("%rGui/tutorial/completedTutorials.nut")
-let { isInSquad } = require("%appGlobals/squadState.nut")
-let { isInRespawn, isRespawnStarted, respawnsLeft, respawnsTotalInitial } = require("%appGlobals/clientState/respawnStateBase.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { showRespChooseWnd, curSlotName, applyBullet } = require("%rGui/respawn/respawnChooseBulletWnd.nut")
-let { chosenBullets, bulletsStatus } = require("%rGui/respawn/bulletsChoiceState.nut")
-let { selSlot, respawnSlots } = require("%rGui/respawn/respawnState.nut")
-let { BS_UNLOCKED } = require("%rGui/bullets/bulletsConst.nut")
-let { lightCtor } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let { bulletsLegend, headerMargin, gap } = require("%rGui/respawn/respawnComps.nut")
-let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
-let { MWP_ALWAYS_TOP } = require("%rGui/components/modalWindows.nut")
 
 const TUTORIAL_ID = "choosingShells"
 
@@ -138,7 +141,7 @@ function startTutorial() {
             transform = {
               translate = [0, -(headerMargin[1] + headerMargin[3] + gap)]
             }
-            children = bulletsLegend.__update({ fillColor = 0xFF000000 })
+            children = bulletsLegend.__merge({ fillColor = 0xFF000000 })
           })
         }]
       }

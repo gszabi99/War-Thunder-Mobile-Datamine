@@ -1,19 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let teamColors = require("%rGui/style/teamColors.nut")
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
+import "%rGui/style/teamColors.nut" as teamColors
 
-let defBgColor = 0x66202020
-let winBgColor = 0x66663900
-let failBgColor = 0x66550101
-let warningBgColor = 0x66664102 
+
+const defBgColor = 0x66202020
+const winBgColor = 0x66663900
+const failBgColor = 0x66550101
+const warningBgColor = 0x66664102 
 let hintWidth = hdpx(800)
 let hintSideGradWidth = hdpx(150)
 let maxHintWidth = min(saSize[0] - hdpx(1100), hintWidth)
 let textGap = hdpx(10)
 
-let appearTime = 0.4
-let bounceTime = 0.35
-let fadeOutTime = 0.3
+const appearTime = 0.4
+const bounceTime = 0.35
+const fadeOutTime = 0.3
 
 
 let fontByWidth = @(text, width) calc_str_box(text, fontSmall)[0] > width

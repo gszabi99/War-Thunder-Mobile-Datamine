@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { format } =  require("string")
-let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
+from "string" import format
+from "%rGui/components/infoButton.nut" import infoTooltipButton
+from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
 
-let defColor = 0xFFFFFFFF
-let tooltipOffset = hdpx(50)
+
+const defColor = 0xFFFFFFFF
+const tooltipOffset = hdpx(50)
 
 let mkText = @(text, color = defColor) {
   rendObj = ROBJ_TEXTAREA
@@ -17,7 +18,7 @@ let mkText = @(text, color = defColor) {
 let mkTooltipBtn = @(tooltip) infoTooltipButton(
   @() tooltip,
   { flowOffset = tooltipOffset },
-  { size = hdpx(30), pos = [-hdpx(40), hdpx(5)]}
+  { size = hdpx(30), pos = const [-hdpx(40), hdpx(5)]}
 )
 
 function mkTooltippedRow(row, tooltip) {

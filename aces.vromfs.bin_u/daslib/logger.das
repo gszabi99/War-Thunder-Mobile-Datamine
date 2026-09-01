@@ -56,6 +56,7 @@ var private log_open_failed = false
 var private log_min_level = LOG_INFO
 var private log_category_overrides : table<string; int>
 var private log_fallback_to_stderr = true
+var private log_tee = false
 
 
 
@@ -119,9 +120,6 @@ def private write_record(var w : StringBuilderWriter; ts, lvl, cat, msg : string
     if (fields != null) {
         w |> write("\",\"fields\":")
         
-        
-        
-        
         w |> write(compact_json_whitespace(write_json(fields)))
         w |> write("}\n")
     } else {
@@ -141,18 +139,10 @@ def private emit(level : int; category, message : string; fields : JsonValue?) {
         return
     }
     
-    
-    
     if (log_fallback_to_stderr) {
         fwrite(fstderr(), line)
     }
 }
-
-
-
-
-
-
 
 
 
@@ -205,9 +195,6 @@ def logger_get_min_level() : int {
 }
 
 def logger_set_category_level(category : string; level : int) {
-    
-    
-    
     
     log_category_overrides[category] = level
 }
@@ -283,25 +270,10 @@ def logger_close() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 let private LOGGER_AGENT_CATEGORY = "daslib_logger"
 
 class private LogHookAgent : DapiDebugAgent {
     def override onLog(context : Context?; at : LineInfo const?; level : int; text : string#) : bool {
-        
-        
-        
         
         if (empty(log_path) && !log_fallback_to_stderr) return false
         var fields : JsonValue? = null
@@ -309,16 +281,18 @@ class private LogHookAgent : DapiDebugAgent {
             fields = JV({"at" => JV("{at.fileInfo.name}:{at.line}")})
         }
         emit(level, "runtime", string(text), fields)
-        return true
+        return !log_tee   
     }
 }
 
+def logger_set_tee(tee : bool) {
+    
+    
+    
+    log_tee = tee
+}
+
 def logger_install_hook() {
-    
-    
-    
-    
-    
     
     return if (has_debug_agent_context(LOGGER_AGENT_CATEGORY))
     install_new_debug_agent(new LogHookAgent(), LOGGER_AGENT_CATEGORY)
@@ -329,4 +303,11 @@ def logger_init(name : string) {
     
     logger_set_name(name)
     logger_install_hook()
+}
+
+def logger_init_tee(name : string) {
+    
+    
+    logger_set_tee(true)
+    logger_init(name)
 }

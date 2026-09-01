@@ -1,31 +1,31 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/underscore.nut" import prevIfEqual
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
-let { unitRewardTypes, G_LOOTBOX } = require("%appGlobals/rewardType.nut")
-let { WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
-let { goodsByCategory } = require("%rGui/shop/shopState.nut")
-let { personalGoodsByShopCategory } = require("%rGui/shop/personalGoodsState.nut")
-let { UnitsSearcher } = require("%rGui/rewards/lootboxesRewards.nut")
-let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
-let { getLocNameLootbox } = require("%rGui/shop/goodsView/goodsLootbox.nut")
-let { eventLootboxes } = require("%rGui/event/eventLootboxes.nut")
-let { MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
-let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
-let { openSeasonScene, LOOTBOX_TAB } = require("%rGui/seasonScene/seasonSceneState.nut")
-let { markTextColor } = require("%rGui/style/stdColors.nut")
+from "%appGlobals/config/lootboxPresentation.nut" import getLootboxName
+from "%appGlobals/currenciesState.nut" import WP, GOLD, PLATINUM
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
+from "%appGlobals/rewardType.nut" import unitRewardTypes, G_LOOTBOX
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/event/eventLootboxes.nut" import eventLootboxes
+from "%rGui/event/eventState.nut" import MAIN_EVENT_ID
+import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
+from "%rGui/rewards/lootboxesRewards.nut" import UnitsSearcher
+from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, LOOTBOX_TAB
+from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
+from "%rGui/shop/goodsView/goodsLootbox.nut" import getLocNameLootbox
+from "%rGui/shop/lootboxPreviewState.nut" import openEventWndLootbox
+from "%rGui/shop/personalGoodsState.nut" import personalGoodsByShopCategory
+from "%rGui/shop/shopState.nut" import goodsByCategory
+from "%rGui/style/stdColors.nut" import markTextColor
 
 
-let NP_SHOP_DIRECT = "shop_direct"
-let NP_SHOP_PERSONAL = "shop_personal"
-let NP_SHOP_LOOTBOX = "shop_lootbox"
-let NP_EVENT_LOOTBOX = "event_lootbox"
+const NP_SHOP_DIRECT = "shop_direct"
+const NP_SHOP_PERSONAL = "shop_personal"
+const NP_SHOP_LOOTBOX = "shop_lootbox"
+const NP_EVENT_LOOTBOX = "event_lootbox"
 
-let defCurrencyPriority = 10
+const defCurrencyPriority = 10
 let priorityByCurrency = {
   [PLATINUM] = 12,
   [GOLD] = 11,

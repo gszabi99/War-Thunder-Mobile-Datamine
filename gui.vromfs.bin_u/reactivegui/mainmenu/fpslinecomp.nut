@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { get_replay_props } = require("replays")
-let { isShowDebugInterface, is_dev_version, is_app_loaded, get_base_game_version_str } = require("app")
-let { dgs_get_settings } = require("dagor.system")
-let { format } = require("string")
-let { capitalize } = require("%sqstd/string.nut")
-let { isInBattle, isInMenu, battleSessionId, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
+from "app" import isShowDebugInterface, is_dev_version, is_app_loaded, get_base_game_version_str
+from "dagor.system" import dgs_get_settings
+from "eventbus" import eventbus_subscribe
+from "replays" import get_replay_props
+from "string" import format
+from "%sqstd/string.nut" import capitalize
+from "%appGlobals/clientState/clientState.nut" import isInBattle, isInMenu, battleSessionId, isInDebriefing
+from "%appGlobals/updater/addonsState.nut" import hasAddons
+from "%rGui/hudState.nut" import isPlayingReplay
 
 
-let DEBUG_INTERFACE_SHIFT_PX = -hdpx(16)
+const DEBUG_INTERFACE_SHIFT_PX = -hdpx(16)
 
 let state = Watched({
   gpu = ""
@@ -55,10 +55,10 @@ let latencyText = Computed(@() latency.get() < 0 ? ""
 
 let replaySessionId = Computed(@() isPlayingReplay.get() ? get_replay_props()?.sessionId ?? "" : "")
 
-let gap = hdpx(10)
+const gap = hdpx(10)
 
-let defColor = 0xFFc0c0c0
-let fadedColor = 0x70707070
+const defColor = 0xFFc0c0c0
+const fadedColor = 0x70707070
 
 let bottomShift = Computed(@() hasDebugInterfaceInMpSession.get() && sessionId.get() != ""
   ? DEBUG_INTERFACE_SHIFT_PX

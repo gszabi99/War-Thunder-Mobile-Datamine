@@ -1,18 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { G_DECORATOR } = require("%appGlobals/rewardType.nut")
-let { mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsWrap
-  goodsH, goodsSmallSize, goodsBgH, mkSlotBgImg, mkBgParticles, borderBg,
-  goodsW, limitFontGrad, mkGradeTitle, mkEndTime
-} = require("%rGui/shop/goodsView/sharedParts.nut")
-let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
-let { allDecorators, myDecorators } = require("%rGui/decorators/decoratorState.nut")
-let { getGoodsIcon } = require("%appGlobals/config/goodsPresentation.nut")
-let { ALL_PURCHASED } = require("%rGui/shop/goodsStates.nut")
+from "%appGlobals/config/goodsPresentation.nut" import getGoodsIcon
+import "%appGlobals/decorators/avatars.nut" as getAvatarImage
+from "%appGlobals/decorators/nickFrames.nut" import frameNick
+from "%appGlobals/rewardType.nut" import G_DECORATOR
+from "%rGui/decorators/decoratorState.nut" import allDecorators, myDecorators
+from "%rGui/shop/goodsStates.nut" import ALL_PURCHASED
+from "%rGui/shop/goodsView/sharedParts.nut" import mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsWrap,
+  goodsH, goodsSmallSize, goodsBgH, mkSlotBgImg, mkBgParticles, borderBg, goodsW, limitFontGrad, mkGradeTitle,
+  mkEndTime
 
 
 let bgSize = [goodsSmallSize[0], goodsBgH]
-let avatarBorderWidth = hdpx(2)
+const avatarBorderWidth = hdpx(2)
 let avatarFrameSize = (goodsBgH * 0.6 + 0.5).tointeger()
 let avatarSize = avatarFrameSize - avatarBorderWidth * 2
 let emptyIconSize = [goodsSmallSize[0] - hdpxi(40), (goodsBgH * 0.9 + 0.5).tointeger()]

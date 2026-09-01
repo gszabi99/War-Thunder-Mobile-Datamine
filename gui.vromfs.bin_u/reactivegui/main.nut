@@ -1,10 +1,35 @@
-from "%globalsDarg/darg_library.nut" import *
-from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
-from "%rGui/cursor.nut" import needShowCursor, cursor
+#default:forbid-root-table
 
-let { get_time_msec } = require("dagor.time")
-let isScriptsLoading = require("%rGui/isScriptsLoading.nut")
-let { markScriptsLoading } = require("%darg/helpers/bitmap.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
+from "platform" import get_platform_string_id
+from "%darg/helpers/bitmap.nut" import markScriptsLoading
+from "%darg/helpers/inspector.nut" import inspectorRoot
+from "%appGlobals/clientState/clientState.nut" import isInLoadingScreen, isInBattle, isHudVisible
+from "%appGlobals/clientState/hudState.nut" import isHudAttached
+from "%appGlobals/loginState.nut" import isLoggedIn, isLoginRequired, isReadyToFullLoad, isLoginStarted
+from "%appGlobals/openForeignMsgBox.nut" import closeFMsgBox
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%rGui/components/debugOverlay.nut" import dbgOverlayComponent
+from "%rGui/components/modalWindows.nut" import modalWindowsComponent, closeAllModalWindows
+from "%rGui/components/spinner.nut" import spinnerOpacityAnim, spinner
+from "%rGui/controlsMenu/gpActBtn.nut" import enableClickButtons
+import "%rGui/controlsMenu/hotkeysPanel.nut" as hotkeysPanel
+from "%rGui/cursor.nut" import needShowCursor, cursor
+from "%rGui/debugTools/debugTouches.nut" import debugTouchesUi, debugTouchesHandlerComp, isDebugTouchesActive
+import "%rGui/hud/deviceState.nut" as deviceStateArea
+from "%rGui/hudState.nut" import isPlayingReplay
+import "%rGui/isScriptsLoading.nut" as isScriptsLoading
+from "%rGui/loading/loadingScreen.nut" import loadingScreen
+import "%rGui/login/sceneBeforeLogin.nut" as sceneBeforeLogin
+import "%rGui/mainMenu/fpsLineComp.nut" as fpsLineComp
+from "%rGui/notifications/waitBox.nut" import waitboxes
+from "%rGui/style/backgrounds.nut" import bgShadedDark
+from "%rGui/tooltip.nut" import tooltipComp
+
+
 function setIsScriptsLoading(v) {
   markScriptsLoading(v)
   isScriptsLoading.set(v)
@@ -19,12 +44,35 @@ clear_vm_entity_systems()
 require("%appGlobals/frpDebug.nut")
 require("%appGlobals/sqevents.nut")
 require("%rGui/initVM.nut")
+require("%rGui/charClientOwners.nut") 
+require("%rGui/pServer/profileServerClient.nut") 
 require("%appGlobals/pServer/pServerApi.nut")
 require("%rGui/consoleCmd.nut")
 require("%sqstd/regScriptProfiler.nut")("darg", dlog) 
 require("%rGui/notifications/foreignMsgBox.nut")
 require("%rGui/notifications/logEvents.nut")
+require("%rGui/loading/loadingStateRelay.nut")
+require("%rGui/dargVmReload.nut")
+require("%rGui/options/optionsExtNames.nut") 
 require("%rGui/options/guiOptions.nut") 
+require("%rGui/clientState/saveProfile.nut") 
+require("%rGui/login/updateRights.nut")
+require("%rGui/login/initLoginWTM.nut")
+require("%rGui/matching/matchingOnline.nut") 
+require("%rGui/matching/gameModesUpdate.nut")
+require("%rGui/webRPC.nut")
+require("%rGui/debugTools/dbgToString.nut")
+require("%rGui/debugTools/dbgQuitAfterTime.nut")
+require("%rGui/currencies.nut")
+require("%rGui/urlType.nut")
+require("%rGui/url.nut")
+require("%rGui/language.nut")
+require("%rGui/debugTools/dbgUtils.nut")
+require("%rGui/debugTools/dbgWindowResolution.nut")
+require("%rGui/debugTools/dbgDedicLogerrs.nut")
+require("%rGui/bqQueue.nut")
+require("%rGui/battlePerfstats.nut")
+require("%rGui/mplayerCallbacks.nut")
 require("%appGlobals/clientState/initWindowState.nut")
 require("%rGui/account/legalAcceptWnd.nut")
 require("%globalScripts/windowStateEs.nut")
@@ -39,29 +87,6 @@ require("%rGui/login/consentGoogleState.nut")
 require("%rGui/login/previewIDFAWnd.nut")
 require("%rGui/login/reloginAuto.nut")
 
-let { get_platform_string_id } = require("platform")
-let { inspectorRoot } = require("%darg/helpers/inspector.nut")
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
-let { modalWindowsComponent, closeAllModalWindows } = require("%rGui/components/modalWindows.nut")
-let { dbgOverlayComponent } = require("%rGui/components/debugOverlay.nut")
-let { isInLoadingScreen, isInBattle, isHudVisible } = require("%appGlobals/clientState/clientState.nut")
-let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
-let { isLoggedIn, isLoginRequired, isReadyToFullLoad, isLoginStarted
-} = require("%appGlobals/loginState.nut")
-let { loadingScreen } = require("%rGui/loading/loadingScreen.nut")
-let sceneBeforeLogin = require("%rGui/login/sceneBeforeLogin.nut")
-let { register_command } = require("console")
-let fpsLineComp = require("%rGui/mainMenu/fpsLineComp.nut")
-let { closeFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { enableClickButtons }  = require("%rGui/controlsMenu/gpActBtn.nut")
-let hotkeysPanel = require("%rGui/controlsMenu/hotkeysPanel.nut")
-let { debugTouchesUi, debugTouchesHandlerComp, isDebugTouchesActive } = require("%rGui/debugTools/debugTouches.nut")
-let deviceStateArea = require("%rGui/hud/deviceState.nut")
-let { tooltipComp } = require("%rGui/tooltip.nut")
-let { waitboxes } = require("%rGui/notifications/waitBox.nut")
-let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
-let { spinnerOpacityAnim, spinner } = require("%rGui/components/spinner.nut")
 
 
 log($"DaRg scripts load before login {get_time_msec() - startLoadTime} msec")
@@ -82,6 +107,7 @@ function loadAfterLoginImpl() {
   setIsScriptsLoading(true)
   let t = get_time_msec()
   log("LOAD RGUI SCRIPTS AFTER LOGIN")
+  require("%rGui/backendAfterLogin.nut")
   sceneAfterLogin = require("%rGui/sceneAfterLogin.nut")
   isAllScriptsLoaded.set(true)
   log($"DaRg scripts load after login {get_time_msec() - t} msec")

@@ -1,82 +1,85 @@
 from "%globalsDarg/darg_library.nut" import *
 from "app" import exitGame
-let { round } =  require("math")
-let { HangarCameraControl } = require("wt.behaviors")
-let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
-let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { mkGamercard } = require("%rGui/mainMenu/gamercard.nut")
-let offerPromo = require("%rGui/shop/offerPromo.nut")
-let mkEventShopBtn = require("%rGui/shop/eventShopBtn.nut")
-let { translucentButtonsVGap, translucentButtonsWidth, translucentButton, translucentBtnStyles
-} = require("%rGui/components/translucentButton.nut")
-let { setHangarUnit, hasBgUnitsByCamp } = require("%rGui/unit/hangarUnit.nut")
-let { curUnit, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
-let { curCampaign, campaignsList, campConfigs, isAnyCampaignSelected } = require("%appGlobals/pServer/campaign.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { chooseCampaignWnd } = require("%rGui/mainMenu/chooseCampaignWnd.nut")
-let { textColor } = require("%rGui/style/stdColors.nut")
-let downloadInfoBlock = require("%rGui/updater/downloadInfoBlock.nut")
-let { registerAutoDownloadUnits, DLP_MEDIUM } = require("%rGui/updater/updaterState.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { isNextBattleNewbieOffline } = require("%rGui/gameModes/newbieOfflineMissions.nut")
-let { allow_subscriptions } = require("%appGlobals/permissions.nut")
-let { lqTexturesWarningHangar } = require("%rGui/hudHints/lqTexturesWarning.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset, mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { canReceivePremDailyBonus, hasPremiumSubs } = require("%rGui/state/profilePremium.nut")
-let squadPanel = require("%rGui/squad/squadPanel.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let btnsOpenSpecialEvents = require("%rGui/event/btnsOpenSpecialEvents.nut")
-let { isFitSeasonRewardsRequirements, isEventActive } = require("%rGui/event/eventState.nut")
-let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
-let { isBpSeasonActive } = require("%rGui/battlePass/battlePassState.nut")
-let { isOPSeasonActive } = require("%rGui/battlePass/operationPassState.nut")
-let { isEpSeasonActive } = require("%rGui/battlePass/eventPassState.nut")
-let bpBanner = require("%rGui/battlePass/bpBanner.nut")
-let premDailyBonusWnd = require("%rGui/shop/premDailyBonusWnd.nut")
-let btnOpenUnitsTree = require("%rGui/unitsTree/btnOpenUnitsTree.nut")
-let { unitsResearchStatus, visibleNodes, selectedCountry, getResearchableCountries
-} = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { mkDropMenuBtn } = require("%rGui/components/mkDropDownMenu.nut")
-let { getTopMenuButtons, topMenuButtonsGenId } = require("%rGui/mainMenu/topMenuButtonsList.nut")
-let { toBattleButtonForRandomBattles, randomBattleButtonDownloading } = require("%rGui/mainMenu/toBattleButton.nut")
-let { framedGradientImageBtn } = require("%rGui/components/imageButton.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { boostersListActive, boostersHeight } = require("%rGui/boosters/boostersListActive.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { DBGLEVEL } = require("dagor.system")
-let { slotBarMainMenu, slotBarMainMenuSize, fakeSlotMainMenu } = require("%rGui/slotBar/slotBar.nut")
-let { unseenCampaigns } = require("%rGui/mainMenu/unseenCampaigns.nut")
-let { openSlotPresetWnd } = require("%rGui/slotBar/slotPresetsState.nut")
-let battleItemsBtn = require("battleItemsBtn.nut")
-let { blockedCountries } = require("%rGui/unit/unitAccess.nut")
-let { openNPWnd, isNPSeasonActive, hasUnseenNpPass, hasNpBpRewardsToReceive } = require("%rGui/battlePass/newPlayerBpState.nut")
-let { addUnlocksUpdater, removeUnlocksUpdater } = require("%rGui/unlocks/userstat.nut")
-let { unitPlateSize, slotsGap } = require("%rGui/slotBar/slotBarConsts.nut")
-let { defaultShopCategory } = require("%rGui/shop/shopCommon.nut")
-let { openShopWnd, hasUnseenGoodsByShop } = require("%rGui/shop/shopState.nut")
-let { openSeasonScene, isQuestsTabVisible } = require("%rGui/seasonScene/seasonSceneState.nut")
-let { questsCfg, questsBySection } = require("%rGui/quests/questsState.nut")
-let mkSeasonSceneUnseenMark = require("%rGui/seasonScene/mkSeasonSceneUnseenMark.nut")
+from "dagor.system" import DBGLEVEL
+from "math" import round
+from "wt.behaviors" import HangarCameraControl
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import prevIfEqual
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/loginState.nut" import isReadyToFullLoad
+from "%appGlobals/pServer/campaign.nut" import curCampaign, campaignsList, campConfigs, isAnyCampaignSelected
+from "%appGlobals/pServer/profile.nut" import curUnit, campUnitsCfg
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%appGlobals/permissions.nut" import allow_subscriptions
+from "%appGlobals/updater/addonsState.nut" import unitSizes
+from "%rGui/globals/fontUtils.nut" import getFontToFitWidth
+from "%rGui/battlePass/battlePassState.nut" import isBpSeasonActive
+import "%rGui/battlePass/bpBanner.nut" as bpBanner
+from "%rGui/battlePass/eventPassState.nut" import isEpSeasonActive
+from "%rGui/battlePass/newPlayerBpState.nut" import openNPWnd, isNPSeasonActive, hasUnseenNpPass,
+  hasNpBpRewardsToReceive
+from "%rGui/battlePass/operationPassState.nut" import isOPSeasonActive
+from "%rGui/boosters/boostersListActive.nut" import boostersListActive, boostersHeight
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/imageButton.nut" import framedGradientImageBtn
+from "%rGui/components/mkDropDownMenu.nut" import mkDropMenuBtn
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/translucentButton.nut" import translucentButtonsVGap, translucentButtonsWidth,
+  translucentButton, translucentBtnStyles
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+import "%rGui/event/btnsOpenSpecialEvents.nut" as btnsOpenSpecialEvents
+from "%rGui/event/eventState.nut" import isFitSeasonRewardsRequirements, isEventActive
+import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
+from "%rGui/gameModes/newbieOfflineMissions.nut" import isNextBattleNewbieOffline
+from "%rGui/hudHints/lqTexturesWarning.nut" import lqTexturesWarningHangar
+from "%rGui/mainMenu/chooseCampaignWnd.nut" import chooseCampaignWnd
+from "%rGui/mainMenu/gamercard.nut" import mkGamercard
+from "%rGui/mainMenu/mainMenuState.nut" import isMainMenuAttached
+from "%rGui/mainMenu/toBattleButton.nut" import toBattleButtonForRandomBattles, randomBattleButtonDownloading
+from "%rGui/mainMenu/topMenuButtonsList.nut" import getTopMenuButtons, topMenuButtonsGenId
+from "%rGui/mainMenu/unseenCampaigns.nut" import unseenCampaigns
+from "%rGui/quests/questsState.nut" import questsCfg, questsBySection
+import "%rGui/seasonScene/mkSeasonSceneUnseenMark.nut" as mkSeasonSceneUnseenMark
+from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, isQuestsTabVisible
+import "%rGui/shop/eventShopBtn.nut" as mkEventShopBtn
+import "%rGui/shop/offerPromo.nut" as offerPromo
+from "%rGui/shop/calendarState.nut" import isActiveSubCalendar, canReceiveSubCalendarReward
+from "%rGui/shop/shopCommon.nut" import defaultShopCategory
+from "%rGui/shop/shopState.nut" import openShopWnd, hasUnseenGoodsByShop
+from "%rGui/slotBar/slotBar.nut" import slotBarMainMenu, slotBarMainMenuSize, fakeSlotMainMenu
+from "%rGui/slotBar/slotBarConsts.nut" import unitPlateSize, slotsGap
+from "%rGui/slotBar/slotPresetsState.nut" import openSlotPresetWnd
+import "%rGui/shop/subscribitionCalendarWnd.nut" as subscribitionCalendarWnd
+import "%rGui/squad/squadPanel.nut" as squadPanel
+from "%rGui/state/profilePremium.nut" import hasPremiumSubs
+from "%rGui/style/gamercardStyle.nut" import gamercardHeight
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset, mkColoredGradientY
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import textColor
+from "%rGui/unit/components/unitInfoPanel.nut" import statsWidth
+from "%rGui/unit/hangarUnit.nut" import setHangarUnit, hasBgUnitsByCamp
+from "%rGui/unit/unitAccess.nut" import blockedCountries
+import "%rGui/unitsTree/btnOpenUnitsTree.nut" as btnOpenUnitsTree
+from "%rGui/unitsTree/unitsTreeNodesState.nut" import unitsResearchStatus, visibleNodes, selectedCountry,
+  getResearchableCountries
+from "%rGui/unlocks/userstat.nut" import addUnlocksUpdater, removeUnlocksUpdater
+import "%rGui/updater/downloadInfoBlock.nut" as downloadInfoBlock
+from "%rGui/updater/updaterState.nut" import registerAutoDownloadUnits, DLP_MEDIUM
+import "battleItemsBtn.nut" as battleItemsBtn
 
 
-let battleInfoBlockMinHeight = hdpx(120)
-let centerBlockGap = hdpx(20)
+const battleInfoBlockMinHeight = hdpx(120)
+const centerBlockGap = hdpx(20)
 let centerBlockWidth = saSize[0] - 2 * statsWidth
 let centerBlockTopMargin = gamercardHeight + translucentButtonsVGap
 let centerBlockBottomMargin = defButtonHeight + battleInfoBlockMinHeight
 let bgPresetsBtn = mkColoredGradientY(0xFF383B3E, 0xFF191616, 2)
-let bgPresetsBtnIconSize = hdpxi(50)
+const bgPresetsBtnIconSize = hdpxi(50)
 let { PRIMARY } = translucentBtnStyles
 let campBtnSize = [translucentButtonsVGap * 2 + translucentButtonsWidth * 3, PRIMARY.size[1]]
 let campBtnImageSize = [hdpx(60), hdpx(60)]
-let campBtnGap = hdpx(10)
+const campBtnGap = hdpx(10)
 
 let mainMenuUnit = Computed(function() {
   if (curUnit.get() != null)
@@ -112,46 +115,61 @@ registerAutoDownloadUnits(
   }),
   DLP_MEDIUM)
 
-let campaignsBtn = @() {
-  watch = [campaignsList, curCampaign, unseenCampaigns]
-  children = campaignsList.get().len() <= 1 || curCampaign.get() == null  ? null
-    : [
-        framedGradientImageBtn("gradient_button.svg", getCampaignPresentation(curCampaign.get()).icon, chooseCampaignWnd,
-          {
-            padding = hdpx(10)
-            size = campBtnSize
-            color = 0xFF000000
-            sound = { click = "click" }
-            imageSize = campBtnImageSize
-            flow = FLOW_HORIZONTAL
-            gap = campBtnGap
-          },
-          {
-            size = FLEX
-            rendObj = ROBJ_TEXT
-            valign = ALIGN_CENTER
-            halign = ALIGN_CENTER
-            color = 0xFFFFFFFF
-            maxWidth = campBtnSize[0] - campBtnImageSize[0] - campBtnGap
-            text = loc("changeCampaignShort")
-          }.__update(fontBoldTinyAccentedShaded))
-        unseenCampaigns.get().len() == 0 ? null
-          : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = [hdpx(10), hdpx(-10)] })
-      ].filter(@(v) v != null)
+function campaignsBtn() {
+  let maxTxtWidth = campBtnSize[0] - campBtnImageSize[0] - campBtnGap
+  let btnTxt = {
+    size = FLEX
+    rendObj = ROBJ_TEXT
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    color = 0xFFFFFFFF
+    maxWidth = maxTxtWidth
+    text = loc("changeCampaignShort")
+  }.__update(fontBoldTinyAccentedShaded)
+
+  return {
+    watch = [campaignsList, curCampaign, unseenCampaigns]
+    children = campaignsList.get().len() <= 1 || curCampaign.get() == null  ? null
+      : [
+          framedGradientImageBtn("gradient_button.svg", getCampaignPresentation(curCampaign.get()).icon, chooseCampaignWnd,
+            {
+              padding = hdpx(10)
+              size = campBtnSize
+              color = 0xFF000000
+              sound = { click = "click" }
+              imageSize = campBtnImageSize
+              flow = FLOW_HORIZONTAL
+              gap = campBtnGap
+            },
+            btnTxt.__update(getFontToFitWidth(btnTxt, maxTxtWidth, [fontBoldVeryTinyAccentedShaded, fontBoldTinyAccentedShaded])))
+          unseenCampaigns.get().len() == 0 ? null
+            : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = const [hdpx(10), hdpx(-10)] })
+        ].filter(@(v) v != null)
+  }
 }
 
 let dropMenuBtn = mkDropMenuBtn(getTopMenuButtons, topMenuButtonsGenId)
 
-let btnPremDailyBonus = @() {
-  watch = [allow_subscriptions, hasPremiumSubs, canReceivePremDailyBonus]
-  children = !allow_subscriptions.get() || !hasPremiumSubs.get() || !canReceivePremDailyBonus.get() ? null
-    : translucentButton("ui/gameuiskin#prem_daily_bonus.svg", premDailyBonusWnd, null,
+let subCalendarImgSize = evenPx(84)
+let subCalendarImg = {
+  rendObj = ROBJ_IMAGE
+  size = subCalendarImgSize
+  color = 0xFFFFC400
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  image = Picture($"ui/gameuiskin#shop_eagles.svg:{subCalendarImgSize}:P")
+  keepAspect = true
+}
+
+let btnSubCalendar = @() {
+  watch = [allow_subscriptions, hasPremiumSubs, isActiveSubCalendar]
+  children = !allow_subscriptions.get() || !hasPremiumSubs.get() || !isActiveSubCalendar.get() ? null
+    : translucentButton(subCalendarImg, subscribitionCalendarWnd, null,
         @(_) @() {
-          watch = canReceivePremDailyBonus
+          watch = canReceiveSubCalendarReward
           hplace = ALIGN_RIGHT
-          vplace = ALIGN_TOP
-          children = !canReceivePremDailyBonus.get() ? priorityUnseenMark : null
-        }, { iconSize = evenPx(75), size = PRIMARY.size })
+          children = canReceiveSubCalendarReward.get() ? priorityUnseenMark : null
+        }, { size = [hdpx(84), PRIMARY.size[1]]})
 }
 
 let btnNewPlayerBpWnd = @() {
@@ -179,10 +197,10 @@ let btnShop = @() translucentButton("ui/gameuiskin#icon_shop.svg",
     watch = needShopUnseenMark
     hplace = ALIGN_RIGHT
     vplace = ALIGN_TOP
-    pos = [-hdpx(4), hdpx(4)]
+    pos = const [-hdpx(4), hdpx(4)]
     children = needShopUnseenMark.get() ? priorityUnseenMark : null
   },
-  { iconMul = 0.8 })
+  { iconMul = 0.8, key = "shop_btn" }) 
 
 let isAchievementsAndPromoBtnVisible = Computed(@() isQuestsTabVisible("", questsCfg.get(), questsBySection.get()))
 
@@ -285,7 +303,7 @@ let leftTopButtons = {
       size = FLEX_H
       margin = [centerBlockGap, 0, 0, 0]
       children = [
-        btnHorRow([campaignsBtn, btnPremDailyBonus])
+        btnHorRow([campaignsBtn, btnSubCalendar])
         {
           size = 0
           pos = [0, hdpx(-45)]
@@ -296,7 +314,7 @@ let leftTopButtons = {
           children = [
             @() {
               watch = shouldShowEventMechanics
-              pos = [0, hdpx(-15)]
+              pos = const [0, hdpx(-15)]
               children = shouldShowEventMechanics.get() ? mkEventShopBtn() : null
             }
             offerPromo
@@ -332,6 +350,7 @@ let toBattleButtonPlace = {
       size = FLEX_H
       halign = ALIGN_RIGHT
       flow = FLOW_VERTICAL
+      gap = hdpx(20)
       children = [
         squadPanel
         {

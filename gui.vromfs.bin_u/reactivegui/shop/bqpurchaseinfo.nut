@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { SGT_UNKNOWN, SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_EVT_CURRENCY, SGT_DECORATOR, SGT_DECALS
-  SGT_LOOTBOX, SGT_GOLD, SGT_PLATINUM, SGT_BOOSTERS, SGT_SLOTS, SGT_BLUEPRINTS, SGT_UNIT_BUNDLE, SGT_SKIN
-} = require("%rGui/shop/shopConst.nut")
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%rGui/shop/shopConst.nut" import SGT_UNKNOWN, SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_EVT_CURRENCY,
+  SGT_DECORATOR, SGT_DECALS, SGT_LOOTBOX, SGT_GOLD, SGT_PLATINUM, SGT_BOOSTERS, SGT_SLOTS, SGT_BLUEPRINTS,
+  SGT_UNIT_BUNDLE, SGT_SKIN
+from "types" import String
 
 
 
@@ -12,55 +13,56 @@ let { SGT_UNKNOWN, SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_EVT_CURRE
 
 
 
-let PURCH_SRC_HANGAR = "hangar"
-let PURCH_SRC_UNITS = "units_list"
-let PURCH_SRC_LEVELUP = "level_up"
-let PURCH_SRC_UNIT_UPGRADES = "unit_upgrades"
-let PURCH_SRC_UNIT_MODS = "unit_mods"
-let PURCH_SRC_UNIT_RESEARCH = "unit_research"
-let PURCH_SRC_PROFILE = "profile"
-let PURCH_SRC_SHOP = "shop"
-let PURCH_SRC_EVENT = "event"
-let PURCH_SRC_BATTLE_PASS = "battle_pass"
-let PURCH_SRC_EVENT_PASS = "event_pass"
-let PURCH_SRC_OPERATION_PASS = "operation_pass"
-let PURCH_SRC_SKINS = "skins"
-let PURCH_SRC_BOOSTERS = "boosters"
-let PURCH_SRC_SLOTBAR = "slotbar"
-let PURCH_SRC_SLOT_UPGRADES = "slot_upgrades"
-let PURCH_SRC_BLUEPRINTS = "blueprints"
-let PURCH_SRC_BRANCH = "branch"
-let PURCH_SRC_DECALS = "decals"
-let PURCH_SRC_RESET_SLOT_LEVEL = "reset_slot_lvl"
-let PURCH_SRC_DEBRIEFING = "debriefing"
 
-let PURCH_TYPE_UNIT = "unit"
-let PURCH_TYPE_UNIT_MOD = "unit_mod"
-let PURCH_TYPE_UNIT_LEVEL = "unit_level"
-let PURCH_TYPE_UNIT_EXP = "unit_exp"
-let PURCH_TYPE_BP_LEVEL = "bp_level"
-let PURCH_TYPE_EP_LEVEL = "ep_level"
-let PURCH_TYPE_OP_LEVEL = "ep_level"
-let PURCH_TYPE_CONSUMABLES = "consumables"
-let PURCH_TYPE_PLAYER_LEVEL = "player_level"
-let PURCH_TYPE_DECORATOR = "player_decorator"
-let PURCH_TYPE_PREMIUM = "premium"
-let PURCH_TYPE_CURRENCY = "currency"
-let PURCH_TYPE_LOOTBOX = "lootbox"
-let PURCH_TYPE_SKIN = "skin"
-let PURCH_TYPE_BOOSTERS = "boosters"
-let PURCH_TYPE_MINI_EVENT = "mini_event"
-let PURCH_TYPE_SLOT = "slot"
-let PURCH_TYPE_GOODS_SLOT = "goods_slot"
-let PURCH_TYPE_GOODS_LIMIT = "goods_limit"
-let PURCH_TYPE_GOODS_REROLL_SLOTS = "goods_reroll_slots"
-let PURCH_TYPE_SLOT_LEVEL = "slot_level"
-let PURCH_TYPE_BLUEPRINTS = "blueprints"
-let PURCH_TYPE_UNIT_BUNDLE = "unit_bundle"
-let PURCH_TYPE_QUEUE_PENALTY = "queue_penalty"
-let PURCH_TYPE_DECAL = "decal"
-let PURCH_TYPE_QUEST_REROLL = "quest_reroll"
-let PURCH_TYPE_RESET_SLOT_LEVEL = "reset_slot_lvl"
+const PURCH_SRC_HANGAR = "hangar"
+const PURCH_SRC_UNITS = "units_list"
+const PURCH_SRC_LEVELUP = "level_up"
+const PURCH_SRC_UNIT_UPGRADES = "unit_upgrades"
+const PURCH_SRC_UNIT_MODS = "unit_mods"
+const PURCH_SRC_UNIT_RESEARCH = "unit_research"
+const PURCH_SRC_PROFILE = "profile"
+const PURCH_SRC_SHOP = "shop"
+const PURCH_SRC_EVENT = "event"
+const PURCH_SRC_BATTLE_PASS = "battle_pass"
+const PURCH_SRC_EVENT_PASS = "event_pass"
+const PURCH_SRC_OPERATION_PASS = "operation_pass"
+const PURCH_SRC_SKINS = "skins"
+const PURCH_SRC_BOOSTERS = "boosters"
+const PURCH_SRC_SLOTBAR = "slotbar"
+const PURCH_SRC_SLOT_UPGRADES = "slot_upgrades"
+const PURCH_SRC_BLUEPRINTS = "blueprints"
+const PURCH_SRC_BRANCH = "branch"
+const PURCH_SRC_DECALS = "decals"
+const PURCH_SRC_RESET_SLOT_LEVEL = "reset_slot_lvl"
+const PURCH_SRC_DEBRIEFING = "debriefing"
+
+const PURCH_TYPE_UNIT = "unit"
+const PURCH_TYPE_UNIT_MOD = "unit_mod"
+const PURCH_TYPE_UNIT_LEVEL = "unit_level"
+const PURCH_TYPE_UNIT_EXP = "unit_exp"
+const PURCH_TYPE_BP_LEVEL = "bp_level"
+const PURCH_TYPE_EP_LEVEL = "ep_level"
+const PURCH_TYPE_OP_LEVEL = "op_level"
+const PURCH_TYPE_CONSUMABLES = "consumables"
+const PURCH_TYPE_PLAYER_LEVEL = "player_level"
+const PURCH_TYPE_DECORATOR = "player_decorator"
+const PURCH_TYPE_PREMIUM = "premium"
+const PURCH_TYPE_CURRENCY = "currency"
+const PURCH_TYPE_LOOTBOX = "lootbox"
+const PURCH_TYPE_SKIN = "skin"
+const PURCH_TYPE_BOOSTERS = "boosters"
+const PURCH_TYPE_MINI_EVENT = "mini_event"
+const PURCH_TYPE_SLOT = "slot"
+const PURCH_TYPE_GOODS_SLOT = "goods_slot"
+const PURCH_TYPE_GOODS_LIMIT = "goods_limit"
+const PURCH_TYPE_GOODS_REROLL_SLOTS = "goods_reroll_slots"
+const PURCH_TYPE_SLOT_LEVEL = "slot_level"
+const PURCH_TYPE_BLUEPRINTS = "blueprints"
+const PURCH_TYPE_UNIT_BUNDLE = "unit_bundle"
+const PURCH_TYPE_QUEUE_PENALTY = "queue_penalty"
+const PURCH_TYPE_DECAL = "decal"
+const PURCH_TYPE_QUEST_REROLL = "quest_reroll"
+const PURCH_TYPE_RESET_SLOT_LEVEL = "reset_slot_lvl"
 
 let goodsTypeToPurchTypeMap = {
   [SGT_UNKNOWN] = "unknown",
@@ -93,7 +95,7 @@ function sendBqEventOnOpenCurrencyShop(bqPurchaseInfo) {
   if (bqPurchaseInfo == null)
     return
   foreach (v in [ "id", "from", "status", "params" ])
-    if (type(bqPurchaseInfo?[v]) != "string") {
+    if (!(bqPurchaseInfo?[v] instanceof String)) {
       logerr($"bqPurchaseInfo: Key \"{v}\" must be string")
       return
     }

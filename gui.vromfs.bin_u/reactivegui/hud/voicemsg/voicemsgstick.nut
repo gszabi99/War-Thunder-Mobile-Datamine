@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { SAILBOAT } = require("%appGlobals/unitConst.nut")
-let { mkMiniStick, stickHeadSize } = require("%rGui/hud/miniStick.nut")
-let { isVoiceMsgAllowedInMission, isVoiceMsgStickActive, voiceMsgStickDelta,
-  voiceMsgCooldownEndTime, COOLDOWN_TIME_SEC, isVoiceMsgEnabled
-} = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
-let { hudUnitType } = require("%rGui/hudStateExt.nut")
-let { tuningUnitType } = require("%rGui/hudTuning/hudTuningState.nut")
-let { STICK } = require("%rGui/hud/stickState.nut")
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
+from "%appGlobals/unitConst.nut" import SAILBOAT
+from "%rGui/hud/miniStick.nut" import mkMiniStick, stickHeadSize
+from "%rGui/hud/stickState.nut" import STICK
+from "%rGui/hud/voiceMsg/voiceMsgState.nut" import isVoiceMsgAllowedInMission, isVoiceMsgStickActive,
+  voiceMsgStickDelta, voiceMsgCooldownEndTime, COOLDOWN_TIME_SEC, isVoiceMsgEnabled
+from "%rGui/hudStateExt.nut" import hudUnitType
+from "%rGui/hudTuning/hudTuningState.nut" import tuningUnitType
+from "%rGui/style/hudColors.nut" import hudWhiteColor
+
 
 let stickHeadIconSize = 2 * (stickHeadSize / 4.0 + 0.5).tointeger()
 

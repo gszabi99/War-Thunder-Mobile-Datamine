@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPicture, setMaxCachedSize } = require("%darg/helpers/bitmap.nut")
+from "%darg/helpers/bitmap.nut" import mkBitmapPicture, setMaxCachedSize
+
 
 setMaxCachedSize(max(sw(15) * sh(15), 128 * 128))
 
-let gradTexSize = 64
+const gradTexSize = 64
 let colorParts = @(color) {
   r = (color >> 16) & 0xFF
   g = (color >> 8) & 0xFF

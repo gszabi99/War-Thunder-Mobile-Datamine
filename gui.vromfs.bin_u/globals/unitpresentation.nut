@@ -1,5 +1,6 @@
 from "%appGlobals/unitConst.nut" import *
-let { loc } = require("dagor.localize")
+from "dagor.localize" import loc
+
 
 let unitClassFontIcons = {
   boat          = "\u2409"

@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_time_msec } = require("dagor.time")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { register_command } = require("console")
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout, clearTimer
+from "eventbus" import eventbus_send, eventbus_subscribe
+
 
 let waitboxes = mkWatched(persist, "waitboxes", [])
 
@@ -28,8 +29,15 @@ function addWaitbox(text, time = 0, uid = null, eventId = null, context = null) 
     timeEnd = time <= 0 ? 0 : (1000 * time).tointeger() + get_time_msec()
   }
   waitboxes.mutate(@(v) v.append(wbox))
-  setTimeout(time, @() removeWaitboxByTimeout(wbox), wbox)
+  if (time > 0)
+    setTimeout(time, @() removeWaitboxByTimeout(wbox), wbox)
 }
+
+
+
+const NATIVE_WAITBOX_UID = "nativeWaitBox"
+eventbus_subscribe("showWaitScreenNative", @(p) addWaitbox(loc(p.txt), 0, NATIVE_WAITBOX_UID))
+eventbus_subscribe("closeWaitScreenNative", @(_) removeWaitbox(NATIVE_WAITBOX_UID))
 
 let filtered = []
 waitboxes.get().each(function(wbox) {

@@ -1,4 +1,5 @@
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+
 
 let replayCamerasButtons = [
   {

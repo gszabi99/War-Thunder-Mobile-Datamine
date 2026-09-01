@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { iconButtonCommon } = require("%rGui/components/textButton.nut")
-let { gap, rowHeight } = require("%rGui/contacts/contactInfoPkg.nut")
-let { onNotifyRemove, onNotifyApply, invitations } = require("%rGui/invitations/invitationsState.nut")
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/textButton.nut" import iconButtonCommon
+from "%rGui/contacts/contactInfoPkg.nut" import gap, rowHeight
+from "%rGui/invitations/invitationsState.nut" import onNotifyRemove, onNotifyApply, invitations
 
 
 let btnIconSize = evenPx(50)
-let btnMargin = hdpx(8)
+const btnMargin = hdpx(8)
 let btnDefOvr = {
   iconOvr = { size = btnIconSize },
   ovr = {

@@ -1,57 +1,56 @@
 from "%globalsDarg/darg_library.nut" import *
-let { HangarCameraControl } = require("wt.behaviors")
-let { deferOnce } = require("dagor.workcycle")
-let { register_command } = require("console")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { campUnitsCfg, curUnit } = require("%appGlobals/pServer/profile.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { setHangarUnitWithSkin } = require("%rGui/unit/hangarUnit.nut")
-let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { buttonsHGap, buttonsVGap } = require("%rGui/components/textButton.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { offlineBattlesCfg, openOfflineBattleMenu, isOfflineBattlesActive, unitSearchName, unitSearchResults,
-  isDebugListMapsActive, canAccessForDebug, runOfflineBattle, initOfflineBattlesData, selectedMission,
-  skipMissionSettings, unitPresetsLevelList, getMissionName, missionsList, getOfflineBattleGameMode,
-  savedBotsCount, savedBotsRank, defMaxBotsCount, defMaxBotsRank, NUMBER_OF_PLAYERS, savedUnitPresetLevel,
-  countriesList, mRanksList, unitsList, selectedCountry, selectedMRank, selectedUnit, savedUnitForReturn
-} = require("%rGui/gameModes/offlineBattlesState.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { horizontalToggleWithLabel } = require("%rGui/components/toggle.nut")
-let { addModalWindowWithHeader, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { sliderWithButtons } = require("%rGui/components/slider.nut")
-let { OCT_LIST } = require("%rGui/options/optCtrlType.nut")
-let mkOption = require("%rGui/options/mkOption.nut")
-let mkUnitPkgDownloadInfo = require("%rGui/unit/mkUnitPkgDownloadInfo.nut")
-let { mkFoldableSelector, mkListItem, headerBgColor, itemGap, contentPadding, contentBgColor,
-  headerH, mkFoldableList } = require("%rGui/components/foldableSelector.nut")
-let { mkGradRank, mkGradRankLarge } = require("%rGui/components/gradTexts.nut")
-let { mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitInfo
-} = require("%rGui/unit/components/unitPlateComp.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { closeWndBtn } = require("%rGui/components/closeWndBtn.nut")
-let { textInput } = require("%rGui/components/textInput.nut")
-let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+from "console" import register_command
+from "dagor.workcycle" import deferOnce
+from "wt.behaviors" import HangarCameraControl
+from "%sqstd/underscore.nut" import arrayByRows
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/gameModes/gameModes.nut" import allGameModes
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg, curUnit
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/unitTags.nut" import getUnitTagsCfg
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/buttonStyles.nut" import defButtonMinWidth
+from "%rGui/components/closeWndBtn.nut" import closeWndBtn
+from "%rGui/components/foldableSelector.nut" import mkFoldableSelector, mkListItem, headerBgColor, itemGap,
+  contentPadding, contentBgColor, headerH, mkFoldableList
+from "%rGui/components/gradTexts.nut" import mkGradRank, mkGradRankLarge
+from "%rGui/components/gradientDefComps.nut" import headerGradientBg
+from "%rGui/components/modalWindows.nut" import addModalWindowWithHeader, removeModalWindow
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/slider.nut" import sliderWithButtons
+from "%rGui/components/textButton.nut" import buttonsVGap
+from "%rGui/components/textInput.nut" import textInput
+from "%rGui/components/toggle.nut" import horizontalToggleWithLabel
+from "%rGui/gameModes/offlineBattlesState.nut" import offlineBattlesCfg, openOfflineBattleMenu,
+  isOfflineBattlesActive, unitSearchName, unitSearchResults, isDebugListMapsActive, canAccessForDebug, runOfflineBattle,
+  initOfflineBattlesData, selectedMission, skipMissionSettings, unitPresetsLevelList, getMissionName, missionsList,
+  getOfflineBattleGameMode, savedBotsCount, savedBotsRank, defMaxBotsCount, defMaxBotsRank, NUMBER_OF_PLAYERS,
+  savedUnitPresetLevel, countriesList, mRanksList, unitsList, selectedCountry, selectedMRank, selectedUnit,
+  savedUnitForReturn
+from "%rGui/mainMenu/toBattleButton.nut" import mkToBattleButtonWithSquadManagement
+from "%rGui/navState.nut" import registerScene
+import "%rGui/options/mkOption.nut" as mkOption
+from "%rGui/options/optCtrlType.nut" import OCT_LIST
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/unit/components/unitPlateComp.nut" import mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitInfo
+from "%rGui/unit/hangarUnit.nut" import setHangarUnitWithSkin
+import "%rGui/unit/mkUnitPkgDownloadInfo.nut" as mkUnitPkgDownloadInfo
+from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
 
 
-let SET_MIS_BLK_PARAMS_WND = "setMisBlkParamsWnd"
+const SET_MIS_BLK_PARAMS_WND = "setMisBlkParamsWnd"
 let curOpenedSelector = Watched("")
 let needShowBattleSettingsWnd = mkWatched(persist, "needShowBattleSettingsWnd", false)
-let rightPanelWidth = hdpx(520)
-let itemSize = hdpx(120)
-let unitPlateW = hdpx(248)
-let textItemH = hdpx(70)
-let labelIconGap = hdpx(20)
-let maxTextWidth = hdpx(400)
-let flagSizeHeader = hdpx(54)
-let searchIconSize = hdpxi(50)
+const rightPanelWidth = hdpx(520)
+const itemSize = hdpx(120)
+const unitPlateW = hdpx(248)
+const textItemH = hdpx(70)
+const labelIconGap = hdpx(20)
+const maxTextWidth = hdpx(400)
+const flagSizeHeader = hdpx(54)
+const searchIconSize = hdpxi(50)
 
 function close() {
   isOfflineBattlesActive.set(false)
@@ -90,7 +89,7 @@ let mkBotOpt = @(value, locId, maxValue) {
 }
 
 let mkText = @(text, ovr = {}) {
-  padding = [0, hdpx(10)]
+  padding = const [0, hdpx(10)]
   rendObj = ROBJ_TEXT
   behavior = Behaviors.Marquee
   halign = ALIGN_LEFT
@@ -104,7 +103,7 @@ let mkIconWithLabel = @(iconComp, text) {
   gap = labelIconGap
   children = [
     iconComp
-    mkText(text, { size = [maxTextWidth - (flagSizeHeader + labelIconGap), SIZE_TO_CONTENT] })
+    mkText(text, { size = const [maxTextWidth - (flagSizeHeader + labelIconGap), SIZE_TO_CONTENT] })
   ]
 }
 
@@ -116,7 +115,7 @@ let mkImage = @(w, h, imgPath, ovr = {}) {
 }.__update(ovr)
 
 let mkUnitPlate = @(unit, isSelected = Watched(false)) {
-  size = [unitPlateW, itemSize]
+  size = const [unitPlateW, itemSize]
   children = [
     mkUnitBg(unit)
     mkUnitSelectedGlow(unit, isSelected)
@@ -128,7 +127,7 @@ let mkUnitPlate = @(unit, isSelected = Watched(false)) {
 
 let searchIcon = {
   size = searchIconSize
-  pos = [hdpx(30), 0]
+  pos = const [hdpx(30), 0]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#btn_search.svg:{searchIconSize}:{searchIconSize}:P")
 }
@@ -148,7 +147,7 @@ let unitSearchTextInput = {
     textInput(unitSearchName, {
       ovr = {
         size = [FLEX, headerH]
-        padding = [hdpx(50), hdpx(85)]
+        padding = const [hdpx(50), hdpx(85)]
         fillColor = headerBgColor
       }
       placeholder = loc("unit_search")
@@ -196,7 +195,7 @@ let searchUnitResults = @() {
 }
 
 let mkUnitHeadItem = @(v) {
-  size = [FLEX, SIZE_TO_CONTENT]
+  size = const [FLEX, SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   padding = [0, itemGap, 0, 0]
@@ -273,7 +272,7 @@ let mkUnitFoldableSelector = @(listValues, curValue, columns, curOpenedSel, sele
 )
 let mkSelectorUnit = @(list, unit) mkUnitFoldableSelector(list, unit, 2, curOpenedSelector, "unit")
 
-let mkMissionHeadItem = @(v) mkText(loc(getMissionName(v)), { size = [maxTextWidth, SIZE_TO_CONTENT] })
+let mkMissionHeadItem = @(v) mkText(loc(getMissionName(v)), { size = const [maxTextWidth, SIZE_TO_CONTENT] })
 let mkMissionListItem = @(v, isSelected, onClick)
   mkListItem(v, isSelected, onClick, rightPanelWidth, textItemH, mkText(loc(getMissionName(v)), { size = FLEX_H }))
 let mkSelectorMission = @(list, mission) mkFoldableSelector(list, mission, 1,
@@ -376,61 +375,61 @@ let searchBlock = {
   ]
 }
 
-let wndHeader = {
-  size = FLEX
-  valign = ALIGN_TOP
-  gap = buttonsVGap
+let wndHeader = headerGradientBg(
+  [
+    backButton(close)
+     {
+       rendObj = ROBJ_TEXT
+       text = loc("mainmenu/offlineBattles")
+     }.__update(fontBig)
+  ], { vplace = ALIGN_TOP })
+
+let rightContent = {
+  size = [rightPanelWidth, FLEX]
   minHeight = hdpx(700)
+  halign = ALIGN_RIGHT
+  hplace = ALIGN_RIGHT
+  vplace = ALIGN_TOP
+  flow = FLOW_VERTICAL
+  gap = buttonsVGap
   children = [
-    headerGradientBg(
-      [
-        backButton(close)
-         {
-           rendObj = ROBJ_TEXT
-           text = loc("mainmenu/offlineBattles")
-         }.__update(fontBig)
-      ],
-      { vplace = ALIGN_TOP })
-    {
-      size = [rightPanelWidth, FLEX]
-      hplace = ALIGN_RIGHT
-      vplace = ALIGN_TOP
-      children = makeVertScroll({
-        size = FLEX_H
-        flow = FLOW_VERTICAL
-        gap = buttonsVGap
-        children = [
-          searchBlock
-          @() {
-            watch = [unitSearchName, missionsList]
-            size = FLEX_H
-            gap = buttonsVGap
-            flow = FLOW_VERTICAL
-            children = unitSearchName.get() == ""
-              ? [
-                  mkSelectorCountry(countriesList, selectedCountry)
-                  mkSelectorMRank(mRanksList, selectedMRank)
-                  mkSelectorUnit(unitsList, selectedUnit)
-                  missionsList.get().len() > 0 ? mkSelectorMission(missionsList, selectedMission) : null
-                ]
-              : searchUnitResults
-          }
-        ]
-      }, { isBarOutside = true })
-    }
+    makeVertScroll({
+      size = FLEX_H
+      flow = FLOW_VERTICAL
+      gap = buttonsVGap
+      children = [
+        searchBlock
+        @() {
+          watch = [unitSearchName, missionsList]
+          size = FLEX_H
+          gap = buttonsVGap
+          flow = FLOW_VERTICAL
+          children = unitSearchName.get() == ""
+            ? [
+                mkSelectorCountry(countriesList, selectedCountry)
+                mkSelectorMRank(mRanksList, selectedMRank)
+                mkSelectorUnit(unitsList, selectedUnit)
+                missionsList.get().len() > 0 ? mkSelectorMission(missionsList, selectedMission) : null
+              ]
+            : searchUnitResults
+        }
+      ]
+    }, { isBarOutside = true })
+    toBattleHint(loc("mainmenu/btnSingleLocalMission"))
+    mkToBattleButtonWithSquadManagement(setParamsAndRunBattle)
   ]
 }
 
-let wndFooter = @() {
+let bottomLeftContent = @() {
   watch = canAccessForDebug
-  size = FLEX_H
-  flow = FLOW_HORIZONTAL
+  size = FLEX
+  flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
-  gap = buttonsHGap
+  gap = buttonsVGap
   children = [
+    mkUnitPkgDownloadInfo(selectedUnit, true, { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
     !canAccessForDebug.get() ? null
       : {
-          valign = ALIGN_BOTTOM
           flow = FLOW_VERTICAL
           gap = buttonsVGap
           children = [
@@ -440,16 +439,6 @@ let wndFooter = @() {
               { behavior = Behaviors.Marquee })
           ]
         }
-    {
-      size = FLEX_H
-      flow = FLOW_VERTICAL
-      gap = buttonsVGap
-      halign = ALIGN_RIGHT
-      children = [
-        toBattleHint(loc("mainmenu/btnSingleLocalMission"))
-        mkToBattleButtonWithSquadManagement(setParamsAndRunBattle)
-      ]
-    }
   ]
 }
 
@@ -465,7 +454,6 @@ function onUnitChange(unit) {
 let content = {
   key = {}
   size = FLEX
-  flow = FLOW_VERTICAL
   function onAttach() {
     if (initOfflineBattlesData.get() != null) {
       let { unitName, missionName } = initOfflineBattlesData.get()
@@ -488,9 +476,8 @@ let content = {
   onDetach = @() selectedUnit.unsubscribe(onUnitChange)
   children = [
     wndHeader
-    { size = FLEX }
-    mkUnitPkgDownloadInfo(selectedUnit, true, { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
-    wndFooter
+    rightContent
+    bottomLeftContent
   ]
 }
 

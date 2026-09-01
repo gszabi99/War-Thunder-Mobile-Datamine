@@ -1,21 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { mkGradientCtorDoubleSideY, gradTexSize, mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { tabsGap } = require("%rGui/components/tabs.nut")
-let { getModCost } = require("%rGui/unitMods/unitModsState.nut")
-let { modContentMargin, modH, modW, equippedFrameWidth, activeColor, equippedColor,
-  blocksLineSize, blocksGap, slotsBlockMargin, contentGamercardGap
-} = require("%rGui/unitMods/unitModsConst.nut")
-let { catsScrollHandler, carouselScrollHandler } = require("%rGui/unitMods/unitModsScroll.nut")
-let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/currencyStyles.nut" import CS_SMALL
+from "%rGui/components/tabs.nut" import tabsGap
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideY, gradTexSize, mkColoredGradientY
+from "%rGui/unitMods/unitModsConst.nut" import modContentMargin, modH, modW, equippedFrameWidth, activeColor,
+  equippedColor, blocksLineSize, blocksGap, slotsBlockMargin, contentGamercardGap
+from "%rGui/unitMods/unitModsScroll.nut" import catsScrollHandler, carouselScrollHandler
+from "%rGui/unitMods/unitModsState.nut" import getModCost
 
 
-let bulletTypeIconSize = hdpxi(80)
-let defLockIconSize = hdpxi(85)
-let bgShadeColor = 0x80000000
-let defImage = "ui/gameuiskin#upgrades_tools_icon.avif:0:P"
+const bulletTypeIconSize = hdpxi(80)
+const defLockIconSize = hdpxi(85)
+const bgShadeColor = 0x80000000
+const defImage = "ui/gameuiskin#upgrades_tools_icon.avif:0:P"
 
 let lineGradientVert = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, 0xFFFFFFFF, 0.25))
 
@@ -44,9 +43,9 @@ let mkLevelLockBase = @(reqLevel, iconSize, textOvr = {}) {
 }
 
 let mkLevelLock = @(reqLevel)
-  mkLevelLockBase(reqLevel, defLockIconSize, { pos = [hdpx(1), hdpx(13)] }.__update(fontVeryTiny))
+  mkLevelLockBase(reqLevel, defLockIconSize, { pos = const [hdpx(1), hdpx(13)] }.__update(fontVeryTiny))
 let mkLevelLockSmall = @(reqLevel)
-  mkLevelLockBase(reqLevel, hdpxi(60), { pos = [hdpx(1), hdpx(9)] }.__update(fontVeryVeryTiny))
+  mkLevelLockBase(reqLevel, hdpxi(60), { pos = const [hdpx(1), hdpx(9)] }.__update(fontVeryVeryTiny))
 
 let mkNotPurchasedShade = @(isPurchased) @() isPurchased.get() ? { watch = isPurchased }
   : bgShade.__merge({ watch = isPurchased })
@@ -151,7 +150,7 @@ let mkBulletTypeIcon = @(iconBulletType, ammoTypeName) {
   margin = [0, equippedFrameWidth * 2, 0, 0]
   children = [
     {
-      size = [bulletTypeIconSize, bulletTypeIconSize]
+      size = const [bulletTypeIconSize, bulletTypeIconSize]
       rendObj = ROBJ_IMAGE
       image = Picture($"{iconBulletType}:{bulletTypeIconSize}:{bulletTypeIconSize}:P")
       keepAspect = KEEP_ASPECT_FIT

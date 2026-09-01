@@ -1,21 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "eventbus" import eventbus_send
+from "json" import object_to_json_string, parse_json
+from "math" import round
+from "%sqstd/datablock.nut" import eachParam, isDataBlock
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
+from "%appGlobals/unitTags.nut" import getUnitType
+from "%rGui/hudStateExt.nut" import hudUnitType
+from "%rGui/missionState.nut" import isGtRace
+from "%rGui/options/chooseMovementControls/groundMoveControlType.nut" import currentTankMoveCtrlType,
+  currentWalkerMoveCtrlType
+from "%rGui/unit/hangarUnit.nut" import hangarUnitName
+
+
 require("%rGui/onlyAfterLogin.nut")
-let { register_command } = require("console")
-let { object_to_json_string, parse_json } = require("json")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { eventbus_send } = require("eventbus")
-let { round } =  require("math")
-let { get_time_msec } = require("dagor.time")
-let { eachParam, isDataBlock } = require("%sqstd/datablock.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { hudUnitType } = require("%rGui/hudStateExt.nut")
-let { isGtRace } = require("%rGui/missionState.nut")
-let { currentTankMoveCtrlType, currentWalkerMoveCtrlType } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
 
 
 const SAVE_ID = "hudTuning"

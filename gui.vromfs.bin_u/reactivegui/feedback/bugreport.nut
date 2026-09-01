@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_cur_circuit_name, get_game_version_str } = require("app")
-let { platformId } = require("%sqstd/platform.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+from "app" import get_cur_circuit_name, get_game_version_str
+from "eventbus" import eventbus_send
+from "%sqstd/platform.nut" import platformId
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+
 
 local bugReportUrl = "{url}?f.platform={platform}&f.version={version}&f.circuit={circuit}".subst({
   url = getCurCircuitOverride("bugReportURL",loc("url/bugreport", "auto_local auto_login https://community.gaijin.net/issues/p/wtm/new_issue"))

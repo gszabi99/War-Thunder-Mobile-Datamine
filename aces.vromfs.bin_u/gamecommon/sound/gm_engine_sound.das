@@ -16,6 +16,7 @@ require %game.sound.sound_events
 require strings
 require app
 require Sound
+require %daslib/type_traits
 
 
 def gm_engine_sound_init(modelBlk : DataBlock?;
@@ -115,9 +116,10 @@ def gm_engine_sound_init(modelBlk : DataBlock?;
       if eventStop != ""
         gm_engine_sound__stop_event_name := path + "/" + eventStop
 
-    let can_patch_engines_for_enemies = sndBlk |> datablock_getBool("canPatchEnginesForEnemies", false)
+    let can_patch_engines_for_enemies = sndBlk |> datablock_getBool("canPatchEnginesForEnemies", false) && *engineBlk |> datablock_getBool("canPatchEnginesForEnemies", true)
     let hero = get_controlled_hero()
-    let is_enemy = !is_hero && unit.isTank && hero != null && hero.army != unit.army && can_patch_engines_for_enemies
+    let isReplay = is_playing_replay() 
+    let is_enemy = !is_hero && unit.isTank && hero != null && (isReplay || (hero.army != unit.army)) && can_patch_engines_for_enemies
     if is_enemy
       gm_engine_sound__event_name := string(gm_engine_sound__event_name) |> replace("/ai/", "/ai/_enemies/")
       gm_engine_sound__start_event_name := string(gm_engine_sound__start_event_name) |> replace("/ai/", "/ai/_enemies/")
@@ -188,7 +190,7 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
                             var gm_engine_sound__start_inside_name : das_string&;
                             var gm_engine_sound__stop_inside_name : das_string&)
   gm_engine_sound_init(evt.modelBlk,
-                       unit__playerId == get_local_player_no() || has(eid, "human_controlled_vehicle"),
+                       unit__playerId == get_local_player_no(),
                        eid,
                        unit__ref,
                        unit__className,
@@ -205,7 +207,7 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
 
 
 [es(tag=sound)]
-def gm_engine_sound_reinit_es(evt : CmdEngineReinitSound;
+def gm_engine_sound_reinit_es(evt : CmdGmReinitSound;
                               eid : EntityId;
                               var unit__ref : UnitRef;
                               unit__className : string;
@@ -224,7 +226,7 @@ def gm_engine_sound_reinit_es(evt : CmdEngineReinitSound;
                               var gm_engine_sound__stop_inside_name : das_string&)
   abandon(gm_engine_sound__event)
   gm_engine_sound_init(evt.modelBlk,
-                       evt.forHero || has(eid, "human_controlled_vehicle"),
+                       evt.forHero,
                        eid,
                        unit__ref,
                        unit__className,
@@ -253,7 +255,7 @@ def reset_cached_params(var cached_params : FloatList&)
 
 def gm_engine_sound_update_inside(gm_engine_sound__should_play : bool;
                                   gm_engine_sound__event_inside_name : das_string;
-                                  var gm_engine_sound__is_inside : bool&;
+                                  gm_engine_sound__is_inside : bool&;
                                   var gm_engine_sound__event : SoundEvent&;
                                   var gm_engine_sound__start_inside_event : SoundEvent&;
                                   var gm_engine_sound__stop_inside_event : SoundEvent&;
@@ -298,9 +300,13 @@ def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
                                 gm_engine_sound__event, gm_engine_sound__start_inside_event,
                                 gm_engine_sound__stop_inside_event, gm_engine_sound__event_inside)
 
+[sideeffects, unused_argument(eid, is_hero)]
+def private reinit_hero_vehicle_sounds(eid : EntityId; is_hero : bool)
+  static_if typeinfo(builtin_function_exists @@ < (arg0 : EntityId; arg1 : bool) : void > _::gm_reinit_sounds)
+    gm_reinit_sounds(eid, is_hero)
+
 [es(tag=sound, REQUIRE = heroVehicle, REQUIRE_NOT = controlledHero, no_order)]
 def gm_engine_sound_update_inside_hero_vehicle_es(act : UpdateStageInfoAct;
-                                                  eid : EntityId;
                                                   unit__ref : UnitRef;
                                                   gm_engine_sound__should_play : bool;
                                                   gm_engine_sound__event_inside_name : das_string;
@@ -316,10 +322,13 @@ def gm_engine_sound_update_inside_hero_vehicle_es(act : UpdateStageInfoAct;
     return
 
   var insideCovered = false
-  ecs::query() <| $ [es(REQUIRE=controlledHero)] (isInVehicle : bool = false;
-                                                  human_anim__vehicleSelected : EntityId = INVALID_ENTITY_ID;
-                                                  human_vehicle__isInsideCovered : bool = false)
-    insideCovered = isInVehicle && human_vehicle__isInsideCovered && human_anim__vehicleSelected == eid
+  static_if typeinfo safe_has_property < isHeroInside > (*unit)
+    insideCovered = unit.isHeroInside
+  else
+    ecs::query() <| $ [es(REQUIRE=controlledHero)] (isInVehicle : bool = false;
+                                                    human_anim__vehicleSelected : EntityId = INVALID_ENTITY_ID;
+                                                    human_vehicle__isInsideCovered : bool = false)
+      insideCovered = isInVehicle && human_vehicle__isInsideCovered && human_anim__vehicleSelected == unit.eid
 
   if gm_engine_sound__is_inside != insideCovered
     gm_engine_sound__loadswitch = false
@@ -330,6 +339,14 @@ def gm_engine_sound_update_inside_hero_vehicle_es(act : UpdateStageInfoAct;
                                 gm_engine_sound__is_inside,
                                 gm_engine_sound__event, gm_engine_sound__start_inside_event,
                                 gm_engine_sound__stop_inside_event, gm_engine_sound__event_inside)
+
+[es(tag=sound, REQUIRE=heroVehicle, on_appear)]
+def hero_vehicle_load_hero_sounds_es(evt : Event; eid : EntityId)
+  reinit_hero_vehicle_sounds(eid, true)
+
+[es(tag=sound, REQUIRE=heroVehicle, on_disappear)]
+def hero_vehicle_unload_hero_sounds_es(evt : Event; eid : EntityId)
+  reinit_hero_vehicle_sounds(eid, false)
 
 [es(tag=sound, REQUIRE = heroVehicle, on_disappear)]
 def gm_engine_sound_reset_inside_on_hero_vehicle_disappear_es(evt : Event;

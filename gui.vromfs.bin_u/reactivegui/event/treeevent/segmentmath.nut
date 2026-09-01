@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { sqrt } = require("math")
+from "math" import sqrt
+
 
 let sqr = @(v) v * v
 

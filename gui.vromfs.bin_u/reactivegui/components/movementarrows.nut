@@ -1,13 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } =  require("math")
-let { TouchScreenButton } = require("wt.behaviors")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { hudLightBlackColor, hudDarkGrayColor, hudRedColor, hudWhiteColor, hudAshGrayColor } = require("%rGui/style/hudColors.nut")
-let { mkContinuousButtonParams, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
-let { isUnitDelayed } = require("%rGui/hudState.nut")
-let { dfAnimBottomLeft } = require("%rGui/style/unitDelayAnims.nut")
+from "math" import round
+from "wt.behaviors" import TouchScreenButton
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/controls/shortcutSimpleComps.nut" import mkContinuousButtonParams, mkGamepadShortcutImage
+from "%rGui/hud/pieMenu.nut" import isPieMenuActive
+from "%rGui/hudState.nut" import isUnitDelayed
+from "%rGui/style/hudColors.nut" import hudLightBlackColor, hudDarkGrayColor, hudRedColor, hudWhiteColor,
+  hudAshGrayColor
+from "%rGui/style/unitDelayAnims.nut" import dfAnimBottomLeft
+
 
 let toInt = @(list) list.map(@(v) v.tointeger())
 
@@ -19,7 +21,7 @@ let ver2stepSizeMul = [0.85, 0.34]
 let stopSizeMul = [0.581, 0.726]
 let fullSizeAirBase = toInt([shHud(26.7), shHud(18.75)])
 
-let animTime = 0.3
+const animTime = 0.3
 let bgColor = hudLightBlackColor
 let bgColorPushed = hudDarkGrayColor
 let fillMoveColorDef = hudWhiteColor
@@ -94,8 +96,8 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
             flipX
           }
           mkGamepadShortcutImage(shortcutId,
-            flipX ? { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(-20), 0] }
-              : { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(20), 0] },
+            flipX ? { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(-20), 0] }
+              : { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(20), 0] },
             scale)
         ])
   }, ovrExt)
@@ -132,8 +134,8 @@ let mkAltMoveHorCtor = @(flipX, hplace) kwarg(function mkMoveHor(onTouchBegin, o
             flipX
           }
           mkGamepadShortcutImage(shortcutId,
-            flipX ? { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(-20), 0] }
-              : { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(20), 0] },
+            flipX ? { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(-20), 0] }
+              : { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(20), 0] },
             scale)
         ]
   }, ovrExt)

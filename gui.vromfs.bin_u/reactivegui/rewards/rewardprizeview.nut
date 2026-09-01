@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
-let { removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { openRewardsPreviewModal } = require("%rGui/rewards/rewardsPreviewModal.nut")
-let { REWARD_STYLE_MEDIUM, getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
-let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
+from "%rGui/components/modalWindows.nut" import removeModalWindow
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM, getRewardPlateSize
+from "%rGui/rewards/rewardsPreviewModal.nut" import openRewardsPreviewModal
+from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
 
 
-let WND_UID = "rewardPrizeView"
+const WND_UID = "rewardPrizeView"
 
 
 let mkUnitPlateClick = @(r) openUnitDetailsWnd({ name = r.id, isUpgraded = r.rType == G_UNIT_UPGRADE })

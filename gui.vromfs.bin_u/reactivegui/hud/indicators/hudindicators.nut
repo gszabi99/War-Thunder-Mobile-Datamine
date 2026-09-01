@@ -1,15 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { Indicator } = require("wt.behaviors")
-let { localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
-let { isHudIndicatorsAttached, hudIndicatorsByPlayerSorted, playerTitlesVisibility
-} = require("%rGui/hud/indicators/hudIndicatorsState.nut")
-let { indicatorTypes, INDICATOR_ICON_SIZE } = require("%rGui/hud/indicators/hudIndicatorTypes.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+from "wt.behaviors" import Indicator
+from "%appGlobals/clientState/clientState.nut" import localMPlayerId
+from "%rGui/hud/indicators/hudIndicatorTypes.nut" import indicatorTypes, INDICATOR_ICON_SIZE
+from "%rGui/hud/indicators/hudIndicatorsState.nut" import isHudIndicatorsAttached, hudIndicatorsByPlayerSorted,
+  playerTitlesVisibility
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
-let PLAYER_LOCAL_INDICATOR_SHIFT_Y = 0
-let PLAYER_WITHOUT_TITLE_INDICATOR_SHIFT_Y = hdpx(-88)
-let PLAYER_WITH_TITLE_INDICATOR_SHIFT_Y = hdpx(-114)
-let ARROW_SIZE = hdpxi(32)
+
+const PLAYER_LOCAL_INDICATOR_SHIFT_Y = 0
+const PLAYER_WITHOUT_TITLE_INDICATOR_SHIFT_Y = hdpx(-88)
+const PLAYER_WITH_TITLE_INDICATOR_SHIFT_Y = hdpx(-114)
+const ARROW_SIZE = hdpxi(32)
 let ARROW_LAYER_SIZE = INDICATOR_ICON_SIZE + (2 * ARROW_SIZE)
 
 let getPlayerIndicatorsShiftY = @(isLocal, isTitleVisible) isLocal ? PLAYER_LOCAL_INDICATOR_SHIFT_Y
@@ -17,7 +18,7 @@ let getPlayerIndicatorsShiftY = @(isLocal, isTitleVisible) isLocal ? PLAYER_LOCA
   : PLAYER_WITHOUT_TITLE_INDICATOR_SHIFT_Y
 
 let scrEdgeArrowImg = {
-  size = [ARROW_SIZE, ARROW_SIZE]
+  size = const [ARROW_SIZE, ARROW_SIZE]
   hplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#arrow_mark.svg:{ARROW_SIZE}:{ARROW_SIZE}:P")

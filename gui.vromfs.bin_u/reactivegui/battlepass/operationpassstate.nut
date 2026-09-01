@@ -1,29 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { eventbus_subscribe } = require("eventbus")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { unitRewardTypes } = require("%appGlobals/rewardType.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
-let { activeUnlocks, unlockInProgress, batchReceiveRewards, buyUnlock, getUnlockPrice
-} = require("%rGui/unlocks/unlocks.nut")
-let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
-let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { shopGoodsToRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { fillViewInfo, gatherUnlockStageInfo } = require("%rGui/battlePass/passStatePkg.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+from "console" import register_command
+from "eventbus" import eventbus_subscribe
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/config/passPresentation.nut" import getOPPresentation
+from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profileSeasons.nut" import curSeasons
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/rewardType.nut" import unitRewardTypes
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/battlePass/passStatePkg.nut" import fillViewInfo, gatherUnlockStageInfo
+from "%rGui/rewards/rewardViewInfo.nut" import shopGoodsToRewardsViewInfo
+from "%rGui/shop/shopState.nut" import shopGoods
+from "%rGui/unlocks/unlocks.nut" import activeUnlocks, unlockInProgress, batchReceiveRewards, buyUnlock, getUnlockPrice
+from "%rGui/unlocks/userstat.nut" import userstatStatsTables
 
 
-let OP_NONE = "none"
-let OP_COMMON = "common"
-let OP_VIP = "vip"
+const OP_NONE = "none"
+const OP_COMMON = "common"
+const OP_VIP = "vip"
 
-let OP_MAX_LEVELS_TO_ADD = 10
-let OP_EVENT_ID = "operation_pass"
+const OP_MAX_LEVELS_TO_ADD = 10
+const OP_EVENT_ID = "operation_pass"
 
 let isOPPurchaseWndOpened = mkWatched(persist, "isOPPurchaseWndOpened", false)
 let debugOP = mkWatched(persist, "debugOP", null)

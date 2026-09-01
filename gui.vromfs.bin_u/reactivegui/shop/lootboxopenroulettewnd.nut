@@ -1,65 +1,64 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
-let logR = log_with_prefix("[Roulette] ")
-let { resetTimeout, defer, deferOnce } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
-let { rnd_int } = require("dagor.random")
-let { playSound, startSound, stopSound } = require("sound_wt")
-let { lerpClamped, cos, sin, PI, pow } = require("%sqstd/math.nut")
-let ln = require("math").log
-let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
-let { registerScene, scenesOrder, setSceneBg } = require("%rGui/navState.nut")
-let { rouletteOpenId, rouletteOpenType, rouletteOpenResult, nextOpenCount,
-  rouletteRewardsList, receivedRewardsCur, receivedRewardsAll, rouletteOpenIdx, nextFixedReward,
-  isCurRewardFixed, requestOpenCurLootbox, closeRoulette, logOpenConfig,
-  rouletteLastReward, isRouletteDebugMode, rouletteOpenRewards,
-  isJackpotReceived, isJackpotCurrent
-} = require("%rGui/shop/lootboxOpenRouletteState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { delayUnseedPurchaseShow, skipUnseenMessageAnimOnce } = require("%rGui/shop/unseenPurchasesState.nut")
-let { REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardLocked, mkRewardPlateBg, mkProgressBar,
-  mkRewardPlateImage, mkProgressLabel, mkProgressBarWithForecast, mkProgressBarText, mkRewardUnitFlag
-} = require("%rGui/rewards/rewardPlateComp.nut")
-let { ignoreSubIdRTypes, joinViewInfo, findIndexForJoin } = require("%rGui/rewards/rewardViewInfo.nut")
-let { addCompToCompAnim } = require("%darg/helpers/compToCompAnim.nut")
-let { mkLensFlareLootbox } = require("%rGui/effects/mkLensFlare.nut")
-let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
-let { opacityAnim, lightAnim } = require("%rGui/shop/lootboxOpenRouletteAnims.nut")
-let lootboxOpenRouletteConfig = require("%rGui/shop/lootboxOpenRouletteConfig.nut")
-let { premiumTextColor } = require("%rGui/style/stdColors.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
-let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
-let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { getRouletteImage } = require("%appGlobals/config/lootboxPresentation.nut")
+from "dagor.random" import rnd_int
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, defer, deferOnce
+from "sound_wt" import playSound, startSound, stopSound
+from "%sqstd/math.nut" import lerpClamped, cos, sin, PI, pow
+from "%darg/helpers/compToCompAnim.nut" import addCompToCompAnim
+from "%appGlobals/config/currencyPresentation.nut" import getBaseCurrency
+from "%appGlobals/config/lootboxPresentation.nut" import getRouletteImage
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/components/gradTexts.nut" import mkGradRankSmall
+from "%rGui/components/modalWindows.nut" import hideModals, unhideModals
+from "%rGui/effects/mkLensFlare.nut" import mkLensFlareLootbox
+from "%rGui/navState.nut" import registerScene, scenesOrder, setSceneBg
+from "%rGui/rewards/rewardPlateComp.nut" import REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardLocked, mkRewardPlateBg,
+  mkProgressBar, mkRewardPlateImage, mkProgressLabel, mkProgressBarWithForecast, mkProgressBarText, mkRewardUnitFlag
+from "%rGui/rewards/rewardStyles.nut" import getRewardPlateSize
+from "%rGui/rewards/rewardViewInfo.nut" import ignoreSubIdRTypes, joinViewInfo, findIndexForJoin
+from "%rGui/shop/lootboxOpenRouletteAnims.nut" import opacityAnim, lightAnim
+import "%rGui/shop/lootboxOpenRouletteConfig.nut" as lootboxOpenRouletteConfig
+from "%rGui/shop/lootboxOpenRouletteState.nut" import rouletteOpenId, rouletteOpenType, rouletteOpenResult,
+  nextOpenCount, rouletteRewardsList, receivedRewardsCur, receivedRewardsAll, rouletteOpenIdx, nextFixedReward,
+  isCurRewardFixed, requestOpenCurLootbox, closeRoulette, logOpenConfig, rouletteLastReward, isRouletteDebugMode,
+  rouletteOpenRewards, isJackpotReceived, isJackpotCurrent
+from "%rGui/shop/unseenPurchasesState.nut" import delayUnseedPurchaseShow, skipUnseenMessageAnimOnce
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import premiumTextColor
 
-let ROULETTE_HIDE_MODALS_ID = "rouletteHideModals"
+
+let logR = log_with_prefix("[Roulette] ")
+let ln = require("math").log
+
+const ROULETTE_HIDE_MODALS_ID = "rouletteHideModals"
 
 let markSize = evenPx(40)
-let markMaxOffset = hdpx(20)
+const markMaxOffset = hdpx(20)
 let slotsGap = evenPx(10)
-let slotPadding = hdpxi(30)
-let progressbarWidth = hdpx(550)
-let progressbarHeight = hdpx(14)
-let openCountIconSize = hdpxi(30)
+const slotPadding = hdpxi(30)
+const progressbarWidth = hdpx(550)
+const progressbarHeight = hdpx(14)
+const openCountIconSize = hdpxi(30)
 
 let RS_IDLE_ROLL = "RS_IDLE_ROLL"
-let RS_ROLL = "RS_ROLL" 
-let RS_SLOWDOWN = "RS_SLOWDOWN"
-let RS_SLOW = "RS_SLOW"
-let RS_PRECISE_REVERSE = "RS_PRECISE_REVERSE" 
-let RS_PRECISE = "RS_PRECISE"
-let RS_STOP = "RS_STOP"
-let RS_REWARD_NO_ROLL = "RS_REWARD_NO_ROLL"
+const RS_ROLL = "RS_ROLL" 
+const RS_SLOWDOWN = "RS_SLOWDOWN"
+const RS_SLOW = "RS_SLOW"
+const RS_PRECISE_REVERSE = "RS_PRECISE_REVERSE" 
+const RS_PRECISE = "RS_PRECISE"
+const RS_STOP = "RS_STOP"
+const RS_REWARD_NO_ROLL = "RS_REWARD_NO_ROLL"
 
-let aTimeRewardScale = 0.6
-let aTimeRewardMove = 0.3
-let delayBeforeClose = 0.5
-let aTimeFixedRewardScale = 1.0
+const aTimeRewardScale = 0.6
+const aTimeRewardMove = 0.3
+const delayBeforeClose = 0.5
+const aTimeFixedRewardScale = 1.0
 
-let aTimeHighlight = 0.9
+const aTimeHighlight = 0.9
 
 let rewardBoxSize = REWARD_STYLE_MEDIUM.boxSize
 let rewardBoxGap = REWARD_STYLE_MEDIUM.boxGap
@@ -143,7 +142,7 @@ recevedRewardAnimIdx.subscribe(function(v) {
   resultOffsetIdx.set(max(resultOffsetIdx.get(), v))
 })
 
-let WND_UID = "lootboxOpenRouletteWindow"
+const WND_UID = "lootboxOpenRouletteWindow"
 rouletteOpenId.subscribe(function(_) {
   resultVisibleIdx.set(-1)
   recevedRewardAnimIdx.set(-1)
@@ -529,7 +528,7 @@ function updateAnimState(state) {
     updateArrowDeviation(dt, state)
 }
 
-let slotBgImgSize = hdpxi(20)
+const slotBgImgSize = hdpxi(20)
 let slotOfs = [hdpxi(9), hdpxi(9)]
 let slotBg = {
   padding = slotPadding
@@ -623,7 +622,7 @@ function mkBlueprintPlateTexts(reward, unitRank, rStyle) {
         padding = const [0, hdpx(5)]
         children = [
           unitRank
-            ? mkGradRankSmall(unitRank).__update({ fontSize = rStyle.textStyle.fontSize, pos = [0, hdpx(5)] })
+            ? mkGradRankSmall(unitRank).__update({ fontSize = rStyle.textStyle.fontSize, pos = const [0, hdpx(5)] })
             : null
           mkProgressBarText(reward, rStyle)
         ]
@@ -669,7 +668,7 @@ let rewardCtors = {
   [G_BLUEPRINT] = mkBlueprintPlate
 }
 
-let function mkRewardBlock(reward, rStyle, ovr = {}) {
+function mkRewardBlock(reward, rStyle, ovr = {}) {
   let { rType } = reward
   if (rType in rewardCtors)
     return rewardCtors[rType](reward, rStyle, ovr)
@@ -817,7 +816,7 @@ function rouletteRewardsBlock() {
       }
       {
         vplace = ALIGN_BOTTOM
-        pos = [0, ph(-100)]
+        pos = const [0, ph(-100)]
         children = markTop
         transform = {}
         behavior = Behaviors.RtPropUpdate
@@ -829,7 +828,7 @@ function rouletteRewardsBlock() {
       }
       {
         vplace = ALIGN_TOP
-        pos = [0, ph(100)]
+        pos = const [0, ph(100)]
         children = markBottom
         transform = {}
         behavior = Behaviors.RtPropUpdate
@@ -936,7 +935,7 @@ let mkOpenCountText = @(text, curCount, totalCount) {
 
 let progressbar = @(value) {
   rendObj = ROBJ_BOX
-  size = [progressbarWidth, progressbarHeight]
+  size = const [progressbarWidth, progressbarHeight]
   margin = const [hdpx(12), 0]
   fillColor = 0x80000000
   borderWidth = hdpx(2)
@@ -997,7 +996,7 @@ let fixedProgressInfo = @() {
         : fixedRewardIcon(nextFixedViewInfo.get()[0])
     ]
     : {
-        size = [FLEX, openCountIconSize]
+        size = const [FLEX, openCountIconSize]
         halign = ALIGN_CENTER
         valign = ALIGN_BOTTOM
         children = {
@@ -1013,12 +1012,12 @@ let fixedProgressInfo = @() {
 }
 
 let afterJackpotReceivedInfo = @() {
-  size = [progressbarWidth, SIZE_TO_CONTENT]
+  size = const [progressbarWidth, SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   children = [
     @() {
       watch = isJackpotCurrent
-      size = [FLEX, openCountIconSize]
+      size = const [FLEX, openCountIconSize]
       halign = ALIGN_CENTER
       valign = ALIGN_BOTTOM
       children = {
@@ -1108,7 +1107,7 @@ let lootboxWnd = @() {
   animations = scenesOrder.get()?[0] == "eventWnd" ? null : wndSwitchAnim
 }
 
-let sceneId = "lootboxOpenRoulette"
+const sceneId = "lootboxOpenRoulette"
 registerScene(sceneId, lootboxWnd, closeRoulette, keepref(Computed(@() rouletteOpenId.get() != null)), true)
 setSceneBg(sceneId, getRouletteImage(rouletteOpenId.get()))
 rouletteOpenId.subscribe(@(v) setSceneBg(sceneId, getRouletteImage(v)))

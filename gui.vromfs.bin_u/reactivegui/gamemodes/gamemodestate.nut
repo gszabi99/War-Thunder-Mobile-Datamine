@@ -1,15 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { register_command } = require("console")
-let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let { newbieGameModesConfig, isNewbieMode, isNewbieModeSingle
-} = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
-let { curCampaign, abTests } = require("%appGlobals/pServer/campaign.nut")
-let { battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
-let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { isInSquad } = require("%appGlobals/squadState.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let newbieModeStats = require("%rGui/gameModes/newbieModeStats.nut")
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/gameModes/gameModes.nut" import allGameModes
+from "%appGlobals/gameModes/newbieGameModesConfig.nut" import newbieGameModesConfig, isNewbieMode, isNewbieModeSingle
+from "%appGlobals/pServer/campaign.nut" import curCampaign, abTests
+from "%appGlobals/pServer/pServerApi.nut" import registerHandler
+from "%appGlobals/pServer/profile.nut" import battleUnitsMaxMRank
+from "%appGlobals/squadState.nut" import isInSquad
+import "%rGui/gameModes/newbieModeStats.nut" as newbieModeStats
 
 
 function findFitGameMode(list, gameModes, stats, maxMRank, abTestsV) {

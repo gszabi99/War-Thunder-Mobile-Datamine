@@ -1,27 +1,29 @@
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "dagor.localize" import getCurrentLanguage
+from "dagor.workcycle" import deferOnce, setInterval, clearTimer
+from "eventbus" import eventbus_subscribe, eventbus_send
 from "math" import round
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { deferOnce, setInterval, clearTimer } = require("dagor.workcycle")
-let { register_command } = require("console")
-let { LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FIREBASE, LT_VKID, LT_GUEST, LT_FACEBOOK, LT_NSWITCH, SST_MAIL, SST_UNKNOWN, availableLoginTypes, isLoginByGajin
-} = require("%appGlobals/loginState.nut")
-let { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL, FORGOT_PASSWORD_URL, REGISTER_URL } = require("%appGlobals/legal.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { defButtonHeight, LOGIN_BTN } = require("%rGui/components/buttonStyles.nut")
-let { mkCustomButton, textButtonPrimary, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
-let { urlText, urlLikeButton } = require("%rGui/components/urlText.nut")
-let { textInput } = require("%rGui/components/textInput.nut")
-let { optLang } = require("%rGui/options/options/langOptions.nut")
-let mkOption = require("%rGui/options/mkOption.nut")
-let { contentWidth } = require("%rGui/options/optionsStyle.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { textColor } = require("%rGui/style/stdColors.nut")
-let { getCurrentLanguage } = require("dagor.localize")
-let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
-let { is_nswitch, is_ios } = require("%sqstd/platform.nut")
+from "%sqstd/platform.nut" import is_nswitch, is_ios
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%appGlobals/legal.nut" import TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL, FORGOT_PASSWORD_URL, REGISTER_URL
+from "%appGlobals/loginState.nut" import LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FIREBASE, LT_VKID, LT_GUEST,
+  LT_FACEBOOK, LT_NSWITCH, SST_MAIL, SST_UNKNOWN, availableLoginTypes, isLoginByGajin
+from "%rGui/components/buttonStyles.nut" import defButtonHeight, LOGIN_BTN
+from "%rGui/components/textButton.nut" import mkCustomButton, textButtonPrimary, textButtonCommon, buttonsHGap
+from "%rGui/components/textInput.nut" import textInput
+from "%rGui/components/urlText.nut" import urlText, urlLikeButton
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/feedback/supportWnd.nut" import openSupportTicketWndOrUrl
+import "%rGui/options/mkOption.nut" as mkOption
+from "%rGui/options/options/langOptions.nut" import optLang
+from "%rGui/options/optionsStyle.nut" import contentWidth
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import textColor
+
+
 let { GP_SUCCESS = 0, getGPStatus = @() 0 } = require("android.account.googleplay")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let fbButtonVisible = getCurrentLanguage() != "Russian"
 let gpButtonVisible = getGPStatus() == GP_SUCCESS
@@ -72,16 +74,16 @@ let googleLogoWidth = round(59.0 / 62.0 * googleLogoHeight).tointeger()
 let vkLogoHeight = round(0.58 * defButtonHeight).tointeger()
 let vkLogoWidth = round(0.96 * vkLogoHeight).tointeger()
 let vkLogoGap = round(0.2 * defButtonHeight).tointeger()
-let refrIconSize = hdpxi(37)
+const refrIconSize = hdpxi(37)
 let cancelText = utf8ToUpper(loc("mainmenu/btnCancel"))
 
-let urlColor = Color(0, 204, 255)
+const urlColor = Color(0, 204, 255)
 let loginButtonStyle = LOGIN_BTN
-let loginButtonsHGap = hdpx(32)
-let guestLoginButtonColor = 0xFF000000
-let btnTxtColor = 0xFF000000
+const loginButtonsHGap = hdpx(32)
+const guestLoginButtonColor = 0xFF000000
+const btnTxtColor = 0xFF000000
 
-let resendTimeout = 30
+const resendTimeout = 30
 
 local languageTitle = loc("profile/language")
 let languageTitleEn = loc("profile/language/en")
@@ -145,6 +147,8 @@ function transparentButton(text, icon, onClick, override = {}) {
 let languageButton = transparentButton(languageTitle, "ui/gameuiskin#menu_lang.svg",
   @() isShowLanguagesList.set(true))
 
+
+
 let supportButton = transparentButton(loc("mainmenu/support"), "ui/gameuiskin#menu_support.svg",
   openSupportTicketWndOrUrl,
   {
@@ -153,7 +157,7 @@ let supportButton = transparentButton(loc("mainmenu/support"), "ui/gameuiskin#me
         rendObj = ROBJ_FRAME
         borderWidth = const [0, 0, 2, 0]
         size = FLEX
-        pos = [0, 2]
+        pos = const [0, 2]
       }
     }
   })
@@ -182,7 +186,7 @@ let mkPasswordInputField = @() {
           size = showPasswordIconSize
           image = Picture($"ui/gameuiskin#icon_password_hide.svg:{showPasswordIconSize[0]}:{showPasswordIconSize[1]}:P")
           hplace = ALIGN_RIGHT
-          pos = [-hdpx(16), 0]
+          pos = const [-hdpx(16), 0]
           behavior = Behaviors.Button
           onClick = @() isPasswordVisible.set(!isPasswordVisible.get())
           opacity = isPasswordVisible.get() ? 1.0 : 0.4

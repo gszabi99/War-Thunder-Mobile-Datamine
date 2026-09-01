@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { boosterInProgress, buy_booster } = require("%appGlobals/pServer/pServerApi.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/pServerApi.nut" import boosterInProgress, buy_booster
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
+from "%rGui/style/stdColors.nut" import userlogTextColor
+
 
 function purchaseBooster(id, localizedName, bqInfo) {
   if (boosterInProgress.get() != null)

@@ -16,20 +16,38 @@
     }
   },
   "imports": {
-    "import_record": {
-      "file": "gameData/missions/cta/tanks/abandoned_factory/tank_spawns/template_abandoned_factory_Conq3_tank_spawns.blk",
-      "importAreas": true,
-      "importUnits": true,
-      "importTriggers": true,
-      "importMissionObjectives": true,
-      "importWayPoints": true,
-      "showAreas": true,
-      "showUnits": true,
-      "showTriggers": true,
-      "showMissionObjectives": true,
-      "showWayPoints": true,
-      "excludes": {}
-    }
+    "import_record": [
+      {
+        "file": "gameData/missions/cta/tanks/abandoned_factory/tank_spawns/template_abandoned_factory_Conq3_tank_spawns.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/cta/tanks/abandoned_factory/battleareas/template_abandoned_factory_battlearea_exclude.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
   },
   "triggers": {
     "isCategory": true,
@@ -64,15 +82,17 @@
             1.0
           ],
           [
-            2264.2,
+            2301.8,
             20.95,
-            521.4
+            1280.2
           ]
         ],
         "props": {
           "squad_members": [
+            "t1_killarea_block02",
             "t1_killarea_block01",
-            "t1_killarea_block02"
+            "t1_killarea_block03",
+            "t1_killarea_block04"
           ]
         }
       },
@@ -95,15 +115,17 @@
             1.0
           ],
           [
-            1800.3,
-            12.1,
-            510.766
+            1863.9,
+            12.1001,
+            1263.95
           ]
         ],
         "props": {
           "squad_members": [
+            "t2_killarea_block02",
             "t2_killarea_block01",
-            "t2_killarea_block02"
+            "t2_killarea_block03",
+            "t2_killarea_block04"
           ]
         }
       }
@@ -137,33 +159,6 @@
       "objLayer": 4,
       "props": {}
     },
-    "t2_killarea_block01": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          150.0,
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          100.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0,
-          150.0
-        ],
-        [
-          1721.55,
-          8.05,
-          2365.1
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
     "t1_killarea_block01": {
       "type": "Cylinder",
       "tm": [
@@ -183,9 +178,36 @@
           150.0
         ],
         [
-          2459.75,
+          2473.0,
           8.05,
-          2257.6
+          1883.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_killarea_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          150.0
+        ],
+        [
+          1768.0,
+          8.05,
+          1883.15
         ]
       ],
       "objLayer": 0,
@@ -210,9 +232,9 @@
           150.0
         ],
         [
-          2463.45,
+          2459.2,
           8.05,
-          2133.5
+          2136.45
         ]
       ],
       "objLayer": 0,
@@ -237,9 +259,117 @@
           150.0
         ],
         [
-          1844.1,
+          1844.0,
           8.05,
-          2165.05
+          2169.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_killarea_block03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          150.0
+        ],
+        [
+          2456.8,
+          8.05,
+          2249.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_killarea_block03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          150.0
+        ],
+        [
+          1723.0,
+          8.05,
+          2362.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_killarea_block04": {
+      "type": "Box",
+      "tm": [
+        [
+          500.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1200.0
+        ],
+        [
+          2605.05,
+          7.0,
+          2064.39
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_killarea_block04": {
+      "type": "Box",
+      "tm": [
+        [
+          500.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1200.0
+        ],
+        [
+          1650.05,
+          7.0,
+          2064.39
         ]
       ],
       "objLayer": 0,

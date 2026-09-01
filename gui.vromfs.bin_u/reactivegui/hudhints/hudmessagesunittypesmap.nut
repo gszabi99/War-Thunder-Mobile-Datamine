@@ -1,5 +1,6 @@
-from "hudMessages" import *
 from "%appGlobals/unitConst.nut" import *
+from "hudMessages" import *
+
 
 return {
   [UT_Airplane] = AIR,

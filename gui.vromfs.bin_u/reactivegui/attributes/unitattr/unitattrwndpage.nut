@@ -1,21 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
-let { playSound } = require("sound_wt")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setInterval, clearTimer
+from "sound_wt" import playSound
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/unitTags.nut" import getUnitTagsShop
+from "%rGui/attributes/attrBlockComp.nut" import applyAttrRowChange, lastClickTime, boost_cooldown, rowHeight,
+  progressBtnGap, mkProgressBtn, mkProgressBtnContentDec, mkRowProgressBar, mkRowLabel, mkRowValue, startIncBtnGlare,
+  incBtnAnimRepeat, mkProgressBtnContentInc, mkNextIncCost
+from "%rGui/attributes/attrState.nut" import selAttributes, curCategoryId, getMaxAttrLevelData
+from "%rGui/attributes/attrValues.nut" import getAttrLabelText, getAttrValData
+import "%rGui/attributes/unitAttr/buyUnitLevelWnd.nut" as buyUnitLevelWnd
+from "%rGui/attributes/unitAttr/unitAttrState.nut" import attrUnitName, attrUnitType, curCategory, unitAttributes,
+  totalUnitSp, leftUnitSp
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
-let { applyAttrRowChange, lastClickTime, boost_cooldown, rowHeight, progressBtnGap, mkProgressBtn,
-  mkProgressBtnContentDec, mkRowProgressBar, mkRowLabel, mkRowValue, startIncBtnGlare, incBtnAnimRepeat,
-  mkProgressBtnContentInc, mkNextIncCost
-} = require("%rGui/attributes/attrBlockComp.nut")
-let { selAttributes, curCategoryId, getMaxAttrLevelData } = require("%rGui/attributes/attrState.nut")
-let { getAttrLabelText, getAttrValData } = require("%rGui/attributes/attrValues.nut")
-let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { attrUnitName, attrUnitType, curCategory, unitAttributes, totalUnitSp,
-  leftUnitSp } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
 
 function applyAttrRowChangeOrBoost(catId, attr, tryValue, selLevel, minLevel, maxLevel) {
   if (applyAttrRowChange(catId, attr.id, tryValue, selLevel, minLevel, maxLevel)) {
@@ -83,7 +82,7 @@ function mkAttrRow(attr) {
 }
 
 let unitAttrPage = @() {
-  key = startIncBtnGlare
+  key = "attributesList" 
   watch = curCategory
   size = FLEX_H
   onAttach = @() setInterval(incBtnAnimRepeat, startIncBtnGlare)

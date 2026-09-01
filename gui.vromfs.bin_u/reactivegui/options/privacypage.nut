@@ -1,17 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } = require("%appGlobals/legal.nut")
-let { isTcfConsentEnabled } = require("%appGlobals/consent.nut")
-let { textButtonPrimary, textButtonCommon, buttonsVGap, mkCustomButton,
+from "dagor.fs" import file_exists
+from "eventbus" import eventbus_send
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/consent.nut" import isTcfConsentEnabled
+from "%appGlobals/legal.nut" import PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL
+from "%rGui/components/buttonStyles.nut" import PRIMARY
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon, buttonsVGap, mkCustomButton,
   mkButtonTextMultiline, mergeStyles
-} = require("%rGui/components/textButton.nut")
-let { PRIMARY } = require("%rGui/components/buttonStyles.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { isTcfConsentRequiredForCountry, openTcfConsentWnd } = require("%rGui/notifications/consentTcf/consentTcfState.nut")
-let { isOpenedManage, consentRequiredForCurrentRegion } = require("%rGui/notifications/consentFirebase/consentState.nut")
-let { openLicenseWnd, licenseFileName } = require("%rGui/options/licenseWnd.nut")
-let { file_exists } = require("dagor.fs")
+from "%rGui/notifications/consentFirebase/consentState.nut" import isOpenedManage, consentRequiredForCurrentRegion
+from "%rGui/notifications/consentTcf/consentTcfState.nut" import isTcfConsentRequiredForCountry, openTcfConsentWnd
+from "%rGui/options/licenseWnd.nut" import openLicenseWnd, licenseFileName
+
 
 let multilineButtonOvrStyle = {
   size = const [hdpx(500), SIZE_TO_CONTENT],

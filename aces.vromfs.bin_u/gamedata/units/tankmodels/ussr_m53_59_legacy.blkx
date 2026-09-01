@@ -1969,9 +1969,9 @@
       "Fuel": 300.0,
       "TakeOff": 10300.0,
       "momentOfInertia": [
-        2.0,
-        2.0,
-        5.0
+        0.66,
+        3.7,
+        3.5
       ],
       "CenterOfGravity": [
         0.3,
@@ -2007,18 +2007,23 @@
       "steerType": "double_differential",
       "maxBrakeForce": 50000.0,
       "driveGearRadius": 0.45,
-      "mainGearRatio": 6.22,
+      "mainGearRatio": 9.9,
       "sideGearRatio": 1.0,
       "doubleDiffGearRatio": 30.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [
-          -6.28,
+          -4.05,
+          -11.6,
           0.0,
-          6.19,
-          3.13,
-          1.75,
-          1.0
+          11.79,
+          5.77,
+          3.97,
+          2.945,
+          2.011,
+          1.83,
+          1.125,
+          0.628
         ]
       }
     },

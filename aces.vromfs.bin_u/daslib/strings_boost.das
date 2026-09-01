@@ -24,6 +24,7 @@ def wide(text : string implicit; width : int) {
 }
 
 
+[temp_string_result]
 def join(it; separator : string implicit) {
     
     static_if (!typeinfo is_iterable(it)) {
@@ -49,6 +50,7 @@ def join(it; separator : string implicit) {
     }
 }
 
+[temp_string_result]
 def join(var it : iterator<auto(TT)>; separator : string implicit) {
     
     let st = build_string() $(var writer) {
@@ -69,8 +71,27 @@ def join(var it : iterator<auto(TT)>; separator : string implicit) {
     return st
 }
 
+[temp_string_result]
 def private join_implement(iterable; separator : string; blk) : string {
     
+    let st = build_string() $(var writer) {
+        var skip_first = true
+        for (elem in iterable) {
+            if (skip_first) {
+                skip_first = false
+            } else {
+                write(writer, separator)
+            }
+            blk |> invoke(writer, elem)
+        }
+    }
+    return st
+}
+
+
+
+[temp_string_result]
+def private join_implement_iterator(var iterable : iterator<auto(TT)>; separator : string; blk) : string {
     let st = build_string() $(var writer) {
         var skip_first = true
         for (elem in iterable) {
@@ -92,7 +113,7 @@ def join(iterable : array<auto(TT)>; separator : string; blk : block<(var writer
 
 def join(var iterable : iterator<auto(TT)>; separator : string; blk : block<(var writer : StringBuilderWriter; elem : TT) : void>) : string {
     
-    return join_implement(iterable, separator, blk)
+    return join_implement_iterator(iterable, separator, blk)
 }
 
 def join(iterable : auto(TT)[]; separator : string; blk : block<(var writer : StringBuilderWriter; elem : TT) : void>) : string {
@@ -367,14 +388,11 @@ def public is_null_or_whitespace(str : string) : bool {
 
 def public glob_match(pattern, text : string) : bool {
     
-    
-    
-    
     if (empty(pattern)) return empty(text)
     if (empty(text)) {
         
         unsafe {
-            var pp = reinterpret<uint8?> pattern
+            var pp = reinterpret<uint8?>(pattern)
             while (*pp == uint8('*')) {
                 pp++
             }
@@ -382,8 +400,8 @@ def public glob_match(pattern, text : string) : bool {
         }
     }
     unsafe {
-        var pp = reinterpret<uint8?> pattern
-        var tp = reinterpret<uint8?> text
+        var pp = reinterpret<uint8?>(pattern)
+        var tp = reinterpret<uint8?>(text)
         var star_pp : uint8?
         var star_tp : uint8?
         while (*tp != 0u8) {

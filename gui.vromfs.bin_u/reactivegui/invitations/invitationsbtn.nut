@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hasUnread, hasImportantUnread, invitations } = require("%rGui/invitations/invitationsState.nut")
-let { framedImageBtn } = require("%rGui/components/imageButton.nut")
-let { priorityUnseenMark, unseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
-let { openContacts, SQUAD_TAB } = require("%rGui/contacts/contactsState.nut")
+from "%rGui/components/imageButton.nut" import framedImageBtn
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark, unseenMark, unseenSize
+from "%rGui/contacts/contactsState.nut" import openContacts, SQUAD_TAB
+from "%rGui/invitations/invitationsState.nut" import hasUnread, hasImportantUnread, invitations
+
 
 let invitationsBtn = @() {
   watch = invitations

@@ -33,7 +33,6 @@ class TemplateMacro : AstFunctionAnnotation {
         }
         qblk |> force_at(func.body.at)
         
-        
         qblk |> force_generated(true)
         func.body = qblk
         return true

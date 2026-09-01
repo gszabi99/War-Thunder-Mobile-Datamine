@@ -1,5 +1,6 @@
-let { get_unittags_blk, get_settings_blk } = require("blkGetters")
-let defaultBattleData = require("defaultBattleData.nut")
+from "blkGetters" import get_unittags_blk, get_settings_blk
+import "defaultBattleData.nut" as defaultBattleData
+
 
 function mkDefaultBattleData(unitName, userId) {
   let unitTags = get_unittags_blk()?[unitName]

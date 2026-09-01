@@ -1,16 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let { HIT_CAMERA_FINISH, HIT_CAMERA_START, HIT_CAMERA_FADE_IN, DM_HIT_RESULT_NONE, DM_HIT_RESULT_KILL
-} = require("hitCamera")
-let { eventbus_subscribe } = require("eventbus")
-let { get_time_msec } = require("dagor.time")
-let { doesLocTextExist } = require("dagor.localize")
-let { setTimeout, clearTimer, resetTimeout } = require("dagor.workcycle")
-let cameraEventUnitType = require("%rGui/hud/hitCamera/cameraEventUnitType.nut")
-let { hitResultCfg, defPartPriority, partsPriority } = require("%rGui/hud/hitCamera/hitCameraConfig.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { register_command } = require("console")
-let { hudUnitType } = require("%rGui/hudStateExt.nut")
+from "console" import register_command
+from "dagor.localize" import doesLocTextExist
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout, clearTimer, resetTimeout
+from "eventbus" import eventbus_subscribe
+from "hitCamera" import HIT_CAMERA_FINISH, HIT_CAMERA_START, HIT_CAMERA_FADE_IN, DM_HIT_RESULT_NONE, DM_HIT_RESULT_KILL
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+import "%rGui/hud/hitCamera/cameraEventUnitType.nut" as cameraEventUnitType
+from "%rGui/hud/hitCamera/hitCameraConfig.nut" import hitResultCfg, defPartPriority, partsPriority
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/hudStateExt.nut" import hudUnitType
+from "types" import Array
 
 
 const MIN_SHOW_IMPORTANT_MSEC = 3000
@@ -156,7 +157,7 @@ function getImportantEventInfo(event) {
   local priority = -1
   local result = null
   let { unitId, unitVersion, partEvent } = event
-  let parts = type(partEvent) == "array" ? partEvent : [partEvent] 
+  let parts = partEvent instanceof Array ? partEvent : [partEvent] 
   foreach (part in parts) {
     let { partName = null } = part
     if (partName == null)
@@ -242,11 +243,11 @@ function onHitCameraImportantEvents(data) {
   }
 }
 
-eventbus_subscribe("hitCamera", @(ev) state.set(ev))
+eventbus_subscribe("on_hit_camera_event", @(ev) state.set(defaultState.__merge(ev)))
 eventbus_subscribe("EnemyPartsDamage", onEnemyPartsDamage)
-eventbus_subscribe("EnemyDamageState", @(ev) ev.unitId != hcUnitId.get() ? null
+subscribeHudEvent("EnemyDamageState", @(ev) ev.unitId != hcUnitId.get() ? null
   : hcDamageStatus.set(ev.updateDebuffsOnly ? hcDamageStatus.get().__merge(ev) : ev))
-eventbus_subscribe("HitCameraImportanEvents", onHitCameraImportantEvents)
+subscribeHudEvent("HitCameraImportanEvents", onHitCameraImportantEvents)
 
 let resetShowBombMiss = @() isBombMiss.set(false)
 eventbus_subscribe("onBombMiss", function(_) {

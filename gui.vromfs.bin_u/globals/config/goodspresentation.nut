@@ -1,4 +1,5 @@
-let { loc } = require("dagor.localize")
+from "dagor.localize" import loc
+
 
 let customGoodsLocId = {
   tanks_blueprints_slots = "shop/air_blueprints_slots"
@@ -17,7 +18,7 @@ let goodsLocIdByNamePart = {
   ["event_pass_collectors_"] = "collectorsPass",
 }
 
-let defaultIcon = "ui/gameuiskin/icon_primary_attention.svg"
+const defaultIcon = "ui/gameuiskin/icon_primary_attention.svg"
 let icons = {
   air_blueprints_slots = "ui/gameuiskin/shop_blueprints_folder.avif"
   air_top_blueprints_slots = "ui/gameuiskin/shop_blueprints_folder.avif"
@@ -57,7 +58,7 @@ let iconGoodsAsOffer = {
   valentine_event_timeline_offer_ship_battleship_bismarck_skin_only = "ui/unitskin#germ_battleship_bismarck_february_skin_c.avif"
 }
 
-let defaultSlotsPreviewBg = "ui/images/air_beta_access_bg.avif"
+const defaultSlotsPreviewBg = "ui/images/air_beta_access_bg.avif"
 let slotsPreviewBg = {
   air_blueprints_slots = "ui/images/air_beta_access_bg.avif"
   air_top_blueprints_slots = "ui/images/air_beta_access_bg.avif"

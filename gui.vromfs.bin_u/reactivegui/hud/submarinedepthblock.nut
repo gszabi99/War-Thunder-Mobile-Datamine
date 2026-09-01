@@ -1,27 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { fabs } = require("math")
-let { setAxisValue } = require("controls")
-let { lerpClamped } = require("%sqstd/math.nut")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { prettyScaleForSmallNumberCharVariants } = require("%globalsDarg/fontScale.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { dfAnimBottomRight } = require("%rGui/style/unitDelayAnims.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { wishDist, waterDist, periscopeDepthCtrl, deadZoneDepth, maxControlDepth } = require("%rGui/hud/shipState.nut")
-let { mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
-let axisListener = require("%rGui/controls/axisListener.nut")
-let { gamepadAxes } = require("%rGui/controls/shortcutsMap.nut")
-let { hudPearlGrayColorFade } = require("%rGui/style/hudColors.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
+from "controls" import setAxisValue
+from "dagor.workcycle" import resetTimeout
+from "math" import fabs
+from "%sqstd/math.nut" import lerpClamped
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%globalsDarg/fontScale.nut" import prettyScaleForSmallNumberCharVariants
+from "%globalsDarg/screenMath.nut" import scaleArr
+import "%rGui/controls/axisListener.nut" as axisListener
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage
+from "%rGui/controls/shortcutsMap.nut" import gamepadAxes
+from "%rGui/hud/actionBar/actionBarState.nut" import updateActionBarDelayed
+from "%rGui/hud/shipState.nut" import wishDist, waterDist, periscopeDepthCtrl, deadZoneDepth, maxControlDepth
+from "%rGui/hudState.nut" import isPlayingReplay
+from "%rGui/style/hudColors.nut" import hudPearlGrayColorFade
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/unitDelayAnims.nut" import dfAnimBottomRight
 
-let markStep = 5
-let marksTextStep = 4
+
+const markStep = 5
+const marksTextStep = 4
 let depthRepeatTimes = [0.3, 0.15, 0.15, 0.07, 0.07, 0.05]
 let knobColor = hudPearlGrayColorFade
-let axisDeadZone = 0.1
+const axisDeadZone = 0.1
 
 let submarineDepthAxisValue = Watched(0)
 
@@ -118,12 +119,12 @@ let btnImageDepthInc = @(scale) mkGamepadShortcutImg("submarine_depth_inc",
   Computed(@() submarineDepthAxisValue.get() > 0),
   Computed(@() fabs(wishDist.get() - 1) > 0.01),
   scale,
-  { hplace = ALIGN_RIGHT, pos = [pw(-100), ph(50)] })
+  { hplace = ALIGN_RIGHT, pos = const [pw(-100), ph(50)] })
 let btnImageDepthDec = @(scale) mkGamepadShortcutImg("submarine_depth_dec",
   Computed(@() submarineDepthAxisValue.get() < 0)
   Computed(@() fabs(wishDist.get() * maxControlDepth.get() - periscopeDepthCtrl.get()) > 0.01),
   scale,
-  { hplace = ALIGN_RIGHT, pos = [pw(-100), ph(-50)] })
+  { hplace = ALIGN_RIGHT, pos = const [pw(-100), ph(-50)] })
 
 function mkDepthSlider(scale) {
   let { height, scaleWidth, scaleImgHeight, knobSize, sliderPadding, fullWidth } = getSizes(scale)
@@ -150,7 +151,7 @@ function mkDepthSlider(scale) {
     }
 
     return {
-      watch = [wishDist, periscopeDepthCtrl, maxControlDepth, isPlayingReplay]
+      watch = [wishDist, periscopeDepthCtrl, maxControlDepth, deadZoneDepth, isPlayingReplay]
       size = [fullWidth, height]
       padding = sliderPadding
       behavior = Behaviors.Slider
@@ -195,7 +196,7 @@ function mkDepthSlider(scale) {
         }
       }
       transform = {}
-      animations = dfAnimBottomRight.extend(wndSwitchAnim)
+      animations = (clone dfAnimBottomRight).extend(wndSwitchAnim)
     }
   }
 }
@@ -243,7 +244,7 @@ function mkDepthSliderEditView() {
       { size = const [hdpx(25), 0] } 
       {
         size = periscopSize
-        pos = [0, -hdpx(33)]
+        pos = const [0, -hdpx(33)]
         hplace = ALIGN_RIGHT
         vplace = ALIGN_TOP
         rendObj = ROBJ_IMAGE

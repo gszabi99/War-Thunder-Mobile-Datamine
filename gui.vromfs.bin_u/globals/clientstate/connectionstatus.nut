@@ -1,12 +1,12 @@
-let { Computed } = require("frp")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
+from "frp" import Computed
+from "%sqstd/globalState.nut" import hardPersistWatched
 
 
-let CON_UNKNOWN = "unknown"
-let CON_LIMITED = "limited"
-let CON_OK = "ok"
-let CON_NO_CONNECTION = "no connection"
-let connectionStatus = sharedWatched("connectionStatus", @() CON_UNKNOWN)
+const CON_UNKNOWN = "unknown"
+const CON_LIMITED = "limited"
+const CON_OK = "ok"
+const CON_NO_CONNECTION = "no connection"
+let connectionStatus = hardPersistWatched("connectionStatus", CON_UNKNOWN)
 
 return {
   CON_LIMITED

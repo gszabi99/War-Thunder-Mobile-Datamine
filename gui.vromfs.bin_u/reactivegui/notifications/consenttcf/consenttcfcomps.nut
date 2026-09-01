@@ -2,13 +2,15 @@ from "%globalsDarg/darg_library.nut" import *
 from "eventbus" import eventbus_send
 from "%sqstd/string.nut" import utf8ToUpper
 import "%darg/helpers/mkTextareaBlock.nut" as mkTextareaBlock
-from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
-from "%rGui/components/scrollbar.nut" import makeVertScroll
-from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader, wndHeaderHeight
 from "%rGui/components/closeWndBtn.nut" import closeWndBtn, closeWndBtnSize
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader, wndHeaderHeight
+from "%rGui/components/scrollbar.nut" import makeVertScroll
 from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 from "%rGui/notifications/consentTcf/consentTcfState.nut" import doAnswerAllAndClose, doSaveAndClose
+from "types" import Function
+
 
 const wndW = hdpx(1300)
 const wndH = saSize[1]
@@ -18,9 +20,9 @@ let fontDefault = fontTiny
 let fontMinor = fontVeryTiny
 let textGap = fontDefault.fontSize
 
-let fadedTextColor = 0x80808080
-let separatorColor = 0x60606060
-let linkColor = 0xFF1697E1
+const fadedTextColor = 0x80808080
+const separatorColor = 0x60606060
+const linkColor = 0xFF1697E1
 
 let mkTextarea = @(text, ovr = {}) {
   size = FLEX_H
@@ -29,10 +31,10 @@ let mkTextarea = @(text, ovr = {}) {
   text
 }.__update(fontDefault, ovr)
 
-let mkTitle = @(text) mkTextarea(text, { margin = [hdpx(50), 0] }.__update(fontTitle))
+let mkTitle = @(text) mkTextarea(text, { margin = const [hdpx(50), 0] }.__update(fontTitle))
 
 let urlUnderline = {
-  size = [FLEX, hdpx(1)]
+  size = const [FLEX, hdpx(1)]
   vplace = ALIGN_BOTTOM
   rendObj = ROBJ_SOLID
   color = linkColor
@@ -62,7 +64,7 @@ let separatorLine = {
   size = [FLEX, textGap]
   valign = ALIGN_CENTER
   children = {
-    size = [FLEX, hdpx(2)]
+    size = const [FLEX, hdpx(2)]
     rendObj = ROBJ_SOLID
     color = separatorColor
   }
@@ -101,7 +103,7 @@ const wndDescH = wndH - wndHeaderHeight - wndFooterH
 const wndContentWidth = wndW - (2 * descPadding)
 
 let mkStatusContent = @(text) {
-  size = [FLEX, wndDescH]
+  size = const [FLEX, wndDescH]
   valign = ALIGN_CENTER
   children = mkTextarea(text, { halign = ALIGN_CENTER })
 }
@@ -111,7 +113,7 @@ function mkContent(titleStr, descChildren, footerBtnsChildren, onClose, isRootWn
   local scrollPosY = 0
   return modalWndBg.__merge({
     key = titleStr
-    size = [wndW, wndH]
+    size = const [wndW, wndH]
     onAttach = @() scrollHandler.scrollToY(lastScrollPosY?.get() ?? 0)
     onDetach = @() lastScrollPosY?.set(scrollPosY)
     flow = FLOW_VERTICAL
@@ -131,7 +133,7 @@ function mkContent(titleStr, descChildren, footerBtnsChildren, onClose, isRootWn
             size = FLEX_H
             padding = descPadding
             flow = FLOW_VERTICAL
-            children = type(descChildren) == "function" ? descChildren() : descChildren
+            children = descChildren instanceof Function ? descChildren() : descChildren
           },
           {
             rootBase = {
@@ -144,7 +146,7 @@ function mkContent(titleStr, descChildren, footerBtnsChildren, onClose, isRootWn
         )
       }
       footerBtnsChildren == null ? null : {
-        size = [wndW, wndFooterH]
+        size = const [wndW, wndFooterH]
         padding = footerBtnsPadding
         vplace = ALIGN_BOTTOM
         halign = ALIGN_CENTER
@@ -169,7 +171,7 @@ let mkManageButtons = @(bqWndId) [
 
 let openUrl = @(baseUrl) eventbus_send("openUrl", { baseUrl })
 
-let mkTextareaProps = @(ovr) mkTextarea("", { size = [wndContentWidth, SIZE_TO_CONTENT] }.__update(ovr))
+let mkTextareaProps = @(ovr) mkTextarea("", { size = const [wndContentWidth, SIZE_TO_CONTENT] }.__update(ovr))
 let mkTextareaWithLinks = @(text, links, ovr = {}) mkTextareaBlock(text, mkTextareaProps(ovr), links)
 
 return {

@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { prettyScaleForSmallNumberCharVariants } = require("%globalsDarg/fontScale.nut")
-let { oxygen, waterDist, periscopeDepthCtrl } = require("%rGui/hud/shipState.nut")
-let { hudBlueColor, hudDarkGrayColor, hudTransparentColor, hudRedColorFade } = require("%rGui/style/hudColors.nut")
+from "%globalsDarg/fontScale.nut" import prettyScaleForSmallNumberCharVariants
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/hud/shipState.nut" import oxygen, waterDist, periscopeDepthCtrl
+from "%rGui/style/hudColors.nut" import hudBlueColor, hudDarkGrayColor, hudTransparentColor, hudRedColorFade
 
 
-let textPadding = hdpx(5)
-let depthWidth = hdpxi(165)
-let depthHeight = hdpxi(105)
+const textPadding = hdpx(5)
+const depthWidth = hdpxi(165)
+const depthHeight = hdpxi(105)
 let oxigenProgressSize = [hdpx(108), hdpx(10)]
 let oxigenBlockSize = [oxigenProgressSize[0], hdpx(70)]
 
@@ -54,7 +54,7 @@ function depthControl(scale) {
         watch = waterDist
         rendObj = ROBJ_TEXT
         text = $"{waterDist.get().tointeger()} {mText}"
-        padding = [0, textPadding, 0, 0]
+        padding = const [0, textPadding, 0, 0]
       }.__update(font1)
       {
         size = FLEX_H
@@ -79,7 +79,7 @@ function depthControl(scale) {
           }
         ]
         children = @() {
-          watch = [waterDist, periscopeDepthCtrl]
+          watch = depthText
           rendObj = ROBJ_TEXTAREA
           size = FLEX_H
           halign = ALIGN_RIGHT
@@ -95,11 +95,11 @@ let depthControlEditView = {
   halign = ALIGN_RIGHT
   valign = ALIGN_BOTTOM
   gap = hdpx(5)
-  size = [depthWidth, depthHeight]
+  size = const [depthWidth, depthHeight]
   flow = FLOW_VERTICAL
   children = [
     {
-      padding = [0, textPadding, 0, 0]
+      padding = const [0, textPadding, 0, 0]
       rendObj = ROBJ_TEXT
       text = $"XX {mText}"
     }.__update(fontTinyAccentedShaded)

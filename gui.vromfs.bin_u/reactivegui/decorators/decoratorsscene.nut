@@ -1,15 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let avatarScene = require("%rGui/decorators/avatarScene.nut")
-let nickFramesScene  = require("%rGui/decorators/nickFramesScene.nut")
-let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
-let titlesScene = require("%rGui/decorators/titlesScene.nut")
-let changeNameScene = require("%rGui/decorators/changeNameScene.nut")
-let { gamercardBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { isDecoratorsSceneOpened, unseenDecorators, availNickFrames, availAvatars,
-availTitles } = require("%rGui/decorators/decoratorState.nut")
-let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
+import "%rGui/decorators/avatarScene.nut" as avatarScene
+import "%rGui/decorators/changeNameScene.nut" as changeNameScene
+from "%rGui/decorators/decoratorState.nut" import isDecoratorsSceneOpened, unseenDecorators, availNickFrames,
+  availAvatars, availTitles
+import "%rGui/decorators/nickFramesScene.nut" as nickFramesScene
+import "%rGui/decorators/titlesScene.nut" as titlesScene
+from "%rGui/mainMenu/gamercard.nut" import gamercardBalanceBtns
+from "%rGui/options/mkOptionsScene.nut" import mkOptionsScene
+from "%rGui/unseenPriority.nut" import SEEN, UNSEEN_HIGH
 
 
 let curTabId = Watched(null)

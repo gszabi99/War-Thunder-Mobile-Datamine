@@ -1,28 +1,29 @@
 from "%globalsDarg/darg_library.nut" import *
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
-let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
-let { isOpenedItemWnd } = require("itemsBuyState.nut")
-let { itemsOrder } = require("%appGlobals/itemsState.nut")
+from "%appGlobals/itemsState.nut" import itemsOrder
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%rGui/components/currencyComp.nut" import mkCurrencyImage
+from "%rGui/components/currencyStyles.nut" import CS_GAMERCARD
+from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset
+from "%rGui/style/stdColors.nut" import hoverColor
+from "%rGui/unit/hangarUnit.nut" import hangarUnit
+from "%rGui/unit/unitItemAccess.nut" import isItemAllowedForUnit
+from "itemsBuyState.nut" import isOpenedItemWnd
 
-let bgIconSize = hdpx(70)
+
+const bgIconSize = hdpx(70)
 let stateFlags = Watched(0)
 
 let plus = {
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
-  pos = [pw(30), ph(35)]
+  pos = const [pw(30), ph(35)]
   rendObj = ROBJ_TEXT
   color = 0xFFFFFFFF
   text = "+"
 }.__update(fontBigShaded)
 
 let hoverBg = {
-  size = [pw(150), FLEX]
+  size = const [pw(150), FLEX]
   rendObj = ROBJ_9RECT
   image = gradCircularSmallHorCorners
   color = hoverColor

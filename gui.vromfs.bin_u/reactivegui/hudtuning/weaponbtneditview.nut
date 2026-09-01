@@ -1,14 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { borderColor, borderWidth, touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { defImageSize } = require("%rGui/hud/weaponsButtonsView.nut")
-let { getRomanNumeral } = require("%sqstd/math.nut")
-let { hudWhiteColor, hudBlackColor, hudTransparentColor } = require("%rGui/style/hudColors.nut")
+from "%sqstd/math.nut" import getRomanNumeral
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderColor, borderWidth, touchButtonSize
+from "%rGui/hud/weaponsButtonsView.nut" import defImageSize
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudBlackColor, hudTransparentColor
+
 
 let weaponNumberSize = (0.3 * touchButtonSize).tointeger()
 let weaponNumberColor = hudBlackColor
 
 let mkWeaponNumber = @(weaponNumber, isRoman = true) weaponNumber == 0 ? null : {
-  pos = [pw(30), 0]
+  pos = const [pw(30), 0]
   vplace = ALIGN_CENTER
   hplace = ALIGN_RIGHT
   valign = ALIGN_CENTER

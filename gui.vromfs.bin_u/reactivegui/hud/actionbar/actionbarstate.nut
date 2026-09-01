@@ -1,9 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getActionBarItems } = require("hudActionBar")
-let { clearTimer, setInterval, resetTimeout } = require("dagor.workcycle")
-let { get_mission_time } = require("mission")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { getActionType, AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON } = require("%rGui/hud/actionBar/actionType.nut")
+from "dagor.workcycle" import clearTimer, setInterval, resetTimeout
+from "hudActionBar" import getActionBarItems
+from "mission" import get_mission_time
+from "%sqstd/underscore.nut" import isEqual
+from "%rGui/hud/actionBar/actionType.nut" import getActionType, AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA,
+  AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON
+from "types" import Table
+
 
 let actionBar = Watched([])
 let actionBarUpdaters = Watched({})
@@ -15,7 +18,7 @@ let actionItemsInCd = Watched({})
 function actionIsEqual(a, b) {
   if (type(a) != type(b))
     return false
-  if (type(a) != "table")
+  if (!(a instanceof Table))
     return a == b
   foreach (k, v in a)
     if (k != "cooldown" && v != b?[k])

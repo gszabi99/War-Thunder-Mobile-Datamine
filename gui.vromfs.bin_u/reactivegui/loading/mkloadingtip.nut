@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curTipInfo, enableTipsUpdate, disableTipsUpdate, GLOBAL_LOADING_TIP_BIT
-} = require("%globalsDarg/loading/loadingTips.nut")
-let { unitTypeFontIcons, unitTypeColors } = require("%appGlobals/unitPresentation.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/unitPresentation.nut" import unitTypeFontIcons, unitTypeColors
+from "%globalsDarg/loading/loadingTips.nut" import curTipInfo, enableTipsUpdate, disableTipsUpdate,
+  GLOBAL_LOADING_TIP_BIT
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
+
 
 let unitTypeWeightsByCampaign = {
   ships = { [BIT_SHIP] = 0.7, [BIT_AIR] = 0.2, [GLOBAL_LOADING_TIP_BIT] = 0.1 }
@@ -12,8 +13,8 @@ let unitTypeWeightsByCampaign = {
   air   = { [BIT_AIR] = 0.9, [GLOBAL_LOADING_TIP_BIT] = 0.1 }
 }
 
-let iconColorDefault = 0xFF808080
-let textColor = 0xFFE0E0E0
+const iconColorDefault = 0xFF808080
+const textColor = 0xFFE0E0E0
 
 let key = {}
 let mkLoadingTip = @(ovr = {}) function() {
@@ -39,7 +40,7 @@ let gradientLoadingTip = {
   size = const [hdpx(1200), SIZE_TO_CONTENT]
   hplace = ALIGN_CENTER
   vplace = ALIGN_BOTTOM
-  pos = [0, sh(-10)]
+  pos = const [0, sh(-10)]
   padding = const [hdpx(20), hdpx(100)]
   rendObj = ROBJ_9RECT
   image = gradTranspDoubleSideX

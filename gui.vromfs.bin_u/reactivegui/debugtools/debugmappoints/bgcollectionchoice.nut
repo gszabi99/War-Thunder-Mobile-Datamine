@@ -1,16 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("math")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-let { bgCollection } = require("%rGui/debugTools/debugMapPoints/mapEditorState.nut")
+from "math" import ceil
+from "%sqstd/underscore.nut" import arrayByRows
+from "%rGui/debugTools/debugMapPoints/mapEditorState.nut" import bgCollection
+from "%rGui/style/stdColors.nut" import hoverColor
+from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
+
 
 let imgSize = evenPx(180)
-let gap = hdpxi(10)
-let borderWidth = hdpxi(2)
+const gap = hdpxi(10)
+const borderWidth = hdpxi(2)
 let cardSize = imgSize + 2 * borderWidth
 let maxColumns = (sw(100).tointeger() - gap) / (cardSize + gap)
-let minWndWidth = hdpx(500)
+const minWndWidth = hdpx(500)
 
 function mkCard(id, elem, onSelect) {
   let stateFlags = Watched(0)

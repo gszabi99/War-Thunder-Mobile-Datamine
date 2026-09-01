@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { openDebugWnd } = require("%rGui/components/debugWnd.nut")
-let { gameModesRaw, allGameModes, endedModes } = require("%appGlobals/gameModes/gameModes.nut")
+from "%appGlobals/gameModes/gameModes.nut" import gameModesRaw, allGameModes, endedModes
+from "%rGui/components/debugWnd.nut" import openDebugWnd
+
 
 return @() openDebugWnd({
   tabs = Computed(@() [

@@ -1,31 +1,31 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getEventLootboxSizeMul } = require("%appGlobals/config/lootboxPresentation.nut")
-let { mkSquareIconBtn } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { getLootboxPicture, lootboxFallbackPicture } = require("%rGui/rewards/components/lootboxView.nut")
-let { REWARD_STYLE_MEDIUM, REWARD_STYLE_BIG, REWARD_STYLE_SMALL, REWARD_STYLE_LARGE } = require("%rGui/rewards/rewardStyles.nut")
-let { mkRewardPlateImage } = require("%rGui/rewards/rewardPlateComp.nut")
-let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { getDecalDescPresentation } = require("%appGlobals/config/decalsPresentation.nut")
-let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { infoCommonButton } = require("%rGui/components/infoButton.nut")
-let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo
-} = require("%rGui/unit/components/unitPlateComp.nut")
-let { textButtonBattle } = require("%rGui/components/textButton.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { doubleSideGradient, doubleSideGradientPaddingX } = require("%rGui/components/gradientDefComps.nut")
-let { markTextColor } = require("%rGui/style/stdColors.nut")
-let { openLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
-let { mkDecalIcon } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
+from "math" import round
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/decalsPresentation.nut" import getDecalDescPresentation
+from "%appGlobals/config/lootboxPresentation.nut" import getEventLootboxSizeMul
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/components/gradientDefComps.nut" import doubleSideGradient, doubleSideGradientPaddingX
+from "%rGui/components/infoButton.nut" import infoCommonButton
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonBattle
+from "%rGui/decorators/decoratorState.nut" import allDecorators
+from "%rGui/rewards/components/lootboxView.nut" import getLootboxPicture, lootboxFallbackPicture
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlateImage
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM, REWARD_STYLE_BIG, REWARD_STYLE_SMALL,
+  REWARD_STYLE_LARGE
+from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, sortRewardsViewInfo
+from "%rGui/shop/goodsView/sharedParts.nut" import mkSquareIconBtn
+from "%rGui/shop/lootboxPreviewState.nut" import openLootboxPreview
+from "%rGui/style/stdColors.nut" import markTextColor
+from "%rGui/unit/components/unitPlateComp.nut" import mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo
+from "%rGui/unitCustom/unitDecals/unitDecalsComps.nut" import mkDecalIcon
+from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
 
 
-let unitPlateWidth = 2 * REWARD_STYLE_MEDIUM.boxSize + REWARD_STYLE_MEDIUM.boxGap
-let unitPlateHeight = REWARD_STYLE_MEDIUM.boxSize
-let unitInfoBtnSize = evenPx(50)
+const unitPlateWidth = 2 * REWARD_STYLE_MEDIUM.boxSize + REWARD_STYLE_MEDIUM.boxGap
+const unitPlateHeight = REWARD_STYLE_MEDIUM.boxSize
+const unitInfoBtnSize = evenPx(50)
 
 let mkUnitPlate = @(unitId, isUpgraded = false) function() {
   let res = { watch = serverConfigs }
@@ -126,7 +126,7 @@ let infoImageCtors = {
       image = getLootboxPicture(viewInfo.id, null)
       fallbackImage = lootboxFallbackPicture
       keepAspect = true
-      children = mkSquareIconBtn("⌡", @() openLootboxPreview(viewInfo.id), { pos = [0, ph(60)] })
+      children = mkSquareIconBtn("⌡", @() openLootboxPreview(viewInfo.id), { pos = const [0, ph(60)] })
   }}
   function decal(viewInfo, _) {
     let size = [1.5 * REWARD_STYLE_MEDIUM.boxSize, REWARD_STYLE_MEDIUM.boxSize]
@@ -157,7 +157,7 @@ let bpRewardDesc = @(reward, texts, curStage, receive, isInProgress) function() 
   return doubleSideGradient.__merge({
     watch = serverConfigs
     size = [hdpx(200) + 4 * doubleSideGradientPaddingX, FLEX]
-    padding = [0, 0, hdpx(10), 0]
+    padding = const [0, 0, hdpx(10), 0]
     hplace = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap = hdpx(5)

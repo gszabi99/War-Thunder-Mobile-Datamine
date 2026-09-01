@@ -1,31 +1,32 @@
 from "%globalsDarg/darg_library.nut" import *
+from "dagor.shell" import shell_execute
+from "dagor.system" import dgs_get_settings, exit
+from "%sqstd/platform.nut" import is_ios
+from "%sqstd/string.nut" import utf8ToUpper
+from "%globalsDarg/updaterUtils.nut" import totalSizeText
+from "gradients.nut" import mkColoredGradientY, gradTranspDoubleSideX, gradDoubleTexOffset
+from "updaterState.nut" import needUpdateMsg, needRestartMsg, needDownloadAcceptMsg, needNotEnoughDiskSpaceMsg,
+  totalSizeBytes, freeDiskSpaceMB, requiredDiskSpaceMB, closeDownloadWarning, isFailedToGetVersion
+
+
 let {
   isDownloadedFromGooglePlay = @() false,
   getPackageName = @() ""
   getBuildMarket = @() "googleplay"
 } = require_optional("android.platform")
-let { is_ios } = require("%sqstd/platform.nut")
 let { register_command  = @(_, __) null } = require_optional("console") 
-let { shell_execute } = require("dagor.shell")
-let { dgs_get_settings, exit } = require("dagor.system")
 let { send_counter = @(_, __, ___) null } = require_optional("statsd")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { needUpdateMsg, needRestartMsg, needDownloadAcceptMsg, needNotEnoughDiskSpaceMsg,
-  totalSizeBytes, freeDiskSpaceMB, requiredDiskSpaceMB, closeDownloadWarning, isFailedToGetVersion
-} = require("updaterState.nut")
-let { totalSizeText } = require("%globalsDarg/updaterUtils.nut")
-let { mkColoredGradientY, gradTranspDoubleSideX, gradDoubleTexOffset } = require("gradients.nut")
 let isHuaweiBuild = getBuildMarket() == "appgallery"
 
-let wndWidth = hdpx(1100)
-let wndHeight = hdpx(550)
+const wndWidth = hdpx(1100)
+const wndHeight = hdpx(550)
 let wndHeaderHeight = evenPx(76)
-let buttonHeight = hdpx(105)
-let buttonMinWidth = hdpx(370)
-let buttonsHGap = hdpx(64)
-let buttonBorderWidth = hdpx(3)
-let paddingX = hdpx(38)
-let buttonTextWidth = buttonMinWidth - 2 * paddingX
+const buttonHeight = hdpx(105)
+const buttonMinWidth = hdpx(370)
+const buttonsHGap = hdpx(64)
+const buttonBorderWidth = hdpx(3)
+const paddingX = hdpx(38)
+const buttonTextWidth = buttonMinWidth - 2 * paddingX
 
 let bgMessage = {
   rendObj = ROBJ_IMAGE
@@ -61,7 +62,7 @@ let msgBoxText = @(text) {
 }.__update(fontSmall)
 
 let mkMsgBox = @(title, desc, buttons) bgMessage.__merge({
-  size = [ wndWidth, wndHeight ]
+  size = const [ wndWidth, wndHeight ]
   flow = FLOW_VERTICAL
   children = [
     msgBoxHeader(title)
@@ -87,7 +88,7 @@ function mkButton(text, onClick) {
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
-    size = [SIZE_TO_CONTENT, buttonHeight]
+    size = const [SIZE_TO_CONTENT, buttonHeight]
     minWidth = buttonMinWidth
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -125,7 +126,7 @@ function mkButton(text, onClick) {
             image = Picture($"ui/gameuiskin#gradient_button.svg")
           }
           {
-            size = [buttonTextWidth, SIZE_TO_CONTENT]
+            size = const [buttonTextWidth, SIZE_TO_CONTENT]
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             text
@@ -189,7 +190,7 @@ register_command(@() needNotEnoughDiskSpaceMsg.set(!needNotEnoughDiskSpaceMsg.ge
 
 return @() {
   watch = [needUpdateMsg, needRestartMsg, needDownloadAcceptMsg, needNotEnoughDiskSpaceMsg, totalSizeBytes, freeDiskSpaceMB, requiredDiskSpaceMB]
-  pos = [0, -hdpx(100)]
+  pos = const [0, -hdpx(100)]
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   children = isFailedToGetVersion.get() ? failedToGetVersonMsg

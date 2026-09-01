@@ -1,17 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { G_UNIT, G_UNIT_UPGRADE, G_ITEM } = require("%appGlobals/rewardType.nut")
-let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
-let { getShopCategory, getGoodsType } = require("%rGui/shop/shopCommon.nut")
-let { campConfigs, receivedSchRewards } = require("%appGlobals/pServer/campaign.nut")
-let { hasVip } = require("%rGui/state/profilePremium.nut")
-let { schRewardInProgress, apply_scheduled_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
-let { isAdsAvailable, showAdsForReward, isProviderInited } = require("%rGui/ads/adsState.nut")
-let adBudget = require("%rGui/ads/adBudget.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { playSound } = require("sound_wt")
-let { rewardsToShopGoods } = require("%rGui/shop/rewardsToShopGoods.nut")
+from "eventbus" import eventbus_subscribe
+from "sound_wt" import playSound
+from "%appGlobals/pServer/campaign.nut" import campConfigs, receivedSchRewards
+from "%appGlobals/pServer/pServerApi.nut" import schRewardInProgress, apply_scheduled_reward, registerHandler
+from "%appGlobals/rewardType.nut" import G_UNIT, G_UNIT_UPGRADE, G_ITEM
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/userstats/serverTime.nut" import serverTime, isServerTimeValid
+import "%rGui/ads/adBudget.nut" as adBudget
+from "%rGui/ads/adsState.nut" import isAdsAvailable, showAdsForReward, isProviderInited
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/shop/rewardsToShopGoods.nut" import rewardsToShopGoods
+from "%rGui/shop/shopCommon.nut" import getShopCategory, getGoodsType
+from "%rGui/state/profilePremium.nut" import hasVip
+
 
 let rewardsToGoodsFormat = @(schReward, id)
   schReward.__merge({ id, isFreeReward = true }, rewardsToShopGoods(schReward?.rewards ?? []))
@@ -61,8 +62,8 @@ let actualSchRewards = Computed(function() {
   return res
 })
 
-let READY_ADVERT      = 10000000000
-let READY_NOT_ADVERT  = 20000000000
+const READY_ADVERT      = 10000000000
+const READY_NOT_ADVERT  = 20000000000
 let getRewardPriority = @(readyTime, isReady, needAdvert) - readyTime
   + (!isReady ? 0
     : needAdvert ? READY_ADVERT

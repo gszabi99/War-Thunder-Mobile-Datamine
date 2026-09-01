@@ -48,12 +48,6 @@ class DecsReqN : AstBlockAnnotation {
 [structure_macro(name="decs_template")]
 class DecsTemplate : AstStructureAnnotation {
     
-    
-    
-    
-    
-    
-    
     def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         if (empty(st.fields)) {
             errors := "expecting at least one field in the desc_template {st.name}"
@@ -80,7 +74,6 @@ class DecsTemplate : AstStructureAnnotation {
             panic("failed to add remove_decs_template, can't add function {fnErase.name}")
         }
         
-        
         var blkArchSetup : array<ExpressionPtr>
         var blkArchWrite : array<ExpressionPtr>
         
@@ -94,7 +87,7 @@ class DecsTemplate : AstStructureAnnotation {
         var fnArch = qmacro_function("apply_decs_template_arch") $(var arch : Archetype; eidx : int; eid : EntityId; src : $t(st); var cache : array<int>) : void {
             pass
         }
-        var blkA = unsafe(reinterpret<ExprBlock?> fnArch.body)
+        var blkA = unsafe(reinterpret<ExprBlock?>(fnArch.body))
         blkA.list |> clear()
         blkA.list |> emplace_new <| qmacro_block() {
             if (length(cache) == 0) {
@@ -109,7 +102,7 @@ class DecsTemplate : AstStructureAnnotation {
         var fnBulk = qmacro_function("create_entities`{st.name}") $(count : int; user_blk : block<(eid : decs::EntityId; i : int; var entity : $t(st)) : void>) : void {
             pass
         }
-        var blk = unsafe(reinterpret<ExprBlock?> fnBulk.body)
+        var blk = unsafe(reinterpret<ExprBlock?>(fnBulk.body))
         blk.list |> clear()
         blk.list |> emplace_new <| qmacro_block() {
             var defval := default<$t(st)>
@@ -313,55 +306,6 @@ enum private DecsQueryType {
 [call_macro(name="query")]
 class DecsQueryMacro : AstCallMacro {
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     def override preVisit(prog : ProgramPtr; mod : Module?; var expr : ExprCallMacro?) : void {
         let totalArgs = length(expr.arguments)
         if (totalArgs != 1 && totalArgs != 2) return
@@ -515,26 +459,6 @@ class DecsQueryMacro : AstCallMacro {
 [call_macro(name="find_query")]
 class DecsFindQueryMacro : DecsQueryMacro {
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     def override visit(prog : ProgramPtr; mod : Module?; var expr : ExprCallMacro?) : ExpressionPtr {
         macro_verify(length(expr.arguments) == 1, prog, expr.at, "expecting find_query($(block_with_arguments))")
         return <- implement(expr, 0, DecsQueryType.find_query)
@@ -543,13 +467,6 @@ class DecsFindQueryMacro : DecsQueryMacro {
 
 [function_macro(name="decs")]
 class DecsEcsMacro : AstFunctionAnnotation {
-    
-    
-    
-    
-    
-    
-    
     
     def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         let argPass = find_arg(args, "stage")
@@ -630,30 +547,6 @@ class DecsEcsMacro : AstFunctionAnnotation {
 [call_macro(name="from_decs")]
 class FromDecsMacro : AstCallMacro {
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     def override visit(prog : ProgramPtr; mod : Module?; var expr : ExprCallMacro?) : ExpressionPtr {
         macro_verify(length(expr.arguments) == 1, prog, expr.at, "expecting from_decs($(block_with_arguments))")
         macro_verify(expr.arguments[0] is ExprMakeBlock, prog, expr.at, "expecting from_decs($(block_with_arguments))")
@@ -713,20 +606,6 @@ class FromDecsMacro : AstCallMacro {
 [call_macro(name="from_decs_template")]
 class FromDecsTemplateMacro : AstCallMacro {
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     def override visit(prog : ProgramPtr; mod : Module?; var expr : ExprCallMacro?) : ExpressionPtr {
         macro_verify(length(expr.arguments) == 1, prog, expr.at, "expecting from_decs_template(type<Foo>)")
         macro_verify(expr.arguments[0] is ExprTypeDecl, prog, expr.at, "expecting from_decs_template(type<Foo>), got {expr.arguments[0].__rtti}")
@@ -765,7 +644,6 @@ class FromDecsTemplateMacro : AstCallMacro {
             mkTuple.values |> push(new ExprVar(at = fld.at, name := "{prefix}{fld.name}"))
             mkTuple.recordNames[idx] := fld.name
         }
-        
         
         var qblock = qmacro(${
             res |> push($e(mkTuple))

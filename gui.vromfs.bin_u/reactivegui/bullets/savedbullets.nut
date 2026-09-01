@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let DataBlock = require("DataBlock")
-let { isDataBlock } = require("%sqstd/datablock.nut")
-let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
-let { getDebugSavedBullets } = require("%rGui/debugTools/debugSavedData.nut")
+import "DataBlock" as DataBlock
+from "blkGetters" import get_local_custom_settings_blk
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import isDataBlock
+from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath, getBlkValueByPath
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
+from "%rGui/bullets/bulletsConst.nut" import BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS
+from "%rGui/debugTools/debugSavedData.nut" import getDebugSavedBullets
 
 
 const SAVE_ID = "bullets"
@@ -131,6 +131,7 @@ function resetSavedBullets(unitName) {
 
 return {
   savedBullets
+  loadSavedBullets
   setUnitBullets
   setOrSwapUnitBullet
   applySavedBullets

@@ -2111,7 +2111,7 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 700.0,
+      "horsePowers": 680.0,
       "maxRPM": 2400.0,
       "minRPM": 600.0
     },

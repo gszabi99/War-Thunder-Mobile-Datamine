@@ -1,9 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { is_android, is_ios, is_nswitch } = require("%sqstd/platform.nut")
+from "auth_wt" import getCountryCode
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "%sqstd/platform.nut" import is_android, is_ios, is_nswitch
+from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/permissions.nut" import can_use_alternative_payment_ios_usa
+from "%rGui/account/emailRegistrationState.nut" import isGuestLogin, renewGuestRegistrationTags
+from "%rGui/account/linkEmailForGaijinLogin.nut" import canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin
+from "%rGui/shop/inAppPurchasesFromRussia.nut" import isForbiddenPlatformPurchaseFromRussia,
+  needShowMsgBoxInAppPurchasesRussia, openMsgBoxInAppPurchasesFromRussia
+import "%rGui/shop/platformGoodsSpecialWnd.nut" as goodsToPaySpecialWnd
+from "types" import Table
+
+
 let { isDownloadedFromGooglePlay = @() false, getBuildMarket = @() "googleplay" } = require("android.platform")
-let { isGuestLogin, renewGuestRegistrationTags } = require("%rGui/account/emailRegistrationState.nut")
-let { canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin } = require("%rGui/account/linkEmailForGaijinLogin.nut")
-let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 let isHuaweiBuild = getBuildMarket() == "appgallery"
 let { platformGoods, platformOffer, platformSubs, platformGoodsDebugInfo, buyPlatformGoods,
   activatePlatfromSubscription = @(_) null,
@@ -17,14 +28,6 @@ let { platformGoods, platformOffer, platformSubs, platformGoodsDebugInfo, buyPla
   : is_nswitch ? require("%rGui/shop/byPlatform/goodsNSwitch.nut")
   : require("%rGui/shop/byPlatform/goodsGaijin.nut")
 let { platformGoodsFromRussia = Watched(null) } = is_android && isDownloadedFromGooglePlay() ? require("%rGui/shop/byPlatform/goodsGaijin.nut") : null
-let { isForbiddenPlatformPurchaseFromRussia, needShowMsgBoxInAppPurchasesRussia, openMsgBoxInAppPurchasesFromRussia
-} = require("%rGui/shop/inAppPurchasesFromRussia.nut")
-let { can_use_alternative_payment_ios_usa } = require("%appGlobals/permissions.nut")
-let { eventbus_send } = require("eventbus")
-let { getCountryCode } = require("auth_wt")
-let goodsToPaySpecialWnd = require("%rGui/shop/platformGoodsSpecialWnd.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { register_command } = require("console")
 
 let listSpecialWndCountry = ["US"]
 
@@ -68,7 +71,7 @@ function buyFromRussia(goods){
 }
 
 function buyGoods(goodsOrId) {
-  let goods = type(goodsOrId) == "table" ? goodsOrId : platformGoods.get()?[goodsOrId]
+  let goods = goodsOrId instanceof Table ? goodsOrId : platformGoods.get()?[goodsOrId]
   if (is_android && !isHuaweiBuild && isForbiddenPlatformPurchaseFromRussia(goods))
     buyFromRussia(goods)
   else if (can_use_alternative_payment_ios_usa.get()

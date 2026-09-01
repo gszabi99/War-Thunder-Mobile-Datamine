@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopCommon.nut" import *
-let { G_BATTLE_MOD } = require("%appGlobals/rewardType.nut")
-let { getGoodsLocName, mkGoods } = require("%rGui/shop/goodsView/goods.nut")
-let { mkOfferGold } = require("%rGui/shop/goodsView/goodsGold.nut")
-let { mkOfferUnit, mkOfferBlueprint, mkOfferBranchUnit, mkOfferBattleMode } = require("%rGui/shop/goodsView/goodsUnit.nut")
-let { mkOfferLootbox } = require("%rGui/shop/goodsView/goodsLootbox.nut")
+from "%appGlobals/rewardType.nut" import G_BATTLE_MOD
+from "%rGui/shop/goodsView/goods.nut" import getGoodsLocName, mkGoods
+from "%rGui/shop/goodsView/goodsGold.nut" import mkOfferGold
+from "%rGui/shop/goodsView/goodsLootbox.nut" import mkOfferLootbox
+from "%rGui/shop/goodsView/goodsUnit.nut" import mkOfferUnit, mkOfferBlueprint, mkOfferBranchUnit, mkOfferBattleMode
+
 
 let constructors = {
   [SGT_GOLD] = mkOfferGold,

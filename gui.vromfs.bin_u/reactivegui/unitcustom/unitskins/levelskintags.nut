@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_current_mission_info_cached } = require("blkGetters")
-let { blkOptFromPath, isDataBlock } = require("%sqstd/datablock.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+from "blkGetters" import get_current_mission_info_cached
+from "%sqstd/datablock.nut" import blkOptFromPath, isDataBlock
+from "%appGlobals/clientState/clientState.nut" import isInBattle
 
 
 let levelTags = Watched({})

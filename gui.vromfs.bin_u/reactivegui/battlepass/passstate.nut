@@ -1,26 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { isDataBlock, blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
-let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { mkBpStagesList, isBpVipActive, isBpCommonActive, hasBpRewardsToReceive, battlePassGoods,
-  lastStageBpProgress, bpProgressUnlock
-} = require("%rGui/battlePass/battlePassState.nut")
-let { mkEpStagesList, isEpVipActive, isEpCommonActive, mkHasEpRewardsToReceive, mkEventPassGoods,
-  lastStageEpProgress, curEventId, getEventPassName, EVENT_PASS, eventsPassList
-} = require("%rGui/battlePass/eventPassState.nut")
-let { mkOPStagesList, isOpVipActive, isOpCommonActive, hasOPRewardsToReceive, operationPassGoods,
-  lastStageOpProgress, OP_EVENT_ID
-} = require("%rGui/battlePass/operationPassState.nut")
-let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
-let { MAIN_EVENT_ID } = require("%rGui/unlocks/unlocksConst.nut")
-let { curEvent, subEventsList } = require("%rGui/event/eventState.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import isDataBlock, blk2SquirrelObjNoArrays
+from "%appGlobals/loginState.nut" import isSettingsAvailable
+from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
+from "%rGui/battlePass/battlePassState.nut" import mkBpStagesList, isBpVipActive, isBpCommonActive,
+  hasBpRewardsToReceive, battlePassGoods, lastStageBpProgress, bpProgressUnlock
+from "%rGui/battlePass/eventPassState.nut" import mkEpStagesList, isEpVipActive, isEpCommonActive,
+  mkHasEpRewardsToReceive, mkEventPassGoods, lastStageEpProgress, curEventId, getEventPassName, EVENT_PASS,
+  eventsPassList
+from "%rGui/battlePass/operationPassState.nut" import mkOPStagesList, isOpVipActive, isOpCommonActive,
+  hasOPRewardsToReceive, operationPassGoods, lastStageOpProgress, OP_EVENT_ID
+from "%rGui/event/eventState.nut" import curEvent, subEventsList
+from "%rGui/unlocks/unlocksConst.nut" import MAIN_EVENT_ID
 
 
-let SEEN_PASSES = "seenPasses"
-let BATTLE_PASS = "battle_pass"
-let OPERATION_PASS = "operation_pass"
+const SEEN_PASSES = "seenPasses"
+const BATTLE_PASS = "battle_pass"
+const OPERATION_PASS = "operation_pass"
 
 let seenPasses = mkWatched(persist, SEEN_PASSES, {})
 let playerSelectedScene = mkWatched(persist, "playerSelectedScene", null)

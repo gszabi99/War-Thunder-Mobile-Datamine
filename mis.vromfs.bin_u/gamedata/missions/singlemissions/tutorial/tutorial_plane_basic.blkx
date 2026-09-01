@@ -8033,9 +8033,7 @@
           "triggerDisable": {
             "target": [
               "assault_destroy_truck",
-              "mission_timer",
-              "retry_assault_truck_crash",
-              "retry_assault_truck_timer"
+              "mission_timer"
             ]
           },
           "varSetInt": {
@@ -8651,7 +8649,11 @@
             "shouldBlink": false
           },
           "triggerDisable": {
-            "target": "mission_timer"
+            "target": [
+              "mission_timer",
+              "retry_assault_truck_crash",
+              "retry_assault_truck_timer"
+            ]
           },
           "varSetInt": {
             "value": 0,
@@ -9525,9 +9527,9 @@
           -0.642787
         ],
         [
-          3895.55,
-          26.1682,
-          6363.5
+          5523.85,
+          41.35,
+          2135.15
         ]
       ],
       "unit_class": "germ_opelBlitz_tent",
@@ -9673,6 +9675,7 @@
           5914.7
         ]
       ],
+      "objLayer": 3,
       "props": {
         "forceReplication": true
       }
@@ -9920,9 +9923,9 @@
           32.4
         ],
         [
-          3895.65,
-          26.6168,
-          6363.8
+          5523.95,
+          41.7986,
+          2135.45
         ]
       ],
       "props": {
@@ -10032,9 +10035,9 @@
           40.0
         ],
         [
-          3518.5,
-          379.354,
-          6552.4
+          5146.8,
+          394.536,
+          2324.05
         ]
       ],
       "props": {
@@ -10189,7 +10192,7 @@
         "enabled": true
       },
       {
-        "enabled": true
+        "enabled": false
       }
     ]
   },

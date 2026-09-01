@@ -1,29 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { mkProgressLevelBg } = require("%rGui/components/levelBlockPkg.nut")
-let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { textButtonPricePurchaseLow } = require("%rGui/components/textButton.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { purchBtnHeight } = require("%rGui/battlePass/passRewardsListComp.nut")
-let { getRewardPlateSize } = require("%rGui/rewards/rewardPlateComp.nut")
-let { bpCardStyle, bpCardPadding } = require("%rGui/battlePass/bpCardsStyle.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle, bpCardPadding
+from "%rGui/battlePass/passRewardsListComp.nut" import purchBtnHeight
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/levelBlockPkg.nut" import mkProgressLevelBg
+from "%rGui/components/pannableArea.nut" import horizontalPannableAreaCtor
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonPricePurchaseLow
+from "%rGui/rewards/rewardPlateComp.nut" import getRewardPlateSize
+
 
 let progressIconSize = [evenPx(54), hdpxi(58)]
 let defPassIconSize = [hdpx(298), hdpx(181)]
 let tabSize = [hdpx(140), hdpx(140)]
-let bpLineFillColor = 0xFF191919
-let bpBorderColor = 0xFF7C7C7C
-let bottomPanelIconSize = hdpxi(60)
+const bpLineFillColor = 0xFF191919
+const bpBorderColor = 0xFF7C7C7C
+const bottomPanelIconSize = hdpxi(60)
 let bottomPanelH = saBorders[1] + bottomPanelIconSize
 
 let sideTabWidth = saBorders[0] + tabSize[0]
 let vGradientGapSize = [hdpx(4), FLEX]
 let contentH = saSize[1] - bottomPanelH - hdpx(40)
 let rewardPannableWidthTabs = sw(100) - (sideTabWidth + vGradientGapSize[0])
-let rewardPannableWidthFull = sw(100)
+const rewardPannableWidthFull = sw(100)
 
 let rewardPannableTabs = horizontalPannableAreaCtor(rewardPannableWidthTabs, [hdpx(40), saBorders[0]])
 let rewardPannableFull = horizontalPannableAreaCtor(rewardPannableWidthFull, [saBorders[0], saBorders[0]])
@@ -78,21 +77,13 @@ let mkRewardsPannable = @(content, scrollHandler, isFullScreenWidth)
   (isFullScreenWidth ? rewardPannableFull : rewardPannableTabs)(
       content,
       isFullScreenWidth
-        ? { size = [rewardPannableWidthFull, SIZE_TO_CONTENT], clipChilden = false }
-        : { size = [rewardPannableWidthTabs, SIZE_TO_CONTENT], pos = [0, 0], clipChilden = false },
+        ? { size = const [rewardPannableWidthFull, SIZE_TO_CONTENT], clipChilden = false }
+        : { size = [rewardPannableWidthTabs, SIZE_TO_CONTENT], pos = const [0, 0], clipChilden = false },
       {
         size = FLEX_H
         behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ],
         scrollHandler = scrollHandler
       })
-
-let mkTimeEndsAtText = @(time, ovr = {}) @() {
-  watch = [time, serverTime]
-  rendObj = ROBJ_TEXT
-  margin = [0, 0, 0, hdpx(16)]
-  text = !time.get() || (time.get() - serverTime.get() < 0) ? null
-    : loc("battlepass/endsin", { time = secondsToHoursLoc(time.get() - serverTime.get()) }  )
-}.__update(fontTinyAccented, ovr)
 
 function mkPassIcon(watch, getImage, getIsActive, fallback, ovr = {}) {
   let size = ovr?.size ?? defPassIconSize
@@ -152,7 +143,6 @@ return {
   bottomPanelH
   bottomPanelIconSize
   mkRewardsPannable
-  mkTimeEndsAtText
   mkBuyLevelBlock
   mkPassIcon
 }

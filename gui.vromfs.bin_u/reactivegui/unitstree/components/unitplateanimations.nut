@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { lerpClamped } = require("%sqstd/math.nut")
-let { startSound, stopSound } = require("sound_wt")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { currencyIconsColor } = require("%appGlobals/config/currencyPresentation.nut")
-let { mkIcon, plateTextsSmallPad } = require("%rGui/unit/components/unitPlateComp.nut")
-let { needShowPriceUnit, animUnitAfterResearch }= require("%rGui/unitsTree/animState.nut")
+from "dagor.time" import get_time_msec
+from "sound_wt" import startSound, stopSound
+from "%sqstd/math.nut" import lerpClamped
+from "%appGlobals/config/currencyPresentation.nut" import currencyIconsColor
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/unit/components/unitPlateComp.nut" import mkIcon, plateTextsSmallPad
+from "%rGui/unitsTree/animState.nut" import needShowPriceUnit, animUnitAfterResearch
 
 
 let activeCounters = Watched({})
@@ -15,18 +15,18 @@ let activeCounters = Watched({})
 let isCounterActive = keepref(Computed(@() activeCounters.get().len() > 0))
 isCounterActive.subscribe(@(v) v ? startSound("coin_counter") : stopSound("coin_counter"))
 
-let progressbarAnimDuration = 1
-let progressbarAnimDurationShort = 0.5
+const progressbarAnimDuration = 1
+const progressbarAnimDurationShort = 0.5
 
-let counterAnimDelay = 0.3
-let counterAnimDuration = 800
+const counterAnimDelay = 0.3
+const counterAnimDuration = 800
 
-let scaleUnitAnimDuration = 0.7
-let scaleUnitAnimDelay = progressbarAnimDuration
+const scaleUnitAnimDuration = 0.7
+const scaleUnitAnimDelay = progressbarAnimDuration
 
-let priceAnimDuration = 0.5
+const priceAnimDuration = 0.5
 
-let sumTimeAnim = progressbarAnimDuration + scaleUnitAnimDuration + priceAnimDuration
+const sumTimeAnim = progressbarAnimDuration + scaleUnitAnimDuration + priceAnimDuration
 
 
 let animUnitSlot  = @(unit) [
@@ -100,7 +100,7 @@ function mkAnimatedCountText(needStart, startV, endV, key, ovr = {}) {
   }, ovr)
 }
 
-let function mkUnitResearchPriceAnim(researchStatus, ovr = {}) {
+function mkUnitResearchPriceAnim(researchStatus, ovr = {}) {
   let { exp = 0, reqExp = 0, isResearched = false } = researchStatus
   return @() {
     watch = animUnitAfterResearch

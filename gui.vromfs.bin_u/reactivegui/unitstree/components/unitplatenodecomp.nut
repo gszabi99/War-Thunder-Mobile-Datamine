@@ -1,18 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { currencyIconsColor } = require("%appGlobals/config/currencyPresentation.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { unitsResearchStatus } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitResearchPrice,
+from "%appGlobals/config/currencyPresentation.nut" import currencyIconsColor
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/components/gradTexts.nut" import mkGradRankSmall
+from "%rGui/components/selectedLineUnits.nut" import selectedLineHorUnits, selLineSize
+from "%rGui/unit/components/unitPlateComp.nut" import mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitResearchPrice,
   mkUnitSelectedGlow, unitPlateTiny, mkIcon
-} = require("%rGui/unit/components/unitPlateComp.nut")
-let { selectedLineHorUnits, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
-let { mkPlateExpBar, mkPlateBlueprintBar } = require("%rGui/unitsTree/unitResearchBar.nut")
-let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
+from "%rGui/unitsTree/unitResearchBar.nut" import mkPlateExpBar, mkPlateBlueprintBar
+from "%rGui/unitsTree/unitsTreeNodesState.nut" import unitsResearchStatus
 
 
 let sectorSizeCommon = [hdpx(20), hdpx(10)]
-let sectorColorLight = 0xFF6EFF95
-let sectorColorDark = 0xFF77B480
+const sectorColorLight = 0xFF6EFF95
+const sectorColorDark = 0xFF77B480
 let gapCommon = hdpx(-10)
 
 let sectorProgBar = @(color, size = sectorSizeCommon){

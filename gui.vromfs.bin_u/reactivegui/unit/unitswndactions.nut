@@ -1,56 +1,56 @@
 from "%globalsDarg/darg_library.nut" import *
-let { playSound } = require("sound_wt")
-let { abs } = require("%sqstd/math.nut")
-let { G_PREMIUM, G_BLUEPRINT, G_BATTLE_MOD } = require("%appGlobals/rewardType.nut")
-let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
-let { infoCommonButton } = require("%rGui/components/infoButton.nut")
-let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
-let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { defButtonHeight, PURCHASE, PRIMARY, COMMON, INACTIVE } = require("%rGui/components/buttonStyles.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { textButtonPrimary, textButtonCommon, textButtonPricePurchase, textButtonMultiline, mergeStyles,
-} = require("%rGui/components/textButton.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { unitInProgress, curUnitInProgress, firstRewardInProgress, set_research_unit
-} = require("%appGlobals/pServer/pServerApi.nut")
-let { mkDiscountPriceComp, CS_INCREASED_ICON, mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
-let { havePremium } = require("%rGui/state/profilePremium.nut")
-let { openGoodsPreview, openedUnitFromTree } = require("%rGui/shop/goodsPreviewState.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curCampaignSlotUnits, curSlots } = require("%appGlobals/pServer/slots.nut")
-let { campUnitsCfg, curUnit, campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { setCurrentUnit, canBuyUnits, canBuyUnitsStatus, US_CAN_BUY
-} = require("%appGlobals/unitsState.nut")
-let { PURCH_SRC_UNITS, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let purchaseUnit = require("%rGui/unit/purchaseUnit.nut")
-let { getUnitAnyPrice } = require("%rGui/unit/unitUtils.nut")
-let { unitDiscounts } = require("%rGui/unit/unitsDiscountState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { tryResetToMainScene } = require("%rGui/navState.nut")
-let { unseenSkins } = require("%rGui/unitCustom/unitSkins/unseenSkins.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { unitsResearchStatus, currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { getReceiveLocId, goToReceive } = require("%rGui/unitsTree/unitNodesReceiveInfo.nut")
-let openBuyUnitResearchWnd = require("%rGui/unitsTree/buyUnitResearchWnd.nut")
-let { clearUnitSlot, openSelectUnitToSlotWnd } = require("%rGui/slotBar/slotBarState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { secondsToTimeSimpleString, TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
-let mkTextRow = require("%darg/helpers/mkTextRow.nut")
-let { mkTreeNodesUnitPlate, treeNodeUnitPlateKey } = require("%rGui/unitsTree/mkUnitPlate.nut")
-let { animBuyRequirementsUnitId, animResearchRequirementsUnitId } = require("%rGui/unitsTree/animState.nut")
-let { upgradeCommonUnitName } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
+from "sound_wt" import playSound
+from "%sqstd/math.nut" import abs
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/time.nut" import secondsToTimeSimpleString, TIME_DAY_IN_SECONDS
+import "%darg/helpers/mkTextRow.nut" as mkTextRow
+from "%appGlobals/currenciesState.nut" import GOLD
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import unitInProgress, curUnitInProgress, firstRewardInProgress,
+  set_research_unit
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg, curUnit, campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/pServer/slots.nut" import curCampaignSlotUnits, curSlots
+from "%appGlobals/rewardType.nut" import G_PREMIUM, G_BLUEPRINT, G_BATTLE_MOD
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/unitsState.nut" import setCurrentUnit, canBuyUnits, canBuyUnitsStatus, US_CAN_BUY
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/buttonStyles.nut" import defButtonHeight, PURCHASE, PRIMARY, COMMON, INACTIVE
+from "%rGui/components/currencyComp.nut" import mkDiscountPriceComp, CS_INCREASED_ICON, mkCurrencyComp
+from "%rGui/components/infoButton.nut" import infoCommonButton
+from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon, textButtonPricePurchase,
+  textButtonMultiline, mergeStyles
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/navState.nut" import tryResetToMainScene
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_UNITS, PURCH_TYPE_UNIT, mkBqPurchaseInfo
+from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview, openedUnitFromTree
+from "%rGui/shop/shopState.nut" import shopGoods
+from "%rGui/slotBar/slotBarState.nut" import clearUnitSlot, openSelectUnitToSlotWnd
+from "%rGui/state/profilePremium.nut" import havePremium
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/unit/hangarUnit.nut" import hangarUnitName
+import "%rGui/unit/purchaseUnit.nut" as purchaseUnit
+from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
+from "%rGui/unit/unitUtils.nut" import getUnitAnyPrice
+from "%rGui/unit/unitsDiscountState.nut" import unitDiscounts
+from "%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut" import upgradeCommonUnitName
+from "%rGui/unitCustom/unitSkins/unseenSkins.nut" import unseenSkins
+from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
+from "%rGui/unitsTree/animState.nut" import animBuyRequirementsUnitId, animResearchRequirementsUnitId
+import "%rGui/unitsTree/buyUnitResearchWnd.nut" as openBuyUnitResearchWnd
+from "%rGui/unitsTree/mkUnitPlate.nut" import mkTreeNodesUnitPlate, treeNodeUnitPlateKey
+from "%rGui/unitsTree/unitNodesReceiveInfo.nut" import getReceiveLocId, goToReceive
+from "%rGui/unitsTree/unitsTreeNodesState.nut" import unitsResearchStatus, currentResearch
 
-let fontIconPreview = "⌡"
 
-let premiumDays = 30
+const fontIconPreview = "⌡"
 
-let msgGap = hdpx(24)
-let gapBtns = hdpx(18)
+const premiumDays = 30
+
+const msgGap = hdpx(24)
+const gapBtns = hdpx(18)
 
 function getBlueprintGoodsId(config, shopCfg, uName) {
   let presets = config?.goodsRewardSlots
@@ -284,7 +284,7 @@ let unitActionButtons = @(unitNameW, unitReceiveInfoW) function() {
   else if (isCurrent)
     bigBtnsList.append(textButtonMultiline(utf8ToUpper(loc("unitsTree/speedUpProgress")),
       @() openBuyUnitResearchWnd(unitName),
-      mergeStyles(PURCHASE, { hotkeys = ["^J:X"] })))
+      mergeStyles(PURCHASE, { hotkeys = ["^J:X"], ovr = { key = "open_unit_research_btn" } }))) 
   else if (!isOwned && (canResearch || (serverConfigs.get()?.unitResearchExp[unitName] ?? 0) > 0))
     bigBtnsList.append(textButtonMultiline(utf8ToUpper(loc("unitsTree/startResearch")),
       @() canResearch ? setResearchUnit(unitName)

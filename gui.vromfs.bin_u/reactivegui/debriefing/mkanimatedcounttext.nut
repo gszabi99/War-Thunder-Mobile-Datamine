@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { lerpClamped } = require("%sqstd/math.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
+from "dagor.time" import get_time_msec
+from "%sqstd/math.nut" import lerpClamped
+from "%rGui/textFormatByLang.nut" import decimalFormat
+
 
 function mkAnimatedCountText(uid, value, printVal, delay, time, onCounterActive, baseComp) {
   let printFunc = printVal ?? decimalFormat

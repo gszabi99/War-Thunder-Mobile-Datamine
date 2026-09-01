@@ -1,13 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { sin, cos, PI, ceil } = require("math")
+from "math" import sin, cos, PI, ceil
 
-let lineWidth = hdpxi(4)
-let roseRadiusPartPrim = 1.0
-let roseRadiusPartSec = 0.8
-let dashLen = hdpx(60)
-let dashSpace = hdpx(40)
+
+const lineWidth = hdpxi(4)
+const roseRadiusPartPrim = 1.0
+const roseRadiusPartSec = 0.8
+const dashLen = hdpx(60)
+const dashSpace = hdpx(40)
 
 function mkNet(mapSize, cellSize, center) {
+  if (cellSize <= 0)
+    return []
   let offset = center.map(@(v) v % cellSize == 0 ? cellSize : v % cellSize)
   let count = mapSize.map(@(v, a) ceil(((v + cellSize - offset[a]) / cellSize)).tointeger())
   let percent = mapSize.map(@(v) 100.0 * cellSize / v)
@@ -60,27 +63,23 @@ function mkRoseLines(mapSize, rose) {
   return res
 }
 
-function mapNet(mapSize, cellSize, bgElems) {
-  let rose = Computed(@() bgElems.get().findvalue(@(b) b.id == "compass_rose"))
-  let center = Computed(function() {
-    if (rose.get() == null)
-      return [0, 0]
-    let { size, pos } = rose.get()
-    return pos.map(@(v, a) v + size[a] / 2)
-  })
-  return {
-    size = FLEX
-    rendObj = ROBJ_MASK
-    image = Picture("ui/images/pirates/mapGridNoise.avif")
-    children = @() {
-      watch = [mapSize, cellSize, center, rose]
+let getRoseCenter = @(rose) rose == null ? [0, 0] : rose.pos.map(@(v, a) v + rose.size[a] / 2)
+
+let mapNet = @(mapSize, cellSize, bgElems) {
+  size = FLEX
+  rendObj = ROBJ_MASK
+  image = Picture("ui/images/pirates/mapGridNoise.avif")
+  children = function() {
+    let rose = bgElems.get().findvalue(@(b) b.id == "compass_rose")
+    return {
+      watch = [mapSize, cellSize, bgElems]
       size = FLEX
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth
       color = 0xFF53250d
       opacity = 0.4
-      commands = mkNet(mapSize.get(), cellSize.get(), center.get())
-        .extend(rose.get() == null ? [] : mkRoseLines(mapSize.get(), rose.get()))
+      commands = mkNet(mapSize.get(), cellSize.get(), getRoseCenter(rose))
+        .extend(rose == null ? [] : mkRoseLines(mapSize.get(), rose))
     }
   }
 }

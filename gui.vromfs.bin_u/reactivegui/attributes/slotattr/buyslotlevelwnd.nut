@@ -1,29 +1,30 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%appGlobals/currenciesState.nut" import GOLD
+from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import buy_slot_level, slotInProgress, registerHandler
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%rGui/attributes/attrState.nut" import hasSlotAttrPreset, getSpCostText
+from "%rGui/attributes/buyLevelComp.nut" import generateDataDiscount, mkLevelBlock
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
+from "%rGui/components/textButton.nut" import buttonsHGap
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_SLOT_UPGRADES, PURCH_TYPE_SLOT_LEVEL, mkBqPurchaseInfo
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
+from "%rGui/slotBar/slotBarState.nut" import slotLevelsCfg, slotMaxLevel
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import userlogTextColor
+from "%rGui/tutorial/tutorialConst.nut" import TUTORIAL_SLOT_ATTRIBUTES_ID
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import activeTutorialId
 
-let { buy_slot_level, slotInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
 
-let { PURCH_SRC_SLOT_UPGRADES, PURCH_TYPE_SLOT_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { generateDataDiscount, mkLevelBlock } = require("%rGui/attributes/buyLevelComp.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { slotLevelsCfg, slotMaxLevel } = require("%rGui/slotBar/slotBarState.nut")
-let { buttonsHGap } = require("%rGui/components/textButton.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { hasSlotAttrPreset, getSpCostText } = require("%rGui/attributes/attrState.nut")
-
-
-let WND_UID = "buySlotLevelWnd"
+const WND_UID = "buySlotLevelWnd"
 
 let slotIndex = mkWatched(persist, "slotIndex", null)
 let slot = Computed(@() curSlots.get()?[slotIndex.get()])
 let levelsToMax = Computed(@() slotMaxLevel.get() - (slot.get()?.level ?? 0))
 let needShowWnd = keepref(Computed(@() levelsToMax.get() > 0 && slotIndex.get() != null))
+let hasFreeLevelToBuy = Computed(@() activeTutorialId.get() == TUTORIAL_SLOT_ATTRIBUTES_ID)
 
 let close = @() slotIndex.set(null)
 
@@ -65,7 +66,9 @@ function wndContent() {
         },
         slotInProgress,
         onClickPurchase,
-        0xFF65BC82))
+        0xFF65BC82,
+        v.levels == 1 ? hasFreeLevelToBuy : Watched(false),
+        v.levels == 1 ? { key = "slotAttrOneLevelBtn" } : {}))
   })
 }
 

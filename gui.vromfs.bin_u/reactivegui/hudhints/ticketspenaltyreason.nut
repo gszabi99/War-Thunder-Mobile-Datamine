@@ -1,19 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "dagor.random" import rnd_int
+from "eventbus" import eventbus_subscribe
+from "guiMission" import TeamTicketsPenaltyReason
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%rGui/missionState.nut" import localTeam
+from "%rGui/style/teamColors.nut" import teamBlueColor, teamRedColor
 
-let { register_command } = require("console")
-let { rnd_int } = require("dagor.random")
-let { eventbus_subscribe } = require("eventbus")
-let { TeamTicketsPenaltyReason } = require("guiMission")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { localTeam } = require("%rGui/missionState.nut")
-let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
 
-let maxPenaltyLogEvents = 3
-let iconWidth = hdpx(30)
-let penaltyReasonW = iconWidth + hdpx(10)
-let penaltyReasonH = hdpx(50)
-let penaltyReasonGap = hdpx(5)
-let animDuration = 0.3
+const maxPenaltyLogEvents = 3
+const iconWidth = hdpx(30)
+const penaltyReasonW = iconWidth + hdpx(10)
+const penaltyReasonH = hdpx(50)
+const penaltyReasonGap = hdpx(5)
+const animDuration = 0.3
 
 let reasonIconConfig = {
   [TeamTicketsPenaltyReason.air_defense_died] = {
@@ -150,7 +150,7 @@ function mkPenaltyReason(data, fontOvr) {
     }.__update(fontOvr)
   ]
   return {
-    size = [penaltyReasonW, FLEX]
+    size = const [penaltyReasonW, FLEX]
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     valign = ALIGN_BOTTOM
@@ -161,10 +161,10 @@ function mkPenaltyReason(data, fontOvr) {
 let mkTransition = @(uid, children, offset, zOrder, isLeft) {
   key = uid
   zOrder
-  size = [penaltyReasonW, penaltyReasonH]
+  size = const [penaltyReasonW, penaltyReasonH]
   halign = ALIGN_CENTER
   children = {
-    size = [penaltyReasonW, penaltyReasonH]
+    size = const [penaltyReasonW, penaltyReasonH]
     children
     transform = { translate = [0, 0] }
     animations = [
@@ -190,7 +190,7 @@ let ticketPenaltyReasonLogPlace = function(events, isLeft) {
 
   return {
     watch = events
-    size = [penaltyReasonW * 3, penaltyReasonH]
+    size = const [penaltyReasonW * 3, penaltyReasonH]
     halign = isLeft ? ALIGN_RIGHT : ALIGN_LEFT
     gap = penaltyReasonGap
     children

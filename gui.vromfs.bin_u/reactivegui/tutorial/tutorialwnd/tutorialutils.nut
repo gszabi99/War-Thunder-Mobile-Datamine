@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { fabs, radToDeg, atan2 } = require("%sqstd/math_ex.nut")
+from "%sqstd/math_ex.nut" import fabs, radToDeg, atan2
+
 
 let isIntersect = @(b1, b2) !(b1.l >= b2.r || b2.l >= b1.r || b1.t >= b2.b || b2.t >= b1.b)
 let isInScreen = @(pos, size) pos[0] >= 0 && pos[1] >= 0 && pos[0] + size[0] <= sw(100) && pos[1] + size[1] <= sh(100)

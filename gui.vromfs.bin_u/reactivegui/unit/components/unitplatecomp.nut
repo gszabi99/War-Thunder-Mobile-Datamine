@@ -1,70 +1,65 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { currencyIconsColor } = require("%appGlobals/config/currencyPresentation.nut")
-let { mkCurrencyComp, mkDiscountPriceComp } = require("%rGui/components/currencyComp.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { getUnitPresentation, getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
-let { AIR, TANK, SHIP } = require("%appGlobals/unitConst.nut")
-let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
-let { mkLevelBg, unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
-let { mkColoredGradientY, mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
-let { shakeAnimation, fadeAnimation, unlockAnimation, ANIMATION_STEP
-} = require("%rGui/unit/components/unitUnlockAnimation.nut")
-let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
-let { mkGradRank } = require("%rGui/components/gradTexts.nut")
-let { starLevelTiny } = require("%rGui/components/starLevel.nut")
-let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
-let { selectedLineUnitsCustomSize, selLineSize } = require("%rGui/components/selectedLineUnits.nut")
-let { mkMasteryTierIcon } = require("%rGui/components/masteryTierComp.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { dailyBonusTag } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { firstBattlesReward } = require("%rGui/gameModes/newbieOfflineMissions.nut")
-let { isDailyBonusActive } = require("%rGui/unit/dailyBonusState.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
+from "math" import round
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%appGlobals/config/currencyPresentation.nut" import currencyIconsColor
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/unitConst.nut" import AIR, TANK, SHIP
+from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitClassFontIcon
+from "%appGlobals/unitTags.nut" import getUnitTagsCfg
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/backButtonBlink.nut" import backButtonBlink
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkDiscountPriceComp
+from "%rGui/components/currencyStyles.nut" import CS_COMMON
+from "%rGui/components/gradTexts.nut" import mkGradRank
+from "%rGui/components/levelBlockPkg.nut" import mkLevelBg, unitExpColor
+from "%rGui/components/masteryTierComp.nut" import mkMasteryTierIcon
+from "%rGui/components/selectedLineUnits.nut" import selectedLineUnitsCustomSize, selLineSize
+from "%rGui/components/spinner.nut" import mkSpinner
+from "%rGui/components/starLevel.nut" import starLevelTiny
+from "%rGui/style/gradients.nut" import mkColoredGradientY, mkGradientCtorRadial, gradTexSize
+from "%rGui/style/stdColors.nut" import selectColor
+from "%rGui/unit/components/unitUnlockAnimation.nut" import shakeAnimation, fadeAnimation, unlockAnimation,
+  ANIMATION_STEP
 
 
-let timerFontIcon = "▩"
-let unitPlateWidth = hdpx(406)
-let unitPlateHeight = hdpx(158)
-let unitPlateRatio = unitPlateHeight / unitPlateWidth
-let unitPlateSmallWidth = hdpx(290)
+const timerFontIcon = "▩"
+const unitPlateWidth = hdpx(406)
+const unitPlateHeight = hdpx(158)
+const unitPlateRatio = unitPlateHeight / unitPlateWidth
+const unitPlateSmallWidth = hdpx(290)
 let unitPlateSmallHeight = (unitPlateSmallWidth * unitPlateRatio).tointeger()
 let unitPlateSmall = [unitPlateSmallWidth, unitPlateSmallHeight]
 let unitPlateTinyWidth = evenPx(280)
 let unitPlateTinyHeight = (unitPlateTinyWidth * unitPlateRatio / 2 + 0.5).tointeger() * 2
 let unitPlateTiny = [unitPlateTinyWidth, unitPlateTinyHeight]
 
-let unutEquppedTopLineFullHeight = hdpx(15)
+const unutEquppedTopLineFullHeight = hdpx(15)
 let unitSelUnderlineFullSize = 2 * selLineSize
 let unitLevelBgSize = evenPx(46)
-let unitPlatesGap = hdpx(20)
-let lockIconSize = hdpxi(80)
-let lockIconOnLockedSlotSize = hdpxi(85)
-let lockIconRespWnd = hdpxi(45)
+const unitPlatesGap = hdpx(20)
+const lockIconSize = hdpxi(80)
+const lockIconOnLockedSlotSize = hdpxi(85)
+const lockIconRespWnd = hdpxi(45)
 let flagIconSize = hdpxi(42).tointeger()
-let maxFlagSizeWithoutGrad = hdpx(55)
+const maxFlagSizeWithoutGrad = hdpx(55)
 let premiumIconSize = [hdpxi(102), hdpxi(42)]
 
-let platoonPlatesGap = 0
-let platoonSelPlatesGap = hdpx(9)
+const platoonPlatesGap = 0
+const platoonSelPlatesGap = hdpx(9)
 
-let plateTextsPad = hdpx(15)
-let plateTextsSmallPad = hdpx(5)
+const plateTextsPad = hdpx(15)
+const plateTextsSmallPad = hdpx(5)
 
-let plateTextColor = 0xFFFFFFFF
-let levelTextColor = 0xFF9C9EA0
-let equippedFrameColorPremium = 0xA0E9D3A7
-let equippedFrameColorCollectible = 0xA063319B
-let slotLockedTextColor = 0xFFC0C0C0
-let premiumHighlightColor = 0xE6F4E9D3
-let collectibleHighlightColor = 0x90CFC6D1
+const plateTextColor = 0xFFFFFFFF
+const levelTextColor = 0xFF9C9EA0
+const equippedFrameColorPremium = 0xA0E9D3A7
+const equippedFrameColorCollectible = 0xA063319B
+const slotLockedTextColor = 0xFFC0C0C0
+const premiumHighlightColor = 0xE6F4E9D3
+const collectibleHighlightColor = 0x90CFC6D1
 
 let highlightCommon = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(selectColor, 0, 35, 20, 30, -35))
@@ -73,7 +68,7 @@ let highlightPrem = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
 let highlightCollect = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(collectibleHighlightColor, 0, 25, 22, 31, -22))
 
-let function getFrameColor(unit) {
+function getFrameColor(unit) {
   if(unit?.isCollectible)
     return equippedFrameColorCollectible
   if(unit?.isUpgraded || unit?.isPremium)
@@ -100,7 +95,7 @@ let mkIcon = @(icon, iconSize, override = {}) {
   keepAspect = KEEP_ASPECT_FIT
 }.__update(override)
 
-let function getUnitBG(isCollectible, isPremium, isLocked, isAvailable){
+function getUnitBG(isCollectible, isPremium, isLocked, isAvailable){
   if(isCollectible)
     return isLocked ? bgUnitCollectibleLocked : bgUnitCollectible
   if(isPremium)
@@ -119,7 +114,7 @@ let unitBgImageBase = {
 
 let mkUnitBgPremium = {
   size = premiumIconSize
-  pos = [-hdpx(40), 0]
+  pos = const [-hdpx(40), 0]
   hplace = ALIGN_RIGHT
   vplace = ALIGN_CENTER
   opacity = 0.15
@@ -294,7 +289,7 @@ let mkAnimationUnitLock = @(unlockAnimDelay, level, lockBottomImg, callback = nu
 }
 
 let mkUnitInfo = @(unit, ovr = {}) {
-  padding = [plateTextsSmallPad * 0.5, plateTextsSmallPad]
+  padding = const [plateTextsSmallPad * 0.5, plateTextsSmallPad]
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   halign = ALIGN_RIGHT
@@ -310,7 +305,7 @@ let mkUnitInfo = @(unit, ovr = {}) {
 }.__update(ovr)
 
 let starRankOvr = {
-  pos = [0, ph(40)]
+  pos = const [0, ph(40)]
 }
 function mkUnitLock(unit, isLocked, unlockAnimDelay = null){
   let children = []
@@ -324,7 +319,7 @@ function mkUnitLock(unit, isLocked, unlockAnimDelay = null){
           children = [
             {
               rendObj = ROBJ_TEXT
-              pos = [0, 0.15 * lockIconSize]
+              pos = const [0, 0.15 * lockIconSize]
               text = rank - starRank
             }.__update(fontVeryTiny)
             starLevelTiny(starRank, starRankOvr)
@@ -336,7 +331,7 @@ function mkUnitLock(unit, isLocked, unlockAnimDelay = null){
         backButtonBlink("UnitsWnd")
       }))
   else
-    children.append(mkUnitInfo(unit, { pos = [-hdpx(10), hdpx(5)] }))
+    children.append(mkUnitInfo(unit, { pos = const [-hdpx(10), hdpx(5)] }))
   return {
     key = {}
     hplace = ALIGN_RIGHT
@@ -360,7 +355,7 @@ let mkFlagImpl = @(img, size, ovr = {}) {
   keepAspect = true
 }.__update(ovr)
 
-let function mkFlagImage(countryId, width, ovr = {}) {
+function mkFlagImage(countryId, width, ovr = {}) {
   let isLegacy = countryId == "legacy"
   let size = mkFlagSize(isLegacy, width)
   let img = isLegacy ? "ui/gameuiskin#icon_legacy_tanks.svg"
@@ -370,7 +365,7 @@ let function mkFlagImage(countryId, width, ovr = {}) {
   return mkFlagImpl(img, size, ovr)
 }
 
-let function mkFlagImageWithoutGrad(countryId, width, ovr = {}) {
+function mkFlagImageWithoutGrad(countryId, width, ovr = {}) {
   let isLegacy = countryId == "legacy"
   let img = isLegacy ? $"ui/gameuiskin#icon_legacy_tanks.svg"
     : $"ui/gameuiskin#{countryId}.svg"
@@ -386,7 +381,7 @@ let mkFlagFrame = @(flagComp, ovr = {}) {
   children = flagComp
 }.__update(ovr)
 
-let function mkUnitFlag(unit, isLocked = false) {
+function mkUnitFlag(unit, isLocked = false) {
   let operatorCountry = getUnitTagsCfg(unit.name)?.operatorCountry
   if (operatorCountry == "")
     return null
@@ -401,8 +396,8 @@ let function mkUnitFlag(unit, isLocked = false) {
 
 let unitPlateNameOvr = {
   size = FLEX_H
-  padding = [plateTextsSmallPad * 0.5, plateTextsSmallPad, 0, plateTextsSmallPad]
-  margin = [0, plateTextsSmallPad, 0, 0]
+  padding = const [plateTextsSmallPad * 0.5, plateTextsSmallPad, 0, plateTextsSmallPad]
+  margin = const [0, plateTextsSmallPad, 0, 0]
   halign = ALIGN_RIGHT
   behavior = Behaviors.Marquee
   speed = hdpx(30)
@@ -422,7 +417,7 @@ let mkUnitPrice = @(price, style = CS_COMMON) {
   vplace = ALIGN_BOTTOM
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  margin = [ 0, 0, plateTextsSmallPad, plateTextsSmallPad ]
+  margin = const [ 0, 0, plateTextsSmallPad, plateTextsSmallPad ]
   children = mkDiscountPriceComp(price.fullPrice, price.price, price.currencyId, style)
 }
 
@@ -431,7 +426,7 @@ let mkUnitsTreePrice = @(price, canBuy = true) {
   vplace = ALIGN_BOTTOM
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  margin = [0, 0, plateTextsSmallPad, plateTextsSmallPad]
+  margin = const [0, 0, plateTextsSmallPad, plateTextsSmallPad]
   children = mkCurrencyComp(price.price, price.currencyId, CS_COMMON.__merge({
     iconSize = hdpxi(35)
     fontStyle = fontTinyAccented
@@ -446,7 +441,7 @@ function mkUnitTimeLeft(timeLeft) {
   return @() {
     watch = countdownText
     vplace = ALIGN_BOTTOM
-    margin = [0, 0, plateTextsSmallPad, plateTextsSmallPad]
+    margin = const [0, 0, plateTextsSmallPad, plateTextsSmallPad]
     rendObj = ROBJ_TEXT
     text = countdownText.get()
   }.__update(fontTinyAccented)
@@ -463,7 +458,7 @@ function mkUnitSlotLockedLine(slot, isLocked = true, unlockAnimDelay = null) {
       {
         rendObj = ROBJ_TEXT
         text = slot.reqLevel
-        pos = [hdpx(1), hdpx(13)]
+        pos = const [hdpx(1), hdpx(13)]
       }.__update(fontVeryTiny)
     )
   else if (isLocked)
@@ -497,7 +492,7 @@ let unitSlotLockedByQuests = {
 }
 
 let mkEquippedIcon = @(unit) {
-  pos = [ 0, hdpx(10) ]
+  pos = const [ 0, hdpx(10) ]
   hplace = ALIGN_CENTER
   vplace = ALIGN_BOTTOM
   halign = ALIGN_CENTER
@@ -544,7 +539,7 @@ function mkSingleUnitPlate(unit) {
   let p = getUnitPresentation(unit)
   let { mRank = 0, rewardedMasteryTier = 0, level = 0 } = unit
   return {
-    size = [ unitPlateWidth, unitPlateHeight ]
+    size = const [ unitPlateWidth, unitPlateHeight ]
     vplace = ALIGN_BOTTOM
     children = [
       mkUnitBg(unit)
@@ -556,7 +551,7 @@ function mkSingleUnitPlate(unit) {
   }
 }
 
-let function mkUnitResearchPrice(researchStatus, ovr = {}) {
+function mkUnitResearchPrice(researchStatus, ovr = {}) {
   let { canResearch = false, exp = 0, reqExp = 0 } = researchStatus
   if (!canResearch || reqExp <= 0 || exp >= reqExp)
     return null
@@ -578,32 +573,12 @@ let function mkUnitResearchPrice(researchStatus, ovr = {}) {
   }.__update(ovr)
 }
 
-let mkUnitDailyBonus = @(canActivateDailyBonus, wpMul, expMul, hasSlots, ovr = {}) @() {
-  watch = [canActivateDailyBonus, wpMul, expMul, hasSlots]
-  children = !canActivateDailyBonus.get() ? null
-    : dailyBonusTag(wpMul.get(), expMul.get(), hasSlots.get())?.__update(ovr)
-  vplace = ALIGN_BOTTOM
-  hplace = ALIGN_LEFT
-}
-
 let mkUnitSpinner = @(needShowSpinner) @() {
   watch = needShowSpinner
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_LEFT
   margin = hdpx(5)
   children = needShowSpinner.get() ? mkSpinner(hdpx(30)) : null
-}
-
-function mkProfileUnitDailyBonus(unit, ovr = {}) {
-  let canActivateDailyBonus = Computed(@() firstBattlesReward.get() == null
-    && unit.name in campMyUnits.get()
-    && isDailyBonusActive.get()
-    && unit?.dailyBonusTime != null
-    && serverTimeDay.get() != getDay(unit.dailyBonusTime, dayOffset.get()))
-  let wpMul = Computed(@() campConfigs.get()?.gameProfile.dailyUnitBonus.wpMul ?? 1)
-  let expMul = Computed(@() campConfigs.get()?.gameProfile.dailyUnitBonus.expMul ?? 1)
-  let hasSlots = Computed(@() (serverConfigs.get()?.campaignCfg[unit?.campaign].totalSlots ?? 0) > 0)
-  return mkUnitDailyBonus(canActivateDailyBonus, wpMul, expMul, hasSlots, ovr)
 }
 
 return {
@@ -641,9 +616,7 @@ return {
   mkUnitResearchPrice
   mkUnitBgPremium
   mkUnitPlateBorder
-  mkUnitDailyBonus
   mkUnitSpinner
-  mkProfileUnitDailyBonus
   mkUnitTimeLeft
 
   mkFlagImage

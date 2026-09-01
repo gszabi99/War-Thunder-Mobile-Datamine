@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isLoginStarted } = require("%appGlobals/loginState.nut")
-let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let mkLoginWnd = require("%rGui/login/loginWnd.nut")
-let { isUpdateInProgress } = require("%rGui/login/loginUpdaterState.nut")
-let mkLoginUpdater = require("%rGui/login/loginUpdater.nut")
-let { loadingAnimBg } = require("%globalsDarg/loading/loadingAnimBg.nut")
-let loadingBeforeLogin = require("%rGui/loading/loadingBeforeLogin.nut")
-let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
+from "%appGlobals/clientState/clientState.nut" import isInLoadingScreen
+from "%appGlobals/loginState.nut" import isLoginStarted
+from "%globalsDarg/components/titleLogo.nut" import mkTitleLogo
+from "%globalsDarg/loading/loadingAnimBg.nut" import loadingAnimBg
+import "%rGui/loading/loadingBeforeLogin.nut" as loadingBeforeLogin
+import "%rGui/login/loginUpdater.nut" as mkLoginUpdater
+from "%rGui/login/loginUpdaterState.nut" import isUpdateInProgress
+import "%rGui/login/loginWnd.nut" as mkLoginWnd
+
 
 let key = {}
 return @() {

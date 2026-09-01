@@ -1,22 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gradRadial } = require("%rGui/style/gradients.nut")
-let { UNSEEN_LOW, UNSEEN_NORMAL, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
+from "%rGui/style/gradients.nut" import gradRadial
+from "%rGui/unseenPriority.nut" import UNSEEN_LOW, UNSEEN_NORMAL, UNSEEN_HIGH
 
-let fillColor = 0xFFFFB70B
-let lowPriorityFillColor = 0xFF808080
-let borderColor = 0xFF000000
-let frameColor = 0xFFFFE9B5
 
-let fillColorFeature = 0xFF38FF92
-let borderColorFeature = 0xFF206E56
-let frameColorFeature = 0xFF9EF7CD
+const fillColor = 0xFFFFB70B
+const lowPriorityFillColor = 0xFF808080
+const borderColor = 0xFF000000
+const frameColor = 0xFFFFE9B5
 
-let minOpacity = 0.4
-let maxOpacity = 1.0
-let DURATION = 1.2
-let DELAY_BETWEEN = 0.3
-let DELAY_FRAME = DURATION / 2 - 0.1
-let LOOP_DURATION = 3.0
+const fillColorFeature = 0xFF38FF92
+const borderColorFeature = 0xFF206E56
+const frameColorFeature = 0xFF9EF7CD
+
+const minOpacity = 0.4
+const maxOpacity = 1.0
+const DURATION = 1.2
+const DELAY_BETWEEN = 0.3
+const DELAY_FRAME = DURATION / 2 - 0.1
+const LOOP_DURATION = 3.0
 
 let unseenSize = [hdpx(22), hdpx(22)]
 let unseenSizeBig = [hdpx(32), hdpx(32)]

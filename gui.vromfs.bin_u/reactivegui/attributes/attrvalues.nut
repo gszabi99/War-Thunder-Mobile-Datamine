@@ -1,19 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { Point2 } = require("dagor.math")
-let { get_game_params } = require("gameparams")
-let { isDataBlock, blk2SquirrelObjNoArrays, getBlkByPathArray, blkOptFromPath
-} = require("%sqstd/datablock.nut")
-let { round, round_by_value, fabs } = require("%sqstd/math.nut")
-let { deep_clone } = require("%sqstd/underscore.nut")
-let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
-let { get_modifications_blk, get_game_params_blk } = require("blkGetters")
-let { TANK, SHIP, AIR } = require("%appGlobals/unitConst.nut")
-let { getUnitTags } = require("%appGlobals/unitTags.nut")
+from "blkGetters" import get_modifications_blk, get_game_params_blk
+from "dagor.math" import Point2
+from "gameparams" import get_game_params
+from "%sqstd/datablock.nut" import isDataBlock, blk2SquirrelObjNoArrays, getBlkByPathArray, blkOptFromPath
+from "%sqstd/math.nut" import round, round_by_value, fabs
+from "%sqstd/underscore.nut" import deep_clone
+from "%appGlobals/unitConst.nut" import TANK, SHIP, AIR
+from "%appGlobals/unitTags.nut" import getUnitTags
+from "%rGui/hud/hudConfigParameters.nut" import getHudConfigParameter
 
-let iconDamage = "►"
-let iconCooldown = "▩"
 
-let defCategoryImage = "ui/gameuiskin/upgrades_captain_icon.avif"
+const iconDamage = "►"
+const iconCooldown = "▩"
+
+const defCategoryImage = "ui/gameuiskin/upgrades_captain_icon.avif"
 let categoryImages = {
   ship_commander = "ui/gameuiskin/upgrades_captain_icon.avif"
   ship_look_out_station = "ui/gameuiskin/upgrades_observation_icon.avif"

@@ -1,22 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
-let { startActionBarUpdate, stopActionBarUpdate } = require("%rGui/hud/actionBar/actionBarState.nut")
-let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
-let hudBottomCenter = require("%rGui/hud/hudBottomCenter.nut")
-let aircraftSight = require("%rGui/hud/aircraftSight.nut")
-let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
-let ctrlPieMenu = require("%rGui/hud/controlsPieMenu/ctrlPieMenu.nut")
-let cameraPieMenu = require("%rGui/hud/cameraPieMenu/cameraPieMenu.nut")
-let { TargetSelector } = require("wt.behaviors")
-let { cannonsOverheat, mgunsOverheat, addgunsOverheat, hasMGun0, hasCanon0, hasAddGun, Cannon0, MGun0, AddGun
-} = require("%rGui/hud/airState.nut")
-let { pointCrosshairScreenPosition } = require("%rGui/hud/commonState.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { currentAircraftCtrlType, curFreeCamByTouchOption } = require("%rGui/options/options/airControlsOptions.nut")
-let { hudBlueColor, hudExtraLightBlackColor, hudCoralRedColorFade } = require("%rGui/style/hudColors.nut")
+from "dagor.workcycle" import resetTimeout
+from "eventbus" import eventbus_subscribe
+from "wt.behaviors" import TargetSelector
+from "%globalScripts/controls/shortcutActions.nut" import setShortcutOn, setShortcutOff
+from "%rGui/hud/actionBar/actionBarState.nut" import startActionBarUpdate, stopActionBarUpdate
+from "%rGui/hud/airState.nut" import cannonsOverheat, mgunsOverheat, addgunsOverheat, hasMGun0, hasCanon0, hasAddGun,
+  Cannon0, MGun0, AddGun
+import "%rGui/hud/aircraftSight.nut" as aircraftSight
+import "%rGui/hud/cameraPieMenu/cameraPieMenu.nut" as cameraPieMenu
+from "%rGui/hud/commonState.nut" import pointCrosshairScreenPosition
+import "%rGui/hud/controlsPieMenu/ctrlPieMenu.nut" as ctrlPieMenu
+import "%rGui/hud/hudBottomCenter.nut" as hudBottomCenter
+import "%rGui/hud/hudTopMainLog.nut" as hudTopMainLog
+from "%rGui/hud/weaponryBlockImpl.nut" import currentWeaponNameText
+import "%rGui/hudTuning/hudTuningElems.nut" as hudTuningElems
+from "%rGui/options/options/airControlsOptions.nut" import currentAircraftCtrlType, curFreeCamByTouchOption
+from "%rGui/style/hudColors.nut" import hudBlueColor, hudExtraLightBlackColor, hudCoralRedColorFade
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/hudHints/killerInfo.nut" import hudKillerInfo
+
 
 let circularIndSize = hdpx(74).tointeger()
 let progressImageRight = Picture($"ui/gameuiskin#air_reload_indicator_right.svg:{circularIndSize}:{circularIndSize}")
@@ -25,8 +27,8 @@ let progressImageLeft = Picture($"ui/gameuiskin#air_reload_indicator_left.svg:{c
 let backGroundColor = hudExtraLightBlackColor
 let overheatColor = hudCoralRedColorFade
 let reloadColor = hudBlueColor
-let ORIENT_RIGHT = 0
-let ORIENT_LEFT = 1
+const ORIENT_RIGHT = 0
+const ORIENT_LEFT = 1
 
 function mkOverheatProgress(orientation, progress) {
   let from = orientation == ORIENT_RIGHT ? 0.385 - progress* 0.25 : 0.615 + progress* 0.25
@@ -117,11 +119,11 @@ let airCircularIndicators = {
   ]
 }
 
-let showHitIndicatorTimer = 1.5
+const showHitIndicatorTimer = 1.5
 let hitIndicatorStateCount = Watched(0)
 let hitIndicatorStateCrit = Watched(false)
-let hitIndicatorBlinkFreq = 0.3
-let hitIndicatorSize = hdpxi(80)
+const hitIndicatorBlinkFreq = 0.3
+const hitIndicatorSize = hdpxi(80)
 let hitIndicatorImage = Picture($"ui/gameuiskin#sight_hit_air.svg:{hitIndicatorSize}:{hitIndicatorSize}:P")
 let hitIndicatorCritImage = Picture($"ui/gameuiskin#sight_hit_air_crit.svg:{hitIndicatorSize}:{hitIndicatorSize}:P")
 
@@ -132,10 +134,10 @@ let resetHitIndicatorState = function() {
 
 let hitIndicator = @() hitIndicatorStateCount.get() != 0 ? {
   watch = [hitIndicatorStateCount, hitIndicatorStateCrit]
-  size = [hitIndicatorSize, hitIndicatorSize]
+  size = const [hitIndicatorSize, hitIndicatorSize]
   behavior = Behaviors.RtPropUpdate
   update = pointCrosshairScreenPositionUpdate
-  pos = [ - hitIndicatorSize * 0.5, - hitIndicatorSize * 0.5]
+  pos = const [ - hitIndicatorSize * 0.5, - hitIndicatorSize * 0.5]
   children = [
     {
       size = FLEX
@@ -195,6 +197,7 @@ let aircraftHud = {
     hudTopMainLog
     hudBottomCenter
     currentWeaponNameText
+    hudKillerInfo
   ]
   animations = wndSwitchAnim
 }

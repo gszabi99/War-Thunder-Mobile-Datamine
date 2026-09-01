@@ -2221,6 +2221,10 @@
           1.0,
           1.15
         ],
+        "shipKineticDamageMult": [
+          1.0,
+          1.15
+        ],
         "shipGunMaxDeltaAngleMult": [
           1.0,
           0.85

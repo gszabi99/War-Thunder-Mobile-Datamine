@@ -1,15 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { Point2 } = require("dagor.math")
-let { deferOnce } = require("dagor.workcycle")
-let { FlightCameraType, getCameraViewType, isCameraViewAvailable } = require("camera_control")
+from "camera_control" import FlightCameraType, getCameraViewType, isCameraViewAvailable
+from "dagor.math" import Point2
+from "dagor.workcycle" import deferOnce
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%rGui/controls/disabledControls.nut" import enabledControls, isAllControlsEnabled
+from "%rGui/hud/hudTouchButtonStyle.nut" import imageDisabledColor
+from "%rGui/hud/pieMenu.nut" import getPieMenuSelectedIdx
+from "%rGui/hudState.nut" import playerUnitName, isUnitDelayed, isUnitAlive, isPlayingReplay
+from "%rGui/missionState.nut" import notGtRace
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudDarkOliveColor
+
+
 let { TPS, VIRTUAL_FPS, BOMBERVIEW, TURRET } = FlightCameraType
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { getPieMenuSelectedIdx } = require("%rGui/hud/pieMenu.nut")
-let { playerUnitName, isUnitDelayed, isUnitAlive, isPlayingReplay } = require("%rGui/hudState.nut")
-let { imageDisabledColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { enabledControls, isAllControlsEnabled } = require("%rGui/controls/disabledControls.nut")
-let { hudWhiteColor, hudDarkOliveColor } = require("%rGui/style/hudColors.nut")
-let { notGtRace } = require("%rGui/missionState.nut")
 
 let selectedViewIconColor = hudDarkOliveColor
 

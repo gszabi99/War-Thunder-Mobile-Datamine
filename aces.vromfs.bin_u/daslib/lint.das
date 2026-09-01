@@ -33,6 +33,12 @@ struct private DeadStoreEntry {
     pending_pure : bool
 }
 
+struct private Lint021Candidate {
+    @do_not_delete v : Variable const?
+    safe_uses : int
+    disqualified : bool
+}
+
 def private is_block_terminator(expr : ExpressionPtr) : bool {
     
     if (expr is ExprReturn) return true
@@ -48,27 +54,18 @@ class LintVisitor : AstVisitor {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    lint014_candidates : array<Variable const?>
     
     astVisitorAdapter : VisitorAdapter?
     exprForTerminator : array<uint64>
     compile_time_errors : bool
     noLint : bool = false
     genericDepth : int = 0
+    multiple_contexts : bool = false
     
     collect_errors : bool = false
     errors : array<string>
+    issues : array<LintIssue>       
     
     
     disabled_codes : table<string>
@@ -77,6 +74,14 @@ class LintVisitor : AstVisitor {
     
     branch_depth : int = 0
     ds_entries : array<DeadStoreEntry>
+    funcFile : string       
+    
+    
+    lint021_candidates : array<Lint021Candidate>
+    lint021_call_kind : array<int>      
+    lint021_narrow_depth : int = 0
+    lint021_poison_depth : int = 0
+    lint021_closure_depth : int = 0
     def LintVisitor() {
         pass
     }
@@ -89,17 +94,137 @@ class LintVisitor : AstVisitor {
         return is_lint_suppressed(at, code)
     }
     def lint_error(text : string; at : LineInfo) : void {
-        if (noLint || is_suppressed(text, at)) return
+        
+        if (noLint || is_suppressed(text, at)
+                || (at.fileInfo != null && !empty(funcFile) && at.fileInfo.name != funcFile)) return
         if (compile_time_errors) {
             compiling_program() |> macro_error(at, text)
         } elif (collect_errors) {
             errors |> push("{text} at {describe(at)}")
+            issues |> push(make_lint_issue(text, at))
         } else {
             error("{text} at {describe(at)}\n")
         }
     }
+    def private source_operator_is_clone(at : LineInfo) : bool {
+        
+        if (at.fileInfo == null || at.line == 0u || at.line != at.last_line) return false
+        var found = false
+        get_file_source_line(at.fileInfo, at.line) $(line) {
+            var start = int(at.column) - 1
+            if (start < 0) {
+                start = 0
+            }
+            var finish = int(at.last_column) + 1
+            if (finish < start + 3) {
+                finish = start + 3
+            }
+            if (finish > length(line)) {
+                finish = length(line)
+            }
+            if (finish > start) {
+                found = find(slice(line, start, finish), ":=") >= 0
+            }
+        }
+        return found
+    }
+    def private root_generic(fn : Function const?) : Function const? {
+        var root = fn
+        while (root != null && root.fromGeneric != null) {
+            root = root.fromGeneric
+        }
+        return root
+    }
+    def private is_temporary_string_source(expr : Expression?) : bool {
+        if (expr == null) return false
+        if (expr._type != null && expr._type.flags.temporary) return true
+        var inner = expr
+        if (inner is ExprRef2Value) {
+            inner = (inner as ExprRef2Value).subexpr
+        }
+        if (inner is ExprVar) {
+            let variable = (inner as ExprVar).variable
+            return variable != null && variable._type != null && variable._type.flags.temporary
+        }
+        return false
+    }
+    def private is_inferred_temp_string_clone(expr : Expression?; clone_at : LineInfo) : bool {
+        
+        if (expr == null || !(expr is ExprCall)) return false
+        let call = expr as ExprCall
+        return (call.func != null && call.func.name == "clone_string"
+            && call.at.line == clone_at.line && call.at.column == clone_at.column)
+    }
+    def private is_inferred_temp_string_init(expr : Expression?; init_at : LineInfo) : bool {
+        
+        if (expr == null || !(expr is ExprCall)) return false
+        let call = expr as ExprCall
+        let root = root_generic(call.func)
+        return (root != null && root.name == "clone_string"
+            && root._module != null && root._module.name == "builtin"
+            && call.at.line == init_at.line && call.at.column == init_at.column
+            && !empty(call.arguments) && is_temporary_string_source(call.arguments[0]))
+    }
+    def private source_variable_init_is_clone(v : VariablePtr) : bool {
+        
+        if (v == null || v.init == null || v.at.fileInfo == null || v.at.line == 0u) return false
+        var found = false
+        get_file_source_line(v.at.fileInfo, v.at.line) $(line) {
+            var start = int(v.at.column) - 1
+            if (start < 0) {
+                start = 0
+            }
+            var finish = length(line)
+            if (v.init.at.line == v.at.line && int(v.init.at.column) > start) {
+                finish = int(v.init.at.column) + 1
+                if (finish > length(line)) {
+                    finish = length(line)
+                }
+            }
+            if (finish > start) {
+                found = find(slice(line, start, finish), ":=") >= 0
+            }
+        }
+        return found
+    }
+    def private check_string_clone_init(v : VariablePtr) : void {
+        if (v == null || multiple_contexts || noLint || genericDepth > 0
+                || v.flags.generated || v._type == null || v.init == null
+                || v._type.baseType != Type.tString
+                || is_temporary_string_source(v.init)
+                || is_inferred_temp_string_init(v.init, v.at)
+                || !source_variable_init_is_clone(v)) return
+        lint_error("LINT016: ':=' does not clone a string variable without 'options multiple_contexts'; use '=' for same-context storage, or did you mean '= clone_string(value)' for a cross-context copy", v.at)
+    }
+    def private check_string_clone_assign(expr : ExprCopy?) : void {
+        if (expr == null || multiple_contexts || noLint || genericDepth > 0 || expr.genFlags.generated
+                || expr.left == null || expr.right == null
+                || expr.left._type == null || expr.right._type == null
+                || expr.left._type.baseType != Type.tString
+                || expr.right._type.baseType != Type.tString
+                || is_temporary_string_source(expr.right)
+                || is_inferred_temp_string_clone(expr.right, expr.at)
+                || !source_operator_is_clone(expr.at)) return
+        lint_error("LINT016: ':=' does not clone a string without 'options multiple_contexts'; use '=' for same-context storage, or did you mean 'clone_string(value)' for a cross-context copy", expr.at)
+    }
+    def private check_string_push_clone(expr : ExprCall?) : void {
+        if (expr == null || multiple_contexts || noLint || genericDepth > 0 || expr.genFlags.generated
+                || expr.func == null || length(expr.arguments) < 2) return
+        let root = root_generic(expr.func)
+        if (root == null || root.name != "push_clone"
+                || root._module == null || root._module.name != "builtin") return
+        let dst = expr.arguments[0]
+        let value = expr.arguments[1]
+        if (dst == null || value == null || dst._type == null || value._type == null
+                || dst._type.baseType != Type.tArray || dst._type.firstType == null
+                || dst._type.firstType.baseType != Type.tString
+                || value._type.baseType != Type.tString
+                || is_temporary_string_source(value)) return
+        lint_error("LINT016: 'push_clone' does not clone a string without 'options multiple_contexts'; use 'push(value)' for same-context storage, or did you mean 'push(clone_string(value))' for a cross-context copy", expr.at)
+    }
     def override preVisitFunction(fun : FunctionPtr) : void {
         noLint = false
+        funcFile = fun.at.fileInfo != null ? "{fun.at.fileInfo.name}" : ""
         if (fun.fromGeneric != null || fun.flags.generated) {
             genericDepth++
         }
@@ -116,8 +241,31 @@ class LintVisitor : AstVisitor {
         
         branch_depth = 0
         ds_entries |> clear()
+        
+        lint021_candidates |> clear()
+        lint021_call_kind |> clear()
+        lint021_narrow_depth = 0
+        lint021_poison_depth = 0
+        lint021_closure_depth = 0
     }
+    def override preVisitExprReturn(expr : ExprReturn?) : void {
+        if (expr.subexpr != null && expr.subexpr is ExprVar) {
+            let ev = expr.subexpr as ExprVar
+            let idx = lint014_candidates |> find_index(ev.variable)
+            if (idx >= 0) {
+                lint014_candidates |> erase(idx)
+            }
+        }
+    }
+
     def override visitFunction(var fun : FunctionPtr) : FunctionPtr {
+        
+        if (!noLint && genericDepth == 0) {
+            for (v in lint014_candidates) {
+                lint_error("LINT014: mutable argument {v.name}: {describe(v._type)} is never written; declare it without 'var'", v.at)
+            }
+        }
+        lint014_candidates |> clear()
         
         if (!noLint && genericDepth == 0) {
             for (e in ds_entries) {
@@ -127,6 +275,15 @@ class LintVisitor : AstVisitor {
                 }
             }
         }
+        
+        if (!noLint && genericDepth == 0) {
+            for (c in lint021_candidates) {
+                if (!c.disqualified && c.safe_uses > 0) {
+                    lint_error("LINT021: 64-bit local '{c.v.name}' is never consumed as 64-bit - every use narrows through int(...)/uint(...); narrow once at the declaration (or use length() int math), or lift the sinks to 64-bit (range64, int64 resize/reserve/erase); nolint if the 64-bit math under a cast is load-bearing", c.v.at)
+                }
+            }
+        }
+        lint021_candidates |> clear()
         noLint = false
         if (fun.fromGeneric != null || fun.flags.generated) {
             genericDepth--
@@ -136,12 +293,10 @@ class LintVisitor : AstVisitor {
     def override preVisitExprBlock(blk : ExprBlock?) : void {
         exprForTerminator |> push(0ul)
         
-        
-        
-        
         let bf = blk.blockFlags
         if (!noLint && genericDepth == 0 && (bf.isClosure || bf.isLambdaBlock || bf.isGeneratorBlock)) {
             branch_depth++
+            lint021_closure_depth++     
         }
     }
     def override visitExprBlock(var blk : ExprBlock?) : ExpressionPtr {
@@ -151,6 +306,7 @@ class LintVisitor : AstVisitor {
         let bf = blk.blockFlags
         if (!noLint && genericDepth == 0 && (bf.isClosure || bf.isLambdaBlock || bf.isGeneratorBlock)) {
             branch_depth--
+            lint021_closure_depth--
         }
         return <- blk
     }
@@ -161,9 +317,12 @@ class LintVisitor : AstVisitor {
             lint_error("LINT001: unreachable code", expr.at)
         }
         
-        
-        
-        
+        if (!noLint && genericDepth == 0 && expr is ExprOp1 && !expr.genFlags.generated) {
+            let op1 = expr as ExprOp1
+            if (op1.op == "+" || op1.op == "-") {
+                lint_error("LINT015: free-floating unary '{op1.op}' expression as a statement - its value is silently discarded; this is almost always a continuation line missing its parens, wrap the multi-line RHS in (...)", expr.at)
+            }
+        }
         
         if (is_block_terminator(expr)) {
             exprForTerminator |> pop()
@@ -180,8 +339,9 @@ class LintVisitor : AstVisitor {
     
 
     def override preVisitExprCast(expr : ExprCast?) : void {
+        
         if (noLint || genericDepth > 0
-            || !expr.castFlags.reinterpretCast
+            || !expr.castFlags.reinterpretCast || expr.genFlags.alwaysSafe
             || expr.subexpr == null || expr.subexpr._type == null || expr.castType == null
             || expr.castType.isVoidPointer != expr.subexpr._type.isVoidPointer) return
         if (is_same_type(expr.castType, expr.subexpr._type, false, true, true, false)) {
@@ -194,11 +354,22 @@ class LintVisitor : AstVisitor {
         validate_var(v, false)
     }
 
+    
+    def private is_inline_temp_name(name : string) : bool {
+        if (!(name |> starts_with("_inl")) || length(name) <= 4) return false
+        var digit = false
+        peek_data(name) $(bytes) {
+            digit = is_number(int(bytes[4]))
+        }
+        return digit
+    }
+
     def validate_var(v : VariablePtr; can_make_const : bool) {
-        if (v.flags.generated) return
+        
+        if (v.flags.generated || v.flags.marked_used) return
         let name = string(v.name)
         
-        if (name |> starts_with("__") || find(name, "`") >= 0) return
+        if (name |> starts_with("__") || find(name, "`") >= 0 || is_inline_temp_name(name)) return
         if (name |> starts_with("_")) {
             if (name |> ends_with("_")) return  
             if (v.access_flags.access_ref || v.access_flags.access_pass || v.access_flags.access_get || v.access_flags.access_fold) {
@@ -228,7 +399,8 @@ class LintVisitor : AstVisitor {
             }
             return
         }
-        if (can_make_const && v.flags.inScope) return 
+        
+        if (can_make_const && (v.flags.inScope || v.access_info.access_info_pass_mutable)) return
         if (can_make_const && v._type.baseType != Type.tPointer && !v._type.flags.constant && !v.access_flags.access_ref && v._type.canCloneFromConst) {
             lint_error("LINT003: variable {v.name}: {describe(v._type)} can be made const (declare with 'let')", v.at)
             return
@@ -244,28 +416,198 @@ class LintVisitor : AstVisitor {
         if (noLint || genericDepth > 0 || v.flags.generated || v.flags.marked_used) return
         let name = string(v.name)
         
-        
-        
-        
         if (name |> starts_with("_") || find(name, "`") >= 0) return
         if (v.isAccessUnused) {
             lint_error("{code}: unused {kind} {v.name}: {describe(v._type)} (add an underscore prefix or [unused_argument({v.name})] if intentional)", v.at)
         }
     }
 
+    def validate_unwritten_var_argument(fun : FunctionPtr; v : VariablePtr) {
+        if (noLint || genericDepth > 0 || v.flags.generated || v.flags.marked_used) return
+        let name = string(v.name)
+        
+        if ((name |> starts_with("_")) || find(name, "`") >= 0
+                || fun.name == "finalize" || fun.moreFlags.addressTaken
+                || v._type == null || v._type.flags.constant
+                || !(v._type.flags.ref || v._type.isRefType)
+                || v.access_flags.access_ref || v.access_info.access_info_pass_mutable
+                || v.isAccessUnused) {
+            return
+        }
+        lint014_candidates |> push(v)
+    }
+
     def override preVisitFunctionArgument(fun : FunctionPtr; arg : VariablePtr; _lastArg : bool) : void {
-        
-        
         
         if (fun.flags.isClassMethod) return
         for (ann in fun.annotations) {
             if (ann.annotation.name == "extern") return
         }
         validate_argument(arg, "LINT012", "function argument")
+        validate_unwritten_var_argument(fun, arg)
     }
 
     def override preVisitExprBlockArgument(_blk : ExprBlock?; arg : VariablePtr; _lastArg : bool) : void {
         validate_argument(arg, "LINT013", "block argument")
+    }
+
+    
+
+    def lint017_long_twin(fname : string; icall : ExprCall?) : string {
+        
+        let nargs = length(icall.arguments)
+        if (nargs == 0 || icall.arguments[0]._type == null) return ""
+        let bt = icall.arguments[0]._type.baseType
+        if (fname == "length" && (bt == Type.tArray || bt == Type.tTable || bt == Type.tString)) return "long_length"
+        if (fname == "capacity" && (bt == Type.tArray || bt == Type.tTable)) return "long_capacity"
+        if (fname == "count" && (bt == Type.tArray || bt == Type.tIterator)) return "long_count"
+        if (fname == "find_index" && bt == Type.tArray && nargs == 2) return "long_find_index"
+        
+        if ((fname == "fread" || fname == "fwrite") && bt == Type.tPointer && nargs == 2) return "long_{fname}"
+        return ""
+    }
+
+    def check_lint017_long_cast(expr : ExprCall?) : void {
+        if (noLint || genericDepth > 0
+            || (expr.name != "int64" && expr.name != "uint64")
+            || length(expr.arguments) != 1) return
+        let inner = expr.arguments[0]
+        if (!(inner is ExprCall)) return
+        let icall = inner as ExprCall
+        let iname = string(icall.func != null && icall.func.fromGeneric != null
+            ? icall.func.fromGeneric.name
+            : icall.name)
+        let twin = lint017_long_twin(iname, icall)
+        if (empty(twin)) return
+        lint_error("LINT017: {expr.name}({iname}(...)) widens an already-32-bit result, so the 2^31 limit is still hit inside {iname} (as a wrap, or as the panic guard on array/table/string length) before the cast runs; call {twin}(...) instead", expr.at)
+    }
+
+    
+
+    def lint018_check_arg(expr : ExprCall?; fname : string; idx : int; isMem : bool) : bool {
+        let a = expr.arguments[idx]
+        if (!(a is ExprCall)) return false
+        let scall = a as ExprCall
+        if (scall.name != "int" || length(scall.arguments) != 1) return false
+        let src = scall.arguments[0]._type
+        if (src == null) return false
+        let bt = src.baseType
+        if (isMem) {
+            if (bt != Type.tInt64 && bt != Type.tUInt64 && bt != Type.tUInt) return false
+            lint_error("LINT018: int(...) truncates the {fname} size above 2^31; {fname} has uint/int64/uint64 overloads, so drop the cast", expr.at)
+        } elif (bt == Type.tInt64) {
+            lint_error("LINT018: int(...) truncates the {fname} argument above 2^31; {fname} has an int64 overload, so drop the cast", expr.at)
+        } elif (bt == Type.tUInt64) {
+            lint_error("LINT018: int(...) truncates the {fname} argument above 2^31; {fname} has an int64 overload - widen with int64(...) instead of narrowing", expr.at)
+        } else {
+            return false
+        }
+        return true
+    }
+
+    def check_lint018_mem_size_narrowing(expr : ExprCall?) : void {
+        
+        if (noLint || genericDepth > 0) return
+        let fname = string(expr.func != null && expr.func.fromGeneric != null
+            ? expr.func.fromGeneric.name
+            : expr.name)
+        let nargs = length(expr.arguments)
+        if ((fname == "memcpy" || fname == "memcmp") && nargs == 3) {
+            lint018_check_arg(expr, fname, 2, true)
+            return
+        }
+        if (nargs < 2 || expr.arguments[0]._type == null) return
+        let bt = expr.arguments[0]._type.baseType
+        if (bt == Type.tArray) {
+            if (nargs == 2 && (fname == "resize" || fname == "resize_no_init"
+                    || fname == "resize_and_init" || fname == "reserve" || fname == "erase")) {
+                lint018_check_arg(expr, fname, 1, false)
+            } elif (nargs == 3 && fname == "resize_and_init") {
+                lint018_check_arg(expr, fname, 1, false)
+            } elif (nargs == 3 && fname == "erase") {
+                
+                if (!lint018_check_arg(expr, fname, 1, false)) {
+                    lint018_check_arg(expr, fname, 2, false)
+                }
+            }
+        } elif (bt == Type.tTable) {
+            if (nargs == 2 && fname == "reserve") {
+                lint018_check_arg(expr, fname, 1, false)
+            }
+        }
+    }
+
+    
+
+    def check_lint020_range_narrowing(expr : ExprCall?) : void {
+        if (noLint || genericDepth > 0) return
+        let isRange = expr.name == "range"
+        let isURange = expr.name == "urange"
+        let isInterval = expr.name == "interval"
+        if (!isRange && !isURange && !isInterval) return
+        let nargs = length(expr.arguments)
+        if (nargs < 1 || nargs > 2) return
+        for (a in expr.arguments) {
+            if (!(a is ExprCall)) { continue; }
+            let scall = a as ExprCall
+            if ((scall.name != "int" && scall.name != "uint") || length(scall.arguments) != 1) { continue; }
+            let src = scall.arguments[0]._type
+            if (src == null || (src.baseType != Type.tInt64 && src.baseType != Type.tUInt64)) { continue; }
+            if (isInterval) {
+                lint_error("LINT020: {scall.name}(...) truncates a 64-bit bound above 2^31; interval has an int64 form, so drop the cast", expr.at)
+            } else {
+                let twin = isRange ? "range64" : "urange64"
+                lint_error("LINT020: {expr.name}({scall.name}(...)) truncates a 64-bit bound above 2^31; use {twin}(...) on the 64-bit values directly - arrays and pointers index with int64/uint64 as-is", expr.at)
+            }
+            return  
+        }
+    }
+
+    
+
+    def lint021_is_narrow_cast(expr : ExprCall?) : bool {
+        if ((expr.name != "int" && expr.name != "uint") || length(expr.arguments) != 1) return false
+        let t = expr.arguments[0]._type
+        return t != null && (t.baseType == Type.tInt64 || t.baseType == Type.tUInt64)
+    }
+
+    def lint021_is_transparent(expr : ExprCall?) : bool {
+        
+        let fname = string(expr.func != null && expr.func.fromGeneric != null
+            ? expr.func.fromGeneric.name
+            : expr.name)
+        return fname == "max" || fname == "abs"
+    }
+
+    def override preVisitExprCall(expr : ExprCall?) : void {
+        var kind = 0
+        if (!noLint && genericDepth == 0) {
+            if (lint021_is_narrow_cast(expr)) {
+                kind = 1
+                lint021_narrow_depth++
+            } elif (lint021_narrow_depth > 0 && !lint021_is_transparent(expr)) {
+                kind = 2
+                lint021_poison_depth++
+            }
+        }
+        lint021_call_kind |> push(kind)
+        check_string_push_clone(expr)
+        check_lint017_long_cast(expr)
+        check_lint018_mem_size_narrowing(expr)
+        check_lint020_range_narrowing(expr)
+    }
+
+    def override visitExprCall(var expr : ExprCall?) : ExpressionPtr {
+        if (!empty(lint021_call_kind)) {
+            let kind = lint021_call_kind |> back()
+            lint021_call_kind |> pop()
+            if (kind == 1) {
+                lint021_narrow_depth--
+            } elif (kind == 2) {
+                lint021_poison_depth--
+            }
+        }
+        return <- expr
     }
 
     
@@ -298,8 +640,6 @@ class LintVisitor : AstVisitor {
         if (a == null || b == null
             || (require_pure && (!a.flags.noSideEffects || !b.flags.noSideEffects))) return false
         
-        
-        
         return describe(a) == describe(b)
     }
 
@@ -319,7 +659,9 @@ class LintVisitor : AstVisitor {
             op == "&"  || op == "|"  || op == "^" ||
             op == "-=" || op == "/=" || op == "%="
         )
-        if (op_same_suspicious && expr_equal(expr.left, expr.right, false)) {
+        
+        if (op_same_suspicious && expr_equal(expr.left, expr.right, false)
+                && !(expr.left.__rtti |> starts_with("ExprConst"))) {
             lint_error("LINT007: left and right operands of '{op}' are the same", expr.at)
         }
     }
@@ -360,14 +702,24 @@ class LintVisitor : AstVisitor {
         return -1
     }
 
+    def private lint021_find(v : VariablePtr) : int {
+        let vc : Variable const? = v
+        for (i in range(length(lint021_candidates))) {
+            if (lint021_candidates[i].v == vc) return i
+        }
+        return -1
+    }
+
     def override preVisitExprLetVariable(_let : ExprLet?; v : VariablePtr; _last : bool) : void {
+        check_string_clone_init(v)
+        if (noLint || genericDepth > 0) return
         
+        if (v._type != null && !v._type.flags.ref && v.init != null && !v.flags.generated
+                && (v._type.baseType == Type.tInt64 || v._type.baseType == Type.tUInt64)) {
+            lint021_candidates |> emplace(Lint021Candidate(v = v, safe_uses = 0, disqualified = false))
+        }
         
-        
-        
-        
-        if (noLint || genericDepth > 0
-            || (v._type != null && v._type.flags.ref)
+        if ((v._type != null && v._type.flags.ref)
             || v.flags.inScope
             || v.access_flags.access_fold
             || !v.access_flags.access_get) return
@@ -382,20 +734,30 @@ class LintVisitor : AstVisitor {
         ))
     }
 
+    def override preVisitGlobalLetVariable(v : VariablePtr; _last : bool) : void {
+        check_string_clone_init(v)
+    }
+
     def override preVisitExprVar(expr : ExprVar?) : void {
         if (noLint || genericDepth > 0) return
+        
+        let ci = lint021_find(expr.variable)
+        if (ci >= 0 && !lint021_candidates[ci].disqualified) {
+            if (expr.varFlags.write || lint021_closure_depth > 0
+                    || lint021_narrow_depth == 0 || lint021_poison_depth > 0) {
+                lint021_candidates[ci].disqualified = true
+            } else {
+                lint021_candidates[ci].safe_uses++
+            }
+        }
         let i = ds_find(expr.variable)
         if (i < 0 || ds_entries[i].skip) return
         let vf = expr.varFlags
-        
-        
         
         if (branch_depth > 0 || (vf.write && !vf.under_clone)) {
             ds_entries[i].skip = true
             return
         }
-        
-        
         
         if (vf.write) return
         
@@ -417,6 +779,7 @@ class LintVisitor : AstVisitor {
     }
 
     def override visitExprCopy(var expr : ExprCopy?) : ExpressionPtr {
+        check_string_clone_assign(expr)
         ds_handle_store(expr.left, expr.right, expr)
         return <- expr
     }
@@ -453,11 +816,6 @@ class LintVisitor : AstVisitor {
         return <- expr
     }
     
-    
-    
-    
-    
-    
 
     
     def override visitExprConstFloat(var expr : ExprConstFloat?) : ExpressionPtr {
@@ -484,7 +842,9 @@ def public paranoid(prog : ProgramPtr; compile_time_errors : bool; disabled_code
     
     
     
-    var astVisitor = new LintVisitor(compile_time_errors = compile_time_errors)
+    var astVisitor = new LintVisitor(
+        compile_time_errors = compile_time_errors,
+        multiple_contexts = prog._options |> find_arg("multiple_contexts") ?as tBool ?? prog.policies.multiple_contexts)
     astVisitor.disabled_codes := disabled_codes
     make_visitor(*astVisitor) $(adapter) {
         astVisitor.astVisitorAdapter = adapter
@@ -506,7 +866,10 @@ def public paranoid_collect(prog : ProgramPtr; var errors : array<string>;
                             disabled_codes, enabled_codes : table<string>) : int {
     
     
-    var astVisitor = new LintVisitor(compile_time_errors = false, collect_errors = true)
+    var astVisitor = new LintVisitor(
+        compile_time_errors = false,
+        collect_errors = true,
+        multiple_contexts = prog._options |> find_arg("multiple_contexts") ?as tBool ?? prog.policies.multiple_contexts)
     astVisitor.disabled_codes := disabled_codes
     astVisitor.enabled_codes := enabled_codes
     make_visitor(*astVisitor) $(adapter) {
@@ -519,4 +882,115 @@ def public paranoid_collect(prog : ProgramPtr; var errors : array<string>;
         delete astVisitor
     }
     return count
+}
+
+def public paranoid_collect_issues(prog : ProgramPtr; var issues : array<LintIssue>;
+                                   disabled_codes, enabled_codes : table<string>) : int {
+    
+    
+    var astVisitor = new LintVisitor(
+        compile_time_errors = false,
+        collect_errors = true,
+        multiple_contexts = prog._options |> find_arg("multiple_contexts") ?as tBool ?? prog.policies.multiple_contexts)
+    astVisitor.disabled_codes := disabled_codes
+    astVisitor.enabled_codes := enabled_codes
+    make_visitor(*astVisitor) $(adapter) {
+        astVisitor.astVisitorAdapter = adapter
+        visit(prog, astVisitor.astVisitorAdapter)
+    }
+    let count = length(astVisitor.issues)
+    issues |> push_from(astVisitor.issues)
+    unsafe {
+        delete astVisitor
+    }
+    return count
+}
+
+
+
+
+def public stale_nolint_collect(fname, source : string; disabled_codes, enabled_codes : table<string>; var issues : array<LintIssue>) : int {
+    return 0 if (key_exists(disabled_codes, "LINT019")
+                    || (!empty(enabled_codes) && !key_exists(enabled_codes, "LINT019")))
+    var count = 0
+    var line_no = 0
+    var stale_codes : array<string>
+    stale_codes |> reserve(4)
+    for (raw_line in split(source, "\n")) {
+        line_no++
+        
+        let line = raw_line |> ends_with("\r") ? slice(raw_line, 0, length(raw_line) - 1) : raw_line
+        let cpos = find(line, "//")
+        continue if (cpos < 0)
+        stale_codes |> clear()
+        var self_suppressed = false
+        var at = find(line, "nolint:", cpos)
+        while (at >= 0) {
+            
+            var p = at + length("nolint:")
+            peek_data(line) $(bytes) {
+                let n = length(bytes)
+                while (p < n) {
+                    while (p < n && (int(bytes[p]) == ' ' || int(bytes[p]) == '\t')) {
+                        p++
+                    }
+                    let tok_start = p
+                    while (p < n && int(bytes[p]) != ',' && int(bytes[p]) != ' ' && int(bytes[p]) != '\t') {
+                        p++
+                    }
+                    break if (p == tok_start)
+                    let code = slice(line, tok_start, p)
+                    if (code == "LINT019") {
+                        self_suppressed = true
+                    } elif (is_rule_code(code)
+                            && !key_exists(disabled_codes, code)
+                            && (empty(enabled_codes) || key_exists(enabled_codes, code))
+                            && !was_nolint_consumed(fname, line_no, code)) {
+                        stale_codes |> push(code)
+                    }
+                    while (p < n && (int(bytes[p]) == ' ' || int(bytes[p]) == '\t')) {
+                        p++
+                    }
+                    break if (p >= n || int(bytes[p]) != ',')
+                    p++
+                }
+            }
+            at = find(line, "nolint:", p)
+        }
+        if (!self_suppressed) {
+            issues |> reserve(length(issues) + length(stale_codes))
+            for (code in stale_codes) {
+                let msg = "LINT019: stale nolint - {code} suppresses nothing on this line; remove it, or add LINT019 to the list if the rule fires only in downstream compiles (generic bodies - instantiations elsewhere fire at the generic's line - macro-template lines, option-gated rules)"
+                issues |> push(LintIssue(code = "LINT019", message = msg, file = fname,
+                    line = line_no, column = 0, last_line = line_no, last_column = 0))
+                count++
+            }
+        }
+    }
+    return count
+}
+
+
+
+def private is_rule_code(code : string) : bool {
+    var prefix_len = 0
+    if (code |> starts_with("LINT") || code |> starts_with("PERF")) {
+        prefix_len = 4
+    } elif (code |> starts_with("STYLE")) {
+        prefix_len = 5
+    } else {
+        return false
+    }
+    var digits = 0
+    var ok = true
+    peek_data(code) $(bytes) {
+        let n = length(bytes)
+        for (i in range(prefix_len, n)) {
+            if (!is_number(int(bytes[i]))) {
+                ok = false
+            }
+            digits++
+        }
+    }
+    return ok && digits > 0
 }

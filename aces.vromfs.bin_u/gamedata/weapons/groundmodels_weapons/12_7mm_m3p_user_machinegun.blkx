@@ -12,7 +12,6 @@
   "emitTime": 0.03,
   "aimMinDist": 0.1,
   "aimMaxDist": 2000.0,
-  "maxDeltaAngle": 0.1,
   "shotFreq": 15.0,
   "shotFreqRndK": 0.14,
   "traceFreq": 4,

@@ -25,7 +25,7 @@ def setup_ammo_cluster_subtract(cluster_id : int; var num_ammo : int&; ammo_type
                                 v : tuple<
                                   ammo_clusters__slotsRange : IPoint2List;
                                   ammo_slots__numAmmo : IPoint2List -const;
-                                  ammo_slots__ammoMaskAndType : UInt32List -const
+                                  ammo_slots__ammoMaskAndType : UInt32List const
                                   >) : int
   
   var subtracted_ammo = 0
@@ -314,6 +314,8 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
         let weapon_idx = v.ammo_stowage__weaponAmmoIds[weapon_ammo_idx]
         let trigger_id = v.ammo_stowage__weaponAmmoTriggers[weapon_ammo_idx]
         let weapon = weapon_controller.Weapons |> get_weapon(weapon_idx)
+        if weapon != null && !(*weapon) |> isBulletCountKnown()
+          continue
         let current_ammo = setup_ammo_get_weapon_stored_count(weapon, remove_loaded_ammo, can_load_to_breech)
         let prev_ammo = v.ammo_stowage__weaponAmmoCount[weapon_ammo_idx]
         let delta_ammo = current_ammo - prev_ammo
@@ -334,8 +336,15 @@ def public setup_ammo_stowage(var unit : Unit?; init_num : bool; is_refill : boo
             if cluster_type == int(AmmoClusterType.CHARGES) && !has_charges
               continue
             var ammo_to_add = delta_ammo
-            setup_ammo_add_to_weapon_clusters(stowage_id, trigger_id, int(AmmoClusterStage.SECOND_STAGE), cluster_type, ammo_to_add, ammo_type, v)
-            setup_ammo_add_to_weapon_clusters(stowage_id, trigger_id, int(AmmoClusterStage.FIRST_STAGE), cluster_type, ammo_to_add, ammo_type, v)
+
+            var firstStageByPriority = int(AmmoClusterStage.FIRST_STAGE)
+            var secondStageByPriority = int(AmmoClusterStage.SECOND_STAGE)
+            if get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.RESTORING_STOWAGE)
+              firstStageByPriority = int(AmmoClusterStage.SECOND_STAGE)
+              secondStageByPriority = int(AmmoClusterStage.FIRST_STAGE)
+            setup_ammo_add_to_weapon_clusters(stowage_id, trigger_id, firstStageByPriority, cluster_type, ammo_to_add, ammo_type, v)
+            setup_ammo_add_to_weapon_clusters(stowage_id, trigger_id, secondStageByPriority, cluster_type, ammo_to_add, ammo_type, v)
+
             if cluster_type == int(AmmoClusterType.SHELLS)
               added_ammo = delta_ammo - ammo_to_add
             is_sync_required = is_sync_required || ammo_to_add != delta_ammo
@@ -519,11 +528,23 @@ def ammo_stowage_recalc_gun_reloading_time_es(evt : CmdAmmoStowageRecalcReloadin
 [es(tag=netClient), with_bundle(v)]
 def ammo_stowage_net_sync_es(evt : EventAmmoStowageNetSync;
                              eid : EntityId;
+                             var unit__ref : UnitRef;
                              var v : tuple<
                                ammo_stowages__replenishmentStartEnd : Point2List;
                                ammo_slots__numAmmo : IPoint2List;
                                ammo_slots__ammoMaskAndType : UInt32List;
-                               ammo_stowage__ammoTypeToMask : UInt32List const
+                               ammo_stowage__ammoTypeToMask : UInt32List const;
+                               ammo_stowages__weaponAmmoRange : IPoint2List;
+                               ammo_stowage__weaponAmmoTriggers : IntList const;
+                               ammo_stowage__weaponAmmoCount : IntList -const;
+                               ammo_stowages__weaponTriggersRange : IPoint2List const;
+                               ammo_stowage__weaponTriggers : IntList const;
+                               ammo_stowages__clustersRange : IPoint2List const;
+                               ammo_clusters__typeAndStage : UInt16List const;
+                               ammo_clusters__slotsRange : IPoint2List const;
+                               ammo_clusters__weaponTriggersRange : IPoint2List const;
+                               ammo_cluster__weaponTriggers : IntList const;
+                               ammo_slots__partId : PartIdList const
                                >) : void
   assume bs = *evt.bs
   let current_time = float(get_app().usefulTotalTime)
@@ -573,8 +594,22 @@ def ammo_stowage_net_sync_es(evt : EventAmmoStowageNetSync;
     changed = changed || slot_ammo.x != num_ammo_before
 
   if changed
-    sendEvent(eid, EventBulletsAmountChanged(isRefill = false))
+    for stowage_id, weapon_ammo_range in iter_range(v.ammo_stowages__weaponAmmoRange), v.ammo_stowages__weaponAmmoRange
+      let hasSingleWeaponBound  = (weapon_ammo_range.y - weapon_ammo_range.x) == 1
+      if !hasSingleWeaponBound
+        continue
+      let weapon_ammo_idx = weapon_ammo_range.x
+      let trigger_id = v.ammo_stowage__weaponAmmoTriggers[weapon_ammo_idx]
+      v.ammo_stowage__weaponAmmoCount[weapon_ammo_idx] = ammo_stowage_calculate_shell_ammo_count(stowage_id, trigger_id, v)
 
+    var unit = unit__ref.unit
+    if !unit.isDelayed
+      var is_dm_changed = false
+      for slot_id, slot_num_ammo in iter_range(v.ammo_slots__numAmmo), v.ammo_slots__numAmmo
+        let has_ammo = slot_num_ammo.x > 0
+        is_dm_changed = ammo_slot_set_dm_enabled(unit, slot_id, has_ammo, v) || is_dm_changed
+      if is_dm_changed
+        sendEvent(eid, EventAmmoStowageInvalidateRenderer())
 
 [es(no_order)]
 def ammo_stowage_gun_net_sync_es(act : UpdateStageInfoAct;

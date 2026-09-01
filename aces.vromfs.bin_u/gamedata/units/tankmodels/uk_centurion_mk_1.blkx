@@ -1106,7 +1106,7 @@
       ]
     },
     "engine": {
-      "horsePowers": 635.0,
+      "horsePowers": 640.0,
       "maxRPM": 2550.0,
       "minRPM": 600.0
     },

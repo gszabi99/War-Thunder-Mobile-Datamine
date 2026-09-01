@@ -1,7 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
+from "dagor.random" import rnd_int, rnd_float
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+
+
 let botsInfo = mkWatched(persist, "botsInfo", {})
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { rnd_int, rnd_float } = require("dagor.random")
 
 function generateBot(player) {
   let { userId, decorators = {}, level = 1 } = player

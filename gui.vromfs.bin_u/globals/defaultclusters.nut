@@ -1,5 +1,6 @@
 from "%appGlobals/permissions.nut" import can_send_hosts_reachability_to_matching
 
+
 let countryToCluster = {
   AM = "RU" 
   AZ = "RU" 

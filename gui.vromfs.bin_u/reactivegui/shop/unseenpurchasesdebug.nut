@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
+from "console" import register_command
+
 
 let unseenPurchasesDebug = mkWatched(persist, "unseenPurchasesDebug", null)
 

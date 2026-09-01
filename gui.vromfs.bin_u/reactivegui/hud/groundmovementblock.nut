@@ -1,20 +1,23 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%rGui/controls/shortcutConsts.nut" import *
-let { Point2 } = require("dagor.math")
-let { TouchScreenSteeringStick, TouchScreenGamepadStick } = require("wt.behaviors")
-let { setVirtualAxisValue } = require("controls")
-let { currentTankMoveCtrlType, currentWalkerMoveCtrlType } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
-let { isStickActiveByStick, stickDelta } = require("%rGui/hud/stickState.nut")
-let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { IsTracked } = require("%rGui/hud/tankState.nut")
-let axisListener = require("%rGui/controls/axisListener.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "controls" import setVirtualAxisValue
+from "dagor.math" import Point2
+from "hudState" import setMoveControlByArrows
+from "wt.behaviors" import TouchScreenSteeringStick, TouchScreenGamepadStick
+from "%appGlobals/activeControls.nut" import isGamepad
+import "%rGui/controls/axisListener.nut" as axisListener
+from "%rGui/controls/disabledControls.nut" import enabledControls, isAllControlsEnabled, isControlEnabled
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderColor
+from "%rGui/hud/pieMenu.nut" import isPieMenuActive
+from "%rGui/hud/stickState.nut" import isStickActiveByStick, stickDelta
+from "%rGui/hud/tankState.nut" import IsTracked
+from "%rGui/hudState.nut" import isPlayingReplay
+from "%rGui/options/chooseMovementControls/groundMoveControlType.nut" import currentTankMoveCtrlType,
+  currentWalkerMoveCtrlType
+
+
 let { gm_mouse_aim_x, gm_mouse_aim_y, gm_throttle, gm_steering, walker_throttle, walker_steering, walker_mouse_aim_x, walker_mouse_aim_y
 } = require("%rGui/controls/shortcutsMap.nut").gamepadAxes
-let { setMoveControlByArrows } = require("hudState")
-let { enabledControls, isAllControlsEnabled, isControlEnabled } = require("%rGui/controls/disabledControls.nut")
-let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
 
 let stickZoneSize = evenPx(380)
 let bgRadius = evenPx(160)
@@ -23,10 +26,10 @@ let imgBgSize = 2 * bgRadius
 let imgRotationSize = (0.1 * imgBgSize).tointeger()
 let imgArrowW = (0.1 * imgBgSize).tointeger()
 let imgArrowH = (23.0 / 35 * imgArrowW).tointeger()
-let imgArrowGapPw = 3
+const imgArrowGapPw = 3
 let imgArrowSmallW = (0.08 * imgBgSize).tointeger()
 let imgArrowSmallH = (23.0 / 35 * imgArrowW).tointeger()
-let diagArrowOffsetPw = 40
+const diagArrowOffsetPw = 40
 let stickSize = shHud(11)
 
 let isTankMoveEnabled = Computed(@()
@@ -80,27 +83,27 @@ function fullImgBg(scale) {
         hplace = ALIGN_RIGHT
       })
       imgArrow.__merge({
-        pos = [0, pw(-100 - imgArrowGapPw)]
+        pos = const [0, pw(-100 - imgArrowGapPw)]
         vplace = ALIGN_BOTTOM
       })
       imgArrow.__merge({
-        pos = [0, pw(100 + imgArrowGapPw)]
+        pos = const [0, pw(100 + imgArrowGapPw)]
         transform = { rotate = 180 }
       })
       imgArrowSmall.__merge({
-        pos = [ pw(-diagArrowOffsetPw), pw(-diagArrowOffsetPw) ]
+        pos = const [ pw(-diagArrowOffsetPw), pw(-diagArrowOffsetPw) ]
         transform = { rotate = -45 }
       })
       imgArrowSmall.__merge({
-        pos = [ pw(diagArrowOffsetPw), pw(-diagArrowOffsetPw) ]
+        pos = const [ pw(diagArrowOffsetPw), pw(-diagArrowOffsetPw) ]
         transform = { rotate = 45 }
       })
       imgArrowSmall.__merge({
-        pos = [ pw(diagArrowOffsetPw), pw(diagArrowOffsetPw) ]
+        pos = const [ pw(diagArrowOffsetPw), pw(diagArrowOffsetPw) ]
         transform = { rotate = 135 }
       })
       imgArrowSmall.__merge({
-        pos = [ pw(-diagArrowOffsetPw), pw(diagArrowOffsetPw) ]
+        pos = const [ pw(-diagArrowOffsetPw), pw(diagArrowOffsetPw) ]
         transform = { rotate = 225 }
       })
     ]

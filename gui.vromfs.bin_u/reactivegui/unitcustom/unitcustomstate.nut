@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { baseUnit, isOwnUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { showDecalInfoWnd } = require("%rGui/unitCustom/unitCustomDecalInfoModalWnd.nut")
+from "%rGui/unitCustom/unitCustomDecalInfoModalWnd.nut" import showDecalInfoWnd
+from "%rGui/unitDetails/unitDetailsState.nut" import baseUnit, isOwnUnit
 
 
 enum SECTION_IDS {

@@ -1,23 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { NEED_SHOW_POSE_INDICATOR, mkMoveIndicator, moveIndicatorShipEditView
-} = require("%rGui/hud/components/moveIndicator.nut")
-let { mkDollCtor, mkDollEditView, mkShipDebuffs, shipDebuffsEditView, mkCrewHealthCtor, mkCrewHealthEditView,
-  defHealthSize
-} = require("%rGui/hud/shipStateModule.nut")
-let { mkTacticalMapForHud, tacticalMapEditView } = require("%rGui/hud/components/tacticalMap.nut")
-let { mkLBPos, mkLTPos, mkRTPos, mkCBPos, mkCTPos } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
-let { hitCamera, hitCameraCommonEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
-let { mkMyPlace, mkMyPlaceUi, mkMyDamage, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
-let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut")
-let { simpleThreatRocketsIndicator, simpleThreatRocketsIndicatorEditView } = require("%rGui/hud/hudThreatRocketsBlock.nut")
-let { simpleThreatTorpedosIndicator, simpleThreatTorpedosIndicatorEditView } = require("%rGui/hud/hudThreatTorpedosBlock.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
+from "%rGui/hud/components/moveIndicator.nut" import NEED_SHOW_POSE_INDICATOR, mkMoveIndicator,
+  moveIndicatorShipEditView
+from "%rGui/hud/components/tacticalMap.nut" import mkTacticalMapForHud, tacticalMapEditView
+from "%rGui/hud/hitCamera/hitCamera.nut" import hitCamera, hitCameraCommonEditView
+from "%rGui/hud/hudThreatRocketsBlock.nut" import simpleThreatRocketsIndicator, simpleThreatRocketsIndicatorEditView
+from "%rGui/hud/hudThreatTorpedosBlock.nut" import simpleThreatTorpedosIndicator, simpleThreatTorpedosIndicatorEditView
+from "%rGui/hud/myScores.nut" import mkMyPlace, mkMyPlaceUi, mkMyDamage, mkMyScoresUi
+from "%rGui/hud/scoreBoard.nut" import scoreBoardType, scoreBoardCfgByType
+from "%rGui/hud/shipStateModule.nut" import mkDollCtor, mkDollEditView, mkShipDebuffs, shipDebuffsEditView,
+  mkCrewHealthCtor, mkCrewHealthEditView, defHealthSize
+from "%rGui/hudState.nut" import isPlayingReplay
+from "%rGui/hudTuning/cfg/hudTuningPkg.nut" import mkLBPos, mkLTPos, mkRTPos, mkCBPos, mkCTPos
+import "%rGui/hudTuning/cfg/initHudTuningCfg.nut" as initHudTuningCfg
+
 
 let dollPosX = clamp(saSize[0] / 2 - hdpx(460), hdpx(420), hdpx(540))
 
 let hasMyScores = Computed(@() scoreBoardCfgByType?[scoreBoardType.get()].addMyScores)
 
-return {
+return initHudTuningCfg({
   hitCamera = {
     canHide = false
     ctor = hitCamera
@@ -92,4 +93,4 @@ return {
     editView = simpleThreatTorpedosIndicatorEditView
     hideForDelayed = false
   }
-}.filter(@(v) v != null)
+}.filter(@(v) v != null))

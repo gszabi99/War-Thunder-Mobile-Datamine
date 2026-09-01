@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { set_gui_fps_limit_mode_active } = require("graphicsOptions")
-let { isLoggedIn, isLoginRequired } = require("%appGlobals/loginState.nut")
+from "graphicsOptions" import set_gui_fps_limit_mode_active
+from "%appGlobals/loginState.nut" import isLoggedIn, isLoginRequired
+
 
 let fpsLimits = Watched({})
 let needFpsLimit = keepref(Computed(@() fpsLimits.get().len() > 0))

@@ -1,21 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
 from "warpoints" import *
+from "dagor.workcycle" import setTimeout, clearTimer
+from "dasevents" import EventZoneDamageMessage
+from "guiMission" import GO_WIN, GO_FAIL, GO_EARLY, GO_WAITING_FOR_RESULT, GO_NONE, MISSION_CAPTURING_ZONE
+from "hudMessages" import HUD_MSG_OBJECTIVE, HUD_MSG_MULTIPLAYER_DMG, HUD_MSG_STREAK_EX
+from "mission" import get_mplayer_by_id
+from "%appGlobals/clientState/clientState.nut" import localMPlayerId, isInBattle
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg
+from "%appGlobals/unitConst.nut" import TANK, AIR
+from "%appGlobals/unitPresentation.nut" import getUnitClassFontIcon
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/hudHints/missionNewbiesHints.nut" import startMissionHintSeria, captureHintSeria
+from "%rGui/hudState.nut" import unitType
+from "%rGui/style/teamColors.nut" import teamRedColor
 
-let { eventbus_subscribe } = require("eventbus")
-let { get_mplayer_by_id } = require("mission")
-let { HUD_MSG_OBJECTIVE, HUD_MSG_MULTIPLAYER_DMG, HUD_MSG_STREAK_EX } = require("hudMessages")
-let { GO_WIN, GO_FAIL, GO_EARLY, GO_WAITING_FOR_RESULT, GO_NONE, MISSION_CAPTURING_ZONE
-} = require("guiMission")
-let { localMPlayerId, isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { getUnitClassFontIcon } = require("%appGlobals/unitPresentation.nut")
-let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { startMissionHintSeria, captureHintSeria } = require("%rGui/hudHints/missionNewbiesHints.nut")
-let { unitType } = require("%rGui/hudState.nut")
-let { TANK, AIR } = require("%appGlobals/unitConst.nut")
-let { teamRedColor } = require("%rGui/style/teamColors.nut")
-let { EventZoneDamageMessage } = require("dasevents")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 const TIME_TO_RESET_SCORE = 1.0
 
@@ -41,7 +40,7 @@ const MISSION_HINT = "mission_hint"
 const SCORE_HINT = "score_hint"
 const EXP_HINT = "exp_hint"
 
-eventbus_subscribe("hint:missionHint:set", @(data) data?.hintType == "bottom" ? null
+subscribeHudEvent("hint:missionHint:set", @(data) data?.hintType == "bottom" ? null
   : modifyOrAddEvent(
       data.__merge({
         id = MISSION_HINT
@@ -52,10 +51,10 @@ eventbus_subscribe("hint:missionHint:set", @(data) data?.hintType == "bottom" ? 
       }),
       @(ev) ev?.id == MISSION_HINT && ev?.locId == data?.locId))
 
-eventbus_subscribe("hint:missionHint:remove", @(data) data?.hintType == "bottom" ? null
+subscribeHudEvent("hint:missionHint:remove", @(data) data?.hintType == "bottom" ? null
   : removeEvent({ id = MISSION_HINT }))
 
-eventbus_subscribe("hint:missionHint:setById", @(data) modifyOrAddEvent(
+subscribeHudEvent("hint:missionHint:setById", @(data) modifyOrAddEvent(
   data.__merge({
     id = MISSION_HINT
     hType = "mission"
@@ -105,10 +104,10 @@ let addHudMessage = {
   }
 }
 
-eventbus_subscribe("HudMessage", @(data) addHudMessage?[data.type](data))
+subscribeHudEvent("HudMessage", @(data) addHudMessage?[data.type](data))
 
 
-eventbus_subscribe("zoneCapturingEvent", function(data) {
+subscribeHudEvent("zoneCapturingEvent", function(data) {
   let { zoneName, isHeroAction, isMyTeam, eventId, text } = data
   let id = $"capture_event_{zoneName}"
   if (isHeroAction && unitType.get() == TANK)
@@ -160,7 +159,7 @@ let resultLocId = {
   [GO_WAITING_FOR_RESULT] = "FINALIZING",
 }
 
-eventbus_subscribe("MissionResult", function(data) {
+subscribeHudEvent("MissionResult", function(data) {
   clearEvents()
   let { resultNum = GO_NONE } = data
   if (resultNum == GO_WIN || resultNum == GO_FAIL)
@@ -175,7 +174,7 @@ eventbus_subscribe("MissionResult", function(data) {
   })
 })
 
-eventbus_subscribe("MissionContinue", @(_) removeEvent({ id = MISSSION_RESULT }))
+subscribeHudEvent("MissionContinue", @(_) removeEvent({ id = MISSSION_RESULT }))
 
 let expEventType = {
   [EXP_EVENT_CRITICAL_HIT]  = "exp_reasons/critical_hit",
@@ -183,7 +182,7 @@ let expEventType = {
   [EXP_EVENT_ASSIST]        = "exp_reasons/assist",
 }
 
-eventbus_subscribe("ExpEvent", function(evt) {
+subscribeHudEvent("ExpEvent", function(evt) {
   let msg = expEventType?[evt.messageCode];
   if ((unitType.get() == AIR || evt.messageCode == EXP_EVENT_ASSIST) && msg) {
     modifyOrAddEvent({

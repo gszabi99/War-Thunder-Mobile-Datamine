@@ -779,16 +779,11 @@
       "cls_turret": "convex_hull",
       "cls_body": "convex_hull"
     },
-    "engine": {
-      "horsePowers": 400.0,
-      "maxRPM": 2400.0,
-      "minRPM": 600.0
-    },
     "mechanics": {
       "maxBrakeForce": 60000.0,
       "driveGearRadius": 0.385,
-      "mainGearRatio": 6.588,
-      "sideGearRatio": 3.0,
+      "mainGearRatio": 17.8,
+      "sideGearRatio": 0.958,
       "alternativeGearControl": 1.0,
       "gearRatios": {
         "ratio": [
@@ -797,8 +792,9 @@
           0.0,
           2.0,
           1.0,
-          0.842,
-          0.421,
+          0.739,
+          0.477,
+          0.361,
           0.244
         ]
       }
@@ -806,7 +802,7 @@
     "suspension": {
       "suspensionOffsets": [
         -0.17,
-        -0.15,
+        -0.07,
         0.07
       ],
       "defaultGearRadius": 0.324,
@@ -820,9 +816,9 @@
       "dampeningCompressionRatio": 0.2
     },
     "Mass": {
-      "Empty": 21700.0,
+      "Empty": 20100.0,
       "Fuel": 300.0,
-      "TakeOff": 22000.0,
+      "TakeOff": 20400.0,
       "momentOfInertia": [
         2.5,
         2.5,
@@ -839,6 +835,11 @@
       ],
       "AdvancedMass": true,
       "trackMass": 700.0
+    },
+    "engine": {
+      "horsePowers": 400.0,
+      "maxRPM": 2400.0,
+      "minRPM": 600.0
     }
   },
   "ammo": {

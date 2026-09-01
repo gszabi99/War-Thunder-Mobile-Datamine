@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
+from "eventbus" import eventbus_send
 
-let { eventbus_send } = require("eventbus")
 
 function urlLikeButton(text, action, style = {}) {
   let { ovr = {}, childOvr = {} } = style
@@ -24,7 +24,7 @@ function urlLikeButton(text, action, style = {}) {
       rendObj = ROBJ_FRAME
       borderWidth = const [0, 0, 2, 0]
       size = FLEX
-      pos = [0, 2]
+      pos = const [0, 2]
       color = Color(192, 192, 192)
     }.__update(childOvr)
   }.__update(fontSmallShaded, ovr)

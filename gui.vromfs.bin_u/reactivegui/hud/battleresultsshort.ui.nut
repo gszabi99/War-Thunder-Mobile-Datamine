@@ -1,39 +1,40 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { get_local_mplayer } = require("mission")
-let { GO_WIN, GO_FAIL } = require("guiMission")
-let { playSound } = require("sound_wt")
-let { register_command } = require("console")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { isInDebriefing, isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
-let { isGtFFA } = require("%rGui/missionState.nut")
-let { localPlayerDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
-let { getScoreFull } = require("%rGui/mpStatistics/playersSortFunc.nut")
-let { opacityAnims } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { mkPlaceIcon, playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
-let { mkImageWithCount, myPlace, isPlaceVisible, icons } = require("%rGui/hud/myScores.nut")
-let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
-let resultsHintLogState = require("%rGui/hudHints/resultsHintLogState.nut")
-let { resultsHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
-let { mkStreakWithMultiplier, prepareStreaksArray } = require("%rGui/unlocks/streakPkg.nut")
-let { hudWhiteColor, hudBlackColor, hudTransparentColor, hudDarkRedFade, hudBurgundyFade
-} = require("%rGui/style/hudColors.nut")
+from "console" import register_command
+from "guiMission" import GO_WIN, GO_FAIL
+from "mission" import get_local_mplayer
+from "sound_wt" import playSound
+from "%appGlobals/clientState/clientState.nut" import isInDebriefing, isInBattle
+from "%appGlobals/clientState/missionState.nut" import battleCampaign
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%rGui/components/playerPlaceIcon.nut" import mkPlaceIcon, playerPlaceIconSize
+from "%rGui/debriefing/debriefingState.nut" import debriefingData
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/hud/myScores.nut" import mkImageWithCount, myPlace, isPlaceVisible, icons
+from "%rGui/hudHints/hintBlocks.nut" import resultsHintsBlock
+import "%rGui/hudHints/resultsHintLogState.nut" as resultsHintLogState
+from "%rGui/missionState.nut" import isGtFFA
+from "%rGui/mpStatistics/playersDamageStats.nut" import localPlayerDamageStats
+from "%rGui/mpStatistics/playersSortFunc.nut" import getScoreFull
+from "%rGui/shop/goodsPreview/goodsPreviewPkg.nut" import opacityAnims
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudBlackColor, hudTransparentColor, hudDarkRedFade,
+  hudBurgundyFade
+from "%rGui/unlocks/streakPkg.nut" import mkStreakWithMultiplier, prepareStreaksArray
 
-let changeTextBgColorDuration = 0.1
-let textBlockBounceDuration = 0.3
-let missionResultScaleDuration = 0.1
-let missionResultOpacityDuration = 0.1
-let textAppearanceDuration = 0.2
-let textAppearanceDelay = textBlockBounceDuration
-let borderColorTransitionDuration = 0.1
-let placeInTeamTextOpacityDuration = 0.1
-let placeInTeamTextOpacityDelay = 0.6
-let earnedScoresOpacityDuration = placeInTeamTextOpacityDuration
-let earnedScoresOpacityDelay = placeInTeamTextOpacityDelay + 0.1
-let placeIconDelay = placeInTeamTextOpacityDelay + 0.5
-let placeIconDuration = 0.4
+
+const changeTextBgColorDuration = 0.1
+const textBlockBounceDuration = 0.3
+const missionResultScaleDuration = 0.1
+const missionResultOpacityDuration = 0.1
+const textAppearanceDuration = 0.2
+const textAppearanceDelay = textBlockBounceDuration
+const borderColorTransitionDuration = 0.1
+const placeInTeamTextOpacityDuration = 0.1
+const placeInTeamTextOpacityDelay = 0.6
+const earnedScoresOpacityDuration = placeInTeamTextOpacityDuration
+const earnedScoresOpacityDelay = placeInTeamTextOpacityDelay + 0.1
+const placeIconDelay = placeInTeamTextOpacityDelay + 0.5
+const placeIconDuration = 0.4
 
 let winBgColor = hudDarkRedFade
 let failBgColor = hudBurgundyFade
@@ -41,11 +42,11 @@ let whiteBgColor = hudWhiteColor
 let noBgColor = hudTransparentColor
 let blackBgColor = hudBlackColor
 
-let gap = hdpx(10)
-let scoresGap = hdpx(100)
+const gap = hdpx(10)
+const scoresGap = hdpx(100)
 let scoresTextWidth = (saSize[0] - scoresGap) / 2
 let scoresContentWidth = scoresTextWidth
-let streakSize = hdpx(70)
+const streakSize = hdpx(70)
 
 let missionResult = Watched(null)
 let needShowResultScreen = Computed(@() missionResult.get() == GO_WIN || missionResult.get() == GO_FAIL)
@@ -53,7 +54,6 @@ let needShowResultScreen = Computed(@() missionResult.get() == GO_WIN || mission
 isInBattle.subscribe(@(v) v ? missionResult.set(null) : null)
 isInDebriefing.subscribe(@(v) v ? missionResult.set(null) : null)
 needShowResultScreen.subscribe(@(v) !v ? resultsHintLogState.clearEvents() : null)
-
 
 let scoresByCampaign = {
   ships = [
@@ -102,14 +102,13 @@ let resultTextFFA = {
   [GO_WIN]  = "".concat(loc("debriefing/victory"), "!"),
   [GO_FAIL] = "".concat(loc("MISSION_FINISHED"), "!"),
 }
-
 let getResultText = @(resultNum, isFFA) resultNum == null ? ""
   : (isFFA ? resultTextFFA : resultText)[resultNum]
 
 let textBgColor = Watched(whiteBgColor)
 let showText = Watched(false)
 let animatedTextBlock = @() {
-  watch = [showText, missionResult, textBgColor]
+  watch = [showText, textBgColor]
   size = FLEX
   rendObj = ROBJ_9RECT
   halign = ALIGN_CENTER
@@ -132,30 +131,30 @@ let animatedTextBlock = @() {
   children =
     showText.get()
       ? @() {
-        watch = [missionResult, isGtFFA]
-        rendObj = ROBJ_TEXT
-        text = getResultText(missionResult.get(), isGtFFA.get())
-        transform = {}
-        animations = opacityAnims(missionResultOpacityDuration, 0)
-          .append({
-            prop = AnimProp.scale, from = [1.0, 1.0], to = [1.15, 1.15], duration = missionResultScaleDuration,
-            easing = InQuad, play = true
-          })
-      }.__update(fontVeryLargeShaded)
+          watch = [missionResult, isGtFFA]
+          rendObj = ROBJ_TEXT
+          text = getResultText(missionResult.get(), isGtFFA.get())
+          transform = {}
+          animations = opacityAnims(missionResultOpacityDuration, 0)
+            .append({
+              prop = AnimProp.scale, from = [1.0, 1.0], to = [1.15, 1.15], duration = missionResultScaleDuration,
+              easing = InQuad, play = true
+            })
+        }.__update(fontVeryLargeShaded)
       : {
-        size = const [pw(60), hdpx(50)]
-        rendObj = ROBJ_9RECT
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        image = gradTranspDoubleSideX
-        texOffs = [0 , gradDoubleTexOffset]
-        screenOffs = [0, hdpx(250)]
-        transform = { scale = [0.2, 1] }
-        animations = [
-          { prop = AnimProp.scale, to = [1, 1], duration = textAppearanceDuration,
-            easing = InQuad, delay = textAppearanceDelay, play = true, onFinish = @() showText.set(true) }
-        ]
-      }
+          size = const [pw(60), hdpx(50)]
+          rendObj = ROBJ_9RECT
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          image = gradTranspDoubleSideX
+          texOffs = [0, gradDoubleTexOffset]
+          screenOffs = [0, hdpx(250)]
+          transform = { scale = [0.2, 1] }
+          animations = [
+            { prop = AnimProp.scale, to = [1, 1], duration = textAppearanceDuration,
+              easing = InQuad, delay = textAppearanceDelay, play = true, onFinish = @() showText.set(true) }
+          ]
+        }
 }
 
 let resultTextBlock = @() {
@@ -168,6 +167,12 @@ let resultTextBlock = @() {
   transitions = [{ prop = AnimProp.borderColor, duration = borderColorTransitionDuration}]
 }
 
+let mkUserScoresText = @(text) {
+  size = [scoresTextWidth, SIZE_TO_CONTENT]
+  rendObj = ROBJ_TEXT
+  text
+}.__update(fontSmall)
+
 let mkUserScores = @(valueComp, locId) {
   size = [saSize[0], SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
@@ -175,12 +180,7 @@ let mkUserScores = @(valueComp, locId) {
   gap = scoresGap
   animations = opacityAnims(earnedScoresOpacityDuration, earnedScoresOpacityDelay)
   children = [
-    {
-      halign = ALIGN_RIGHT
-      size = [scoresTextWidth, SIZE_TO_CONTENT]
-      rendObj = ROBJ_TEXT
-      text = "".concat(loc(locId), colon)
-    }.__update(fontSmall)
+    mkUserScoresText("".concat(loc(locId), colon)).__update({ halign = ALIGN_RIGHT })
     {
       size = [SIZE_TO_CONTENT, playerPlaceIconSize]
       halign = ALIGN_LEFT
@@ -222,24 +222,30 @@ let achievementsBlock = @() {
 }
 
 function battleResultsShort() {
-  let res = { watch = needShowResultScreen }
+  let res = {
+    watch = [
+      needShowResultScreen,
+      battleCampaign,
+      isPlaceVisible,
+      localPlayerDamageStats,
+      myPlace
+    ]
+  }
   if (!needShowResultScreen.get())
     return res
 
   let children = !isPlaceVisible.get() ? []
-                 : [ mkUserScores(mkPlaceIcon(myPlace.get()), "debriefing/placeInMyTeam") ]
-                   .extend((scoresByCampaign?[getCampaignPresentation(battleCampaign.get()).campaign] ?? [])
-                     .map(function(v) {
-                       let score = v?.getFromStats(localPlayerDamageStats.get())
-                         ?? v?.getFromPlayer(get_local_mplayer())
-                         ?? 0
-                       return mkUserScores(mkImageWithCount(score, icons?[v.iconId] ?? icons.score), v.locId)
-                     }))
+    : [mkUserScores(mkPlaceIcon(myPlace.get()), "debriefing/placeInMyTeam")]
+        .extend((scoresByCampaign?[getCampaignPresentation(battleCampaign.get()).campaign] ?? [])
+          .map(function(v) {
+            let score = v?.getFromStats(localPlayerDamageStats.get())
+                ?? v?.getFromPlayer(get_local_mplayer())
+                ?? 0
+            return mkUserScores(mkImageWithCount(score, icons?[v.iconId] ?? icons.score), v.locId)
+          }))
   children.append(achievementsBlock)
 
-  res.__update({
-    rendObj = ROBJ_SOLID
-    color = 0xAA000000
+  let baseResults = {
     size = FLEX
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -248,16 +254,23 @@ function battleResultsShort() {
     children = [
       resultsHintsBlock
       resultTextBlock
-      @() {
-        watch = [battleCampaign, isPlaceVisible, localPlayerDamageStats, myPlace]
+      {
         flow = FLOW_VERTICAL
         gap
         children
       }
     ]
-  })
+  }
 
-  return res
+  return res.__update({
+    rendObj = ROBJ_SOLID
+    color = 0xAA000000
+    size = FLEX
+    padding = saBordersRv
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = baseResults
+  })
 }
 
 function openResult(resultNum) {
@@ -266,18 +279,15 @@ function openResult(resultNum) {
   missionResult.set(resultNum)
 }
 
-eventbus_subscribe("MissionResult", function(data) {
+subscribeHudEvent("MissionResult", function(data) {
   let { resultNum } = data
   if (resultNum == GO_WIN || resultNum == GO_FAIL)
     openResult(resultNum)
 })
 
-function toggleResult(resultNum) {
-  if (missionResult.get() == resultNum)
-    missionResult.set(null)
-  else
-    openResult(resultNum)
-}
+let toggleResult = @(resultNum) missionResult.get() == resultNum
+  ? missionResult.set(null)
+  : openResult(resultNum)
 
 register_command(@() toggleResult(GO_WIN), "hud.showShortBattleResultWin")
 register_command(@() toggleResult(GO_FAIL), "hud.showShortBattleResultFail")

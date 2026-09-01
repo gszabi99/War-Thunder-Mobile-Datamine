@@ -1,30 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
-let { fabs, round } = require("math")
-let { get_time_msec } = require("dagor.time")
-let { clearTimer, resetTimeout, setInterval } = require("dagor.workcycle")
-let { isReadyToFullLoad } = require("%appGlobals/loginState.nut")
-let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
-let { visibleOffer, onOfferPromoAttach, onOfferPromoDetach, offerPurchasingState
-} = require("%rGui/shop/offerState.nut")
-let { activeOffersByGoods, mkOfferByGoodsPurchasingState
-} = require("%rGui/shop/offerByGoodsState.nut")
-let { mkOffer } = require("%rGui/shop/goodsView/offers.nut")
-let { offerW, offerH } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { openGoodsPreview, previewType, getNotLoadedTagsUnitsToShowGoods } = require("%rGui/shop/goodsPreviewState.nut")
-let { buyPlatformGoods } = require("%rGui/shop/platformGoods.nut")
-let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
-let { eventGift, eventGiftGap } = require("%rGui/event/eventGift.nut")
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import clearTimer, resetTimeout, setInterval
+from "math" import fabs, round
+from "%appGlobals/loginState.nut" import isReadyToFullLoad
+from "%appGlobals/pServer/bqClient.nut" import sendOfferBqEvent
+from "%appGlobals/updater/addonsState.nut" import unitSizes
+from "%rGui/event/eventGift.nut" import eventGift, eventGiftGap
+from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview, previewType, getNotLoadedTagsUnitsToShowGoods
+from "%rGui/shop/goodsView/offers.nut" import mkOffer
+from "%rGui/shop/goodsView/sharedParts.nut" import offerW, offerH
+from "%rGui/shop/offerByGoodsState.nut" import activeOffersByGoods, mkOfferByGoodsPurchasingState
+from "%rGui/shop/offerState.nut" import visibleOffer, onOfferPromoAttach, onOfferPromoDetach, offerPurchasingState
+from "%rGui/shop/platformGoods.nut" import buyPlatformGoods
+from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd
 
 
-let defColor = 0xFFFFFFFF
-let secondaryColor = 0xFFC5C5C5
-let pointSize = hdpx(11)
+const defColor = 0xFFFFFFFF
+const secondaryColor = 0xFFC5C5C5
+const pointSize = hdpx(11)
 
 local animScrollCfg = null
-let aTimeScroll = 0.5
-let autoSwipeTime = 10
-let minScrollSpeed = hdpxi(1)
+const aTimeScroll = 0.5
+const autoSwipeTime = 10
+const minScrollSpeed = hdpxi(1)
 
 let scrollHandler = ScrollHandler()
 let sliderOfferIdx = Watched(0)
@@ -90,7 +88,7 @@ function updateAnimScroll() {
 
 function startAnimScroll(posX2, scrollSpeed = minScrollSpeed) {
   let posX1 = scrollHandler.elem?.getScrollOffsX() ?? 0
-  let time = (1000 * min(aTimeScroll, max(fabs(posX1 - posX2), fabs(posX1 - posX2)) / max(fabs(scrollSpeed), minScrollSpeed)))
+  let time = (1000 * min(aTimeScroll, fabs(posX1 - posX2) / max(fabs(scrollSpeed), minScrollSpeed)))
     .tointeger()
   if (time <= 0)
     return
@@ -113,7 +111,7 @@ function autoSwipe() {
 let interruptAnimScroll = @() animScrollCfg = null
 
 let mkSliderPoint = @(isActive) {
-  size = [pointSize, pointSize]
+  size = const [pointSize, pointSize]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = hdpx(1)
   fillColor = isActive ? defColor : secondaryColor

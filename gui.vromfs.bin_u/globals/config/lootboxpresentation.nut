@@ -1,7 +1,8 @@
-let regexp2 = require("regexp2")
-let { loc } = require("dagor.localize")
-let { getRomanNumeral } = require("%sqstd/math.nut")
-let { memoize } = require("%sqstd/functools.nut")
+from "dagor.localize" import loc
+import "regexp2" as regexp2
+from "%sqstd/functools.nut" import memoize
+from "%sqstd/math.nut" import getRomanNumeral
+
 
 let customLootboxImages = {
   every_day_award_first = "every_day_award_medium_pack.avif"
@@ -131,6 +132,9 @@ let customLootboxImages = {
   past_events_box_tanks_seasons_1_to_33 = "past_events_box_seasons_1_to_33.avif"
   past_events_box_ships_seasons_1_to_33 = "past_events_box_seasons_1_to_33.avif"
   past_events_box_air_seasons_1_to_33 = "past_events_box_seasons_1_to_33.avif"
+  past_events_box_tanks_seasons_1_to_34 = "past_events_box_seasons_1_to_34.avif"
+  past_events_box_ships_seasons_1_to_34 = "past_events_box_seasons_1_to_34.avif"
+  past_events_box_air_seasons_1_to_34 = "past_events_box_seasons_1_to_34.avif"
 }
 
 let customRouletteImages = {
@@ -182,7 +186,7 @@ let defaultSeasonImages = [
   { re = regexp2(@"^event_air_(medium|big)_season_\d+$"),   mkImg = @(id) $"{id.replace("air", "ships")}.avif" },
 ]
 
-let defaultBgImage = "ui/images/bp_bg_01.avif"
+const defaultBgImage = "ui/images/bp_bg_01.avif"
 
 let lootboxPreviewBg = { 
   event_special_gift_tanks_new_year_2025         = { bg = "ui/images/event_bg_christmas_2024.avif" }
@@ -203,6 +207,9 @@ let lootboxPreviewBg = {
   past_events_box_tanks_seasons_1_to_33             = { bg = "ui/images/event_bg_season_36.avif" }
   past_events_box_ships_seasons_1_to_33             = { bg = "ui/images/event_bg_season_36.avif" }
   past_events_box_air_seasons_1_to_33               = { bg = "ui/images/event_bg_season_36.avif" }
+  past_events_box_tanks_seasons_1_to_34             = { bg = "ui/images/event_bg_season_37.avif" }
+  past_events_box_ships_seasons_1_to_34             = { bg = "ui/images/event_bg_season_37.avif" }
+  past_events_box_air_seasons_1_to_34               = { bg = "ui/images/event_bg_season_37.avif" }
 
   event_special_china_tanks_spending_event         = { bg = "ui/images/event_bg_lunar.avif" }
   japan_tanks_spending_event_box                   = { bg = "ui/images/event_bg_japan_tanks_early_access.avif", bgColor = 0xFF999999 }
@@ -241,6 +248,7 @@ let eventLootboxScale = {
   ["event_ships_big_season_36.avif"] = 1.7,
   ["event_special_april_event_2026.avif"] = 1.5,
   ["anniversary_2026_lootbox.avif"] = 1.5,
+  ["event_ships_big_season_37.avif"] = 1.2,
 }
 
 let eventLootboxShiftPos = {
@@ -310,8 +318,8 @@ let getRouletteImage = @(id) customRouletteImages?[id] ?? defaultBgImage
 
 let mkTagLayers = @(image) [{
   image
-  size = [0.35, 0.35]
-  pos = [-0.04, 0.2]
+  size = const [0.35, 0.35]
+  pos = const [-0.04, 0.2]
 }]
 
 let lootboxLayers = {

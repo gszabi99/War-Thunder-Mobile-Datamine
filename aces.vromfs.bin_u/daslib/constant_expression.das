@@ -20,15 +20,6 @@ require daslib/algorithm
 [function_macro(name=constexpr)]
 class ConstExprAnnotation : AstFunctionAnnotation {
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
     def override verifyCall(var call : ExprCallFunc?; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
         for (aa in args) {
             if (aa.basicType == Type.tBool) {
@@ -58,15 +49,6 @@ def public isConstantExpression(expr : Expression?) : bool {
 
 [function_macro(name="constant_expression")]
 class ConstantExpressionMacro : AstFunctionAnnotation {
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     def override transform(var expr : ExprCallFunc?; var errors : das_string) : Expression? {
         macro_verify(expr.func != null, compiling_program(), expr.at, "expecting inferred function")
@@ -127,9 +109,6 @@ class ConstantExpressionMacro : AstFunctionAnnotation {
         compiling_module() |> add_function(func_copy)
         var new_call = clone_expression(expr)
         var ncall = new_call as ExprCall
-        
-        
-        
         
         ncall.name := "__::{func_name}"
         for (i in argi) {

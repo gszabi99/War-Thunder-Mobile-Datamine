@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let sceneContentCfg = require("%rGui/seasonScene/seasonSceneContentCfg.nut")
-let { addUnlocksUpdater, removeUnlocksUpdater } = require("%rGui/unlocks/userstat.nut")
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+import "%rGui/seasonScene/seasonSceneContentCfg.nut" as sceneContentCfg
+from "%rGui/unlocks/userstat.nut" import addUnlocksUpdater, removeUnlocksUpdater
 
 
 function mkSeasonSceneUnseenMark(eventId, ovr = {}) {

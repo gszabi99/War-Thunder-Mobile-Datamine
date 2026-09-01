@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { unitRewardTypes } = require("%appGlobals/rewardType.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
-let { SGT_SLOTS, SGT_UNIT, SGT_UNIT_BUNDLE } = require("%rGui/shop/shopConst.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
-let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
-let { isFitSeasonRewardsRequirements } = require("%rGui/event/eventState.nut")
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/rewardType.nut" import unitRewardTypes
+from "%rGui/event/eventState.nut" import isFitSeasonRewardsRequirements
+from "%rGui/shop/offerByGoodsState.nut" import activeOffersByGoods
+from "%rGui/shop/shopCommon.nut" import getGoodsType
+from "%rGui/shop/shopConst.nut" import SGT_SLOTS, SGT_UNIT, SGT_UNIT_BUNDLE
+from "%rGui/shop/shopState.nut" import shopGoods
 
 
 let orderByGoodType = [SGT_UNIT_BUNDLE, SGT_UNIT, SGT_SLOTS].reduce(@(res, v, i) res.$rawset(v, i + 1), {})

@@ -1,29 +1,31 @@
 from "%globalsDarg/darg_library.nut" import *
+from "adjust" import setOnlineAdjust, setAdjustThirdPartySharing, getAdjustAdId
+from "appsFlyer" import setAppsFlyerConsent, startAppsFlyer, enableTCFCollection, startAppsFlyerConnector
+from "auth_wt" import getCountryCode
 from "blkGetters" import get_settings_blk, get_local_custom_settings_blk
+from "console" import register_command
 from "dagor.workcycle" import deferOnce
 from "eventbus" import eventbus_send
-from "console" import register_command
-from "auth_wt" import getCountryCode
+from "json" import object_to_json_string
+from "%sqstd/datablock.nut" import copyParamsToTable
+from "%sqstd/platform.nut" import is_ios, is_android
+from "%appGlobals/consent.nut" import isTcfConsentEnabled
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
-let { isConsentAllowLogin, isReadyForConsent, CONSENT_OPTIONS_SAVE_ID } = require("%appGlobals/loginState.nut")
-let { copyParamsToTable } = require("%sqstd/datablock.nut")
-let { is_ios, is_android } = require("%sqstd/platform.nut")
+from "%appGlobals/loginState.nut" import isConsentAllowLogin, isReadyForConsent, CONSENT_OPTIONS_SAVE_ID
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%appGlobals/permissions.nut" import request_firebase_consent_eu_only
+from "%rGui/login/stateIDFA.nut" import isIdfaDenied
+
+
 let { setCollectionEnabled = @(_) null,
       setFirebaseConsent = @(_) null } = is_android ? require("android.firebase.analytics")
     : is_ios ? require("ios.firebase.analytics")
     : {}
-let { setAppsFlyerConsent, startAppsFlyer, enableTCFCollection, startAppsFlyerConnector } = require("appsFlyer")
-let { setOnlineAdjust, setAdjustThirdPartySharing = @(_)null, getAdjustAdId } = require("adjust")
-let { object_to_json_string } = require("json")
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { isIdfaDenied } = require("%rGui/login/stateIDFA.nut")
-let { request_firebase_consent_eu_only } = require("%appGlobals/permissions.nut")
-let { isTcfConsentEnabled } = require("%appGlobals/consent.nut")
 let logC = log_with_prefix("[consent] ")
 
 let EU_REGION = ["BE","BG","CZ","DK","DE","EE","IE","GR","EL","ES","FR","HR","HU","IT","CY","LV","LT","LU","MT","NL","AT","PL","PT","RO","SI","SK","FI","SE","GB","UK","LI","NO","IS","CH"]
 
-let CFG_PATH = "firebase_consent"
+const CFG_PATH = "firebase_consent"
 
 let configManagePoints = [
   "analytics_storage"
@@ -35,6 +37,8 @@ let configManagePoints = [
 let defaultPointsTable = configManagePoints.reduce(@(res, val) res.$rawset(val, true), {})
 
 let savedPoints = mkWatched(persist, "savedPoints", null)
+
+let adsConsent = mkWatched(persist, "adsConsent", false)
 
 let isEnabled = keepref(Computed(@() !isTcfConsentEnabled.get()))
 let isConsentAcceptedOnce = Computed(@() (savedPoints.get()?.len() ?? 0) != 0)
@@ -54,7 +58,7 @@ function setupAnalytics() {
   if (!isEnabled.get())
     return
   let v = savedPoints.get()
-  let consentCommon = (v?.analytics_storage ?? false) && (v?.ad_storage ?? false) && (v?.ad_user_data ?? false) && (v?.ad_personalization ?? false)
+  adsConsent.set((v?.ad_storage ?? false) && (v?.ad_user_data ?? false) && (v?.ad_personalization ?? false))
   enableTCFCollection(false)
   logC("Firebase consent, analytics starting:", v)
   setFirebaseConsent(object_to_json_string(v))
@@ -62,7 +66,7 @@ function setupAnalytics() {
   setAppsFlyerConsent(v?.ad_user_data ?? false, v?.ad_personalization ?? false, true)
   startAppsFlyer()
   startAppsFlyerConnector()
-  setAdjustThirdPartySharing(consentCommon)
+  setAdjustThirdPartySharing((v?.analytics_storage ?? false) && (v?.ad_storage ?? false) && (v?.ad_user_data ?? false) && (v?.ad_personalization ?? false))
   setOnlineAdjust(true)
   getAdjustAdId()
 }
@@ -98,7 +102,7 @@ function getPartnersList() {
   return (partnersBlk != null ? (partnersBlk % "p") : []).map(@(blk) copyParamsToTable(blk))
 }
 
-let function loadPoints() {
+function loadPoints() {
   if (!isEnabled.get())
     return
   let blk = get_local_custom_settings_blk()?[CONSENT_OPTIONS_SAVE_ID]
@@ -211,4 +215,5 @@ return {
   configManagePoints
   defaultPointsTable
   savedPoints
+  adsConsent
 }

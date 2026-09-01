@@ -1,45 +1,44 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import resetTimeout
-let { round } = require("math")
-let { HangarCameraControl } = require("wt.behaviors")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { allow_subscriptions } = require("%appGlobals/permissions.nut")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { getDecalDescPresentation } = require("%appGlobals/config/decalsPresentation.nut")
-let { skinActionBtn, skinsBlockNoTags, skinsBlockWithTags } = require("%rGui/unitCustom/unitSkins/unitSkinsComps.nut")
-let { decalsCollection, selectedDecalId, availableDecals, decalsSlots, selectedSlotId, isPreparingToEditDecal,
-  isEditingDecal, shouldSaveDecal, isAvailableSlot, exitDecalMode, customizationDecalId, editSelectedSlot,
-  isManipulatorInProgress, decalsCfg, decalsPenalty, selectedSlot
-} = require("%rGui/unitCustom/unitDecals/unitDecalsState.nut")
-let { closeUnitCustom, unitCustomOpenCount, sectionsList, selSectionId, curSelectedSectionId, SECTION_IDS
-} = require("%rGui/unitCustom/unitCustomState.nut")
-let { baseUnit, unitToShow, isCustomizationWndAttached } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
-let { mkSectionTabs, sectionBtnGap } = require("%rGui/unitCustom/unitCustomComps.nut")
-let { mkDecalsCollectionChoice } = require("%rGui/unitCustom/unitDecals/decalsCollectionChoice.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let unitDecalsSlotsActions = require("%rGui/unitCustom/unitDecals/unitDecalsSlotsActions.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { decalsFooterHeight, getDecalTitle, getDecalDesc, mkDecalIcon, decalIconSizeBig
-} = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
-let { unseenDecals, markDecalSeen } = require("%rGui/unitCustom/unitDecals/unseenDecals.nut")
-let { decalsEditor } = require("%rGui/unitCustom/unitDecals/unitDecalsEditor.nut")
-let { hasTagsChoice } = require("%rGui/unitCustom/unitSkins/unitSkinsState.nut")
-let mkDecalsSlots = require("%rGui/unitCustom/unitDecals/mkDecalsSlots.nut")
-let buyDecalWnd = require("%rGui/unitCustom/unitDecals/buyDecalWnd.nut")
-let { openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { openShopWnd } = require("%rGui/shop/shopState.nut")
-let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
-let { registerScene } = require("%rGui/navState.nut")
+from "math" import round
+from "wt.behaviors" import HangarCameraControl
+from "%appGlobals/config/decalsPresentation.nut" import getDecalDescPresentation
+from "%appGlobals/currenciesState.nut" import GOLD
+from "%appGlobals/permissions.nut" import allow_subscriptions
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
+from "%rGui/navState.nut" import registerScene
+from "%rGui/shop/goodsPreviewState.nut" import openSubsPreview
+from "%rGui/shop/shopCommon.nut" import SC_PREMIUM
+from "%rGui/shop/shopState.nut" import openShopWnd
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset, simpleHorGrad
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/unitCustom/unitCustomComps.nut" import mkSectionTabs, sectionBtnGap
+from "%rGui/unitCustom/unitCustomState.nut" import closeUnitCustom, unitCustomOpenCount, sectionsList, selSectionId,
+  curSelectedSectionId, SECTION_IDS
+import "%rGui/unitCustom/unitDecals/buyDecalWnd.nut" as buyDecalWnd
+from "%rGui/unitCustom/unitDecals/decalsCollectionChoice.nut" import mkDecalsCollectionChoice
+import "%rGui/unitCustom/unitDecals/mkDecalsSlots.nut" as mkDecalsSlots
+from "%rGui/unitCustom/unitDecals/unitDecalsComps.nut" import decalsFooterHeight, getDecalTitle, getDecalDesc,
+  mkDecalIcon, decalIconSizeBig
+from "%rGui/unitCustom/unitDecals/unitDecalsEditor.nut" import decalsEditor
+import "%rGui/unitCustom/unitDecals/unitDecalsSlotsActions.nut" as unitDecalsSlotsActions
+from "%rGui/unitCustom/unitDecals/unitDecalsState.nut" import decalsCollection, selectedDecalId, availableDecals,
+  decalsSlots, selectedSlotId, isPreparingToEditDecal, isEditingDecal, shouldSaveDecal, isAvailableSlot, exitDecalMode,
+  customizationDecalId, editSelectedSlot, isManipulatorInProgress, decalsCfg, decalsPenalty, selectedSlot
+from "%rGui/unitCustom/unitDecals/unseenDecals.nut" import unseenDecals, markDecalSeen
+from "%rGui/unitCustom/unitSkins/unitSkinsComps.nut" import skinActionBtn, skinsBlockNoTags, skinsBlockWithTags
+from "%rGui/unitCustom/unitSkins/unitSkinsState.nut" import hasTagsChoice
+from "%rGui/unitDetails/unitDetailsState.nut" import baseUnit, unitToShow, isCustomizationWndAttached
 
 
-let sectionBlockWidth = hdpx(600)
+const sectionBlockWidth = hdpx(600)
 
 let isExpandedCustomSection = mkWatched(persist, "isExpandedCustomSection", true)
 let isDecalSelected = Computed(@() customizationDecalId.get() != null)
@@ -90,7 +89,7 @@ function penaltyDescription() {
 
   return @() {
     watch = timeToEndDecalsPenalty
-    pos = [0, hdpx(50)]
+    pos = const [0, hdpx(50)]
     vplace = ALIGN_TOP
     hplace = ALIGN_LEFT
     flow = FLOW_VERTICAL
@@ -100,7 +99,7 @@ function penaltyDescription() {
     texOffs = [0, gradDoubleTexOffset]
     screenOffs = [0, hdpx(50)]
     color = 0x90000000
-    padding = [hdpx(10), hdpx(30)]
+    padding = const [hdpx(10), hdpx(30)]
     children = timeToEndDecalsPenalty.get() <= 0 ? null
       : [
           mkPenaltyText(loc("msgbox/decalsPenalty"))
@@ -199,7 +198,7 @@ let sectionFooterById = {
   [SECTION_IDS.SKINS] = {
     children = @() {
       watch = isExpandedCustomSection
-      size = [pw(100), SIZE_TO_CONTENT]
+      size = const [pw(100), SIZE_TO_CONTENT]
       children = isExpandedCustomSection.get() ? skinActionBtn : null
     }
   },
@@ -255,7 +254,7 @@ let sectionContent = @(curSectionId, isExpanded) @() {
 
 let sectionFooter = @(curSectionId) @() {
   watch = [curSectionId, isManipulatorInProgress]
-  size = [sectionBlockWidth, SIZE_TO_CONTENT]
+  size = const [sectionBlockWidth, SIZE_TO_CONTENT]
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   animations = wndSwitchAnim
@@ -272,7 +271,7 @@ let sectionActions = @(curSectionId) @() {
 
 let sectionsBlock = @() {
   watch = [isExpandedCustomSection, isEditingDecal, customizationDecalId, sectionsList, hasUnseenBySection]
-  size = [sectionBlockWidth, SIZE_TO_CONTENT]
+  size = const [sectionBlockWidth, SIZE_TO_CONTENT]
   vplace = isExpandedCustomSection.get() ? ALIGN_TOP : ALIGN_BOTTOM
   hplace = ALIGN_RIGHT
   flow = FLOW_VERTICAL

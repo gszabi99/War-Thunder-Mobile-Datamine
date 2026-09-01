@@ -1,40 +1,43 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { eventbus_send } = require("eventbus")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { ACTIVATE_PROMO_CODE_URL, LINK_TO_GAIJIN_ACCOUNT_URL } = require("%appGlobals/commonUrl.nut")
-let { curLoginType, LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FACEBOOK, LT_HUAWEI } = require("%appGlobals/loginState.nut")
-let { can_link_to_gaijin_account, allow_subscriptions } = require("%appGlobals/permissions.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { getSubsPresentation, getPremIcon } = require("%appGlobals/config/subsPresentation.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin } = require("%rGui/account/linkEmailForGaijinLogin.nut")
-let { buttonsVGap, mkCustomButton, mkButtonTextMultiline, textButtonPurchase, mergeStyles } = require("%rGui/components/textButton.nut")
-let { defButtonHeight, PRIMARY, COMMON, INACTIVE } = require("%rGui/components/buttonStyles.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
-let { starLevelTiny } = require("%rGui/components/starLevel.nut")
-let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { myUserId, myUserIdStr, myUserName } = require("%appGlobals/profileStates.nut")
-let { havePremium, premiumEndsAt, hasPremiumSubs, hasVip } = require("%rGui/state/profilePremium.nut")
-let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { premiumTextColor } = require("%rGui/style/stdColors.nut")
-let { is_ios, is_nswitch } = require("%sqstd/platform.nut")
-let { mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
-let { myNameWithFrame, openDecoratorsScene, myAvatarImage, hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { openSupportTicketWndOrUrl } = require("%rGui/feedback/supportWnd.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { copyToClipboard } = require("%rGui/components/clipboard.nut")
-let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
-let { canUpgradeGuestAccountToGaijinID, openGuestEmailRegistration } = require("%rGui/account/emailRegistrationState.nut")
-let { hasRestorePurchases, restorePurchases, platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
-let { openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { subsByCategory } = require("%rGui/shop/shopState.nut")
-let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+from "eventbus" import eventbus_send
+from "%sqstd/platform.nut" import is_ios, is_nswitch
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import arrayByRows
+from "%appGlobals/clientState/clientState.nut" import isInMenu
+from "%appGlobals/commonUrl.nut" import ACTIVATE_PROMO_CODE_URL, LINK_TO_GAIJIN_ACCOUNT_URL
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/config/subsPresentation.nut" import getSubsPresentation, getPremIcon
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%appGlobals/loginState.nut" import curLoginType, LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FACEBOOK, LT_HUAWEI
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profile.nut" import playerLevelInfo
+from "%appGlobals/permissions.nut" import can_link_to_gaijin_account, allow_subscriptions
+from "%appGlobals/profileStates.nut" import myUserId, myUserIdStr, myUserName
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/account/emailRegistrationState.nut" import canUpgradeGuestAccountToGaijinID, openGuestEmailRegistration
+from "%rGui/account/linkEmailForGaijinLogin.nut" import canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin
+from "%rGui/components/buttonStyles.nut" import defButtonHeight, PRIMARY, COMMON, INACTIVE
+from "%rGui/components/clipboard.nut" import copyToClipboard
+from "%rGui/components/levelBlockPkg.nut" import mkLevelBg
+import "%rGui/components/mkIconBtn.nut" as mkIconBtn
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/starLevel.nut" import starLevelTiny
+from "%rGui/components/textButton.nut" import buttonsVGap, mkCustomButton, mkButtonTextMultiline, textButtonPurchase,
+  mergeStyles
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/controlsMenu/gpActBtn.nut" import btnAUp
+from "%rGui/decorators/decoratorState.nut" import myNameWithFrame, openDecoratorsScene, myAvatarImage,
+  hasUnseenDecorators
+from "%rGui/decorators/decoratorsPkg.nut" import mkTitle
+from "%rGui/feedback/supportWnd.nut" import openSupportTicketWndOrUrl
+from "%rGui/shop/goodsPreviewState.nut" import openSubsPreview
+from "%rGui/shop/platformGoods.nut" import hasRestorePurchases, restorePurchases, platformPurchaseInProgress
+from "%rGui/shop/shopState.nut" import subsByCategory
+from "%rGui/state/profilePremium.nut" import havePremium, premiumEndsAt, hasPremiumSubs, hasVip
+from "%rGui/style/stdColors.nut" import premiumTextColor
+
 
 
 
@@ -48,25 +51,25 @@ let canChangeAccount = Computed(@() isInMenu.get() && !is_nswitch)
 
 let canUsePromoCodes = !is_ios && !is_nswitch
 
-let avatarSize = hdpx(200)
-let levelBlockSize = hdpx(60)
-let borderColor = 0xFF000000
-let borderWidth = hdpx(1)
-let gap = hdpx(20)
-let lvlInfoWidth = sw(45)
+const avatarSize = hdpx(200)
+const levelBlockSize = hdpx(60)
+const borderColor = 0xFF000000
+const borderWidth = hdpx(1)
+const gap = hdpx(20)
+const lvlInfoWidth = sw(45)
 let premIconSize = [avatarSize, (avatarSize / 1.4).tointeger()]
 
 let unitsResearchInfo = @() {
   watch = curCampaign
-  size = [lvlInfoWidth, SIZE_TO_CONTENT]
+  size = const [lvlInfoWidth, SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   hplace = ALIGN_LEFT
-  pos = [levelBlockSize + gap, 0]
+  pos = const [levelBlockSize + gap, 0]
   text = loc(getCampaignPresentation(curCampaign.get()).playerLevelDescLocId)
 }.__update(fontVeryTiny)
 
-let starLevelOvr = { pos = [0, ph(40)] }
+let starLevelOvr = { pos = const [0, ph(40)] }
 let levelMark = @() {
   watch = playerLevelInfo
   size = array(2, levelBlockSize)
@@ -88,7 +91,7 @@ let levelMark = @() {
 }
 
 function mkAvatar() {
-  let avatarBtnSize = hdpxi(40)
+  const avatarBtnSize = hdpxi(40)
   let iconStateFlags = Watched(0)
   return {
     behavior = Behaviors.Button
@@ -102,8 +105,8 @@ function mkAvatar() {
     borderColor = borderColor
     children = [
       @() {
-        watch = myAvatarImage
-        size = [avatarSize, avatarSize]
+        watch = [myAvatarImage, hasUnseenDecorators]
+        size = const [avatarSize, avatarSize]
         rendObj = ROBJ_IMAGE
         image =  Picture($"{myAvatarImage.get()}:{avatarSize}:{avatarSize}:P")
         padding = hdpx(10)
@@ -126,10 +129,9 @@ function mkAvatar() {
 }
 
 function mkUserName() {
-  let userNameBtnSize = hdpxi(40)
+  const userNameBtnSize = hdpxi(40)
   let iconStateFlags = Watched(0)
   return @() {
-    watch = hasUnseenDecorators
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     gap
@@ -154,7 +156,7 @@ function mkUserName() {
 }
 
 function mkUserId() {
-  let idBtnSize = hdpxi(30)
+  const idBtnSize = hdpxi(30)
   let iconStateFlags = Watched(0)
   return {
     behavior = Behaviors.Button
@@ -233,9 +235,9 @@ function mkPremiumDescription() {
       : {
           size = FLEX_H
           rendObj = ROBJ_SOLID
-          padding = [hdpx(10), hdpx(20)]
+          padding = const [hdpx(10), hdpx(20)]
           color = 0x70000000
-          margin = [hdpx(70), 0, 0, 0]
+          margin = const [hdpx(70), 0, 0, 0]
           flow = FLOW_HORIZONTAL
           valign = ALIGN_CENTER
           gap = {size = FLEX}

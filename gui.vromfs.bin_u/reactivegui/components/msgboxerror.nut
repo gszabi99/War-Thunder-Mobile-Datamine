@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { defaultBtnsCfg, msgBoxText, mkCustomMsgBoxWnd, mkMsgBoxBtnsSet
-} = require("%rGui/components/msgBox.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { urlText } = require("%rGui/components/urlText.nut")
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/msgBox.nut" import defaultBtnsCfg, msgBoxText, mkCustomMsgBoxWnd, mkMsgBoxBtnsSet
+from "%rGui/components/urlText.nut" import urlText
+from "%rGui/style/backgrounds.nut" import bgShaded
 
-let wndWidth = hdpx(1500)
-let wndHeight = hdpx(700)
+
+const wndWidth = hdpx(1500)
+const wndHeight = hdpx(700)
 
 let msgContent = @(text, moreInfoLink) {
   size = FLEX
@@ -36,7 +36,7 @@ function openMsgBoxError(text, uid = null, title = null, buttons = defaultBtnsCf
       hplace = ALIGN_CENTER
       children = [
         mkCustomMsgBoxWnd(title, msgContent(text, moreInfoLink), mkMsgBoxBtnsSet(uid, buttons),
-          { size = [wndWidth, wndHeight] })
+          { size = const [wndWidth, wndHeight] })
         {
           hplace = ALIGN_RIGHT
           rendObj = ROBJ_TEXT

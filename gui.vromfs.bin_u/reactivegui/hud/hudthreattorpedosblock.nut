@@ -1,15 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hudWhiteColor, hudCoralRedColor } = require("%rGui/style/hudColors.nut")
+from "%sqstd/math.nut" import round
+from "%rGui/hudState.nut" import threatTorpedos
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudCoralRedColor
 
-let { threatTorpedos } = require("%rGui/hudState.nut")
-let { round } = require("%sqstd/math.nut")
 
-let textPadding = hdpx(10)
-let imgSize = hdpx(40)
+const textPadding = hdpx(10)
+const imgSize = hdpx(40)
 let textColor = hudWhiteColor
 let warnColor = hudCoralRedColor
-let torpedosPosX = hdpx(650)
-let blinkingTime = 4.0
+const torpedosPosX = hdpx(650)
+const blinkingTime = 4.0
 let blinking = [{
   prop = AnimProp.color,
   from = textColor,
@@ -59,7 +59,7 @@ let threatTorpedosBlock = @() {
   vplace = ALIGN_CENTER
   halign = ALIGN_LEFT
   flow = FLOW_VERTICAL
-  pos = [torpedosPosX, 30]
+  pos = const [torpedosPosX, 30]
   children = threatTorpedos.get()
         .map(@(threat) threat.x > 0 ? mkRecord(threat.x, threat.y) : null)
 }

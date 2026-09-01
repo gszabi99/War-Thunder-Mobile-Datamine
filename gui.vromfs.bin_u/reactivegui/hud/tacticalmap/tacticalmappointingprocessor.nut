@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
+from "dagor.time" import get_time_msec
+
 
 const SHORT_TAP_MSEC = 300
 const DEV_GAMEPAD = 3

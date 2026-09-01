@@ -1,14 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%rGui/components/textButton.nut" import mkCustomButton, buttonStyles, mergeStyles, buttonTextWidth, paddingX
+from "%rGui/dmViewer/protectionAnalysisState.nut" import isProtectionAnalysisAvailable, openProtectionAnalysis
+from "%rGui/unit/hangarUnit.nut" import hasHangarUnitResources
 
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { mkCustomButton, buttonStyles, mergeStyles, buttonTextWidth, paddingX } = require("%rGui/components/textButton.nut")
-let { isProtectionAnalysisAvailable, openProtectionAnalysis } = require("%rGui/dmViewer/protectionAnalysisState.nut")
-let { hasHangarUnitResources } = require("%rGui/unit/hangarUnit.nut")
 
-
-let iconSize = hdpxi(60)
-let contentGap = hdpx(20)
+const iconSize = hdpxi(60)
+const contentGap = hdpx(20)
 
 let mkBtnContent = @(contentOvr = {}) {
   valign = ALIGN_CENTER

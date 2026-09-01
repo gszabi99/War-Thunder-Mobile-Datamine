@@ -1,4 +1,4 @@
-let eventBgFallback = "ui/images/event_bg.avif"
+const eventBgFallback = "ui/images/event_bg.avif"
 
 let genParams = {
   name = @(name) name
@@ -53,6 +53,7 @@ let presentations = {
   season_34 = { color = 0xFF2A4C94 }
   season_35 = { color = 0xFFE97611 }
   season_36 = { color = 0xFFFE6F71 }
+  season_37 = { color = 0xFF191970 }
   nybond                       = { bg = "ui/images/event_bg_christmas_2024.avif" }
   blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }
@@ -79,6 +80,15 @@ let presentations = {
   event_april_2025  = {
     icon = "ui/gameuiskin#icon_event_april_2025.svg",
     bg = "ui/images/event_bg_event_april_2025.avif"
+  }
+  season_37_main_event = {
+    icon = "ui/gameuiskin#icon_event_april_2025.svg"
+    bg = "ui/images/bg_main.avif"
+    mapSceneBg = "ui/images/event_s37_background.avif"
+    bgMap = {
+      image = "ui/images/event_s37_monitor.avif"
+      offs = [80, 170, 190, 170] 
+    }
   }
   april_event_2026  = {
     image = $"ui/gameuiskin/icon_event_april_2026_shop.avif",

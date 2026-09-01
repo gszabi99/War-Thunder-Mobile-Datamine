@@ -1,23 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let fontStyleAll = require("%globalsDarg/fontsStyle.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { textInput } = require("%rGui/components/textInput.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
+from "console" import register_command
+from "%sqstd/underscore.nut" import arrayByRows
+import "%globalsDarg/fontsStyle.nut" as fontStyleAll
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/textInput.nut" import textInput
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let curText = mkWatched(persist, "curText", "")
 
-let wndHeaderHeight = hdpx(60)
+const wndHeaderHeight = hdpx(60)
 let opacityGradientSize = saBorders[1]
 let wndContentHeight = saSize[1] - wndHeaderHeight + opacityGradientSize
-let hGap = hdpx(30)
-let vGap = hdpx(20)
+const hGap = hdpx(30)
+const vGap = hdpx(20)
 let colCount = max(3, saSize[0] / hdpxi(700))
 
 let close = @() isOpened.set(false)
@@ -35,7 +35,7 @@ let inputBlock = textInput(curText, {
 })
 
 let wndHeader = {
-  size = [FLEX, wndHeaderHeight]
+  size = const [FLEX, wndHeaderHeight]
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(15)

@@ -1,41 +1,40 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("%sqstd/math.nut")
-let { format } = require("string")
-let { deep_clone, isEqual } = require("%sqstd/underscore.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { backButtonHeight } = require("%rGui/components/backButton.nut")
-let { openEditTextWnd, closeEditTextWnd } = require("%rGui/components/editTextWnd.nut")
-let { getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
-let { mkWeaponBelts, isBeltWeapon, getEquippedBelt } = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
-let { padding, weaponSize, smallGap, commonWeaponIcon, mkBeltImage,
-  header, headerText, caliberTitle, defPadding
-} = require("%rGui/respawn/respawnComps.nut")
-let { mkBlocksContainer } = require("%rGui/components/verticalBlocks.nut")
-let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
-let { mkWeaponPreset, mkChosenBelts, mkSavedWeaponPresets } = require("%rGui/unit/unitSettings.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
+from "string" import format
+from "%sqstd/math.nut" import ceil
+from "%sqstd/underscore.nut" import deep_clone, isEqual
+from "%rGui/components/backButton.nut" import backButtonHeight
+from "%rGui/components/editTextWnd.nut" import openEditTextWnd, closeEditTextWnd
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/verticalBlocks.nut" import mkBlocksContainer
+from "%rGui/respawn/playerActivity.nut" import sendPlayerActivityToServer
+from "%rGui/respawn/respawnComps.nut" import padding, weaponSize, smallGap, commonWeaponIcon, mkBeltImage, header,
+  headerText, caliberTitle, defPadding
+from "%rGui/style/stdColors.nut" import selectColor
+from "%rGui/unit/unitSettings.nut" import mkWeaponPreset, mkChosenBelts, mkSavedWeaponPresets
+from "%rGui/unitMods/equippedSecondaryWeapons.nut" import getEquippedWeapon
+from "%rGui/unitMods/unitModsSlotsState.nut" import mkWeaponBelts, isBeltWeapon, getEquippedBelt
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitWeaponSlots
+from "%rGui/weaponry/weaponsVisual.nut" import getBulletBeltShortName
 
 
-let MAX_PRESET_NAME_LENGTH = 32
-let MAX_SAVED_PRESET = 5
-let SLOTS_IN_ROW = 5
-let SLOTS_IN_PRESET_ROW = 6
+const MAX_PRESET_NAME_LENGTH = 32
+const MAX_SAVED_PRESET = 5
+const SLOTS_IN_ROW = 5
+const SLOTS_IN_PRESET_ROW = 6
 let activeBorderColor = selectColor
-let cardBgColor = 0xFF45545D
-let presetBorderWidth = hdpx(3)
-let cellGap = hdpx(12)
+const cardBgColor = 0xFF45545D
+const presetBorderWidth = hdpx(3)
+const cellGap = hdpx(12)
 let cellSizeWithGap = weaponSize + cellGap
 let wndSize = @(cells) cellSizeWithGap * cells - cellGap
-let presetBlockHeight = hdpx(180)
-let paddingWnd = hdpx(10)
+const presetBlockHeight = hdpx(180)
+const paddingWnd = hdpx(10)
 let wndSizeWithPadding = @(cells) wndSize(cells) + paddingWnd * 2
 let containerHeight = saSize[1] - backButtonHeight - hdpx(70) - saBordersRv[0] * 2
 let weaponBlockWidth = wndSizeWithPadding(SLOTS_IN_ROW)
 let presetBlockWidth = wndSizeWithPadding(SLOTS_IN_PRESET_ROW)
-let weaponBorderWidth = hdpx(3)
-let contentGap = hdpx(20)
+const weaponBorderWidth = hdpx(3)
+const contentGap = hdpx(20)
 
 let activePresetIdx = Watched(-1)
 let currentPresetName = Watched("")

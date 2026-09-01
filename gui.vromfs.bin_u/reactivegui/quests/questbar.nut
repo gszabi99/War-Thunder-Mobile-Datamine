@@ -1,45 +1,44 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { tagRedColor } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { progressBarRewardSize, questItemsGap, rewardProgressBarCtor, statsAnimation
-} = require("%rGui/quests/rewardsComps.nut")
-let { getUnlockRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { batchReceiveRewards, unlockInProgress, unlockProgress } = require("%rGui/unlocks/unlocks.nut")
-let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
-let { horizontalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { minContentOffset, tabW } = require("%rGui/options/optionsStyle.nut")
-let { mkBalanceDiffAnims } = require("%rGui/mainMenu/balanceAnimations.nut")
-let { sendBqQuestsStage } = require("%rGui/quests/bqQuests.nut")
-let { getStarsTotalNonUpdatable } = require("%rGui/quests/questsState.nut")
-let { allShopGoods, isDisabledGoods } = require("%rGui/shop/shopState.nut")
-let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
-let { isAdsVisible } = require("%rGui/ads/adsState.nut")
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/ads/adsState.nut" import isAdsVisible
+from "%rGui/components/pannableArea.nut" import horizontalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
+from "%rGui/mainMenu/balanceAnimations.nut" import mkBalanceDiffAnims
+from "%rGui/options/optionsStyle.nut" import minContentOffset, tabW
+from "%rGui/quests/bqQuests.nut" import sendBqQuestsStage
+from "%rGui/quests/questsState.nut" import getStarsTotalNonUpdatable
+from "%rGui/quests/rewardsComps.nut" import progressBarRewardSize, questItemsGap, rewardProgressBarCtor, statsAnimation
+from "%rGui/rewards/rewardViewInfo.nut" import getUnlockRewardsViewInfo, sortRewardsViewInfo
+from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
+from "%rGui/shop/goodsView/sharedParts.nut" import tagRedColor
+from "%rGui/shop/offerByGoodsState.nut" import activeOffersByGoods
+from "%rGui/shop/shopState.nut" import allShopGoods, isDisabledGoods
+from "%rGui/unlocks/unlocks.nut" import batchReceiveRewards, unlockInProgress, unlockProgress
+from "%rGui/unlocks/userstat.nut" import isUserstatMissingData
 
 
-let questBarHeight = hdpx(28)
-let progressBarHeight = hdpx(30)
-let starIconSize = hdpxi(60)
-let starIconOffset = hdpx(44)
-let borderWidth = hdpx(3)
-let bgColor = 0x80000000
-let questBarColor = 0xFF2EC181
-let completedBarColor = 0xFF505050
-let progressBarColor = 0xFF5AA0E9
-let progressBarColorLight = 0xFFDEECFA
-let barBorderColor = 0xFF606060
-let subtleRedColor = 0xC8800000
-let BAR_COLOR_SHOW = 0.4
-let BAR_COLOR_BLINK = 1.0
+const questBarHeight = hdpx(28)
+const progressBarHeight = hdpx(30)
+const starIconSize = hdpxi(60)
+const starIconOffset = hdpx(44)
+const borderWidth = hdpx(3)
+const bgColor = 0x80000000
+const questBarColor = 0xFF2EC181
+const completedBarColor = 0xFF505050
+const progressBarColor = 0xFF5AA0E9
+const progressBarColorLight = 0xFFDEECFA
+const barBorderColor = 0xFF606060
+const subtleRedColor = 0xC8800000
+const BAR_COLOR_SHOW = 0.4
+const BAR_COLOR_BLINK = 1.0
 
-let fadeWidth = hdpx(10)
-let minStageProgressWidth = hdpx(122)
+const fadeWidth = hdpx(10)
+const minStageProgressWidth = hdpx(122)
 let progressBarWidthFull = sw(100) - saBorders[0] * 2 - tabW - minContentOffset
 let progressBarWidthNoTabs = saSize[0]
-let firstProgressWider = starIconOffset
+const firstProgressWider = starIconOffset
 
 let visibleProgress = hardPersistWatched("unlocks.visibleProgress", {})
 let changeOrders = hardPersistWatched("unlocks.changeOrders", {})
@@ -134,7 +133,7 @@ function mkQuestBar(quest, triggerPostfix = null) {
   return {
     key = quest.name
     rendObj = ROBJ_BOX
-    size = [FLEX, questBarHeight]
+    size = const [FLEX, questBarHeight]
     fillColor = bgColor
     borderWidth
     borderColor = barBorderColor
@@ -198,7 +197,7 @@ let mkChangeView = @(name, change) {
     valign = ALIGN_CENTER
     children = [
       {
-        size = [starIconSize, starIconSize]
+        size = const [starIconSize, starIconSize]
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#quest_experience_icon.avif:{starIconSize}:{starIconSize}:P")
       }
@@ -288,13 +287,13 @@ function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
             children = [
               @() {
                 watch = stageCompletion
-                size = [FLEX, progressBarHeight]
+                size = const [FLEX, progressBarHeight]
                 children = [
                   {
                     rendObj = ROBJ_BOX
                     size = FLEX
                     fillColor = bgColor
-                    borderWidth = [borderWidth, 0]
+                    borderWidth = const [borderWidth, 0]
                     borderColor = barBorderColor
                   }
                   {
@@ -362,7 +361,7 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, isFullScree
     : {
         watch = [progressUnlock, hasScroll, progressBarWidth, minWidth, rewardsFullWidth, isFullScreenWidth]
         hplace = ALIGN_LEFT
-        padding = [0, 0, 0, starIconOffset]
+        padding = const [0, 0, 0, starIconOffset]
         children = [
           !hasScroll.get()
             ? mkStages(progressUnlock.get(), minStageProgressWidth, tabId, curSectionId)
@@ -383,7 +382,7 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, isFullScree
                 children = [
                   (isFullScreenWidth.get() ? pannableAreaNoTabs : pannableArea)(
                     mkStages(progressUnlock.get(), minStageProgressWidth, tabId, curSectionId),
-                    { pos = [0, 0], size = FLEX_H, vplace = ALIGN_CENTER },
+                    { pos = const [0, 0], size = FLEX_H, vplace = ALIGN_CENTER },
                     {
                       size = FLEX_H
                       behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
@@ -399,9 +398,9 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, isFullScree
               }
           {
             key = progressUnlock.get().name
-            size = [starIconSize, starIconSize]
+            size = const [starIconSize, starIconSize]
             vplace = ALIGN_CENTER
-            pos = [-starIconOffset, hdpx(-7)]
+            pos = const [-starIconOffset, hdpx(-7)]
             rendObj = ROBJ_IMAGE
             image = Picture("ui/gameuiskin#quest_experience_icon.avif:0:P")
             transform = {}
@@ -414,8 +413,6 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, isFullScree
 return {
   mkQuestBar
   mkQuestListProgressBar
-
-  progressBarHeight
 
   calcStageCompletion
 }

@@ -1,72 +1,68 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_mission_time } = require("mission")
-let { eventbus_send } = require("eventbus")
-let { deferOnce } = require("dagor.workcycle")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { AIR } = require("%appGlobals/unitConst.nut")
-let { hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { isRespawnAttached, respawnSlots, respawn, cancelRespawn, selSlotContentGenId,
-  selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum, unitListScrollHandler, hasSkins,
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_send
+from "mission" import get_mission_time
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%appGlobals/clientState/missionState.nut" import hudCustomRules
+from "%appGlobals/clientState/respawnStateBase.nut" import isRespawnInProgress, isRespawnStarted, respawnUnitInfo,
+  timeToRespawn, respawnUnitItems, respawnsLeft, respawnsTotalInitial
+from "%appGlobals/itemsState.nut" import SPARE
+from "%appGlobals/unitConst.nut" import AIR
+from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitName
+from "%rGui/components/animGrowLines.nut" import mkAnimGrowLines, mkAGLinesCfgOrdered
+from "%rGui/components/buttonStyles.nut" import defButtonHeight, BATTLE, INACTIVE
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkCurrencyImage
+from "%rGui/components/currencyStyles.nut" import CS_RESPAWN, CS_GAMERCARD
+from "%rGui/components/infoButton.nut" import infoTooltipButton
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
+from "%rGui/components/selectedLineUnits.nut" import selLineSize
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/textButton.nut" import textButtonCommon, mkCustomButton, iconButtonPrimary, mkButtonTextMultiline
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/hud/localMPlayer.nut" import mySpawnScore
+from "%rGui/hud/menuButton.nut" import mkMenuButton
+from "%rGui/hud/scoreBoard.nut" import scoreBoardType, scoreBoardCfgByType, scoreBoardHeight
+from "%rGui/hud/weaponsButtonsAnimations.nut" import mkConsumableSpend
+from "%rGui/hudHints/hintBlocks.nut" import logerrHintsBlock
+from "%rGui/respawn/bulletsChoiceState.nut" import bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets,
+  hasChangedCurSlotBullets, hasZeroMainBullets
+from "%rGui/respawn/playerActivity.nut" import sendPlayerActivityToServer
+import "%rGui/respawn/respawnAirWeaponry.nut" as respawnAirWeaponry
+from "%rGui/respawn/respawnAnimState.nut" import slotAABB, selSlotLinesSteps, lineSpeed
+import "%rGui/respawn/respawnBullets.nut" as respawnBullets
+from "%rGui/respawn/respawnComps.nut" import bg, headerText, headerHeight, header, gap, contentOffset, unitListHeight,
+  skinPadding
+from "%rGui/respawn/respawnMap.ui.nut" import respawnMap, visibleRespawnBases
+from "%rGui/respawn/respawnSkins.nut" import respawnSkins, skinSize, skinGap
+from "%rGui/respawn/respawnState.nut" import isRespawnAttached, respawnSlots, respawn, cancelRespawn,
+  selSlotContentGenId, selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum, unitListScrollHandler, hasSkins,
   needRespawnSlotsAndWeaponry, spawnScoreCosts, isUseSpawnScore
-} = require("%rGui/respawn/respawnState.nut")
-let { mkSpawnScore, spawnScoreBalance } = require("%rGui/respawn/spawnScore.nut")
-let { bulletsToSpawn, hasLowBullets, hasZeroBullets, chosenBullets, hasChangedCurSlotBullets, hasZeroMainBullets
-} = require("%rGui/respawn/bulletsChoiceState.nut")
-let { slotAABB, selSlotLinesSteps, lineSpeed } = require("%rGui/respawn/respawnAnimState.nut")
-let { isRespawnInProgress, isRespawnStarted, respawnUnitInfo, timeToRespawn, respawnUnitItems,
-  hasPredefinedReward, dailyBonus, respawnsLeft, respawnsTotalInitial
-} = require("%appGlobals/clientState/respawnStateBase.nut")
-let { getUnitPresentation, getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { markTextColor, badTextColor2, textColor, commonTextColor } = require("%rGui/style/stdColors.nut")
-let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
-let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
-let { textButtonCommon, mkCustomButton, iconButtonPrimary, mkButtonTextMultiline } = require("%rGui/components/textButton.nut")
-let { defButtonHeight, BATTLE, INACTIVE } = require("%rGui/components/buttonStyles.nut")
-let { scoreBoardType, scoreBoardCfgByType, scoreBoardHeight } = require("%rGui/hud/scoreBoard.nut")
-let { unitPlateSmall, mkUnitBg, mkUnitSelectedGlow, mkPlateText, mkUnitLevel,
-  mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, unitSlotLockedByQuests,
-  mkUnitSelectedUnderline, mkUnitInfo, plateTextsSmallPad, mkUnitDailyBonus
-} = require("%rGui/unit/components/unitPlateComp.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
-let { logerrHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { respawnMap, visibleRespawnBases } = require("%rGui/respawn/respawnMap.ui.nut")
-let respawnBullets = require("%rGui/respawn/respawnBullets.nut")
-let respawnAirWeaponry = require("%rGui/respawn/respawnAirWeaponry.nut")
-let { bg, headerText, headerHeight, header, gap, contentOffset, unitListHeight, skinPadding
-} = require("%rGui/respawn/respawnComps.nut")
-let { mkAnimGrowLines, mkAGLinesCfgOrdered } = require("%rGui/components/animGrowLines.nut")
-let { SPARE } = require("%appGlobals/itemsState.nut")
-let { mkCurrencyComp, mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
-let { mySpawnScore } = require("%rGui/hud/localMPlayer.nut")
-let { respawnSkins, skinSize, skinGap } = require("%rGui/respawn/respawnSkins.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { openUnitWeaponPresetWnd } = require("%rGui/unit/unitWeaponPresetsWnd.nut")
-let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
-let { selLineSize } = require("%rGui/components/selectedLineUnits.nut")
-let { CS_RESPAWN, CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
-let { mkWeaponPreset } = require("%rGui/unit/unitSettings.nut")
-let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { mkTooltipText } = require("%rGui/tooltip.nut")
+from "%rGui/respawn/spawnScore.nut" import mkSpawnScore, spawnScoreBalance
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import markTextColor, badTextColor2, textColor, commonTextColor
+from "%rGui/tooltip.nut" import mkTooltipText
+from "%rGui/unit/components/unitPlateComp.nut" import unitPlateSmall, mkUnitBg, mkUnitSelectedGlow, mkPlateText,
+  mkUnitLevel, mkUnitImage, mkUnitTexts, mkUnitSlotLockedLine, unitSlotLockedByQuests, mkUnitSelectedUnderline,
+  mkUnitInfo, plateTextsSmallPad
+from "%rGui/unit/unitSettings.nut" import mkWeaponPreset
+from "%rGui/unit/unitWeaponPresetsWnd.nut" import openUnitWeaponPresetWnd
+from "%rGui/unitMods/equippedSecondaryWeapons.nut" import getEquippedWeapon
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitWeaponSlots
 
 
-let MAX_DEF_SLOTS = 4
+const MAX_DEF_SLOTS = 4
 
-let mapMaxSize = hdpx(610)
+const mapMaxSize = hdpx(610)
 let unitListGradientSize = [gap, saBorders[1]]
-let scoreIconSize = hdpxi(30)
-let tooltipIconSize = hdpxi(32)
+const scoreIconSize = hdpxi(30)
+const tooltipIconSize = hdpxi(32)
 
-let lockColor = 0xFF9C9EA0
-let destroyedColor = 0xFFEE5353
+const lockColor = 0xFF9C9EA0
+const destroyedColor = 0xFFEE5353
 
 let needCancel = Computed(@() isRespawnStarted.get() && !isRespawnInProgress.get() && respawnSlots.get().len() > 1)
 let showLowBulletsWarning = Watched(true)
@@ -191,12 +187,6 @@ function mkSlotPlate(slot, baseUnit) {
               ? unitSlotLockedByQuests
             : mkUnitSlotLockedLine(slot)
           canSpawn && isSpawnBySpare ? sparePrice : null
-          unit?.hasDailyBonus
-            ? mkUnitDailyBonus(Computed(@() !hasPredefinedReward.get()),
-              Computed(@() dailyBonus.get()?.wpMul ?? 1),
-              Computed(@() dailyBonus.get()?.expMul ?? 1),
-              Computed(@() (serverConfigs.get()?.campaignCfg[unit?.campaign].totalSlots ?? 0) > 0))
-            : null
         ]
       }
     ]
@@ -232,11 +222,12 @@ let mkTooltipRow = @(iconComp, text) {
 
 function tooltipContentCtor() {
   sendPlayerActivityToServer()
+  let { allowSpare = false } = hudCustomRules.get()
   let res = {
     flow = FLOW_VERTICAL
     children = [
       mkTooltipRow(tankIcon, loc("respawn/spawnsCounter/type/available"))
-      mkTooltipRow(spareIcon, loc("respawn/spawnsCounter/type/spare"))
+      allowSpare ? mkTooltipRow(spareIcon, loc("respawn/spawnsCounter/type/spare")) : null
       mkTooltipRow(destroyedIcon, loc("respawn/spawnsCounter/type/destroyed"))
       mkTooltipRow(lockIcon, loc("respawn/spawnsCounter/type/notAvailable"))
     ]
@@ -244,11 +235,12 @@ function tooltipContentCtor() {
 
   let unitsLeft = min(respawnsLeft.get(), respawnSlots.get().filter(@(slot) slot.canSpawn && !slot.isSpawnBySpare).len())
   let hasMaxSlots = respawnSlots.get().len() >= min(respawnsTotalInitial.get(), MAX_DEF_SLOTS)
-  let hasEnoughSpares = sparesNum.get() >= (respawnsLeft.get() - unitsLeft)
+  let hasEnoughSpares = !allowSpare || (sparesNum.get() >= (respawnsLeft.get() - unitsLeft))
   if (hasMaxSlots && hasEnoughSpares)
     return res
 
   let hint = !hasMaxSlots && !hasEnoughSpares ? loc("respawn/spawnsCounter/tooltip/all")
+    : !allowSpare ? loc("respawn/spawnsCounter/tooltip/unit")
     : !hasMaxSlots ? loc("respawn/spawnsCounter/tooltip/unitNoSpare")
     : hasEnoughSpares ? loc("respawn/spawnsCounter/tooltip/unit")
     : loc("respawn/spawnsCounter/tooltip/spare")
@@ -309,9 +301,9 @@ let slotsBlockTitle = @(unit, respSlots) function() {
 
   let unitsLeft = min(respawnsLeft.get(),
     respSlots.filter(@(slot) slot.canSpawn && !slot.isSpawnBySpare).len())
-  let sparesLeft = min(respawnsLeft.get() - unitsLeft,
-    sparesNum.get(),
-    unitsLeft + respSlots.filter(@(slot) slot.canSpawn && slot.isSpawnBySpare).len())
+  let sparesLeft = !hudCustomRules.get()?.allowSpare ? 0
+    : min(respawnsLeft.get() - unitsLeft, sparesNum.get(),
+        unitsLeft + respSlots.filter(@(slot) slot.canSpawn && slot.isSpawnBySpare).len())
   let unitsDestroyed = respawnsTotalInitial.get() - respawnsLeft.get()
   let unitsNotAvailable = respawnsLeft.get() - unitsLeft - sparesLeft
 
@@ -359,7 +351,10 @@ let slotsBlockTitle = @(unit, respSlots) function() {
         }
       ]
     }
-    { watch = [respawnsTotalInitial, sparesNum, isUseSpawnScore, respawnsLeft], size = [FLEX, hdpx(100)] })
+    {
+      watch = [respawnsTotalInitial, sparesNum, isUseSpawnScore, respawnsLeft, hudCustomRules],
+      size = const [FLEX, hdpx(100)]
+    })
 }
 
 let pannableArea = verticalPannableAreaCtor(unitListHeight + unitListGradientSize[0] + unitListGradientSize[1],

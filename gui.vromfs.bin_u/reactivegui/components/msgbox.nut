@@ -1,21 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "%sqstd/string.nut" import utf8ToUpper
+import "%rGui/components/buttonStyles.nut" as buttonStyles
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow, MWP_COMMON
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/textButton.nut" import textButtonMultiline, buttonsHGap, mergeStyles, textButton,
+  textButtonPricePurchase
+from "%rGui/controlsMenu/gpActBtn.nut" import btnAUp, btnBEscUp, EMPTY_ACTION
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import locColorTable
+from "types" import String
+
+
 let logM = log_with_prefix("[MSGBOX] ")
-let { register_command } = require("console")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { addModalWindow, removeModalWindow, MWP_COMMON } = require("%rGui/components/modalWindows.nut")
-let { textButtonMultiline, buttonsHGap, mergeStyles, textButton, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { btnAUp, btnBEscUp, EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
-let buttonStyles = require("%rGui/components/buttonStyles.nut")
-let { locColorTable } = require("%rGui/style/stdColors.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
 
 
-let wndWidthDefault = hdpx(1106) 
-let wndWidthWide = hdpx(1500) 
-let wndHeight = hdpx(652)
+const wndWidthDefault = hdpx(1106) 
+const wndWidthWide = hdpx(1500) 
+const wndHeight = hdpx(652)
 let { defButtonHeight } = buttonStyles
 
 function mkBtn(b, wndUid) {
@@ -90,14 +94,14 @@ let mkCustomMsgBoxWnd = @(title, content, buttonsArray, ovr = {}) modalWndBg.__m
   size = [ buttonsArray.len() <= 2 ? wndWidthDefault : wndWidthWide, wndHeight ]
   flow = FLOW_VERTICAL
   children = [
-    type(title) == "string" ? modalWndHeader(title) : title,
+    title instanceof String ? modalWndHeader(title) : title,
     {
       size = FLEX
       flow = FLOW_VERTICAL
       padding = [ 0, buttonsHGap, buttonsHGap, buttonsHGap ]
       halign = ALIGN_CENTER
       children = [
-        type(content) == "string" ? msgBoxText(content) : content,
+        content instanceof String ? msgBoxText(content) : content,
         {
           size = FLEX_H
           halign = ALIGN_CENTER
@@ -111,7 +115,7 @@ let mkCustomMsgBoxWnd = @(title, content, buttonsArray, ovr = {}) modalWndBg.__m
 },
   ovr)
 
-let defaultBtnsCfg = freeze([ { id = "ok", styleId = "COMMON", isDefault = true } ])
+const defaultBtnsCfg = [ { id = "ok", styleId = "COMMON", isDefault = true } ]
 function closeMsgBox(uid) {
   if (removeModalWindow(uid))
     logM($"close '{uid}'")

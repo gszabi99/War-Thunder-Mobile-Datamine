@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { register_command } = require("console")
-let { getStrategyState, NODE_ORDER_RETURN } = require("guiStrategyMode")
-let { AIR_GROUP_TYPE } = require("%rGui/hud/strategyMode/style.nut")
+from "console" import register_command
+from "dagor.workcycle" import setInterval, clearTimer
+from "guiStrategyMode" import getStrategyState, NODE_ORDER_RETURN
+from "%rGui/hud/strategyMode/style.nut" import AIR_GROUP_TYPE
+
 
 let behaviourToType = {
   [""]              = AIR_GROUP_TYPE.SHIP_SELF,

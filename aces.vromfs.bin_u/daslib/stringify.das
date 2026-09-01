@@ -16,12 +16,6 @@ require daslib/ast_boost
 [reader_macro(name="stringify")]
 class private LongStringReader : AstReaderMacro {
     
-    
-    
-    
-    
-    
-    
     def override accept(prog : ProgramPtr; mod : Module?; var expr : ExprReader?; ch : int; info : LineInfo) : bool {
         
         if (ch != '\r') {

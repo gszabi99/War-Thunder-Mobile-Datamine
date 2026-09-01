@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { date } = require("datetime")
-let { format } = require("string")
-let { getMedalPresentation } = require("%appGlobals/config/medalsPresentation.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
+from "datetime" import date
+from "string" import format
+from "%appGlobals/config/medalsPresentation.nut" import getMedalPresentation
+from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
 
-let medalSize = hdpx(50)
 
-let defColor = 0xFFFFFFFF
+const medalSize = hdpx(50)
+
+const defColor = 0xFFFFFFFF
 let mkText = @(text, color = defColor) {
   rendObj = ROBJ_TEXT
   text
@@ -17,7 +18,7 @@ let mkLbMedalTop10Ctor = @(presentation) function(medal) {
   let { descLocId, image } = presentation
   let stateFlags = Watched(0)
   return @() {
-    size = [medalSize, medalSize]
+    size = const [medalSize, medalSize]
     watch = stateFlags
     key = medal
     behavior = Behaviors.Button
@@ -43,7 +44,7 @@ let mkLbMedalTop10Ctor = @(presentation) function(medal) {
     })
     children = [
       {
-        size = [medalSize, medalSize]
+        size = const [medalSize, medalSize]
         rendObj = ROBJ_IMAGE
         keepAspect = KEEP_ASPECT_FIT
         image = Picture($"ui/gameuiskin#{image}:{medalSize}:{medalSize}:P")
@@ -53,7 +54,7 @@ let mkLbMedalTop10Ctor = @(presentation) function(medal) {
             rendObj = ROBJ_TEXT
             text = medal.list.len()
             halign = ALIGN_CENTER
-            pos = [medalSize * 0.8, medalSize * 0.8]
+            pos = const [medalSize * 0.8, medalSize * 0.8]
           }.__update(fontVeryTinyAccented)
     ]
   }
@@ -65,7 +66,7 @@ let mkSimpleMedalCtor = @(presentation) function(medal) {
   return @() {
     watch = stateFlags
     key = medal
-    size = [medalSize, medalSize]
+    size = const [medalSize, medalSize]
     rendObj = ROBJ_IMAGE
     keepAspect = KEEP_ASPECT_FIT
     image = image == null ? Picture("ui/unitskin#image_in_progress")

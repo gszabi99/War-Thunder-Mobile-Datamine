@@ -1769,7 +1769,7 @@
     },
     "mechanics": {
       "maxBrakeForce": 80000.0,
-      "driveGearRadius": 0.23,
+      "driveGearRadius": 0.24,
       "mainGearRatio": 1.0,
       "sideGearRatio": 3.77573,
       "alternativeGearControl": 5.0,
@@ -1794,7 +1794,7 @@
         0.05
       ],
       "defaultGearRadius": 0.3,
-      "frontBackGearRadius": 0.2,
+      "frontBackGearRadius": 0.24,
       "defaultDampeningForce": [
         55000.0,
         55000.0

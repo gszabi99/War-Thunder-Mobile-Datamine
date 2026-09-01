@@ -1,27 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { round_by_value, fabs } = require("%sqstd/math.nut")
-let { isStringInteger } = require("%sqstd/string.nut")
-let { loadUnitWeaponSlots, loadUnitSlotsParams, loadUnitReqModifications
-} = require("%rGui/weaponry/loadUnitBullets.nut")
-let { hangarUnitName, hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { baseUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { balance } = require("%appGlobals/currenciesState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { mkWeaponPreset, getWeaponPreset, mkChosenBelts, getChosenBelts, mkSeenMods
-} = require("%rGui/unit/unitSettings.nut")
-let { mkUnitModCostCfg, hasEnoughCurrencies } = require("%rGui/unitMods/unitModsState.nut")
-let { getEquippedWeapon, getEqippedWithoutOverload, hasConflictWeapons } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
+from "console" import register_command
+from "%sqstd/math.nut" import round_by_value, fabs
+from "%sqstd/string.nut" import isStringInteger
+from "%appGlobals/currenciesState.nut" import balance
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/unitTags.nut" import getUnitTagsCfg
+from "%rGui/unit/hangarUnit.nut" import hangarUnitName, hangarUnit
+from "%rGui/unit/unitSettings.nut" import mkWeaponPreset, getWeaponPreset, mkChosenBelts, getChosenBelts, mkSeenMods
+from "%rGui/unitDetails/unitDetailsState.nut" import baseUnit
+from "%rGui/unitMods/equippedSecondaryWeapons.nut" import getEquippedWeapon, getEqippedWithoutOverload,
+  hasConflictWeapons
+from "%rGui/unitMods/unitModsState.nut" import mkUnitModCostCfg, hasEnoughCurrencies
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitWeaponSlots, loadUnitSlotsParams, loadUnitReqModifications
 
 
-let WS_SEEN_AVAILABLE = true
-let WS_SEEN_UNAVAILABLE = false
+const WS_SEEN_AVAILABLE = true
+const WS_SEEN_UNAVAILABLE = false
 
-let DEFAULT_SLOT_IDX = 1
+const DEFAULT_SLOT_IDX = 1
 
 let seenIndexedSlotMods = mkWatched(persist, "seenIndexedSlotMods", {})
 let openedUnitId = mkWatched(persist, "openedUnitId", null)
@@ -270,7 +269,7 @@ function setDefaultSecondaryWeapon() {
 
 let { chosenBelts, setChosenBelts } = mkChosenBelts(openedUnitId)
 
-let function getEquippedBelt(chosenBeltsV, weaponId, beltsList, unitMods = null) {
+function getEquippedBelt(chosenBeltsV, weaponId, beltsList, unitMods = null) {
   let id = chosenBeltsV?[weaponId] ?? ""
   local res = beltsList?[id]
   let { reqModification = "" } = res

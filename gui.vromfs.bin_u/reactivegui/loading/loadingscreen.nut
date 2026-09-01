@@ -1,19 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { getServerTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
-let { wndSwitchAnim, wndSwitchTrigger } = require("%rGui/style/stdAnimations.nut")
-let { screensList } = require("%globalsDarg/loading/loadingScreensCfg.nut")
-let { loadingAnimBg, isLoadinAnimBgAttached, curScreenId, screenWeights
-} = require("%globalsDarg/loading/loadingAnimBg.nut")
-let { register_command } = require("console")
-let { isInLoadingScreen, isMissionLoading } = require("%appGlobals/clientState/clientState.nut")
-let { gradientLoadingTip } = require("%rGui/loading/mkLoadingTip.nut")
-let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
-let { addFpsLimit, removeFpsLimit } = require("%rGui/guiFpsLimit.nut")
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, clearTimer, deferOnce
+from "%appGlobals/clientState/clientState.nut" import isInLoadingScreen, isMissionLoading
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profileSeasons.nut" import curSeasons
+from "%appGlobals/userstats/serverTime.nut" import getServerTime, isServerTimeValid
+from "%globalsDarg/components/titleLogo.nut" import mkTitleLogo
+from "%globalsDarg/loading/loadingAnimBg.nut" import loadingAnimBg, isLoadinAnimBgAttached, curScreenId, screenWeights
+from "%globalsDarg/loading/loadingScreensCfg.nut" import screensList
+from "%rGui/guiFpsLimit.nut" import addFpsLimit, removeFpsLimit
+from "%rGui/loading/mkLoadingTip.nut" import gradientLoadingTip
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, wndSwitchTrigger
+
 
 let lastLoadingBgShow = Watched(get_time_msec())
 let missionScreenIdx = Watched(0)

@@ -127,9 +127,6 @@ def public make_notification(method : string; params_json : string) : string {
 
 def public make_batch(messages : array<string>) : string {
     
-    
-    
-    
     return build_string() $(var w) {
         write_char(w, '[')
         var first = true
@@ -155,10 +152,7 @@ def private parse_one_request(body_value : JsonValue?; strict : bool) : ParsedRe
     let id_v = body?["id"] ?? null
     let method_v = body?["method"] ?? null
     
-    
-    
     var params_v = unsafe(reinterpret<JsonValue?>(body?["params"] ?? null))
-    
     
     if (id_v != null && !(id_v.value is _string) && !(id_v.value is _number) && !(id_v.value is _longint) && !(id_v.value is _null)) {
         result.error_envelope = error("null", INVALID_REQUEST, "invalid request: id must be string, number, or null")
@@ -166,7 +160,6 @@ def private parse_one_request(body_value : JsonValue?; strict : bool) : ParsedRe
     }
     result.id_str = serialize_id(id_v)
     if (method_v == null || !(method_v.value is _string)) {
-        
         
         result.error_envelope = error(result.id_str, INVALID_REQUEST, "invalid request: missing or non-string method")
         return result
@@ -193,12 +186,6 @@ def private parse_one_request(body_value : JsonValue?; strict : bool) : ParsedRe
 
 def public parse_request(line : string; strict : bool = false) : ParsedRequest {
     
-    
-    
-    
-    
-    
-    
     var result = ParsedRequest(id_str = "null")
     var parse_error_msg = ""
     var parsed = read_json(line, parse_error_msg)
@@ -210,15 +197,6 @@ def public parse_request(line : string; strict : bool = false) : ParsedRequest {
 }
 
 def public parse_batch(line : string; strict : bool = false) : ParsedBatch {
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     var result : ParsedBatch
     var parse_error_msg = ""
@@ -290,10 +268,6 @@ def private parse_one_response(body_value : JsonValue?) : ParsedResponse {
 
 def public parse_response(line : string) : ParsedResponse {
     
-    
-    
-    
-    
     var result = ParsedResponse(id_str = "null", is_success = false)
     var parse_error_msg = ""
     var parsed = read_json(line, parse_error_msg)
@@ -305,10 +279,6 @@ def public parse_response(line : string) : ParsedResponse {
 }
 
 def public parse_response_batch(line : string) : ParsedResponseBatch {
-    
-    
-    
-    
     
     var result : ParsedResponseBatch
     var parse_error_msg = ""
@@ -337,29 +307,27 @@ def public parse_response_batch(line : string) : ParsedResponseBatch {
 
 def public compact_json_whitespace(s : string) : string {
     
-    
-    
-    
     return build_string() $(var w) {
         peek_data(s) $(bytes) {
             var in_string = false
             var escape = false
-            for (b in bytes) {
+            for (raw_b in bytes) {
+                let b = int(raw_b)
                 if (in_string) {
-                    write_char(w, int(b))
+                    write_char(w, b)
                     if (escape) {
                         escape = false
-                    } elif (b == uint8('\\')) {
+                    } elif (b == '\\') {
                         escape = true
-                    } elif (b == uint8('"')) {
+                    } elif (b == '"') {
                         in_string = false
                     }
                 } else {
-                    if (b == uint8('"')) {
+                    if (b == '"') {
                         in_string = true
-                        write_char(w, int(b))
-                    } elif (b != uint8(' ') && b != uint8('\n') && b != uint8('\t') && b != uint8('\r')) {
-                        write_char(w, int(b))
+                        write_char(w, b)
+                    } elif (b != ' ' && b != '\n' && b != '\t' && b != '\r') {
+                        write_char(w, b)
                     }
                 }
             }
@@ -377,17 +345,6 @@ def private dispatch_one(req : ParsedRequest; dispatcher : block<(method : strin
 }
 
 def public dispatch_line(line : string; strict : bool; dispatcher : block<(method : string; params_json : string) : string>) : string {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     let pb = parse_batch(line, strict)
     if (!empty(pb.framing_error)) return pb.framing_error

@@ -1,53 +1,54 @@
 from "%globalsDarg/darg_library.nut" import *
-let mkTextRow = require("%darg/helpers/mkTextRow.nut")
-let { register_command } = require("console")
-let { ceil } = require("%sqstd/math.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { TIME_DAY_IN_SECONDS_F } = require("%sqstd/time.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { subscriptions } = require("%appGlobals/pServer/campaign.nut")
-let { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } = require("%appGlobals/legal.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { getSubsPresentation, getSubsName } = require("%appGlobals/config/subsPresentation.nut")
-let { can_upgrade_subscription } = require("%appGlobals/permissions.nut")
-let { openedSubsId, closeSubsPreview, openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { allSubs, subsGroups } = require("%rGui/shop/shopState.nut")
-let { activatePlatfromSubscription, changeSubscription, platformPurchaseInProgress, platformSubs
-} = require("%rGui/shop/platformGoods.nut")
-let { getSubsPeriodString } = require("%rGui/shop/shopCommon.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeaderBg } = require("%rGui/components/modalWnd.nut")
-let { closeWndBtn } = require("%rGui/components/closeWndBtn.nut")
-let { textButtonPurchase, mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
-let { defButtonMinWidth, defButtonHeight, COMMON } = require("%rGui/components/buttonStyles.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { urlText } = require("%rGui/components/urlText.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { premiumEndsAt, activeInternalSubs } = require("%rGui/state/profilePremium.nut")
-let { smallGap, textColor, premiumRowsCfg, vipRowsCfg, mkBonusRow } = require("%rGui/shop/goodsPreview/subscriptionDescComp.nut")
+from "console" import register_command
+from "%sqstd/math.nut" import ceil
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/time.nut" import TIME_DAY_IN_SECONDS_F
+import "%darg/helpers/mkTextRow.nut" as mkTextRow
+from "%appGlobals/config/subsPresentation.nut" import getSubsPresentation, getSubsName
+from "%appGlobals/legal.nut" import PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL
+from "%appGlobals/pServer/campaign.nut" import subscriptions
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/permissions.nut" import can_upgrade_subscription
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/buttonStyles.nut" import defButtonMinWidth, defButtonHeight, COMMON
+from "%rGui/components/closeWndBtn.nut" import closeWndBtn
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderBg
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonPurchase, mkCustomButton, mergeStyles
+from "%rGui/components/urlText.nut" import urlText
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/shop/goodsPreview/subscriptionDescComp.nut" import smallGap, textColor, premiumRowsCfg, vipRowsCfg,
+  mkBonusRow
+from "%rGui/shop/goodsPreviewState.nut" import openedSubsId, closeSubsPreview, openSubsPreview
+from "%rGui/shop/platformGoods.nut" import activatePlatfromSubscription, changeSubscription,
+  platformPurchaseInProgress, platformSubs
+from "%rGui/shop/shopCommon.nut" import getSubsPeriodString
+from "%rGui/shop/shopState.nut" import allSubs, subsGroups
+from "%rGui/state/profilePremium.nut" import premiumEndsAt, activeInternalSubs
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import userlogTextColor
 
 
-let WND_UID = "subscription_wnd"
-let OLD_SUBSCRIPTION_WND_UID = "old_subscription_wnd"
+const WND_UID = "subscription_wnd"
+const OLD_SUBSCRIPTION_WND_UID = "old_subscription_wnd"
 
-let wndWidth = hdpx(1450)
-let descriptionMinHeight = hdpx(500)
-let wndGap = hdpx(30)
-let descriptionGap = hdpx(5)
-let infoGap = hdpx(100)
-let urlsGap = hdpx(30)
+const wndWidth = hdpx(1450)
+const descriptionMinHeight = hdpx(500)
+const wndGap = hdpx(30)
+const descriptionGap = hdpx(5)
+const infoGap = hdpx(100)
+const urlsGap = hdpx(30)
 let buttonBlockWidth = defButtonMinWidth
 let groupWidthInc = buttonBlockWidth / 2
 let iconSize = [buttonBlockWidth, (buttonBlockWidth / 1.4).tointeger()]
 let headerIconSize = [evenPx(100), (evenPx(100) / 1.4).tointeger()]
 let descriptionWidth = wndWidth - buttonBlockWidth - 2 * wndGap
-let swIconSz = hdpxi(70)
+const swIconSz = hdpxi(70)
 
 let groupBySubs = subsGroups.reduce(function(res, list, groupId) {
     foreach (s in list)
@@ -158,7 +159,7 @@ function getNextFromList(list, cur) {
 
 let toggleSubsBtn = @(subs, subsList) mkCustomButton(
   {
-    size = [swIconSz, swIconSz]
+    size = const [swIconSz, swIconSz]
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#decor_change_icon.svg:{swIconSz}:{swIconSz}:P")
     keepAspect = true

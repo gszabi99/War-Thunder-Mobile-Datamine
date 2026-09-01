@@ -1,29 +1,31 @@
 from "%globalsDarg/darg_library.nut" import *
+from "android.platform" import enqueueDownload, queryDownloadStatus, tryToInstall, getApkFileVersion,
+  DOWNLOAD_STASUS_UNKNOWN, DOWNLOAD_STATUS_PENDING, DOWNLOAD_STATUS_RUNNING, DOWNLOAD_STATUS_PAUSED,
+  DOWNLOAD_STATUS_SUCCESSFUL, DOWNLOAD_STATUS_FAILED
+from "app" import get_base_game_version_str
+from "blkGetters" import get_local_custom_settings_blk
+from "dagor.workcycle" import deferOnce, resetTimeout
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/clientState/clientState.nut" import isInLoadingScreen
+from "%appGlobals/clientState/connectionStatus.nut" import isConnectionLimited
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox, subscribeFMsgBtns
+from "%rGui/components/modalWindows.nut" import hasModalWindows
+from "%rGui/mainMenu/mainMenuState.nut" import isMainMenuAttached
+from "%rGui/notifications/needUpdate/needUpdateAndroidSite.nut" import actualGameVersion, actualGameHash,
+  getApkLinkWithHash, apkTag
+from "%rGui/options/options/gameAutoUpdateOption.nut" import isGameAutoUpdateEnabled
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import isTutorialActive
+
+
 let logD = log_with_prefix("[DOWNLOAD] ")
-let { deferOnce, resetTimeout } = require("dagor.workcycle")
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { enqueueDownload, queryDownloadStatus, tryToInstall, getApkFileVersion, DOWNLOAD_STASUS_UNKNOWN,
-  DOWNLOAD_STATUS_PENDING, DOWNLOAD_STATUS_RUNNING, DOWNLOAD_STATUS_PAUSED, DOWNLOAD_STATUS_SUCCESSFUL,
-  DOWNLOAD_STATUS_FAILED } = require("android.platform")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
-let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
-let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { actualGameVersion, actualGameHash, getApkLinkWithHash, apkTag
-} = require("%rGui/notifications/needUpdate/needUpdateAndroidSite.nut")
-let { get_base_game_version_str } = require("app")
-let { isConnectionLimited } = require("%appGlobals/clientState/connectionStatus.nut")
-let { isGameAutoUpdateEnabled } = require("%rGui/options/options/gameAutoUpdateOption.nut")
 
 let isSuggested = hardPersistWatched("suggestInstall.isSuggested", false)
 let cachedDownloadId = hardPersistWatched("suggestInstall.downloadId", null)
-let SUGGEST_INSTALL_APK = "suggestInstallApk"
-let DOWNLOAD_SUCCESSFUL_BY_SITE = "downloadSuccessfulBySite"
-let TIME_TO_CHECK_DOWNLOAD_STATUS = 2
+const SUGGEST_INSTALL_APK = "suggestInstallApk"
+const DOWNLOAD_SUCCESSFUL_BY_SITE = "downloadSuccessfulBySite"
+const TIME_TO_CHECK_DOWNLOAD_STATUS = 2
 let getApkName = @() $"wtm_{apkTag}_{actualGameVersion.get()}.apk"
 
 let hasDownloadedApk = Watched(false)

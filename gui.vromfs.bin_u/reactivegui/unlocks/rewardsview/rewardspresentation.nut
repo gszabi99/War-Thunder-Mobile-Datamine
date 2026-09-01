@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { G_LOOTBOX, G_CURRENCY } = require("%appGlobals/rewardType.nut")
-let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
-let { mkLootboxImage } = require("%rGui/rewards/components/lootboxView.nut")
-let { mkCurrencyComp, CS_SMALL } = require("%rGui/components/currencyComp.nut")
+from "%appGlobals/config/lootboxPresentation.nut" import getLootboxName
+from "%appGlobals/rewardType.nut" import G_LOOTBOX, G_CURRENCY
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, CS_SMALL
+from "%rGui/rewards/components/lootboxView.nut" import mkLootboxImage
+
 
 let mkCurrencyImage = @(amount, size, currencyId) {
   size = [size, 2 * size]

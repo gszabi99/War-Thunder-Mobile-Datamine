@@ -1,6 +1,9 @@
+from "%globalScripts/weaponConsts.nut" import *
 from "%appGlobals/unitConst.nut" import *
+import "hudActionBarConst" as hudActionBarConst
+
+
 require("%rGui/onlyAfterLogin.nut")
-let hudActionBarConst = require("hudActionBarConst")
 let { EII_SPECIAL_UNIT } = hudActionBarConst
 
 let actions = [

@@ -1,13 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { setInterval, clearTimer, resetTimeout } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { getBox, incBoxSize, findGoodArrowPos, sizePosToBox, leftArrowPos, rightArrowPos
-} = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
-let { pointerArrow } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let { register_command } = require("console")
-let { elements, sizeIncDef } = require("%rGui/tutorial/hudElementsCfg.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setInterval, clearTimer, resetTimeout
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%rGui/tutorial/hudElementsCfg.nut" import elements, sizeIncDef
+from "%rGui/tutorial/tutorialWnd/tutorialUtils.nut" import getBox, incBoxSize, findGoodArrowPos, sizePosToBox,
+  leftArrowPos, rightArrowPos
+from "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" import pointerArrow
+from "types" import Table, Array
+
 
 let isHudPointersAtached = Watched(false)
 let activeIds = mkWatched(persist, "activeIds", {})
@@ -52,7 +54,7 @@ function updateCurBoxes() {
         continue
       box = incBoxSize(box, sizeInc)
       box.id <- key
-      boxes.append(type(cfg) == "table" ? cfg.__merge(box) : box)
+      boxes.append(cfg instanceof Table ? cfg.__merge(box) : box)
     }
 
   if (!isEqual(curBoxes.get(), boxes))
@@ -117,7 +119,7 @@ let hudElementPointers = @() {
 }
 
 function addHudElementPointer(id, time) {
-  if (type(id) == "array") {
+  if (id instanceof Array) {
     activeIds.mutate(function(v) {
       foreach(localId in id){
         v[localId] <- get_time_msec() + (1000 * time).tointeger()
@@ -133,7 +135,7 @@ function removeHudElementPointer(id) {
     activeIds.mutate(@(v) v.$rawdelete(id))
     return
   }
-  else if (type(id) == "array") {
+  else if (id instanceof Array) {
     activeIds.mutate(function(v) {
       foreach(localId in id){
         v?.$rawdelete(localId)

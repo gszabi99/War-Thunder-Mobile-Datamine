@@ -1,42 +1,41 @@
 from "%globalsDarg/darg_library.nut" import *
+from "mission" import get_mission_time
+from "string" import format
+from "%sqstd/math.nut" import round_by_value
+from "%rGui/hud/actionBar/actionBarState.nut" import primaryAction, primaryExtraAction, secondaryAction
+from "%rGui/hud/bullets/hudUnitBulletsState.nut" import isSecondaryBulletsSame
+from "%rGui/hud/commonSight.nut" import crosshairColor, scopeSize
+from "%rGui/hud/commonState.nut" import pointCrosshairScreenPosition
+from "%rGui/hud/currentWeaponsStates.nut" import hasCrosshairForWeapon, isCurHoldWeaponInCancelZone
+from "%rGui/hud/hudTouchButtonStyle.nut" import getSvgImage
+from "%rGui/hud/shipState.nut" import isHrosshairVisibile, aimModulePos, crosshairDistance
+from "%rGui/hud/targetSelectionProgress.nut" import targetSelectionProgress, asmCaptureProgress
+from "%rGui/hudState.nut" import tankZoomAutoAimMode, tankCrosshairColor, isFreeCamera
+from "%rGui/options/options/shipControlsOptions.nut" import hasSightDistance
+from "%rGui/style/hudColors.nut" import hudBlueColor, hudBlueDeepColor, hudGrayColor, hudMediumGrayColor,
+  hudTransparentColor
 
-let { get_mission_time } = require("mission")
-let { tankZoomAutoAimMode, tankCrosshairColor, isFreeCamera } = require("%rGui/hudState.nut")
-let { hasCrosshairForWeapon, isCurHoldWeaponInCancelZone
-} = require("%rGui/hud/currentWeaponsStates.nut")
-let { primaryAction, primaryExtraAction, secondaryAction } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { isSecondaryBulletsSame } = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
-let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { crosshairColor, scopeSize } = require("%rGui/hud/commonSight.nut")
-let { targetSelectionProgress, asmCaptureProgress } = require("%rGui/hud/targetSelectionProgress.nut")
-let { pointCrosshairScreenPosition } = require("%rGui/hud/commonState.nut")
-let { isHrosshairVisibile, aimModulePos, crosshairDistance } = require("%rGui/hud/shipState.nut")
-let { hasSightDistance } = require("%rGui/options/options/shipControlsOptions.nut")
-let { hudBlueColor, hudBlueDeepColor, hudGrayColor, hudMediumGrayColor, hudTransparentColor
-} = require("%rGui/style/hudColors.nut")
-let { round_by_value } = require("%sqstd/math.nut")
-let { format } = require("string")
 
 let crosshairColorFire = hudGrayColor
 let reloadColorPrimary = hudBlueColor
 let reloadColorPrimaryExtra = hudBlueColor
 let reloadColorSecondary = hudBlueDeepColor
-let crosshairLineWidth = hdpx(2)
+const crosshairLineWidth = hdpx(2)
 let sightColor = hudMediumGrayColor
-let cancelShootSize = hdpxi(70)
+const cancelShootSize = hdpxi(70)
 
 let crosshairLineHeight = evenPx(10)
 
 let crosshairSize = shHud(3.5)
-let pointSize = hdpxi(10)
-let crosshairLineSize = hdpx(10)
+const pointSize = hdpxi(10)
+const crosshairLineSize = hdpx(10)
 let crosshairReloadSize = (1.7 * crosshairSize).tointeger()
 let reloadImageInZoom = getSvgImage("reload_indication_in_zoom", crosshairReloadSize)
-let moduleMarkSize = hdpxi(35)
+const moduleMarkSize = hdpxi(35)
 
-let fireIncreaseSizeAnimTime = 0.2
-let fireDecreaseSizeAnimTime = 0.4
-let fireNormalizeSizeAnimTime = 0.2
+const fireIncreaseSizeAnimTime = 0.2
+const fireDecreaseSizeAnimTime = 0.4
+const fireNormalizeSizeAnimTime = 0.2
 
 let fireColorAnimations = { prop = AnimProp.color, from = crosshairColorFire, to = crosshairColor,
   duration = fireIncreaseSizeAnimTime + fireDecreaseSizeAnimTime, easing = Linear, trigger = "fire" }
@@ -90,7 +89,7 @@ function mkReloadPartData(action, color) {
 
 let reloadSecAction = Computed(@() isSecondaryBulletsSame.get() ? secondaryAction.get() : null)
 let reloadIndicator = @() {
-  watch = [primaryAction, reloadSecAction]
+  watch = [primaryAction, primaryExtraAction, reloadSecAction]
   size = [crosshairReloadSize, crosshairReloadSize]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
@@ -115,7 +114,7 @@ let pointCrosshairScreenPositionUpdate = @() {
 
 let pointCrosshair = {
   behavior = Behaviors.RtPropUpdate
-  size = [pointSize, pointSize]
+  size = const [pointSize, pointSize]
   pos = [-saBorders[0] - pointSize * 0.5, -saBorders[1] - pointSize * 0.5]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#sight_point.svg:{pointSize}:{pointSize}")
@@ -189,7 +188,7 @@ let aimModulePosUpdate = @() {
 
 let aimModuleIndicator = {
   behavior = Behaviors.RtPropUpdate
-  size = [moduleMarkSize, moduleMarkSize]
+  size = const [moduleMarkSize, moduleMarkSize]
   pos = [-saBorders[0] - moduleMarkSize * 0.5, -saBorders[1] - moduleMarkSize * 0.5]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#ship_aa_caliber_sight.svg:{moduleMarkSize}:{moduleMarkSize}")
@@ -201,7 +200,7 @@ let aimModuleIndicator = {
 
 let mkDistanceText = function(distance) {
   return distance <= 0 ? null : {
-    size = [0, 0]
+    size = const [0, 0]
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
     pos = [crosshairSize * 0.5 + hdpx(8), 0]
@@ -233,7 +232,7 @@ let sightFrame = {
 }
 
 let cancelShootMark = {
-  size = [cancelShootSize, cancelShootSize]
+  size = const [cancelShootSize, cancelShootSize]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#sight_blocked.svg:{cancelShootSize}:{cancelShootSize}")
   color = 0x80FFFFFF
@@ -241,7 +240,8 @@ let cancelShootMark = {
 }
 
 let shipSight = @() {
-  watch = [isCurHoldWeaponInCancelZone, hasCrosshairForWeapon, aimModulePos, crosshairDistance, hasSightDistance]
+  watch = [isCurHoldWeaponInCancelZone, hasCrosshairForWeapon, aimModulePos, crosshairDistance,
+    hasSightDistance, isHrosshairVisibile]
   size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER

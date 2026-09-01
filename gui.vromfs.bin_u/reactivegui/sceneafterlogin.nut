@@ -1,4 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%darg/helpers/compToCompAnim.nut" import compToCompAnimations
+from "%appGlobals/clientState/clientState.nut" import isInBattle, isInMpSession, isInFlightMenu, isMpStatisticsActive
+from "%appGlobals/clientState/initialState.nut" import shouldDisableMenu
+from "%appGlobals/clientState/respawnStateBase.nut" import isInRespawn
+from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
+from "%rGui/behindScene.nut" import behindScene
+from "%rGui/components/modalWindows.nut" import modalWindowsComponent
+import "%rGui/flightMenu/flightMenu.nut" as flightMenu
+import "%rGui/hud/hudArtilleryMap.nut" as hudArtilleryMap
+import "%rGui/hud/hudBase.nut" as hudBase
+import "%rGui/hud/hudSpectator.nut" as hudSpectator
+from "%rGui/hud/tacticalMap/hudTacticalMapScene.nut" import isTacticalMapSceneOpened, tacticalMapScene
+from "%rGui/hud/voiceMsg/hudVoiceMsgMapScene.nut" import isVoiceMsgMapSceneOpened, voiceMsgMapScene
+from "%rGui/hudState.nut" import isInSpectatorMode, isInArtilleryMap
+import "%rGui/mainMenu/mainMenuWnd.nut" as mainMenuWnd
+import "%rGui/mpStatistics/mpStatisticsWnd.nut" as mpStatisticsWnd
+from "%rGui/navState.nut" import scenesOrder, getTopScene
+import "%rGui/respawn/respawnWnd.nut" as respawnWnd
+
 
 require("%rGui/debriefing/debriefingWnd.nut")
 require("%rGui/attributes/unitAttr/unitAttrWnd.nut")
@@ -50,9 +69,10 @@ require("%rGui/tutorial/tutorialUnitsResearch.nut")
 require("%rGui/tutorial/tutorialArsenal.nut")
 require("%rGui/tutorial/tutorialBattlePass.nut")
 require("%rGui/tutorial/tutorialMainEvent.nut")
+require("%rGui/tutorial/tutorialShop.nut")
 require("%rGui/tutorial/choosingShellsTutorial.nut")
 require("%rGui/tutorial/tutorialSlotAttributes.nut")
-require("%rGui/tutorial/tutorTreeEvent.nut")
+require("%rGui/tutorial/tutorialAttributes.nut")
 require("%rGui/feedback/rateGameState.nut")
 require("%rGui/updater/downloadAddonsWnd.nut")
 require("%rGui/updater/downloadMsgCtor.nut")
@@ -106,7 +126,6 @@ require("%rGui/contacts/myContactPresence.nut")
 require("%rGui/squad/myExtData.nut")
 require("%rGui/event/buyEventCurrenciesWnd.nut")
 require("%rGui/event/profileUpdateOnSeasonEnd.nut")
-require("%rGui/event/treeEvent/treeEventWnd.nut")
 require("%rGui/leaderboard/lbWnd.nut")
 require("%rGui/leaderboard/lbBestBattlesWnd.nut")
 require("%rGui/debriefing/debrQuestsMgr.nut")
@@ -130,25 +149,6 @@ require("%rGui/seasonScene/seasonScene.nut")
 require("%rGui/mainMenu/itemsBuyWnd.nut")
 
 
-
-let { modalWindowsComponent } = require("%rGui/components/modalWindows.nut")
-let { scenesOrder, getTopScene } = require("%rGui/navState.nut")
-let { behindScene } = require("%rGui/behindScene.nut")
-let { isInBattle, isInMpSession, isInFlightMenu, isMpStatisticsActive
-} = require("%appGlobals/clientState/clientState.nut")
-let { isInRespawn } = require("%appGlobals/clientState/respawnStateBase.nut")
-let { isInSpectatorMode, isInArtilleryMap } = require("%rGui/hudState.nut")
-let { compToCompAnimations } = require("%darg/helpers/compToCompAnim.nut")
-let mainMenuWnd = require("%rGui/mainMenu/mainMenuWnd.nut")
-let respawnWnd = require("%rGui/respawn/respawnWnd.nut")
-let hudSpectator = require("%rGui/hud/hudSpectator.nut")
-let hudArtilleryMap = require("%rGui/hud/hudArtilleryMap.nut")
-let { isVoiceMsgMapSceneOpened, voiceMsgMapScene } = require("%rGui/hud/voiceMsg/hudVoiceMsgMapScene.nut")
-let { isTacticalMapSceneOpened, tacticalMapScene } = require("%rGui/hud/tacticalMap/hudTacticalMapScene.nut")
-let flightMenu = require("%rGui/flightMenu/flightMenu.nut")
-let mpStatisticsWnd = require("%rGui/mpStatistics/mpStatisticsWnd.nut")
-let hudBase = require("%rGui/hud/hudBase.nut")
-let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
 
 isInBattle.subscribe(@(v)
   sendNewbieBqEvent(v ? "enterBattle" : "leaveBattle", { status = isInMpSession.get() ? "online" : "offline" }))
@@ -176,8 +176,12 @@ return {
       watch = [scenesOrder, isInBattle]
       size = FLEX
       waitForChildrenFadeOut = true
+      
+      
       children = getTopScene(scenesOrder.get())
-        ?? (isInBattle.get() ? battleScene : mainMenuWnd)
+        ?? (isInBattle.get() ? battleScene
+        : shouldDisableMenu ? null
+        : mainMenuWnd)
     }
     modalWindowsComponent
     compToCompAnimations

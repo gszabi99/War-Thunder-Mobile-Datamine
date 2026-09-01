@@ -1,12 +1,13 @@
-let { sw, sh } = require("daRg")
-let { round } =  require("math")
+from "daRg" import sw, sh
+from "math" import round
 
-let HDPX_H = 1080
 
-let minScreenRatio = 16.0 / 9.0
-let swMul = 1.0 / minScreenRatio
-let swMulPrc = swMul * 100
-let canScaleBySh = sh(100) <= sw(swMulPrc)
+const HDPX_H = 1080
+
+const minScreenRatio = 16.0 / 9.0
+const swMul = 1.0 / minScreenRatio
+const swMulPrc = swMul * 100
+const canScaleBySh = sh(100) <= sw(swMulPrc)
 
 let hdpx = canScaleBySh
   ? @[pure](pixels) sh(100.0 * pixels / HDPX_H)

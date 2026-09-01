@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { removeDecalFromSelectedSlot, editSelectedSlot, selectedDecalId, selectedSlotId, selectedSlot, resetDecalsPreset
-  isEditingDecal, getEmptySlotIdx, enterDecalMode, isNotEqualPresets, isCurSkinAvailable, curSkinForEdit
-} = require("%rGui/unitCustom/unitDecals/unitDecalsState.nut")
-let notEmptySlotWnd = require("%rGui/unitCustom/unitDecals/notEmptySlotWnd.nut")
-let { textButtonPrimary, textButtonInactive } = require("%rGui/components/textButton.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonInactive
+import "%rGui/unitCustom/unitDecals/notEmptySlotWnd.nut" as notEmptySlotWnd
+from "%rGui/unitCustom/unitDecals/unitDecalsState.nut" import removeDecalFromSelectedSlot, editSelectedSlot,
+  selectedDecalId, selectedSlotId, selectedSlot, resetDecalsPreset, isEditingDecal, getEmptySlotIdx, enterDecalMode,
+  isNotEqualPresets, isCurSkinAvailable, curSkinForEdit
 
 
-let gap = hdpx(10)
+const gap = hdpx(10)
 
 let skinIsNotAvailableForEditMsg = @(skin) openMsgBox({
   text = skin == "upgraded"
@@ -68,7 +68,7 @@ let slotsActions = {
 
 return @() {
   watch = [selectedSlot, isEditingDecal, selectedSlotId, selectedDecalId]
-  margin = [hdpx(25), 0, 0, 0]
+  margin = const [hdpx(25), 0, 0, 0]
   flow = FLOW_HORIZONTAL
   gap
   children = isEditingDecal.get() ? null

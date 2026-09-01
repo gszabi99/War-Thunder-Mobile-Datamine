@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { baseUnit, curSelectedUnitSkin } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { openForUnit, unitCustomOpenCount } = require("%rGui/unitCustom/unitCustomState.nut")
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/unitCustom/unitCustomState.nut" import openForUnit, unitCustomOpenCount
+from "%rGui/unitDetails/unitDetailsState.nut" import baseUnit, curSelectedUnitSkin
 
 
 let unitSkins = Computed(@() { [""] = true }.__merge(serverConfigs.get()?.allUnits[openForUnit.get()].skins ?? {}))

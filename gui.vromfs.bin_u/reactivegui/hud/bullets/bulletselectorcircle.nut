@@ -1,24 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { PI, cos, sin } = require("%sqstd/math.nut")
-let { hudPearlGrayColor, hudVeilGrayColorFade } = require("%rGui/style/hudColors.nut")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { buttonSize, mkCircleGroundSecondaryGun, mkCircleBtnEditView } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
-let { mkNextBulletArrow } = require("%rGui/hud/bullets/bulletNextArrow.nut")
+from "%sqstd/math.nut" import PI, cos, sin
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/hud/bullets/bulletNextArrow.nut" import mkNextBulletArrow
+from "%rGui/hud/buttons/circleTouchHudButtons.nut" import buttonSize, mkCircleGroundSecondaryGun, mkCircleBtnEditView
+from "%rGui/style/hudColors.nut" import hudPearlGrayColor, hudVeilGrayColorFade
 
 
 let colorActive = hudPearlGrayColor
 let colorInactive = hudVeilGrayColorFade
 
-let DEG_TO_RAD = PI / 180.0
-let MAIN_ANGLE_DEG = 180.0
+const DEG_TO_RAD = PI / 180.0
+const MAIN_ANGLE_DEG = 180.0
 
-let DEFAULT_ORIENTATION = false
+const DEFAULT_ORIENTATION = false
 let ORIENTATION_ANGLES = {
   [false] = { main = 180.0, extra = 226.0 },  
   [true] = { main = 0.0, extra = 314.0 }  
 }
 
-let sectorGap = hdpx(10)
+const sectorGap = hdpx(10)
 
 let calcSectorPos = @(angleDeg, radius, size, center) [
   (center + cos(angleDeg * DEG_TO_RAD) * radius - size[0] / 2).tointeger(),

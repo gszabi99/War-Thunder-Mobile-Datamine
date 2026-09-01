@@ -2167,7 +2167,7 @@
       "maxRPM": 2600.0,
       "minRPM": 900.0,
       "manufacturer": "transmash",
-      "model": "utd_29"
+      "model": "utd_29t_01"
     },
     "mechanics": {
       "maxBrakeForce": 130000.0,

@@ -1,8 +1,9 @@
 from "%globalScripts/logs.nut" import *
 from "math" import abs, min
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getServerTime } = require("%appGlobals/userstats/serverTime.nut")
-let { getUnitTagsCfg, getUnitTagsCountry, getUnitTagsClass } = require("%appGlobals/unitTags.nut")
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/unitTags.nut" import getUnitTagsCfg, getUnitTagsCountry, getUnitTagsClass
+from "%appGlobals/userstats/serverTime.nut" import getServerTime
+
 
 const MAX_TIME = 0x7FFFFFFFFFFFFFFF
 let avatarsCache = []

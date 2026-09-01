@@ -1,25 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
-from "math" import round
+from "dagor.workcycle" import resetTimeout, clearTimer
 from "hangar" import DM_VIEWER_NONE, DM_VIEWER_PROTECTION
 from "hangarEventCommand" import set_protection_checker_params, protection_examination_shot,
   hangar_protection_map_update, protection_map_reset, get_protection_map_progress, dm_viewer_reset,
   set_dm_viewer_pointer_screenpos
-from "dagor.workcycle" import resetTimeout, clearTimer
+from "math" import round
 from "%sqstd/underscore.nut" import isEqual
-from "%appGlobals/permissions.nut" import allow_protection_analysis
 from "%appGlobals/config/countryPresentation.nut" import sortCountries
-from "%rGui/unit/unitsWndState.nut" import visibleUnitsList
-from "%rGui/unit/unitUtils.nut" import sortUnits
-from "%rGui/unit/unitNameSearch.nut" import isUnitNameMatchSearchStr
-from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitBulletsChoice
-from "%rGui/weaponry/dmgModel.nut" import getArmorPiercingByDistance
-from "%rGui/dmViewer/dmViewerState.nut" import dmViewerMode
+from "%appGlobals/permissions.nut" import allow_protection_analysis
 from "%rGui/dmViewer/dmViewerPkg.nut" import hitProbMinorColor
+from "%rGui/dmViewer/dmViewerState.nut" import dmViewerMode
+from "%rGui/unit/unitNameSearch.nut" import isUnitNameMatchSearchStr
+from "%rGui/unit/unitUtils.nut" import sortUnits
+from "%rGui/unit/unitsWndState.nut" import visibleUnitsList
+from "%rGui/weaponry/dmgModel.nut" import getArmorPiercingByDistance
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitBulletsChoice
 
-let FIRE_DISTANCE_DEFAULT = 500
-let FIRE_DISTANCE_MAX = 2000
-let PROTECTION_MAP_PROGRESS_UPDATE_INTERVAL = 0.3
-let DM_MODE_SWITCHING_DELAY = 0.1
+
+const FIRE_DISTANCE_DEFAULT = 500
+const FIRE_DISTANCE_MAX = 2000
+const PROTECTION_MAP_PROGRESS_UPDATE_INTERVAL = 0.3
+const DM_MODE_SWITCHING_DELAY = 0.1
 
 let inspectedUnit = mkWatched(persist, "inspectedUnit", null)
 let inspectedBaseUnit = mkWatched(persist, "inspectedBaseUnit", null)
@@ -42,10 +43,10 @@ let protectionMapUpdProgress = Watched(0)
 let isProtectionMapUpdating = Computed(@() ![0, 100].contains(protectionMapUpdProgress.get()))
 let isProtectionMapVisible = mkWatched(persist, "isProtectionMapVisible", false)
 
-let initialTargetPosX = sw(50)
-let initialTargetPosY = sh(50)
-let screenMaxX = sw(100) - 1
-let screenMaxY = sh(100) - 1
+const initialTargetPosX = sw(50)
+const initialTargetPosY = sh(50)
+const screenMaxX = sw(100) - 1
+const screenMaxY = sh(100) - 1
 let targetScreenX = Watched(initialTargetPosX)
 let targetScreenY = Watched(initialTargetPosY)
 let onPointerScreenCoordsChange = @(_) set_dm_viewer_pointer_screenpos(

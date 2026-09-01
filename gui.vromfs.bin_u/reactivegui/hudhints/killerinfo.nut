@@ -1,23 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { get_mplayer_by_id } = require("mission")
-let { HUD_MSG_MULTIPLAYER_DMG } = require("hudMessages")
-let { get_unittags_blk } = require("blkGetters")
-let { localMPlayerId } = require("%appGlobals/clientState/clientState.nut")
-let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
-let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getUnitCfgByTagName } = require("%appGlobals/pServer/unitCfgByTagName.nut")
-let { isUnitAlive } = require("%rGui/hudState.nut")
-let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
-let { mkGradientBlock, failBgColor } = require("%rGui/hudHints/hintCtors.nut")
-let { mkSingleUnitPlate, unitPlateWidth } = require("%rGui/unit/components/unitPlateComp.nut")
-let hudMessagesUnitTypesMap = require("%rGui/hudHints/hudMessagesUnitTypesMap.nut")
-let unitFake = require("%rGui/unit/unitFake.nut")
-let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
+from "blkGetters" import get_unittags_blk
+from "hudMessages" import HUD_MSG_MULTIPLAYER_DMG
+from "mission" import get_mplayer_by_id
+from "%appGlobals/botUtils.nut" import genBotCommonStats
+from "%appGlobals/clientState/clientState.nut" import localMPlayerId
+from "%appGlobals/clientState/missionState.nut" import battleCampaign
+import "%appGlobals/decorators/avatars.nut" as getAvatarImage
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/pServer/unitCfgByTagName.nut" import getUnitCfgByTagName
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/hudHints/hintCtors.nut" import mkGradientBlock, failBgColor
+import "%rGui/hudHints/hudMessagesUnitTypesMap.nut" as hudMessagesUnitTypesMap
+from "%rGui/hudState.nut" import isUnitAlive
+from "%rGui/mpStatistics/playersCommonStats.nut" import playersCommonStats
+from "%rGui/unit/components/unitPlateComp.nut" import mkSingleUnitPlate, unitPlateWidth
+import "%rGui/unit/unitFake.nut" as unitFake
 
-let premIconSize = hdpxi(56)
-let gradPadding = hdpx(100)
+
+const premIconSize = hdpxi(56)
+const gradPadding = hdpx(100)
 
 let killData = mkWatched(persist, "killData", null)
 isUnitAlive.subscribe(@(v) v ? killData.set(null) : null)
@@ -52,7 +53,7 @@ let info = Computed(function() {
   })
 })
 
-eventbus_subscribe("HudMessage", function(data) {
+subscribeHudEvent("HudMessage", function(data) {
   if (data.type != HUD_MSG_MULTIPLAYER_DMG)
     return
   let { isKill = false, playerId = null, victimPlayerId = null } = data
@@ -73,7 +74,7 @@ let fontByPlateWidth = @(text) calc_str_box(text, fontSmall)[0] > unitPlateWidth
   ? fontSmallShaded : fontMediumShaded
 
 let premiumMark = {
-  size = [premIconSize, premIconSize]
+  size = const [premIconSize, premIconSize]
   rendObj = ROBJ_IMAGE
   keepAspect = true
   image = Picture($"ui/gameuiskin#premium_active.svg:{premIconSize}:{premIconSize}:K:P")
@@ -123,9 +124,16 @@ function killerInfo() {
     watch = info
     key
     hplace = ALIGN_RIGHT
-    pos = [gradPadding, 0]
+    pos = const [gradPadding, 0]
     children = mkGradientBlock(failBgColor, content, calc_comp_size(content)[0] + 2 * gradPadding)
   }
 }
 
-return killerInfo
+
+let hudKillerInfo = @() {
+  watch = isUnitAlive
+  size = FLEX
+  children = isUnitAlive.get() ? null : killerInfo
+}
+
+return { killerInfo, hudKillerInfo }

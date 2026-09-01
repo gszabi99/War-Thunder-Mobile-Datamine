@@ -1,12 +1,14 @@
+from "%globalScripts/gameRendObjs.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { isInMpSession } = require("%appGlobals/clientState/clientState.nut")
-let { isVoiceMsgEnabled } = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
-let { isVoiceMsgMapSceneOpened } = require("%rGui/hud/voiceMsg/hudVoiceMsgMapScene.nut")
-let { isTacticalMapSceneOpened } = require("%rGui/hud/tacticalMap/hudTacticalMapScene.nut")
-let { tacticalMapMarkersLayer } = require("%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut")
-let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
+from "%appGlobals/clientState/clientState.nut" import isInMpSession
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkGamepadHotkey
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderColor
+from "%rGui/hud/tacticalMap/hudTacticalMapScene.nut" import isTacticalMapSceneOpened
+from "%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut" import tacticalMapMarkersLayer
+from "%rGui/hud/voiceMsg/hudVoiceMsgMapScene.nut" import isVoiceMsgMapSceneOpened
+from "%rGui/hud/voiceMsg/voiceMsgState.nut" import isVoiceMsgEnabled
+
 
 let tacticalMapSize = [hdpx(325), hdpx(325)]
 
@@ -34,7 +36,7 @@ let tacticalMap = mkTacticalMap(tacticalMapSize)
 function mkTacticalMapForHud(scale) {
   let stateFlags = Watched(0)
   let size = scaleArr(tacticalMapSize, scale)
-  let shortcutId = "ID_TACTICAL_MAP"
+  const shortcutId = "ID_TACTICAL_MAP"
   let openMapBtn = @() {
     watch = stateFlags
     size = FLEX
@@ -50,7 +52,7 @@ function mkTacticalMapForHud(scale) {
     hotkeys = mkGamepadHotkey(shortcutId)
   }
   return mkTacticalMap(size, [ openMapBtn, mkGamepadShortcutImage(shortcutId,
-    { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-52)] },
+    { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(-52)] },
     scale) ])
 }
 

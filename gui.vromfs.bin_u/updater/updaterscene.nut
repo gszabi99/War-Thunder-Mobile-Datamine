@@ -1,13 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command  = null } = require_optional("console") 
-let { statusText, progressPercent, hasAnyMsg } = require("updaterState.nut")
-let { screensList } = require("%globalsDarg/loading/loadingScreensCfg.nut")
-let { screenWeights, loadingAnimBg, chooseRandomScreen, curScreenId } = require("%globalsDarg/loading/loadingAnimBg.nut")
-let { mkProgressStatusText, mkProgressbar, progressbarGap } = require("%globalsDarg/loading/loadingProgressbar.nut")
-let { mkTitleLogo } = require("%globalsDarg/components/titleLogo.nut")
-let { gradientLoadingTip } = require("loadingTip.nut")
+from "%globalsDarg/components/titleLogo.nut" import mkTitleLogo
+from "%globalsDarg/loading/loadingAnimBg.nut" import screenWeights, loadingAnimBg, chooseRandomScreen, curScreenId
+from "%globalsDarg/loading/loadingProgressbar.nut" import mkProgressStatusText, mkProgressbar, progressbarGap
+from "%globalsDarg/loading/loadingScreensCfg.nut" import screensList
+from "loadingTip.nut" import gradientLoadingTip
+from "updaterState.nut" import statusText, progressPercent, hasAnyMsg
 
-let spinnerSize = hdpxi(100)
+
+let { register_command  = null } = require_optional("console") 
+
+const spinnerSize = hdpxi(100)
 
 
 
@@ -33,7 +35,7 @@ updateScreenList()
 dbgScreen.subscribe(@(_) updateScreenList())
 
 let waitSpinner = {
-  size = [spinnerSize, spinnerSize]
+  size = const [spinnerSize, spinnerSize]
   hplace = ALIGN_RIGHT
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#progress_bar_circle.svg:{spinnerSize}:{spinnerSize}")
@@ -71,8 +73,8 @@ return {
         waitSpinner
         @() {
           watch = hasAnyMsg
-          size = [FLEX, 0]
-          pos = [0, sh(-20)]
+          size = const [FLEX, 0]
+          pos = const [0, sh(-20)]
           vplace = ALIGN_BOTTOM
           children = hasAnyMsg.get() ? null : gradientLoadingTip
         }

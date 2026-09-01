@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { selectColor } = require("%rGui/style/stdColors.nut")
+from "%rGui/style/stdColors.nut" import selectColor
 
-let lineColorPremium = 0xFFFFFFFF
-let aTimeOpacity = 0.3
-let selLineSize = hdpx(6)
+
+const lineColorPremium = 0xFFFFFFFF
+const aTimeOpacity = 0.3
+const selLineSize = hdpx(6)
 
 let opacityTransition = [{ prop = AnimProp.opacity, duration = aTimeOpacity, easing = InOutQuad }]
 

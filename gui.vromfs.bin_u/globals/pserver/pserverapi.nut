@@ -1,12 +1,13 @@
 from "%globalScripts/logs.nut" import *
-let { Watched } = require("frp")
-let { eventbus_send,eventbus_subscribe } = require("eventbus")
-let { rnd_int } = require("dagor.random")
-let { loc } = require("dagor.localize")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let servProfile = require("servProfile.nut")
-let { updateAllConfigs } = require("servConfigs.nut")
-let { isAuthorized } = require("%appGlobals/loginState.nut")
+from "dagor.localize" import loc
+from "dagor.random" import rnd_int
+from "eventbus" import eventbus_send,eventbus_subscribe
+from "frp" import Watched
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/loginState.nut" import isAuthorized
+from "servConfigs.nut" import updateAllConfigs
+import "servProfile.nut" as servProfile
+from "types" import String, Array, Table
 
 
 const PROGRESS_UNIT = "UnitInProgress"
@@ -36,6 +37,9 @@ const PROGRESS_CLIENT_MISSION_REWARD = "ClientMissionRewardInProgress"
 const PROGRESS_UNIT_MASTERY_TIER = "UnitMasteryTierInProgress"
 const PROGRESS_MIG_ACC_INFO = "MigAccInfoInProgress"
 
+const PROGRESS_CALENDAR_REWARD = "CalendarRewardInProgress"
+const PROGRESS_EVENT_MAP_NODE = "EventMapNodeInProgress"
+
 let handlers = {}
 let requestData = persist("requestData", @() { id = rnd_int(0, 32767), callbacks = {} })
 let lastProfileKeysUpdated = Watched({})
@@ -54,16 +58,16 @@ function call(id, result, context) {
 }
 
 function callAll(execData, result) {
-  if (type(execData) == "string") {
+  if (execData instanceof String) {
     call(execData, result, null)
     return
   }
-  if (type(execData) == "array") {
+  if (execData instanceof Array) {
     foreach(e in execData)
       callAll(e, result)
     return
   }
-  if (type(execData) != "table")
+  if (!(execData instanceof Table))
     return
 
   let { id = null, executeAfter = null } = execData
@@ -80,7 +84,7 @@ function popCallback(uid, result) {
 function handleMessages(msg) {
   let result = msg.data?.result
   if (!result) {
-    popCallback(msg.id, { error = "unknown error" }.__update(type(msg.data) == "table" ? msg.data : { data = msg.data }))
+    popCallback(msg.id, { error = "unknown error" }.__update(msg.data instanceof Table ? msg.data : { data = msg.data }))
     return
   }
 
@@ -93,14 +97,14 @@ function handleMessages(msg) {
         logerr($"Not empty removed field on full profile update on '{msg?.method}'")
       servProfile.set(result)
       lastProfileKeysUpdated.set(result
-        .map(@(v, k) type(v) == "table" && k != "configs")
+        .map(@(v, k) v instanceof Table && k != "configs")
         .filter(@(v) v))
     }
     else {
       let newProfile = clone servProfile.get()
       let updatedKeys = {}
       foreach (k, v in result)
-        if (type(v) != "table" || k == "configs" || k == "removed" || k == "custom_info")
+        if (!(v instanceof Table) || k == "configs" || k == "removed" || k == "custom_info")
           continue
         else {
           if (k == "receivedLvlRewards") {
@@ -136,22 +140,22 @@ eventbus_subscribe("profile_srv.response", handleMessages)
 
 function checkHandlerId(id) {
   if (id not in handlers)
-    logerr($"Not registered pServerApi callbakc id: {id}")
+    logerr($"Not registered pServerApi callback id: {id}")
 }
 
 function addCallback(idStr, cb) {
-  if (type(cb) == "string") {
+  if (cb instanceof String) {
     requestData.callbacks[idStr] <- cb
     checkHandlerId(cb)
   }
-  else if (type(cb) == "table") {
-    if (type(cb?.id) == "string") {
+  else if (cb instanceof Table) {
+    if (cb?.id instanceof String) {
       requestData.callbacks[idStr] <- cb
       checkHandlerId(cb.id)
     } else
       logerr($"Bad type of pServerApi callback id: {type(cb?.id)}. String required.")
   }
-  else if (type(cb) == "array")
+  else if (cb instanceof Array)
     requestData.callbacks[idStr] <- cb
   else
     logerr($"Bad type of pServerApi callback data: {type(cb)}. String, table or array required")
@@ -221,12 +225,12 @@ function registerHandler(id, handler) {
 }
 
 function localizePServerError(err) {
-  if (type(err) == "table" && "message" in err) {
+  if (err instanceof Table && "message" in err) {
     let msg = loc($"error/{err.message}", err.message)
     let code = "code" in err ? $"(code: {err.code})" : ""
     return { bqLocId = err.message, text = "\n".join([msg, code], true) }
   }
-  if (type(err) == "string")
+  if (err instanceof String)
     return { bqLocId = err, text = loc($"error/{err}", err) }
   return { bqLocId = "profile server internal error", text = loc("matching/SERVER_ERROR_INTERNAL") }
 }
@@ -270,6 +274,8 @@ return {
   clientMissionRewardInProgress = mkProgress(PROGRESS_CLIENT_MISSION_REWARD)
   unitMasteryTierInProgress = mkProgress(PROGRESS_UNIT_MASTERY_TIER)
   migAccInfoInProgress = mkProgress(PROGRESS_MIG_ACC_INFO)
+  isCalendarRewardInProgress = mkProgress(PROGRESS_CALENDAR_REWARD, false)
+  eventMapNodeInProgress = mkProgress(PROGRESS_EVENT_MAP_NODE)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -297,6 +303,7 @@ return {
   get_gdpr_report = @(cb = null) request({ method = "get_gdpr_report_client" }, cb)
   reset_ab_tests = @(cb = null) request({ method = "reset_ab_tests" }, cb)
   pp_get_config = @(cb = null) request({ method = "pp_get_config_client" }, cb)
+  reset_free_gold_use = @(cb = null) request({ method = "reset_free_gold_use" }, cb)
 
   reset_campaigns = @(campaigns, cb = null) request({
     method = "reset_campaigns"
@@ -423,13 +430,6 @@ return {
     params = { unitName, price }
     progressId = PROGRESS_UNIT
     progressValue = unitName
-  }, cb)
-
-  levelup_without_unit = @(campaign, cb = null) request({
-    method = "levelup_without_unit"
-    progressId = PROGRESS_LEVEL
-    progressValue = campaign
-    params = { campaign }
   }, cb)
 
   halt_unit_purchase = @(unitName, cb = null) request({
@@ -740,6 +740,20 @@ return {
     progressValue = id
   }, cb)
 
+  buy_event_map_node = @(eventId, nodeId, currencyId, price, cb = null) request({
+    method = "buy_event_map_node"
+    params = { eventId, nodeId, currencyId, price }
+    progressId = PROGRESS_EVENT_MAP_NODE
+    progressValue = nodeId
+  }, cb)
+
+  receive_event_map_node_reward = @(eventId, nodeId, cb = null) request({
+    method = "receive_event_map_node_reward"
+    params = { eventId, nodeId }
+    progressId = PROGRESS_EVENT_MAP_NODE
+    progressValue = nodeId
+  }, cb)
+
   get_my_lootbox_chances = @(id, cb = null) request({
     method = "get_my_lootbox_chances"
     params = { id }
@@ -819,16 +833,6 @@ return {
   debug_apply_boosters_in_battle = @(boosters, cb = null) request({
     method = "debug_apply_boosters_in_battle"
     params = { boosters }
-  }, cb)
-
-  debug_apply_unit_daily_bonus_in_battle = @(unitName, cb = null) request({
-    method = "debug_apply_unit_daily_bonus_in_battle"
-    params = { unitName }
-  }, cb)
-
-  debug_reset_all_unit_daily_bonus = @(cb = null) request({
-    method = "debug_reset_all_unit_daily_bonus"
-    params = {}
   }, cb)
 
   buy_booster = @(name, currencyId, price, cb = null) request({
@@ -1053,12 +1057,6 @@ return {
     params = { idx }
   }, cb)
 
-  clan_lookup = @(params, cb = null) request({
-    method = "clan_lookup"
-    projectId = "war_thunder_mobile_clans"
-    params
-  }, cb)
-
   increase_vehicle_mastery_tier = @(unitName, masteryTier, cb = null) request({
     method = "increase_vehicle_mastery_tier"
     params = { unitName, masteryTier }
@@ -1075,5 +1073,24 @@ return {
     method = "get_migrate_acc_info"
     progressId = PROGRESS_MIG_ACC_INFO
     progressValue = true
+  }, cb)
+
+  increase_calendar_value = @(calendarId, cb = null) request({
+    method = "increase_calendar_value"
+    params = { calendarId }
+    progressId = PROGRESS_CALENDAR_REWARD
+  }, cb)
+
+  shift_all_calendars_time = @(cb = null) request({
+    method = "shift_all_calendars_time"
+  }, cb)
+
+  update_calendars_activity = @(cb = null) request({
+    method = "update_calendars_activity"
+  }, cb)
+
+  debug_skip_event_delay = @(campaign, cb = null) request({
+    method = "debug_skip_event_delay"
+    params = { campaign }
   }, cb)
 }

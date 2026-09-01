@@ -1978,8 +1978,8 @@
     },
     "tracks": {
       "animationMultiplier": -0.605,
-      "height": 0.045,
-      "width": 0.654,
+      "height": 0.065,
+      "width": 0.59,
       "fricSideRotAlternative": [
         5.0,
         0.0,
@@ -2032,7 +2032,7 @@
       ],
       "defaultGearRadius": 0.24,
       "topGearRadius": 0.13,
-      "frontBackGearRadius": 0.37,
+      "frontBackGearRadius": 0.39,
       "defaultDampeningForce": [
         400000.0,
         400000.0

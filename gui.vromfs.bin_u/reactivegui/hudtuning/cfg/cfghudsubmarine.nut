@@ -1,22 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { SUBMARINE } = require("%appGlobals/unitConst.nut")
-let { EII_TOOLKIT, EII_ACOUSTIC_DECOY } = require("%rGui/hud/weaponsButtonsConfig.nut")
-let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
-let cfgHudCommonNaval = require("%rGui/hudTuning/cfg/cfgHudCommonNaval.nut")
-let { mkRhombZoomButton, mkDivingLockButton } = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
-let { mkWeaponBtnEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
-let { Z_ORDER, mkRBPos, mkLBPos, weaponryButtonDynamicCtor,
-  withActionBarButtonCtor } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
-let { depthSliderBlock, depthSliderEditView } = require("%rGui/hud/submarineDepthBlock.nut")
-let shipMovementBlock = require("%rGui/hud/shipMovementBlock.nut")
-let { moveArrowsViewWithMode } = require("%rGui/components/movementArrows.nut")
-let { voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
-} = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
-let { oxygenLevel, oxygenLevelEditView, depthControl, depthControlEditView
-} = require("%rGui/hud/oxygenBlock.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
+from "%appGlobals/unitConst.nut" import SUBMARINE
+from "%rGui/components/movementArrows.nut" import moveArrowsViewWithMode
+from "%rGui/hud/buttons/rhombTouchHudButtons.nut" import mkRhombZoomButton, mkDivingLockButton
+from "%rGui/hud/oxygenBlock.nut" import oxygenLevel, oxygenLevelEditView, depthControl, depthControlEditView
+import "%rGui/hud/shipMovementBlock.nut" as shipMovementBlock
+from "%rGui/hud/submarineDepthBlock.nut" import depthSliderBlock, depthSliderEditView
+from "%rGui/hud/voiceMsg/voiceMsgStick.nut" import voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
+from "%rGui/hud/weaponsButtonsConfig.nut" import EII_TOOLKIT, EII_ACOUSTIC_DECOY
+from "%rGui/hudState.nut" import isPlayingReplay
+import "%rGui/hudTuning/cfg/cfgHudCommon.nut" as cfgHudCommon
+import "%rGui/hudTuning/cfg/cfgHudCommonNaval.nut" as cfgHudCommonNaval
+from "%rGui/hudTuning/cfg/hudTuningPkg.nut" import Z_ORDER, mkRBPos, mkLBPos, weaponryButtonDynamicCtor,
+  withActionBarButtonCtor
+import "%rGui/hudTuning/cfg/initHudTuningCfg.nut" as initHudTuningCfg
+from "%rGui/hudTuning/weaponBtnEditView.nut" import mkWeaponBtnEditView
 
-return cfgHudCommon.__merge(cfgHudCommonNaval, {
+
+return cfgHudCommon.__merge(cfgHudCommonNaval, initHudTuningCfg({
   zoom = {
     ctor = mkRhombZoomButton
     defTransform = mkRBPos([hdpx(-506), hdpx(-220)])
@@ -102,4 +102,4 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     editView = depthControlEditView
     hideForDelayed = false
   }
-})
+}))

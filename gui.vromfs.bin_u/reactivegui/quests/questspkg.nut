@@ -1,61 +1,45 @@
 from "%globalsDarg/darg_library.nut" import *
-let { txt, tagRedColor } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { onWatchQuestAd, SPEED_UP_AD_COST, getStarsTotalNonUpdatable } = require("%rGui/quests/questsState.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { progressBarRewardSize } = require("%rGui/quests/rewardsComps.nut")
-let { CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
-let { mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
-let buttonStyles = require("%rGui/components/buttonStyles.nut")
-let { adsButtonCounter, isProviderInited } = require("%rGui/ads/adsState.nut")
-let adBudget = require("%rGui/ads/adBudget.nut")
-let { sendBqQuestsSpeedUp } = require("%rGui/quests/bqQuests.nut")
-let { mkGlare } = require("%rGui/components/glare.nut")
-let { hasVip } = require("%rGui/state/profilePremium.nut")
-let { unlockProgress } = require("%rGui/unlocks/unlocks.nut")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { selectColor, tabBgColor } = require("%rGui/style/stdColors.nut")
-let { opacityTransition } = require("%rGui/components/selectedLine.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%rGui/globals/fontUtils.nut" import getFontToFitWidth
+import "%rGui/ads/adBudget.nut" as adBudget
+from "%rGui/ads/adsState.nut" import adsButtonCounter, isProviderInited
+import "%rGui/components/buttonStyles.nut" as buttonStyles
+from "%rGui/components/currencyComp.nut" import CS_INCREASED_ICON
+from "%rGui/components/glare.nut" import mkGlare
+from "%rGui/components/selectedLine.nut" import opacityTransition
+from "%rGui/components/textButton.nut" import mkCustomButton, mergeStyles
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/quests/bqQuests.nut" import sendBqQuestsSpeedUp
+from "%rGui/quests/questsState.nut" import onWatchQuestAd, SPEED_UP_AD_COST, getStarsTotalNonUpdatable
+from "%rGui/quests/rewardsComps.nut" import progressBarRewardSize
+from "%rGui/state/profilePremium.nut" import hasVip
+from "%rGui/style/gradients.nut" import gradTexSize, mkGradientCtorRadial
+from "%rGui/style/stdColors.nut" import selectColor, tabBgColor
+from "%rGui/textFormatByLang.nut" import decimalFormat
+from "%rGui/unlocks/unlocks.nut" import unlockProgress
 
 
-let newMarkH = hdpxi(50)
-let newMarkTexOffs = [0, newMarkH / 2, 0, newMarkH / 10]
-let sectionBtnHeight = hdpx(70)
-let sectionBtnMaxWidth = hdpx(400)
-let sectionBtnGap = hdpx(10)
-let linkToEventWidth = hdpx(240)
-let linkToEventIconSize = hdpxi(74)
+const sectionBtnHeight = hdpx(70)
+const sectionBtnMaxWidth = hdpx(400)
+const sectionBtnGap = hdpx(10)
+const linkToEventWidth = hdpx(240)
+const linkToEventIconSize = hdpxi(74)
 let iconSize = CS_INCREASED_ICON.iconSize
 let btnSize = [isWidescreen ? hdpx(300) : hdpx(230), hdpx(90)]
 let childOvr = isWidescreen ? {} : fontBoldTinyAccentedShaded
-let btnStyle = { ovr = { size = btnSize, minWidth = 0, padding = [0, hdpx(2)] }, childOvr }
+let btnStyle = { ovr = { size = btnSize, minWidth = 0, padding = const [0, hdpx(2)] }, childOvr }
 let btnStyleSound = { ovr = { size = btnSize, minWidth = 0, maxWidth = btnSize[0], sound = { click  = "meta_get_unlock" } }, childOvr }
-let btnGap = hdpx(10)
+const btnGap = hdpx(10)
 let vipIconW = CS_INCREASED_ICON.iconSize
 let vipIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
-let imageInProgress = "ui/unitskin#image_in_progress.avif"
+const imageInProgress = "ui/unitskin#image_in_progress.avif"
 
 let btnGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(selectColor, 0, 35, 20, 30, -35))
 
-let newMark = {
-  size  = [SIZE_TO_CONTENT, newMarkH]
-  rendObj = ROBJ_9RECT
-  image = Picture($"ui/gameuiskin#tag_popular.svg:{newMarkH}:{newMarkH}:P")
-  screenOffs = newMarkTexOffs
-  texOffs = newMarkTexOffs
-  color = tagRedColor
-  padding = const [0, hdpx(30), 0, hdpx(20)]
-  children = txt({
-    text = utf8ToUpper(loc("shop/item/new"))
-    vplace = ALIGN_CENTER
-  })
-}
-
 let mkSectionBtn = @(onClick, isSelected, hasUnseen, content) {
-  size = [FLEX, sectionBtnHeight]
+  size = const [FLEX, sectionBtnHeight]
   behavior = Behaviors.Button
   onClick
   sound = { click = "choose" }
@@ -80,7 +64,7 @@ let mkSectionBtn = @(onClick, isSelected, hasUnseen, content) {
 
     {
       size = FLEX
-      margin = [0, sectionBtnGap / 2]
+      margin = const [0, sectionBtnGap / 2]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = content
@@ -154,12 +138,27 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeM
   }
 }
 
+function mkAdsTxtBlock(isVip, hasAdBudget, budget, txtMaxWidth) {
+  let txtBlock = {
+    maxWidth = txtMaxWidth
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    halign = ALIGN_CENTER
+    text = utf8ToUpper(hasAdBudget
+      ? loc(!isVip ? "quests/addProgress" : "quests/addProgress_budget", { num = budget })
+      : loc("btn/adsLimitReached"))
+  }.__update(fontBoldVeryTinyShaded, adsButtonCounter)
+
+  return txtBlock.__update(getFontToFitWidth(txtBlock, txtMaxWidth, [fontBoldVeryVeryTinyAccentedShaded, fontBoldVeryTinyShaded]))
+}
+
 function mkAdsBtn(unlock) {
   let hasAdBudget = Computed(@() adBudget.get() >= SPEED_UP_AD_COST)
   function onClick() {
     if (onWatchQuestAd(unlock))
       sendBqQuestsSpeedUp(unlock, getStarsTotalNonUpdatable(unlock))
   }
+  let txtMaxWidth = Computed(@() hasAdBudget.get() ? (btnSize[0] - iconSize - btnGap * 2) : btnSize[0])
 
   return @() {
     watch = [hasAdBudget, isProviderInited, adBudget, hasVip]
@@ -180,15 +179,10 @@ function mkAdsBtn(unlock) {
                   ? Picture($"ui/gameuiskin#watch_ads.svg:{iconSize}:{iconSize}:P")
                   : Picture($"ui/gameuiskin#gamercard_subs_vip.avif:{vipIconW}:{vipIconH}:P")
               }
-          {
-            maxWidth = hasAdBudget.get() ? (btnSize[0] - iconSize - btnGap * 2) : btnSize[0]
-            rendObj = ROBJ_TEXTAREA
-            behavior = Behaviors.TextArea
-            halign = ALIGN_CENTER
-            text = utf8ToUpper(hasAdBudget.get()
-              ? loc(!hasVip.get() ? "quests/addProgress" : "quests/addProgress_budget", { num = adBudget.get() })
-              : loc("btn/adsLimitReached"))
-          }.__update(fontBoldVeryTinyShaded, adsButtonCounter)
+          @() {
+            watch = [hasVip, hasAdBudget, adBudget, txtMaxWidth]
+            children = mkAdsTxtBlock(hasVip.get(), hasAdBudget.get(), adBudget.get(), txtMaxWidth.get())
+          }
         ]
       },
       onClick,
@@ -249,7 +243,6 @@ function mkQuestText(item, ovr = {}) {
 }
 
 return {
-  newMark
   mkSectionBtn
   sectionBtnHeight
   sectionBtnMaxWidth

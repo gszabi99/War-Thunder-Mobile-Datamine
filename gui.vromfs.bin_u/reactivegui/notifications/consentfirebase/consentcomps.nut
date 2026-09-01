@@ -1,15 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
-from "%rGui/components/msgBox.nut" import wndWidthDefault
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
-from "%rGui/components/scrollbar.nut" import makeVertScroll
-from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader, wndHeaderHeight
 from "%rGui/components/closeWndBtn.nut" import closeWndBtn
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader, wndHeaderHeight
+from "%rGui/components/msgBox.nut" import wndWidthDefault
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkLink, mkBackBtn
+
 
 const wndW = wndWidthDefault
 const wndH = hdpx(880)
-let gapAfterPoint = hdpx(10)
+const gapAfterPoint = hdpx(10)
 
 let mkLinkText = @(text, onClick, ovr = {}) mkLink(text, onClick, fontTiny.__merge(ovr))
 
@@ -22,7 +23,7 @@ function mkContent(titleStr, descChildren, footerBtnsChildren, onClose, isRootWn
   let scrollHandler = ScrollHandler()
   return modalWndBg.__merge({
     key = titleStr
-    size = [wndW, wndH]
+    size = const [wndW, wndH]
     flow = FLOW_VERTICAL
     children = [
       {
@@ -56,7 +57,7 @@ function mkContent(titleStr, descChildren, footerBtnsChildren, onClose, isRootWn
       footerBtnsChildren == null
         ? null
         : {
-            size = [wndW, wndFooterH]
+            size = const [wndW, wndFooterH]
             padding = footerBtnsPadding
             vplace = ALIGN_BOTTOM
             halign = ALIGN_CENTER

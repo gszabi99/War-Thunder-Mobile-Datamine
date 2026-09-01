@@ -91,10 +91,7 @@
       "gt_ffa": true,
       "gt_last_man_standing": true,
       "timeLimit": 60,
-      "useAlternativeMapCoord": [
-        true,
-        true
-      ],
+      "useAlternativeMapCoord": true,
       "useTankBots": true,
       "battleAreaColorPreset": "battleRoyale",
       "ignoreInvulnerableTimer": false,

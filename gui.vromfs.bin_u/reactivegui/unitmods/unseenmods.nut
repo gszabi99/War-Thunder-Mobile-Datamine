@@ -1,21 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import isDataBlock, blk2SquirrelObjNoArrays, eachBlock, eachParam
+import "%appGlobals/getTagsUnitName.nut" as getTagsUnitName
+from "%appGlobals/loginState.nut" import isSettingsAvailable, isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
+
+
 require("%rGui/onlyAfterLogin.nut")
-let { eventbus_send } = require("eventbus")
-let { register_command } = require("console")
-let { deferOnce } = require("dagor.workcycle")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { isDataBlock, blk2SquirrelObjNoArrays, eachBlock, eachParam  } = require("%sqstd/datablock.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
-let { isSettingsAvailable, isLoggedIn } = require("%appGlobals/loginState.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
 
 
-let SEEN_MODS = "seenMods"
-let SEEN_MODS_VERSION_KEY = "seenModsVersion"
-let ACTUAL_VERSION = 3
-let SEEN_MODS_VERSIONS = "seenModsVersions"
+const SEEN_MODS = "seenMods"
+const SEEN_MODS_VERSION_KEY = "seenModsVersion"
+const ACTUAL_VERSION = 3
+const SEEN_MODS_VERSIONS = "seenModsVersions"
 let seenVersions = {
   tanks = 2
 }

@@ -1,10 +1,12 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/clientState/connectionStatus.nut" import *
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { register_command } = require("console")
-let iosModule = require("ios.platform")
-let { is_ios } = require("%sqstd/platform.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "eventbus" import eventbus_subscribe, eventbus_send
+import "ios.platform" as iosModule
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/platform.nut" import is_ios
+
+
 let { CONN_LIMITED, CONN_WIFI, CONN_NO_CONNECTION, CONN_UNKNOWN } = iosModule
 let { getConnectionStatus } = is_ios ? iosModule
   : { getConnectionStatus = @() CONN_WIFI }

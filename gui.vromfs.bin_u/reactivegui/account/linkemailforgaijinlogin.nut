@@ -1,12 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { getPlayerSsoShortTokenAsync, YU2_OK } = require("auth_wt")
+from "auth_wt" import getPlayerSsoShortTokenAsync, YU2_OK
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "%sqstd/platform.nut" import is_nswitch
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%appGlobals/loginState.nut" import authTags, curLoginType, LT_GOOGLE, LT_APPLE, LT_HUAWEI
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%appGlobals/permissions.nut" import can_link_email_for_gaijin_login
+
+
 let logLinkEFGL = log_with_prefix("[LINKEFGL] ")
-let { is_nswitch } = require("%sqstd/platform.nut")
-let { can_link_email_for_gaijin_login } = require("%appGlobals/permissions.nut")
-let { authTags, curLoginType, LT_GOOGLE, LT_APPLE, LT_HUAWEI } = require("%appGlobals/loginState.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 
 let lang = loc("current_lang")

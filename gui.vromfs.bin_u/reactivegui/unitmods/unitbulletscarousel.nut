@@ -1,19 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getBulletImage, getBulletTypeIcon } = require("%appGlobals/config/bulletsPresentation.nut")
-let { contentMargin, bgColor, bgGradient, mkEquippedIcon
-} = require("%rGui/unitMods/unitModsCarousel.nut")
-let { selectedLineHorSolid, opacityTransition } = require("%rGui/components/selectedLine.nut")
-let { curBSetByCategory } = require("%rGui/unitMods/unitBulletsState.nut")
-let { mkLevelLock, mkNotPurchasedShade, mkEquippedFrame, mkBulletTypeIcon, mkUnseenModIndicator,
-  mkModCost
-} = require("%rGui/unitMods/modsComps.nut")
-let { unit, curBulletId } = require("%rGui/unitMods/unitModsState.nut")
-let { modH, modW, modsGap } = require("%rGui/unitMods/unitModsConst.nut")
-let { startCarouselAnimScroll, carouselScrollHandler, getCarouselPosX } = require("%rGui/unitMods/unitModsScroll.nut")
-let { getAmmoNameShortText, getAmmoTypeShortText } = require("%rGui/weaponry/weaponsVisual.nut")
-let { mkUnseenUnitBullets, markShellsSeen } = require("%rGui/unitMods/unseenBullets.nut")
-let { BULLETS_PRIM_SLOTS, BS_UNLOCKED } = require("%rGui/bullets/bulletsConst.nut")
-let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
+from "%appGlobals/config/bulletsPresentation.nut" import getBulletImage, getBulletTypeIcon
+from "%rGui/bullets/bulletsConst.nut" import BULLETS_PRIM_SLOTS, BS_UNLOCKED
+from "%rGui/components/currencyStyles.nut" import CS_SMALL
+from "%rGui/components/selectedLine.nut" import selectedLineHorSolid, opacityTransition
+from "%rGui/unitMods/modsComps.nut" import mkLevelLock, mkNotPurchasedShade, mkEquippedFrame, mkBulletTypeIcon,
+  mkUnseenModIndicator, mkModCost
+from "%rGui/unitMods/unitBulletsState.nut" import curBSetByCategory
+from "%rGui/unitMods/unitModsCarousel.nut" import contentMargin, bgColor, bgGradient, mkEquippedIcon
+from "%rGui/unitMods/unitModsConst.nut" import modH, modW, modsGap
+from "%rGui/unitMods/unitModsScroll.nut" import startCarouselAnimScroll, carouselScrollHandler, getCarouselPosX
+from "%rGui/unitMods/unitModsState.nut" import unit, curBulletId
+from "%rGui/unitMods/unseenBullets.nut" import mkUnseenUnitBullets, markShellsSeen
+from "%rGui/weaponry/weaponsVisual.nut" import getAmmoNameShortText, getAmmoTypeShortText
 
 
 let mkBulletContent = @(content, isActive, isHover) {

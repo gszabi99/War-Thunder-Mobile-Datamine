@@ -1,26 +1,27 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("%sqstd/math.nut")
-let { simpleHorGrad, simpleVerGrad } = require("%rGui/style/gradients.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { premiumTextColor } = require("%rGui/style/stdColors.nut")
-let buttonStyles = require("%rGui/components/buttonStyles.nut")
+from "%sqstd/math.nut" import ceil
+from "%sqstd/string.nut" import utf8ToUpper
+import "%rGui/components/buttonStyles.nut" as buttonStyles
+from "%rGui/style/gradients.nut" import simpleHorGrad, simpleVerGrad
+from "%rGui/style/stdColors.nut" import premiumTextColor
 
-let fontIconPreview = "⌡"
 
-let offerCardWidth = hdpx(550)
-let offerCardHeight = hdpx(630)
-let cardHPadding = hdpx(80)
-let buyBtnMinWidth = hdpx(300)
+const fontIconPreview = "⌡"
+
+const offerCardWidth = hdpx(550)
+const offerCardHeight = hdpx(630)
+const cardHPadding = hdpx(80)
+const buyBtnMinWidth = hdpx(300)
 
 let gapCards = isWidescreen ? hdpx(240) : hdpx(120)
 
 let patternSize = [hdpx(200), hdpx(200)]
-let bgSlotColor = 0xFFe38e15
+const bgSlotColor = 0xFFe38e15
 
 let offerCardBaseStyle = {
   rendObj = ROBJ_FRAME
   borderWidth = const [hdpx(2), hdpx(2), 0, hdpx(2)]
-  size = [ offerCardWidth, offerCardHeight ]
+  size = const [ offerCardWidth, offerCardHeight ]
 }
 
 let mkBgGradient = @(height, ovr = {}) {
@@ -75,7 +76,7 @@ let battleRewardsTitle = @(unit, ovr = {}){
 
 let premDesc = {
   flow = FLOW_VERTICAL
-  pos = [offerCardWidth - hdpx(30), hdpx(30)]
+  pos = const [offerCardWidth - hdpx(30), hdpx(30)]
   children =[
     {
       size = const [hdpx(389), hdpx(144)]

@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%globalsDarg/interop.nut" import registerInteropFunc
 
-let { registerInteropFunc } = require("%globalsDarg/interop.nut")
 
 let visibleLog = Watched({})
 
@@ -17,12 +17,12 @@ let dmgTypeIcons = [
   "⋄" 
 ]
 
-let delayAnimTime = 0.2
-let scaleAnimTime = 0.1
-let showAnimTime = 0.5
-let visibleAnimTime = delayAnimTime + scaleAnimTime + showAnimTime
-let opacityAnimTime = 0.3
-let fullAnimTime = visibleAnimTime + opacityAnimTime
+const delayAnimTime = 0.2
+const scaleAnimTime = 0.1
+const showAnimTime = 0.5
+const visibleAnimTime = delayAnimTime + scaleAnimTime + showAnimTime
+const opacityAnimTime = 0.3
+const fullAnimTime = visibleAnimTime + opacityAnimTime
 
 registerInteropFunc("hudDmgInfoUpdate", function(dmg, dmgType) {
   gui_scene.resetTimeout(fullAnimTime, clearLog)

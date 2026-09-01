@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { blinkAnimation, clearBlinkInterval } = require("%rGui/components/backButtonBlink.nut")
+from "%rGui/components/backButtonBlink.nut" import blinkAnimation, clearBlinkInterval
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/style/stdColors.nut" import hoverColor
 
-let backButtonHeight = hdpx(60)
+
+const backButtonHeight = hdpx(60)
 let backButtonWidth  = (78.0 / 59.0 * backButtonHeight).tointeger()
 let image  = Picture($"ui/gameuiskin#back_icon.svg:{backButtonWidth}:{backButtonHeight}")
 

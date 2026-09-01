@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { previewGoods } = require("%rGui/shop/goodsPreviewState.nut")
-let { visibleOffer } = require("%rGui/shop/offerState.nut")
-let { hasSavedDeepLink } = require("%rGui/notifications/appsFlierDeepLink.nut")
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%rGui/notifications/appsFlierDeepLink.nut" import hasSavedDeepLink
+from "%rGui/shop/goodsPreviewState.nut" import previewGoods
+from "%rGui/shop/offerState.nut" import visibleOffer
 
 
 let offerShowedTime = hardPersistWatched("offerAutoPreview.showedTime", {})

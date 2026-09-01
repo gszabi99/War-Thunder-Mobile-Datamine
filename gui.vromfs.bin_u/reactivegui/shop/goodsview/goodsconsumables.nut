@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopCommon.nut" import *
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { G_ITEM } = require("%appGlobals/rewardType.nut")
-let { orderByItems } = require("%appGlobals/itemsState.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
-let { LIMIT_REACHED } = require("%rGui/shop/goodsStates.nut")
-let { mkGoodsWrap, borderBg, mkCurrencyAmountTitle, mkPricePlate, mkGoodsCommonParts,
-  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTimeExt,
-  titleFontGradConsumables, mkBorderByCurrency, disabledBg
-} = require("%rGui/shop/goodsView/sharedParts.nut")
+from "%appGlobals/itemsState.nut" import orderByItems
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/rewardType.nut" import G_ITEM
+from "%rGui/shop/goodsStates.nut" import LIMIT_REACHED
+from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, borderBg, mkCurrencyAmountTitle, mkPricePlate,
+  mkGoodsCommonParts, mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg,
+  mkGoodsLimitAndEndTimeExt, titleFontGradConsumables, mkBorderByCurrency, disabledBg
+from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset
+from "%rGui/textFormatByLang.nut" import decimalFormat
+
 
 let icons = {
   ship_tool_kit = "ui/gameuiskin/shop_consumables_repair.avif"
@@ -27,14 +27,14 @@ let imgCustomCfg = {
   firework_kit = {
     scale = 0.4
     ovr = {
-      pos = [0, 0]
+      pos = const [0, 0]
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER
     }
   }
 }
 
-let imgSize = hdpx(500)
+const imgSize = hdpx(500)
 let slotNameBG = {
   hplace = ALIGN_RIGHT
   color = 0x80000000
@@ -52,7 +52,7 @@ let bgHiglight = {
 }
 
 let itemImageOptionsStack = [
-  [{ size = imgSize, pos = [0, -hdpx(91)] }],
+  [{ size = imgSize, pos = const [0, -hdpx(91)] }],
   [
     { size = hdpx(400), pos = [0, -hdpx(15)] sortOrder = 2}
     { size = hdpx(400), pos = [hdpx(100), -hdpx(35)] sortOrder = 1}
@@ -98,7 +98,7 @@ function getLocNameConsumables(goods) {
 
 function mkGoodsConsumables(goods, onClick, state, animParams, addChildren) {
   let data = getConsumablesInfo(goods)
-  let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
+  let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {}, id } = goods
   let nameConsumable = data.len() != 1 ? loc($"goods/{goods.id}") : loc($"item/{data[0].id}")
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
   let border = mkBorderByCurrency(borderBg, isFreeReward, price?.currencyId)
@@ -131,7 +131,8 @@ function mkGoodsConsumables(goods, onClick, state, animParams, addChildren) {
         size = FLEX
         children = hasLimitReached.get() ? disabledBg : null
       }),
-    mkPricePlate(goods, stateExt, animParams), {size = goodsSmallSize})
+    mkPricePlate(goods, stateExt, animParams),
+      { size = goodsSmallSize, key = isFreeReward ? $"shop_card_{id}" : null }) 
 }
 
 

@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { mkCustomButton, paddingX, mergeStyles } = require("%rGui/components/textButton.nut")
-let { PURCHASE, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { mkUnitLevel } = require("%rGui/unit/components/unitLevelComp.nut")
-let { CS_COMMON } = require("%rGui/components/currencyStyles.nut")
-let { unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/buttonStyles.nut" import PURCHASE, defButtonMinWidth
+from "%rGui/components/currencyStyles.nut" import CS_COMMON
+from "%rGui/components/levelBlockPkg.nut" import unitExpColor
+from "%rGui/components/textButton.nut" import mkCustomButton, paddingX, mergeStyles
+from "%rGui/unit/components/unitLevelComp.nut" import mkUnitLevel
+
 
 let textBtnComp = @(text, ovr){
   maxWidth = defButtonMinWidth - (2 * paddingX + CS_COMMON.iconSize)

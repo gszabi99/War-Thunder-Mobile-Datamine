@@ -1,24 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { myQueueToken, jwtUserstat } = require("%appGlobals/queueState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { myClustersRTT, queueDataCheckTime, isInSquad } = require("%appGlobals/squadState.nut")
-let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
-let { missingUnitResourcesByRank, allUnitsRanks, getModeAddonsInfo, maxReleasedUnitRanks
-} = require("%appGlobals/updater/gameModeAddons.nut")
-let { activeBattleMods } = require("%appGlobals/pServer/battleMods.nut")
-let { gameModeQueueGroups, getGameModeQueueGroup } = require("%appGlobals/gameModes/gameModes.nut")
-let { bindSquadROVar } = require("%rGui/squad/squadManager.nut")
-let { readyCheckTime } = require("%rGui/squad/readyCheck.nut")
-let { mRankCheckTime } = require("%rGui/squad/mRankCheck.nut")
-let { chosenDecoratorsHash } = require("%rGui/decorators/decoratorState.nut")
-let { ovrUnitsGameModes } = require("%rGui/gameModes/gameModeState.nut")
-let { wantedModeId, downloadCheckTime } = require("%rGui/squad/downloadCheck.nut")
+from "dagor.time" import get_time_msec
+from "%sqstd/underscore.nut" import prevIfEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/gameModes/gameModes.nut" import gameModeQueueGroups, getGameModeQueueGroup
+from "%appGlobals/pServer/battleMods.nut" import activeBattleMods
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%appGlobals/queueState.nut" import myQueueToken, jwtUserstat
+from "%appGlobals/squadState.nut" import myClustersRTT, queueDataCheckTime, isInSquad
+from "%appGlobals/updater/addonsState.nut" import hasAddons, unitSizes
+from "%appGlobals/updater/gameModeAddons.nut" import missingUnitResourcesByRank, allUnitsRanks, getModeAddonsInfo,
+  maxReleasedUnitRanks
+from "%rGui/decorators/decoratorState.nut" import chosenDecoratorsHash
+from "%rGui/gameModes/gameModeState.nut" import ovrUnitsGameModes
+from "%rGui/squad/downloadCheck.nut" import wantedModeId, downloadCheckTime
+from "%rGui/squad/mRankCheck.nut" import mRankCheckTime
+from "%rGui/squad/readyCheck.nut" import readyCheckTime
+from "%rGui/squad/squadManager.nut" import bindSquadROVar
 
 
 let curUnitInfos = keepref(Computed(function(prev) {

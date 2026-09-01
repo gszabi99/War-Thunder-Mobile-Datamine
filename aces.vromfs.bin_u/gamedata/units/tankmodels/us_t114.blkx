@@ -1833,9 +1833,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 8850.0,
-      "Fuel": 150.0,
-      "TakeOff": 9000.0,
+      "Empty": 6300.0,
+      "Fuel": 300.0,
+      "TakeOff": 6600.0,
       "momentOfInertia": [
         2.0,
         2.0,
@@ -1855,7 +1855,7 @@
     },
     "tracks": {
       "animationMultiplier": -0.63,
-      "height": 0.085,
+      "height": 0.03,
       "width": 0.5,
       "fricSideRotAlternative": [
         5.0,
@@ -1875,9 +1875,9 @@
     },
     "mechanics": {
       "maxBrakeForce": 50000.0,
-      "driveGearRadius": 0.25,
-      "mainGearRatio": 4.17,
-      "sideGearRatio": 1.81,
+      "driveGearRadius": 0.15,
+      "mainGearRatio": 4.38,
+      "sideGearRatio": 1.0,
       "alternativeGearControl": 3.0,
       "gearRatios": {
         "ratio": [
@@ -1899,9 +1899,9 @@
         -0.08,
         0.05
       ],
-      "defaultGearRadius": 0.24,
+      "defaultGearRadius": 0.26,
       "topGearRadius": 0.122,
-      "frontBackGearRadius": 0.22,
+      "frontBackGearRadius": 0.15,
       "defaultDampeningForce": [
         27000.0,
         27000.0

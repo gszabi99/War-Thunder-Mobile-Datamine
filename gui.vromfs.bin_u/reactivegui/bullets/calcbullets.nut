@@ -1,9 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("math")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let { ammoReductionFactorsByIdx, ammoReductionFactorDef, BS_VISIBLE, BS_ONLY_EXTERNAL_SLOT, BS_UNLOCKED, BS_BR_PICKUP
-} = require("%rGui/bullets/bulletsConst.nut")
-let { abTests } = require("%appGlobals/pServer/campaign.nut")
+from "math" import ceil
+from "%sqstd/datablock.nut" import eachBlock
+from "%appGlobals/pServer/campaign.nut" import abTests
+from "%rGui/bullets/bulletsConst.nut" import ammoReductionFactorsByIdx, ammoReductionFactorDef, BS_VISIBLE,
+  BS_ONLY_EXTERNAL_SLOT, BS_UNLOCKED, BS_BR_PICKUP, BULLETS_PRIM_SLOTS
+from "%rGui/bullets/savedBullets.nut" import loadSavedBullets
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitBulletsChoice
 
 
 
@@ -130,12 +132,41 @@ function calcChosenBullets(bInfo, stepSize, bulletsStatus, maxBullets,
   return res
 }
 
+function calcSlotChosenBullets(bInfo, bulletsStatus, sBullets, sBulletLimit,
+  ammoReductionFactor, ammoReductionFactorsBySlot, bSlots, addIndex = 0
+) {
+  let stepSize = calcBulletStep(bInfo)
+  let totalCount = (bInfo?.total ?? 1).tofloat()
+  let totalSteps = ceil(totalCount / stepSize).tointeger()
+  let hasExtra = stepSize * totalSteps > totalCount
+  let maxBullets = hasExtra ? calcMaxBullets(totalSteps, bInfo, totalCount, bSlots) : {}
+  return calcChosenBullets(bInfo, stepSize, bulletsStatus, maxBullets, hasExtra, totalSteps,
+    sBullets, sBulletLimit, ammoReductionFactor, ammoReductionFactorsBySlot, bSlots, addIndex)
+}
+
+function getPrimaryBullets(unitName, level, mods) {
+  if (unitName == null)
+    return []
+  let bInfo = loadUnitBulletsChoice(unitName)?.commonWeapons?.primary
+  if (bInfo == null)
+    return []
+
+  let status = calcBulletsStatus(bInfo, level, mods, {})
+  let chosen = calcSlotChosenBullets(bInfo, status, loadSavedBullets(unitName),
+    @(idx) idx > BULLETS_PRIM_SLOTS, ammoReductionFactorDefExt.get(), ammoReductionFactorsByIdxExt.get(),
+    BULLETS_PRIM_SLOTS)
+
+  return chosen.map(@(b) b.name)
+}
+
 return {
   calcBulletStep
   calcLeftSteps
   calcBulletsStatus
   calcMaxBullets
   calcChosenBullets
+
+  getPrimaryBullets
 
   ammoReductionFactorDefExt
   ammoReductionFactorsByIdxExt

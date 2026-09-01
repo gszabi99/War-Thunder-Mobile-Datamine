@@ -556,6 +556,7 @@
     "engines": {
       "maxSpeed": 24.3,
       "maxReverseSpeed": 9.0,
+      "throttleEngineControlParam": "engine_speed",
       "speedToTime": {
         "row": [
           [
@@ -631,7 +632,7 @@
         }
       ],
       "hydrofoils": {
-        "targetAltitude": 1.3,
+        "targetAltitude": 6.8,
         "maxTiltAngle": 12.0,
         "hydrofoil": [
           {
@@ -689,6 +690,35 @@
               "ClCritHigh": 0.2,
               "ClCritLow": -0.15,
               "alphaCritHigh": 10.0,
+              "alphaCritLow": -3.0
+            }
+          },
+          {
+            "euler": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "pos": [
+              -35.0,
+              -1.0,
+              0.0
+            ],
+            "size": [
+              12.0,
+              4.0
+            ],
+            "maxV": 140.0,
+            "glider": {
+              "sensitivity": 0.8
+            },
+            "polar": {
+              "Cl0": 0.15,
+              "CdMin": 0.09,
+              "lineClCoeff": 0.052,
+              "ClCritHigh": 0.2,
+              "ClCritLow": -0.15,
+              "alphaCritHigh": 7.0,
               "alphaCritLow": -3.0
             }
           }
@@ -818,8 +848,8 @@
         ],
         "bullets": 400,
         "launchAnimVar": "anim_launch_rockets_01",
-        "animLaunchTime": 1.0,
-        "launchTime": 0.26,
+        "animLaunchTime": 0.5,
+        "launchTime": 0.16,
         "startFx": "smoke_rocketlaunch_ground",
         "startFxOffset": [
           1.5,
@@ -877,8 +907,8 @@
         ],
         "bullets": 400,
         "launchAnimVar": "anim_launch_rockets_02",
-        "animLaunchTime": 1.0,
-        "launchTime": 0.26,
+        "animLaunchTime": 0.5,
+        "launchTime": 0.16,
         "startFx": "smoke_rocketlaunch_ground",
         "startFxOffset": [
           1.5,
@@ -1663,20 +1693,20 @@
   },
   "Effects": {
     "waterSplashFx": "water_splash_massive",
-    "sideSplashSpeedMult": 0.5,
-    "sideSplashUpDirMult": 0.8,
-    "sideSplashSpawnRate": 3.0,
-    "sideSplashNormalMult": 1.2,
+    "sideSplashSpeedMult": 1.2,
+    "sideSplashUpDirMult": 1.4,
+    "sideSplashSpawnRate": 6.0,
+    "sideSplashNormalMult": 2.0,
     "sideSplashEmissionCurve": [
-      1.5,
-      0.0,
-      -0.5
+      2.0,
+      0.5,
+      -0.3
     ],
     "waterSplashFxBow": "water_splash_medium_bow",
-    "bowSplashSpeedMult": 3.0,
-    "bowSplashUpDirMult": 0.3,
-    "bowSplashSpawnRate": 0.0,
-    "bowSplashNormalMult": 5.0
+    "bowSplashSpeedMult": 1.2,
+    "bowSplashUpDirMult": 1.4,
+    "bowSplashSpawnRate": 2.5,
+    "bowSplashNormalMult": 2.0
   },
   "breaches": {
     "repairSpeed": 50.0,
@@ -1745,8 +1775,8 @@
   },
   "battleHideNodes": {
     "n": [
-      "ex_decor_l_01",
-      "ex_decor_r_01"
+      "ex_decor_l_02",
+      "ex_decor_r_02"
     ]
   },
   "default_skin": {

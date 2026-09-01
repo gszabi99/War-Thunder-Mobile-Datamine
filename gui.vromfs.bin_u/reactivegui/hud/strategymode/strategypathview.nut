@@ -1,24 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { Point2, Point3 } = require("dagor.math")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { fabs } = require("math")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { touchButtonSize, borderWidth, btnBgStyle, borderColor, borderNoAmmoColor,
-  imageDisabledColor, imageColor
-} = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { textButtonPrimary, textButtonSecondary } = require("%rGui/components/textButton.nut")
-let { getSelectionPos2d, nodeAdd, nodeInsert, nodeClear, nodeEdit, launchPlane, launchShip
-  setSelection, setSelectionRect, NODE_INVALID, NODE_SELF, NODE_ORDER_RETURN,
-  NODE_ORDER_POINT, NODE_ORDER_ATTACK, NODE_ORDER_DEFEND, NODE_ORDER_HUNT
-} = require("guiStrategyMode")
-let { showHint } = require("%rGui/tooltip.nut")
-let { strategyDataCur, curGroupIndex, curAirGroupIsLaunched, curAirGroupPathLength,
-  curAirGroupIsReturning, curAirGroupType, curAirGroupCanAttackAir, curAirGroupCanAttackGround,
+from "dagor.math" import Point2, Point3
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "guiStrategyMode" import getSelectionPos2d, nodeAdd, nodeInsert, nodeClear, nodeEdit, launchPlane, launchShip,
+  setSelection, setSelectionRect, NODE_INVALID, NODE_SELF, NODE_ORDER_RETURN, NODE_ORDER_POINT, NODE_ORDER_ATTACK,
+  NODE_ORDER_DEFEND, NODE_ORDER_HUNT
+from "math" import fabs
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonSecondary
+from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize, borderWidth, btnBgStyle, borderColor,
+  borderNoAmmoColor, imageDisabledColor, imageColor
+from "%rGui/hud/strategyMode/strategyState.nut" import strategyDataCur, curGroupIndex, curAirGroupIsLaunched,
+  curAirGroupPathLength, curAirGroupIsReturning, curAirGroupType, curAirGroupCanAttackAir, curAirGroupCanAttackGround,
   curAirGroupCanDefend, curAirGroupCanHunt, updateStrategyDataCur, optDebugDraw
-} = require("%rGui/hud/strategyMode/strategyState.nut")
-let { getNodeStyle, edgeColorDefault, edgeColorPending, edgeButtonColor, airGroupAttackIcons,
-  iconInsert, iconClear, debugIconWarning, airGroupIcons, debugTextColor
-} = require("%rGui/hud/strategyMode/style.nut")
+from "%rGui/hud/strategyMode/style.nut" import getNodeStyle, edgeColorDefault, edgeColorPending, edgeButtonColor,
+  airGroupAttackIcons, iconInsert, iconClear, debugIconWarning, airGroupIcons, debugTextColor
+from "%rGui/tooltip.nut" import showHint
+
 
 const iconEdge = "ui/gameuiskin#blink_sharp.svg"
 const iconSelectedUnit = "ui/gameuiskin#crew_gunner_indicator.svg"
@@ -338,7 +335,7 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
 }
 
 function mkPathEdgeButton(edgePos, edgeId, edgeColor) {
-  let btnSize = hdpx(50)
+  const btnSize = hdpx(50)
   let imgSizeOuter = (btnSize * 0.95).tointeger()
   let imgSizeInner = (btnSize * 0.65).tointeger()
   let isSelected = Computed(@() edgeId != -1 && selectedEdgeId.get() == edgeId)
@@ -351,7 +348,7 @@ function mkPathEdgeButton(edgePos, edgeId, edgeColor) {
     children = [
       {
         rendObj = ROBJ_BOX
-        size = [btnSize, btnSize]
+        size = const [btnSize, btnSize]
         fillColor = isSelected.get() ? btnBgStyle.get().ready : 0
         borderWidth = isSelected.get() ? borderWidth : 0
         borderColor = borderColor
@@ -450,7 +447,7 @@ function mkNodesUi(data) {
     edgesUi.append([VECTOR_LINE_DASHED, pendingSrcPos.x, pendingSrcPos.y, pendingDstPos.x, pendingDstPos.y, hdpx(10), hdpx(20)])
 
     if (selectedUnitId.get() != -1) {
-      let pendingIconSize = hdpxi(100)
+      const pendingIconSize = hdpxi(100)
       nodesUi.append({
         size = 0
         halign = ALIGN_CENTER
@@ -458,7 +455,7 @@ function mkNodesUi(data) {
         pos = [pendingDstPos.x, pendingDstPos.y]
         children = {
           rendObj = ROBJ_IMAGE
-          size = [pendingIconSize, pendingIconSize]
+          size = const [pendingIconSize, pendingIconSize]
           image = Picture($"{iconSelectedUnit}:{pendingIconSize}:{pendingIconSize}:P")
           color = imageColor
           keepAspect = KEEP_ASPECT_FIT

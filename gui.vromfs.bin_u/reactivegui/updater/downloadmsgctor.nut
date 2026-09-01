@@ -3,8 +3,8 @@ from "console" import register_command
 from "eventbus" import eventbus_send
 from "%appGlobals/pServer/bqClient.nut" import sendLoadingAddonsBqEvent
 from "%appGlobals/updater/addons.nut" import mbToString, toMB
-from "%rGui/notifications/foreignMsgBox.nut" import getFMsgButtons, registerFMsgCreator
 from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText, closeMsgBox
+from "%rGui/notifications/foreignMsgBox.nut" import getFMsgButtons, registerFMsgCreator
 from "%rGui/updater/downloadSize.nut" import mkDlSizeComp
 
 

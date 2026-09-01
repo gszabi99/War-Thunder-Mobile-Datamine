@@ -1,21 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { borderWidth, btnBgStyle, borderColor, borderNoAmmoColor, imageColor
-} = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { mkShipDebuffs, mkCrewHealthCtor, defHealthSize } = require("%rGui/hud/shipStateModule.nut")
-let { actionBarItems, startActionBarUpdate, stopActionBarUpdate } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3 } = require("%rGui/hud/actionBar/actionType.nut")
-let { strategyDataRest, strategyDataShip, curGroupIndex, optDebugDraw } = require("%rGui/hud/strategyMode/strategyState.nut")
-let { getNodeStyle, airGroupIcons, airGroupButtonWidth, airGroupButtonHeight,
+from "guiStrategyMode" import onGroupSelected, NODE_SELF
+from "sound_wt" import playSound
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/hud/actionBar/actionBarState.nut" import actionBarItems, startActionBarUpdate, stopActionBarUpdate
+from "%rGui/hud/actionBar/actionType.nut" import AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3
+from "%rGui/hud/buttons/squareTouchHudButtons.nut" import mkSquareButtonBg
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderWidth, btnBgStyle, borderColor, borderNoAmmoColor, imageColor
+from "%rGui/hud/shipStateModule.nut" import mkShipDebuffs, mkCrewHealthCtor, defHealthSize
+from "%rGui/hud/strategyMode/strategyPathView.nut" import pathSelectionReset
+from "%rGui/hud/strategyMode/strategyState.nut" import strategyDataRest, strategyDataShip, curGroupIndex, optDebugDraw
+from "%rGui/hud/strategyMode/style.nut" import getNodeStyle, airGroupIcons, airGroupButtonWidth, airGroupButtonHeight,
   iconShip, debugTextColor
-} = require("%rGui/hud/strategyMode/style.nut")
-let { pathSelectionReset } = require("%rGui/hud/strategyMode/strategyPathView.nut")
-let { onGroupSelected, NODE_SELF } = require("guiStrategyMode")
-let { mkSquareButtonBg } = require("%rGui/hud/buttons/squareTouchHudButtons.nut")
-let { mkActionGlare } = require("%rGui/hud/weaponsButtonsAnimations.nut")
-let { playSound } = require("sound_wt")
-let { isHudPrimaryStyle } = require("%rGui/options/options/hudStyleOptions.nut")
-let { hudGrayColorFade, hudTealColorFade, hudBrownRedFade } = require("%rGui/style/hudColors.nut")
+from "%rGui/hud/weaponsButtonsAnimations.nut" import mkActionGlare
+from "%rGui/options/options/hudStyleOptions.nut" import isHudPrimaryStyle
+from "%rGui/style/hudColors.nut" import hudGrayColorFade, hudTealColorFade, hudBrownRedFade
+
 
 local prevAirGroupHealth = {}
 

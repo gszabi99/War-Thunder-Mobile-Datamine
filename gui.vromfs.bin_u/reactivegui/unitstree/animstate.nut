@@ -1,18 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { playSound } = require("sound_wt")
-let { resetTimeout } = require("dagor.workcycle")
-let { unitsResearchStatus, blueprintUnitsStatus, setUnitToScroll } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { needSelectResearch } = require("%rGui/unitsTree/selectResearchWnd.nut")
-let { isUnitsTreeOpen } = require("%rGui/unitsTree/unitsTreeState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { maxBuyRequirementsAnimTime, maxResearchRequirementsAnimTime } = require("%rGui/unitsTree/treeAnimConsts.nut")
+from "dagor.workcycle" import resetTimeout
+from "sound_wt" import playSound
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/unitsTree/selectResearchWnd.nut" import needSelectResearch
+from "%rGui/unitsTree/treeAnimConsts.nut" import maxBuyRequirementsAnimTime, maxResearchRequirementsAnimTime
+from "%rGui/unitsTree/unitsTreeNodesState.nut" import unitsResearchStatus, blueprintUnitsStatus, setUnitToScroll
+from "%rGui/unitsTree/unitsTreeState.nut" import isUnitsTreeOpen
 
-let animExpPartDelay = 0.3
 
-let animNewUnitsAfterResearchTrigger = "animNewUnitsAfterResearchTrigger"
+const animExpPartDelay = 0.3
+
+const animNewUnitsAfterResearchTrigger = "animNewUnitsAfterResearchTrigger"
 
 let isBuyUnitWndOpened = mkWatched(persist, "isBuyUnitWndOpened", false)
 let animUnitAfterResearch = mkWatched(persist, "animUnitAfterResearch", null)

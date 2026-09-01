@@ -1,5 +1,6 @@
 from "frp" import Computed
-import "%globalScripts/sharedWatched.nut" as sharedWatched
+from "%sqstd/globalState.nut" import hardPersistWatched
+
 
 let steamLanguages = {
   English = "english"
@@ -23,7 +24,7 @@ let steamLanguages = {
   Thai = "thai"
 }
 
-let currentLanguage = sharedWatched("currentLanguage", @() "")
+let currentLanguage = hardPersistWatched("currentLanguage", "")
 let currentSteamLanguage = Computed(@() steamLanguages?[currentLanguage.get()] ?? "english")
 
 return {

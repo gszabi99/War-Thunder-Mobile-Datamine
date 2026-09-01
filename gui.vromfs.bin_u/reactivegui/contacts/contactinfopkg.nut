@@ -1,18 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
-let { myUserName, myUserRealName } = require("%appGlobals/profileStates.nut")
-let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
-let { mkSubsIcon } = require("%appGlobals/config/subsPresentation.nut")
-let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
-let { starLevelSmall } = require("%rGui/components/starLevel.nut")
-let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { isInSquad, squadId, isInvitedToSquad, squadMembers } = require("%appGlobals/squadState.nut")
-let { leaderColor, memberNotReadyColor, memberReadyColor, selectColor } = require("%rGui/style/stdColors.nut")
+from "%appGlobals/config/subsPresentation.nut" import mkSubsIcon
+import "%appGlobals/decorators/avatars.nut" as getAvatarImage
+from "%appGlobals/decorators/nickFrames.nut" import frameNick
+from "%appGlobals/profileStates.nut" import myUserName, myUserRealName
+from "%appGlobals/squadState.nut" import isInSquad, squadId, isInvitedToSquad, squadMembers
+from "%appGlobals/user/nickTools.nut" import getPlayerName
+from "%rGui/components/levelBlockPkg.nut" import mkLevelBg
+from "%rGui/components/starLevel.nut" import starLevelSmall
+from "%rGui/style/stdColors.nut" import leaderColor, memberNotReadyColor, memberReadyColor, selectColor
 
 
 let nameColor = selectColor
-let titleColor = 0xFFFFFFFF
-let darkenBgColor = 0x80001521
+const titleColor = 0xFFFFFFFF
+const darkenBgColor = 0x80000000
 
 let onlineStatusColorsList = {
   in_battle = 0xFFDDA339
@@ -20,12 +20,12 @@ let onlineStatusColorsList = {
   online = 0xFF20E040
 }
 
-let borderWidth = hdpx(3)
-let avatarSize = hdpxi(90)
+const borderWidth = hdpx(3)
+const avatarSize = hdpxi(90)
 let contactLevelSize = avatarSize * 0.8
 let rowHeight = avatarSize + 2 * borderWidth
-let gap = hdpx(10)
-let premIconSize = hdpxi(25)
+const gap = hdpx(10)
+const premIconSize = hdpxi(25)
 
 
 function contactNameBlock(contact, info, addChildren = [], styles = {}) {
@@ -79,7 +79,7 @@ function contactAvatar(info, size = avatarSize) {
 }
 
 let levelBg = freeze(mkLevelBg())
-let starLevelOvr = { pos = [0, ph(45)] }
+let starLevelOvr = { pos = const [0, ph(45)] }
 let levelMark = @(level, starLevel) {
   size = hdpx(40)
   margin = hdpx(10)

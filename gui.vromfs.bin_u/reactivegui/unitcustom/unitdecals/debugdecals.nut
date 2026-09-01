@@ -1,14 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command, command } = require("console")
-let { getUnitFileName } = require("vehicleModel")
-let { get_unittags_blk } = require("blkGetters")
-let { object_to_json_string } = require("json")
-let io = require("io")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
-let { Point2 } = require("dagor.math")
-let { eachBlock, blkOptFromPath } = require("%sqstd/datablock.nut")
-let { MAX_DECAL_SLOTS_COUNT } = require("%rGui/unit/hangarUnit.nut")
+from "blkGetters" import get_unittags_blk
+from "console" import register_command, command
+from "dagor.math" import Point2
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setInterval, clearTimer
+import "io" as io
+from "json" import object_to_json_string
+from "vehicleModel" import getUnitFileName
+from "%sqstd/datablock.nut" import eachBlock, blkOptFromPath
+from "%rGui/unit/hangarUnit.nut" import MAX_DECAL_SLOTS_COUNT
+
 
 let prepareInstance = {
   [Point2] = @(v) { x = v.x, y = v.y },

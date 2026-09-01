@@ -24,14 +24,6 @@ def public unroll(blk : block) {
 [tag_function_macro(tag="unroll_tag")]
 class UnrollMacro : AstFunctionAnnotation {
     
-    
-    
-    
-    
-    
-    
-    
-    
     def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
         if (is_in_lint_check()) {
             

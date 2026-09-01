@@ -1,32 +1,74 @@
-let { logerr } = require("dagor.debug")
+from "dagor.debug" import logerr
 
-let mkState = @(image, color = 0xFFFFFFFF)
-  { image, color, scale = 1.0 }
+const defaultPointView = "mapMark"
+const fallbackPointSize = 80
+const colorActive = 0xFFFFFFFF
+let noOffset = [0, 0]
 
-let defaultPresentation = {
-  locked = mkState("ui/gameuiskin#scroll_quest_locked.avif")
-  unlocked = mkState("ui/gameuiskin#scroll_quest_active.avif")
-  completed = mkState("ui/gameuiskin#scroll_quest_completed.avif")
-  finished = mkState("ui/gameuiskin#scroll_quest_completed.avif")
+
+let mkState = @(image, color = colorActive, opacity = 1) { image, color, opacity, scale = 1.0 }
+
+function mkNodeView(artPrefix, artType) {
+  let img = $"ui/gameuiskin#{artPrefix}_{artType}.avif"
+  let active = $"ui/gameuiskin#{artPrefix}_{artType}_selected.avif"
+
+  return {
+    locked = mkState(img, colorActive, 0.5)
+    unlocked = mkState(img)
+    completed = mkState(img)
+    finished = mkState(img)
+    selected = mkState(active)
+  }
 }
 
-let presentations = {
-  mapMark = defaultPresentation
-  mapMarkFinal = {
-    locked = mkState("ui/gameuiskin#scroll_quest_locked_final.avif")
-    unlocked = mkState("ui/gameuiskin#scroll_quest_active_final.avif")
-    completed = mkState("ui/gameuiskin#scroll_quest_active_final.avif")
-    finished = mkState("ui/gameuiskin#scroll_quest_completed_final.avif")
-  }.map(@(v) v.$rawset("scale", 1.3))
+let themes = {
+  event_s37_node = {
+    default = { view = "mapMark", art = "step", size = fallbackPointSize, lineStartOffset = 0.1 }
+    nextPage = { view = "mapMarkFinal", art = "start", size = 110, offset = [0.1, 0], lineStartOffset = 0.25 }
+    start = { view = "mapMarkStart", art = "start", size = 110, offset = [0.1, 0], lineStartOffset = 0.25 }
+    reward = { view = "mapMarkReward", art = "reward", size = 150, lineStartOffset = 0.15 }
+    quests = { view = "mapMarkQuests", art = "task", size = 110, lineStartOffset = 0.15 }
+  }
 }
 
-let reqFields = ["locked", "unlocked", "completed", "finished"]
-foreach (id, p in presentations)
-  foreach (f in reqFields)
-    if (f not in p)
-      logerr($"Missing field {f} in mapPointsPresentation {id}")
+const defaultThemePrefix = "event_s37_node"
+
+let eventThemePrefix = {
+  season_37_main_event = defaultThemePrefix
+}
+
+let presentations = {}
+let themeNodeViews = {}
+
+foreach (prefix, roles in themes) {
+  let nodeViews = {}
+  foreach (nodeType, r in roles) {
+    if (r.view in presentations)
+      logerr($"Duplicate map point view id '{r.view}' in theme {prefix}")
+    presentations[r.view] <- mkNodeView(prefix, r.art).__update({
+      size = r.size
+      offset = r?.offset ?? noOffset
+      lineStartOffset = r?.lineStartOffset ?? 0.0
+    })
+    nodeViews[nodeType] <- r.view
+  }
+  themeNodeViews[prefix] <- nodeViews
+}
+
+let defaultNodeViews = themeNodeViews[defaultThemePrefix]
+
+function getEventNodeViews(eventId) {
+  let prefix = eventThemePrefix?[eventId] ?? defaultThemePrefix
+  return themeNodeViews?[prefix] ?? defaultNodeViews
+}
 
 return {
   mapPointsPresentations = presentations
-  getMapPointsPresentation = @(id) presentations?[id] ?? defaultPresentation
+  defaultPointView
+  getMapPointsPresentation = @(view) presentations?[view] ?? presentations[defaultPointView]
+  getTreeNodeView = @(eventId, nodeType)
+    getEventNodeViews(eventId)?[nodeType] ?? defaultNodeViews?[nodeType] ?? defaultPointView
+  getDefaultPointSize = @(view) presentations?[view]?.size ?? fallbackPointSize
+  getPointOffset = @(view) presentations?[view]?.offset ?? noOffset
+  getPointLineStartOffset = @(view) presentations?[view]?.lineStartOffset ?? 0.0
 }

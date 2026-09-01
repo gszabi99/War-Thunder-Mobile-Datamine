@@ -50,7 +50,7 @@ def check_recursive(at : LineInfo; var fun : Function?) {
 def collect_call_tree(fun : Function?; var visited : table<Function?>) {
     if (fun.flags.builtIn || visited |> key_exists(fun)) return
     visited |> insert(fun)
-    unsafe(reinterpret<FunctionPtr> fun) |> get_use_functions() $(f) {
+    unsafe(reinterpret<FunctionPtr>(fun)) |> get_use_functions() $(f) {
         collect_call_tree(f, visited)
     }
 }
@@ -100,9 +100,6 @@ class ValidateCompletionVisitor : AstVisitor {
 
 [function_macro(name="verify_completion")]
 class VerifyCompletion : AstFunctionAnnotation {
-    
-    
-    
     
     def override lint(var func : FunctionPtr; var group : ModuleGroup; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
         var visited : table<Function?>

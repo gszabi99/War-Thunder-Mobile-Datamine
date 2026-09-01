@@ -1,51 +1,49 @@
 from "%globalsDarg/darg_library.nut" import *
-let { WALKER } = require("%appGlobals/unitConst.nut")
-let { AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN, AB_FIREWORK, AB_TOOLKIT
-} = require("%rGui/hud/actionBar/actionType.nut")
-let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { EII_EXTINGUISHER, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET,
-  EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT, EII_TOOLKIT_SPLIT, EII_MEDICALKIT
-} = require("%rGui/hud/weaponsButtonsConfig.nut")
-let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
-let { mkCircleWalkerPrimaryGun, mkCircleGroundSecondaryGun, mkCircleGroundMachineGun, mkCircleZoomCtor,
-  mkCircleBtnEditView, mkBigCircleBtnEditView, mkCountTextRight, mkCircleFireworkBtn
-} = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
-let { withActionBarButtonCtor, withAnyActionBarButtonCtor,
+from "%appGlobals/activeControls.nut" import isGamepad, isKeyboard
+from "%appGlobals/unitConst.nut" import WALKER
+from "%rGui/compass/compass.nut" import mkCompass, mkCompassEditView
+from "%rGui/compass/compassState.nut" import isCompassVisible
+from "%rGui/components/movementArrows.nut" import moveArrowsView
+from "%rGui/hud/actionBar/actionBarState.nut" import actionBarItems
+from "%rGui/hud/actionBar/actionType.nut" import AB_PRIMARY_WEAPON, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON,
+  AB_MACHINE_GUN, AB_FIREWORK, AB_TOOLKIT
+from "%rGui/hud/buttons/actionButtonComps.nut" import mkActionItemEditView
+from "%rGui/hud/buttons/cameraButtons.nut" import mkFreeCameraButton
+from "%rGui/hud/buttons/circleTouchHudButtons.nut" import mkCircleWalkerPrimaryGun, mkCircleGroundSecondaryGun,
+  mkCircleGroundMachineGun, mkCircleZoomCtor, mkCircleBtnEditView, mkBigCircleBtnEditView, mkCountTextRight,
+  mkCircleFireworkBtn
+from "%rGui/hud/buttons/repairButton.nut" import tankRrepairButtonCtor
+from "%rGui/hud/components/moveIndicator.nut" import NEED_SHOW_POSE_INDICATOR, mkMoveIndicator,
+  moveIndicatorTankEditView
+from "%rGui/hud/components/tacticalMap.nut" import mkTacticalMapForHud, tacticalMapEditView, tacticalMapSize
+from "%rGui/hud/crewRank.nut" import crewRankCtr, crewRankEditView, isVisibleCrewRank
+from "%rGui/hud/fireworkState.nut" import fwVisibleInEditor, fwVisibleInBattle
+from "%rGui/hud/groundMovementBlock.nut" import walkerMoveStick, moveStickView, walkerGamepadMoveBlock
+from "%rGui/hud/hitCamera/hitCamera.nut" import hitCamera, hitCameraTankEditView
+from "%rGui/hud/missionScore.nut" import missionScoreCtr, missionScoreEditView
+from "%rGui/hud/myScores.nut" import mkMyPlace, mkMyPlaceUi, mkTankMyScores, mkMyScoresUi
+from "%rGui/hud/scoreBoard.nut" import scoreBoardType, scoreBoardCfgByType
+from "%rGui/hud/tankStateModule.nut" import mkDoll, dollEditView, mkSpeedText, speedTextEditView, mkCrewDebuffs,
+  crewDebuffsEditView, mkTechDebuffs, techDebuffsEditView
+from "%rGui/hud/voiceMsg/voiceMsgStick.nut" import voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
+import "%rGui/hud/walkerMovementBlock.nut" as walkerArrowsMovementBlock
+from "%rGui/hud/weaponsButtonsConfig.nut" import EII_EXTINGUISHER, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN,
+  EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT, EII_TOOLKIT_SPLIT, EII_MEDICALKIT
+from "%rGui/hud/weaponsButtonsView.nut" import mkRepairActionItem
+from "%rGui/hudState.nut" import isUnitAlive
+import "%rGui/hudTuning/cfg/cfgHudCommon.nut" as cfgHudCommon
+from "%rGui/hudTuning/cfg/cfgOptions.nut" import optWalkerMoveControlType, gearDownOnStopButtonTouch,
+  optDoublePrimaryGuns, optDoubleRepairBtn
+from "%rGui/hudTuning/cfg/hudTuningPkg.nut" import withActionBarButtonCtor, withAnyActionBarButtonCtor,
   withActionButtonScaleCtor, Z_ORDER, mkRBPos, mkLBPos, mkRTPos, mkLTPos, mkCBPos, mkCTPos
-} = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
-let { walkerMoveStick, moveStickView, walkerGamepadMoveBlock } = require("%rGui/hud/groundMovementBlock.nut")
-let { voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
-} = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
-let walkerArrowsMovementBlock = require("%rGui/hud/walkerMovementBlock.nut")
-let { currentWalkerMoveCtrlType } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
-let { isGamepad, isKeyboard } = require("%appGlobals/activeControls.nut")
-let { moveArrowsView } = require("%rGui/components/movementArrows.nut")
-let { hitCamera, hitCameraTankEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
-let { mkTacticalMapForHud, tacticalMapEditView, tacticalMapSize } = require("%rGui/hud/components/tacticalMap.nut")
-let { mkDoll, dollEditView, mkSpeedText, speedTextEditView, mkCrewDebuffs, crewDebuffsEditView,
-  mkTechDebuffs, techDebuffsEditView } = require("%rGui/hud/tankStateModule.nut")
-let { NEED_SHOW_POSE_INDICATOR, mkMoveIndicator, moveIndicatorTankEditView
-} = require("%rGui/hud/components/moveIndicator.nut")
-let { mkFreeCameraButton } = require("%rGui/hud/buttons/cameraButtons.nut")
-let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
-let { mkRepairActionItem } = require("%rGui/hud/weaponsButtonsView.nut")
-let { mkMyPlace, mkMyPlaceUi, mkTankMyScores, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
-let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut")
-let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
-let { missionScoreCtr, missionScoreEditView } = require("%rGui/hud/missionScore.nut")
-let { optWalkerMoveControlType, gearDownOnStopButtonTouch, optDoublePrimaryGuns,
-  optDoubleRepairBtn
-} = require("%rGui/hudTuning/cfg/cfgOptions.nut")
-let { tankRrepairButtonCtor } = require("%rGui/hud/buttons/repairButton.nut")
-let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut")
-let { isUnitAlive } = require("%rGui/hudState.nut")
-let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
-let { crewRankCtr, crewRankEditView, isVisibleCrewRank } = require("%rGui/hud/crewRank.nut")
-let { showRadarOverMap, IsRadarVisible, IsRadarHudVisible } = require("%rGui/radar/radarState.nut")
-let { mkRadarToggleButton, mkRadarToggleButtonEditView } = require("%rGui/radar/radarToggleButton.nut")
-let { radarHudCtor, radarHudEditView } = require("%rGui/radar/radar.nut")
-let { isCompassVisible } = require("%rGui/compass/compassState.nut")
-let { mkCompass, mkCompassEditView } = require("%rGui/compass/compass.nut")
+import "%rGui/hudTuning/cfg/initHudTuningCfg.nut" as initHudTuningCfg
+from "%rGui/hudTuning/hudTuningBattleState.nut" import curUnitHudTuningOptions
+import "%rGui/hudTuning/squareBtnEditView.nut" as mkSquareBtnEditView
+from "%rGui/options/chooseMovementControls/groundMoveControlType.nut" import currentWalkerMoveCtrlType
+from "%rGui/radar/radar.nut" import radarHudCtor, radarHudEditView
+from "%rGui/radar/radarState.nut" import showRadarOverMap, IsRadarVisible, IsRadarHudVisible
+from "%rGui/radar/radarToggleButton.nut" import mkRadarToggleButton, mkRadarToggleButtonEditView
+
 
 let isViewMoveArrows = Computed(@() currentWalkerMoveCtrlType.get() == "arrows")
 let isBattleMoveArrows = Computed(@() (isViewMoveArrows.get() || isKeyboard.get()) && !isGamepad.get())
@@ -54,9 +52,9 @@ let hasMyScores = Computed(@() scoreBoardCfgByType?[scoreBoardType.get()].addMyS
 let actionBarInterval = isWidescreen ? 150 : 130
 let actionBarTransform = @(idx, isBullet = false)
   mkRBPos([hdpx(-actionBarInterval * idx), isBullet ? 0 : hdpx(43)])
-let tacticalMapPos = hdpx(155)
+const tacticalMapPos = hdpx(155)
 
-return {
+return cfgHudCommon.__merge(initHudTuningCfg({
   primaryGun = withActionButtonScaleCtor(AB_PRIMARY_WEAPON,
     @(a, scale) mkCircleWalkerPrimaryGun(AB_PRIMARY_WEAPON)(a, scale, "btn_weapon_primary_alt", mkCountTextRight),
     {
@@ -315,4 +313,4 @@ return {
     isVisibleInEditor = IsRadarHudVisible
   }
 
-}.__update(cfgHudCommon).filter(@(v) v != null)
+}.filter(@(v) v != null)))

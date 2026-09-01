@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
 from "%appGlobals/config/countryPresentation.nut" import sortCountries
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { hasStatsImage } = require("%appGlobals/config/rewardStatsPresentation.nut")
+from "%appGlobals/config/rewardStatsPresentation.nut" import hasStatsImage
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 
 
-let NO_DROP_LIMIT = 1000000
+const NO_DROP_LIMIT = 1000000
 
 let rTypesPriority = {
   [G_STAT_SET]        = 10_000_000,
@@ -172,13 +172,13 @@ function joinViewInfo(resViewInfo, joiningViewInfo, onJoin = null) {
 let findIndexForJoin = @(viewInfoList, viewInfo)
   viewInfoList.findindex(@(v) joinSingleViewInfo(clone viewInfo, v, null))
 
-let function addTbl(res, id) {
+function addTbl(res, id) {
   if (id not in res)
     res[id] <- {}
   return res[id]
 }
 
-let function addArray(res, id) {
+function addArray(res, id) {
   if (id not in res)
     res[id] <- []
   return res[id]
@@ -312,7 +312,7 @@ function getLootboxRewardsViewInfo(lootbox, needToGroup = false) {
   let fixedRewards = getLootboxFixedRewardsViewInfo(lootbox)
   let commonRewards = getLootboxCommonRewardsViewInfo(lootbox)
     .filter(@(cR) fixedRewards.findindex(@(fR) fR?.rewardId && cR?.rewardId && fR.rewardId == cR.rewardId) == null)
-  return fixedRewards.extend(needToGroup ? groupRewards(commonRewards) : commonRewards)
+  return fixedRewards.extend((needToGroup ? groupRewards(commonRewards) : commonRewards).sort(sortRewardsWithOrder))
 }
 
 let getAllLootboxRewardsViewInfo = @(lootbox)

@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { G_LOOTBOX, unitRewardTypes } = require("%appGlobals/rewardType.nut")
+from "%appGlobals/rewardType.nut" import G_LOOTBOX, unitRewardTypes
+from "types" import String
 
 
 let RewardSearcher = class {
@@ -132,7 +133,7 @@ function findLootboxWithReward(lootboxes, configs, isRewardFit) {
   let { lootboxesCfg = {}, rewardsCfg = {} } = configs
   let searcher = RewardSearcher(rewardsCfg, lootboxesCfg, isRewardFit)
   foreach(lootbox in lootboxes)
-    if (searcher.isLootboxHasReward(type(lootbox) == "string" ? lootbox : lootbox.name))
+    if (searcher.isLootboxHasReward(lootbox instanceof String ? lootbox : lootbox.name))
       return lootbox
   return null
 }

@@ -1,27 +1,27 @@
 from "%globalsDarg/darg_library.nut" import *
-from "dagor.workcycle" import resetTimeout, clearTimer, deferOnce
-from "hangar" import activate_downloadable_hangar, get_current_downloadable_hangar, reload_hangar_scene
 from "auth_wt" import setLoginHangarDelayed
 from "console" import register_command
-from "eventbus" import eventbus_subscribe
+from "dagor.workcycle" import resetTimeout, clearTimer, deferOnce
 from "dasevents" import EventChangeHangarBanners
+from "eventbus" import eventbus_subscribe
+from "hangar" import activate_downloadable_hangar, get_current_downloadable_hangar, reload_hangar_scene
 import "%sqstd/ecs.nut" as ecs
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%sqstd/underscore.nut" import prevIfEqual, isEqual
-from "%appGlobals/config/eventSeasonPresentation.nut" import seasonFlagsRotation
-from "%appGlobals/userstats/serverTime.nut" import getServerTime
 from "%appGlobals/clientState/clientState.nut" import isInBattle, isInLoadingScreen
-from "%appGlobals/queueState.nut" import isInQueue
-from "%appGlobals/pServer/profileSeasons.nut" import curSeasons
+from "%appGlobals/config/eventSeasonPresentation.nut" import seasonFlagsRotation
 from "%appGlobals/loginState.nut" import isLoginStarted, isLoginRequired, isProfileConfigsReceived
-from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid
-from "%appGlobals/updater/addonsState.nut" import hasAddons, isAddonsSizesActual
+from "%appGlobals/pServer/profileSeasons.nut" import curSeasons
+from "%appGlobals/queueState.nut" import isInQueue
 from "%appGlobals/timeoutExt.nut" import resetExtTimeout
+from "%appGlobals/updater/addonsState.nut" import hasAddons, isAddonsSizesActual
+from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid
+from "%appGlobals/userstats/serverTime.nut" import getServerTime
 
 
-let MAX_HANGAR_DELAY_TIME = 20
-let FLAGS_SEASON = "season"
-let SOON_ADDONS_SEC = 3600 * 24
+const MAX_HANGAR_DELAY_TIME = 20
+const FLAGS_SEASON = "season"
+const SOON_ADDONS_SEC = 3600 * 24
 
 let debugHangar = hardPersistWatched("debugHangar")
 let debugFlagsOffset = hardPersistWatched("debugFlags", 0)

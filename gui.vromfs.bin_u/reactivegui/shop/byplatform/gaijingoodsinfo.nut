@@ -1,13 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
+from "dagor.workcycle" import resetTimeout, clearTimer, deferOnce
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%appGlobals/loginState.nut" import isAuthorized
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/shop/httpRequest.nut" import requestData, createGuidsRequestParams
+from "types" import Table
+
+
 let logG = log_with_prefix("[GOODS] ")
-let { resetTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isAuthorized } = require("%appGlobals/loginState.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { requestData, createGuidsRequestParams } = require("%rGui/shop/httpRequest.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let REPEAT_ON_ERROR_SEC = [60, 120, 240, 600, 900, 1200]
 const NO_ANSWER_TIMEOUT_SEC = 60
@@ -53,7 +56,7 @@ function refreshAvailableGuids() {
       lastError.set(null)
       lastUpdateTime.set(serverTime.get())
       let list = data?.items
-      if (type(list) == "table" && list.len() > 0)
+      if (list instanceof Table && list.len() > 0)
         goodsInfo.mutate(@(v) v.__update(list))
     },
     function(errData) {

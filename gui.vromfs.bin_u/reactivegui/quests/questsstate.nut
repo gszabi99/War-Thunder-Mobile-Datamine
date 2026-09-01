@@ -1,31 +1,29 @@
 from "%globalsDarg/darg_library.nut" import *
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { eventSectionOrder } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { hasVip } = require("%rGui/state/profilePremium.nut")
-let { isUserstatMissingData } = require("%rGui/unlocks/userstat.nut")
-let { campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockTablesSeasons, isSeasonPast, unlockProgress,
-  emptyProgress, setLastSeenUnlocks, unseenUnlocks, getUnlockAllRewardCurrencies, getAllUnlockCurrencies
-} = require("%rGui/unlocks/unlocks.nut")
-let { EVENT_PREFIX, COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, PERSONAL_TAB, DAILY_SECTION, WEEKLY_SECTION,
-  PERSONAL_META_MARK, SPEED_UP_AD_COST
-} = require("%rGui/unlocks/unlocksConst.nut")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { showAdsForReward, isProviderInited  } = require("%rGui/ads/adsState.nut")
-let { playSound } = require("sound_wt")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { speed_up_unlock_progress } = require("%appGlobals/pServer/pServerApi.nut")
-let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let adBudget = require("%rGui/ads/adBudget.nut")
-let { specialEvents, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
-let { isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
-let { sendBqQuestsReceiveTask } = require("%rGui/quests/bqQuests.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "sound_wt" import playSound
+from "%sqstd/datablock.nut" import isDataBlock, eachParam
+from "%sqstd/underscore.nut" import prevIfEqual
+from "%appGlobals/loginState.nut" import isSettingsAvailable
+from "%appGlobals/pServer/bqClient.nut" import sendErrorLocIdBqEvent
+from "%appGlobals/pServer/pServerApi.nut" import speed_up_unlock_progress
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/config/eventSeasonPresentation.nut" import eventSectionOrder
+import "%rGui/ads/adBudget.nut" as adBudget
+from "%rGui/ads/adsState.nut" import showAdsForReward, isProviderInited
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/event/eventState.nut" import specialEvents, MAIN_EVENT_ID
+from "%rGui/quests/bqQuests.nut" import sendBqQuestsReceiveTask
+from "%rGui/rewards/rewardViewInfo.nut" import isSingleViewInfoRewardEmpty
+from "%rGui/state/profilePremium.nut" import hasVip
+from "%rGui/unlocks/unlocks.nut" import campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockTablesSeasons,
+  unlockProgress, emptyProgress, setLastSeenUnlocks, unseenUnlocks, getUnlockAllRewardCurrencies, getAllUnlockCurrencies
+from "%rGui/unlocks/unlocksConst.nut" import EVENT_PREFIX, COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB,
+  PERSONAL_TAB, DAILY_SECTION, WEEKLY_SECTION, PERSONAL_META_MARK, SPEED_UP_AD_COST
+from "%rGui/unlocks/userstat.nut" import isUserstatMissingData
 
 
-let SEEN_QUESTS = "seenQuests"
+const SEEN_QUESTS = "seenQuests"
 
 let isQuestsAttached = mkWatched(persist, "isQuestsAttached", false)
 let rewardsList = Watched(null)
@@ -51,10 +49,20 @@ function closeRewardsList() {
 let mkEventSectionName = @(day, eventName) "".concat(eventName, "_", EVENT_PREFIX, day)
 let mkEventNamedSectionName = @(section, eventName) "".concat(eventName, "_", EVENT_PREFIX, "section_", section)
 
+function isSeasonCurrent(unlock, seasons) {
+  let { start_index = null, end_index = null, table = unlock?.table ?? "" } = unlock?.activity
+  if (table == "")
+    return false
+  let season = seasons?[table] ?? -1
+  return season >= 0
+    && (start_index ?? season) <= season
+    && (end_index ?? season) <= season
+}
+
 let inactiveEventUnlocks = Computed(@() allUnlocksDesc.get()
   .filter(@(u) (u?.meta.event_day != null || (u?.meta.section ?? "") != "")
     && !(unlockTables.get()?[u?.table] ?? false)
-    && !isSeasonPast(u, unlockTablesSeasons.get()))
+    && isSeasonCurrent(u, unlockTablesSeasons.get()))
   .map(@(u, id) u.__merge(unlockProgress.get()?[id] ?? emptyProgress)))
 
 let eventUnlocksBySection = Computed(function() {
@@ -242,6 +250,10 @@ function saveSeenQuests(names) {
 let hasUnseenQuestsBySection = Computed(@() questsBySection.get().map(@(quests)
   null != quests.findindex(@(v, id) id not in inactiveEventUnlocks.get() && (id in unseenUnlocks.get() || v.hasReward))))
 
+let hasRewardQuestsBySection = Computed(@() questsBySection.get().map(@(quests)
+  null != quests.findindex(@(v, id) id not in inactiveEventUnlocks.get() && v.hasReward
+    && ((v?.requirement ?? "") not in quests || (unlockProgress.get()?[v.requirement].isFinished ?? false)))))
+
 let saveSeenQuestsForSection = @(sectionId) !hasUnseenQuestsBySection.get()?[sectionId] ? null
   : saveSeenQuests(questsBySection.get()?[sectionId].filter(@(v) !v.hasReward).keys())
 
@@ -258,7 +270,7 @@ function onWatchQuestAd(unlock) {
   }
 
   if (!isProviderInited.get()) {
-    let locId = "shop/notAvailableAds"
+    const locId = "shop/notAvailableAds"
     openMsgBox({ text = loc(locId) })
     sendErrorLocIdBqEvent(locId)
     return false
@@ -297,6 +309,7 @@ return {
   unseenUnlocks
   saveSeenQuests
   hasUnseenQuestsBySection
+  hasRewardQuestsBySection
   saveSeenQuestsForSection
 
   questsCfg

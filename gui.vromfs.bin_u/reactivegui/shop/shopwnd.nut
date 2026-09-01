@@ -1,30 +1,27 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("%sqstd/math.nut")
-let { defer, deferOnce } = require("dagor.workcycle")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { shopCategoriesCfg } = require("%rGui/shop/shopCommon.nut")
-let { isShopOpened, shopOpenCount, saveSeenGoodsCurrent,
-  pageScrollHandler, onTabChange, hasGoodsCategoryNonUpdatable, hasUnseenGoodsByShop, curShopId,
-  closeShopWnd, setShopCategory,
-  shopCurCategories, subsByCategory,
-  goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop, personalGoodsByShop,
-  mkShopActualSchRewardsByCategoryFor, getCurShopGoodsByCategoryFor,
-} = require("%rGui/shop/shopState.nut")
-let { getShopIdForEventId } = require("%rGui/shop/eventShopState.nut")
-let { mkShopTabs } = require("%rGui/shop/shopWndTabs.nut")
-let { mkShopPage, mkShopGamercard } = require("%rGui/shop/shopWndPage.nut")
-let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
-} = require("%rGui/shop/unseenPurchasesState.nut")
-let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curEvent, specialEvents } = require("%rGui/event/eventState.nut")
-let { contentH } = require("%rGui/battlePass/passPkg.nut")
-let { tabW, shopGap, titleH, titleGap, goodsH, goodsPerRow, goodsGap, categoryGap } = require("%rGui/shop/shopWndConst.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { headerHeightInSafeArea, headerMargin } = require("%rGui/components/gradientDefComps.nut")
-let { tabExtraWidth } = require("%rGui/components/tabs.nut")
+from "dagor.workcycle" import defer, deferOnce
+from "%sqstd/math.nut" import ceil
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%rGui/battlePass/passPkg.nut" import contentH
+from "%rGui/components/gradientDefComps.nut" import headerHeightInSafeArea, headerMargin
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/tabs.nut" import tabExtraWidth
+from "%rGui/event/eventState.nut" import curEvent, specialEvents
+from "%rGui/navState.nut" import registerScene
+from "%rGui/shop/eventShopState.nut" import getShopIdForEventId
+from "%rGui/shop/shopCommon.nut" import shopCategoriesCfg
+from "%rGui/shop/shopState.nut" import isShopOpened, shopOpenCount, saveSeenGoodsCurrent, pageScrollHandler,
+  onTabChange, hasGoodsCategoryNonUpdatable, hasUnseenGoodsByShop, curShopId, closeShopWnd, setShopCategory,
+  isShopAttached, shopCurCategories, subsByCategory, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop,
+  personalGoodsByShop, mkShopActualSchRewardsByCategoryFor, getCurShopGoodsByCategoryFor
+from "%rGui/shop/shopWndConst.nut" import tabW, shopGap, titleH, titleGap, goodsH, goodsPerRow, goodsGap, categoryGap
+from "%rGui/shop/shopWndPage.nut" import mkShopPage, mkShopGamercard
+from "%rGui/shop/shopWndTabs.nut" import mkShopTabs
+from "%rGui/shop/unseenPurchasesState.nut" import addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler,
+  markPurchasesSeen
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/unit/unitPurchaseEffectScene.nut" import isPurchEffectVisible
 
 
 let shopContentW = saSize[0] + saBorders[0] - tabW
@@ -219,8 +216,14 @@ let shopScene = @() bgShaded.__merge({
   size = FLEX
   padding = [saBorders[1], saBorders[0], 0, saBorders[0]]
   flow = FLOW_VERTICAL
-  onAttach = @() addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
-  onDetach = @() removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
+  function onAttach() {
+    isShopAttached.set(true)
+    addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
+  }
+  function onDetach() {
+    isShopAttached.set(false)
+    removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
+  }
   children = [
     mkShopGamercard(onClose)
     mkShopContent(shopContentW, pannableArea)

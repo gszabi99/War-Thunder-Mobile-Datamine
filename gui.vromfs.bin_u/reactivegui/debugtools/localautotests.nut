@@ -1,15 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe, eventbus_send, send } = require("eventbus")
-let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
-let { debugModes } = require("%rGui/gameModes/gameModeState.nut")
-let { curCampaign, campaignsList, setCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curCampaignSlots } = require("%appGlobals/pServer/slots.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { set_unit_to_slot } = require("%appGlobals/pServer/pServerApi.nut")
-let { rnd } = require("dagor.random")
-let { graphicOptions } = require("%rGui/options/options/graphicOptions.nut")
-let { isInQueue } = require("%appGlobals/queueState.nut")
+from "dagor.random" import rnd
+from "eventbus" import eventbus_subscribe, eventbus_send, send
+from "%appGlobals/pServer/campaign.nut" import curCampaign, campaignsList, setCampaign
+from "%appGlobals/pServer/pServerApi.nut" import set_unit_to_slot
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/slots.nut" import curCampaignSlots
+from "%appGlobals/queueState.nut" import isInQueue
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout
+from "%rGui/gameModes/gameModeState.nut" import debugModes
+from "%rGui/options/options/graphicOptions.nut" import graphicOptions
+from "%rGui/unit/hangarUnit.nut" import setHangarUnit
+
 
 function getIndexOrRandom(msg, size) {
   return (msg?.index ?? rnd()) % size

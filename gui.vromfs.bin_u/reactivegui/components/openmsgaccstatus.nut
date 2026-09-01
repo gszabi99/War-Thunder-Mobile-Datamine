@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { msgBoxText, openMsgBox } = require("%rGui/components/msgBox.nut")
-let { copyToClipboard } = require("%rGui/components/clipboard.nut")
-let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
+from "%rGui/components/clipboard.nut" import copyToClipboard
+import "%rGui/components/mkIconBtn.nut" as mkIconBtn
+from "%rGui/components/msgBox.nut" import msgBoxText, openMsgBox
 
-let wndWidth = hdpx(1500)
-let wndHeight = hdpx(700)
-let idBtnSize = hdpxi(30)
+
+const wndWidth = hdpx(1500)
+const wndHeight = hdpx(700)
+const idBtnSize = hdpxi(30)
 
 function userIdBlock(userId) {
   if (userId == "")
@@ -40,7 +41,7 @@ let openMsgAccStatus = @(msg) openMsgBox(msg.__merge({
       userIdBlock(msg.userId)
     ]
   }
-  wndOvr = { size = [wndWidth, wndHeight] }
+  wndOvr = { size = const [wndWidth, wndHeight] }
 }), KWARG_NON_STRICT)
 
 return openMsgAccStatus

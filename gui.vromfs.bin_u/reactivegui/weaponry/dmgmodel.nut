@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
+import "DataBlock" as DataBlock
+from "dagor.math" import Point2
+from "unitCalculcation" import calculate_tank_bullet_parameters
+from "%sqstd/datablock.nut" import eachBlock
+from "%sqstd/math.nut" import lerp
+from "%appGlobals/loginState.nut" import isLoggedIn
 
-let DataBlock = require("DataBlock")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let { Point2 } = require("dagor.math")
-let { lerp } = require("%sqstd/math.nut")
-let { calculate_tank_bullet_parameters } = require("unitCalculcation")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
 let RICOCHET_PROBABILITIES = [1.0]
 

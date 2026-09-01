@@ -1,60 +1,60 @@
 from "%globalsDarg/darg_library.nut" import *
-let { defer } = require("dagor.workcycle")
-let { eventbus_send } = require("eventbus")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { G_ITEM } = require("%appGlobals/rewardType.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
-let { itemsCfgOrdered, orderByItems } = require("%appGlobals/itemsState.nut")
-let { items, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { textButtonBattle, mkCustomButton } = require("%rGui/components/textButton.nut")
-let { defButtonHeight, PURCHASE } = require("%rGui/components/buttonStyles.nut")
-let { shopPurchaseInProgress, buy_goods } = require("%appGlobals/pServer/pServerApi.nut")
-let { mkCurrencyComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { mkViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { REWARD_STYLE_MEDIUM, mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
-let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
-let { PURCH_SRC_HANGAR, PURCH_TYPE_CONSUMABLES, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
-} = require("%rGui/shop/unseenPurchasesState.nut")
-let { balanceWp, balanceGold, balance } = require("%appGlobals/currenciesState.nut")
-let { CS_COMMON, CS_NO_BALANCE } = require("%rGui/components/currencyStyles.nut")
-let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { unitAttributes } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
-let { ceil, floor } = require("%sqstd/math.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { isInSquad, isReady, isSquadLeader } = require("%appGlobals/squadState.nut")
-let { markTextColor } = require("%rGui/style/stdColors.nut")
-let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
-let { spendingUnlocks } = require("%rGui/unlocks/unlocks.nut")
-let { mkQuestDesc } = require("%rGui/shop/msgQuestDesc.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "dagor.workcycle" import defer
+from "eventbus" import eventbus_send
+from "%sqstd/math.nut" import ceil, floor
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/time.nut" import TIME_DAY_IN_SECONDS
+from "%appGlobals/currenciesState.nut" import balanceWp, balanceGold, balance
+from "%appGlobals/itemsState.nut" import itemsCfgOrdered, orderByItems
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
+from "%appGlobals/pServer/campaign.nut" import items, curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import shopPurchaseInProgress, buy_goods
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%appGlobals/rewardType.nut" import G_ITEM
+from "%appGlobals/squadState.nut" import isInSquad, isReady, isSquadLeader
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/attributes/unitAttr/unitAttrState.nut" import unitAttributes
+from "%rGui/components/buttonStyles.nut" import defButtonHeight, PURCHASE
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, CS_INCREASED_ICON
+from "%rGui/components/currencyStyles.nut" import CS_COMMON, CS_NO_BALANCE
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonBattle, mkCustomButton
+from "%rGui/debriefing/debriefingState.nut" import debriefingData
+from "%rGui/rewards/rewardPlateComp.nut" import REWARD_STYLE_MEDIUM, mkRewardPlate
+from "%rGui/rewards/rewardViewInfo.nut" import mkViewInfo
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_HANGAR, PURCH_TYPE_CONSUMABLES, mkBqPurchaseInfo
+from "%rGui/shop/msgBoxPurchase.nut" import showNoBalanceMsgIfNeed
+from "%rGui/shop/msgQuestDesc.nut" import mkQuestDesc
+from "%rGui/shop/shopState.nut" import shopGoods
+from "%rGui/shop/unseenPurchasesState.nut" import addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler,
+  markPurchasesSeen
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import markTextColor
+from "%rGui/unit/unitItemAccess.nut" import isItemAllowedForUnit
+from "%rGui/unlocks/unlocks.nut" import spendingUnlocks
 
 
-let itemsGap = hdpx(50)
+const itemsGap = hdpx(50)
 
-let itemBuyingWidth = hdpx(1000)
-let titleWidth = hdpx(850)
-let insideIndent = hdpxi(50)
+const itemBuyingWidth = hdpx(1000)
+const titleWidth = hdpx(850)
+const insideIndent = hdpxi(50)
 
-let battleItemIconSize = hdpxi(105)
+const battleItemIconSize = hdpxi(105)
 let arrowSize =  [hdpxi(80), hdpxi(60)]
 
-let WND_UID = "itemWnd"
+const WND_UID = "itemWnd"
 let close = @() removeModalWindow(WND_UID)
 
-let defaultPurchaseDesc = "msg/purchaseDesc/toolKit"
+const defaultPurchaseDesc = "msg/purchaseDesc/toolKit"
 
-let TIMERS_SHOWING_MISS_ITEMS = "timersShowingMissItemsWnd"
+const TIMERS_SHOWING_MISS_ITEMS = "timersShowingMissItemsWnd"
 
 let spawnsByCampaign = {
   tanks = { maxSpawns = 3, maxSpawnsBySlot = 2 },
@@ -91,7 +91,7 @@ let purchaseDesc = {
 
 let titleWnd = @(unit, itemId){
   margin = const [hdpx(20), 0,0,0]
-  size = [titleWidth, SIZE_TO_CONTENT]
+  size = const [titleWidth, SIZE_TO_CONTENT]
   colorTable = {
     shipNameColor = 0x1052C4E4
   }
@@ -322,7 +322,7 @@ let mkSimpleContent = @(item){
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   children = [
-    mkItemPlate(item.itemId, item.hasItems, { margin = [insideIndent*2, 0]})
+    mkItemPlate(item.itemId, item.hasItems, { margin = const [insideIndent*2, 0]})
     {
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
@@ -338,7 +338,7 @@ let mkSimpleContent = @(item){
       children = mkQuestDesc(item?.goods.price.currencyId ?? "", spendingUnlocks.get())
     }
     @() {
-      pos = [hdpx(250), 0]
+      pos = const [hdpx(250), 0]
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       flow = FLOW_HORIZONTAL
@@ -354,12 +354,12 @@ let mkContWithTransfToSkill = @(item) {
   vplace = ALIGN_CENTER
   children = [
     {
-      pos = [-hdpx(35), 0]
+      pos = const [-hdpx(35), 0]
       size = SIZE_TO_CONTENT
       flow = FLOW_HORIZONTAL
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      padding = [ insideIndent, 0 ]
+      padding = const [ insideIndent, 0 ]
       children = [
         mkItemPlate(item.itemId, item.hasItems)
         {
@@ -370,7 +370,7 @@ let mkContWithTransfToSkill = @(item) {
           image = Picture($"ui/gameuiskin#arrow_icon.svg:{arrowSize[0]}:{arrowSize[1]}:P")
         }
         {
-          size = [battleItemIconSize, battleItemIconSize]
+          size = const [battleItemIconSize, battleItemIconSize]
           rendObj = ROBJ_BOX
           color = 0xFFFFFFFF
           borderColor = 0xFFFFFFFF
@@ -380,7 +380,7 @@ let mkContWithTransfToSkill = @(item) {
             {
               rendObj = ROBJ_IMAGE
               keepAspect = true
-              size = [battleItemIconSize, battleItemIconSize]
+              size = const [battleItemIconSize, battleItemIconSize]
               image = Picture($"{battleItemsIcons[item.itemId]}:{battleItemIconSize}:{battleItemIconSize}:P")
             }
             @() {
@@ -412,7 +412,7 @@ let mkContWithTransfToSkill = @(item) {
       children = mkQuestDesc(item?.goods.price.currencyId ?? "", spendingUnlocks.get())
     }
     @() {
-      pos = [hdpx(250), 0]
+      pos = const [hdpx(250), 0]
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       flow = FLOW_HORIZONTAL
@@ -424,7 +424,7 @@ let mkContWithTransfToSkill = @(item) {
 let mkMsgContent = @(item, needSwitchAnim, toBattle, unit) modalWndBg.__merge({
   key = item.itemId
   size = FLEX_H
-  padding = [0, 0, insideIndent, 0]
+  padding = const [0, 0, insideIndent, 0]
   flow = FLOW_VERTICAL
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
@@ -481,7 +481,7 @@ function itemsPurchaseMessage(missItems, toBattle, unit, onClose) {
       vplace = ALIGN_CENTER
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      size = [ itemBuyingWidth, SIZE_TO_CONTENT ]
+      size = const [ itemBuyingWidth, SIZE_TO_CONTENT ]
       children = content
     }
     animations = wndSwitchAnim

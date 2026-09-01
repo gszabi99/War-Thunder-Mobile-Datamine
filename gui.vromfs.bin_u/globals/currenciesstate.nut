@@ -1,36 +1,37 @@
+from "frp" import Computed
+from "%sqstd/globalState.nut" import hardPersistWatched
 
-let { Computed } = require("frp")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
 
-let WP = "wp"
-let GOLD = "gold"
-let WARBOND = "warbond"
-let EVENT_KEY = "eventKey"
-let SLOT_EXP_TANKS = "slot_exp_tanks"
-let SLOT_EXP_AIR = "slot_exp_air"
+const WP = "wp"
+const GOLD = "gold"
+const WARBOND = "warbond"
+const EVENT_KEY = "eventKey"
+const SLOT_EXP_TANKS = "slot_exp_tanks"
+const SLOT_EXP_AIR = "slot_exp_air"
 
-let NYBOND = "nybond"
-let LUNARBOND = "lunarbond"
-let APRILBOND = "aprilbond"
-let APRILINTEL = "aprilintel"
-let PLATINUM = "platinum"
-let BLACKFRIDAYBOND = "blackfridaybond"
-let APRILMAPPIECE = "aprilMapPiece"
-let APRILDOUBLON = "aprilDoublon"
-let HOTMAYBOND = "hotmaybond"
-let INDEPENDENCEBOND = "independencebond"
-let ANNIVERSARYBOND = "anniversarybond"
-let ANNIVERSARYTOKEN = "anniversarytoken"
-let HALLOWEENBOND = "halloweenbond"
-let VALENTINEBOND = "valentinebond"
-let CANDYBOND = "candybond"
-let LOLLIPOPBOND = "lollipopbond"
-let CHOCOLATEBOND = "chocolatebond"
-let UKBOND = "ukbond"
-let JAPANBOND = "japanbond"
+const NYBOND = "nybond"
+const LUNARBOND = "lunarbond"
+const APRILBOND = "aprilbond"
+const APRILINTEL = "aprilintel"
+const PLATINUM = "platinum"
+const BLACKFRIDAYBOND = "blackfridaybond"
+const APRILMAPPIECE = "aprilMapPiece"
+const APRILDOUBLON = "aprilDoublon"
+const HOTMAYBOND = "hotmaybond"
+const INDEPENDENCEBOND = "independencebond"
+const ANNIVERSARYBOND = "anniversarybond"
+const ANNIVERSARYTOKEN = "anniversarytoken"
+const HALLOWEENBOND = "halloweenbond"
+const VALENTINEBOND = "valentinebond"
+const CANDYBOND = "candybond"
+const LOLLIPOPBOND = "lollipopbond"
+const CHOCOLATEBOND = "chocolatebond"
+const UKBOND = "ukbond"
+const JAPANBOND = "japanbond"
+const MAPTOKEN = "maptoken"
 
-let balance = sharedWatched("balance", @() {})
-let isBalanceReceived = sharedWatched("isBalanceReceived", @() false)
+let balance = hardPersistWatched("balance", {})
+let isBalanceReceived = hardPersistWatched("isBalanceReceived", false)
 
 let currencyOrder = [PLATINUM, GOLD, WP, WARBOND, EVENT_KEY, SLOT_EXP_TANKS, SLOT_EXP_AIR, CANDYBOND, LOLLIPOPBOND, CHOCOLATEBOND]
 let orderByCurrency = currencyOrder.reduce(@(res, c, i) res.$rawset(c, i + 1), {})
@@ -46,6 +47,7 @@ let currenciesRes = {
   PLATINUM
   GOLD
   WARBOND
+  MAPTOKEN
   EVENT_KEY
   SLOT_EXP_TANKS
   SLOT_EXP_AIR

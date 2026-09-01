@@ -1,18 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { is_ios, is_pc } = require("%sqstd/platform.nut")
-let { has_game_center, can_view_replays } = require("%appGlobals/permissions.nut")
-let communityOptions = require("%rGui/options/options/communityOptions.nut")
-let accountPage = require("%rGui/options/accountPage.nut")
-let statisticsPage = require("%rGui/options/statisticsPage.nut")
-let privacyPage = require("%rGui/options/privacyPage.nut")
-let gameCenterPage = require("%rGui/options/gameCenterPage.nut")
-let replaysPage = require("%rGui/options/replaysPage.nut")
-let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
-let { hasUnseenDecorators } = require("%rGui/decorators/decoratorState.nut")
-let { UNSEEN_HIGH, SEEN } = require("%rGui/unseenPriority.nut")
+from "%sqstd/platform.nut" import is_ios, is_pc
+from "%appGlobals/permissions.nut" import has_game_center, can_view_replays
+from "%rGui/decorators/decoratorState.nut" import hasUnseenDecorators
+import "%rGui/options/accountPage.nut" as accountPage
+import "%rGui/options/gameCenterPage.nut" as gameCenterPage
+from "%rGui/options/mkOptionsScene.nut" import mkOptionsScene
+import "%rGui/options/options/communityOptions.nut" as communityOptions
+import "%rGui/options/privacyPage.nut" as privacyPage
+import "%rGui/options/replaysPage.nut" as replaysPage
+import "%rGui/options/statisticsPage.nut" as statisticsPage
+from "%rGui/unseenPriority.nut" import UNSEEN_HIGH, SEEN
 
 
-let SCENE_ID = "accountOptionsScene"
+const SCENE_ID = "accountOptionsScene"
 let isOpened = mkWatched(persist, $"{SCENE_ID}_isOpened", false)
 let curTabId = Watched(null)
 

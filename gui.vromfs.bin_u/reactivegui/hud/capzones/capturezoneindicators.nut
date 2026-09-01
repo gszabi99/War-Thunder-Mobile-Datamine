@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { CaptureZone } = require("wt.behaviors")
-let { capZones, capZonesCount } = require("%rGui/hud/capZones/capZonesState.nut")
-let { capZoneCtr, getZoneIcon } = require("%rGui/hud/capZones/capZones.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { round_by_value } = require("%sqstd/math.nut")
+from "wt.behaviors" import CaptureZone
+from "%sqstd/math.nut" import round_by_value
+from "%rGui/hud/capZones/capZones.nut" import capZoneCtr, getZoneIcon
+from "%rGui/hud/capZones/capZonesState.nut" import capZones, capZonesCount
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+
 
 let zoneSize = evenPx(45)
 

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isEqual } = require("%sqstd/underscore.nut")
-let { getRewardsViewInfo, sortRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
+from "%sqstd/underscore.nut" import isEqual
+from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, sortRewardsViewInfo
+
 
 function gatherUnlockStageInfo(unlock, isPaid, isActive, curProgressV) {
   let res = []

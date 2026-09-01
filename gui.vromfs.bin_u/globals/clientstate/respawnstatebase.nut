@@ -1,22 +1,21 @@
+from "%sqstd/globalState.nut" import hardPersistWatched
 
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
 
-let isInRespawn = sharedWatched("isInRespawn", @() false)
-let isBatleDataRequired = sharedWatched("isBatleDataRequired", @() false)
-let respawnsLeft = sharedWatched("respawnsLeft", @() -1)
-let respawnsTotalInitial = sharedWatched("respawnsTotalInitial", @() -1)
-let respawnUnitInfo = sharedWatched("respawnUnitInfo", @() null)
-let respawnUnitItems = sharedWatched("respawnUnitItems", @() null)
-let respawnUnitMods = sharedWatched("respawnUnitMods", @() null)
-let respawnUnitSkins = sharedWatched("respawnUnitSkins", @() null)
-let isRespawnStarted = sharedWatched("isRespawnStarted", @() false)
-let isRespawnDataInProgress = sharedWatched("isRespawnDataInProgress", @() false)
-let isRespawnInProgress = sharedWatched("isRespawnInProgress", @() false)
-let timeToRespawn = sharedWatched("timeToRespawn", @() -1)
-let curUnitsAvgCostWp = sharedWatched("curUnitsAvgCostWp", @() null)
-let isBattleDataFake = sharedWatched("isBattleDataFake", @() null)
-let hasPredefinedReward = sharedWatched("hasPredefinedReward", @() false)
-let dailyBonus = sharedWatched("dailyBonus", @() null)
+let isInRespawn = hardPersistWatched("isInRespawn", false)
+let isBatleDataRequired = hardPersistWatched("isBatleDataRequired", false)
+let respawnsLeft = hardPersistWatched("respawnsLeft", -1)
+let respawnsTotalInitial = hardPersistWatched("respawnsTotalInitial", -1)
+let respawnUnitInfo = hardPersistWatched("respawnUnitInfo", null)
+let respawnUnitItems = hardPersistWatched("respawnUnitItems", null)
+let respawnUnitMods = hardPersistWatched("respawnUnitMods", null)
+let respawnUnitSkins = hardPersistWatched("respawnUnitSkins", null)
+let isRespawnStarted = hardPersistWatched("isRespawnStarted", false)
+let isRespawnDataInProgress = hardPersistWatched("isRespawnDataInProgress", false)
+let isRespawnInProgress = hardPersistWatched("isRespawnInProgress", false)
+let timeToRespawn = hardPersistWatched("timeToRespawn", -1)
+let curUnitsAvgCostWp = hardPersistWatched("curUnitsAvgCostWp", null)
+let isBattleDataFake = hardPersistWatched("isBattleDataFake", null)
+let hasPredefinedReward = hardPersistWatched("hasPredefinedReward", false)
 
 return {
   isInRespawn
@@ -34,5 +33,4 @@ return {
   curUnitsAvgCostWp
   isBattleDataFake
   hasPredefinedReward
-  dailyBonus
 }

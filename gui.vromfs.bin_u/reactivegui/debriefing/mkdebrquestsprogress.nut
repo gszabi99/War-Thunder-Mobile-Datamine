@@ -1,17 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-let { MAIN_EVENT_ID } = require("%rGui/unlocks/unlocksConst.nut")
-let { getSpecialEventLocName } = require("%rGui/event/eventLocName.nut")
+from "math" import round
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/event/eventLocName.nut" import getSpecialEventLocName
+from "%rGui/textFormatByLang.nut" import decimalFormat
+from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
+from "%rGui/unlocks/unlocksConst.nut" import MAIN_EVENT_ID
 
-let progressFillTime = 0.5
-let completedTxtBlinkTime = 0.25
-let completedTxtDelayTime = progressFillTime - completedTxtBlinkTime
-let completedTxtScale = 1.2
+
+const progressFillTime = 0.5
+const completedTxtBlinkTime = 0.25
+const completedTxtDelayTime = progressFillTime - completedTxtBlinkTime
+const completedTxtScale = 1.2
 
 let completedLocText = utf8ToUpper(loc("quests/completed"))
 let progressTextBase = {
@@ -22,18 +23,18 @@ let progressTextBase = {
 let progressTextWidth = max(hdpx(100), calc_comp_size(progressTextBase)[0])
 progressTextBase.__update({ size = [progressTextWidth, SIZE_TO_CONTENT] })
 
-let columnsGap = hdpx(30)
+const columnsGap = hdpx(30)
 let columnWidth = ((saSize[0] - columnsGap) / 2).tointeger()
-let questSectionBgHorPad = hdpx(30)
-let questSectionBgColor = 0x80000000
-let progressTextGap = hdpx(30)
+const questSectionBgHorPad = hdpx(30)
+const questSectionBgColor = 0x80000000
+const progressTextGap = hdpx(30)
 let progressBarW = (columnWidth - (2 * questSectionBgHorPad) - progressTextGap - progressTextWidth).tointeger()
-let progressBarH = hdpxi(28)
-let progressBarBorderWidth = hdpx(3)
-let progressBarBgColor = 0x80000000
-let progressBarFillOldColor = 0xFF2EC181
-let progressBarFillNewColor = 0xFFBAEBD5
-let progressBarBorderColor = 0xFF606060
+const progressBarH = hdpxi(28)
+const progressBarBorderWidth = hdpx(3)
+const progressBarBgColor = 0x80000000
+const progressBarFillOldColor = 0xFF2EC181
+const progressBarFillNewColor = 0xFFBAEBD5
+const progressBarBorderColor = 0xFF606060
 
 let mkTextArea = @(text, ovr) {
   size = FLEX_H
@@ -204,7 +205,7 @@ function mkQuestComp(quest, delay) {
 
 let mkQuestSectionComp = @(locName, questSection, delay) {
   size = FLEX_H
-  margin = [0, 0, hdpx(12), 0]
+  margin = const [0, 0, hdpx(12), 0]
   flow = FLOW_VERTICAL
   gap = hdpx(16)
   children = [
@@ -222,7 +223,7 @@ let mkQuestSectionComp = @(locName, questSection, delay) {
 }
 
 function mkColumns(questSectionComps) {
-  let columnsTotal = 2
+  const columnsTotal = 2
   let columns = [ [], [] ]
   let colH = array(columnsTotal, 0)
   let qs = questSectionComps.map(@(comp) { comp, h = calc_comp_size(comp)[1] })

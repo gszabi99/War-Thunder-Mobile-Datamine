@@ -1,20 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
+from "dagor.workcycle" import resetTimeout
+from "%appGlobals/currenciesState.nut" import GOLD
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import buy_unit_slot
+from "%appGlobals/pServer/slots.nut" import curCampaignSlots, curSlots
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_SLOTBAR, PURCH_TYPE_SLOT, mkBqPurchaseInfo
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
+from "%rGui/slotBar/slotBarUpdater.nut" import setSlots
+from "%rGui/unit/hangarUnit.nut" import hangarUnit
+from "%rGui/unit/unitsWndState.nut" import curUnitName
+from "%rGui/unitsTree/animState.nut" import canPlayAnimUnitWithLink, animUnitWithLink
+
+
 require("%rGui/onlyAfterLogin.nut")
-let { resetTimeout } = require("dagor.workcycle")
-let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curCampaignSlots, curSlots } = require("%appGlobals/pServer/slots.nut")
-let { buy_unit_slot } = require("%appGlobals/pServer/pServerApi.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
-let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { curUnitName } = require("%rGui/unit/unitsWndState.nut")
-let { PURCH_SRC_SLOTBAR, PURCH_TYPE_SLOT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { canPlayAnimUnitWithLink, animUnitWithLink } = require("%rGui/unitsTree/animState.nut")
-let { setSlots } = require("%rGui/slotBar/slotBarUpdater.nut")
 
 
-let animTimeout = 5.0 
+const animTimeout = 5.0 
 
 let visibleNewModsSlots = Watched({})
 let selectedSlotIdx = mkWatched(persist, "selectedSlotIdx", null)
@@ -26,7 +28,7 @@ let hangarUnitName = Computed(@() hangarUnit.get()?.name)
 let actualSlotIdx = Computed(@() curSlots.get().findindex(@(s) s?.name == curUnitName.get())
   ?? curSlots.get().findindex(@(s) s?.name == hangarUnitName.get()))
 
-let slotBarArsenalKey = "slot_bar_arsenal"
+const slotBarArsenalKey = "slot_bar_arsenal"
 let slotBarSlotKey = @(idx) $"slotbar_slot_{idx}"
 
 let selectSlotByHangarUnit = @() selectedSlotIdx.set(actualSlotIdx.get())
@@ -85,7 +87,7 @@ function closeSelectUnitToSlotWnd() {
   slotBarOpenParams.set(null)
 }
 
-let function setUnitToSlot(idx) {
+function setUnitToSlot(idx) {
   if (selectedUnitToSlot.get() == null)
     return
   let preset = curSlots.get().map(@(slot, slotIdx) slotIdx == idx ? selectedUnitToSlot.get() : slot.name)
@@ -93,7 +95,7 @@ let function setUnitToSlot(idx) {
   closeSelectUnitToSlotWnd()
 }
 
-let function buyUnitSlot() {
+function buyUnitSlot() {
   let price = newSlotPriceGold.get()
   let campaign = curCampaign.get()
   let idx = curCampaignSlots.get()?.totalSlots
@@ -105,7 +107,7 @@ let function buyUnitSlot() {
   })
 }
 
-let function clearUnitSlot(unitName) {
+function clearUnitSlot(unitName) {
   let idx = curSlots.get().findindex(@(v) v?.name == unitName)
   let preset = curSlots.get().map(@(slot, slotIdx) slotIdx == idx ? "" : slot.name)
   setSlots(curCampaign.get(), preset)

@@ -80,8 +80,8 @@
     "mission": {
       "level": "levels/avg_tokyo.bin",
       "type": "domination",
-      "environment": "Day",
-      "weather": "clear",
+      "environment": "15.5",
+      "weather": "good",
       "checkFriendlyFireAlsoFromAircrafts": true,
       "locName": "missions/_Dom;silver_district/name",
       "locDesc": "silver_district/desc;missions/_Dom/desc",

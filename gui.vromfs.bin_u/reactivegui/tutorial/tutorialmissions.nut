@@ -1,22 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, deferOnce } = require("dagor.workcycle")
-let { receivedMissionRewards, curCampaign, isProfileReceived, isAnyCampaignSelected, abTests,
-  sharedStatsByCampaign
-} = require("%appGlobals/pServer/campaign.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { campMyUnits, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { apply_client_mission_reward, clientMissionRewardInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { register_command } = require("console")
-let { eventbus_send } = require("eventbus")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { isInSquad } = require("%appGlobals/squadState.nut")
-let { mkResearchingUnitForBattleData } = require("%appGlobals/data/battleDataExtras.nut")
-let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
-let { currentResearch } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { getDefaultBulletsForSpawn } = require("%rGui/weaponry/bulletsCalc.nut")
+from "console" import register_command
+from "dagor.workcycle" import resetTimeout, deferOnce
+from "eventbus" import eventbus_send
+from "%appGlobals/clientState/clientState.nut" import isInMenu
+from "%appGlobals/data/battleDataExtras.nut" import mkResearchingUnitForBattleData
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import receivedMissionRewards, curCampaign, isProfileReceived,
+  isAnyCampaignSelected, abTests, sharedStatsByCampaign
+from "%appGlobals/pServer/pServerApi.nut" import apply_client_mission_reward, clientMissionRewardInProgress
+from "%appGlobals/pServer/profile.nut" import campMyUnits, playerLevelInfo
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/squadState.nut" import isInSquad
+from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
+from "%rGui/unit/hangarUnit.nut" import hangarUnit
+from "%rGui/unitsTree/unitsTreeNodesState.nut" import currentResearch
+from "%rGui/weaponry/bulletsCalc.nut" import getDefaultBulletsForSpawn
 
 
 function getFirstBattleTutor(campaign, sConfigs) {

@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 
 let defLineColor = 0xFFFFFFFF
-let borderWidth = hdpx(2)
-let lineWidth = 2 * borderWidth
-let pointSize = lineWidth + 2 * hdpx(3)
-let blockPadding = hdpx(10)
+const borderWidth = hdpx(2)
+const lineWidth = 2 * borderWidth
+const pointSize = lineWidth + 2 * hdpx(3)
+const blockPadding = hdpx(10)
 let blockBgColor = 0x50000000
 
 let mkLines = @(hints) {
@@ -52,7 +52,7 @@ function mkTgtPoint(hint) {
     size = 0
     pos = [pw(lines[0]), ph(lines[1])]
     children = {
-      size = [pointSize, pointSize]
+      size = const [pointSize, pointSize]
       rendObj = ROBJ_SOLID
       color
       vplace = ALIGN_CENTER

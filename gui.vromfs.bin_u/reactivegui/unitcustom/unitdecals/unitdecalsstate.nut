@@ -1,37 +1,37 @@
 from "%globalsDarg/darg_library.nut" import *
-let { Point2, norm_s_ang } = require("dagor.math")
-let { register_command } = require("console")
-let { getUnitFileName } = require("vehicleModel")
-let { hangar_enable_controls, hangar_focus_model } = require("hangar")
-let { exit_decal_mode, get_decal_in_slot, set_current_decal_slot, get_skin_decals_blk, notify_decal_menu_visibility,
-  enter_decal_mode, focus_on_current_decal, set_decal_scalerot_active,
-  set_decal_pos, get_decal_rotation_scale, apply_skin_decals_blk
-} = require("unitCustomization")
-let { setVirtualAxisValue, setAxisValue } = require("controls")
-let { eventbus_subscribe } = require("eventbus")
-let { deferOnce } = require("dagor.workcycle")
-let { utf8ToLower } = require("%sqstd/string.nut")
-let { PI, atan2 } = require("%sqstd/math.nut")
-let { blkOptFromPath } = require("%sqstd/datablock.nut")
-let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { allPenalties } = require("%appGlobals/userPenalties.nut")
-let { decalBlkToTbl, decalTblToBlk } = require("%appGlobals/decalBlkSerializer.nut")
-let { getDecalCategoryLocName } = require("%appGlobals/config/decalsPresentation.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { getDecalsByCategories, decalsBlkVersion } = require("%rGui/unitCustom/unitDecals/decalsCache.nut")
-let { isCustomizationWndAttached } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { currentSkin, selectedSkin, availableSkins } = require("%rGui/unitCustom/unitSkins/unitSkinsState.nut")
-let { hangarUnitDecalSlotsCount, MAX_DECAL_SLOTS_COUNT, isHangarUnitLoaded, hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
-let { curSelectedSectionId, SECTION_IDS } = require("%rGui/unitCustom/unitCustomState.nut")
-let { mkDecalsPresets } = require("%rGui/unit/unitSettings.nut")
+from "console" import register_command
+from "controls" import setVirtualAxisValue, setAxisValue
+from "dagor.math" import Point2, norm_s_ang
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_subscribe
+from "hangar" import hangar_enable_controls, hangar_focus_model
+from "unitCustomization" import exit_decal_mode, get_decal_in_slot, set_current_decal_slot, get_skin_decals_blk,
+  notify_decal_menu_visibility, enter_decal_mode, focus_on_current_decal, set_decal_scalerot_active, set_decal_pos,
+  get_decal_rotation_scale, apply_skin_decals_blk
+from "vehicleModel" import getUnitFileName
+from "%sqstd/datablock.nut" import blkOptFromPath
+from "%sqstd/math.nut" import PI, atan2
+from "%sqstd/string.nut" import utf8ToLower
+from "%sqstd/underscore.nut" import arrayByRows, isEqual
+from "%appGlobals/config/decalsPresentation.nut" import getDecalCategoryLocName
+from "%appGlobals/decalBlkSerializer.nut" import decalBlkToTbl, decalTblToBlk
+from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/userPenalties.nut" import allPenalties
+from "%rGui/unit/hangarUnit.nut" import hangarUnitDecalSlotsCount, MAX_DECAL_SLOTS_COUNT, isHangarUnitLoaded,
+  hangarUnitName
+from "%rGui/unit/unitSettings.nut" import mkDecalsPresets
+from "%rGui/unitCustom/unitCustomState.nut" import curSelectedSectionId, SECTION_IDS
+from "%rGui/unitCustom/unitDecals/decalsCache.nut" import getDecalsByCategories, decalsBlkVersion
+from "%rGui/unitCustom/unitSkins/unitSkinsState.nut" import currentSkin, selectedSkin, availableSkins
+from "%rGui/unitDetails/unitDetailsState.nut" import isCustomizationWndAttached
 
 
-let MAX_DECALS_IN_ROW = 4
-let SCALE_SPEED = 2.0
-let DEFAULT_PRESET_NAME = "default"
-let PENALTY_KEY = "DECALS_DISABLE"
+const MAX_DECALS_IN_ROW = 4
+const SCALE_SPEED = 2.0
+const DEFAULT_PRESET_NAME = "default"
+const PENALTY_KEY = "DECALS_DISABLE"
 
 let decalParamNames = [
   "decal{0}Line0"

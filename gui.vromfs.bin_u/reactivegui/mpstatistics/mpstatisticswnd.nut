@@ -1,17 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { get_current_mission_name } = require("mission")
-let { GO_WIN, GO_FAIL } = require("guiMission")
-let { battleCampaign, hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
-let { gameOverReason, isGtFFA, gameType } = require("%rGui/missionState.nut")
-let { mkMpStatsTable, getColumnsByCampaign } = require("%rGui/mpStatistics/mpStatsTable.nut")
-let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
-let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { updatePlayersByTeams, playersByTeam, startContinuousUpdate, stopContinuousUpdate
-} = require("%rGui/mpStatistics/playersByTeamState.nut")
-let { spawnScoreBalance } = require("%rGui/respawn/spawnScore.nut")
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "guiMission" import GO_WIN, GO_FAIL
+from "mission" import get_current_mission_name
+from "%appGlobals/clientState/missionState.nut" import battleCampaign, hudCustomRules
+from "%rGui/components/backButton.nut" import backButton, backButtonHeight
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/hud/scoreBoard.nut" import scoreBoardType, scoreBoardCfgByType
+from "%rGui/missionState.nut" import gameOverReason, isGtFFA, gameType
+from "%rGui/mpStatistics/mpStatsTable.nut" import mkMpStatsTable, getColumnsByCampaign
+from "%rGui/mpStatistics/playersByTeamState.nut" import updatePlayersByTeams, playersByTeam, startContinuousUpdate,
+  stopContinuousUpdate
+from "%rGui/respawn/spawnScore.nut" import spawnScoreBalance
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
 let isAttached = Watched(false)
@@ -26,7 +27,7 @@ gameOverReason.subscribe(function(val) {
     onQuit()
 })
 
-eventbus_subscribe("MissionResult", @(_) updatePlayersByTeams())
+subscribeHudEvent("MissionResult", @(_) updatePlayersByTeams())
 isGtFFA.subscribe(@(_) isAttached.get() ? updatePlayersByTeams() : null)
 
 function onAttach() {

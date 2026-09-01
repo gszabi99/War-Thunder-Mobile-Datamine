@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, deferOnce } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { myUserName, myUserId } = require("%appGlobals/profileStates.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { contactsRequest, contactsRegisterHandler } = require("%rGui/contacts/contactsClient.nut")
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, deferOnce
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/profileStates.nut" import myUserName, myUserId
+from "%rGui/contacts/contactsClient.nut" import contactsRequest, contactsRegisterHandler
+
 
 const LEADERBOARD_NO_START_LIST_INDEX = 0x7FFFFFFF
 const LB_REQUEST_TIMEOUT = 45000

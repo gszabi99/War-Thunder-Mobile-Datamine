@@ -1,16 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { fabs, sqrt, PI, atan2 } = require("%sqstd/math.nut")
-let rand = require("%sqstd/rand.nut")()
-let { gradRadial } = require("%rGui/style/gradients.nut")
+from "dagor.time" import get_time_msec
+from "%sqstd/math.nut" import fabs, sqrt, PI, atan2
+from "%rGui/style/gradients.nut" import gradRadial
 
-let maxStartSpeedXMul = 0.5
-let chanceToBeColored = 0.3
-let sparkColor = 0x80F95927
-let upstreamAcc = hdpx(20)
-let viscosity = 0.1
-let maxScaleBySpeed = 10.0
-let maxSpeed = hdpxi(10000)
+
+let rand = require("%sqstd/rand.nut")()
+
+const maxStartSpeedXMul = 0.5
+const chanceToBeColored = 0.3
+const sparkColor = 0x80F95927
+const upstreamAcc = hdpx(20)
+const viscosity = 0.1
+const maxScaleBySpeed = 10.0
+const maxSpeed = hdpxi(10000)
 
 function fillNewForce(state, time, speedY) {
   state.accChangeTime <- time + (speedY == 0 ? 200 : max(100, (hdpx(50) / speedY * rand.rfloat(100, 100)).tointeger()))

@@ -16,20 +16,40 @@
     }
   },
   "imports": {
-    "import_record": {
-      "file": "gameData/missions/cta/tanks/stalingrad_factory/tank_spawns/template_stalingrad_factory_Bttl_tank_spawns.blk",
-      "importAreas": true,
-      "importUnits": true,
-      "importTriggers": true,
-      "importMissionObjectives": true,
-      "importWayPoints": true,
-      "showAreas": true,
-      "showUnits": true,
-      "showTriggers": true,
-      "showMissionObjectives": true,
-      "showWayPoints": true,
-      "excludes": {}
-    }
+    "import_record": [
+      {
+        "file": "gameData/missions/cta/tanks/stalingrad_factory/tank_spawns/template_stalingrad_factory_Bttl_tank_spawns.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/cta/tanks/stalingrad_factory/battleareas/template_stalingrad_factory_battlearea_exclude.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
   },
   "triggers": {
     "isCategory": true,
@@ -64,9 +84,9 @@
             1.0
           ],
           [
-            2264.2,
+            3871.0,
             20.95,
-            521.4
+            2339.15
           ]
         ],
         "props": {
@@ -92,9 +112,9 @@
             1.0
           ],
           [
-            1800.3,
-            12.1,
-            510.766
+            3888.55,
+            12.1001,
+            1976.6
           ]
         ],
         "props": {
@@ -150,9 +170,9 @@
           150.0
         ],
         [
-          1687.57,
-          13.9082,
-          2270.77
+          3118.2,
+          17.0,
+          1785.2
         ]
       ],
       "objLayer": 0,
@@ -177,9 +197,9 @@
           150.0
         ],
         [
-          2362.12,
-          5.55078,
-          1922.88
+          3310.95,
+          17.0,
+          2407.2
         ]
       ],
       "objLayer": 0,

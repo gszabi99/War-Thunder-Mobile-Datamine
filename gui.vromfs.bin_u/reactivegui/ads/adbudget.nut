@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
+import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/timeoutExt.nut" import resetExtTimeout
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+from "%appGlobals/userstats/serverTime.nut" import serverTime
 
 
 let isAdBudgetPastReset = Watched(false)

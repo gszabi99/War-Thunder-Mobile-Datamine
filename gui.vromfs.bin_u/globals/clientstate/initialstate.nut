@@ -1,9 +1,9 @@
-let { get_settings_blk } = require("blkGetters")
-let { get_arg_value_by_name, dgs_get_settings } = require("dagor.system")
-let { platformId } = require("%sqstd/platform.nut")
+from "blkGetters" import get_settings_blk
+from "dagor.system" import get_arg_value_by_name, dgs_get_settings
+from "%sqstd/platform.nut" import platformId
 
 
-let defProjectId = "war_thunder_mobile"
+const defProjectId = "war_thunder_mobile"
 
 let sBlk = dgs_get_settings()
 let projectId = sBlk?[$"{platformId}_project_id"] ?? sBlk?.project_id ?? defProjectId

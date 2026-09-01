@@ -1,5 +1,7 @@
+from "%globalsDarg/interop.nut" import registerInteropFunc
+
+
 let str = @(...) "".join(vargv)
-let { registerInteropFunc } = require("%globalsDarg/interop.nut")
 
 function makeSlotName(original_name, prefix, postfix) {
   let slotName = (prefix.len() > 0)

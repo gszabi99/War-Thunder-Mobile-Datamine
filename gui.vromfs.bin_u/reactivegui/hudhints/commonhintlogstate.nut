@@ -1,22 +1,25 @@
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { format } =  require("string")
-let { register_command } = require("console")
-let { HUD_MSG_EVENT } = require("hudMessages")
-let { localMPlayerTeam, isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
-let { bulletsInfo, currentBulletName } = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
-let { hasMGun0, hasCanon0, Cannon0, MGun0 } = require("%rGui/hud/airState.nut")
-let { addHudElementPointer, removeHudElementPointer } = require("%rGui/tutorial/hudElementPointers.nut")
-let { resetTimeout } = require("dagor.workcycle")
-let { HudTextId } = require("hudTexts")
-let { unitType } = require("%rGui/hudState.nut")
-let { TANK, AIR } = require("%appGlobals/unitConst.nut")
-let { isGtFFA } = require("%rGui/missionState.nut")
-let { get_game_type } = require("mission")
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "dagor.workcycle" import resetTimeout
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "hudMessages" import HUD_MSG_EVENT
+from "hudTexts" import HudTextId
+from "mission" import get_game_type
+from "string" import format
+from "%sqstd/time.nut" import secondsToTimeSimpleString
+from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath, getBlkValueByPath
+from "%appGlobals/clientState/clientState.nut" import localMPlayerTeam, isInBattle
+from "%appGlobals/unitConst.nut" import TANK, AIR
+from "%rGui/hud/airState.nut" import hasMGun0, hasCanon0, Cannon0, MGun0
+from "%rGui/hud/bullets/hudUnitBulletsState.nut" import bulletsInfo, currentBulletName
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/hudState.nut" import unitType
+from "%rGui/missionState.nut" import isGtFFA
+from "%rGui/style/teamColors.nut" import teamBlueColor, teamRedColor
+from "%rGui/tutorial/hudElementPointers.nut" import addHudElementPointer, removeHudElementPointer
+
 
 let state = require("%sqstd/mkEventLogState.nut")({
   persistId = "commonHintLogState"
@@ -25,12 +28,12 @@ let state = require("%sqstd/mkEventLogState.nut")({
   isEventsEqual = @(a, b) "id" in a ? a?.id == b?.id : a?.text == b?.text
 })
 let { addEvent, modifyOrAddEvent, removeEvent, clearEvents } = state
-let COUNTER_SAVE_ID = "hintCounter"
+const COUNTER_SAVE_ID = "hintCounter"
 
 let isCannonReloading = keepref(Computed(@() hasCanon0.get() && Cannon0.get().time > 0))
 let isMGunReloading = keepref(Computed(@() hasMGun0.get() && MGun0.get().time > 0))
 let isThrottleHintAvailable = Watched(false)
-let warningColor = Color(255, 35, 30, 255)
+const warningColor = Color(255, 35, 30, 255)
 
 isInBattle.subscribe(function(_) {
   clearEvents()
@@ -55,7 +58,7 @@ isCannonReloading.subscribe(@(v) !v ? removeEvent({ id = WEAPON_RELOAD_ID })
 isMGunReloading.subscribe(@(v) !v ? removeEvent({ id = WEAPON_RELOAD_ID })
   : addCommonHintWithTtl(loc("hints/reloading/guns"), MGun0.get().time, WEAPON_RELOAD_ID, "simpleTextTinyGrad"))
 
-eventbus_subscribe("hint:ui_message:show", function(data) {
+subscribeHudEvent("hint:ui_message:show", function(data) {
   let { locId, param = null, paramTeamId = MP_TEAM_NEUTRAL, teamId = MP_TEAM_NEUTRAL } = data
   local text = loc(locId)
   if (param != null)
@@ -63,7 +66,7 @@ eventbus_subscribe("hint:ui_message:show", function(data) {
   addCommonHint(colorize(getTeamColor(teamId), text))
 })
 
-eventbus_subscribe("hint:action_not_available", function(data) {
+subscribeHudEvent("hint:action_not_available", function(data) {
   let { hintId, param = null, paramTeamId = MP_TEAM_NEUTRAL, teamId = MP_TEAM_NEUTRAL } = data
   local text = loc("".concat("hints/", hintId))
   if (param != null)
@@ -72,28 +75,28 @@ eventbus_subscribe("hint:action_not_available", function(data) {
 })
 
 const ART_SUPPORT_ID = "have_art_support"
-eventbus_subscribe("hint:have_art_support:show",
+subscribeHudEvent("hint:have_art_support:show",
   @(_) !isGtFFA.get()
     ? addEvent({ id = ART_SUPPORT_ID, hType = "simpleTextTiny", text = loc("hints/have_art_support") })
     : null)
 
-eventbus_subscribe("hint:have_art_support:hide",
+subscribeHudEvent("hint:have_art_support:hide",
   @(_) removeEvent({ id = ART_SUPPORT_ID }))
 
 eventbus_subscribe("repairBlocked",
   @(p) addEvent({ id = "repair_blocked", hType = "simpleTextTiny", text = loc(p.hintId) }))
 
-eventbus_subscribe("hint:target_deeper_than_periscope:show",
+subscribeHudEvent("hint:target_deeper_than_periscope:show",
   @(_) addEvent({ hType = "simpleTextTiny", text = loc("hints/target_deeper_than_periscope") }))
 
-eventbus_subscribe("hint:drowning:show", function(data) {
+subscribeHudEvent("hint:drowning:show", function(data) {
   let timeTo = data?.timeTo ?? 0
   let text = " ".concat(loc("hints/drowning_in"), secondsToTimeSimpleString(timeTo))
   addEvent({ hType = "simpleTextTiny", text, ttl = timeTo > 4 ? 0.5 : 1.0 })
 })
 
 const MISSION_HINT = "mission_hint_bottom"
-eventbus_subscribe("hint:missionHint:set", @(data) data?.hintType != "bottom" ? null
+subscribeHudEvent("hint:missionHint:set", @(data) data?.hintType != "bottom" ? null
   : modifyOrAddEvent(
       data.__merge({
         id = MISSION_HINT
@@ -104,7 +107,7 @@ eventbus_subscribe("hint:missionHint:set", @(data) data?.hintType != "bottom" ? 
       }),
       @(ev) ev?.id == MISSION_HINT && ev?.locId == data?.locId))
 
-eventbus_subscribe("hint:missionHint:remove", @(data) data?.hintType != "bottom" ? null
+subscribeHudEvent("hint:missionHint:remove", @(data) data?.hintType != "bottom" ? null
   : removeEvent({ id = MISSION_HINT }))
 
 function incHintCounter(id, showCount) {
@@ -119,17 +122,17 @@ function incHintCounter(id, showCount) {
   return true
 }
 
-eventbus_subscribe("hint:ineffective_hit_tank:show", function(_) {
+subscribeHudEvent("hint:ineffective_hit_tank:show", function(_) {
   if (incHintCounter("ineffective_hit_tank", 15))
     addCommonHint(loc("hints/ineffective_hit_tank"))
 })
 
-eventbus_subscribe("hint:shoot_when_tank_stop:show", function(_) {
+subscribeHudEvent("hint:shoot_when_tank_stop:show", function(_) {
   if (incHintCounter("shoot_when_tank_stop", 15))
     addCommonHint(loc("hints/shoot_when_tank_stop"))
 })
 
-eventbus_subscribe("hint:change_shell_type:show", function(_) {
+subscribeHudEvent("hint:change_shell_type:show", function(_) {
   if (bulletsInfo.get() == null)
     return
   let isHE = bulletsInfo.get()?.fromUnitTags[currentBulletName.get() ?? "default"]?.isHE ?? false
@@ -137,12 +140,12 @@ eventbus_subscribe("hint:change_shell_type:show", function(_) {
     addCommonHint(loc("hints/change_shell_type"))
 })
 
-eventbus_subscribe("hint:miss_shot_tank:show", function(_) {
+subscribeHudEvent("hint:miss_shot_tank:show", function(_) {
   if (incHintCounter("miss_shot_tank", 5))
     addCommonHint(loc("hints/miss_shot_tank"))
 })
 
-eventbus_subscribe("hint:kill_tank_back:show", function(_) {
+subscribeHudEvent("hint:kill_tank_back:show", function(_) {
   if (incHintCounter("kill_tank_back", 5))
     addCommonHint(loc("hints/kill_tank_back"))
 })
@@ -162,22 +165,22 @@ eventbus_subscribe("hint:turn_types_ctrl:show", function(_) {
     addCommonHint(loc("hints/turn_types_ctrl"))
 })
 
-eventbus_subscribe("hint:need_target_for_lock", function(_) {
+subscribeHudEvent("hint:need_target_for_lock", function(_) {
   addCommonHint(loc("hints/need_target_for_lock"))
 })
 
-eventbus_subscribe("hint:kill_streak_fighter_reverted", function(_) {
+subscribeHudEvent("hint:kill_streak_fighter_reverted", function(_) {
   addCommonHint(loc("hints/kill_streak_fighter_reverted"))
 })
 
 const GUT_OVERHEAT_WARNING = "gun_overheat_warning"
-eventbus_subscribe("hint:gun_overheat_warning", function(_) {
+subscribeHudEvent("hint:gun_overheat_warning", function(_) {
   if (!incHintCounter(GUT_OVERHEAT_WARNING, 5))
     return
   addCommonHint(loc("hints/gun_overheat_warning"))
 })
 
-eventbus_subscribe("hint:use_gun_for_spaa:show", function(_) {
+subscribeHudEvent("hint:use_gun_for_spaa:show", function(_) {
   if (incHintCounter("use_gun_for_spaa", 3)){
     addCommonHint(loc("hints/use_gun_for_spaa"))
   }
@@ -189,70 +192,70 @@ eventbus_subscribe("hint:holding_for_stop:show", function(_) {
   addCommonHint(loc("hints/holding_for_stop"))
 })
 
-eventbus_subscribe("hint:need_stop_for_fire", function(_) {
+subscribeHudEvent("hint:need_stop_for_fire", function(_) {
   addCommonHint(loc("hints/need_stop_for_fire"))
 })
 
-eventbus_subscribe("hint:hull_aiming_with_camera:show", function(_) {
+subscribeHudEvent("hint:hull_aiming_with_camera:show", function(_) {
   if (!incHintCounter("hull_aiming_with_camera", 3))
     return
   addCommonHint(loc("hints/hull_aiming_with_camera"))
 })
 
 const REPAIR_MODULE_ID = "repair_module"
-eventbus_subscribe("hint:repair_module:show", function(_) {
+subscribeHudEvent("hint:repair_module:show", function(_) {
   if (!incHintCounter(REPAIR_MODULE_ID, 15))
     return
   addCommonHintWithTtl(loc("hints/for_newbies/repair_module"), 30, REPAIR_MODULE_ID)
   addHudElementPointer("btn_repair", 30)
 })
-eventbus_subscribe("hint:repair_module:hide", function(_) {
+subscribeHudEvent("hint:repair_module:hide", function(_) {
   removeEvent({ id = REPAIR_MODULE_ID })
   removeHudElementPointer("btn_repair")
 })
 
 const SHIP_REPAIR_OFFER_ID = "ship_offer_repair"
-eventbus_subscribe("hint:ship_offer_repair:show", function(_) {
+subscribeHudEvent("hint:ship_offer_repair:show", function(_) {
   if (!incHintCounter(SHIP_REPAIR_OFFER_ID, 15))
     return
   addCommonHintWithTtl(loc("hints/ship_offer_repair"), 30, SHIP_REPAIR_OFFER_ID)
   addHudElementPointer("btn_repair", 30)
 })
-eventbus_subscribe("hint:ship_offer_repair:hide", function(_) {
+subscribeHudEvent("hint:ship_offer_repair:hide", function(_) {
   removeEvent({ id = SHIP_REPAIR_OFFER_ID })
   removeHudElementPointer("btn_repair")
 })
 
 
 const EXTINGUISH_FIRE_ID = "can_extinguish_fire"
-eventbus_subscribe("hint:can_extinguish_fire:show", function(_) {
+subscribeHudEvent("hint:can_extinguish_fire:show", function(_) {
   if (!incHintCounter(EXTINGUISH_FIRE_ID, 15))
     return
   addCommonHintWithTtl(loc("hints/for_newbies/can_extinguish_fire"), 30, EXTINGUISH_FIRE_ID)
   addHudElementPointer("btn_extinguisher", 30)
 })
-eventbus_subscribe("hint:can_extinguish_fire:hide", function(_) {
+subscribeHudEvent("hint:can_extinguish_fire:hide", function(_) {
   removeEvent({ id = EXTINGUISH_FIRE_ID })
   removeHudElementPointer("btn_extinguisher")
 })
 
 const WAIT_FOR_FIRE_STOP_ID = "wait_for_fire_stop"
-eventbus_subscribe("hint:wait_for_fire_stop:show", function(_) {
+subscribeHudEvent("hint:wait_for_fire_stop:show", function(_) {
   if (incHintCounter(WAIT_FOR_FIRE_STOP_ID, 15))
     addCommonHintWithTtl(loc("hints/for_newbies/wait_for_fire_stop"), 30, WAIT_FOR_FIRE_STOP_ID)
 })
-eventbus_subscribe("hint:wait_for_fire_stop:hide",
+subscribeHudEvent("hint:wait_for_fire_stop:hide",
   @(_) removeEvent({ id = WAIT_FOR_FIRE_STOP_ID }))
 
 const CAN_USE_AIR_SUPPORT_ID = "can_use_air_support"
-eventbus_subscribe("hint:can_use_air_support:show", function(_) {
+subscribeHudEvent("hint:can_use_air_support:show", function(_) {
   if (!incHintCounter(CAN_USE_AIR_SUPPORT_ID, 15))
     return
   addCommonHintWithTtl(loc("hints/for_newbies/can_use_air_support"), 30, CAN_USE_AIR_SUPPORT_ID)
   addHudElementPointer("btn_special_unit", 30)
   addHudElementPointer("btn_special_unit2", 30)
 })
-eventbus_subscribe("hint:can_use_air_support:hide", function(_) {
+subscribeHudEvent("hint:can_use_air_support:hide", function(_) {
   removeEvent({ id = CAN_USE_AIR_SUPPORT_ID })
   removeHudElementPointer("btn_special_unit")
   removeHudElementPointer("btn_special_unit2")
@@ -329,18 +332,18 @@ function updateBailoutText() {
 bailoutTimer.subscribe(@(_) resetTimeout(bailoutTimerStep, updateBailoutText))
 updateBailoutText()
 
-eventbus_subscribe("hint:bailout:startBailout", function(data) {
+subscribeHudEvent("hint:bailout:startBailout", function(data) {
   bailoutTimerStep = 0
   bailoutTimer.set(data?.lifeTime ?? 0)
   addCommonHintWithTtl(loc("hints/can_leave_in_menu"), 5)
 })
 
-eventbus_subscribe("hint:bailout:offerBailout", function(_) {
+subscribeHudEvent("hint:bailout:offerBailout", function(_) {
   if (!(get_game_type() & GT_RACE))
     addCommonHintWithTtl(loc("hints/can_leave_in_menu"), 10)
 })
 
-eventbus_subscribe("hint:bailout:notBailouts", function(_) {
+subscribeHudEvent("hint:bailout:notBailouts", function(_) {
   bailoutTimer.set(0)
 })
 
@@ -356,7 +359,7 @@ let blockedMessages = [
 ]
 
 const MSG_EVENT_HINT = "MSG_EVENT_HINT"
-eventbus_subscribe("HudMessage", @(data) data.type != HUD_MSG_EVENT || blockedMessages.contains(data.id) ? null
+subscribeHudEvent("HudMessage", @(data) data.type != HUD_MSG_EVENT || blockedMessages.contains(data.id) ? null
   : modifyOrAddEvent(data.__merge({
         id = MSG_EVENT_HINT
         hType = "simpleTextTiny"
@@ -364,61 +367,61 @@ eventbus_subscribe("HudMessage", @(data) data.type != HUD_MSG_EVENT || blockedMe
       }),
       @(ev) ev?.id == MSG_EVENT_HINT))
 
-eventbus_subscribe("hint:air_target_far_away", function(data) {
+subscribeHudEvent("hint:air_target_far_away", function(data) {
   let rangeText = "".concat(data?.effectiveRange ?? "", loc("measureUnits/meters_alt"))
   addCommonHintWithTtl("".concat(loc("hints/air_target_far_away"), rangeText), 10)
 })
 
-eventbus_subscribe("hint:air_critical_speed", function(_) {
+subscribeHudEvent("hint:air_critical_speed", function(_) {
   addCommonHintWithTtl(loc("hints/air_critical_speed"), 10)
 })
 
-eventbus_subscribe("hint:aim_for_lead_indicator", function(_) {
+subscribeHudEvent("hint:aim_for_lead_indicator", function(_) {
   addCommonHintWithTtl(loc("hints/aim_for_lead_indicator"), 10)
 })
 
-eventbus_subscribe("hint:capture_blocker_active", function(_) {
+subscribeHudEvent("hint:capture_blocker_active", function(_) {
   addCommonHintWithTtl(loc("hints/capture_blocker_active"), 5)
 })
 
-eventbus_subscribe("hint:capture_interrupted", function(_) {
+subscribeHudEvent("hint:capture_interrupted", function(_) {
   addCommonHintWithTtl(loc("hints/capture_interrupted"), 5)
 })
 
-eventbus_subscribe("hint:rocket_blocker_active", function(_) {
+subscribeHudEvent("hint:rocket_blocker_active", function(_) {
   addCommonHintWithTtl(loc("hints/rocket_blocker_active"), 5)
 })
 
-eventbus_subscribe("hint:rocket_blocker_success", function(_) {
+subscribeHudEvent("hint:rocket_blocker_success", function(_) {
   addCommonHintWithTtl(loc("hints/rocket_blocker_success"), 5)
 })
 
-eventbus_subscribe("hint:rocket_intercepted", function(_) {
+subscribeHudEvent("hint:rocket_intercepted", function(_) {
     addCommonHintWithTtl(loc("hints/rocket_intercepted"), 5)
 })
 
-eventbus_subscribe("hint:enemy_too_far", function(_) {
+subscribeHudEvent("hint:enemy_too_far", function(_) {
   addCommonHintWithTtl(loc("hints/enemy_too_far"), 3)
 })
 
-eventbus_subscribe("hint:enemy_armored", function(_) {
+subscribeHudEvent("hint:enemy_armored", function(_) {
   addCommonHintWithTtl(loc("hints/enemy_armored"), 3)
 })
 
-eventbus_subscribe("hint:have_potential_assistee", function(_) {
+subscribeHudEvent("hint:have_potential_assistee", function(_) {
   addCommonHintWithTtl(loc("hints/have_potential_assistee"), 1)
 })
 
-eventbus_subscribe("hint:atgm_failed_to_lock_target", function(_) {
+subscribeHudEvent("hint:atgm_failed_to_lock_target", function(_) {
   addCommonHintWithTtl(loc("hints/atgm_failed_to_lock_target"), 5)
 })
 
-eventbus_subscribe("hint:atgm_need_target_lock_to_shoot", function(_) {
+subscribeHudEvent("hint:atgm_need_target_lock_to_shoot", function(_) {
   addCommonHintWithTtl(loc("hints/atgm_need_target_lock_to_shoot"), 5)
 })
 
 const REPAIR = "REPAIR"
-eventbus_subscribe("tankRepair:offerRepair", function(data) {
+subscribeHudEvent("tankRepair:offerRepair", function(data) {
   local locId = !data?.assist ? ""
     : unitType.get() == TANK ? "hints/repair_assist_tank_hold"
     : unitType.get() == AIR ? "hints/repair_assist_plane_hold"
@@ -426,24 +429,24 @@ eventbus_subscribe("tankRepair:offerRepair", function(data) {
   addCommonHintWithTtl(loc(locId), -1, REPAIR)
 })
 
-eventbus_subscribe("tankRepair:cantRepair", function(_) {
+subscribeHudEvent("tankRepair:cantRepair", function(_) {
   removeEvent({ id = REPAIR })
 })
 
 
 const HAVE_REPAIR_ASSISTANT = "HAVE_REPAIR_ASSISTANT"
-eventbus_subscribe("hint:have_repair_assistant:show", function(data) {
+subscribeHudEvent("hint:have_repair_assistant:show", function(data) {
   let assistantNick = data?.assistantNick ?? ""
   addCommonHintWithTtl(loc("hints/have_repair_assistant", { assistantNick }), -1, HAVE_REPAIR_ASSISTANT)
 })
 
-eventbus_subscribe("hint:have_repair_assistant:hide", function(_) {
+subscribeHudEvent("hint:have_repair_assistant:hide", function(_) {
   removeEvent({ id = HAVE_REPAIR_ASSISTANT })
 })
 
 unitType.subscribe(@(_v) removeEvent({ id = HAVE_REPAIR_ASSISTANT }))
 
-eventbus_subscribe("hint:need_lock_target", function(_) {
+subscribeHudEvent("hint:need_lock_target", function(_) {
   if (incHintCounter("need_lock_target", 5)) {
     addCommonHintWithTtl(loc("hints/need_lock_target"), 5)
     anim_start("hint_need_lock_target")
@@ -461,15 +464,15 @@ eventbus_subscribe("hint:air_increase_throttle", function(_) {
 
 const CAPTURED_BY_ENEMY = "CAPTURED_BY_ENEMY"
 
-eventbus_subscribe("CapturedByEnemy:show",
+subscribeHudEvent("CapturedByEnemy:show",
   @(_) addCommonHintWithTtl(loc("hints/ship_is_captured_by_enemy"), -1, CAPTURED_BY_ENEMY))
 
-eventbus_subscribe("CapturedByEnemy:hide",
+subscribeHudEvent("CapturedByEnemy:hide",
   @(_) removeEvent({ id = CAPTURED_BY_ENEMY }))
 
 const LAUNCH_WARNING = "LAUNCH_WARNING"
 
-eventbus_subscribe("ShipLauchWarning", function(_) {
+subscribeHudEvent("ShipLauchWarning", function(_) {
   removeEvent({ id = CAPTURED_BY_ENEMY })
   addCommonHintWithTtl(colorize(warningColor, loc("hints/ship_lauch_warning")), 5, LAUNCH_WARNING)
 })

@@ -1,13 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { setTimeout } = require("dagor.workcycle")
+from "auth_wt" import get_user_info, login_nswitch_async
+from "dagor.workcycle" import setTimeout
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "nswitch.account" import getNsaToken, getNickname
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/loginState.nut" import isAuthorized
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%appGlobals/pServer/campaign.nut" import campConfigs, activeOffers
+from "%appGlobals/permissions.nut" import can_debug_shop
+from "%rGui/shop/checkPurchases.nut" import startSeveralCheckPurchases
+
+
 let logG = log_with_prefix("[GOODS] eshop:")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
-let { isAuthorized } = require("%appGlobals/loginState.nut")
-let { can_debug_shop } = require("%appGlobals/permissions.nut")
-let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
 
 let {
   REQUEST_FINISHED = 0,
@@ -29,13 +33,11 @@ let {
   showErrorWithCode = @(_) null
 } = require("nswitch.eshop")
 
-let { getNsaToken, getNickname} = require("nswitch.account")
-let { get_user_info, login_nswitch_async } = require("auth_wt")
 
 let products = hardPersistWatched("goodsNSwitch.products", {})
 let purchaseInProgress = mkWatched(persist, "purchaseInProgress", null)
 
-let max_request_number = 5;
+const max_request_number = 5;
 local request_number = 0;
 
 let vatMsg = Watched("")

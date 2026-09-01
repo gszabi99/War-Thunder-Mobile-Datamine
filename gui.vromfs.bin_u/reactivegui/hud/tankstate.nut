@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let interopGen = require("%rGui/interopGen.nut")
-let { register_command } = require("console")
-let { rnd_int } = require("dagor.random")
-let { crewDriverState, crewGunnerState, crewLoaderState } = require("%rGui/hud/crewState.nut")
+from "console" import register_command
+from "dagor.random" import rnd_int
+from "%rGui/hud/crewState.nut" import crewDriverState, crewGunnerState, crewLoaderState
+import "%rGui/interopGen.nut" as interopGen
+
 
 let debugDebuff = mkWatched(persist, "debugDebuff", 0)
 
@@ -46,7 +47,7 @@ let export = tankStateNative.__merge({
   hasDebuffFireExternal = Computed(@() !!hasDebuffFireExternal.get() != ((debugDebuff.get() & 256) != 0))
 })
 
-let maxDebugDebuff = 255
+const maxDebugDebuff = 255
 register_command(@() debugDebuff.set(debugDebuff.get() == maxDebugDebuff ? 0 : maxDebugDebuff), "hud.debug.tankDebuffsAll")
 register_command(@() debugDebuff.set(rnd_int(0, maxDebugDebuff)), "hud.debug.tankDebuffsRandom")
 

@@ -1,15 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkTabs } = require("%rGui/components/tabs.nut")
-let mkAvailAttrMark = require("%rGui/attributes/mkAvailAttrMark.nut")
+import "%rGui/attributes/mkAvailAttrMark.nut" as mkAvailAttrMark
+from "%rGui/components/tabs.nut" import mkTabs
 
-let tabH = hdpx(165)
-let contentMargin = hdpx(20)
 
-let textColor = 0xFFFFFFFF
+const tabH = hdpx(165)
+const contentMargin = hdpx(20)
+
+const textColor = 0xFFFFFFFF
 
 let mkStatus = @(statusW) @() {
   watch = statusW
-  margin = [contentMargin, contentMargin]
+  margin = const [contentMargin, contentMargin]
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_RIGHT
   children = mkAvailAttrMark(statusW.get())
@@ -20,7 +21,7 @@ function tabData(tab) {
   return {
     id
     content = {
-      size = [ FLEX,  tabH ]
+      size = const [ FLEX,  tabH ]
       children = [
         image == null ? null
           : {
@@ -34,7 +35,7 @@ function tabData(tab) {
             }
         {
           hplace = ALIGN_RIGHT
-          margin = [contentMargin - hdpx(10), contentMargin] 
+          margin = const [contentMargin - hdpx(10), contentMargin] 
           rendObj = ROBJ_TEXT
           color = textColor
           text = loc(locId)

@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
-let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
+from "%appGlobals/clientState/clientState.nut" import localMPlayerTeam
+from "%rGui/style/teamColors.nut" import teamBlueLightColor, teamRedLightColor, mySquadLightColor
 
-let MP_TEAM_NEUTRAL = 0
 
-let localPlayerColor = 0xFFDDA339
-let systemMsgColor = 0xFFFFFF00
+const MP_TEAM_NEUTRAL = 0
+
+const localPlayerColor = 0xFFDDA339
+const systemMsgColor = 0xFFFFFF00
 
 let getTeamColor = @(team) team == MP_TEAM_NEUTRAL ? null
   : team == localMPlayerTeam.get() ? teamBlueLightColor

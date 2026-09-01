@@ -1,5 +1,5 @@
-let { get_time_msec } = require("dagor.time")
-let { gameStartServerTimeMsec, lastReceivedServerTime } = require("%appGlobals/userstats/serverTime.nut")
+from "dagor.time" import get_time_msec
+from "%appGlobals/userstats/serverTime.nut" import gameStartServerTimeMsec, lastReceivedServerTime
 
 
 function serverTimeUpdate(timestampMsec, requestTimeMsec) {

@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBgImageByPx, mkBgImageWithFallback } = require("%globalsDarg/components/mkAnimBg.nut")
+from "%globalsDarg/components/mkAnimBg.nut" import mkBgImageByPx, mkBgImageWithFallback
+
 
 return @() [
   {

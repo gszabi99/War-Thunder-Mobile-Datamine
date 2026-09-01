@@ -1,8 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { is_ios, is_pc } = require("%sqstd/platform.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { HUD_MSG_STREAK_EX } = require("hudMessages")
-let { getMultiStageUnlockId } = require("%rGui/unlocks/streakPkg.nut")
+from "hudMessages" import HUD_MSG_STREAK_EX
+from "%sqstd/platform.nut" import is_ios, is_pc
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/unlocks/streakPkg.nut" import getMultiStageUnlockId
+
+
 let { unlockAchievement = @(_) null } = is_ios ? require("iosGameCenter.nut")
   : is_pc ? { unlockAchievement = @(id) console_print($"Unlocked achievement: {id}") } 
   : null
@@ -37,4 +39,4 @@ let addAchievementByHudMessage = {
   [HUD_MSG_STREAK_EX] = addAchievement
 }
 
-eventbus_subscribe("HudMessage", @(data) addAchievementByHudMessage?[data.type](data))
+subscribeHudEvent("HudMessage", @(data) addAchievementByHudMessage?[data.type](data))

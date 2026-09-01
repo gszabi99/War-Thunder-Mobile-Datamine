@@ -1,60 +1,59 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { eventbus_send } = require("eventbus")
-let { playSound } = require("sound_wt")
-let { deferOnce } = require("dagor.workcycle")
-let { can_write_replays } = require("%appGlobals/permissions.nut")
-let { hasUnsavedReplay } = require("%rGui/replay/lastReplayState.nut")
-let saveReplayWindow = require("%rGui/replay/saveReplayWindow.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { curUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { setHangarUnit, setHangarUnitGroup } = require("%rGui/unit/hangarUnit.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { textButtonPrimary, textButtonCommon, textButtonBattle, buttonsHGap, iconButtonCommon } = require("%rGui/components/textButton.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { openUnitAttrWnd } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
-let { debriefingData, curDebrTabId, nextDebrTabId, isDebriefingAnimFinished, isNoExtraScenesAfterDebriefing,
-  DEBR_TAB_SCORES, debrTabsShowTime, showReleaseToContinueBtn,
-  needShowBtns_Campaign, needShowBtns_Unit, needShowBtns_Final, needReinitScene
-  activatingTimeBtns_Campaign, activatingTimeBtns_Final
-} = require("%rGui/debriefing/debriefingState.nut")
-let { randomBattleMode, allGameModes, shouldStartNewbieSingleOnline } = require("%rGui/gameModes/gameModeState.nut")
-let { isNextBattleNewbieOffline, startCurNewbieMission } = require("%rGui/gameModes/newbieOfflineMissions.nut")
-let { isNewbieMode } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
-let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { needRateGame } = require("%rGui/feedback/rateGameState.nut")
-let { requestShowRateGame } = require("%rGui/feedback/rateGame.nut")
-let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
-let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
-let { footerGap, footerHeight } = require("%rGui/debriefing/debriefingWndConsts.nut")
-let { getResearchedUnit, getBestUnitName, isUnitReceiveLevel, getSlotOrUnitLevelUnlockRewards, getBgUnits
-} = require("%rGui/debriefing/debrUtils.nut")
-let tapListener = require("%rGui/debriefing/tapListener.nut")
-let mkDebrTabsInfo = require("%rGui/debriefing/mkDebrTabsInfo.nut")
-let { debriefingTabBar } = require("%rGui/debriefing/debriefingTabBar.nut")
-let mkDebriefingEmpty = require("%rGui/debriefing/mkDebriefingEmpty.nut")
-let { boostersListActive } = require("%rGui/boosters/boostersListActive.nut")
-let { allSpecialEvents, specialEventsWithTree } = require("%rGui/event/eventState.nut")
-let { openSeasonScene, LOOTBOX_TAB, openGmEventWnd } = require("%rGui/seasonScene/seasonSceneState.nut")
-let { openUnitsTreeAtUnit } = require("%rGui/unitsTree/unitsTreeState.nut")
-let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
-let { selectedSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
-let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
-let { runOfflineBattle, openOfflineBattleMenu } = require("%rGui/gameModes/offlineBattlesState.nut")
-let { TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID } = require("%rGui/tutorial/tutorialConst.nut")
-let { openTreeEventWnd } = require("%rGui/event/treeEvent/treeEventState.nut")
-let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
-let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
-let { gmEventsList } = require("%rGui/event/gmEventState.nut")
-let panelBg = require("%rGui/components/panelBg.nut")
-let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_send
+from "sound_wt" import playSound
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/clientState/clientState.nut" import isInDebriefing
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/gameModes/newbieGameModesConfig.nut" import isNewbieMode
+from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
+from "%appGlobals/pServer/pServerApi.nut" import registerHandler
+from "%appGlobals/pServer/profile.nut" import curUnits, campUnitsCfg
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%appGlobals/permissions.nut" import can_write_replays
+from "%appGlobals/squadState.nut" import isInSquad, isSquadLeader
+from "%appGlobals/unitsState.nut" import setCurrentUnit
+from "%rGui/attributes/unitAttr/unitAttrState.nut" import openUnitAttrWnd
+from "%rGui/boosters/boostersListActive.nut" import boostersListActive
+import "%rGui/components/panelBg.nut" as panelBg
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon, textButtonBattle, buttonsHGap,
+  iconButtonCommon
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/debriefing/debrUtils.nut" import getResearchedUnit, getBestUnitName, isUnitReceiveLevel,
+  getSlotOrUnitLevelUnlockRewards, getBgUnits
+from "%rGui/debriefing/debriefingState.nut" import debriefingData, curDebrTabId, nextDebrTabId,
+  isDebriefingAnimFinished, isNoExtraScenesAfterDebriefing, DEBR_TAB_SCORES, debrTabsShowTime, showReleaseToContinueBtn,
+  needShowBtns_Campaign, needShowBtns_Unit, needShowBtns_Final, needReinitScene, activatingTimeBtns_Campaign,
+  activatingTimeBtns_Final
+from "%rGui/debriefing/debriefingTabBar.nut" import debriefingTabBar
+from "%rGui/debriefing/debriefingWndConsts.nut" import footerGap, footerHeight
+import "%rGui/debriefing/mkDebrTabsInfo.nut" as mkDebrTabsInfo
+import "%rGui/debriefing/mkDebriefingEmpty.nut" as mkDebriefingEmpty
+import "%rGui/debriefing/tapListener.nut" as tapListener
+from "%rGui/event/eventState.nut" import allSpecialEvents, specialEventsWithTree
+from "%rGui/event/gmEventState.nut" import gmEventsList
+from "%rGui/feedback/rateGame.nut" import requestShowRateGame
+from "%rGui/feedback/rateGameState.nut" import needRateGame
+from "%rGui/gameModes/gameModeState.nut" import randomBattleMode, allGameModes, shouldStartNewbieSingleOnline
+from "%rGui/gameModes/newbieOfflineMissions.nut" import isNextBattleNewbieOffline, startCurNewbieMission
+from "%rGui/gameModes/offlineBattlesState.nut" import runOfflineBattle, openOfflineBattleMenu
+from "%rGui/mainMenu/toBattleButton.nut" import mkToBattleButtonWithSquadManagement
+from "%rGui/navState.nut" import registerScene
+import "%rGui/queue/queuePenaltyWnd.nut" as tryOpenQueuePenaltyWnd
+from "%rGui/replay/lastReplayState.nut" import hasUnsavedReplay
+import "%rGui/replay/saveReplayWindow.nut" as saveReplayWindow
+from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, LOOTBOX_TAB, MAP_TAB, openGmEventWnd
+import "%rGui/shop/missingPremiumAccWnd.nut" as showNoPremMessageIfNeed
+import "%rGui/shop/offerMissingUnitItemsMessage.nut" as offerMissingUnitItemsMessage
+from "%rGui/slotBar/slotBarState.nut" import selectedSlotIdx
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/tutorial/tutorialConst.nut" import TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID
+from "%rGui/unit/hangarUnit.nut" import setHangarUnit, setHangarUnitGroup
+from "%rGui/unit/unitsWndState.nut" import curSelectedUnit
+from "%rGui/unitsTree/unitsTreeState.nut" import openUnitsTreeAtUnit
+from "%rGui/unlocks/userstat.nut" import registerUnlocksSceneToUpdate
 
 
 let rightButtonOvr = { minWidth = hdpx(400) }
@@ -66,14 +65,14 @@ function closeDebriefing() {
   needReinitScene.set(true)
 }
 let startBattle = @(modeId) eventbus_send("queueToGameMode", { modeId })
-let function openSpecialEvent() {
+function openSpecialEvent() {
   let eventName = allGameModes.get().findvalue(@(m) m.name == debriefingData.get()?.roomInfo.game_mode_name)?.eventId
   let eventId = allSpecialEvents.get().findindex(@(e) e.eventName == eventName)
   if (eventId) {
     if (eventName in gmEventsList.get())
       openGmEventWnd(eventName)
     else if (specialEventsWithTree.get().findindex(@(event) event.eventName == eventId) != null)
-      openTreeEventWnd(eventId)
+      openSeasonScene(eventId, MAP_TAB)
     else
       openSeasonScene(eventId, LOOTBOX_TAB)
   }
@@ -81,7 +80,7 @@ let function openSpecialEvent() {
 
 const SAVE_ID_UPGRADE_BUTTON_PUSHED = "debriefingUpgradeButtonPushed"
 let countUpgradeButtonPushed = Watched(get_local_custom_settings_blk()?[SAVE_ID_UPGRADE_BUTTON_PUSHED] ?? 0)
-let minCountUpgradeButtonPushed = 3
+const minCountUpgradeButtonPushed = 3
 
 let updateHangarUnit = @(unitId) unitId == null ? null : setHangarUnit(unitId)
 
@@ -190,7 +189,7 @@ function toBattle(gmId) {
   closeDebriefing()
 }
 
-let cbId = "onResetPenaltyToBattleInDebriefing"
+const cbId = "onResetPenaltyToBattleInDebriefing"
 registerHandler(cbId, @(res, context) res?.error == null ? toBattle(context.gmId) : null)
 
 let toBattleButton = @(gmId, campaign)
@@ -228,7 +227,7 @@ let mkStartCustomOfflineBattleButton = @(unitName, missionName) textButtonBattle
     if (activatingTimeBtns_Final.get() > get_time_msec())
       return
     isNoExtraScenesAfterDebriefing.set(true)
-    let nextAction = @() runOfflineBattle(unitName, missionName)
+    let nextAction = @() runOfflineBattle(missionName, unitName)
     if (needRateGame.get())
       requestShowRateGame(nextAction)
     else
@@ -307,8 +306,9 @@ let btnNextTab = function() {
 
 function debriefingWnd() {
   let debrData = debriefingData.get()
-  let { campaign = "", isWon = false, isTutorial = false, roomInfo = null,
-    isFinished = false, isDeserter = false, isDisconnected = false, kickInactivity = false, isCustomOfflineBattle = false
+  let { campaign = "", isWon = false, isTutorial = false, roomInfo = null, isCustomOfflineBattle = false,
+    isFinished = false, isDeserter = false, isDisconnected = false, kickInactivity = false, predefinedId = null,
+    abTests = null
   } = debrData
   let unitName = getBestUnitName(debrData)
   let bgUnits = getBgUnits(debrData)
@@ -328,6 +328,7 @@ function debriefingWnd() {
   let needForceQuitToHangar = isUnitResearchedAfterTutorial
     || isFirstLvlUpForSlot
     || canStartArsenalTutorial
+  let isFirstBattleRewardPart = (abTests?.hasSpendTutorials ?? "false") == "true" && predefinedId == 0
   let hasUnitLevelUp = !needForceQuitToHangar && ("slots" not in debrData) && isUnitReceiveLevel(unitName, debrData)
 
   let tabsParams = {
@@ -405,7 +406,7 @@ function debriefingWnd() {
             flow = FLOW_HORIZONTAL
             gap = footerGap
             children = [
-              researchedUnit != null || needForceQuitToHangar ? null
+              researchedUnit != null || needForceQuitToHangar || isFirstBattleRewardPart ? null
                 : hasUnitLevelUp ? mkBtnUpgradeUnit(needShowBtns_Unit, campaign)
                 : {
                     flow = FLOW_HORIZONTAL
@@ -431,6 +432,7 @@ function debriefingWnd() {
                     buttonDescText(needShowBtns_Campaign, loc("unitsTree/researchCompleted"))
                     mkBtnNewUnitResearched(needShowBtns_Campaign, researchedUnit)
                   ]
+                : isFirstBattleRewardPart ? [mkBtnNewUnitResearched(needShowBtns_Campaign, researchedUnit)]
                 : hasUnitLevelUp && countUpgradeButtonPushed.get() < minCountUpgradeButtonPushed ? []
                 : [
                     mkBtnToBattlePlace(needShowBtns_Final, mkNextGameModeInfo(roomInfo, campaign), debrData)
@@ -445,7 +447,7 @@ function debriefingWnd() {
         hplace = ALIGN_RIGHT
         children = !showReleaseToContinueBtn.get() ? null
           : panelBg.__merge({
-              size = [hdpx(400), hdpx(90)]
+              size = const [hdpx(400), hdpx(90)]
               valign = ALIGN_CENTER
               halign = ALIGN_CENTER
               padding = 0
@@ -462,6 +464,6 @@ function debriefingWnd() {
   })
 }
 
-let sceneId = "debriefingWnd"
+const sceneId = "debriefingWnd"
 registerScene(sceneId, debriefingWnd, closeDebriefing, isInDebriefing)
 registerUnlocksSceneToUpdate(sceneId)

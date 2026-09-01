@@ -1,36 +1,34 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { get_time_msec } = require("dagor.time")
-let { stop_prem_cutscene } = require("hangar")
-let { lerpClamped } = require("%sqstd/math.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { abTests } = require("%appGlobals/pServer/campaign.nut")
-let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
-let { unhideModals } = require("%rGui/components/modalWindows.nut")
-let { previewGoods, isPreviewGoodsPurchasing, HIDE_PREVIEW_MODALS_ID } = require("%rGui/shop/goodsPreviewState.nut")
-let { purchaseGoods } = require("%rGui/shop/purchaseGoods.nut")
-let { buyPlatformGoods } = require("%rGui/shop/platformGoods.nut")
-let { discountsToApply, applyDiscount } = require("%rGui/shop/discounts.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToTimeSimpleString, TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { sendOfferBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { mkCustomButton, buttonStyles, mergeStyles } = require("%rGui/components/textButton.nut")
-let { mkCurrencyComp, mkPriceExtText, CS_BIG, CS_COMMON } = require("%rGui/components/currencyComp.nut")
-let { getRewardsViewInfo, isRewardEmpty, filterHiddenViewInfo
-} = require("%rGui/rewards/rewardViewInfo.nut")
-let { REWARD_STYLE_TINY, mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts, mkRewardReceivedMark
-} = require("%rGui/rewards/rewardPlateComp.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { doubleSideGradient, doubleSideGradientPaddingY, headerGradientWithRightBlock
-} = require("%rGui/components/gradientDefComps.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { gradCircularSqCorners, gradCircCornerOffset, simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { discountTagOffer, discountOfferTagH } = require("%rGui/components/discountTag.nut")
-let { activeRewardInfo } = require("%rGui/shop/goodsPreview/goodsPreviewHint.nut")
+from "dagor.time" import get_time_msec
+from "hangar" import stop_prem_cutscene
+from "math" import round
+from "%sqstd/math.nut" import lerpClamped
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/pServer/bqClient.nut" import sendOfferBqEvent
+from "%appGlobals/pServer/campaign.nut" import abTests
+from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/buttonStyles.nut" import defButtonHeight, defButtonMinWidth
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkPriceExtText, CS_BIG, CS_COMMON
+from "%rGui/components/discountTag.nut" import discountTagOffer, discountOfferTagH
+from "%rGui/components/gradientDefComps.nut" import doubleSideGradient, doubleSideGradientPaddingY,
+  headerGradientWithRightBlock
+from "%rGui/components/modalWindows.nut" import unhideModals
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import mkCustomButton, buttonStyles, mergeStyles
+from "%rGui/globals/fontUtils.nut" import getFontToFitWidth
+from "%rGui/rewards/rewardPlateComp.nut" import REWARD_STYLE_TINY, mkRewardPlateBg, mkRewardPlateImage,
+  mkRewardPlateTexts, mkRewardReceivedMark
+from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, isRewardEmpty, filterHiddenViewInfo
+from "%rGui/shop/discounts.nut" import discountsToApply, applyDiscount
+from "%rGui/shop/goodsPreview/goodsPreviewHint.nut" import activeRewardInfo
+from "%rGui/shop/goodsPreviewState.nut" import previewGoods, isPreviewGoodsPurchasing, HIDE_PREVIEW_MODALS_ID
+from "%rGui/shop/platformGoods.nut" import buyPlatformGoods
+from "%rGui/shop/purchaseGoods.nut" import purchaseGoods
+from "%rGui/style/gradients.nut" import gradCircularSqCorners, gradCircCornerOffset, simpleHorGrad
+from "%rGui/components/timerBlock.nut" import mkTimer
 
 
 let currencyStyle = CS_BIG
@@ -40,24 +38,24 @@ let oldPriceTranslate = [0,
   purchGap + 0.5 * defButtonHeight + 0.5 * calc_str_box("2", currencyStyle.fontStyle)[1]]
 
 
-let aTimePackNameFull = 0.5
-let aTimePackNameBack = 0.3
-let aTimeBackBtn = aTimePackNameFull - aTimePackNameBack
+const aTimePackNameFull = 0.5
+const aTimePackNameBack = 0.3
+const aTimeBackBtn = aTimePackNameFull - aTimePackNameBack
 
-let aTimeTime = 0.4
-let aTimePriceMove = 0.3
-let aTimePriceBounce = 0.15
-let aTimePriceStrike = 0.15
-let aTimeDiscountTagScale = 0.3
-let aTimeDiscountTagMove = 0.15
-let aTimeFinalPriceShow = 0.2
-let aTimeFinalPriceBounce = 0.3
-let aTimeFinalPriceGlow = 0.1
-let aTimePriceFull = aTimePriceMove + aTimePriceBounce + aTimeFinalPriceShow + aTimeFinalPriceBounce + aTimeDiscountTagScale
+const aTimeTime = 0.4
+const aTimePriceMove = 0.3
+const aTimePriceBounce = 0.15
+const aTimePriceStrike = 0.15
+const aTimeDiscountTagScale = 0.3
+const aTimeDiscountTagMove = 0.15
+const aTimeFinalPriceShow = 0.2
+const aTimeFinalPriceBounce = 0.3
+const aTimeFinalPriceGlow = 0.1
+const aTimePriceFull = aTimePriceMove + aTimePriceBounce + aTimeFinalPriceShow + aTimeFinalPriceBounce + aTimeDiscountTagScale
 
-let aTimeInfoItem = 0.3
-let aTimeInfoItemOffset = 0.15
-let aTimeInfoLight = 0.2
+const aTimeInfoItem = 0.3
+const aTimeInfoItemOffset = 0.15
+const aTimeInfoLight = 0.2
 
 let ANIM_SKIP = {}
 let ANIM_SKIP_DELAY = {}
@@ -203,7 +201,7 @@ function mkPurchButton(content, onClick, animStartTime, ovr = {}) {
         mkHighlight(aTimeFinalPriceGlow, start, 0.1)
       ]
     },
-    spinnerBlockOvr.__update(ovr))
+    spinnerBlockOvr.__merge(ovr))
 }
 
 function unifyBasePrice(basePrice, finalPrice) {
@@ -352,26 +350,8 @@ let purchaseButtonNoOldPrice = function() {
   })
 }
 
-let mkTimeLeftText = @(timeLeft) function() {
-  let res = { watch = timeLeft, rendObj = ROBJ_TEXT }
-  let time = timeLeft.get()
-  if (time == null)
-    return res
-  if (time < 0)
-    return res.__update({
-      text = utf8ToUpper(loc("lastChance"))
-      color = 0xFFFFA406
-    }, fontSmall)
-  if (time >= TIME_DAY_IN_SECONDS)
-    return res.__update({ text = $"▩{secondsToHoursLoc(time)}" }, fontMedium)
-  return res.__update({
-    text = secondsToTimeSimpleString(time)
-    monoWidth = hdpx(38)
-  }, fontBig)
-}
-
 function previewGoodsTimeLeft(halign, width = hdpx(350)) {
-  let timeLeft = Computed(function() {
+  let endsAt = Computed(function() {
     if (previewGoods.get() == null)
       return null
     let curTime = serverTime.get()
@@ -379,19 +359,22 @@ function previewGoodsTimeLeft(halign, width = hdpx(350)) {
     if (endTime != null) { 
       if (endTime <= 0)
         return null
-      return endTime - curTime
+      return endTime
     }
     let { timeRanges = [] } = previewGoods.get()
     foreach (tr in timeRanges)
       if (tr.start <= curTime && tr.end >= curTime)
-        return tr.end - curTime
+        return tr.end
     return null
   })
+  let timeLeft = Computed(@() endsAt.get() == null ? null
+    : endsAt.get() - serverTime.get())
   let hasTimeLeft = Computed(@() timeLeft.get() != null)
+  let isTimeEnd = Computed(@() hasTimeLeft.get() && timeLeft.get() <= 0)
   let text = utf8ToUpper(loc("limitedTimeOffer"))
-  return @() !hasTimeLeft.get() ? { watch = hasTimeLeft }
+  return @() !hasTimeLeft.get() ? { watch = [hasTimeLeft, isTimeEnd] }
     : {
-        watch = hasTimeLeft
+        watch = [hasTimeLeft, isTimeEnd]
         flow = FLOW_VERTICAL
         halign
         children = [
@@ -405,7 +388,13 @@ function previewGoodsTimeLeft(halign, width = hdpx(350)) {
           }.__update(
             getFontToFitWidth({ rendObj = ROBJ_TEXT, text }.__update(fontTiny),
               width, [fontVeryTiny, fontTiny]))
-          mkTimeLeftText(timeLeft)
+          isTimeEnd.get()
+            ? {
+              rendObj = ROBJ_TEXT
+              text = utf8ToUpper(loc("lastChance"))
+              color = 0xFFFFA406
+            }.__update(fontSmall)
+            : mkTimer(endsAt, { halign }, fontMedium, true)
         ]
       }
 }

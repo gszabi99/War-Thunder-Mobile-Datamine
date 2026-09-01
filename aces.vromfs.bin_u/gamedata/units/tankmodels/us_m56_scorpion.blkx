@@ -2290,7 +2290,7 @@
         0.0,
         0.3
       ],
-      "AdvancedMass": false,
+      "AdvancedMass": true,
       "trackMass": 300.0
     },
     "tracks": {

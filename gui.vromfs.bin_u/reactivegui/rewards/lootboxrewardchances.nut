@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { defer } = require("dagor.workcycle")
-let { get_my_lootbox_chances, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+from "dagor.workcycle" import defer
+from "%appGlobals/pServer/pServerApi.nut" import get_my_lootbox_chances, registerHandler
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+
 
 let chances = Watched({})
 servProfile.subscribe(@(_) chances.get().len() != 0 ? chances.set({}) : null)

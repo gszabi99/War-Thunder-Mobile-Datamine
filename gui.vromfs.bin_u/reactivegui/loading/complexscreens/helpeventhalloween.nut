@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/components/screenHintsLib.nut" import mkScreenHints
 
-let bgImage = "ui/images/help/help_event_halloween.avif"
+const bgImage = "ui/images/help/help_event_halloween.avif"
 let bgSize = [3282, 1041]
 
 let mkSizeByParent = @(size) [pw(100.0 * size[0] / bgSize[0]), ph(100.0 * size[1] / bgSize[1])]
 
-let hintBgColor = 0xCC052737
+const hintBgColor = 0xCC052737
 
 let mkTextarea = @(text, maxWidth, ovr = {}) {
   maxWidth
@@ -43,7 +43,7 @@ function makeScreen() {
     color = 0xFF000000
     children = {
       size = [sw(100), sw(100) / bgSize[0] * bgSize[1]]
-      pos = [0, -sh(1.5)]
+      pos = const [0, -sh(1.5)]
       rendObj = ROBJ_IMAGE
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER

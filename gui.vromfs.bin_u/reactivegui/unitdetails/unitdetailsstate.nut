@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { setCustomHangarUnit, resetCustomHangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { mkBaseUnit } = require("%rGui/unit/unitList.nut")
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%rGui/unit/hangarUnit.nut" import setCustomHangarUnit, resetCustomHangarUnit
+from "%rGui/unit/unitList.nut" import mkBaseUnit
 
 
 let curSelectedUnitSkin = Watched(null)
@@ -11,7 +11,7 @@ let isWindowAttached = Watched(false)
 let isCustomizationWndAttached = Watched(false)
 let isOwnUnit = Computed(@() (openUnitOvr.get()?.canShowOwnUnit ?? true) && openUnitOvr.get()?.name in campMyUnits.get())
 
-let function setUnit(unit) {
+function setUnit(unit) {
   if (unit != null)
     setCustomHangarUnit(unit)
   else

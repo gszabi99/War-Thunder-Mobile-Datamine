@@ -1,9 +1,11 @@
+from "dagor.time" import get_time_msec
+from "eventbus" import eventbus_subscribe
 from "%sqstd/frp.nut" import ComputedImmediate
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/platform.nut" import is_mobile
+
+
 let logW = require("%globalScripts/logs.nut").log_with_prefix("[WINDOW] ")
-let { get_time_msec } = require("dagor.time")
-let { eventbus_subscribe } = require("eventbus")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { is_mobile } = require("%sqstd/platform.nut")
 
 
 let windowInactiveFlags = hardPersistWatched("globals.windowInactiveFlags", {})

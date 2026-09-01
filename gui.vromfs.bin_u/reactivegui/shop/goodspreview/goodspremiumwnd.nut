@@ -1,26 +1,27 @@
 from "%globalsDarg/darg_library.nut" import *
-let { G_PREMIUM } = require("%appGlobals/rewardType.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { textButtonPurchase } = require("%rGui/components/textButton.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { previewGoods, GPT_PREMIUM , closeGoodsPreview, previewType} = require("%rGui/shop/goodsPreviewState.nut")
-let { buyPlatformGoods } = require("%rGui/shop/platformGoods.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/rewardType.nut" import G_PREMIUM
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/textButton.nut" import textButtonPurchase
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/shop/goodsPreviewState.nut" import previewGoods, GPT_PREMIUM, closeGoodsPreview, previewType
+from "%rGui/shop/platformGoods.nut" import buyPlatformGoods
+from "%rGui/style/gamercardStyle.nut" import gamercardHeight
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
 
-let premDescWndUid = "prem_desc_wnd_uid"
+
+const premDescWndUid = "prem_desc_wnd_uid"
 
 let isOpened = keepref(Computed(@() previewType.get() == GPT_PREMIUM))
-let premiumDescriptionWndBg = 0xDC000000
-let premiumDescriptionWidth = sw(50)
-let premiumDescriptionHeaderHeight = sh(8)
-let premiumDescriptionHeaderBg = 0x0A585858
-let premiumDescriptionDecorativeLineBg = 0xFFD4D4D4
-let insideIndent = hdpxi(12)
-let iconSize = hdpx(300)
+const premiumDescriptionWndBg = 0xDC000000
+const premiumDescriptionWidth = sw(50)
+const premiumDescriptionHeaderHeight = sh(8)
+const premiumDescriptionHeaderBg = 0x0A585858
+const premiumDescriptionDecorativeLineBg = 0xFFD4D4D4
+const insideIndent = hdpxi(12)
+const iconSize = hdpx(300)
 
 let premiumBonusesCfg = Computed(@() serverConfigs.get()?.gameProfile.premiumBonuses)
 let bonusMultText = @(v) $"{v}x"
@@ -41,7 +42,7 @@ let decorativeLine = {
   rendObj = ROBJ_IMAGE
   image = gradTranspDoubleSideX
   color = premiumDescriptionDecorativeLineBg
-  size = [ premiumDescriptionWidth, hdpx(6) ]
+  size = const [ premiumDescriptionWidth, hdpx(6) ]
 }
 
 let premiumDescriptionHeader = @() {
@@ -49,7 +50,7 @@ let premiumDescriptionHeader = @() {
   rendObj = ROBJ_IMAGE
   image = gradTranspDoubleSideX
   color = premiumDescriptionHeaderBg
-  size = [ premiumDescriptionWidth, premiumDescriptionHeaderHeight ]
+  size = const [ premiumDescriptionWidth, premiumDescriptionHeaderHeight ]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = {
@@ -77,7 +78,7 @@ let premiumDescription = {
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
     halign = ALIGN_CENTER
-    size = [ premiumDescriptionWidth, SIZE_TO_CONTENT ]
+    size = const [ premiumDescriptionWidth, SIZE_TO_CONTENT ]
     children = [
       decorativeLine
       premiumDescriptionHeader
@@ -103,7 +104,7 @@ let premiumDescription = {
                 rendObj = ROBJ_IMAGE
                 image = Picture("ui/gameuiskin/premium_active_big.avif")
                 keepAspect = KEEP_ASPECT_FIT
-                size = [iconSize, iconSize]
+                size = const [iconSize, iconSize]
                 minHeight = sh(30)
               }
               @() {

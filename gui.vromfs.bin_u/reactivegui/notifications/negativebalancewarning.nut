@@ -1,15 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { onlineBattleBlockCurrencyId, balance, PLATINUM, GOLD
-} = require("%appGlobals/currenciesState.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { SC_GOLD, SC_PLATINUM } = require("%rGui/shop/shopCommon.nut")
-let { openShopWnd } = require("%rGui/shop/shopState.nut")
-let { badTextColor2, highlightTextColor } = require("%rGui/style/stdColors.nut")
+from "eventbus" import eventbus_subscribe
+from "%appGlobals/currenciesState.nut" import onlineBattleBlockCurrencyId, balance, PLATINUM, GOLD
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/shop/shopCommon.nut" import SC_GOLD, SC_PLATINUM
+from "%rGui/shop/shopState.nut" import openShopWnd
+from "%rGui/style/stdColors.nut" import badTextColor2, highlightTextColor
 
 
-let MSG_ID = "negativeBalanceWarning"
+const MSG_ID = "negativeBalanceWarning"
 
 let currencyStoreCategory = {
   [PLATINUM] = SC_PLATINUM,

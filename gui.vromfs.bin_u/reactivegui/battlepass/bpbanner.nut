@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { eventSeason, eventSeasonIdx, MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
-let { translucentButton, translucentButtonsVGap, translucentButtonsWidth } = require("%rGui/components/translucentButton.nut")
-let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { openMainSeasonScene } = require("%rGui/seasonScene/seasonSceneState.nut")
-let mkSeasonSceneUnseenMark = require("%rGui/seasonScene/mkSeasonSceneUnseenMark.nut")
-let { tutorialQuestBtnKey } = require("%rGui/quests/questsState.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+from "%rGui/components/translucentButton.nut" import translucentButton, translucentButtonsVGap, translucentButtonsWidth
+from "%rGui/event/eventState.nut" import eventSeason, eventSeasonIdx, MAIN_EVENT_ID
+from "%rGui/quests/questsState.nut" import tutorialQuestBtnKey
+import "%rGui/seasonScene/mkSeasonSceneUnseenMark.nut" as mkSeasonSceneUnseenMark
+from "%rGui/seasonScene/seasonSceneState.nut" import openMainSeasonScene
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
+from "%rGui/style/stdColors.nut" import hoverColor
 
 
-let bannerBtnKey = "bp_banner_btn" 
+const bannerBtnKey = "bp_banner_btn" 
 
 let bannerIconSize = [hdpxi(184), hdpxi(108)]
-let borderColor = 0xFFDEDEDE
+const borderColor = 0xFFDEDEDE
 let bannerWidth = translucentButtonsVGap * 2 + translucentButtonsWidth * 3
-let textRowHeight = hdpx(30)
+const textRowHeight = hdpx(30)
 let bannerHeight = hdpx(20) + bannerIconSize[1] + textRowHeight
 
 let mainEventBtn = @(unseenMark) translucentButton("ui/gameuiskin#icon_events.svg",
@@ -47,7 +47,7 @@ return @(isPassActive, isEventActive) function () {
           behavior = Behaviors.Button
           onClick = @() openMainSeasonScene()
           children = {
-            size = [FLEX, SIZE_TO_CONTENT]
+            size = const [FLEX, SIZE_TO_CONTENT]
             rendObj = ROBJ_BOX
             valign = ALIGN_CENTER
             halign = ALIGN_CENTER
@@ -60,7 +60,7 @@ return @(isPassActive, isEventActive) function () {
                 valign = ALIGN_CENTER
                 children = [
                   {
-                    size = [FLEX, hdpx(75)]
+                    size = const [FLEX, hdpx(75)]
                     rendObj = ROBJ_9RECT
                     image = gradTranspDoubleSideX
                     texOffs = [0, gradDoubleTexOffset]
@@ -78,7 +78,7 @@ return @(isPassActive, isEventActive) function () {
               }
               @() {
                 watch = eventSeasonIdx
-                size = [SIZE_TO_CONTENT, textRowHeight]
+                size = const [SIZE_TO_CONTENT, textRowHeight]
                 flow = FLOW_HORIZONTAL
                 valign = ALIGN_CENTER
                 gap = hdpx(10)

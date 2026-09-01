@@ -1,13 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import deferOnce
-import "%appGlobals/pServer/servProfile.nut" as servProfile
-from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/clientState/clientState.nut" import isInBattle
 from "%appGlobals/loginState.nut" import isLoggedIn
-from "%rGui/unlocks/unlocks.nut" import activeUnlocks, unlockInProgress,
-  batchReceiveRewards, isPrevUnlockCompleted
-from "%rGui/unlocks/userstat.nut" import isUserstatMissingData
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%rGui/rewards/rewardViewInfo.nut" import isRewardEmpty
+from "%rGui/unlocks/unlocks.nut" import activeUnlocks, unlockInProgress, batchReceiveRewards, isPrevUnlockCompleted
+from "%rGui/unlocks/userstat.nut" import isUserstatMissingData
 
 
 let unlocksToAutoRecieveRaw = Computed(function() {

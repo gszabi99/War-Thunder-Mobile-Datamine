@@ -1,14 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/controls/shortcutsMap.nut" import gamepadShortcuts
-from "%rGui/controlsMenu/gamepadVendor.nut" import gamepadPreset
 import "%rGui/controlsMenu/gamepadImagePresets.nut" as gamepadImagePresets
+from "%rGui/controlsMenu/gamepadVendor.nut" import gamepadPreset
+from "types" import String
 
-let blockWidth = hdpx(480)
-let textWidth = hdpx(450)
+
+const blockWidth = hdpx(480)
+const textWidth = hdpx(450)
 let bgSize = [840, 452]
-let bgFinalHeight = hdpx(500)
+const bgFinalHeight = hdpx(500)
 let bgFinalWidth = (bgFinalHeight * bgSize[0] / bgSize[1]).tointeger()
-let borderOffs = 25 
+const borderOffs = 25 
 let iconSize = fontSmall.fontSize.tointeger()
 let textWithIconWidth = textWidth - iconSize
 
@@ -18,7 +20,7 @@ let keyWithCombination = @(v) $"{gamepadShortcuts["ID_COMBINATION"]} {v}"
 
 function mergeWithDefaults(cfg) {
   let keys = []
-  if (type(cfg.key) == "string")
+  if (cfg.key instanceof String)
     keys.append(cfg.key, keyWithCombination(cfg.key))
   else
     keys.extend(cfg.key, cfg.key.map(keyWithCombination))
@@ -27,7 +29,7 @@ function mergeWithDefaults(cfg) {
   if (cfg?.axisKey)
     cfg.axisKey.extend(cfg.axisKey.map(keyWithCombination))
 
-  cfg.blockOvr <- {}.__merge({ size = [blockWidth, SIZE_TO_CONTENT] }, cfg?.blockOvr ?? {})
+  cfg.blockOvr <- {}.__merge({ size = const [blockWidth, SIZE_TO_CONTENT] }, cfg?.blockOvr ?? {})
 
   return cfg
 }
@@ -76,7 +78,7 @@ let mkTwoRowBlock = @(text, isLeft) {
 }.__update(fontTiny)
 
 function getHintText(hint, texts) {
-  if (type(hint.key) == "string")
+  if (hint.key instanceof String)
     return { sc = texts?[hint.key] }
   let list = []
   foreach (k in hint.key) {

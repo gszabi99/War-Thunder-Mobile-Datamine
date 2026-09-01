@@ -27,7 +27,6 @@ typedef Coroutines = array<Coroutine>
 [macro_function]
 def private verify_inside_coroutine(prog : ProgramPtr; call : ExprCallMacro?&) : bool {
     
-    
     if (call.inFunction == null) return true
     for (ann in call.inFunction.annotations) {
         if (ann.annotation.name == "coroutine" || ann.annotation.name == "async") return true
@@ -38,11 +37,6 @@ def private verify_inside_coroutine(prog : ProgramPtr; call : ExprCallMacro?&) :
 
 [call_macro(name="yeild_from")]
 class private YieldFrom : AstCallMacro {
-    
-    
-    
-    
-    
     
     def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : Expression? {
         
@@ -76,11 +70,6 @@ class private CoContinue : AstCallMacro {
 [call_macro(name="co_await")]
 class private CoAwait : AstCallMacro {
     
-    
-    
-    
-    
-    
     def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : Expression? {
         
         macro_verify(call.arguments |> length == 1, prog, call.at, "expecting co_await(subroutine)")
@@ -96,10 +85,6 @@ class private CoAwait : AstCallMacro {
 
 [function_macro(name="coroutine")]
 class private CoroutineMacro : AstFunctionAnnotation {
-    
-    
-    
-    
     
     def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         

@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
+from "%rGui/debriefing/missionResultTitle.nut" import mkMissionResultTitle
+
 
 let mkDebriefingEmpty = @(debrData) debrData == null ? null : {
   size = FLEX

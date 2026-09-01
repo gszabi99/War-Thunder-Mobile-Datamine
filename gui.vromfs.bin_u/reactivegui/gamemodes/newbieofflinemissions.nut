@@ -1,26 +1,29 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { register_command } = require("console")
-let { get_time_msec } = require("dagor.time")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { endswith } = require("string")
-let logO = log_with_prefix("[OFFLINE_BATTLE] ")
-let { chooseRandom } = require("%sqstd/rand.nut")
-let { curCampaign, campProfile, abTests } = require("%appGlobals/pServer/campaign.nut")
-let { curCampaignSlotUnits } = require("%appGlobals/pServer/slots.nut")
-let { battleUnitsMaxMRank, curUnit, playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
-let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let newbieModeStats = require("%rGui/gameModes/newbieModeStats.nut")
-let { havePremium } = require("%rGui/state/profilePremium.nut")
-let { startNewbieOfflineBattle, startLocalMPBattle } = require("%rGui/gameModes/startOfflineMode.nut")
-let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
-let { myUserId } = require("%appGlobals/profileStates.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { apply_first_battles_reward, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "eventbus" import eventbus_send
+from "string" import endswith
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/rand.nut" import chooseRandom
+from "%appGlobals/gameModes/gameModes.nut" import allGameModes
+from "%appGlobals/gameModes/newbieGameModesConfig.nut" import newbieGameModesConfig
+from "%appGlobals/pServer/campaign.nut" import curCampaign, campProfile, abTests
+from "%appGlobals/pServer/pServerApi.nut" import apply_first_battles_reward, registerHandler
+from "%appGlobals/pServer/profile.nut" import battleUnitsMaxMRank, curUnit, playerLevelInfo
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/pServer/slots.nut" import curCampaignSlotUnits
+from "%appGlobals/profileStates.nut" import myUserId
+from "%rGui/debriefing/debriefingState.nut" import debriefingData
+import "%rGui/gameModes/newbieModeStats.nut" as newbieModeStats
+from "%rGui/gameModes/startOfflineMode.nut" import startNewbieOfflineBattle, startLocalMPBattle
+from "%rGui/state/profilePremium.nut" import havePremium
+from "types" import String
 
-let ERROR_REPEAT_TIME_MSEC = 60000
+
+let logO = log_with_prefix("[OFFLINE_BATTLE] ")
+
+const ERROR_REPEAT_TIME_MSEC = 60000
 
 let delayedRewards = hardPersistWatched("newbieOfflineMissions.delayedRewards", {}) 
 let lastErrorTime = hardPersistWatched("newbieOfflineMissions.lastErrorTime", -1)
@@ -38,9 +41,14 @@ let hasFirstBattleRewards = Computed(function() {
   let battleRewardsLen = serverConfigs.get()?.firstBattlesRewards[curCampaign.get()].len() ?? 0
   return idx < battleRewardsLen
 })
+let hasFreePurchaseUnitResearch = Computed(@() (campProfile.get()?.freeGoldUse.purchaseUnitResearch ?? 0) == 0)
+let firstBattleRewardsKey = Computed(@() hasFreePurchaseUnitResearch.get()
+  ? $"{curCampaign.get()}{abTests.get()?.firstRewardsPostfixOnFreeResearch ?? ""}"
+  : curCampaign.get())
+let firstBattleRewards = Computed(@() serverConfigs.get()?.firstBattlesRewards[firstBattleRewardsKey.get()][0])
 let firstBattlesRewardId = Computed(@() 1 + max(curProfileRewardId.get(), curDelayedRewardId.get()))
 let firstBattlesReward = Computed(@()
-  serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][firstBattlesRewardId.get()])
+  serverConfigs.get()?.firstBattlesRewards[firstBattleRewardsKey.get()][firstBattlesRewardId.get()])
 
 let hasTankRestrictedOfflineMission = Computed(@() (abTests.get()?.tankRestrictedOfflineMission ?? "false") == "true")
 
@@ -89,7 +97,7 @@ registerHandler("onNewbieOfflineMissionReward",
       delayedRewards.mutate(@(v) v[userId][campaign].remove(idx))
       return
     }
-    if (type(res.error) == "string" && endswith(res.error, "already received")) {
+    if (res.error instanceof String && endswith(res.error, "already received")) {
       logO($"Remove reward from queue {campaign}/{rewardId} because of error: ", res.error)
       delayedRewards.mutate(@(v) v[userId][campaign].remove(idx))
       return
@@ -225,7 +233,7 @@ let startDebugNewbieMission = @()
       .findvalue(@(cfg) (cfg?.offlineMissions ?? []).len() != 0)
       .offlineMissions
       ?? [],
-    serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][0],
+    firstBattleRewards.get(),
     null
   )
 
@@ -236,7 +244,7 @@ function startDebugNewbieLocalMp() {
     return
   let mGMode = allGameModes.get().findvalue(@(m) m?.name == gmName)
   if (mGMode != null)
-    startNewbieLocalMP(mGMode, serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][0], null)
+    startNewbieLocalMP(mGMode, firstBattleRewards.get(), null)
 }
 
 function startLocalMultiplayerMission() {
@@ -248,10 +256,10 @@ function startLocalMultiplayerMission() {
   if (missions.len() == 0)
     return
   let missionName = chooseRandom(missions)
-  let reward = serverConfigs.get()?.firstBattlesRewards[curCampaign.get()][0]
   let unitName = curUnit.get()?.name
   logO($"Start local multiplayer battle. Unit = {unitName}, missionName = {missionName}")
-  eventbus_send("lastSingleMissionRewardData", { battleData = mkCurRewardBattleData(reward, null, [unitName]) })
+  eventbus_send("lastSingleMissionRewardData",
+    { battleData = mkCurRewardBattleData(firstBattleRewards.get(), null, [unitName]) })
   startLocalMPBattle(mGMode.gameModeId, missionName, [unitName])
 }
 
@@ -269,4 +277,6 @@ return {
   firstBattlesReward
   hasFirstBattleRewards
   curProfileRewardId
+  isFirstBattleRewardPart = Computed(@() (abTests.get()?.hasSpendTutorials ?? "false") == "true"
+    && hasFreePurchaseUnitResearch.get())
 }

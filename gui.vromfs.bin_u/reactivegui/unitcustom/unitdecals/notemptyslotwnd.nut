@@ -1,23 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { allow_subscriptions } = require("%appGlobals/permissions.nut")
-let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { hangarUnitHasLockedPremDecals } = require("%rGui/unit/hangarUnit.nut")
-let { textButtonPurchase, textButtonCommon, buttonStyles } = require("%rGui/components/textButton.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { btnBEscUp, btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { openShopWnd } = require("%rGui/shop/shopState.nut")
-let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
-let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
-let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/pServer/pServerApi.nut" import registerHandler
+from "%appGlobals/permissions.nut" import allow_subscriptions
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
+from "%rGui/components/textButton.nut" import textButtonPurchase, textButtonCommon, buttonStyles
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp, btnAUp
+from "%rGui/shop/goodsPreviewState.nut" import openSubsPreview
+from "%rGui/shop/shopCommon.nut" import SC_PREMIUM
+from "%rGui/shop/shopState.nut" import openShopWnd
+from "%rGui/style/backgrounds.nut" import bgShadedDark
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/unit/hangarUnit.nut" import hangarUnitHasLockedPremDecals
+
+
 let { defButtonMinWidth } = buttonStyles
 
 
-let WND_UID = "notEmptySlotWnd"
+const WND_UID = "notEmptySlotWnd"
 
-let wndGap = hdpx(40)
+const wndGap = hdpx(40)
 let isOpened = mkWatched(persist, "isOpened", false)
 let close = @() isOpened.set(false)
 registerHandler("closeNotEmptySlotWnd", @(res) res?.error == null ? close() : null)
@@ -30,7 +32,7 @@ function tryPremium() {
 let window = @() modalWndBg.__merge({
   watch = [hangarUnitHasLockedPremDecals, allow_subscriptions]
   size = [2 * defButtonMinWidth + 3 * wndGap, SIZE_TO_CONTENT]
-  padding = [0, 0, wndGap, 0]
+  padding = const [0, 0, wndGap, 0]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = wndGap

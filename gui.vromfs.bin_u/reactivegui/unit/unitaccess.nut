@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { blockedResearchByBattleMods, activeBattleMods } = require("%appGlobals/pServer/battleMods.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+from "%appGlobals/pServer/battleMods.nut" import blockedResearchByBattleMods, activeBattleMods
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 
 
 let blockedCountries = Computed(@() blockedResearchByBattleMods.get()?[curCampaign.get()]

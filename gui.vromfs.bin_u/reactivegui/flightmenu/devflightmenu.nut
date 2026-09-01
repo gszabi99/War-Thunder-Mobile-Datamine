@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
+from "dagor.localize" import doesLocTextExist
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/permissions.nut" import can_debug_missions
+from "%rGui/components/buttonStyles.nut" import COMMON, defButtonHeight
+from "%rGui/components/textButton.nut" import textButtonMultiline, buttonsVGap, mergeStyles
+from "%rGui/flightMenu/replayMenu.nut" import replayCamerasButtons
+from "%rGui/hudState.nut" import isPlayingReplay
+import "%rGui/options/optionsScene.nut" as optionsScene
 
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { doesLocTextExist } = require("dagor.localize")
-let { can_debug_missions } = require("%appGlobals/permissions.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { textButtonMultiline, buttonsVGap, mergeStyles } = require("%rGui/components/textButton.nut")
-let optionsScene = require("%rGui/options/optionsScene.nut")
-let { replayCamerasButtons } = require("%rGui/flightMenu/replayMenu.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
-let { COMMON, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
 
 let isShowDevMenu = mkWatched(persist, "isShowDevMenu", false)
 
@@ -32,10 +32,10 @@ function getFlightButtonText(buttonName) {
   return doesLocTextExist(locId) ? loc(locId) : buttonName
 }
 
-let replayButtonHeigth = hdpxi(79)
+const replayButtonHeigth = hdpxi(79)
 let buttonHeight = Computed(@() isPlayingReplay.get() && isShowDevMenu.get() ? replayButtonHeigth : defButtonHeight)
 
-let replayButtonsVGap = hdpx(15)
+const replayButtonsVGap = hdpx(15)
 let buttonGap = Computed(@() isPlayingReplay.get() && isShowDevMenu.get() ? replayButtonsVGap : buttonsVGap)
 
 let devMenuContent = @(menuBtnWidth) @() {

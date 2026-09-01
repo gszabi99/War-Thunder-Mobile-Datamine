@@ -1,23 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_game_version_str, get_base_game_version_str } = require("app")
-let { WALKER } = require("%appGlobals/unitConst.nut")
-let { soundOptions } = require("%rGui/options/options/soundOptions.nut")
-let { graphicOptions } = require("%rGui/options/options/graphicOptions.nut")
-let { langOptions } = require("%rGui/options/options/langOptions.nut")
-let { controlsOptions } = require("%rGui/options/options/controlsOptions.nut")
-let { tankControlsOptions } = require("%rGui/options/options/tankControlsOptions.nut")
-let { shipControlsOptions } = require("%rGui/options/options/shipControlsOptions.nut")
-let { airControlsOptions } = require("%rGui/options/options/airControlsOptions.nut")
-let { walkerControlsOptions } = require("%rGui/options/options/walkerControlsOptions.nut")
-let { systemOptions } = require("%rGui/options/options/systemOptions.nut")
-let { gameOptions } = require("%rGui/options/options/gameOptions.nut")
-let { mkOptionsScene } = require("%rGui/options/mkOptionsScene.nut")
-let { unitTypesByEvent } = require("%rGui/event/eventState.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
+from "app" import get_game_version_str, get_base_game_version_str
+from "%appGlobals/unitConst.nut" import WALKER
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
+from "%rGui/event/eventState.nut" import unitTypesByEvent
+from "%rGui/options/mkOptionsScene.nut" import mkOptionsScene
+from "%rGui/options/options/airControlsOptions.nut" import airControlsOptions
+from "%rGui/options/options/controlsOptions.nut" import controlsOptions
+from "%rGui/options/options/gameOptions.nut" import gameOptions
+from "%rGui/options/options/graphicOptions.nut" import graphicOptions
+from "%rGui/options/options/langOptions.nut" import langOptions
+from "%rGui/options/options/shipControlsOptions.nut" import shipControlsOptions
+from "%rGui/options/options/soundOptions.nut" import soundOptions
+from "%rGui/options/options/systemOptions.nut" import systemOptions
+from "%rGui/options/options/tankControlsOptions.nut" import tankControlsOptions
+from "%rGui/options/options/walkerControlsOptions.nut" import walkerControlsOptions
 
 
-let SCENE_ID = "optionsScene"
+const SCENE_ID = "optionsScene"
 let isOpened = mkWatched(persist, $"{SCENE_ID}_isOpened", false)
 let curTabId = Watched(null)
 

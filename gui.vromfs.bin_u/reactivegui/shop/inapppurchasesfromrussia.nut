@@ -1,20 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "%sqstd/string.nut" import toIntegerSafe
+from "%appGlobals/curCircuitOverride.nut" import isExternalOperator
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox, subscribeFMsgBtns
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/permissions.nut" import has_payments_blocked_web_page
+from "%rGui/notifications/waitBox.nut" import addWaitbox, removeWaitbox, waitboxes
+from "%rGui/shop/byPlatform/gaijinGoodsInfo.nut" import addGoodsInfoGuids, goodsInfo
+from "%rGui/shop/checkPurchases.nut" import severalCheckPurchasesOnActivate
 
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { register_command } = require("console")
+
 let { isDownloadedFromGooglePlay = @() false } = require("android.platform")
-let { toIntegerSafe } = require("%sqstd/string.nut")
-let { isExternalOperator } = require("%appGlobals/curCircuitOverride.nut")
-let { has_payments_blocked_web_page } = require("%appGlobals/permissions.nut")
-let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
-let { addGoodsInfoGuids, goodsInfo } = require("%rGui/shop/byPlatform/gaijinGoodsInfo.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { severalCheckPurchasesOnActivate } = require("%rGui/shop/checkPurchases.nut")
-let { addWaitbox, removeWaitbox, waitboxes } = require("%rGui/notifications/waitBox.nut")
 
-let INGAME_PURCHASES_IN_RUSSIA_URL
+const INGAME_PURCHASES_IN_RUSSIA_URL
   = "auto_login https://wtmobile.com/premium-webmagazin?skin_lang=ru"
-let INGAME_PURCHASES_IN_RUSSIA_URL_GOODS_ID
+const INGAME_PURCHASES_IN_RUSSIA_URL_GOODS_ID
   = "auto_login https://wtmobile.com/premium-webmagazin?id={id}&skin_lang=ru" 
 
 let paymentDisabledInRussiaCurrencies = [ "rub", "byn" ].reduce(@(res, v) res.rawset(v, true), {})

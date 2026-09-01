@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { userstatRequest, userstatRegisterHandler, isStatsActual } = require("%rGui/unlocks/userstat.nut")
-let { authTags, isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { eventbus_send } = require("eventbus")
+from "blkGetters" import get_local_custom_settings_blk
+from "eventbus" import eventbus_send
+from "%appGlobals/loginState.nut" import authTags, isOnlineSettingsAvailable
+from "%rGui/unlocks/userstat.nut" import userstatRequest, userstatRegisterHandler, isStatsActual
 
-let storeId = "UpdateAuthStatsCalled"
+
+const storeId = "UpdateAuthStatsCalled"
 let needCall = Watched(false)
 
 let statsUpdateAuthTags = ["fblogin", "gplogin", "applelogin", "hwlogin"]

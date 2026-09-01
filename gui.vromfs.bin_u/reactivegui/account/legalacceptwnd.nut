@@ -1,23 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { isOpenedLegalWnd } = require("%appGlobals/loginState.nut")
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { EMPTY_ACTION } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { urlText } = require("%rGui/components/urlText.nut")
-let { buttonsHGap, mkCustomButton, buttonStyles } = require("%rGui/components/textButton.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { legalToApprove } = require("%appGlobals/legal.nut")
-let mkTextRow = require("%darg/helpers/mkTextRow.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+import "%darg/helpers/mkTextRow.nut" as mkTextRow
+from "%appGlobals/legal.nut" import legalToApprove
+from "%appGlobals/loginState.nut" import isOpenedLegalWnd
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
+from "%rGui/components/textButton.nut" import buttonsHGap, mkCustomButton, buttonStyles
+from "%rGui/components/urlText.nut" import urlText
+from "%rGui/controlsMenu/gpActBtn.nut" import EMPTY_ACTION
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/login/legalState.nut" import acceptAllLegals, isAcceptLegalsInProgress
+
 
 const WND_UID = "legalAcceptWnd"
 
-let urlColor = 0xFF17C0FC
-let wndWidthDefault = hdpx(1300)
-let wndHeight = hdpx(650)
+const urlColor = 0xFF17C0FC
+const wndWidthDefault = hdpx(1300)
+const wndHeight = hdpx(650)
 
 let urlStyle = { ovr = { color = urlColor }, childOvr = { color = urlColor } }
 function legalInfoUrl(legalCfg) {
@@ -74,8 +75,10 @@ let acceptText = {
 let acceptButton = mkCustomButton(
   acceptText,
   function() {
+    if (isAcceptLegalsInProgress.get())
+      return
     sendUiBqEvent("legal_accept_wnd", { id = "accept" })
-    eventbus_send("acceptAllLegals", {})
+    acceptAllLegals()
   },
   buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:X"] }))
 
@@ -98,7 +101,7 @@ let legalWnd = bgShaded.__merge({
   onClick = EMPTY_ACTION
   children = @() modalWndBg.__merge({
     flow = FLOW_VERTICAL
-    size = [ wndWidthDefault, wndHeight ]
+    size = const [ wndWidthDefault, wndHeight ]
     children = [
       modalWndHeader(loc("terms_wnd/header"), { minWidth = SIZE_TO_CONTENT, padding = [ 0, buttonsHGap ] })
       wndContent

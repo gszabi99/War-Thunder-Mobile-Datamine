@@ -1,12 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { VendorId, getJoystickVendor, hasXInputDevice } = require("controls")
-let { UNKNOWN, MICROSOFT, SONY, NINTENDO } = VendorId
-let { register_command } = require("console")
-let { resetTimeout } = require("dagor.workcycle")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+from "console" import register_command
+from "controls" import VendorId, getJoystickVendor, hasXInputDevice
+from "dagor.workcycle" import resetTimeout
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "%sqstd/globalState.nut" import hardPersistWatched
 
-let defGamepadPresetId = "xone"
+
+let { UNKNOWN, MICROSOFT, SONY, NINTENDO } = VendorId
+
+const defGamepadPresetId = "xone"
 let vendorIdToGamepadPresetId = {
   [MICROSOFT] = "xone",
   [SONY] = "sony",

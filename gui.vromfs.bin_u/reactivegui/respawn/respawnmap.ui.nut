@@ -1,13 +1,15 @@
+from "%globalScripts/gameRendObjs.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { deferOnce } = require("dagor.workcycle")
-let { respawnBases, availRespBases, playerSelectedRespBase, curRespBase, selSlotContentGenId, selSlot
-} = require("%rGui/respawn/respawnState.nut")
-let { localTeam } = require("%rGui/missionState.nut")
-let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
-let { VISIBLE_ON_MAP, getRespawnBasePos, is_respawnbase_selectable } = require("guiRespawn")
-let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
-let { tacticalMapMarkersLayer } = require("%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut")
+from "dagor.workcycle" import deferOnce
+from "guiRespawn" import VISIBLE_ON_MAP, getRespawnBasePos, is_respawnbase_selectable
+from "math" import round
+from "%rGui/hud/tacticalMap/tacticalMapMarkersLayer.nut" import tacticalMapMarkersLayer
+from "%rGui/missionState.nut" import localTeam
+from "%rGui/respawn/playerActivity.nut" import sendPlayerActivityToServer
+from "%rGui/respawn/respawnState.nut" import respawnBases, availRespBases, playerSelectedRespBase, curRespBase,
+  selSlotContentGenId, selSlot
+from "%rGui/style/teamColors.nut" import teamBlueColor, teamRedColor
+
 
 let baseSize = evenPx(50)
 let circleSize = evenPx(70)

@@ -1,6 +1,7 @@
 from "%globalScripts/logs.nut" import *
 from "dagor.localize" import loc, doesLocTextExist
 
+
 let namingRemap = {
   US = "NA"
   RU = "CIS"

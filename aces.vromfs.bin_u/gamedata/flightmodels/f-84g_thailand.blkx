@@ -2,7 +2,7 @@
   "fmFile": "fm/f-84g.blk",
   "model": "f_84g",
   "useTouchTargeting": true,
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.25,
   "gearSinkRangeC": 0.235,
   "gyroSight": true,

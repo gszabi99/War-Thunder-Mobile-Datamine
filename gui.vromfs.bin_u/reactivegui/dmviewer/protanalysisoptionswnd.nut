@@ -1,35 +1,35 @@
 from "%globalsDarg/darg_library.nut" import *
 from "eventbus" import eventbus_subscribe
 from "wt.behaviors" import HangarCameraControl
-from "%darg/helpers/bitmap.nut" import mkBitmapPicture
 from "%sqstd/string.nut" import utf8ToUpper, utf8ToLower
 from "%sqstd/underscore.nut" import arrayByRows
-from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%darg/helpers/bitmap.nut" import mkBitmapPicture
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
-from "%appGlobals/updater/addonsState.nut" import unitSizes
 from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
-from "%rGui/navState.nut" import registerScene
-from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd
-from "%rGui/mainMenu/gamercard.nut" import mkLeftBlockUnitCampaign
-from "%rGui/style/gamercardStyle.nut" import gamercardHeight
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
-import "%rGui/components/panelBg.nut" as panelBg
-from "%rGui/components/textInput.nut" import textInput
-from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/updater/addonsState.nut" import unitSizes
 from "%rGui/components/buttonStyles.nut" import defButtonHeight, defButtonMinWidth, defButtonBorderWidth
 from "%rGui/components/closeWndBtn.nut" import closeWndBtn
-from "%rGui/components/spinner.nut" import mkSpinner
-from "%rGui/components/slider.nut" import sliderWithButtons, sliderH
 from "%rGui/components/foldableSelector.nut" import itemGap, contentPadding, contentBgColor, headerBgColor
+import "%rGui/components/panelBg.nut" as panelBg
 from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/slider.nut" import sliderWithButtons, sliderH
+from "%rGui/components/spinner.nut" import mkSpinner
+from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
+from "%rGui/components/textInput.nut" import textInput
+from "%rGui/dmViewer/protAnalysisOptionsComps.nut" import curOpenedSelector, mkSelectorCountry, mkSelectorMRank,
+  mkSelectorUnit, mkSelectorBullet, mkUnitPlate
 from "%rGui/dmViewer/protectionAnalysisState.nut" import isProtectionAnalysisActive, inspectedUnit, inspectedBaseUnit,
   isSimulationMode, protectionMapUpdate, threatUnitSearchString, threatCountry, threatMRank, threatUnit,
-  threatBulletData, fireDistance, armorPiercingMm, threatCountriesList, threatMRanksList,
-  threatUnitsList, threatBulletDataList, threatUnitSearchResults, selectThreatUnit,
-  isProtectionMapUpdating, protectionMapUpdProgress, FIRE_DISTANCE_MAX
-from "%rGui/dmViewer/protAnalysisOptionsComps.nut" import curOpenedSelector, mkSelectorCountry,
-  mkSelectorMRank, mkSelectorUnit, mkSelectorBullet, mkUnitPlate
+  threatBulletData, fireDistance, armorPiercingMm, threatCountriesList, threatMRanksList, threatUnitsList,
+  threatBulletDataList, threatUnitSearchResults, selectThreatUnit, isProtectionMapUpdating, protectionMapUpdProgress,
+  FIRE_DISTANCE_MAX
+from "%rGui/mainMenu/gamercard.nut" import mkLeftBlockUnitCampaign
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/gamercardStyle.nut" import gamercardHeight
 from "%rGui/style/gradients.nut" import mkGradientCtorTripleSideX, gradTexSize
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd
 
 
 const leftPanelW = hdpx(580)
@@ -47,7 +47,7 @@ let sceneHeader = @() {
     inspectedBaseUnit)
 }
 
-let gamercardGap = hdpx(24)
+const gamercardGap = hdpx(24)
 let contentHeight = saSize[1] - gamercardHeight - gamercardGap
 
 let threatBlockTitle = {
@@ -92,10 +92,10 @@ let armorPiercingLine = mkParamLine(loc("bullet_properties/armorPiercing"),
 let fireDistanceLine = mkParamLine(loc("distance"),
   fireDistance, "0000", @(v) " ".concat(v, loc("measureUnits/meters_alt")))
 
-let searchIconSize = hdpxi(60)
+const searchIconSize = hdpxi(60)
 let searchIcon = {
-  size = [searchIconSize, searchIconSize]
-  pos = [hdpx(12), 0]
+  size = const [searchIconSize, searchIconSize]
+  pos = const [hdpx(12), 0]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#btn_search.svg:{searchIconSize}:{searchIconSize}:P")
 }
@@ -103,7 +103,7 @@ let searchIcon = {
 let clearSearchBtn = @() threatUnitSearchString.get() == "" ? { watch = threatUnitSearchString } : {
   watch = threatUnitSearchString
   hplace = ALIGN_RIGHT
-  pos = [-hdpx(10), 0]
+  pos = const [-hdpx(10), 0]
   children = closeWndBtn(@() threatUnitSearchString.set(""), {
   })
 }
@@ -136,6 +136,7 @@ function selectSearchResultUnit(unit) {
 
 function mkSearchResultUnit(unit) {
   let stateFlags = Watched(0)
+  let plate = mkUnitPlate(unit, Watched(false))
   return @() {
     watch = stateFlags
     behavior = Behaviors.Button
@@ -144,7 +145,7 @@ function mkSearchResultUnit(unit) {
     sound = { click  = "click" }
     transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
-    children = mkUnitPlate(unit, Watched(false))
+    children = plate
   }
 }
 
@@ -195,7 +196,7 @@ let protMapWaiting = {
   halign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   children = [
-    mkSpinner(hdpx(80), { margin = [0, hdpx(15), 0, 0] })
+    mkSpinner(hdpx(80), { margin = const [0, hdpx(15), 0, 0] })
     @() {
       watch = protectionMapUpdProgress
       rendObj = ROBJ_TEXT
@@ -330,7 +331,7 @@ let penetrationColorScale = {
       ]
     }
     {
-      size = [FLEX, hdpx(30)]
+      size = const [FLEX, hdpx(30)]
       rendObj = ROBJ_BOX
       borderColor = 0xFF000000
       borderWidth = defButtonBorderWidth

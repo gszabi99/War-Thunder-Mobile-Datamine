@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { add_unit_attributes, unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { selAttributes, curCategoryId, attrPresets, calcStatus, sumCost, MAX_AVAIL_STATUS
-} = require("%rGui/attributes/attrState.nut")
-let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/pServerApi.nut" import add_unit_attributes, unitInProgress
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%rGui/attributes/attrState.nut" import selAttributes, curCategoryId, attrPresets, calcStatus, sumCost,
+  MAX_AVAIL_STATUS
+from "%rGui/unit/hangarUnit.nut" import hangarUnitName
+
 
 let isUnitAttrOpened = mkWatched(persist, "isUnitAttrOpened", false)
 

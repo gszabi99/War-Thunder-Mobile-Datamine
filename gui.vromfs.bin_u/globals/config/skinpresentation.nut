@@ -1,6 +1,7 @@
 from "%globalScripts/logs.nut" import *
-let skinViewPresets = require("skins/skinViewPresets.nut")
-let { getUnitType } = require("%appGlobals/unitTags.nut")
+from "%appGlobals/unitTags.nut" import getUnitType
+import "skins/skinViewPresets.nut" as skinViewPresets
+
 
 let unknownSkinPreset = { tag = "", image = "icon_primary_attention.svg", id = "unknown" }
 

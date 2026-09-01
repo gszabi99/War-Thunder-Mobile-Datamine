@@ -1,65 +1,62 @@
 from "%globalsDarg/darg_library.nut" import *
-let { HangarCameraControl } = require("wt.behaviors")
-let { curCampaign, campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { getBulletImage, getBulletTypeIcon } = require("%appGlobals/config/bulletsPresentation.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { modsInProgress, buy_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { mkGamercardUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
-let { getAmmoNameText, getAmmoTypeText, getAmmoAdviceText, getAmmoTypeShortText, getAmmoNameShortText
-} = require("%rGui/weaponry/weaponsVisual.nut")
-let getBulletStats = require("%rGui/bullets/bulletStats.nut")
-let { mkShellVideo } = require("%rGui/bullets/bulletsSelectorComps.nut")
-let { BS_UNLOCKED } = require("%rGui/bullets/bulletsConst.nut")
-let { catsHeight } = require("%rGui/unitMods/unitModsScroll.nut")
-let { tabW, blocksGap, blocksPadding, blocksLineSize, modW, modH,
-  knobSize, catsBlockHeight, contentGamercardGap, slotsBlockMargin
-} = require("%rGui/unitMods/unitModsConst.nut")
-let { modsCategories, curModCategoryId, curMod, isUnitModsOpen, closeUnitModsWnd,
-  modsSorted, mods, unit, enableCurUnitMod, disableCurUnitMod,
-  isCurModPurchased, isCurModEnabled, isCurModLocked, curBulletId, curBulletCategoryId,
-  getModCost, curUnitModCostCfg, iconCfg, isOwn, isUnitModAttached
-} = require("%rGui/unitMods/unitModsState.nut")
-let { mkModsCategories } = require("%rGui/unitMods/unitModsWndTabs.nut")
-let { mkMods } = require("%rGui/unitMods/unitModsCarousel.nut")
-let { chosenBullets, chosenBulletsSec, chosenBulletsSpec, bulletsInfo, bulletsSecInfo, bulletsSpecInfo, choiceCount,
-  bulletTotalSteps, bulletStep, maxBulletsCountForExtraAmmo, hasExtraBullets, bulletLeftSteps, bulletSecTotalSteps,
-  bulletSpecTotalSteps, bulletSecStep, bulletSpecStep, maxBulletsSecCountForExtraAmmo, maxBulletsSpecCountForExtraAmmo,
-  hasExtraBulletsSec, hasExtraBulletsSpec, bulletSecLeftSteps, bulletSpecLeftSteps, isCurBulletEnabled,
-  setOrSwapCurUnitBullet, visibleBulletsList, isFakeSecondary, isFakeSpecial, curBullet
-} = require("%rGui/unitMods/unitBulletsState.nut")
-let { mkBulletsTabs } = require("%rGui/unitMods/unitBulletsWndTabs.nut")
-let { mkBullets } = require("%rGui/unitMods/unitBulletsCarousel.nut")
-let { mkVerticalPannableArea, mkCarouselPannableArea, verticalGradientLine, mkBulletTypeIcon, catsPanelBg
-} = require("%rGui/unitMods/modsComps.nut")
-let { selLineSize } = require("%rGui/components/selectedLine.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
-let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
-let buttonStyles = require("%rGui/components/buttonStyles.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
-let { tabsGap, tabExtraWidth } = require("%rGui/components/tabs.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
-let { PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { mkGradientCtorDoubleSideX, mkGradientCtorDoubleSideY } = require("%rGui/style/gradients.nut")
-let panelBg = require("%rGui/components/panelBg.nut")
-let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
+from "wt.behaviors" import HangarCameraControl
+from "%sqstd/string.nut" import utf8ToUpper
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%appGlobals/config/bulletsPresentation.nut" import getBulletImage, getBulletTypeIcon
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/pServer/campaign.nut" import curCampaign, campConfigs
+from "%appGlobals/pServer/pServerApi.nut" import modsInProgress, buy_unit_mod
+import "%rGui/attributes/unitAttr/buyUnitLevelWnd.nut" as buyUnitLevelWnd
+import "%rGui/bullets/bulletStats.nut" as getBulletStats
+from "%rGui/bullets/bulletsConst.nut" import BS_UNLOCKED
+from "%rGui/bullets/bulletsSelectorComps.nut" import mkShellVideo
+import "%rGui/components/buttonStyles.nut" as buttonStyles
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+import "%rGui/components/panelBg.nut" as panelBg
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/selectedLine.nut" import selLineSize
+from "%rGui/components/spinner.nut" import mkSpinner
+from "%rGui/components/tabs.nut" import tabsGap, tabExtraWidth
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonPricePurchase
+from "%rGui/mainMenu/gamercard.nut" import mkGamercardUnitCampaign
+from "%rGui/navState.nut" import registerScene
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, mkBqPurchaseInfo
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
+from "%rGui/style/gamercardStyle.nut" import gamercardHeight
+from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideX, mkGradientCtorDoubleSideY
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import userlogTextColor
+from "%rGui/unit/components/textButtonWithLevel.nut" import textButtonVehicleLevelUp
+from "%rGui/unitMods/modsComps.nut" import mkVerticalPannableArea, mkCarouselPannableArea, verticalGradientLine,
+  mkBulletTypeIcon, catsPanelBg
+from "%rGui/unitMods/unitBulletsCarousel.nut" import mkBullets
+from "%rGui/unitMods/unitBulletsState.nut" import chosenBullets, chosenBulletsSec, chosenBulletsSpec, bulletsInfo,
+  bulletsSecInfo, bulletsSpecInfo, choiceCount, bulletTotalSteps, bulletStep, maxBulletsCountForExtraAmmo,
+  hasExtraBullets, bulletLeftSteps, bulletSecTotalSteps, bulletSpecTotalSteps, bulletSecStep, bulletSpecStep,
+  maxBulletsSecCountForExtraAmmo, maxBulletsSpecCountForExtraAmmo, hasExtraBulletsSec, hasExtraBulletsSpec,
+  bulletSecLeftSteps, bulletSpecLeftSteps, isCurBulletEnabled, setOrSwapCurUnitBullet, visibleBulletsList,
+  isFakeSecondary, isFakeSpecial, curBullet
+from "%rGui/unitMods/unitBulletsWndTabs.nut" import mkBulletsTabs
+from "%rGui/unitMods/unitModsCarousel.nut" import mkMods
+from "%rGui/unitMods/unitModsConst.nut" import tabW, blocksGap, blocksPadding, blocksLineSize, modW, modH, knobSize,
+  catsBlockHeight, contentGamercardGap, slotsBlockMargin
+from "%rGui/unitMods/unitModsScroll.nut" import catsHeight
+from "%rGui/unitMods/unitModsState.nut" import modsCategories, curModCategoryId, curMod, isUnitModsOpen,
+  closeUnitModsWnd, modsSorted, mods, unit, enableCurUnitMod, disableCurUnitMod, isCurModPurchased, isCurModEnabled,
+  isCurModLocked, curBulletId, curBulletCategoryId, getModCost, curUnitModCostCfg, iconCfg, isOwn, isUnitModAttached
+from "%rGui/unitMods/unitModsWndTabs.nut" import mkModsCategories
+from "%rGui/weaponry/weaponsVisual.nut" import getAmmoNameText, getAmmoTypeText, getAmmoAdviceText,
+  getAmmoTypeShortText, getAmmoNameShortText
 
 
-let iconSizeH = hdpxi(80)
-let iconSizeW = iconSizeH * 2.3
+const iconSizeH = hdpxi(80)
+const iconSizeW = iconSizeH * 2.3
 
 let shellVideoWidth = modH * 4
-let infoPanelPadding = hdpx(20)
-let modsInfoPadding = hdpx(32)
-let shellVideoGap = hdpx(10)
-let buttonGap = hdpx(25)
+const infoPanelPadding = hdpx(20)
+const modsInfoPadding = hdpx(32)
+const shellVideoGap = hdpx(10)
+const buttonGap = hdpx(25)
 let infoPanelHeight = saSize[1] - gamercardHeight - modH - selLineSize - buttonGap * 2 - buttonStyles.defButtonHeight - contentGamercardGap
 
 let pageWidth = saSize[0] + saBorders[0] - tabW - blocksLineSize - blocksGap
@@ -214,7 +211,7 @@ let modsBlock = @() {
 
 let mkModIcon = @() {
   watch = curMod
-  size = [iconSizeW, iconSizeH]
+  size = const [iconSizeW, iconSizeH]
   rendObj = ROBJ_IMAGE
   image = curMod.get()?.name ? Picture($"ui/gameuiskin#{curMod.get().name}.avif:0:P") : null
   keepAspect = KEEP_ASPECT_FILL

@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
-let { OPT_HUD_RELOAD_STYLE } = require("%rGui/options/guiOptions.nut")
-let { mkTooltipText } = require("%rGui/tooltip.nut")
+from "%appGlobals/unitPresentation.nut" import unitClassFontIcons
+from "%rGui/options/guiOptions.nut" import OPT_HUD_RELOAD_STYLE
+from "%rGui/tooltip.nut" import mkTooltipText
+from "types" import Function
 
 
 let touchButtonSize = shHud(10)
 
 let mkHudReloadStyleDescItem = @(img, title, isPrimaryStyle) {
-  size = [hdpx(250), SIZE_TO_CONTENT]
+  size = const [hdpx(250), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   gap = hdpx(10)
   halign = ALIGN_CENTER
@@ -122,7 +123,7 @@ function mkOvrTooltipContent(tooltipCtorId, dataW = Watched({})) {
     return @() null
   }
 
-  return @() type(optionTooltipCtors[tooltipCtorId]) == "function"
+  return @() optionTooltipCtors[tooltipCtorId] instanceof Function
     ? optionTooltipCtors[tooltipCtorId](dataW)
     : optionTooltipCtors[tooltipCtorId]
 }

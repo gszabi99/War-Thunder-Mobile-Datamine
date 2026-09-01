@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
-let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
-let { scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
-let { missionScoresTable } = require("%rGui/hud/missionScoreState.nut")
+from "%appGlobals/clientState/clientState.nut" import localMPlayerTeam
+from "%globalsDarg/fontScale.nut" import scaleFontWithTransform
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/hud/missionScoreState.nut" import missionScoresTable
+from "%rGui/style/hudColors.nut" import hudWhiteColor
+from "%rGui/style/teamColors.nut" import teamBlueColor, teamRedColor
 
 
 let hiddenScores = ["flags_count_t1", "flags_count_t2"].totable()

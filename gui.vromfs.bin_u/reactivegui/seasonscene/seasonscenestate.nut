@@ -1,38 +1,37 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { getOPPresentation } = require("%appGlobals/config/passPresentation.nut")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { openEventInfo, specialEvents, MAIN_EVENT_ID, curEvent, eventWndOpenCounter, subEventsList,
-  specialEventsOrdered, isEventActive, getIsEventActive, getEventLootboxes, closeEventShellCleanup, closeEventWnd,
-  getEventPresentationId, eventSeason, allSpecialEvents, specialEventsWithTree
-} = require("%rGui/event/eventState.nut")
-let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
-let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
-let { openTreeEventWnd } = require("%rGui/event/treeEvent/treeEventState.nut")
-let { separateEventModes } = require("%rGui/gameModes/gameModeState.nut")
-let { eventsPassList } = require("%rGui/battlePass/eventPassState.nut")
-let { bpProgressUnlock } = require("%rGui/battlePass/battlePassState.nut")
-let { isOPSeasonActive, OP_EVENT_ID, OPCampaign } = require("%rGui/battlePass/operationPassState.nut")
-let { playerSelectedScene, getVisibleTabs } = require("%rGui/battlePass/passState.nut")
-let { tabIdToOpen, questsCfg, questsBySection } = require("%rGui/quests/questsState.nut")
-let { openShopWndByGoods, getGoodsShopId, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop,
-  personalGoodsByShop
-} = require("%rGui/shop/shopState.nut")
-let { getShopIdForEventId } = require("%rGui/shop/eventShopState.nut")
-let { COMMON_TAB, EVENT_TAB, PERSONAL_TAB, ACHIEVEMENTS_TAB, PROMO_TAB } = require("%rGui/unlocks/unlocksConst.nut")
+from "%appGlobals/clientState/initialState.nut" import isOfflineMenu
+from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+from "%appGlobals/config/passPresentation.nut" import getOPPresentation
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%rGui/battlePass/battlePassState.nut" import bpProgressUnlock
+from "%rGui/battlePass/eventPassState.nut" import eventsPassList
+from "%rGui/battlePass/operationPassState.nut" import isOPSeasonActive, OP_EVENT_ID, OPCampaign
+from "%rGui/battlePass/passState.nut" import playerSelectedScene, getVisibleTabs
+from "%rGui/event/eventLootboxes.nut" import eventLootboxesRaw
+from "%rGui/event/eventState.nut" import openEventInfo, specialEvents, MAIN_EVENT_ID, curEvent, eventWndOpenCounter,
+  subEventsList, specialEventsOrdered, isEventActive, getIsEventActive, getEventLootboxes, closeEventShellCleanup,
+  closeEventWnd, getEventPresentationId, eventSeason, allSpecialEvents, specialEventsWithTree
+import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
+from "%rGui/event/treeEvent/treeEventState.nut" import hasTreeMap, openedTreeEventId
+from "%rGui/gameModes/gameModeState.nut" import separateEventModes
+from "%rGui/quests/questsState.nut" import tabIdToOpen, questsCfg, questsBySection
+from "%rGui/shop/eventShopState.nut" import getShopIdForEventId
+from "%rGui/shop/shopState.nut" import openShopWndByGoods, getGoodsShopId, goodsByShop, soonGoodsByShop,
+  soonPersonalGoodsByShop, personalGoodsByShop
+from "%rGui/unlocks/unlocksConst.nut" import COMMON_TAB, EVENT_TAB, PERSONAL_TAB, ACHIEVEMENTS_TAB, PROMO_TAB
 
 
-let PASS_SCENE = "pass_scene"
-let QUESTS_TAB = "quests_tab"
-let EVENT_SHOP_TAB = "event_shop_tab"
-let LOOTBOX_TAB = "lootbox_tab"
-let BATTLE_TAB = "battle"
+const PASS_SCENE = "pass_scene"
+const QUESTS_TAB = "quests_tab"
+const EVENT_SHOP_TAB = "event_shop_tab"
+const LOOTBOX_TAB = "lootbox_tab"
+const MAP_TAB = "map_tab"
+const BATTLE_TAB = "battle"
 
 let playerSelectedSeasonTab = mkWatched(persist, "playerSelectedSeasonTab", PASS_SCENE)
 let seasonSceneOpenCounter = mkWatched(persist, "seasonSceneOpenCounter", 0)
 
-let seasonTabs = [ BATTLE_TAB, PASS_SCENE, QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB ]
+let seasonTabs = [ BATTLE_TAB, MAP_TAB, PASS_SCENE, QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB ]
 
 let questTabsByEventId = {
   [""] = [ ACHIEVEMENTS_TAB, PROMO_TAB ],
@@ -68,6 +67,10 @@ let isBattleVisible = @(eventId, separateEventModesV, specialEventsV)
   eventId in separateEventModesV || specialEventsV?[eventId].eventName in separateEventModesV
 
 let isSeasonTabVisible = {
+  [MAP_TAB] = {
+    calcByEventId = @(id) shouldShowEventMechanics.get() && hasTreeMap(id)
+    watched = Computed(@() shouldShowEventMechanics.get() && openedTreeEventId.get() != null)
+  },
   [PASS_SCENE] = {
     calcByEventId = @(id) shouldShowEventMechanics.get()
       && getVisibleTabs(id, bpProgressUnlock.get(), eventsPassList.get(), subEventsList.get()).len() > 0
@@ -110,6 +113,11 @@ let bgUnits = Computed(@() seasonPageId.get() != BATTLE_TAB ? null
 
 let bgScene = Computed(function() {
   let eventId = curEvent.get()
+  let isMapTab = seasonPageId.get() == MAP_TAB
+  let mapTabPresentation = getEventPresentation(openedTreeEventId.get())
+
+  if (isMapTab && mapTabPresentation?.mapSceneBg != null)
+    return mapTabPresentation.__merge({ bg = mapTabPresentation.mapSceneBg })
   if (eventId == OP_EVENT_ID)
     return getOPPresentation(OPCampaign.get())
   if (eventId == "")
@@ -193,7 +201,7 @@ function openGmEventWnd(eventName) {
     return
   let eventId = specialEventsWithTree.get().findindex(@(event) event.eventName == eventName)
   if (eventId != null)
-    return openTreeEventWnd(eventId)
+    return openSeasonScene(eventId, MAP_TAB)
   openSeasonScene(eventName)
 }
 
@@ -203,6 +211,7 @@ return {
   QUESTS_TAB
   EVENT_SHOP_TAB
   LOOTBOX_TAB
+  MAP_TAB
   isBattleTab
   questTabsByEventId
   isSeasonTabVisible

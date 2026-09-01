@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { openDebugWnd } = require("%rGui/components/debugWnd.nut")
-let { platformGoods, platformGoodsDebugInfo, platformOffer, platformSubs } = require("%rGui/shop/platformGoods.nut")
-let { shopGoodsInternal } = require("%rGui/shop/shopState.nut")
+from "%rGui/components/debugWnd.nut" import openDebugWnd
+from "%rGui/shop/platformGoods.nut" import platformGoods, platformGoodsDebugInfo, platformOffer, platformSubs
+from "%rGui/shop/shopState.nut" import shopGoodsInternal
+
 
 let tabs = Computed(@() [
   { id = "platformGoods", data = platformGoods.get() }

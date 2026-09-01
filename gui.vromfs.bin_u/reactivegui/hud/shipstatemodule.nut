@@ -1,34 +1,36 @@
+from "%globalScripts/gameRendObjs.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { round } =  require("math")
-let { TouchAreaOutButton } = require("wt.behaviors")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { prettyScaleForSmallNumberCharVariants } = require("%globalsDarg/fontScale.nut")
-let { hasDebuffFire, curRelativeHealth, maxHealth, hasDebuffFlooding, hasDebuffGuns, hasDebuffEngines, hasDebuffMoveControl,
-hasDebuffTorpedoes, maxHpToRepair } = require("%rGui/hud/shipState.nut")
-let { teamBlueLightColor } = require("%rGui/style/teamColors.nut")
-let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
-let { playHapticPattern, HAPT_DAMAGE } = require("%rGui/hud/hudHaptic.nut")
-let { mkDebuffIcon, mkDebuffIconEditView } = require("%rGui/hud/components/debuffIcon.nut")
-let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { isInZoom } = require("%rGui/hudState.nut")
-let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
-let damagePanelBacklight = require("%rGui/hud/components/damagePanelBacklight.nut")
-let { getOptValue, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT } = require("%rGui/options/guiOptions.nut")
-let { tryPlaySound } = require("sound_wt")
-let { hudRedColor, hudOrangeColor, hudCoralRedColor } = require("%rGui/style/hudColors.nut")
+from "math" import round
+from "sound_wt" import tryPlaySound
+from "wt.behaviors" import TouchAreaOutButton
+from "%globalScripts/controls/shortcutActions.nut" import setShortcutOn, setShortcutOff
+from "%globalsDarg/fontScale.nut" import prettyScaleForSmallNumberCharVariants
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadHotkey, mkGamepadShortcutImage
+from "%rGui/hud/actionBar/actionBarState.nut" import updateActionBarDelayed
+import "%rGui/hud/components/damagePanelBacklight.nut" as damagePanelBacklight
+from "%rGui/hud/components/debuffIcon.nut" import mkDebuffIcon, mkDebuffIconEditView
+from "%rGui/hud/hudConfigParameters.nut" import getHudConfigParameter
+from "%rGui/hud/hudHaptic.nut" import playHapticPattern, HAPT_DAMAGE
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderColor
+from "%rGui/hud/shipState.nut" import hasDebuffFire, curRelativeHealth, maxHealth, hasDebuffFlooding, hasDebuffGuns,
+  hasDebuffEngines, hasDebuffMoveControl, hasDebuffTorpedoes, maxHpToRepair
+from "%rGui/hudState.nut" import isInZoom
+from "%rGui/options/guiOptions.nut" import getOptValue, OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT
+from "%rGui/style/hudColors.nut" import hudRedColor, hudOrangeColor, hudCoralRedColor
+from "%rGui/style/teamColors.nut" import teamBlueLightColor
+
 
 let iconSize = shHud(3.5)
 let crewIconSize = shHud(4.0)
-let gap = hdpx(10)
+const gap = hdpx(10)
 
 let defHealthImageWidth = shHud(40)
 let defHealthImageHeight = (36.0 / 200.0 * defHealthImageWidth).tointeger()
 let defHealthSize = [defHealthImageWidth, defHealthImageHeight]
 
 let calcCrewHealthWidth = @(width) (width * 0.7).tointeger()
-let crewHealthGap = hdpxi(17)
+const crewHealthGap = hdpxi(17)
 
 let remainingHpPercent = Computed(@() maxHealth.get() == 0 ? 1 : curRelativeHealth.get())
 
@@ -100,7 +102,7 @@ function useShortcutOn(shortcutId) {
   setShortcutOn(shortcutId)
   updateActionBarDelayed()
 }
-let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(60), ph(-50)] }
+let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(60), ph(-50)] }
 
 let shortcutId = "ID_SHOW_HERO_MODULES"
 let stateFlags = Watched(0)

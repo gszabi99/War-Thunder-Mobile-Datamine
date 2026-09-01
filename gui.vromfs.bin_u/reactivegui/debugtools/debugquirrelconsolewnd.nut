@@ -1,28 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
-let { command, setObjPrintFunc } = require("console")
-let { eventbus_send_foreign, eventbus_subscribe } = require("eventbus")
-let { register_logerr_monitor, unregister_logerr_interceptor } = require("dagor.debug")
-let { defer } = require("dagor.workcycle")
-let { set_clipboard_text } = require("dagor.clipboard")
-let { textColor, badTextColor } = require("%rGui/style/stdColors.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { textInput } = require("%rGui/components/textInput.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { closeButton } = require("%rGui/components/debugWnd.nut")
+from "console" import command, setObjPrintFunc
+from "dagor.clipboard" import set_clipboard_text
+from "dagor.debug" import register_logerr_monitor, unregister_logerr_interceptor
+from "dagor.workcycle" import defer
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/debugWnd.nut" import closeButton
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon
+from "%rGui/components/textInput.nut" import textInput
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/style/stdColors.nut" import textColor, badTextColor
 
-let MAX_CONSOLE_TEXTS = 100
-let CMD_VM_DARG  = "darg.exec"
-let CMD_VM_DAGUI = "dagui.exec"
+
+const MAX_CONSOLE_TEXTS = 100
+const CMD_VM_DARG  = "darg.exec"
+
 
 let defaultObjPrintFunc = debugTableData
 
-let wndUid = "debugConsoleWnd"
+const wndUid = "debugConsoleWnd"
 let close = @() removeModalWindow(wndUid)
 
-let commandColor = 0xFF0099FF
+const commandColor = 0xFF0099FF
 
 let consoleInputText = Watched("")
 let consoleInputClear = @() consoleInputText.set("")
@@ -46,37 +46,32 @@ function printCmdResultToConsole(result, params) {
   defaultObjPrintFunc(result, params)
 }
 
-function toggleConsoleCmdResultHandler(isDaRG, isEnable) {
-  if (isDaRG) {
-    setObjPrintFunc(isEnable ? printCmdResultToConsole : defaultObjPrintFunc)
-    if (isEnable)
-      register_logerr_monitor([""], printErrorToConsole)
-    else
-      unregister_logerr_interceptor(printErrorToConsole)
-  }
+function toggleConsoleCmdResultHandler(isEnable) {
+  setObjPrintFunc(isEnable ? printCmdResultToConsole : defaultObjPrintFunc)
+  if (isEnable)
+    register_logerr_monitor([""], printErrorToConsole)
   else
-    eventbus_send_foreign("toggleConsoleCmdResultHandler", { isEnable })
+    unregister_logerr_interceptor(printErrorToConsole)
 }
 
-eventbus_subscribe("daguiConsoleCmdResult", @(p) consolePrint(p.isError ? badTextColor : textColor, p.txt))
-
-let wrapCommand = @(cmd) [ CMD_VM_DARG, CMD_VM_DAGUI ].findindex(@(v) cmd.startswith(v)) != null
-    ? cmd
-  : cmd.contains("require(\"%scripts/")
-    ? $"{CMD_VM_DAGUI} {cmd}"
-  : $"{CMD_VM_DARG} {cmd}"
+let wrapCommand = @(cmd) cmd.startswith(CMD_VM_DARG) ? cmd : $"{CMD_VM_DARG} {cmd}"
 
 function consoleExecute() {
   let rawCmd = consoleInputText.get().strip()
   if (rawCmd == "")
     return
   let cmd = wrapCommand(rawCmd)
-  let isDaRG = cmd.startswith(CMD_VM_DARG)
+
   consolePrint(commandColor, $"> {cmd}")
-  toggleConsoleCmdResultHandler(isDaRG, true)
+  toggleConsoleCmdResultHandler(true)
   defer(function() {
-    command(cmd)
-    toggleConsoleCmdResultHandler(isDaRG, false)
+    
+    try {
+      command(cmd)
+    }
+    catch (e)
+      consolePrint(badTextColor, e)
+    toggleConsoleCmdResultHandler(false)
   })
 }
 

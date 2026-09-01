@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
+import "DataBlock" as DataBlock
+from "guiMission" import get_current_mission_desc
+from "string" import split_by_chars
 
-let DataBlock  = require("DataBlock")
-let { split_by_chars } = require("string")
-let { get_current_mission_desc } = require("guiMission")
 
 function getLocIdsArray(config, key = "locId") {
   let keyValue = config?[key] ?? ""

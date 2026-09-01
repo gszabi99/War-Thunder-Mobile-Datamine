@@ -1,22 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { tankTagsOrder, getTagName } = require("%appGlobals/config/skins/skinTags.nut")
-let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
+from "math" import round
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/skinPresentation.nut" import getSkinPresentation
+from "%appGlobals/config/skins/skinTags.nut" import tankTagsOrder, getTagName
+from "%rGui/components/closeWndBtn.nut" import closeWndBtn
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/unit/unitSettings.nut" import mkSkinCustomTags
 
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { closeWndBtn } = require("%rGui/components/closeWndBtn.nut")
-let { mkSkinCustomTags } = require("%rGui/unit/unitSettings.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
 
-
-let wndUid = "changeSkinTagWnd"
+const wndUid = "changeSkinTagWnd"
 let close = @() removeModalWindow(wndUid)
 
-let gap = hdpx(20)
-let skinSize = hdpxi(110)
+const gap = hdpx(20)
+const skinSize = hdpxi(110)
 let skinBorderRadius = round(skinSize * 0.2).tointeger()
 
 let content = @(curTag, setTag) @() {
@@ -62,7 +61,7 @@ function changeSkinTagWnd(unitName, skinName) {
           size = FLEX_H
           flow = FLOW_HORIZONTAL
           valign = ALIGN_CENTER
-          padding = [gap, gap, 0, gap]
+          padding = const [gap, gap, 0, gap]
           gap
           children = [
             {

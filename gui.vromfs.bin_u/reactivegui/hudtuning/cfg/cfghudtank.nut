@@ -1,64 +1,59 @@
 from "%globalsDarg/darg_library.nut" import *
-let { TANK } = require("%appGlobals/unitConst.nut")
-let { raceForceCannotShoot } = require("%rGui/missionState.nut")
-let { AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA, AB_SECONDARY_WEAPON, AB_SPECIAL_WEAPON, AB_MACHINE_GUN, AB_FIREWORK, AB_TOOLKIT
-} = require("%rGui/hud/actionBar/actionType.nut")
-let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { EII_EXTINGUISHER, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET,
-  EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT, EII_TOOLKIT_SPLIT, EII_MEDICALKIT
-} = require("%rGui/hud/weaponsButtonsConfig.nut")
-let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
-let { mkCircleTankPrimaryGun, mkCircleGroundMachineGun, mkCircleFireworkBtn, mkCircleTargetTrackingBtn,
-  mkCircleZoomCtor, mkCircleBtnEditView, mkBigCircleBtnEditView, mkCountTextRight
-} = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
-let { withActionBarButtonCtor, withAnyActionBarButtonCtor, withActionsButtonScaleCtor,
-  withActionButtonScaleCtor, Z_ORDER, mkRBPos, mkLBPos, mkRTPos, mkLTPos, mkCBPos, mkCTPos
-} = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
-let { tankMoveStick, moveStickView, tankGamepadMoveBlock } = require("%rGui/hud/groundMovementBlock.nut")
-let { voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
-} = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
-let tankArrowsMovementBlock = require("%rGui/hud/tankArrowsMovementBlock.nut")
-let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
-let { currentTargetTrackingType } = require("%rGui/options/options/tankControlsOptions.nut")
-let { isGamepad, isKeyboard } = require("%appGlobals/activeControls.nut")
-let { moveArrowsView } = require("%rGui/components/movementArrows.nut")
-let { hitCamera, hitCameraTankEditView } = require("%rGui/hud/hitCamera/hitCamera.nut")
-let { mkTacticalMapForHud, tacticalMapEditView, tacticalMapSize } = require("%rGui/hud/components/tacticalMap.nut")
-let winchButton = require("%rGui/hud/buttons/winchButton.nut")
-let { mkDoll, dollEditView, mkSpeedText, speedTextEditView, mkCrewDebuffs, crewDebuffsEditView,
-  mkTechDebuffs, techDebuffsEditView } = require("%rGui/hud/tankStateModule.nut")
-let { NEED_SHOW_POSE_INDICATOR, mkMoveIndicator, moveIndicatorTankEditView
-} = require("%rGui/hud/components/moveIndicator.nut")
-let { mkFreeCameraButton } = require("%rGui/hud/buttons/cameraButtons.nut")
-let mkSquareBtnEditView = require("%rGui/hudTuning/squareBtnEditView.nut")
-let { bulletMainButton, bulletExtraButton } = require("%rGui/hud/bullets/bulletButton.nut")
-let { sideGunBulletMainButton, sideGunBulletExtraButton } = require("%rGui/hud/bullets/sideBulletButton.nut")
-let { mkSecGunWithBullets, mkSecGunWithBulletsEditView } = require("%rGui/hud/bullets/bulletSelectorCircle.nut")
-let { isFakeSecondary, isFakeSpecial, hasOnlyOneSideGroup, mainBulletInfoSec, extraBulletInfoSec, mainBulletCountSec,
-  bulletsInfoSec, currentBulletNameSec, nextBulletNameSec, selectBulletSec, mainBulletInfoSpec, extraBulletInfoSpec,
-  mainBulletCountSpec, extraBulletCountSec, extraBulletCountSpec, bulletsInfoSpec, currentBulletNameSpec,
-  nextBulletNameSpec, selectBulletSpec
-} = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
-let { mkBulletEditView, mkRepairActionItem } = require("%rGui/hud/weaponsButtonsView.nut")
-let { mkMyPlace, mkMyPlaceUi, mkTankMyScores, mkMyScoresUi } = require("%rGui/hud/myScores.nut")
-let { scoreBoardType, scoreBoardCfgByType } = require("%rGui/hud/scoreBoard.nut")
-let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
-let { missionScoreCtr, missionScoreEditView } = require("%rGui/hud/missionScore.nut")
-let { optTankMoveControlType, gearDownOnStopButtonTouch, optDoublePrimaryGuns, optDoubleRepairBtn, optSplitSideGunBullets,
-  isBulletsRight, optBulletsRight
-} = require("%rGui/hudTuning/cfg/cfgOptions.nut")
-let { tankRrepairButtonCtor } = require("%rGui/hud/buttons/repairButton.nut")
-let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut")
-let { isUnitAlive, isPlayingReplay } = require("%rGui/hudState.nut")
-let { isInHangarChallenge } = require("%rGui/hud/challengeState.nut")
-let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
-let { crewRankCtr, crewRankEditView, isVisibleCrewRank } = require("%rGui/hud/crewRank.nut")
-let { showRadarOverMap, IsRadarVisible, IsRadarHudVisible, IsBScopeVisible } = require("%rGui/radar/radarState.nut")
-let { mkRadarToggleButton, mkRadarToggleButtonEditView } = require("%rGui/radar/radarToggleButton.nut")
-let { radarHudWithOverlayCtor, radarHudEditView } = require("%rGui/radar/radar.nut")
-let { isCompassVisible } = require("%rGui/compass/compassState.nut")
-let { mkCompass, mkCompassEditView } = require("%rGui/compass/compass.nut")
-let { touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
+from "%appGlobals/activeControls.nut" import isGamepad, isKeyboard
+from "%appGlobals/unitConst.nut" import TANK
+from "%rGui/compass/compass.nut" import mkCompass, mkCompassEditView
+from "%rGui/compass/compassState.nut" import isCompassVisible
+from "%rGui/components/movementArrows.nut" import moveArrowsView
+from "%rGui/hud/actionBar/actionBarState.nut" import actionBarItems
+from "%rGui/hud/actionBar/actionType.nut" import AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA, AB_SECONDARY_WEAPON,
+  AB_SPECIAL_WEAPON, AB_MACHINE_GUN, AB_FIREWORK, AB_TOOLKIT
+from "%rGui/hud/bullets/bulletButton.nut" import bulletMainButton, bulletExtraButton
+from "%rGui/hud/bullets/bulletSelectorCircle.nut" import mkSecGunWithBullets, mkSecGunWithBulletsEditView
+from "%rGui/hud/bullets/hudUnitBulletsState.nut" import isFakeSecondary, isFakeSpecial, hasOnlyOneSideGroup,
+  mainBulletInfoSec, extraBulletInfoSec, mainBulletCountSec, bulletsInfoSec, currentBulletNameSec, nextBulletNameSec,
+  selectBulletSec, mainBulletInfoSpec, extraBulletInfoSpec, mainBulletCountSpec, extraBulletCountSec,
+  extraBulletCountSpec, bulletsInfoSpec, currentBulletNameSpec, nextBulletNameSpec, selectBulletSpec
+from "%rGui/hud/bullets/sideBulletButton.nut" import sideGunBulletMainButton, sideGunBulletExtraButton
+from "%rGui/hud/buttons/actionButtonComps.nut" import mkActionItemEditView
+from "%rGui/hud/buttons/cameraButtons.nut" import mkFreeCameraButton
+from "%rGui/hud/buttons/circleTouchHudButtons.nut" import mkCircleTankPrimaryGun, mkCircleGroundMachineGun,
+  mkCircleFireworkBtn, mkCircleTargetTrackingBtn, mkCircleZoomCtor, mkCircleBtnEditView, mkBigCircleBtnEditView,
+  mkCountTextRight
+from "%rGui/hud/buttons/repairButton.nut" import tankRrepairButtonCtor
+import "%rGui/hud/buttons/winchButton.nut" as winchButton
+from "%rGui/hud/components/moveIndicator.nut" import NEED_SHOW_POSE_INDICATOR, mkMoveIndicator,
+  moveIndicatorTankEditView
+from "%rGui/hud/components/tacticalMap.nut" import mkTacticalMapForHud, tacticalMapEditView, tacticalMapSize
+from "%rGui/hud/crewRank.nut" import crewRankCtr, crewRankEditView, isVisibleCrewRank
+from "%rGui/hud/fireworkState.nut" import fwVisibleInEditor, fwVisibleInBattle
+from "%rGui/hud/groundMovementBlock.nut" import tankMoveStick, moveStickView, tankGamepadMoveBlock
+from "%rGui/hud/hitCamera/hitCamera.nut" import hitCamera, hitCameraTankEditView
+from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize
+from "%rGui/hud/missionScore.nut" import missionScoreCtr, missionScoreEditView
+from "%rGui/hud/myScores.nut" import mkMyPlace, mkMyPlaceUi, mkTankMyScores, mkMyScoresUi
+from "%rGui/hud/scoreBoard.nut" import scoreBoardType, scoreBoardCfgByType
+import "%rGui/hud/tankArrowsMovementBlock.nut" as tankArrowsMovementBlock
+from "%rGui/hud/tankStateModule.nut" import mkDoll, dollEditView, mkSpeedText, speedTextEditView, mkCrewDebuffs,
+  crewDebuffsEditView, mkTechDebuffs, techDebuffsEditView
+from "%rGui/hud/voiceMsg/voiceMsgStick.nut" import voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
+from "%rGui/hud/weaponsButtonsConfig.nut" import EII_EXTINGUISHER, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN,
+  EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT, EII_TOOLKIT_SPLIT, EII_MEDICALKIT
+from "%rGui/hud/weaponsButtonsView.nut" import mkBulletEditView, mkRepairActionItem
+from "%rGui/hudState.nut" import isUnitAlive, isPlayingReplay
+import "%rGui/hudTuning/cfg/cfgHudCommon.nut" as cfgHudCommon
+from "%rGui/hudTuning/cfg/cfgOptions.nut" import optTankMoveControlType, gearDownOnStopButtonTouch,
+  optDoublePrimaryGuns, optDoubleRepairBtn, optSplitSideGunBullets, isBulletsRight, optBulletsRight
+from "%rGui/hudTuning/cfg/hudTuningPkg.nut" import withActionBarButtonCtor, withAnyActionBarButtonCtor,
+  withActionsButtonScaleCtor, withActionButtonScaleCtor, Z_ORDER, mkRBPos, mkLBPos, mkRTPos, mkLTPos, mkCBPos, mkCTPos
+import "%rGui/hudTuning/cfg/initHudTuningCfg.nut" as initHudTuningCfg
+from "%rGui/hudTuning/hudTuningBattleState.nut" import curUnitHudTuningOptions
+import "%rGui/hudTuning/squareBtnEditView.nut" as mkSquareBtnEditView
+from "%rGui/missionState.nut" import raceForceCannotShoot
+from "%rGui/options/chooseMovementControls/groundMoveControlType.nut" import currentTankMoveCtrlType
+from "%rGui/options/options/tankControlsOptions.nut" import currentTargetTrackingType
+from "%rGui/radar/radar.nut" import radarHudWithOverlayCtor, radarHudEditView
+from "%rGui/radar/radarState.nut" import showRadarOverMap, IsRadarVisible, IsRadarHudVisible, IsBScopeVisible
+from "%rGui/radar/radarToggleButton.nut" import mkRadarToggleButton, mkRadarToggleButtonEditView
 
 
 let isViewMoveArrows = Computed(@() currentTankMoveCtrlType.get() == "arrows")
@@ -66,14 +61,12 @@ let isBattleMoveArrows = Computed(@() (isViewMoveArrows.get() || isKeyboard.get(
 let isTargetTracking = Computed(@() !currentTargetTrackingType.get())
 let hasMyScores = Computed(@() scoreBoardCfgByType?[scoreBoardType.get()].addMyScores)
 let isRadarExist = Computed(@() IsBScopeVisible.get() && IsRadarVisible.get() && IsRadarHudVisible.get())
-let notInHangarChallenge = Computed(@() !isInHangarChallenge.get())
-let notInReplayNotChallenge = Computed(@() !isPlayingReplay.get() && notInHangarChallenge.get())
-let isUnitAliveInBattle = Computed(@() isUnitAlive.get() && notInHangarChallenge.get())
+let notInReplay = Computed(@() !isPlayingReplay.get())
 
 let actionBarInterval = isWidescreen ? 150 : 130
 let actionBarTransform = @(idx, isBullet = false)
   mkRBPos([hdpx(-actionBarInterval * idx), isBullet ? 0 : hdpx(43)])
-let tacticalMapPos = hdpx(155)
+const tacticalMapPos = hdpx(155)
 
 let hasDoubleChoiceSec = Computed(@() !isFakeSecondary.get() && hasOnlyOneSideGroup.get())
 let hasDoubleChoiceSpec = Computed(@() !isFakeSpecial.get() && hasOnlyOneSideGroup.get())
@@ -85,7 +78,7 @@ let hasDoubleChoiceSpecOpt = Computed(@() !isSplitSideGun.get() && hasDoubleChoi
 let curSecGunBulletsOrientation = Computed(@() isBulletsRight(curUnitHudTuningOptions.get(), "secondaryGun"))
 let curSpecGunBulletsOrientation = Computed(@() isBulletsRight(curUnitHudTuningOptions.get(), "specialGun"))
 
-return {
+return cfgHudCommon.__merge(initHudTuningCfg({
   primaryGun = withActionsButtonScaleCtor([AB_PRIMARY_WEAPON, AB_PRIMARY_WEAPON_EXTRA],
     @(a, aType, scale) mkCircleTankPrimaryGun(a, aType, scale, "btn_weapon_primary_alt", mkCountTextRight),
     {
@@ -155,7 +148,7 @@ return {
     ctor = winchButton
     defTransform = mkLTPos([0, hdpx(100)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_winch.svg")
-    isVisibleInBattle = notInReplayNotChallenge
+    isVisibleInBattle = notInReplay
     priority = Z_ORDER.BUTTON
   }
 
@@ -163,7 +156,7 @@ return {
     ctor = mkFreeCameraButton
     defTransform = mkLTPos([hdpx(0), hdpx(240)])
     editView = mkSquareBtnEditView("ui/gameuiskin#hud_free_camera.svg")
-    isVisibleInBattle = notInReplayNotChallenge
+    isVisibleInBattle = notInReplay
     priority = Z_ORDER.BUTTON
   }
 
@@ -172,7 +165,7 @@ return {
     defTransform = mkLBPos([hdpx(190), hdpx(-420)])
     editView = mkCircleBtnEditView("ui/gameuiskin#hud_tank_target_tracking.svg")
     isVisibleInEditor = isTargetTracking
-    isVisibleInBattle = Computed(@() isTargetTracking.get() && !raceForceCannotShoot.get() && notInHangarChallenge.get())
+    isVisibleInBattle = Computed(@() isTargetTracking.get() && !raceForceCannotShoot.get())
     priority = Z_ORDER.BUTTON
   }
 
@@ -180,7 +173,7 @@ return {
     {
       defTransform = actionBarTransform(0),
       shouldShowDisabled = true
-      isVisibleInBattle = isUnitAliveInBattle
+      isVisibleInBattle = isUnitAlive
     })
 
   abToolkit = {
@@ -205,7 +198,7 @@ return {
       return mkActionItemEditView(image)
     }
     priority = Z_ORDER.STICK
-    isVisibleInBattle = isUnitAliveInBattle
+    isVisibleInBattle = isUnitAlive
     options = [ optDoubleRepairBtn ]
   }
 
@@ -213,7 +206,7 @@ return {
     defTransform = mkRBPos([hdpx(-300), hdpx(-130)])
     priority = Z_ORDER.STICK
     isVisible = @(options) optDoubleRepairBtn.has(options)
-    isVisibleInBattle = isUnitAliveInBattle
+    isVisibleInBattle = isUnitAlive
     options = [ optDoubleRepairBtn ]
   })
 
@@ -231,7 +224,7 @@ return {
       defTransform = mkRBPos([hdpx(-240), hdpx(-490)])
       editView = mkCircleBtnEditView("ui/gameuiskin#hud_ammo_fireworks.svg")
       isVisibleInEditor = fwVisibleInEditor
-      isVisibleInBattle = Computed(@() fwVisibleInBattle.get() && notInHangarChallenge.get())
+      isVisibleInBattle = fwVisibleInBattle
     })
 
   bulletMain = {
@@ -286,7 +279,7 @@ return {
     defTransform = mkLBPos([0, 0])
     editView = moveStickView
     isVisibleInEditor = Computed(@() !isViewMoveArrows.get())
-    isVisibleInBattle = Computed(@() !isBattleMoveArrows.get() && notInHangarChallenge.get())
+    isVisibleInBattle = Computed(@() !isBattleMoveArrows.get())
     priority = Z_ORDER.STICK
     options = [ optTankMoveControlType, gearDownOnStopButtonTouch ]
   }
@@ -300,7 +293,7 @@ return {
     defTransform = mkLBPos([0, 0])
     editView = moveArrowsView
     isVisibleInEditor = isViewMoveArrows
-    isVisibleInBattle = Computed(@() isBattleMoveArrows.get() && notInHangarChallenge.get())
+    isVisibleInBattle = isBattleMoveArrows
     priority = Z_ORDER.STICK
     options = [ optTankMoveControlType, gearDownOnStopButtonTouch ]
   }
@@ -319,7 +312,7 @@ return {
     ctor = mkTacticalMapForHud
     defTransform = mkLTPos([tacticalMapPos, 0])
     editView = tacticalMapEditView
-    isVisibleInBattle = Computed(@() (!showRadarOverMap.get() || !isRadarExist.get()) && notInHangarChallenge.get())
+    isVisibleInBattle = Computed(@() !showRadarOverMap.get() || !isRadarExist.get())
     hideForDelayed = false
   }
 
@@ -344,7 +337,7 @@ return {
     ctor = mkDoll
     defTransform = mkLBPos([hdpx(540), 0])
     editView = dollEditView
-    isVisibleInBattle = Computed(@() notInHangarChallenge.get() && !isPlayingReplay.get())
+    isVisibleInBattle = notInReplay
     hideForDelayed = false
   }
 
@@ -353,7 +346,6 @@ return {
         ctor = mkMoveIndicator
         defTransform = mkCBPos([0, -sh(20)])
         editView = moveIndicatorTankEditView
-        isVisibleInBattle = notInHangarChallenge
         hideForDelayed = false
       }
   : null
@@ -362,7 +354,6 @@ return {
     ctor = mkSpeedText
     defTransform = mkLBPos([hdpx(420), hdpx(-105)])
     editView = speedTextEditView
-    isVisibleInBattle = notInHangarChallenge
     hideForDelayed = false
   }
 
@@ -370,7 +361,6 @@ return {
     ctor = mkCrewDebuffs
     defTransform = mkLBPos([hdpx(365), hdpx(-50)])
     editView = crewDebuffsEditView
-    isVisibleInBattle = notInHangarChallenge
     hideForDelayed = false
   }
 
@@ -378,7 +368,6 @@ return {
     ctor = mkTechDebuffs
     defTransform = mkLBPos([hdpx(210), 0])
     editView = techDebuffsEditView
-    isVisibleInBattle = notInHangarChallenge
     hideForDelayed = false
   }
 
@@ -401,7 +390,7 @@ return {
     defTransform = mkLTPos([tacticalMapPos + tacticalMapSize[0], 0])
     editView = mkRadarToggleButtonEditView
     priority = Z_ORDER.BUTTON
-    isVisibleInBattle = Computed(@() isRadarExist.get() && notInHangarChallenge.get())
+    isVisibleInBattle = isRadarExist
   }
 
   radarHud = {
@@ -409,7 +398,7 @@ return {
     defTransform = mkLTPos([tacticalMapPos, 0])
     editView = radarHudEditView
     priority = Z_ORDER.BUTTON
-    isVisibleInBattle = Computed(@() isRadarExist.get() && showRadarOverMap.get() && notInHangarChallenge.get())
+    isVisibleInBattle = Computed(@() isRadarExist.get() && showRadarOverMap.get())
   }
 
   compass = {
@@ -420,4 +409,4 @@ return {
     isVisibleInBattle = Computed(@() isCompassVisible && isRadarExist.get())
   }
 
-}.__update(cfgHudCommon).filter(@(v) v != null)
+}.filter(@(v) v != null)))

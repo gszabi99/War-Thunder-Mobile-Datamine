@@ -1,14 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isCurPresetChanged, transformInProgress, closeTuning, saveCurrentTransform, tuningState,
-  setByHistory, history, curHistoryIdx, tuningUnitType, clearTuningState, isAllElemsOptionsOpened
-} = require("%rGui/hudTuning/hudTuningState.nut")
-let { hasAnyOfAllElemOptions } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { tuningBtn, tuningBtnWithActivity, tuningBtnImg,
-  btnBgColorPositive, btnBgColorNegative, btnBgColorDisabled, btnBgColorDefault,
-  btnImgColor, btnImgColorDisabled, tuningBtnGap
-} = require("%rGui/hudTuning/tuningBtn.nut")
-let chooseTuningUnitTypeWnd = require("%rGui/hudTuning/chooseTuningUnitTypeWnd.nut")
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/hudTuning/cfg/cfgOptions.nut" import hasAnyOfAllElemOptions
+import "%rGui/hudTuning/chooseTuningUnitTypeWnd.nut" as chooseTuningUnitTypeWnd
+from "%rGui/hudTuning/hudTuningState.nut" import isCurPresetChanged, transformInProgress, closeTuning,
+  saveCurrentTransform, tuningState, setByHistory, history, curHistoryIdx, tuningUnitType, clearTuningState,
+  isAllElemsOptionsOpened
+from "%rGui/hudTuning/tuningBtn.nut" import tuningBtn, tuningBtnWithActivity, tuningBtnImg, btnBgColorPositive,
+  btnBgColorNegative, btnBgColorDisabled, btnBgColorDefault, btnImgColor, btnImgColorDisabled, tuningBtnGap
 
 
 let isOpen = mkWatched(persist, "isOpen", true)
@@ -39,7 +37,7 @@ function askSaveAndClose() {
 let toggleBtn = @() {
   watch = isOpen
   hplace = ALIGN_LEFT
-  pos = [sw(37), 0]
+  pos = const [sw(37), 0]
   children = tuningBtn("ui/gameuiskin#hud_tank_arrow_segment.svg",
     @() isOpen.set(!isOpen.get()),
     isOpen.get() ? "hudTuning/toggle/desc/hide" : "hudTuning/toggle/desc/show",

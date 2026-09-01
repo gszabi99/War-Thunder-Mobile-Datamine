@@ -2005,7 +2005,7 @@
     },
     "tracks": {
       "animationMultiplier": 0.5,
-      "height": 0.0,
+      "height": -0.03,
       "width": 0.4,
       "trackPhysMat": "wheel"
     },
@@ -2030,10 +2030,16 @@
       "gearRatios": {
         "ratio": [
           -7.38,
+          -13.5,
           0.0,
+          14.3,
           7.82,
+          7.37,
+          4.57,
           4.03,
+          2.8,
           2.5,
+          1.83,
           1.53,
           1.0
         ]
@@ -2047,12 +2053,12 @@
       ],
       "defaultGearRadius": 0.55,
       "defaultDampeningForce": [
-        150000.0,
-        150000.0
+        45000.0,
+        45000.0
       ],
       "hasSuspensionOnDriveGear": true,
-      "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15,
+      "dampeningRelaxationRatio": 0.15,
+      "dampeningCompressionRatio": 0.05,
       "brokenWheelSteeringDeflection": -15.0,
       "steeringNodes": {
         "wheel_r_01": "bone_wheel_r_01",

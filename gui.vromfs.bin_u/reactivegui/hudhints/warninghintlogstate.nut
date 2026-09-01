@@ -1,7 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { eventbus_subscribe } = require("eventbus")
-let defaultTtl = 5
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+
+
+const defaultTtl = 5
 
 let state = require("%sqstd/mkEventLogState.nut")({
   persistId = "warningHintLogState"
@@ -14,28 +16,28 @@ isInBattle.subscribe(@(_) state.clearEvents())
 let { addEvent, removeEvent} = state
 let addWarning = @(text, evId = "", ttl = 0, evType = "warningTextTiny") addEvent({ id = evId, hType = evType, text, ttl })
 
-eventbus_subscribe("warn:visible_by_zone", function(data) {
+subscribeHudEvent("warn:visible_by_zone", function(data) {
   if (data?.isVisible)
     addWarning(data?.text ?? "", "warn:visible_by_zone")
   else
     removeEvent({id = "warn:visible_by_zone"})
 })
 
-eventbus_subscribe("warn:crit_speed", function(data) {
+subscribeHudEvent("warn:crit_speed", function(data) {
   if (data?.isVisible)
     addWarning(data?.text ?? "", "warn:crit_speed")
   else
     removeEvent({id = "warn:crit_speed"})
 })
 
-eventbus_subscribe("warn:stamina_loose_control", function(data) {
+subscribeHudEvent("warn:stamina_loose_control", function(data) {
   if (data?.isVisible)
     addWarning(data?.text ?? "", "warn:stamina_loose_control")
   else
     removeEvent({id = "warn:stamina_loose_control"})
 })
 
-eventbus_subscribe("warn:crit_overload", function(data) {
+subscribeHudEvent("warn:crit_overload", function(data) {
   let overloadText = "".concat(loc("HUD_CRIT_OVERLOAD")," ", data?.val ?? "", loc("HUD_CRIT_OVERLOAD_G"))
   if (data?.isVisible)
     addWarning(overloadText, "warn:overload")
@@ -44,7 +46,7 @@ eventbus_subscribe("warn:crit_overload", function(data) {
 
 })
 
-eventbus_subscribe("warn:danger_overload", function(data) {
+subscribeHudEvent("warn:danger_overload", function(data) {
   let overloadText = "".concat(loc("HUD_DANGEROUS_OVERLOAD")," ", data?.val ?? "", loc("HUD_CRIT_OVERLOAD_G"))
   if (data?.isVisible)
     addWarning(overloadText, "warn:overload")
@@ -76,7 +78,7 @@ let simpleWarningEvents = [
 
 foreach (ev in simpleWarningEvents) {
   let name = ev
-  eventbus_subscribe(ev, @(data) handleSimpleWarning(name, data))
+  subscribeHudEvent(ev, @(data) handleSimpleWarning(name, data))
 }
 
 

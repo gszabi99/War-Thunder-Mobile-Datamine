@@ -1,16 +1,17 @@
+from "%globalScripts/weaponConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+from "dagor.workcycle" import setTimeout, clearTimer
+from "dasevents" import EventOnSupportUnitSpawn
+from "hudActionBar" import selectActionBarAction
+from "sound_wt" import playSound
 import "%sqstd/ecs.nut" as ecs
-let { EventOnSupportUnitSpawn } = require("dasevents")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { unitType, HM_MANUAL_ANTIAIR, hudMode, HM_COMMON } = require("%rGui/hudState.nut")
-let { MainMask } = require("%rGui/hud/airState.nut")
-let { selectActionBarAction } = require("hudActionBar")
-let weaponsButtonsConfig = require("%rGui/hud/weaponsButtonsConfig.nut")
-let { playHapticPattern, HAPT_WEAP_SELECT } = require("%rGui/hud/hudHaptic.nut")
-let { playSound } = require("sound_wt")
+from "%sqstd/underscore.nut" import isEqual
+from "%rGui/hud/actionBar/actionBarState.nut" import actionBarItems
+from "%rGui/hud/airState.nut" import MainMask
+from "%rGui/hud/hudHaptic.nut" import playHapticPattern, HAPT_WEAP_SELECT
+import "%rGui/hud/weaponsButtonsConfig.nut" as weaponsButtonsConfig
+from "%rGui/hudState.nut" import unitType, HM_MANUAL_ANTIAIR, hudMode, HM_COMMON
 
 
 const REPAY_TIME = 0.3
@@ -26,7 +27,7 @@ let shipWeaponsList = [
   "EII_ROCKET_ASW"
 ]
 
-let shipGunInsertIdx = 1
+const shipGunInsertIdx = 1
 let shipGunTriggers = [
   TRIGGER_GROUP_PRIMARY
   TRIGGER_GROUP_SECONDARY

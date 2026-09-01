@@ -1,5 +1,6 @@
 from "math" import max
-let { roundToDigits } = require("%sqstd/math.nut")
+from "%sqstd/math.nut" import roundToDigits
+
 
 function roundPrice(value, digits = 2) {
   if (value <= 0.0)

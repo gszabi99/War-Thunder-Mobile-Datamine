@@ -1,24 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { ceil } = require("math")
-let { register_command } = require("console")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { isDataBlock, eachParam, blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { needToShowHiddenUnitsDebug } = require("%rGui/unit/debugUnits.nut")
-let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
-let { unitsBlockedByBattleMode, blockedCountries } = require("%rGui/unit/unitAccess.nut")
-let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "math" import ceil
+from "%sqstd/datablock.nut" import isDataBlock, eachParam, blk2SquirrelObjNoArrays
+from "%sqstd/underscore.nut" import prevIfEqual
+import "%appGlobals/getTagsUnitName.nut" as getTagsUnitName
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg, campMyUnits
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
+from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
+from "%rGui/unit/debugUnits.nut" import needToShowHiddenUnitsDebug
+from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode, blockedCountries
+from "types" import Table
 
 
-let SEEN_RESEARCHED_UNITS = "seenResearchedUnits"
-let SEEN_VERSION_KEY = "seenResearchedUnitsVersion"
-let ACTUAL_VERSION = 3
+const SEEN_RESEARCHED_UNITS = "seenResearchedUnits"
+const SEEN_VERSION_KEY = "seenResearchedUnitsVersion"
+const ACTUAL_VERSION = 3
 
 let countryPriority = {
   country_usa = 10
@@ -72,7 +73,7 @@ let unitsResearchStatus = Computed(function(prev) {
     hasChanges = hasChanges || value != prev?[unitName]
   }
 
-  return hasChanges || type(prev) != "table" || prev.len() != list.len() ? list : prev
+  return hasChanges || !(prev instanceof Table) || prev.len() != list.len() ? list : prev
 })
 
 let currentResearch = Computed(@() unitsResearchStatus.get().findvalue(@(r) r.isCurrent))
@@ -329,7 +330,7 @@ let blueprintUnitsStatus = Computed(function(prev) {
     hasChanges = hasChanges || value != prev?[unitName]
   }
 
-  return hasChanges || type(prev) != "table" || prev.len() != list.len() ? list : prev
+  return hasChanges || !(prev instanceof Table) || prev.len() != list.len() ? list : prev
 })
 
 let unseenResearchedUnits = Computed(function() {

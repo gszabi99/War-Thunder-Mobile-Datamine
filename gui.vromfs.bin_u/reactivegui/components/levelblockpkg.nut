@@ -1,21 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { selectColor } = require("%rGui/style/stdColors.nut")
+from "%rGui/style/stdColors.nut" import selectColor
 
-let darkBorderWidth = hdpx(2)
-let lightBorderWidth = hdpx(3)
-let levelBgColor = Color(51, 54, 58)
-let playerExpColor = 0xFFFFB70B
+
+const darkBorderWidth = hdpx(2)
+const lightBorderWidth = hdpx(3)
+const levelBgColor = Color(51, 54, 58)
+const playerExpColor = 0xFFFFB70B
 let unitExpColor = selectColor
-let slotExpColor = 0xFF65BC82
-let maxLevelStarChar = "\u2605"
+const slotExpColor = 0xFF65BC82
+const maxLevelStarChar = "\u2605"
 
-let levelProgressBgColor     = Color(96, 96, 96)
-let levelProgressBorderColor = Color(0, 0, 0)
-let levelProgressBarHeight   = hdpx(15)
-let levelProgressBarWidth    = hdpx(400)
-let levelProgressBorderWidth = hdpx(2)
-let levelProgressBarFillWidth = levelProgressBarWidth - levelProgressBorderWidth * 2
-let rotateCompensate = 1.1
+const levelProgressBgColor     = Color(96, 96, 96)
+const levelProgressBorderColor = Color(0, 0, 0)
+const levelProgressBarHeight   = hdpx(15)
+const levelProgressBarWidth    = hdpx(400)
+const levelProgressBorderWidth = hdpx(2)
+const levelProgressBarFillWidth = levelProgressBarWidth - levelProgressBorderWidth * 2
+const rotateCompensate = 1.1
 
 let mkLevelBg = @(override = {}) {
   size = FLEX
@@ -35,7 +36,7 @@ let mkLevelBg = @(override = {}) {
 }.__update(override?.ovr ?? {})
 
 let mkProgressLevelBg = @(override = {}) {
-  size = [levelProgressBarWidth, levelProgressBarHeight]
+  size = const [levelProgressBarWidth, levelProgressBarHeight]
   rendObj = ROBJ_BOX
   hplace = ALIGN_LEFT
   padding = levelProgressBorderWidth

@@ -1,45 +1,43 @@
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { ceil, round, floor, tan, PI } = require("%sqstd/math.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { getBombingZones } = require("guiMission")
-let { get_mission_time } = require("mission")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { prettyScaleForSmallNumberCharVariants, scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
-let { isHudAttached } = require("%appGlobals/clientState/hudState.nut")
-let { missionProgressType, ctfFlagPreset } = require("%appGlobals/clientState/missionState.nut")
-let { getCtfFlagPresentation } = require("%appGlobals/config/hudCustomRulesPresentation.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { isInMpBattle, isInBattle, localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
-let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit, gameType,
-  isGtRace, isGtBattleRoyale
-} = require("%rGui/missionState.nut")
-let { teamBlueColor, teamRedColor, teamBlueDarkColor, teamRedDarkColor } = require("%rGui/style/teamColors.nut")
-let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { ticketPenaltyReasonAllyLogPlace, ticketPenaltyReasonEnemyLogPlace } = require("%rGui/hudHints/ticketsPenaltyReason.nut")
-let { mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
-let { mkImageWithCount } = require("%rGui/hud/myScores.nut")
-let { isInHangarChallenge, challengeState } = require("%rGui/hud/challengeState.nut")
-let { mkMissionVar } = require("%rGui/hud/missionVariableState.nut")
-let { missionScoresTable, isCTFProgressType } = require("%rGui/hud/missionScoreState.nut")
-let { playersByTeam, startContinuousUpdate, stopContinuousUpdate } = require("%rGui/mpStatistics/playersByTeamState.nut")
-let { cellTextProps } = require("%rGui/mpStatistics/mpStatsTable.nut")
-let { hudWhiteColor, hudBlackColor, hudTranslucentBlackColor, hudSilverGray, hudSmokyBlack } = require("%rGui/style/hudColors.nut")
-let { raceCurrentLap, raceTotalLaps, raceCurrentCheckpoint, raceTotalCheckpoints, hasRaceState, raceTime
-} = require("raceState.nut")
+from "dagor.workcycle" import setInterval, clearTimer
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "guiMission" import getBombingZones
+from "mission" import get_mission_time
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/math.nut" import ceil, round, floor, tan, PI
+from "%sqstd/time.nut" import secondsToTimeSimpleString
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInMpBattle, isInBattle, localMPlayerTeam
+from "%appGlobals/clientState/hudState.nut" import isHudAttached
+from "%appGlobals/clientState/missionState.nut" import missionProgressType, ctfFlagPreset
+from "%appGlobals/config/hudCustomRulesPresentation.nut" import getCtfFlagPresentation
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%globalsDarg/fontScale.nut" import prettyScaleForSmallNumberCharVariants
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/components/playerPlaceIcon.nut" import mkPlaceIcon
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkGamepadHotkey
+from "%rGui/hud/missionScoreState.nut" import missionScoresTable, isCTFProgressType
+from "%rGui/hud/missionVariableState.nut" import mkMissionVar
+from "%rGui/hud/myScores.nut" import mkImageWithCount
+from "%rGui/hudHints/ticketsPenaltyReason.nut" import ticketPenaltyReasonAllyLogPlace, ticketPenaltyReasonEnemyLogPlace
+from "%rGui/hudState.nut" import isPlayingReplay
+from "%rGui/missionState.nut" import localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit, gameType, isGtRace,
+  isGtBattleRoyale
+from "%rGui/mpStatistics/mpStatsTable.nut" import cellTextProps
+from "%rGui/mpStatistics/playersByTeamState.nut" import playersByTeam, startContinuousUpdate, stopContinuousUpdate
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudBlackColor, hudTranslucentBlackColor, hudSilverGray,
+  hudSmokyBlack
+from "%rGui/style/teamColors.nut" import teamBlueColor, teamRedColor, teamBlueDarkColor, teamRedDarkColor
+from "raceState.nut" import raceCurrentLap, raceTotalLaps, raceCurrentCheckpoint, raceTotalCheckpoints, hasRaceState,
+  raceTime
 
 
-let scoreBlockAngle = 30
-let scoreVerticalGap = hdpx(8)
-let secondsPerHour = 3600
-let barRatio = 56.0 / 19
+const scoreBlockAngle = 30
+const scoreVerticalGap = hdpx(8)
+const secondsPerHour = 3600
+const barRatio = 56.0 / 19
 const SCORE_PLATES_TEAM_COUNT = 5
-
-let ICON_TANK = "╠"
 
 let canShowMpStats = Computed(@() isInMpBattle.get() || isPlayingReplay.get())
 
@@ -52,9 +50,9 @@ let battleRoyaleScoreBoardCfg = {
 
 const airDropActiveColor = 0xFFFF9600
 
-let scoreBarIconSize = hdpxi(40)
-let scoreBarIconGap = hdpx(5)
-let scoreBarPlateHeight = hdpxi(15)
+const scoreBarIconSize = hdpxi(40)
+const scoreBarIconGap = hdpx(5)
+const scoreBarPlateHeight = hdpxi(15)
 let scoreBarPlateWidth = (barRatio * scoreBarPlateHeight + 0.5).tointeger()
 let scoreBarPadding = (0.15 * scoreBarPlateHeight).tointeger()
 let scoreBarGap = (-0.4 * scoreBarPlateHeight).tointeger()
@@ -63,27 +61,24 @@ let scoreBarHeight = scoreBarPlateHeight + 2 * scoreBarPadding
 let baseIconSize = (scoreBarHeight * 1.4)
 let timerBgWidth   = (0.65 * scoreBarWidth).tointeger()
 let timerBgHeight  = (57.0 / 131 * timerBgWidth).tointeger()
-let raceCPBarWidth = hdpx(450)
-let challengeCPBarWidth = hdpx(250)
+const raceCPBarWidth = hdpx(450)
 let gapToTimer = @(timerBgWidthV) -0.15 * timerBgWidthV
 let scoreBarOffesetY = 0.45 * timerBgHeight
 let penaltyReasonBlockSize = [hdpx(130), hdpx(60)]
 
 let timerBgColor = hudSmokyBlack
 
-let timeWarningIconSide = hdpxi(40)
-let aliveAmountIconSide = hdpxi(80)
+const timeWarningIconSide = hdpxi(40)
+const aliveAmountIconSide = hdpxi(80)
 let airdropIconSide = timerBgHeight - hdpx(10)
 
 let localTeamTickets = Computed(@() localTeam.get() == 2 ? ticketsTeamB.get() : ticketsTeamA.get())
 let enemyTeamTickets = Computed(@() localTeam.get() == 2 ? ticketsTeamA.get() : ticketsTeamB.get())
 
 let scoresForOneKill = Computed(@() (scoreLimit.get().tofloat() / SCORE_PLATES_TEAM_COUNT).tointeger())
-let needScoreBoard = Computed(@() (gameType.get() & (GT_MP_SCORE | GT_MP_TICKETS | GT_FFA | GT_RACE)) != 0
-  || isInHangarChallenge.get())
+let needScoreBoard = Computed(@() (gameType.get() & (GT_MP_SCORE | GT_MP_TICKETS | GT_FFA | GT_RACE)) != 0)
 let scoreBoardType = Computed(@() isGtRace.get() ? "race"
   : isGtBattleRoyale.get() ? "battle_royale"
-  : isInHangarChallenge.get() ? "challenge"
   : "common")
 
 let battleBasesRaw = hardPersistWatched("battleBasesRaw",[])
@@ -355,7 +350,7 @@ function mkLinearScoreBarWithScore(teamName, scale) {
       @() {
         watch = prevScore
         key = updateScore
-        size = [FLEX, SIZE_TO_CONTENT]
+        size = const [FLEX, SIZE_TO_CONTENT]
         rendObj = ROBJ_TEXT
         color = hudWhiteColor
         halign = ALIGN_CENTER
@@ -380,7 +375,7 @@ function mkLinearScoreBarWithScore(teamName, scale) {
   })
 }
 
-let shortcutId = "ID_MPSTATSCREEN"
+const shortcutId = "ID_MPSTATSCREEN"
 let shortcutImg = @(scale) @() {
   watch = isHudAttached
   hplace = ALIGN_LEFT
@@ -574,9 +569,9 @@ function mkScoreBoardBattleRoyale(scale) {
   let zoneTimer = mkMissionVar("BRzoneTimer", 0)
   let airDropTimer = mkMissionVar("AirDropTimer", 0)
 
-  let backgroundWidth = hdpx(500)
+  const backgroundWidth = hdpx(500)
   let backgroundSize = scaleArr([backgroundWidth, timerBgHeight], scale)
-  let backgroundAngle = scoreBlockAngle
+  const backgroundAngle = scoreBlockAngle
   let padding = getEmptyWidthRatioPercent(backgroundSize, backgroundAngle) / 100 * backgroundSize[0]
   return scoreBoardBase.__merge({
     key = "score_board_battle_roayle"
@@ -622,7 +617,7 @@ function mkScoreBoardBattleRoyale(scale) {
       @() {
         watch = place
         size = blockSize
-        pos = [backgroundWidth, 0]
+        pos = const [backgroundWidth, 0]
         flow = FLOW_HORIZONTAL
         valign = ALIGN_CENTER
         halign = ALIGN_LEFT
@@ -725,48 +720,6 @@ function mkScoreBoardRace(scale) {
   })
 }
 
-function mkScoreBoardChallenge(scale) {
-  let cntBlockSize = scaleArr([challengeCPBarWidth, timerBgHeight], scale)
-  let rowHeight = cntBlockSize[1]
-  let vGap = round(scoreVerticalGap * scale).tointeger()
-  let extraWidthRow = 2 * getEmptyPartWidth(rowHeight + vGap, scoreBlockAngle).tointeger()
-  let timeBlockSize = [cntBlockSize[0] - extraWidthRow, rowHeight]
-
-  let fontMonoTinyScaled = prettyScaleForSmallNumberCharVariants(fontMonoTiny, scale)
-  let fontTinyScaled = scaleFontWithTransform(fontTiny, scale, [0.5, 0.5])
-  let counters = Computed(function() {
-    let { tanksLeft = 0, totalTanks = 0 } = challengeState.get()
-    return $"{ICON_TANK} {totalTanks - tanksLeft} / {totalTanks}"
-  })
-
-  let counterBlock = mkIsoscelesTrapezoid(cntBlockSize, scoreBlockAngle,
-    {
-      children = @() {
-        watch = counters
-        rendObj = ROBJ_TEXT
-        text = counters.get()
-      }.__update(fontTinyScaled)
-    })
-
-  let timeBlock = mkIsoscelesTrapezoid(timeBlockSize, scoreBlockAngle,
-    { children = mkTime(Computed(@() challengeState.get()?.timeLeft ?? 0), fontMonoTinyScaled) })
-
-  return scoreBoardBase.__merge({
-    key = "score_board_challenge"
-    behavior = Behaviors.Button
-    onClick = @() eventbus_send("toggleMpstatscreen", {})
-    onAttach = startContinuousUpdate
-    onDetach = stopContinuousUpdate
-    flow = FLOW_VERTICAL
-    halign = ALIGN_CENTER
-    gap = scoreVerticalGap
-    children = [
-      counterBlock
-      timeBlock
-    ]
-  })
-}
-
 let scoreBoardEditView = {
   flow = FLOW_HORIZONTAL
   gap = gapToTimer(timerBgWidth)
@@ -801,10 +754,6 @@ let scoreBoardCfgByType = {
   race = {
     comp = mkScoreBoardRace(1)
     ctor = mkScoreBoardRace
-  }
-  challenge = {
-    comp = mkScoreBoardChallenge(1)
-    ctor = mkScoreBoardChallenge
   }
 }
 

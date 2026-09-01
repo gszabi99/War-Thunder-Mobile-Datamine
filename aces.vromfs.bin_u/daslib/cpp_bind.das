@@ -11,10 +11,8 @@ module cpp_bind public
 
 
 require daslib/fio
-require daslib/rtti
 require daslib/ast
 require daslib/ast_boost
-require daslib/strings_boost
 
 def private log_cpp_class_method(cpp_file : file; name : string; fntype : TypeDeclPtr) {
     var cft = clone_type(fntype.firstType)
@@ -69,9 +67,6 @@ def private log_cpp_class_method_call(cpp_file : file; name : string; fntype : T
 }
 
 def log_cpp_class_adapter(cpp_file : file; name : string; var cinfo : TypeDeclPtr) {
-    
-    
-    
     
     assert(cinfo.isClass, "can only make adapter out of a class")
     var methods : array<tuple<name : string; index : int>>

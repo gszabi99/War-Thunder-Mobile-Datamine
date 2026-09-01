@@ -3,7 +3,7 @@ from "string" import format
 from "%rGui/components/screenHintsLib.nut" import mkScreenHints
 from "%rGui/style/teamColors.nut" import teamBlueColor, teamRedColor
 
-let bgImage = "ui/images/help/help_event_christmas2.avif"
+const bgImage = "ui/images/help/help_event_christmas2.avif"
 let bgSize = [3282, 1041]
 
 let mkSizeByParent = @(size) [pw(100.0 * size[0] / bgSize[0]), ph(100.0 * size[1] / bgSize[1])]
@@ -25,10 +25,10 @@ let mkPlayerLabelText = @(text) {
   color = 0xFFFFFFFF
 }.__update(fontBoldTinyAccentedShaded)
 
-let icoSize = hdpxi(64)
+const icoSize = hdpxi(64)
 
 let mkIcon = @(icon, color, ovr) {
-  size = [icoSize, icoSize]
+  size = const [icoSize, icoSize]
   rendObj = ROBJ_IMAGE
   image = Picture($"{icon}:{icoSize}:{icoSize}:P")
   keepAspect = KEEP_ASPECT_FIT
@@ -40,7 +40,7 @@ let mkUnitLabel = @(name, distMeters, color, needIcon, ovr) {
   halign = ALIGN_CENTER
   children = [
     needIcon
-      ? mkIcon("ui/gameuiskin#icon_hud_gift.svg", color, { margin = [ 0, 0, hdpx(10), 0 ] })
+      ? mkIcon("ui/gameuiskin#icon_hud_gift.svg", color, { margin = const [ 0, 0, hdpx(10), 0 ] })
       : null
     mkPlayerLabelText(name).__update(fontBoldTinyAccentedShaded, playerLabelShade, { color })
     mkPlayerLabelText(" ".concat(format("%.2f", 0.001 * distMeters), loc("measureUnits/km_dist")))
@@ -52,33 +52,33 @@ let bgItems = [
   mkUnitLabel("Enemy", 30, teamRedColor, true, {
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    pos = [pw(-23.8), ph(-21)]
+    pos = const [pw(-23.8), ph(-21)]
   })
   mkIcon("ui/gameuiskin#icon_hud_base_new_year.svg", teamRedColor, {
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    pos = [pw(8.8), ph(-30)]
+    pos = const [pw(8.8), ph(-30)]
   })
   mkIcon("ui/gameuiskin#icon_hud_gift.svg", teamRedColor, {
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    pos = [pw(10.0), ph(-7)]
+    pos = const [pw(10.0), ph(-7)]
   })
   mkUnitLabel("Ally", 15, teamBlueColor, false, {
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    pos = [pw(20.1), ph(-12)]
+    pos = const [pw(20.1), ph(-12)]
   })
 ]
 
-let hintW = hdpx(500)
-let enemyX = 850
-let enemyY = 700
-let giftX = 2030
-let giftY = 240
-let giftPointX = 1969
-let allyX = 2334
-let allyY = enemyY
+const hintW = hdpx(500)
+const enemyX = 850
+const enemyY = 700
+const giftX = 2030
+const giftY = 240
+const giftPointX = 1969
+const allyX = 2334
+const allyY = enemyY
 
 let hints = [
   {
@@ -108,7 +108,7 @@ function makeScreen() {
     color = 0xFF000000
     children = {
       size = [sw(100), sw(100) / bgSize[0] * bgSize[1]]
-      pos = [0, -sh(1.5)]
+      pos = const [0, -sh(1.5)]
       rendObj = ROBJ_IMAGE
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER

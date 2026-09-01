@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let UPSIZE = 0.5
-let SHAKE = 0.5
-let UNLOCK = 0.3
-let RAISE = 0.05
-let FADE = 0.2
-let REVEAL = 0.3
-let ANIMATION_STEP = 0.5
+const UPSIZE = 0.5
+const SHAKE = 0.5
+const UNLOCK = 0.3
+const RAISE = 0.05
+const FADE = 0.2
+const REVEAL = 0.3
+const ANIMATION_STEP = 0.5
 
 let shakeAnimation = @(delay) delay
   ? [

@@ -1,6 +1,6 @@
-let { round } = require("math")
-let { fontsLists } = require("fontsStyle.nut")
-let { memoize } = require("%sqstd/functools.nut")
+from "math" import round
+from "%sqstd/functools.nut" import memoize
+from "fontsStyle.nut" import fontsLists
 
 
 let listByFont = {}

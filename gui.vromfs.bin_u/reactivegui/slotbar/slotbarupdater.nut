@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
+from "dagor.workcycle" import deferOnce
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import registerHandler, apply_slot_preset, campaignSlotsInProgress
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/slots.nut" import curSlots, isCampaignWithSlots, slotsSelectedByUser
+
 
 let logS = log_with_prefix("[SLOTS] ")
-let { deferOnce } = require("dagor.workcycle")
-let { isEqual } = require("%sqstd/underscore.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { registerHandler, apply_slot_preset, campaignSlotsInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { curSlots, isCampaignWithSlots, slotsSelectedByUser } = require("%appGlobals/pServer/slots.nut")
 
 
 let notActualSlotsByCampaign = Computed(function() {

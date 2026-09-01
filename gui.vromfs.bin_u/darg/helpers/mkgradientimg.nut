@@ -3,6 +3,7 @@
 from "%darg/ui_imports.nut" import *
 from "base64" import encodeString
 import "math" as math
+from "types" import Array
 
 const BLEND_MODE_PREMULTIPLIED = "PREMULTIPLIED"
 const BLEND_MODE_NONPREMULTIPLIED = "NONPREMULTIPLIED"
@@ -14,11 +15,11 @@ let blendModesPrefix = {
   [BLEND_MODE_ADDITIVE] = "+"
 }
 
-function mkGradPointStyle(point, idx, points){
+function mkGradPointStyle(point, idx, points): string {
   let offset = point?.offset ?? (100 * idx/(points.len()-1))
 
   local color = point?.color
-  if (color==null && type(point)=="array")
+  if (color==null && point instanceof Array)
     color = point
   let opacity = color?.len()==4
     ? color[3]/255.0
@@ -39,9 +40,9 @@ enum GRADSPREAD {
   REPEAT = "repeat"
 }
 
-function mkLinearGradSvgTxtImpl(points, width, height, x1=0, y1=0, x2=null, y2=0, spreadMethod=GRADSPREAD.PAD, transform=null){
+function mkLinearGradSvgTxtImpl(points, width, height, x1=0, y1=0, x2=null, y2=0, spreadMethod=GRADSPREAD.PAD, transform=null): string {
   x2 = x2 ?? width
-  assert(type(points)=="array", "points should be array of objects with color=[r,g,b,optional alpha] and optional offset. If offset is missing points are evenly distributed")
+  assert(points instanceof Array, "points should be array of objects with color=[r,g,b,optional alpha] and optional offset. If offset is missing points are evenly distributed")
   assert(width>1 && height>1 && width+height > 7, "gradient should be created with some reasonable sizes")
   spreadMethod=spreadMethod ?? GRADSPREAD.PAD
   if (transform != null)
@@ -62,8 +63,8 @@ let mkLinearGradientImg = kwarg(function(points, width, height, x1=0, y1=0, x2=n
   return pic($"{prefix}b64://{text}.svg:{width}:{height}?Ac")
 })
 
-function mkRadialGradSvgTxtImpl(points, width, height, cx=null, cy=null, r=null, fx=null, fy=null, spreadMethod=GRADSPREAD.PAD, transform=null){
-  assert(type(points)=="array", "points should be array of objects with color=[r,g,b,optional alpha] and optional offset. If offset is missing points are evenly distributed")
+function mkRadialGradSvgTxtImpl(points, width, height, cx=null, cy=null, r=null, fx=null, fy=null, spreadMethod=GRADSPREAD.PAD, transform=null): string {
+  assert(points instanceof Array, "points should be array of objects with color=[r,g,b,optional alpha] and optional offset. If offset is missing points are evenly distributed")
   assert(width>1 && height>1 && width+height > 15, "gradient should be created with some reasonable sizes")
   spreadMethod=spreadMethod ?? GRADSPREAD.PAD
   if (transform != null)

@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { allow_subscriptions } = require("%appGlobals/permissions.nut")
+from "%appGlobals/permissions.nut" import allow_subscriptions
+
 
 let iconImg = {
   vip = "gamercard_subs_vip.svg"

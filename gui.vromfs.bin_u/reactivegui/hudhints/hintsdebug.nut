@@ -1,18 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { rnd_int } = require("dagor.random")
-let { register_command } = require("console")
-let { HUD_MSG_MULTIPLAYER_DMG, HUD_MSG_STREAK_EX, UT_Unknown, UT_Ship } = require("hudMessages")
-let { GO_WIN, GO_FAIL, GO_NONE } = require("guiMission")
-let { chooseRandom } = require("%sqstd/rand.nut")
-let { localMPlayerId, localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
-let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { debugHudType, HT_CUTSCENE } = require("%appGlobals/clientState/hudState.nut")
-let { areHintsHidden } = require("%rGui/hudState.nut")
-let { playersCommonStats, dbgCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
-let { myUserId } = require("%appGlobals/profileStates.nut")
-let hudMessagesUnitTypesMap = require("%rGui/hudHints/hudMessagesUnitTypesMap.nut")
-let { get_unlocks_blk} = require("blkGetters")
+from "blkGetters" import get_unlocks_blk
+from "console" import register_command
+from "dagor.random" import rnd_int
+from "eventbus" import eventbus_send
+from "guiMission" import GO_WIN, GO_FAIL, GO_NONE
+from "hudMessages" import HUD_MSG_MULTIPLAYER_DMG, HUD_MSG_STREAK_EX, UT_Unknown, UT_Ship
+from "%sqstd/rand.nut" import chooseRandom
+from "%appGlobals/clientState/clientState.nut" import localMPlayerId, localMPlayerTeam
+from "%appGlobals/clientState/hudState.nut" import debugHudType, HT_CUTSCENE
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg
+from "%appGlobals/profileStates.nut" import myUserId
+import "%rGui/hudHints/hudMessagesUnitTypesMap.nut" as hudMessagesUnitTypesMap
+from "%rGui/hudState.nut" import areHintsHidden
+from "%rGui/mpStatistics/playersCommonStats.nut" import playersCommonStats, dbgCommonStats
+
 
 
 let hintsForTest = [

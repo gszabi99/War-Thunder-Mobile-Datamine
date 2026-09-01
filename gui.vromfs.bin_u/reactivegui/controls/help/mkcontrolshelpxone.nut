@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/components/screenHintsLib.nut" import mkScreenHints
-from "%rGui/controls/controlsPkg.nut" import mkSizeByParent, mkLines,
-  mergeWithDefaults, bgFinalWidth, bgFinalHeight, borderOffs, mkHintsContent
+from "%rGui/controls/controlsPkg.nut" import mkSizeByParent, mkLines, mergeWithDefaults, bgFinalWidth, bgFinalHeight,
+  borderOffs, mkHintsContent
 
 
-let bgImage = "!ui/images/controller/controller_xbox_one.avif"
-let right = 800
-let left = 50
+const bgImage = "!ui/images/controller/controller_xbox_one.avif"
+const right = 800
+const left = 50
 
 
 let hints = [

@@ -1,27 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
-let { registerScene } = require("%rGui/navState.nut")
-let { curLbCfg, ratingBattlesCount, bestBattles, isLbBestBattlesOpened } = require("%rGui/leaderboard/lbState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { actualizeStats } = require("%rGui/unlocks/userstat.nut")
-let { LOG_TIME } = require("%rGui/leaderboard/lbCategory.nut")
-
-let { modalWndBg, modalWndHeaderBg } = require("%rGui/components/modalWnd.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { lbHeaderHeight, lbVGap, lbHeaderRowHeight, lbTableBorderWidth,
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderBg
+from "%rGui/components/scrollbar.nut" import makeVertScroll, scrollbarWidth
+from "%rGui/leaderboard/lbCategory.nut" import LOG_TIME
+from "%rGui/leaderboard/lbState.nut" import curLbCfg, ratingBattlesCount, bestBattles, isLbBestBattlesOpened
+from "%rGui/leaderboard/lbStyle.nut" import lbHeaderHeight, lbVGap, lbHeaderRowHeight, lbTableBorderWidth,
   rowBgOddColor, rowBgEvenColor, getRowBgColor
-} = require("%rGui/leaderboard/lbStyle.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { mkLbHeaderRow } = require("%rGui/leaderboard/mkLbHeaderRow.nut")
-let { makeVertScroll, scrollbarWidth } = require("%rGui/components/scrollbar.nut")
+from "%rGui/leaderboard/mkLbHeaderRow.nut" import mkLbHeaderRow
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/unlocks/userstat.nut" import actualizeStats
 
-let tableWidth = hdpx(1200)
+
+const tableWidth = hdpx(1200)
 let rowHeight = evenPx(40)
 let maxRowsNoScroll = (saSize[1] - lbHeaderHeight - lbVGap - lbHeaderRowHeight - lbTableBorderWidth) / rowHeight
 
-let defTxtColor = 0xFFD8D8D8
-let unratedColor = 0xFFF08466
+const defTxtColor = 0xFFD8D8D8
+const unratedColor = 0xFFF08466
 
 let close = @() isLbBestBattlesOpened.set(false)
 
@@ -54,7 +53,7 @@ let header = @() {
       children = backButton(close)
     }
     {
-      size = [tableWidth, FLEX]
+      size = const [tableWidth, FLEX]
       flow = FLOW_VERTICAL
       valign = ALIGN_CENTER
       children = [
@@ -143,7 +142,7 @@ function content() {
 
   return modalWndBg.__merge({
     watch = [curLbCfg, bestBattles, ratingBattlesCount]
-    size = [tableWidth, FLEX]
+    size = const [tableWidth, FLEX]
     flow = FLOW_VERTICAL
     children = [
        modalWndHeaderBg.__merge({

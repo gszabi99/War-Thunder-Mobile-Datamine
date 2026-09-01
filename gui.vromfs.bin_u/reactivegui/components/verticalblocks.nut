@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPicture } = require("%darg/helpers/bitmap.nut")
-let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
-let { makeVertScroll, scrollbarWidth } = require("%rGui/components/scrollbar.nut")
-let { selectedLineHorUnits } = require("%rGui/components/selectedLineUnits.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
+from "%darg/helpers/bitmap.nut" import mkBitmapPicture
+from "%rGui/components/scrollbar.nut" import makeVertScroll, scrollbarWidth
+from "%rGui/components/selectedLineUnits.nut" import selectedLineHorUnits
+from "%rGui/style/gradients.nut" import mkGradientCtorRadial, gradTexSize
+from "%rGui/style/stdColors.nut" import selectColor
 
-let contentGap = hdpx(20)
+
+const contentGap = hdpx(20)
 
 let contentBlockScrollHandler = ScrollHandler()
 

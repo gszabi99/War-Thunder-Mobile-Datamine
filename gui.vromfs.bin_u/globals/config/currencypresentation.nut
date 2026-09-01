@@ -1,8 +1,9 @@
 from "%globalScripts/logs.nut" import *
-let { max } = require("math")
-let { loc } = require("dagor.localize")
-let { memoize } = require("%sqstd/functools.nut")
-let { isStringInteger } = require("%sqstd/string.nut")
+from "dagor.localize" import loc
+from "math" import max
+from "%sqstd/functools.nut" import memoize
+from "%sqstd/string.nut" import isStringInteger
+
 
 let iconsScale = {
   ship_tool_kit = 1.6
@@ -32,6 +33,7 @@ let iconsScale = {
   platinum = 1.2
   ukbond = 1.3
   japanbond = 1.3
+  maptoken = 0.9
 }
 let maxIconsScale = iconsScale.reduce(@(a, b) max(a, b))
 
@@ -63,6 +65,7 @@ let icons = {
   independencebond = "ui/gameuiskin#warbond_icon_independencebond.avif"
   ukbond = "ui/gameuiskin#warbond_icon_ukbond.avif"
   japanbond = "ui/gameuiskin#warbond_icon_japanbond.avif"
+  maptoken = "ui/gameuiskin#warbond_icon_maptoken.avif"
   
   ship_tool_kit = "ui/gameuiskin#shop_consumables_repair_gamercard.avif"
   ship_smoke_screen_system_mod = "ui/gameuiskin#shop_consumables_smoke_gamercard.avif"
@@ -97,7 +100,7 @@ let bigIcons = {
   japanbond = "ui/gameuiskin#japanbond_goods_2026_01.avif"
 }
 
-let placeholder = "ui/gameuiskin#icon_primary_attention.svg"
+const placeholder = "ui/gameuiskin#icon_primary_attention.svg"
 
 let seasonIcons = {
   warbond = @(season) $"ui/gameuiskin#warbond_icon_season_{season}.avif"

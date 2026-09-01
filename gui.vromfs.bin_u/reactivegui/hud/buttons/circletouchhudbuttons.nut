@@ -1,54 +1,51 @@
 from "%globalsDarg/darg_library.nut" import *
-let { sqrt } = require("math")
-let { get_mission_time } = require("mission")
-let { playSound } = require("sound_wt")
-let { TouchAreaOutButton, TouchScreenButton } = require("wt.behaviors")
-let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { btnBgStyle, borderColorPushed, borderNoAmmoColor, borderColor, imageColor, imageDisabledColor
-} = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { updateActionBarDelayed, actionItemsInCd } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
-let { canZoom, isInZoom, isTrackingActive } = require("%rGui/hudState.nut")
-let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
-let { mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
-} = require("%rGui/controls/shortcutSimpleComps.nut")
-let { weaponTouchIcons } = require("%appGlobals/weaponPresentation.nut")
-let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
-let { allowShoot, primaryRocketGun } = require("%rGui/hud/tankState.nut")
-let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
-let { Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun,
-  TurretsVisible, TurretsReloading, TurretsEmpty, IsBoosterActive
-} = require("%rGui/hud/airState.nut")
-let { markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
-} = require("%rGui/hud/currentWeaponsStates.nut")
-let { mkBtnZone, lockButtonIcon, canLock, defShortcutOvr}  = require("%rGui/hud/buttons/hudButtonsPkg.nut")
-let { isAvailableActionItem } = require("%rGui/hud/buttons/actionButtonComps.nut")
-let { playHapticPattern } = require("hapticVibration")
-let { getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT } = require("%rGui/options/guiOptions.nut")
-let { HAPT_SHOOT_ITEM } = require("%rGui/hud/hudHaptic.nut")
-let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
-let { isHudPrimaryStyle } = require("%rGui/options/options/hudStyleOptions.nut")
-let { hudSmokyGreyColor, hudGreenColor, hudWhiteColor, hudVeilGrayColor, hudLightBlackColor,
-  hudTranslucentBlackColor, hudGrayColor } = require("%rGui/style/hudColors.nut")
-let { primaryIconToggle, secondaryIconToggle } = require("%rGui/components/toggle.nut")
+from "hapticVibration" import playHapticPattern
+from "math" import sqrt
+from "mission" import get_mission_time
+from "sound_wt" import playSound
+from "wt.behaviors" import TouchAreaOutButton, TouchScreenButton
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut, setShortcutOn, setShortcutOff
+from "%appGlobals/weaponPresentation.nut" import weaponTouchIcons
+from "%globalsDarg/fontScale.nut" import getScaledFont
+from "%rGui/components/toggle.nut" import primaryIconToggle, secondaryIconToggle
+from "%rGui/controls/disabledControls.nut" import mkIsControlDisabled
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
+from "%rGui/hud/actionBar/actionBarState.nut" import updateActionBarDelayed, actionItemsInCd
+from "%rGui/hud/airState.nut" import Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun, TurretsVisible,
+  TurretsReloading, TurretsEmpty, IsBoosterActive
+from "%rGui/hud/buttons/actionButtonComps.nut" import isAvailableActionItem
+from "%rGui/hud/buttons/hudButtonsPkg.nut" import mkBtnZone, lockButtonIcon, canLock, defShortcutOvr
+from "%rGui/hud/cooldownComps.nut" import mkItemWithCooldownText
+from "%rGui/hud/currentWeaponsStates.nut" import markWeapKeyHold, unmarkWeapKeyHold, userHoldWeapInside
+from "%rGui/hud/hudHaptic.nut" import HAPT_SHOOT_ITEM
+from "%rGui/hud/hudTouchButtonStyle.nut" import btnBgStyle, borderColorPushed, borderNoAmmoColor, borderColor,
+  imageColor, imageDisabledColor
+from "%rGui/hud/tankState.nut" import allowShoot, primaryRocketGun
+from "%rGui/hud/weaponsButtonsAnimations.nut" import mkConsumableSpend
+from "%rGui/hudHints/commonHintLogState.nut" import addCommonHint
+from "%rGui/hudState.nut" import canZoom, isInZoom, isTrackingActive
+from "%rGui/options/guiOptions.nut" import getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT
+from "%rGui/options/options/hudStyleOptions.nut" import isHudPrimaryStyle
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX
+from "%rGui/style/hudColors.nut" import hudSmokyGreyColor, hudGreenColor, hudWhiteColor, hudVeilGrayColor,
+  hudLightBlackColor, hudTranslucentBlackColor, hudGrayColor
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
-let bigButtonSize = hdpxi(150)
+const bigButtonSize = hdpxi(150)
 let bigButtonImgSize = (0.65 * bigButtonSize + 0.5).tointeger()
-let buttonSize = hdpxi(120)
-let airButtonSize = hdpxi(113)
-let readyIndicatorSize = hdpxi(35)
+const buttonSize = hdpxi(120)
+const airButtonSize = hdpxi(113)
+const readyIndicatorSize = hdpxi(35)
 let buttonImgSize = (0.65 * buttonSize + 0.5).tointeger()
 let buttonAirImgSize = (0.65 * airButtonSize + 0.5).tointeger()
-let aimImageSize = hdpxi(80)
+const aimImageSize = hdpxi(80)
 let disabledColor = hudSmokyGreyColor
 let readyEnableColor = hudGreenColor
 let readyDisableColor = hudVeilGrayColor
 
-let targetTrackingImgSize = hdpxi(76)
-let targetTrackingOffImgSize = hdpxi(94)
+const targetTrackingImgSize = hdpxi(76)
+const targetTrackingOffImgSize = hdpxi(94)
 
 let zoneRadiusX = 2.5 * buttonSize
 let zoneRadiusY = buttonSize
@@ -275,10 +272,10 @@ let mkCountText = @(text, color, scale = 1, ovr = {}) {
 }.__update(getScaledFont(countTextFont, scale), ovr)
 
 let mkCountTextRight = @(text, color, scale = 1, ovr = {})
-  mkCountText(text, color, scale, { pos = [pw(80), ph(-90)] }.__merge(ovr))
+  mkCountText(text, color, scale, { pos = const [pw(80), ph(-90)] }.__merge(ovr))
 
 let mkCountTextLeft = @(text, color, scale = 1, ovr = {})
-  mkCountText(text, color, scale, { hplace = ALIGN_RIGHT, pos = [pw(-80), ph(-90)] }.__merge(ovr))
+  mkCountText(text, color, scale, { hplace = ALIGN_RIGHT, pos = const [pw(-80), ph(-90)] }.__merge(ovr))
 
 function mkCountTextLeftUpperlist(btnSize, scale, count) {
   let font = getScaledFont(countTextFont, scale)

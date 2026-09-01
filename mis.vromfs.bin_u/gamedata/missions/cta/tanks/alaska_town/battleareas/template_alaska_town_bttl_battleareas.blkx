@@ -16,22 +16,40 @@
     }
   },
   "imports": {
-    "import_record": {
-      "file": "gameData/missions/cta/tanks/alaska_town/tank_spawns/template_alaska_town_Bttl_tank_spawns.blk",
-      "importAreas": true,
-      "importUnits": true,
-      "importTriggers": true,
-      "importMissionObjectives": true,
-      "importWayPoints": true,
-      "importDialogs": true,
-      "showAreas": true,
-      "showUnits": true,
-      "showTriggers": true,
-      "showMissionObjectives": true,
-      "showWayPoints": true,
-      "showDialogs": true,
-      "excludes": {}
-    }
+    "import_record": [
+      {
+        "file": "gameData/missions/cta/tanks/alaska_town/tank_spawns/template_alaska_town_Bttl_tank_spawns.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/cta/tanks/alaska_town/battleareas/template_alaska_town_battlearea_exclude.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
   },
   "triggers": {
     "isCategory": true,
@@ -66,13 +84,17 @@
             7.54979e-8
           ],
           [
-            1945.65,
-            42.4976,
-            2954.35
+            1181.65,
+            40.0974,
+            1947.7
           ]
         ],
         "props": {
-          "squad_members": "t1_killarea_block01"
+          "squad_members": [
+            "t1_killarea_block01",
+            "t1_killarea_block02",
+            "t1_killarea_block03"
+          ]
         }
       },
       {
@@ -94,13 +116,17 @@
             7.54979e-8
           ],
           [
-            2096.3,
-            33.6477,
-            1038.75
+            1169.9,
+            31.2473,
+            1809.95
           ]
         ],
         "props": {
-          "squad_members": "t2_killarea_block01"
+          "squad_members": [
+            "t2_killarea_block01",
+            "t2_killarea_block02",
+            "t2_killarea_block03"
+          ]
         }
       }
     ]
@@ -133,87 +159,6 @@
       "objLayer": 4,
       "props": {}
     },
-    "t2_killarea_block01": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          0.0000113247,
-          0.0,
-          -150.0
-        ],
-        [
-          0.0,
-          100.0,
-          0.0
-        ],
-        [
-          150.0,
-          0.0,
-          0.0000113247
-        ],
-        [
-          2284.4,
-          5.14111,
-          1410.1
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_killarea_block02": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          0.0000113247,
-          0.0,
-          -150.0
-        ],
-        [
-          0.0,
-          100.0,
-          0.0
-        ],
-        [
-          150.0,
-          0.0,
-          0.0000113247
-        ],
-        [
-          1978.15,
-          5.14102,
-          1433.2
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "t2_killarea_block03": {
-      "type": "Cylinder",
-      "tm": [
-        [
-          0.0000113247,
-          0.0,
-          -150.0
-        ],
-        [
-          0.0,
-          100.0,
-          0.0
-        ],
-        [
-          150.0,
-          0.0,
-          0.0000113247
-        ],
-        [
-          1680.2,
-          5.14093,
-          1448.1
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
     "t1_killarea_block01": {
       "type": "Cylinder",
       "tm": [
@@ -233,9 +178,36 @@
           0.0000113247
         ],
         [
-          2296.35,
-          5.15673,
-          2336.35
+          2117.25,
+          2.75674,
+          2335.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_killarea_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          0.0000113247,
+          0.0,
+          -150.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          150.0,
+          0.0,
+          0.0000113247
+        ],
+        [
+          2113.7,
+          2.74111,
+          1494.9
         ]
       ],
       "objLayer": 0,
@@ -260,15 +232,15 @@
           0.0000113247
         ],
         [
-          1995.4,
-          5.17844,
-          2324.1
+          1675.4,
+          2.77847,
+          2331.5
         ]
       ],
       "objLayer": 0,
       "props": {}
     },
-    "t1_killarea_block03": {
+    "t2_killarea_block02": {
       "type": "Cylinder",
       "tm": [
         [
@@ -287,9 +259,63 @@
           0.0000113247
         ],
         [
-          1694.9,
-          5.19669,
-          2329.05
+          1787.75,
+          2.74099,
+          1496.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_killarea_block03": {
+      "type": "Box",
+      "tm": [
+        [
+          -1300.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          103.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -350.0
+        ],
+        [
+          1988.55,
+          2.79995,
+          2389.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_killarea_block03": {
+      "type": "Box",
+      "tm": [
+        [
+          -1300.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          103.6,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -350.0
+        ],
+        [
+          1988.55,
+          2.79995,
+          1439.55
         ]
       ],
       "objLayer": 0,

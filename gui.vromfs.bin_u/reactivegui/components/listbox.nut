@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let listButton = require("%rGui/components/listButton.nut")
+from "%sqstd/underscore.nut" import arrayByRows
+import "%rGui/components/listButton.nut" as listButton
 
-let gapH = hdpx(20)
-let gapV = hdpx(10)
+
+const gapH = hdpx(20)
+const gapV = hdpx(10)
 
 
 function listbox(value, list, columns = null, valToString = @(v) v, setValue = null, mkContentCtor = null) {

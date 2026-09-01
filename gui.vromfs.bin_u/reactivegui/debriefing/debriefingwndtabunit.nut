@@ -1,20 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { unitExpColor } = require("%rGui/components/levelBlockPkg.nut")
-let panelBg = require("%rGui/components/panelBg.nut")
-let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
-let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
-let { mkLevelProgressLine } = require("%rGui/debriefing/levelProgressLine.nut")
-let { mkTotalRewardCountsUnit } = require("%rGui/debriefing/totalRewardCounts.nut")
-let { getBestUnitName, getUnit, getUnitRewards, getLevelProgress, sortUnitMods } = require("%rGui/debriefing/debrUtils.nut")
-let { getLevelUnlockPlateAnimTime, mkLevelUnlockPlatesContainer,
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/components/levelBlockPkg.nut" import unitExpColor
+import "%rGui/components/panelBg.nut" as panelBg
+from "%rGui/debriefing/debrLevelUnlockPlates.nut" import getLevelUnlockPlateAnimTime, mkLevelUnlockPlatesContainer,
   mkDebrPlateMod, mkDebrPlatePoints, plateH, platesGap, scrollBoxMarginV
-} = require("%rGui/debriefing/debrLevelUnlockPlates.nut")
+from "%rGui/debriefing/debrUtils.nut" import getBestUnitName, getUnit, getUnitRewards, getLevelProgress, sortUnitMods
+from "%rGui/debriefing/debriefingWndConsts.nut" import buttonsShowTime
+from "%rGui/debriefing/levelProgressLine.nut" import mkLevelProgressLine
+from "%rGui/debriefing/missionResultTitle.nut" import mkMissionResultTitle
+from "%rGui/debriefing/totalRewardCounts.nut" import mkTotalRewardCountsUnit
 
-let levelProgressAnimStartTime = 0.0
-let levelUnlocksAnimStartTime = 1.0
-let rewardsAnimStartTime = 0.5
+
+const levelProgressAnimStartTime = 0.0
+const levelUnlocksAnimStartTime = 1.0
+const rewardsAnimStartTime = 0.5
 
 let unlockPlatesContainerHeight = plateH * 3 + platesGap * 2 + scrollBoxMarginV * 2
 
@@ -112,10 +112,10 @@ function mkDebriefingWndTabUnit(debrData, params) {
                 children = [
                   panelBg.__merge(totalRewardCountsComp.__update({
                     size = SIZE_TO_CONTENT
-                    pos = [hdpx(85), hdpx(145)]
+                    pos = const [hdpx(85), hdpx(145)]
                   }))
                   mkLevelUnlockPlatesContainer(levelUnlocksComps).__update({
-                    pos = [hdpx(1000), 0],
+                    pos = const [hdpx(1000), 0],
                     size = [SIZE_TO_CONTENT, unlockPlatesContainerHeight]
                   })
                 ]

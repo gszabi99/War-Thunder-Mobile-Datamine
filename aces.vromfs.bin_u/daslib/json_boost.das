@@ -198,13 +198,6 @@ class private BetterJsonMacro : AstVariantMacro {
 [reader_macro(name="json")]
 class private JsonReader : AstReaderMacro {
     
-    
-    
-    
-    
-    
-    
-    
     def override accept(prog : ProgramPtr; mod : Module?; var expr : ExprReader?; ch : int; info : LineInfo) : bool {
         
         append(expr.sequence, ch)
@@ -575,10 +568,7 @@ def JV(value : auto(TT)) : JsonValue? {
                     fieldStateParsed = true
                 }
                 
-                
-                
-                
-                var skip = false
+                var skip = false   
                 if (fieldState.optional) {
                     
                     static_if (typeinfo is_string(field)) {
@@ -729,19 +719,8 @@ def JV(val1; val2; val3; val4; val5; val6; val7; val8; val9; val10) : JsonValue?
 
 
 
-
-
-
-
 [unused_argument(t)]
 def from_json_row(jv : JsonValue const explicit?; t : auto(TT)) : TT {
-    
-    
-    
-    
-    
-    
-    
     
     static_if (typeinfo is_struct(type<TT>)) {
         var ret <- default<TT -const>
@@ -758,9 +737,6 @@ def from_json_row(jv : JsonValue const explicit?; t : auto(TT)) : TT {
     } static_elif (typeinfo is_enum(type<TT>)) {
         return from_JV(jv, type<TT>)   
     } static_elif (typeinfo is_numeric(type<TT>)) {
-        
-        
-        
         
         static_if (typeinfo is_float(type<TT>) || typeinfo is_double(type<TT>)) {
             if (jv.value is _number) return TT(jv.value as _number)    
@@ -781,12 +757,6 @@ def from_json_row(jv : JsonValue const explicit?; t : auto(TT)) : TT {
 [unsafe_outside_of_for]
 def from_json(jv : JsonValue const?; t : type<auto(TT)>) : iterator<TT -const> {
     
-    
-    
-    
-    
-    
-    
     return <- generator<TT -const> {
         if (jv != null && jv.value is _array) {
             for (elem in jv.value as _array) {
@@ -799,14 +769,6 @@ def from_json(jv : JsonValue const?; t : type<auto(TT)>) : iterator<TT -const> {
 
 [constant_expression(key=false)]
 def read_json_field(jv : JsonValue const?; key : string; defv : auto(TT)) : TT {
-    
-    
-    
-    
-    
-    
-    
-    
     
     let found = unsafe((unsafe(jv ?as _object))?[key])   
     if (found != null) return from_json_row(*found, type<TT>)

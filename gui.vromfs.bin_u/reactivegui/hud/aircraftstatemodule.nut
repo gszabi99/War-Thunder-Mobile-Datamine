@@ -1,22 +1,24 @@
+from "%globalScripts/gameRendObjs.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { round } =  require("math")
-let { TouchAreaOutButton } = require("wt.behaviors")
-let { borderColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { isInZoom } = require("%rGui/hudState.nut")
-let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
-let damagePanelBacklight = require("%rGui/hud/components/damagePanelBacklight.nut")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { DmStateMask } = require("%rGui/hud/airState.nut")
-let { hudCoralRedColor } = require("%rGui/style/hudColors.nut")
+from "math" import round
+from "wt.behaviors" import TouchAreaOutButton
+from "%sqstd/underscore.nut" import arrayByRows
+from "%globalScripts/controls/shortcutActions.nut" import setShortcutOn, setShortcutOff
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadHotkey, mkGamepadShortcutImage
+from "%rGui/hud/actionBar/actionBarState.nut" import updateActionBarDelayed
+from "%rGui/hud/airState.nut" import DmStateMask
+import "%rGui/hud/components/damagePanelBacklight.nut" as damagePanelBacklight
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderColor
+from "%rGui/hudState.nut" import isInZoom
+from "%rGui/style/hudColors.nut" import hudCoralRedColor
+
 
 let iconSize = hdpx(60).tointeger()
-let iconColumnCount = 5
+const iconColumnCount = 5
 let red = hudCoralRedColor
 
 let dmModulesSize = [iconSize * iconColumnCount, SIZE_TO_CONTENT]
-let xrayDollSize = hdpx(150)
+const xrayDollSize = hdpx(150)
 function xrayDoll(stateFlags, scale) {
   let size = round(xrayDollSize * scale)
   return {
@@ -40,7 +42,7 @@ function useShortcutOn(shortcutId) {
   setShortcutOn(shortcutId)
   updateActionBarDelayed()
 }
-let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(60), ph(-50)] }
+let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(60), ph(-50)] }
 
 let shortcutId = "ID_SHOW_HERO_MODULES"
 let stateFlags = Watched(0)
@@ -127,7 +129,7 @@ let dmModulesEditView = {
 }
 
 let xrayModelEditView = {
-  size = [xrayDollSize, xrayDollSize]
+  size = const [xrayDollSize, xrayDollSize]
   rendObj = ROBJ_BOX
   borderWidth = hdpx(3)
   borderColor

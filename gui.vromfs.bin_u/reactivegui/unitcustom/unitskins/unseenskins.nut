@@ -1,19 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { register_command } = require("console")
-let { deferOnce } = require("dagor.workcycle")
-let { blk2SquirrelObjNoArrays, isDataBlock, eachParam, eachBlock } = require("%sqstd/datablock.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import blk2SquirrelObjNoArrays, isDataBlock, eachParam, eachBlock
+import "%appGlobals/getTagsUnitName.nut" as getTagsUnitName
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+import "%appGlobals/pServer/servProfile.nut" as servProfile
 
-let SEEN_SKINS = "seenSkins"
-let SEEN_SKINS_VERSIONS = "seenSkinsVersions"
-let SEEN_SKINS_VERSION_KEY = "seenSkinsVersion"
-let ACTUAL_VERSION = 3
+
+const SEEN_SKINS = "seenSkins"
+const SEEN_SKINS_VERSIONS = "seenSkinsVersions"
+const SEEN_SKINS_VERSION_KEY = "seenSkinsVersion"
+const ACTUAL_VERSION = 3
 let seenVersions = {
   tanks = 1
 }

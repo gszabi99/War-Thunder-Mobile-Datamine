@@ -1,18 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { allPermissions, dbgPermissions } = require("%appGlobals/permissions.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { textButtonCommon, textButtonPrimary } = require("%rGui/components/textButton.nut")
+from "%sqstd/underscore.nut" import arrayByRows
+from "%appGlobals/permissions.nut" import allPermissions, dbgPermissions
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/style/backgrounds.nut" import bgShaded
 
 
-let wndWidth = hdpx(1500)
-let gap = hdpx(10)
+const wndWidth = hdpx(1500)
+const gap = hdpx(10)
 
-let wndUid = "permissionsWnd"
+const wndUid = "permissionsWnd"
 let close = @() removeModalWindow(wndUid)
 
 let mkBtn = @(label, isActive, func) (isActive ? textButtonPrimary : textButtonCommon)(
@@ -34,7 +34,7 @@ function permissionsList() {
     watch = allPermissions
     size = FLEX_H
     flow = FLOW_VERTICAL
-    padding = [0, gap]
+    padding = const [0, gap]
     gap
     children = rows.map(@(children) {
       size = FLEX_H
@@ -51,7 +51,7 @@ return @() addModalWindow(bgShaded.__merge({
   stopHotkeys = true
   hotkeys = [[btnBEscUp, { action = close, description = loc("Cancel") }]]
   children = modalWndBg.__merge({
-    size = [wndWidth + 2 * gap, sh(90)]
+    size = const [wndWidth + 2 * gap, sh(90)]
     flow = FLOW_VERTICAL
     children = [
       modalWndHeaderWithClose("Permissions", close)

@@ -1,14 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-
-let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { groundMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString, currentWalkerMoveCtrlType
-} = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
-let { openChooseMovementControls, openChooseWalkerMovementControls
-} = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
-let { gearDownOnStopButtonList, currentGearDownOnStopButtonTouch, showGearDownControl
-} = require("%rGui/options/chooseMovementControls/gearDownControl.nut")
-let { tuningStateDefault, fontsList } = require("%rGui/hudTuning/hudTuningConsts.nut")
+from "%appGlobals/pServer/bqClient.nut" import sendSettingChangeBqEvent
+from "%rGui/hudTuning/hudTuningConsts.nut" import tuningStateDefault, fontsList
+from "%rGui/options/chooseMovementControls/chooseMovementControlsState.nut" import openChooseMovementControls,
+  openChooseWalkerMovementControls
+from "%rGui/options/chooseMovementControls/gearDownControl.nut" import gearDownOnStopButtonList,
+  currentGearDownOnStopButtonTouch, showGearDownControl
+from "%rGui/options/chooseMovementControls/groundMoveControlType.nut" import groundMoveCtrlTypesList,
+  currentTankMoveCtrlType, ctrlTypeToString, currentWalkerMoveCtrlType
 
 
 let mkSetValue = @(key) function setValue(options, id, value) {

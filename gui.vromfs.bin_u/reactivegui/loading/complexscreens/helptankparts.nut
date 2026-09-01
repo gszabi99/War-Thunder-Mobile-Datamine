@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkScreenHints, mkScreenHeader } = require("%rGui/components/screenHintsLib.nut")
+from "%rGui/components/screenHintsLib.nut" import mkScreenHints, mkScreenHeader
 
-let bgImage = "!ui/images/help/help_tank_parts2.avif"
+
+const bgImage = "!ui/images/help/help_tank_parts2.avif"
 let bgSize = [3282, 1041]
 
-let defLineLen = 140
-let borderOffs = 45
-let crewX = 1120
+const defLineLen = 140
+const borderOffs = 45
+const crewX = 1120
 let crewLineY = @(i) 113 + i * 100
 
 let mkSizeByParent = @(size) [pw(100.0 * size[0] / bgSize[0]), ph(100.0 * size[1] / bgSize[1])]
@@ -70,7 +71,7 @@ let hints = [
 
 let header = {
   hplace = ALIGN_CENTER
-  pos = [0, ph(0)]
+  pos = const [0, ph(0)]
   children = mkText(loc("help/header/tankModules"))
 }
 
@@ -81,7 +82,7 @@ function makeScreen() {
     color = 0xFF000000
     children = {
       size = [sw(100), sw(100).tofloat() / bgSize[0] * bgSize[1]]
-      pos = [0, -sh(1.5)]
+      pos = const [0, -sh(1.5)]
       rendObj = ROBJ_IMAGE
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER

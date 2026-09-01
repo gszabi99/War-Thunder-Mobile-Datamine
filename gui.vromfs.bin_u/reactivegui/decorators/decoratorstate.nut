@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { decorators, campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { myUserName } = require("%appGlobals/profileStates.nut")
-let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
-let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { register_command } = require("console")
-let { mark_decorators_seen, mark_decorators_unseen } = require("%appGlobals/pServer/pServerApi.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+from "console" import register_command
+from "%sqstd/globalState.nut" import hardPersistWatched
+import "%appGlobals/decorators/avatars.nut" as getAvatarImage
+from "%appGlobals/decorators/nickFrames.nut" import frameNick
+from "%appGlobals/pServer/campaign.nut" import decorators, campConfigs
+from "%appGlobals/pServer/pServerApi.nut" import mark_decorators_seen, mark_decorators_unseen
+from "%appGlobals/profileStates.nut" import myUserName
+
 
 let isDecoratorsSceneOpened = mkWatched(persist, "isDecoratorsSceneOpened", false)
 let isShowAllDecorators = mkWatched(persist, "isShowAllDecorators", false)

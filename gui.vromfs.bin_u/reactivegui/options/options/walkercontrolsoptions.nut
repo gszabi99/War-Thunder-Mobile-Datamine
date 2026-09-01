@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { OPT_WALER_CAMERA_FORWARD_MOVEMENT, OPT_WALKER_STEP_SHAKE_CAMERA, OPT_AUTO_ZOOM_WALKER, mkOptionValue
-} = require("%rGui/options/guiOptions.nut")
-let { set_walker_camera_forward_movement, set_auto_zoom_walker } = require("controlsOptions")
-let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { groundMoveCtrlTypesList, currentWalkerMoveCtrlType, ctrlTypeToString
-} = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
-let { openChooseWalkerMovementControls
-} = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
+from "controlsOptions" import set_walker_camera_forward_movement, set_auto_zoom_walker
+from "%appGlobals/pServer/bqClient.nut" import sendSettingChangeBqEvent
+from "%rGui/options/chooseMovementControls/chooseMovementControlsState.nut" import openChooseWalkerMovementControls
+from "%rGui/options/chooseMovementControls/groundMoveControlType.nut" import groundMoveCtrlTypesList,
+  currentWalkerMoveCtrlType, ctrlTypeToString
+from "%rGui/options/guiOptions.nut" import OPT_WALER_CAMERA_FORWARD_MOVEMENT, OPT_WALKER_STEP_SHAKE_CAMERA,
+  OPT_AUTO_ZOOM_WALKER, mkOptionValue
+
 
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "walkers", v)
 

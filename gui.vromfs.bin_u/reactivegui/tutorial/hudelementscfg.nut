@@ -1,9 +1,11 @@
+from "%globalScripts/weaponConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
 
-let sizeIncDef = hdpx(2)
-let rotatedBtnSizeInc = hdpx(40)
-let circleWithCountSizeInc = hdpx(10)
-let pushedArrowColor = 0xFF7EE2FF
+
+const sizeIncDef = hdpx(2)
+const rotatedBtnSizeInc = hdpx(40)
+const circleWithCountSizeInc = hdpx(10)
+const pushedArrowColor = 0xFF7EE2FF
 
 let rotated = @(objs) { objs, sizeInc = rotatedBtnSizeInc }
 let circle = @(objs) { objs, sizeInc = circleWithCountSizeInc }

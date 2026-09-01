@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { hudPearlGrayColor, hudTransparentColor } = require("%rGui/style/hudColors.nut")
+from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize
+from "%rGui/style/hudColors.nut" import hudPearlGrayColor, hudTransparentColor
 
-let borderWidth = hdpxi(1)
+
+const borderWidth = hdpxi(1)
 let colorActive = hudPearlGrayColor
 
 let imgSize = (touchButtonSize * 0.8  + 0.5).tointeger()

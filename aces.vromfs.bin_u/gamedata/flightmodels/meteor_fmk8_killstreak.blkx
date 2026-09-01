@@ -3,7 +3,7 @@
   "fmFile": "fm/meteor_fmk8.blk",
   "useTouchTargeting": true,
   "gForceTolerationMult": 10.3,
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeC": 0.09,
   "gearSinkRangeLR": 0.19,
   "gyroSight": true,

@@ -1,16 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("%sqstd/math.nut")
-let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { calcBulletsStatus, calcBulletStep, calcChosenBullets, calcMaxBullets, calcLeftSteps,
-  ammoReductionFactorDefExt, ammoReductionFactorsByIdxExt
-} = require("%rGui/bullets/calcBullets.nut")
-let { applySavedBullets, savedBullets, setOrSwapUnitBullet, setUnitBullets } = require("%rGui/bullets/savedBullets.nut")
-let { BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS, BULLETS_SPEC_SLOTS, ammoReductionSecFactorDef,
-  ammoReductionSpecFactorDef, BS_VISIBLE, BS_ONLY_EXTERNAL_SLOT
-} = require("%rGui/bullets/bulletsConst.nut")
-let { unit, unitName, isOwn, mods, unitMods, curBulletId, curModId, curBulletCategoryId,
-  changeModTabWithUnseenTrigger, changeBulletTabWithUnseenTrigger
-} = require("%rGui/unitMods/unitModsState.nut")
+from "%sqstd/math.nut" import ceil
+from "%rGui/bullets/bulletsConst.nut" import BULLETS_PRIM_SLOTS, BULLETS_SEC_SLOTS, BULLETS_SPEC_SLOTS,
+  ammoReductionSecFactorDef, ammoReductionSpecFactorDef, BS_VISIBLE, BS_ONLY_EXTERNAL_SLOT
+from "%rGui/bullets/calcBullets.nut" import calcBulletsStatus, calcBulletStep, calcChosenBullets, calcMaxBullets,
+  calcLeftSteps, ammoReductionFactorDefExt, ammoReductionFactorsByIdxExt
+from "%rGui/bullets/savedBullets.nut" import applySavedBullets, savedBullets, setOrSwapUnitBullet, setUnitBullets
+from "%rGui/unitMods/unitModsState.nut" import unit, unitName, isOwn, mods, unitMods, curBulletId, curModId,
+  curBulletCategoryId, changeModTabWithUnseenTrigger, changeBulletTabWithUnseenTrigger
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitBulletsChoice
 
 
 let bulletsInfo = Computed(@() unitName.get() == null ? null

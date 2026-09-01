@@ -1,34 +1,32 @@
 from "%globalsDarg/darg_library.nut" import *
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { ceil } = require("%sqstd/math.nut")
-let { utf8ToUpper, utf8ToLower } = require("%sqstd/string.nut")
-let { myUserName } = require("%appGlobals/profileStates.nut")
-let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { chosenTitle, allTitles, chosenNickFrame, availTitles,
+from "%sqstd/math.nut" import ceil
+from "%sqstd/string.nut" import utf8ToUpper, utf8ToLower
+from "%sqstd/underscore.nut" import arrayByRows
+import "%darg/helpers/hoverHoldAction.nut" as hoverHoldAction
+from "%appGlobals/decorators/nickFrames.nut" import frameNick
+from "%appGlobals/pServer/pServerApi.nut" import set_current_decorator, unset_current_decorator, decoratorInProgress
+from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
+from "%appGlobals/profileStates.nut" import myUserName
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonPricePurchase
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/decorators/decoratorState.nut" import chosenTitle, allTitles, chosenNickFrame, availTitles,
   unseenDecorators, markDecoratorSeen, markDecoratorsSeen, isShowAllDecorators
-} = require("%rGui/decorators/decoratorState.nut")
-let { set_current_decorator, unset_current_decorator, decoratorInProgress
-} = require("%appGlobals/pServer/pServerApi.nut")
-let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { textButtonPrimary, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { choosenMark, mkTitle } = require("%rGui/decorators/decoratorsPkg.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let hoverHoldAction = require("%darg/helpers/hoverHoldAction.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { mkDecoratorUnlockProgress } = require("%rGui/decorators/mkDecoratorUnlockProgress.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let purchaseDecorator = require("%rGui/decorators/purchaseDecorator.nut")
-let { PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
+from "%rGui/decorators/decoratorsPkg.nut" import choosenMark, mkTitle
+from "%rGui/decorators/mkDecoratorUnlockProgress.nut" import mkDecoratorUnlockProgress
+import "%rGui/decorators/purchaseDecorator.nut" as purchaseDecorator
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import hoverColor
 
 
-let gap = hdpx(15)
-let rowHeight = hdpx(75)
-let minRows = 6
-let columns = 2
+const gap = hdpx(15)
+const rowHeight = hdpx(75)
+const minRows = 6
+const columns = 2
 
 let bgColor = @(rowIdx) rowIdx % 2 == 0 ? 0x00000000 : 0x80323232
 
@@ -36,6 +34,7 @@ let chosenTitleName = Computed(@() chosenTitle.get()?.name ?? "")
 let selectedTitleName = Watched(chosenTitleName.get())
 let visibleTitles = Computed(@() allTitles.get().filter(@(dec, id) !dec.isHidden || isShowAllDecorators.get() || (id in availTitles.get())))
 let hasVisibleTitles = Computed(@() visibleTitles.get().len() > 0)
+let isDecoratorInProgress = Computed(@() decoratorInProgress.get() != null)
 
 function applySelectedTitle() {
   let selTitle = selectedTitleName.get()
@@ -65,7 +64,7 @@ function titleRow(name, locName, rowIdx) {
   let isUnseen = Computed(@() name in unseenDecorators.get())
   return {
     rendObj = ROBJ_SOLID
-    size = [FLEX, rowHeight]
+    size = const [FLEX, rowHeight]
     color = bgColor(rowIdx)
     xmbNode = {}
     behavior = Behaviors.Button
@@ -105,7 +104,7 @@ function titleRow(name, locName, rowIdx) {
                 image =  Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(35)}:{hdpxi(45)}:P")
               }
             : isChoosen.get() || isSelected.get()
-              ? mkSpinnerHideBlock(Computed(@() decoratorInProgress.get() != null),
+              ? mkSpinnerHideBlock(isDecoratorInProgress,
                 isChoosen.get() ? choosenMark(hdpxi(45), { hplace = ALIGN_CENTER }) : null)
             : isUnseen.get()
               ? {
@@ -129,7 +128,7 @@ function titleRow(name, locName, rowIdx) {
 
 let emptyRow = @(rowIdx) {
   rendObj = ROBJ_SOLID
-  size = [FLEX, rowHeight]
+  size = const [FLEX, rowHeight]
   color = bgColor(rowIdx)
 }
 
@@ -181,7 +180,7 @@ function titlesList() {
     titleComps.append(emptyRow(i % rows))
 
   let chosenIdx = (titles.findindex(@(v) v.name == chosenTitleName.get()) ?? 0) % rows
-  let showRowsAbove = (minRows / 2) - 0.5
+  const showRowsAbove = (minRows / 2) - 0.5
   let onAttach = @() scrollHandler.scrollToY(rowHeight * (chosenIdx - showRowsAbove))
 
   return {

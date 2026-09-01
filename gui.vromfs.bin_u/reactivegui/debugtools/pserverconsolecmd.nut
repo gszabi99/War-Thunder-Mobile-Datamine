@@ -1,44 +1,45 @@
-
 from "%globalsDarg/darg_library.nut" import *
-let { set_clipboard_text } = require("dagor.clipboard")
-let { object_to_json_string } = require("json")
-let { isDownloadedFromGooglePlay, getBuildMarket } = require("android.platform")
-let { is_android, is_ios } = require("%sqstd/platform.nut")
-let { saveJson } = require("%sqstd/json.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { roundToDigits, round_by_value } = require("%sqstd/math.nut")
-let pServerApi = require("%appGlobals/pServer/pServerApi.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
+from "android.platform" import isDownloadedFromGooglePlay, getBuildMarket
+from "console" import register_command
+from "dagor.clipboard" import set_clipboard_text
+from "json" import object_to_json_string
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/json.nut" import saveJson
+from "%sqstd/math.nut" import roundToDigits, round_by_value
+from "%sqstd/platform.nut" import is_android, is_ios
+from "%appGlobals/currenciesState.nut" import allCurrencies, currencyOrder, getDbgCurrencyCount
+from "%appGlobals/customSettings.nut" import resetCustomSettings
+from "%appGlobals/itemsState.nut" import itemsOrderFull
+from "%appGlobals/pServer/campaign.nut" import curCampaign, campProfile, setCampaign, campaignsList, campConfigs
+import "%appGlobals/pServer/pServerApi.nut" as pServerApi
+from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg, battleUnitsMaxMRank
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
+from "%appGlobals/rewardType.nut" import G_CURRENCY, G_UNIT, G_UNIT_UPGRADE
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText
+from "%rGui/components/scrollbar.nut" import makeSideScroll
+from "%rGui/unit/hangarUnit.nut" import mainHangarUnitName, mainHangarUnit
+from "%rGui/unlocks/unlocks.nut" import resetUserstatAppData
+
+
+
 let { add_unit_exp, add_player_exp, add_currency_no_popup, change_item_count, set_purch_player_type,
   check_new_offer, debug_offer_generation_stats, shift_all_offers_time, generate_fixed_type_offer, add_subscription_time,
   userstat_add_item, add_premium, remove_premium, add_unit, remove_unit, registerHandler, add_decal_by_name,
   add_decorator, set_current_decorator, remove_decorator, unset_current_decorator, add_all_decals, remove_decal_by_name,
   apply_profile_mutation, add_lootbox, get_base_lootbox_chances, get_my_lootbox_chances, remove_all_decals,
   reset_lootbox_counters, reset_profile_with_stats, renew_ad_budget, halt_goods_purchase, add_shop_goods,
-  halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle, debug_apply_unit_daily_bonus_in_battle,
+  halt_offer_purchase, add_boosters, debug_apply_boosters_in_battle,
   add_all_skins_for_unit, remove_all_skins_for_unit, upgrade_unit, downgrade_unit, add_blueprints,
   add_battle_mod, set_research_unit, add_slot_exp, validate_active_offer,
   shift_all_personal_goods_time, halt_personal_goods_purchase, apply_deeplink_reward, authorize_deeplink_reward,
   check_purchases_debug, reset_daily_counter, debug_apply_deserter_lock_time, debug_reset_deserters,
   add_currency_no_popup_by_full_id, get_profile, debug_apply_unit_rent, get_gdpr_report,
   get_purchases_list, userstat_start_personal_season, add_unit_skin, pp_get_config, pp_get_units, pp_add_rewards,
-  add_unit_gold_today, get_configs_set, pp_get_currencies, add_unit_stats
+  add_unit_gold_today, get_configs_set, pp_get_currencies, add_unit_stats, debug_skip_event_delay
 } = pServerApi
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
-let { resetUserstatAppData } = require("%rGui/unlocks/unlocks.nut")
-let { campMyUnits, campUnitsCfg, battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
-let { resetCustomSettings } = require("%appGlobals/customSettings.nut")
-let { G_CURRENCY, G_UNIT, G_UNIT_UPGRADE } = require("%appGlobals/rewardType.nut")
-let { mainHangarUnitName, mainHangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { register_command } = require("console")
-let { curCampaign, campProfile, setCampaign, campaignsList, campConfigs
-} = require("%appGlobals/pServer/campaign.nut")
-let { itemsOrderFull } = require("%appGlobals/itemsState.nut")
-let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
-let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
-let { allCurrencies, currencyOrder, getDbgCurrencyCount } = require("%appGlobals/currenciesState.nut")
 
 
 registerHandler("consolePrintResult",
@@ -219,9 +220,6 @@ register_command(
 register_command(
   @() debug_apply_boosters_in_battle(servProfile.get()?.boosters.filter(@(v) v.battlesLeft > 0 && !v.isDisabled).keys() ?? [], "consolePrintResult"),
   "meta.debug_apply_boosters_in_battle")
-register_command(
-  @() debug_apply_unit_daily_bonus_in_battle(mainHangarUnitName.get() ?? "", "consolePrintResult"),
-  "meta.debug_apply_unit_daily_bonus_in_battle")
 
 register_command(@(statName, amount)
   add_unit_stats(mainHangarUnitName.get(), statName, amount, "consolePrintResult"),
@@ -277,9 +275,9 @@ foreach (ot in offerTypes) {
 register_command(@() validate_active_offer(curCampaign.get()),
   "meta.validate_active_offer")
 
-foreach (cmd in ["get_all_configs", "reset_profile",
-  "unlock_all_common_units", "unlock_all_premium_units", "unlock_all_units", "unlock_all_units_and_upgrade", "unlock_all_unreleased_units",
-  "check_purchases", "reset_mutations_timestamp", "reset_scheduled_reward_timers", "debug_reset_all_unit_daily_bonus", "debug_reset_unit_rent"
+foreach (cmd in ["get_all_configs", "reset_profile", "reset_free_gold_use", "unlock_all_unreleased_units",
+  "unlock_all_common_units", "unlock_all_premium_units", "unlock_all_units", "unlock_all_units_and_upgrade",
+  "check_purchases", "reset_mutations_timestamp", "reset_scheduled_reward_timers", "debug_reset_unit_rent"
 ]) {
   let action = pServerApi[cmd]
   register_command(@() action("consolePrintResult"), $"meta.{cmd}")
@@ -352,6 +350,7 @@ register_command(
 register_command(@() debug_apply_unit_rent(1, curCampaign.get(), serverTime.get()),
   "meta.debug_apply_unit_rent")
 register_command(@() debug_reset_deserters(), "meta.debug_reset_deserters")
+register_command(@() debug_skip_event_delay(curCampaign.get(), "consolePrintResult"), "meta.debug_skip_event_delay")
 
 register_command(
   function() {

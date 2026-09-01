@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round_by_value, round } = require("%sqstd/math.nut")
+from "%sqstd/math.nut" import round_by_value, round
 
-let rangeSeparator = " - "
+
+const rangeSeparator = " - "
 
 let getMassText = @(mass) mass < 1 ? "".concat((1000 * mass).tointeger(), loc("measureUnits/gr"))
   : "".concat(round_by_value(mass, 0.01), loc("measureUnits/kg"))

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getUnitTagsShop } = require("%appGlobals/unitTags.nut")
-let { getAttrValRaw, applyAttrLevels } = require("%rGui/attributes/attrValues.nut")
+from "%appGlobals/unitTags.nut" import getUnitTagsShop
+from "%rGui/attributes/attrValues.nut" import getAttrValRaw, applyAttrLevels
+
 
 function getUnitStats(commonData) {
   let { unitDataCache, sharedWatches } = commonData

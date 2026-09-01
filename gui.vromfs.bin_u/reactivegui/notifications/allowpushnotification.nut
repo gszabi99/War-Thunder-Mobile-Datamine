@@ -1,17 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let { getApiVersion, checkAndRequestPermission } = require("android.platform")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { isNoExtraScenesAfterDebriefing } = require("%rGui/debriefing/debriefingState.nut")
-let { needRateGame } = require("%rGui/feedback/rateGameState.nut")
-let { isInQueue } = require("%appGlobals/queueState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { sharedStats } = require("%appGlobals/pServer/campaign.nut")
+from "android.platform" import getApiVersion, checkAndRequestPermission
+from "dagor.workcycle" import deferOnce
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/clientState/clientState.nut" import isInDebriefing
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import sharedStats
+from "%appGlobals/queueState.nut" import isInQueue
+from "%rGui/debriefing/debriefingState.nut" import isNoExtraScenesAfterDebriefing
+from "%rGui/feedback/rateGameState.nut" import needRateGame
 
 
 let needAskPermissions = getApiVersion() >= 33
-let MIN_SESSIONS_TO_SHOW_ON_LOGIN = 3
+const MIN_SESSIONS_TO_SHOW_ON_LOGIN = 3
 let isShowed = hardPersistWatched("allowPushNotificationsShowed", false)
 
 function show() {

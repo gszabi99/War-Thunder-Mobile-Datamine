@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-from "hudMessages" import *
 from "%appGlobals/unitConst.nut" import *
+from "hudMessages" import *
+from "mission" import get_mplayer_by_id
+from "%appGlobals/clientState/clientState.nut" import localMPlayerTeam, isInBattle
+from "%appGlobals/unitTags.nut" import getUnitType
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+import "%rGui/hudHints/hudMessagesUnitTypesMap.nut" as hudMessagesUnitTypesMap
+from "%rGui/missionState.nut" import isGtFFA
+from "%rGui/style/teamColors.nut" import teamBlueLightColor, teamRedLightColor, mySquadLightColor
 
-let { eventbus_subscribe } = require("eventbus")
-let { get_mplayer_by_id } = require("mission")
-let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { localMPlayerTeam, isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
-let hudMessagesUnitTypesMap = require("%rGui/hudHints/hudMessagesUnitTypesMap.nut")
-let { isGtFFA } = require("%rGui/missionState.nut")
 
-let maxKillLogEvents = 5
+const maxKillLogEvents = 5
 let state = require("%sqstd/mkEventLogState.nut")({
   persistId = "killLogState"
   maxActiveEvents = maxKillLogEvents
@@ -24,7 +24,7 @@ isInBattle.subscribe(@(_) clearEvents())
 
 const MP_TEAM_NEUTRAL = 0
 
-let localPlayerColor = 0xFFDDA339
+const localPlayerColor = 0xFFDDA339
 
 let unitTypeSuffix = {
   [AIR]        = "_a",
@@ -72,7 +72,7 @@ function getActionTextIconic(msg) {
   return loc($"icon/hud_msg_mp_dmg/{iconId}")
 }
 
-eventbus_subscribe("HudMessage", function(data) {
+subscribeHudEvent("HudMessage", function(data) {
   if (data.type != HUD_MSG_MULTIPLAYER_DMG || !data.isKill)
     return
 

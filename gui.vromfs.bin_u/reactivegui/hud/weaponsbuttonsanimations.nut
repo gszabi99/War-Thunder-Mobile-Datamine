@@ -1,14 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { touchButtonSize } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { spendItemsQueue, removeSpendItem } = require("%rGui/hud/spendItems.nut")
+from "%rGui/components/currencyComp.nut" import mkCurrencyImage
+from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize
+from "%rGui/hud/spendItems.nut" import spendItemsQueue, removeSpendItem
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX
 
-let consumableIconSize = hdpx(50)
-let consumableAnimationBottom = hdpx(-80)
-let consumableAnimationTop = hdpx(-130)
-let FADE = 0.2
-let SHOW = 0.8
+
+const consumableIconSize = hdpx(50)
+const consumableAnimationBottom = hdpx(-80)
+const consumableAnimationTop = hdpx(-130)
+const FADE = 0.2
+const SHOW = 0.8
 
 function mkBtnGlare(trigger, btnSize = touchButtonSize) {
   let btnGlareSize = (1.62 * btnSize).tointeger()

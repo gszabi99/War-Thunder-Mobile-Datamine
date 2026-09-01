@@ -1,18 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { balance, WP, GOLD, WARBOND, isBalanceReceived } = require("%appGlobals/currenciesState.nut")
-let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { SPARE } = require("%appGlobals/itemsState.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { isProfileReceived } = require("%appGlobals/pServer/campaign.nut")
-let { isAuthorized } = require("%appGlobals/loginState.nut")
-let { mkCurrencyComp, CS_GAMERCARD } = require("%rGui/components/currencyComp.nut")
-let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
-let { goodTextColor2, badTextColor2, hoverColor } = require("%rGui/style/stdColors.nut")
-let { mkBalanceDiffAnims, mkBalanceHiglightAnims } = require("%rGui/mainMenu/balanceAnimations.nut")
-let { isAdsVisible } = require("%rGui/ads/adsState.nut")
-let { GPT_PREMIUM } = require("%rGui/shop/goodsPreviewState.nut")
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/currenciesState.nut" import balance, WP, GOLD, WARBOND, isBalanceReceived
+from "%appGlobals/itemsState.nut" import SPARE
+from "%appGlobals/loginState.nut" import isAuthorized
+from "%appGlobals/pServer/campaign.nut" import isProfileReceived
+from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/ads/adsState.nut" import isAdsVisible
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, CS_GAMERCARD
+from "%rGui/mainMenu/balanceAnimations.nut" import mkBalanceDiffAnims, mkBalanceHiglightAnims
+from "%rGui/shop/goodsPreviewState.nut" import GPT_PREMIUM
+from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset
+from "%rGui/style/stdColors.nut" import goodTextColor2, badTextColor2, hoverColor
+from "%rGui/textFormatByLang.nut" import decimalFormat
+
 
 let visibleBalance = hardPersistWatched("balance.visibleBalance", {})
 let changeOrders = hardPersistWatched("balance.changeOrders", {})
@@ -138,7 +139,7 @@ let mkChangeView = @(id, change) {
 let plus = {
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
-  pos = [pw(30), ph(30)]
+  pos = const [pw(30), ph(30)]
   rendObj = ROBJ_TEXT
   color = 0xFFFFFFFF
   text = "+"

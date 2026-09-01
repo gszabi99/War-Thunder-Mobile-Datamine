@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/notifications/consentTcf/consentTcfState.nut" import isOpenedPartnersExt,
-  vendorsLists, vendorsListsCfg, getPurposesList, getSpecialPurposesList,
-  getFeaturesList, getDataCategoiresList, mkPartnersExtLists, debugShowIds
 from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkManageButtons, mkTextarea, mkLink,
   separatorLine, openUrl, gapAbove, gapBelow, fadedAndMinor
+from "%rGui/notifications/consentTcf/consentTcfState.nut" import isOpenedPartnersExt, vendorsLists, vendorsListsCfg,
+  getPurposesList, getSpecialPurposesList, getFeaturesList, getDataCategoiresList, mkPartnersExtLists, debugShowIds
 from "%rGui/notifications/consentTcf/mkExpandableSwitch.nut" import mkExpandableSwitch, mkSwitch
+
 
 const BQ_WND_ID = "consentPartners"
 

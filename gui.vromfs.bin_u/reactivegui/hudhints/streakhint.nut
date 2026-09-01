@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { registerHintCreator, mkGradientBlock, defBgColor } = require("%rGui/hudHints/hintCtors.nut")
-let { mkStreakIcon, getMultiStageUnlockId, getUnlockLocText } = require("%rGui/unlocks/streakPkg.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { WP } = require("%appGlobals/currenciesState.nut")
-let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
+from "%appGlobals/currenciesState.nut" import WP
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/currencyStyles.nut" import CS_SMALL
+from "%rGui/hudHints/hintCtors.nut" import registerHintCreator, mkGradientBlock, defBgColor
+from "%rGui/unlocks/streakPkg.nut" import mkStreakIcon, getMultiStageUnlockId, getUnlockLocText
 
-let HINT_TYPE = "streak"
+
+const HINT_TYPE = "streak"
 
 registerHintCreator(HINT_TYPE, function(data, _) {
   let { unlockId = "", wp = 0, stage = 1, sound = "streak" } = data

@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { invitationsUids, markRead, markReadAll, clearAll } = require("%rGui/invitations/invitationsState.nut")
-let { mkContactActionBtn } = require("%rGui/contacts/mkContactActionBtn.nut")
-let squadNotifyToMeResponse = require("%rGui/contacts/mkSquadResponse.nut")
-let { contactsBlock } = require("%rGui/contacts/mkContactListScene.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
-let { PROFILE_VIEW } = require("%rGui/contacts/contactActions.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/textButton.nut" import textButtonCommon
+from "%rGui/contacts/contactActions.nut" import PROFILE_VIEW
+from "%rGui/contacts/mkContactActionBtn.nut" import mkContactActionBtn
+from "%rGui/contacts/mkContactListScene.nut" import contactsBlock
+import "%rGui/contacts/mkSquadResponse.nut" as squadNotifyToMeResponse
+from "%rGui/invitations/invitationsState.nut" import invitationsUids, markRead, markReadAll, clearAll
 
 
-let gap = hdpx(24)
+const gap = hdpx(24)
 let playerSelectedUserId = mkWatched(persist, "squadSelectedUserId")
 let selectedUserId = Computed(@() playerSelectedUserId.get() in invitationsUids.get()
   ? playerSelectedUserId.get()

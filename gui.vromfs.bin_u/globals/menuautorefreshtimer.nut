@@ -1,10 +1,11 @@
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout
 from "math" import max
-let { get_time_msec } = require("dagor.time")
-let { setTimeout } = require("dagor.workcycle")
-let { kwarg } = require("%sqstd/functools.nut")
-let { windowActive } = require("%appGlobals/windowState.nut")
-let { isLoggedIn } = require("loginState.nut")
-let { isInBattle } = require("clientState/clientState.nut")
+from "%sqstd/functools.nut" import kwarg
+from "%appGlobals/windowState.nut" import windowActive
+from "clientState/clientState.nut" import isInBattle
+from "loginState.nut" import isLoggedIn
+
 
 
 

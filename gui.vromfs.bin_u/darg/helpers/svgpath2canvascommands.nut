@@ -1,6 +1,7 @@
 from "dagor.system" import get_arg_value_by_name
 from "daRg" import *
 from "std/underscore.nut" import chunk
+from "types" import Array
 
 const MOVE_ABS = "MOVE_ABS"
 const MOVE_REL = "MOVE_REL"
@@ -52,7 +53,7 @@ foreach(i in COMMANDS_KEYS){
 let NUMBERS = [0,1,2,3,4,5,6,7,8,9, "."].map(@(v) v.tostring())
 const MINUS = "-"
 
-function prP(str, start=0){
+function prP(str, start=0): table {
   for (local i=start; i<str.len(); i++){
     let chr = str[i].tochar()
     if ((i == start && chr == MINUS) || NUMBERS.contains(chr))
@@ -61,7 +62,7 @@ function prP(str, start=0){
   }
   return {substr = str.slice(start), end=str.len()}
 }
-function parsePoints(str){
+function parsePoints(str): array {
   let res = []
   local start = 0
   while (start<str.len()){
@@ -76,7 +77,7 @@ function parsePoints(str){
   return res.map(@(v) v.tofloat())
 }
 
-function parsePath(pathstr){
+function parsePath(pathstr): array {
   let res = []
   local last = -1
   local lastcommand = null
@@ -119,7 +120,7 @@ function parsePath(pathstr){
   return res
 }
 
-function transformP(point, offset, scale, curpos, command=null){
+function transformP(point, offset, scale, curpos, command=null): array {
   if (command?.abs)
     curpos = [0,0]
   return [(point[0]+curpos[0]-offset[0])*scale[0], (point[1]+curpos[1]-offset[1])*scale[1]]
@@ -127,7 +128,7 @@ function transformP(point, offset, scale, curpos, command=null){
 
 let DRAWLINE_CMDS = COMMANDS.filter(@(v) !v?.draw)
 
-function curPos(curCursorPos, point, command=null){
+function curPos(curCursorPos, point, command=null): array {
   let abs = command?.abs
   if (abs) {
     return [point[0], point[1]]
@@ -135,7 +136,7 @@ function curPos(curCursorPos, point, command=null){
   return [curCursorPos[0]+point[0], curCursorPos[1]+point[1]]
 }
 
-function pathToCanvas(path, viewBox=null, fill=false){
+function pathToCanvas(path, viewBox=null, fill=false): array {
   viewBox = viewBox ?? [0,0,100,100]
   let offset = [viewBox[0], viewBox[1]]
   let scale = [100.0/viewBox[2], 100.0/viewBox[3]]
@@ -182,8 +183,8 @@ function pathToCanvas(path, viewBox=null, fill=false){
   return res
 }
 
-function stringify(v){
-  if (type(v) == "array")
+function stringify(v): string {
+  if (v instanceof Array)
     return "".concat("[", ", ".join(v.map(stringify)), "]")
   return v == null ? "null" : v.tostring()
 }

@@ -1,17 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
+from "eventbus" import eventbus_subscribe
+from "ios.platform" import getTrackingPermission, ATT_GRANTED
+from "%sqstd/platform.nut" import is_android, is_ios
+from "%appGlobals/consent.nut" import isTcfConsentEnabled
+from "%appGlobals/loginState.nut" import isReadyForGoogleConsent, goodleConsent, isAuthorized
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%appGlobals/permissions.nut" import google_consent_enabled
+from "types" import Integer
+
+
 let logC = log_with_prefix("[consent] ")
 
-let { eventbus_subscribe } = require("eventbus")
-let { is_android, is_ios } = require("%sqstd/platform.nut")
-let ads = is_ios ? require("ios.ads")
-  : is_android ? require("android.ads")
+
+let ump = is_ios || is_android ? (require_optional("consent.googleump") ?? require(is_ios ? "ios.ads" : "android.ads"))
   : require("%rGui/ads/byPlatform/adsAndroidDbg.nut")
-let { requestConsent } = ads
-let { getTrackingPermission, ATT_GRANTED } = require("ios.platform")
-let { google_consent_enabled } = require("%appGlobals/permissions.nut")
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { isReadyForGoogleConsent, goodleConsent, isAuthorized } = require("%appGlobals/loginState.nut")
-let { isTcfConsentEnabled } = require("%appGlobals/consent.nut")
+let { requestConsent } = ump
 
 let isGoogleConsentEnabled = keepref(Computed(@()
      google_consent_enabled.get()
@@ -19,8 +22,8 @@ let isGoogleConsentEnabled = keepref(Computed(@()
   && (!is_ios || getTrackingPermission() == ATT_GRANTED)))
 
 let consentNames = {}
-foreach(id, val in ads)
-  if (type(val) != "integer")
+foreach(id, val in ump)
+  if (!(val instanceof Integer))
     continue
   else if (id.startswith("CONSENT_"))
     consentNames[val] <- id
@@ -46,7 +49,9 @@ isReadyForGoogleConsent.subscribe(function(isReady) {
   requestConsent(true)
 })
 
-eventbus_subscribe("android.ads.onConsentRequest", @(msg) onConsentResponse("request_result", msg))
-eventbus_subscribe("android.ads.onShowConsent",    @(msg) onConsentResponse("show_result", msg))
-eventbus_subscribe("ios.ads.onConsentRequest",     @(msg) onConsentResponse("request_result", msg))
-eventbus_subscribe("ios.ads.onShowConsent",        @(msg) onConsentResponse("show_result", msg))
+eventbus_subscribe("consent.googleump.onConsentRequest", @(msg) onConsentResponse("request_result", msg))
+eventbus_subscribe("consent.googleump.onConsentShow",    @(msg) onConsentResponse("show_result", msg))
+
+eventbus_subscribe(is_ios ?  "ios.ads.onConsentRequest" : "android.ads.onConsentRequest", @(msg) onConsentResponse("request_result", msg))
+eventbus_subscribe(is_ios ? "ios.ads.onConsentShow" : "android.ads.onConsentShow",    @(msg) onConsentResponse("show_result", msg))
+

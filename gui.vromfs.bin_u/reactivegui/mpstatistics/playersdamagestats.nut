@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
-let { get_mplayer_by_id } = require("mission")
-let { resetTimeout } = require("dagor.workcycle")
-let { isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
+from "dagor.workcycle" import resetTimeout
+from "mission" import get_mplayer_by_id
+from "%appGlobals/clientState/clientState.nut" import isInBattle, isInLoadingScreen
+
 
 let playersDamageStats = Watched({})
 let statsRaw = Watched({})
@@ -62,7 +63,7 @@ register_es("players_damage_stats_es",
     },
     [["onDestroy"]] = function trackDamageStats(_, comp) {
       let { player_id } = comp
-      if (player_id.tostring() in statsRaw.get())
+      if (player_id in statsRaw.get())
         statsRaw.mutate(@(v) v.$rawdelete(player_id))
     },
   },

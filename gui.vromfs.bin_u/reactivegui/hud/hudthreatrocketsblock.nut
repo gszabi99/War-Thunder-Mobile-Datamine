@@ -1,15 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hudWhiteColor, hudCoralRedColor } = require("%rGui/style/hudColors.nut")
+from "%sqstd/math.nut" import round
+from "%rGui/hudState.nut" import threatRockets, hasCountermeasures
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudCoralRedColor
 
-let { threatRockets, hasCountermeasures } = require("%rGui/hudState.nut")
-let { round } = require("%sqstd/math.nut")
 
-let textPadding = hdpx(10)
-let imgSize = hdpx(40)
+const textPadding = hdpx(10)
+const imgSize = hdpx(40)
 let textColor = hudWhiteColor
 let warnColor = hudCoralRedColor
-let rocketsPosX = hdpx(650)
-let blinkingTime = 4.0
+const rocketsPosX = hdpx(650)
+const blinkingTime = 4.0
 
 let imageType = [
   "hud_missile_anti_ship",
@@ -65,7 +65,7 @@ let threatRocketsBlock = @() {
   vplace = ALIGN_CENTER
   halign = ALIGN_LEFT
   flow = FLOW_VERTICAL
-  pos = [rocketsPosX, 0]
+  pos = const [rocketsPosX, 0]
   children = !hasCountermeasures.get() ? null
     : threatRockets.get()
         .map(@(threat) threat.x > 0 ? mkRecord(threat.x, threat.y, threat.z) : null)

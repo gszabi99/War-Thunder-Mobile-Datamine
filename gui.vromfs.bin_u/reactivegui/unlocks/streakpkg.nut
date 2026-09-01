@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { streakPresentation } = require("%appGlobals/config/streakPresentation.nut")
-let { format } = require("string")
+from "string" import format
+from "%appGlobals/config/streakPresentation.nut" import streakPresentation
+
 
 let multiStageUnlockIdConfig = {
   multi_kill_air =    { [2] = "double_kill_air",    [3] = "triple_kill_air",    def = "multi_kill_air" }

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+from "eventbus" import eventbus_subscribe
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+
 
 let state = require("%sqstd/mkEventLogState.nut")({
   persistId = "logerrLogState"

@@ -1,15 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { register_command } = require("console")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
-let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
-let { userstatDescList, userstatUnlocks, userstatStatsTables, userstatRequest, userstatRegisterHandler,
-  forceRefreshUnlocks, forceRefreshStats, tablesActivityOvr
-} = require("%rGui/unlocks/userstat.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/rewardType.nut" import G_CURRENCY
+from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
+from "%rGui/unlocks/userstat.nut" import userstatDescList, userstatUnlocks, userstatStatsTables, userstatRequest,
+  userstatRegisterHandler, forceRefreshUnlocks, forceRefreshStats, tablesActivityOvr
+from "types" import Table
+
 
 let ignoreUnseen = hardPersistWatched("unlocks.ignoreUnseen", {})
 let allowOpenUnlock = hardPersistWatched("allowOpenUnlock", false)
@@ -83,7 +84,7 @@ let unlockProgress = Computed(function(prev) {
   let progressList = userstatUnlocks.get()?.unlocks ?? {}
   let unlockDataList = allUnlocksDesc.get()
   let res = {}
-  local hasChanges = type(prev) != "table"
+  local hasChanges = !(prev instanceof Table)
   foreach (name, _ in progressList.__merge(unlockDataList)) {
     let pNow = calcUnlockProgress(progressList?[name], unlockDataList?[name])
     let pWas = prev?[name]
@@ -110,14 +111,6 @@ function isFitSeason(unlock, seasons) {
     return false
   return (start_index == null || start_index <= season)
     && (end_index == null || end_index >= season)
-}
-
-function isSeasonPast(unlock, seasons) {
-  let { end_index = null, table = unlock?.table ?? "" } = unlock?.activity
-  if (table == "")
-    return false
-  let season = seasons?[table] ?? -1
-  return end_index != null && season >= 0 && end_index < season
 }
 
 let personalUnlocksData = Computed(@() userstatUnlocks.get()?.personalUnlocks ?? {})
@@ -422,7 +415,6 @@ return {
   getRelativeStageData
   unlockTables
   unlockTablesSeasons
-  isSeasonPast
   allUnlocksDesc
   buyUnlock
   buyUnlockReroll

@@ -1,17 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { prevIfEqual } = require("%sqstd/underscore.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { isInBattle, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { questsBySection, progressUnlockByTab, saveSeenQuests } = require("%rGui/quests/questsState.nut")
-let { specialEventsOrdered } = require("%rGui/event/eventState.nut")
-let { getSpecialEventRewardUnitName } = require("%rGui/event/eventLocName.nut")
-let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
-let { MAIN_EVENT_ID } = require("%rGui/unlocks/unlocksConst.nut")
-let { activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
-let { allShopGoods } = require("%rGui/shop/shopState.nut")
+from "eventbus" import eventbus_send
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/underscore.nut" import prevIfEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle, isInDebriefing
+from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/event/eventLocName.nut" import getSpecialEventRewardUnitName
+from "%rGui/event/eventState.nut" import specialEventsOrdered
+import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
+from "%rGui/quests/questsState.nut" import questsBySection, progressUnlockByTab, saveSeenQuests
+from "%rGui/shop/shopState.nut" import allShopGoods
+from "%rGui/unlocks/unlocks.nut" import activeUnlocks
+from "%rGui/unlocks/unlocksConst.nut" import MAIN_EVENT_ID
+
 
 let prevProgress = keepref(hardPersistWatched("prevProgress", null))
 

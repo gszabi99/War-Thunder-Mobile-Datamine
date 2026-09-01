@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { touchButtonSize, btnBgStyle, borderColor, borderColorPushed, borderWidth
-} = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { mkGamepadHotkey, mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { defShortcutOvr}  = require("%rGui/hud/buttons/hudButtonsPkg.nut")
-let { get_mission_time } = require("mission")
+from "math" import round
+from "mission" import get_mission_time
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadHotkey, mkGamepadShortcutImage
+from "%rGui/hud/buttons/hudButtonsPkg.nut" import defShortcutOvr
+from "%rGui/hud/cooldownComps.nut" import mkItemWithCooldownText
+from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize, btnBgStyle, borderColor, borderColorPushed, borderWidth
+
 
 let defImageSize = (0.75 * touchButtonSize).tointeger()
 

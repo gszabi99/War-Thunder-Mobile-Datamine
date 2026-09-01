@@ -1,8 +1,9 @@
-let { Computed } = require("frp")
-let { serverConfigs } = require("servConfigs.nut")
-let { curSeasons } = require("profileSeasons.nut")
-let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
-let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
+from "frp" import Computed
+from "%appGlobals/config/currencyPresentation.nut" import getBaseCurrency
+from "%appGlobals/currenciesState.nut" import orderByCurrency
+from "profileSeasons.nut" import curSeasons
+from "servConfigs.nut" import serverConfigs
+
 
 let currencySeasons = Computed(@() serverConfigs.get()?.currencySeasons ?? {})
 

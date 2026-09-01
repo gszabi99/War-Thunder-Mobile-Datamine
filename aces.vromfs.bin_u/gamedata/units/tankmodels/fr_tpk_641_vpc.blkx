@@ -2332,7 +2332,7 @@
     "tracks": {
       "animationMultiplier": 0.56,
       "height": 0.07,
-      "width": 0.1,
+      "width": 0.3,
       "trackPhysMat": "wheel"
     },
     "collisionProps": {

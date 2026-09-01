@@ -1,18 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let { isProfileReceived, curCampaign, sharedStatsByCampaign
-} = require("%appGlobals/pServer/campaign.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-
-let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { TUTORIAL_AFTER_REWARD_ID } = require("%rGui/tutorial/tutorialConst.nut")
-let { completedTutorials } = require("%rGui/tutorial/completedTutorials.nut")
-let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
+from "dagor.workcycle" import deferOnce
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/clientState/clientState.nut" import isInLoadingScreen
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import isProfileReceived, curCampaign, sharedStatsByCampaign
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
+from "%rGui/tutorial/completedTutorials.nut" import completedTutorials
+from "%rGui/tutorial/tutorialConst.nut" import TUTORIAL_AFTER_REWARD_ID
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import isTutorialActive
+from "%rGui/unit/unitPurchaseEffectScene.nut" import requestOpenUnitPurchEffect
 
 
 let UNITS_STATUS = {

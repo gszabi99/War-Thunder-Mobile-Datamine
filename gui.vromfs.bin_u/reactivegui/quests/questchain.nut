@@ -1,37 +1,36 @@
 from "%globalsDarg/darg_library.nut" import *
 from "math" import min
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, wndHeaderHeight, modalWndHeaderWithClose
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/textButton.nut" import buttonsHGap
+from "%rGui/quests/questBar.nut" import mkQuestBar
+from "%rGui/quests/questsPkg.nut" import mkQuestText
+from "%rGui/quests/rewardsComps.nut" import mkRewardsPreview, getRewardsPreviewInfo, REWARDS_PREVIEW_SLOTS
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_SMALL
+from "%rGui/shop/goodsView/sharedParts.nut" import mkSquareIconBtn
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { REWARD_STYLE_SMALL } = require("%rGui/rewards/rewardStyles.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, wndHeaderHeight, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { buttonsHGap } = require("%rGui/components/textButton.nut")
-let { mkSquareIconBtn } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { mkQuestBar } = require("%rGui/quests/questBar.nut")
-let { mkRewardsPreview, getRewardsPreviewInfo, REWARDS_PREVIEW_SLOTS } = require("%rGui/quests/rewardsComps.nut")
-let { mkQuestText } = require("%rGui/quests/questsPkg.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
 
+const WND_UID = "quest_chain_info_wnd"
 
-let WND_UID = "quest_chain_info_wnd"
-
-let maxVisibleQuestChains = 6
-let iconWidth = hdpxi(40)
-let questIconGap = hdpx(10)
-let chainIconBlockWidth = iconWidth * maxVisibleQuestChains + questIconGap * (maxVisibleQuestChains - 1)
+const maxVisibleQuestChains = 6
+const iconWidth = hdpxi(40)
+const questIconGap = hdpx(10)
+const chainIconBlockWidth = iconWidth * maxVisibleQuestChains + questIconGap * (maxVisibleQuestChains - 1)
 let questChainIconSize = [iconWidth, hdpxi(45)]
-let iconColor = 0xFFFF9C11
+const iconColor = 0xFFFF9C11
 let rewardPlateFullWidth = REWARD_STYLE_SMALL.boxSize + REWARD_STYLE_SMALL.boxGap
 
 let questChainIconCurrent = Picture($"ui/gameuiskin/quest_chain_icon_current.svg:{questChainIconSize[0]}:{questChainIconSize[1]}:P")
 let questChainIconCompleted = Picture($"ui/gameuiskin/quest_chain_icon_completed.svg:{questChainIconSize[0]}:{questChainIconSize[1]}:P")
 let questChainIconComing = Picture($"ui/gameuiskin/quest_chain_icon_coming.svg:{questChainIconSize[0]}:{questChainIconSize[1]}:P")
 
-let P_COMPLETED = 0x1
-let P_CURRENT = 0x2
-let P_PERIODIC = 0x4
+const P_COMPLETED = 0x1
+const P_CURRENT = 0x2
+const P_PERIODIC = 0x4
 
 let mkProgresImage = memoize(@(mask) {
   size = questChainIconSize
@@ -45,7 +44,7 @@ let mkProgresImage = memoize(@(mask) {
   children = !(mask & P_PERIODIC) ? null
     : {
         size = FLEX
-        pos = [0, -hdpx(3)]
+        pos = const [0, -hdpx(3)]
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         rendObj = ROBJ_TEXT

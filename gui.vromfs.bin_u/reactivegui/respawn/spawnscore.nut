@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%globalsDarg/fontScale.nut" import scaleFontWithTransform
 from "%rGui/components/currencyStyles.nut" import CS_COMMON
-from "%rGui/textFormatByLang.nut" import decimalFormat
 from "%rGui/hud/localMPlayer.nut" import mySpawnScore, addMPlayerUpdater, removeMPlayerUpdater
 from "%rGui/respawn/respawnState.nut" import isUseSpawnScore
+from "%rGui/textFormatByLang.nut" import decimalFormat
 
 
 let hudStyle = CS_COMMON.__merge({ fontStyle = fontSmallShaded })

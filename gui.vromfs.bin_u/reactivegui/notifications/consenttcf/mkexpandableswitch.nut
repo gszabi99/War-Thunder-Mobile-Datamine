@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/stdColors.nut" import selectColor
 
-let textColor = 0xFFFFFFFF
+const textColor = 0xFFFFFFFF
 let slotOnColor = selectColor
-let slotOffColor = 0xFF000000
+const slotOffColor = 0xFF000000
 
 let toEvenInt = @(v) (v / 2.0 + 0.5).tointeger() * 2
 
@@ -19,9 +19,9 @@ let expandBtnGap = headerHorGap - arrowCollapsedShiftX
 let expandableHeaderMinH = switchH
 let expandableContentLPad = arrowSize[0] + expandBtnGap
 
-let knobMoveTime = 0.1
-let activeColorTime = 0.2
-let expandTime = 0.15
+const knobMoveTime = 0.1
+const activeColorTime = 0.2
+const expandTime = 0.15
 let transEasing = InOutQuad
 
 let mkLabel = @(text) {

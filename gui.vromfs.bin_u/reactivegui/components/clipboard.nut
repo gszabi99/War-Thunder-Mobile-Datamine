@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { set_clipboard_text } = require("dagor.clipboard")
-let { showHint } = require("%rGui/tooltip.nut")
+from "dagor.clipboard" import set_clipboard_text
+from "%rGui/tooltip.nut" import showHint
 
-let CLIPBOARD_HINT_SHOW_TIME = 2
+
+const CLIPBOARD_HINT_SHOW_TIME = 2
 
 function copyToClipboard(evt, text) {
   set_clipboard_text(text)

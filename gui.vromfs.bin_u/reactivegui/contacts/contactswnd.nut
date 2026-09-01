@@ -1,20 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { friendsUids, myRequestsUids, requestsToMeUids, myBlacklistUids } = require("%rGui/contacts/contactLists.nut")
-let { mkOptionsScene, topAreaSize } = require("%rGui/options/mkOptionsScene.nut")
-let { isContactsOpened, SEARCH_TAB, FRIENDS_TAB, SQUAD_TAB, contactsOpenTabId } = require("%rGui/contacts/contactsState.nut")
-let searchContactsScene = require("%rGui/contacts/searchContactsScene.nut")
-let squadContactsScene = require("%rGui/contacts/squadContactsScene.nut")
-let { mkContactListScene } = require("%rGui/contacts/mkContactListScene.nut")
-let { mkContactActionBtn, mkContactActionBtnPrimary } = require("%rGui/contacts/mkContactActionBtn.nut")
-let { CANCEL_INVITE, REMOVE_FROM_FRIENDS, ADD_TO_BLACKLIST, REMOVE_FROM_BLACKLIST, INVITE_TO_SQUAD,
-  PROFILE_VIEW } = require("%rGui/contacts/contactActions.nut")
-let { UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
-let friendRequestToMeResponse = require("%rGui/contacts/mkContactResponse.nut")
-let { tabW } = require("%rGui/options/optionsStyle.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { invitationsUids } = require("%rGui/invitations/invitationsState.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { headerGradientBg } = require("%rGui/components/gradientDefComps.nut")
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/gradientDefComps.nut" import headerGradientBg
+from "%rGui/contacts/contactActions.nut" import CANCEL_INVITE, REMOVE_FROM_FRIENDS, ADD_TO_BLACKLIST,
+  REMOVE_FROM_BLACKLIST, INVITE_TO_SQUAD, PROFILE_VIEW
+from "%rGui/contacts/contactLists.nut" import friendsUids, myRequestsUids, requestsToMeUids, myBlacklistUids
+from "%rGui/contacts/contactsState.nut" import isContactsOpened, SEARCH_TAB, FRIENDS_TAB, SQUAD_TAB, contactsOpenTabId
+from "%rGui/contacts/mkContactActionBtn.nut" import mkContactActionBtn, mkContactActionBtnPrimary
+from "%rGui/contacts/mkContactListScene.nut" import mkContactListScene
+import "%rGui/contacts/mkContactResponse.nut" as friendRequestToMeResponse
+import "%rGui/contacts/searchContactsScene.nut" as searchContactsScene
+import "%rGui/contacts/squadContactsScene.nut" as squadContactsScene
+from "%rGui/invitations/invitationsState.nut" import invitationsUids
+from "%rGui/options/mkOptionsScene.nut" import mkOptionsScene, topAreaSize
+from "%rGui/options/optionsStyle.nut" import tabW
+from "%rGui/unseenPriority.nut" import UNSEEN_HIGH
+
 
 let tabs = [
   {

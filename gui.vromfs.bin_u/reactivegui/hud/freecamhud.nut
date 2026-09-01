@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkSimpleCircleTouchBtn } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%rGui/hud/buttons/circleTouchHudButtons.nut" import mkSimpleCircleTouchBtn
+from "%rGui/hud/menuButton.nut" import mkMenuButton
 
-let gap = hdpx(40)
+
+const gap = hdpx(40)
 
 let movementBlock = {
   flow = FLOW_VERTICAL

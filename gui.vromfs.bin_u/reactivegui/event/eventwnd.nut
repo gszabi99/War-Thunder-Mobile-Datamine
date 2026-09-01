@@ -1,58 +1,57 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen,
-  bestCampLevel, curEventLootboxes, curEvent, MAIN_EVENT_ID, isCurEventActive, isEventSceneAttached,
-  specialEventGamercardItems, campToBack, closeEventShellCleanup, curEventEndsAt
-} = require("%rGui/event/eventState.nut")
-let { closeSeasonScene } = require("%rGui/seasonScene/seasonSceneState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { lootboxInfo, mkLootboxImageWithTimer, mkPurchaseBtns, leaderbordBtn
-} = require("%rGui/event/eventPkg.nut")
-let { mkToBattleButtonWithSquadManagement } = require("%rGui/mainMenu/toBattleButton.nut")
-let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
-let { buy_lootbox, lootboxInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { PURCH_SRC_EVENT, PURCH_TYPE_LOOTBOX, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { has_leaderboard } = require("%appGlobals/permissions.nut")
-let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { lootboxImageWithTimer, lootboxContentBlock, lootboxHeader, mkJackpotProgress, mkJackpotProgressBar,
-  smallChestIcon
-} = require("%rGui/shop/lootboxPreviewContent.nut")
-let { isEventWndLootboxOpen, openEventWndLootbox, closeEventWndLootbox, eventWndLootbox,
-  getStepsToNextFixed
-} = require("%rGui/shop/lootboxPreviewState.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { buttonsHGap } = require("%rGui/components/textButton.nut")
-let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let squadPanel = require("%rGui/squad/squadPanel.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardPlateComp.nut")
+from "eventbus" import eventbus_send
+from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+from "%appGlobals/gameModes/gameModes.nut" import allGameModes
+from "%appGlobals/itemsState.nut" import itemsCfgByCampaignOrdered, orderByItems, SPARE
+from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
+from "%appGlobals/pServer/campaign.nut" import curCampaign, setCampaign
+from "%appGlobals/pServer/pServerApi.nut" import buy_lootbox, lootboxInProgress
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/permissions.nut" import has_leaderboard
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/battlePass/passPkg.nut" import contentH, bottomPanelH
+from "%rGui/components/buttonStyles.nut" import defButtonHeight, defButtonMinWidth
+from "%rGui/components/currencyStyles.nut" import gamercardGap, CS_GAMERCARD
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
+from "%rGui/components/textButton.nut" import buttonsHGap
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/event/eventPkg.nut" import lootboxInfo, mkLootboxImageWithTimer, mkPurchaseBtns, leaderbordBtn
+from "%rGui/event/eventState.nut" import unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen, bestCampLevel,
+  curEventLootboxes, curEvent, MAIN_EVENT_ID, isCurEventActive, isEventSceneAttached, specialEventGamercardItems,
+  campToBack, closeEventShellCleanup, curEventEndsAt
+from "%rGui/mainMenu/balanceComps.nut" import mkItemsBalance
+from "%rGui/mainMenu/chooseCampaignWnd.nut" import onCampaignChange
+from "%rGui/mainMenu/toBattleButton.nut" import mkToBattleButtonWithSquadManagement
+import "%rGui/queue/queuePenaltyWnd.nut" as tryOpenQueuePenaltyWnd
+from "%rGui/rewards/rewardPlateComp.nut" import REWARD_STYLE_MEDIUM
+from "%rGui/seasonScene/seasonSceneState.nut" import closeSeasonScene
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_EVENT, PURCH_TYPE_LOOTBOX, mkBqPurchaseInfo
+from "%rGui/shop/lootboxPreviewContent.nut" import lootboxImageWithTimer, lootboxContentBlock, lootboxHeader,
+  mkJackpotProgress, mkJackpotProgressBar, smallChestIcon
+from "%rGui/shop/lootboxPreviewState.nut" import isEventWndLootboxOpen, openEventWndLootbox, closeEventWndLootbox,
+  eventWndLootbox, getStepsToNextFixed
+from "%rGui/shop/msgBoxPurchase.nut" import showNoBalanceMsgIfNeed
+from "%rGui/shop/shopCommon.nut" import SC_CONSUMABLES
+from "%rGui/shop/shopState.nut" import openShopWnd
+import "%rGui/squad/squadPanel.nut" as squadPanel
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/tutorial/tutorialMissions.nut" import needFirstBattleTutorForCampaign
+from "%rGui/components/timerBlock.nut" import mkTimerBlock
+
+
 let { boxSize, boxGap } = REWARD_STYLE_MEDIUM
-let { itemsCfgByCampaignOrdered, orderByItems, SPARE } = require("%appGlobals/itemsState.nut")
-let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
-let { openShopWnd } = require("%rGui/shop/shopState.nut")
-let { SC_CONSUMABLES } = require("%rGui/shop/shopCommon.nut")
-let { gamercardGap, CS_GAMERCARD } = require("%rGui/components/currencyStyles.nut")
-let { onCampaignChange } = require("%rGui/mainMenu/chooseCampaignWnd.nut")
-let { curCampaign, setCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { needFirstBattleTutorForCampaign } = require("%rGui/tutorial/tutorialMissions.nut")
-let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
-let { contentH, mkTimeEndsAtText, bottomPanelH } = require("%rGui/battlePass/passPkg.nut")
 
 
-let MAX_LOOTBOXES_AMOUNT = 3
-let contentGap = hdpx(30)
+const MAX_LOOTBOXES_AMOUNT = 3
+const contentGap = hdpx(30)
 let rewardsBlockWidth = saSize[0] - 2 * defButtonMinWidth - 2 * contentGap
 
-let wndHeaderHeight = hdpx(110)
+const wndHeaderHeight = hdpx(110)
 
 function onPurchase(lootbox, price, currencyId, count = 1) {
   if (lootboxInProgress.get())
@@ -81,9 +80,9 @@ let mkRow = @(children) {
   children
 }
 
-let progressHeight = hdpx(80)
+const progressHeight = hdpx(80)
 let mkProgress = @(stepsToFixed) @() {
-  size = [SIZE_TO_CONTENT, progressHeight]
+  size = const [SIZE_TO_CONTENT, progressHeight]
   watch = stepsToFixed
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
@@ -113,7 +112,7 @@ function mkLootboxBlock(lootbox, blockSize) {
   let unseenMark = @() {
     watch = hasUnseen
     size = 0
-    pos = [-hdpx(210), -hdpx(140)]
+    pos = const [-hdpx(210), -hdpx(140)]
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
     children = hasUnseen.get() ? priorityUnseenMark : null
@@ -139,19 +138,19 @@ function mkLootboxBlock(lootbox, blockSize) {
     children = [
       {
         vplace = ALIGN_CENTER
-        pos = [0, hdpx(40)]
+        pos = const [0, hdpx(40)]
         transform = { scale = (stateFlags.get() & S_HOVER) != 0 ? [0.9, 0.9] : [1, 1] }
         transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
         children = [lootboxImage, unseenMark]
       }
       {
         vplace = ALIGN_CENTER
-        pos = [0, -hdpx(200)]
+        pos = const [0, -hdpx(200)]
         children = info
       }
       {
         vplace = ALIGN_CENTER
-        pos = [0, hdpx(270)]
+        pos = const [0, hdpx(270)]
         children = mkProgress(stepsToFixed)
       }
     ]
@@ -263,12 +262,12 @@ function mkLootboxPreviewContent() {
       }
       @() {
         watch = eventWndLootbox
-        size = [flex(), ph(100)]
+        size = const [flex(), ph(100)]
         halign = ALIGN_CENTER
         children = eventWndLootbox.get() == null ? null
           : [
               {
-                pos = [0, ph(20)]
+                pos = const [0, ph(20)]
                 children = lootboxImageWithTimer(eventWndLootbox.get())
               }
               lootboxHeader(eventWndLootbox.get())
@@ -304,7 +303,7 @@ function eventWndContent() {
     flow = FLOW_VERTICAL
     children = isEventWndLootboxOpen.get() ? mkLootboxPreviewContent()
       : [
-          mkTimeEndsAtText(curEventEndsAt, { size = FLEX_H, halign = ALIGN_CENTER, margin = null })
+          mkTimerBlock(curEventEndsAt)
           {
             size = FLEX
             children = [

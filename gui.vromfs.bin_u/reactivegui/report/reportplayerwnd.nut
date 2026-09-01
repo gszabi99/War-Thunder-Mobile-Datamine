@@ -1,25 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
-let utf8 = require("utf8")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { dropDownMenu } = require("%rGui/components/dropDownMenu.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { REJECT_WND_UID, SUCCESS_WND_UID, REPORT_WND_UID, categoryCfg, fieldCategory, fieldMessage,
-  getFormValidationError, selectedPlayerForReport, requestSelfRow, close,
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/buttonStyles.nut" import defButtonMinWidth
+from "%rGui/components/dropDownMenu.nut" import dropDownMenu
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonCommon
+from "%rGui/components/textInput.nut" import multilineTextInput
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBUp
+from "%rGui/report/reportPlayerState.nut" import REJECT_WND_UID, SUCCESS_WND_UID, REPORT_WND_UID, categoryCfg,
+  fieldCategory, fieldMessage, getFormValidationError, selectedPlayerForReport, requestSelfRow, close,
   isReportStatusSuccessed, isReportStatusRejected, isRequestInProgress
-} = require("%rGui/report/reportPlayerState.nut")
-let { defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { btnBUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { multilineTextInput } = require("%rGui/components/textInput.nut")
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
-let defColor = 0xFFFFFFFF
-let componentWidth = hdpx(780)
+const defColor = 0xFFFFFFFF
+const componentWidth = hdpx(780)
 
 function submitImpl() {
   removeModalWindow(SUCCESS_WND_UID)
@@ -47,8 +45,6 @@ let mkTextInputLabel = @(text) {
 }.__update(fontSmall)
 
 function formBlock() {
-  let message = EditableText(fieldMessage.get())
-  let lenWatched = Computed(@() utf8(fieldMessage.get()).charCount())
   return {
     size = FLEX_H
     flow = FLOW_VERTICAL
@@ -64,14 +60,14 @@ function formBlock() {
           : null
       })
       mkTextInputLabel(loc("msgbox/report/addComment"))
-      multilineTextInput(message, lenWatched, fieldMessage)
+      multilineTextInput({ state = fieldMessage })
     ]
   }
 }
 
 let mkButtons = {
   minWidth = SIZE_TO_CONTENT
-  size = [componentWidth, SIZE_TO_CONTENT]
+  size = const [componentWidth, SIZE_TO_CONTENT]
   gap = componentWidth - defButtonMinWidth * 2
   flow = FLOW_HORIZONTAL
   children = [

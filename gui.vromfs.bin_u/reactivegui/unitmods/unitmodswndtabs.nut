@@ -1,23 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkTabs, tabExtraWidth } = require("%rGui/components/tabs.nut")
-let getCatIcon = require("%appGlobals/config/modsPresentation.nut")
-let { mods, unitMods, modsByCategory, unit, curModCategoryId,
+import "%appGlobals/config/modsPresentation.nut" as getCatIcon
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/currencyStyles.nut" import CS_SMALL
+from "%rGui/components/tabs.nut" import mkTabs, tabExtraWidth
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/unitMods/modsComps.nut" import mkLevelLock, bgShade
+from "%rGui/unitMods/unitModsConst.nut" import tabW, tabH, tabContentMargin, tabsOvr
+from "%rGui/unitMods/unitModsState.nut" import mods, unitMods, modsByCategory, unit, curModCategoryId,
   unseenModsByCategory, onModTabChange, modsSort, getModCost, curUnitModCostCfg, isOwn
-} = require("%rGui/unitMods/unitModsState.nut")
-let { tabW, tabH, tabContentMargin, tabsOvr } = require("%rGui/unitMods/unitModsConst.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { mkLevelLock, bgShade } = require("%rGui/unitMods/modsComps.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { CS_SMALL } = require("%rGui/components/currencyStyles.nut")
 
 
-let defImage = "ui/gameuiskin#upgrades_tools_icon.avif:0:P"
+const defImage = "ui/gameuiskin#upgrades_tools_icon.avif:0:P"
 
 let tabContentW = tabW - tabExtraWidth
-let iconSize = hdpxi(60)
+const iconSize = hdpxi(60)
 
 let mkCatIcon = @(cat) {
-  size = [iconSize, iconSize]
+  size = const [iconSize, iconSize]
   margin = hdpx(10)
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_LEFT

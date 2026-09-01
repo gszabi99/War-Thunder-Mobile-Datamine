@@ -1,13 +1,15 @@
+from "%globalScripts/gameRendObjs.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { mkLoadingTip } = require("%rGui/loading/mkLoadingTip.nut")
-let { locMissionName, locMissionDesc } = require("%rGui/globals/missionUtils.nut")
-let { isMissionLoading } = require("%appGlobals/clientState/clientState.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
-let teamColors = require("%rGui/style/teamColors.nut")
+from "%appGlobals/clientState/clientState.nut" import isMissionLoading
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%rGui/components/spinner.nut" import mkSpinner
+from "%rGui/globals/missionUtils.nut" import locMissionName, locMissionDesc
+from "%rGui/loading/mkLoadingTip.nut" import mkLoadingTip
+import "%rGui/style/teamColors.nut" as teamColors
 
-let mapSize = hdpxi(680)
-let borderSize = hdpxi(200)
+
+const mapSize = hdpxi(680)
+const borderSize = hdpxi(200)
 
 let mapBgByCamp = {
   ships = "ui/images/loading/briefing_water_map.avif"
@@ -76,7 +78,7 @@ return @() {
   image = Picture("ui/images/loading/campaign_back.avif")
   children =
   [
-    mkImage("ui/images/loading/decor2.avif", [hdpxi(300), hdpxi(150)], { pos = [pw(50), hdpxi(200)] })
+    mkImage("ui/images/loading/decor2.avif", [hdpxi(300), hdpxi(150)], { pos = const [pw(50), hdpxi(200)] })
     mkImage("ui/images/loading/decor3.avif", [hdpxi(300), hdpxi(600)], {
       hplace = ALIGN_RIGHT
       vplace = ALIGN_CENTER
@@ -86,7 +88,7 @@ return @() {
       children = [
          {
           vplace = ALIGN_CENTER
-          size = [FLEX, mapSize]
+          size = const [FLEX, mapSize]
           flow = FLOW_HORIZONTAL
           halign = ALIGN_CENTER
           gap = hdpx(10)
@@ -118,14 +120,14 @@ return @() {
         }
         {
           vplace = ALIGN_TOP
-          size = [FLEX, borderSize]
+          size = const [FLEX, borderSize]
           rendObj = ROBJ_SOLID
           color = 0xFF000000
           children = loadingHeader
         }
         {
           vplace = ALIGN_BOTTOM
-          size = [FLEX, borderSize]
+          size = const [FLEX, borderSize]
           rendObj = ROBJ_SOLID
           color = 0xFF000000
           children = mkLoadingTip({

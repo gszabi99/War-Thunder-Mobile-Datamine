@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { userstatRequest, userstatRegisterHandler, userstatDescList
-} = require("%rGui/unlocks/userstat.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { curLbCfg } = require("%rGui/leaderboard/lbState.nut")
-let { unlockTables } = require("%rGui/unlocks/unlocks.nut")
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%rGui/leaderboard/lbState.nut" import curLbCfg
+from "%rGui/unlocks/unlocks.nut" import unlockTables
+from "%rGui/unlocks/userstat.nut" import userstatRequest, userstatRegisterHandler, userstatDescList
+
 
 let lbRewardsTypes = ["tillPlaces", "tillPercent"]
   .$reduce(@(res, v, idx) res.$rawset(v, idx), {})

@@ -37,21 +37,38 @@ module style_lint shared private
 
 
 
+
+
+
+
+
+
+
+
+
+
 require daslib/ast_boost
 require daslib/is_local
 require daslib/lint_config
+require math
 require strings
+
+
+let MAX_CONCAT_ARITY = 8         
+let MAX_VARIADIC_PUSH_ARITY = 4  
+
+
+let STYLE037_DEFAULT_MAX = 20
+
+
+
+let STYLE038_DEFAULT_MAX_LINES = 80
 
 
 
 
 
 struct UnsafeFrame {
-    
-    
-    
-    
-    
     
     count : int
     has_non_local_let_ref : bool
@@ -61,10 +78,13 @@ class StyleLintVisitor : AstVisitor {
     compile_time_errors : bool
     comment_hygiene : bool = false
     
+    ascii_strings : bool = false
+    
     warning_count : int = 0
     
     collect_warnings : bool = false
     warnings : array<string>
+    issues : array<LintIssue>       
     
     reported_locations : table<uint64>
     
@@ -76,6 +96,11 @@ class StyleLintVisitor : AstVisitor {
     @do_not_delete unsafeExprs : table<Expression?; UnsafeFrame>
     unsafe_stack : array<UnsafeFrame>
     unsafe_block_stack : array<int>
+    
+    complexity_stack : array<int>
+    max_complexity : int = STYLE037_DEFAULT_MAX
+    
+    max_function_length : int = STYLE038_DEFAULT_MAX_LINES
     
     
     
@@ -110,11 +135,10 @@ class StyleLintVisitor : AstVisitor {
 
     def style_warning(text : string; at : LineInfo) : void {
         
-        if (current_function != null && current_function.flags.generated) return
-        let key = location_key(at)
+        if ((current_function != null && current_function.flags.generated) || is_suppressed(text, at)) return
+        let key = location_key(at) ^ hash(extract_lint_code(text))
         if (key_exists(reported_locations, key)) return
         reported_locations |> insert(key)
-        if (is_suppressed(text, at)) return
         warning_count++
         var msg = text
         if (current_function != null && current_function.fromGeneric != null && !empty(current_function.inferStack)) {
@@ -130,6 +154,7 @@ class StyleLintVisitor : AstVisitor {
             compiling_program() |> macro_style_warning(at, msg)
         } elif (collect_warnings) {
             warnings |> push("style warning: {msg} at {describe(at)}")
+            issues |> push(make_lint_issue(msg, at))
         } else {
             to_log(LOG_WARNING, "style warning: {msg} at {describe(at)}\n")
         }
@@ -138,7 +163,6 @@ class StyleLintVisitor : AstVisitor {
     
 
     def source_line_between(at_start : LineInfo; at_end : LineInfo) : string {
-        
         
         var result = ""
         if (at_start.fileInfo == null) return result
@@ -155,6 +179,7 @@ class StyleLintVisitor : AstVisitor {
     def override preVisitFunction(var fn : FunctionPtr) : void {
         current_function = fn
         unsafe_block_stack |> push(0)
+        complexity_stack |> push(1)
         check_defer_pipe(fn)
         if (analyze_requires && fn._module == this_module) {
             for (a in fn.annotations) {
@@ -203,9 +228,68 @@ class StyleLintVisitor : AstVisitor {
     }
 
     def override visitFunction(var fn : FunctionPtr) : FunctionPtr {
+        st037_pop_and_check("function '{fn.name}'", "split it into smaller functions", fn.at)
+        if (fn.body != null) {
+            st038_check_length("function '{fn.name}'", "split it into smaller functions", fn.at, fn.body.at)
+        }
         current_function = null
         unsafe_block_stack |> pop
         return <- fn
+    }
+
+    
+    
+    
+
+    def st038_check_length(what : string; fix : string; at : LineInfo; body_at : LineInfo) : void {
+        
+        if (max_function_length <= 0 || at.line == 0u || foreign_module_code()) return
+        let nlines = int(body_at.last_line) - int(at.line) + 1
+        if (nlines > max_function_length) {
+            style_warning("STYLE038: {what} is {nlines} lines long (max {max_function_length}); {fix}", at)
+        }
+    }
+
+    
+
+    def st037_bump() : void {
+        let n = length(complexity_stack)
+        if (n > 0) complexity_stack[n - 1]++
+    }
+
+    def foreign_module_code() : bool {
+        
+        if (current_function == null || this_module == null) return false
+        if (current_function._module != this_module) return true
+        
+        var root = current_function.fromGeneric
+        while (root != null && root.fromGeneric != null) {
+            root = root.fromGeneric
+        }
+        return root != null && root._module != this_module
+    }
+
+    def st037_pop_and_check(what : string; fix : string; at : LineInfo) : void {
+        let n = length(complexity_stack)
+        if (n == 0) return
+        let cc = complexity_stack[n - 1]
+        complexity_stack |> pop
+        
+        if (max_complexity > 0 && cc > max_complexity && !foreign_module_code()) {
+            style_warning("STYLE037: {what} has cyclomatic complexity {cc} (max {max_complexity}); {fix}", at)
+        }
+    }
+
+    def override preVisitExprWhile(expr : ExprWhile?) : void {
+        if (!expr.genFlags.generated) st037_bump()
+    }
+
+    def override preVisitExprFor(expr : ExprFor?) : void {
+        if (!expr.genFlags.generated) st037_bump()
+    }
+
+    def override preVisitExprTryCatch(expr : ExprTryCatch?) : void {
+        if (!expr.genFlags.generated) st037_bump()
     }
 
     
@@ -229,11 +313,9 @@ class StyleLintVisitor : AstVisitor {
                         let has_pipe = pipe_pos >= 0
                         if (has_pipe) {
                             
-                            
                             let after_pipe = strip_left(slice(src, pipe_pos + 2))
                             let pipes_block = starts_with(after_pipe, "$(") || starts_with(after_pipe, "$ ") || starts_with(after_pipe, "$\{") || starts_with(after_pipe, "@") || starts_with(after_pipe, "\{")
                             if (pipes_block) {
-                                
                                 
                                 let arrow_pos = find(after_pipe, "=>")
                                 let brace_pos = find(after_pipe, "\{")
@@ -279,8 +361,6 @@ class StyleLintVisitor : AstVisitor {
 
     def is_supported_jv_scalar(t : TypeDecl?) : bool {
         
-        
-        
         if (t == null) return false
         let bt = t.baseType
         return (bt == Type.tInt    || bt == Type.tUInt
@@ -293,7 +373,6 @@ class StyleLintVisitor : AstVisitor {
 
     def root_generic(fn : Function const?) : Function const? {
         
-        
         var cur = fn
         while (cur != null && cur.fromGeneric != null) {
             cur = cur.fromGeneric
@@ -304,16 +383,10 @@ class StyleLintVisitor : AstVisitor {
     def check_style020_from_jv(expr : ExprCall?) : void {
         if (expr.func == null || length(expr.arguments) < 2) return
         
-        
-        
-        
-        
         let root = root_generic(expr.func)
         let is_from_JV = (root != null && root.name == "from_JV"
             && root._module != null && root._module.name == "json_boost")
         if (!is_from_JV) return
-        
-        
         
         if (current_function != null) {
             let in_cf = (current_function._module != null
@@ -324,16 +397,13 @@ class StyleLintVisitor : AstVisitor {
             return if (in_cf || in_fg)
         }
         
-        
-        
         if (!is_supported_jv_scalar(expr._type)) return
-        style_warning("STYLE020: from_JV(v, type<T>, defV) on a supported scalar — use 'v ?? defV' (operator ?? from json_boost)", expr.at)
+        style_warning("STYLE020: from_JV(v, type<T>, defV) on a supported scalar - use 'v ?? defV' (operator ?? from json_boost)", expr.at)
     }
 
     
 
     def is_math_call(expr : Expression? const; fname : string) : bool {
-        
         
         let inner = peel_ref2value_const(expr)
         if (inner == null || !(inner is ExprCall)) return false
@@ -350,13 +420,12 @@ class StyleLintVisitor : AstVisitor {
         if (outer_name != "min" && outer_name != "max") return
         let inner_name = outer_name == "min" ? "max" : "min"
         
-        
         if (is_math_call(expr.arguments[0], inner_name)) {
-            style_warning("STYLE019: nested {outer_name}({inner_name}(...)) — use 'clamp(x, lo, hi)' from math module", expr.at)
+            style_warning("STYLE019: nested {outer_name}({inner_name}(...)) - use 'clamp(x, lo, hi)' from math module", expr.at)
             return
         }
         if (is_math_call(expr.arguments[1], inner_name)) {
-            style_warning("STYLE019: nested {outer_name}({inner_name}(...)) — use 'clamp(x, lo, hi)' from math module", expr.at)
+            style_warning("STYLE019: nested {outer_name}({inner_name}(...)) - use 'clamp(x, lo, hi)' from math module", expr.at)
         }
     }
 
@@ -368,13 +437,6 @@ class StyleLintVisitor : AstVisitor {
     
 
     def check_style028_self_arrow(expr : ExprInvoke?) : void {
-        
-        
-        
-        
-        
-        
-        
         
         if (expr == null || expr.genFlags.generated || !expr.isInvokeMethod ||
             current_function == null || !current_function.flags.isClassMethod ||
@@ -428,7 +490,6 @@ class StyleLintVisitor : AstVisitor {
             mark_unsafe_in_stack()
         }
         
-        
         if (expr.at.fileInfo == null || expr.at.line == 0u) return
         var src = ""
         get_file_source_line(expr.at.fileInfo, expr.at.line) $(line) {
@@ -462,7 +523,6 @@ class StyleLintVisitor : AstVisitor {
         let src = source_line_between(expr.at, eblk.at)
         let dollar_pos = find(src, "$()")
         
-        
         if (dollar_pos < 0 || find(src, "<|") >= 0) return
         
         let after_dollar = strip_left(slice(src, dollar_pos + 3))
@@ -470,6 +530,7 @@ class StyleLintVisitor : AstVisitor {
         style_warning("STYLE003: remove redundant $() for parameterless block; use $ \{", expr.at)
     }
 
+    
     
     
 
@@ -482,6 +543,146 @@ class StyleLintVisitor : AstVisitor {
         
         if (a == null || b == null) return false
         return describe(a) == describe(b)
+    }
+
+    def style035_numeric_cast_target(name : string) : Type {
+        
+        if (name == "int") return Type.tInt
+        if (name == "int8") return Type.tInt8
+        if (name == "int16") return Type.tInt16
+        if (name == "int64") return Type.tInt64
+        if (name == "uint") return Type.tUInt
+        if (name == "uint8") return Type.tUInt8
+        if (name == "uint16") return Type.tUInt16
+        if (name == "uint64") return Type.tUInt64
+        if (name == "float") return Type.tFloat
+        if (name == "double") return Type.tDouble
+        return Type.none
+    }
+
+    def plain_style035_variable(expr : Expression?; target : Type) : Variable const? {
+        
+        if (target == Type.none || target == Type.tInt || expr == null) return null
+        var inner = expr
+        if (inner is ExprRef2Value) {
+            inner = (inner as ExprRef2Value.subexpr)
+        }
+        if (inner == null || !(inner is ExprVar)) return null
+        let ev = inner as ExprVar
+        let v = ev.variable
+        
+        if (v == null || v._type == null || v._type.baseType != target) return null
+        return v
+    }
+
+    def numeric_char_cast_target(expr : Expression const?) : Type {
+        
+        if (expr != null && expr is ExprCall) {
+            
+            let call = expr as ExprCall
+            if (call.func == null || length(call.arguments) != 1
+                    || call.arguments[0] == null) return Type.none
+            let target = style035_numeric_cast_target(string(call.func.name))
+            if (target == Type.none) return Type.none
+            let arg = call.arguments[0]
+            if (arg.at.fileInfo == null || arg.at.line == 0u
+                    || arg.at.line != arg.at.last_line
+                    || arg.at.last_column <= arg.at.column) return Type.none
+            var arg_src = ""
+            get_file_source_line(arg.at.fileInfo, arg.at.line) $(line) {
+                let start = int(arg.at.column)
+                let finish = int(arg.at.last_column)
+                if (start >= 0 && finish <= length(line)) {
+                    arg_src = slice(line, start, finish)
+                }
+            }
+            let inner = strip(arg_src)
+            if (length(inner) >= 3 && starts_with(inner, "'") && ends_with(inner, "'")) return target
+            return Type.none
+        }
+        if (expr == null || expr.at.fileInfo == null
+                || expr.at.line == 0u || expr.at.line != expr.at.last_line
+                || expr.at.last_column <= expr.at.column) return Type.none
+        var src = ""
+        get_file_source_line(expr.at.fileInfo, expr.at.line) $(line) {
+            let start = int(expr.at.column)
+            let finish = int(expr.at.last_column)
+            if (start >= 0 && finish <= length(line)) {
+                src = slice(line, start, finish)
+            }
+        }
+        let spelling = strip(src)
+        let open = find(spelling, "(")
+        if (open <= 0 || !ends_with(spelling, ")")) return Type.none
+        let target = style035_numeric_cast_target(strip(slice(spelling, 0, open)))
+        if (target == Type.none) return Type.none
+        let inner = strip(slice(spelling, open + 1, length(spelling) - 1))
+        
+        if (length(inner) >= 3 && starts_with(inner, "'") && ends_with(inner, "'")) return target
+        return Type.none
+    }
+
+    def check_style035_numeric_char_compare(expr : ExprOp2?) : void {
+        if (expr.genFlags.generated
+                || (expr.op != "==" && expr.op != "!=" && expr.op != "<"
+                    && expr.op != "<=" && expr.op != ">" && expr.op != ">=")) return
+        var target = numeric_char_cast_target(expr.right)
+        var v = plain_style035_variable(expr.left, target)
+        if (v == null) {
+            target = numeric_char_cast_target(expr.left)
+            v = plain_style035_variable(expr.right, target)
+        }
+        if (v == null) return
+        
+        style_warning("STYLE035: non-int numeric variable '{v.name}' is compared with a cast character literal; make '{v.name}' int and compare directly with the character literal", v.at)
+    }
+
+    def string_has_non_ascii(s : string const implicit; var badOffset : int&; var badByte : int&) : bool {
+        var hit = false
+        peek_data(s) $(arr) {
+            for (i in range(length(arr))) {
+                let b = int(arr[i])
+                if (b >= 128) {
+                    badOffset = i
+                    badByte = b
+                    hit = true
+                    break
+                }
+            }
+        }
+        return hit
+    }
+
+    def source_span_has_non_ascii(at : LineInfo) : bool {
+        if (at.fileInfo == null) return true   
+        var hit = false
+        let l0 = int(at.line)
+        let l1 = max(int(at.last_line), l0)
+        for (ln in range(l0, l1 + 1)) {
+            get_file_source_line(at.fileInfo, uint(ln)) $(line) {
+                
+                let len = length(line)
+                let from = ln == l0 ? min(int(at.column), len) : 0
+                let to = ln == l1 ? min(int(at.last_column), len) : len
+                var o = 0
+                var b = 0
+                if (to > from && string_has_non_ascii(slice(line, from, to), o, b)) {
+                    hit = true
+                }
+            }
+            if (hit) break
+        }
+        return hit
+    }
+
+    def override preVisitExprConstString(expr : ExprConstString?) : void {
+        var badOffset = 0
+        var badByte = 0
+        
+        if (!ascii_strings || expr.genFlags.generated
+                || !string_has_non_ascii(string(expr.value), badOffset, badByte)
+                || !source_span_has_non_ascii(expr.at)) return
+        style_warning("STYLE039: non-ASCII byte {badByte} at offset {badOffset} in string literal; emitted strings must be ASCII - spell it out (e.g. '-' for an em-dash), or '// nolint:STYLE039' when the character is intended", expr.at)
     }
 
     def override preVisitExprOp2(expr : ExprOp2?) : void {
@@ -502,13 +703,12 @@ class StyleLintVisitor : AstVisitor {
             let lbool = lhs != null && lhs is ExprConstBool
             let rbool = rhs != null && rhs is ExprConstBool
             
-            
             if (lbool != rbool) {
                 let const_side = lbool ? lhs : rhs
                 let cval = (const_side as ExprConstBool).value
                 let positive = (expr.op == "==" && cval) || (expr.op == "!=" && !cval)
                 let suggestion = positive ? "b" : "!b"
-                style_warning("STYLE018: redundant boolean comparison — use '{suggestion}' directly (drop the '{expr.op} {cval}')", expr.at)
+                style_warning("STYLE018: redundant boolean comparison - use '{suggestion}' directly (drop the '{expr.op} {cval}')", expr.at)
             }
         }
         
@@ -519,6 +719,7 @@ class StyleLintVisitor : AstVisitor {
         if (expr.op == "==" || expr.op == "!=") {
             check_style023_bitfield_test(expr)
         }
+        check_style035_numeric_char_compare(expr)
     }
 
     
@@ -529,12 +730,6 @@ class StyleLintVisitor : AstVisitor {
     }
 
     def extract_single_bit_name(expr : Expression? const; bf_type : TypeDecl?) : string {
-        
-        
-        
-        
-        
-        
         
         if (expr == null) return ""
         var inner = expr
@@ -567,8 +762,6 @@ class StyleLintVisitor : AstVisitor {
 
     def is_zero_int_const(expr : Expression? const) : bool {
         
-        
-        
         if (expr == null) return false
         if (expr is ExprConstInt) return (expr as ExprConstInt.value) == 0
         if (expr is ExprConstUInt) return (expr as ExprConstUInt.value) == 0u
@@ -579,7 +772,6 @@ class StyleLintVisitor : AstVisitor {
 
     def unwrap_int_like_cast(expr : Expression? const) : Expression? const {
         
-        
         if (expr == null || !(expr is ExprCall)) return null
         let call = expr as ExprCall
         if (call.func == null) return null
@@ -589,9 +781,6 @@ class StyleLintVisitor : AstVisitor {
     }
 
     def check_style023_bitfield_test(expr : ExprOp2?) : void {
-        
-        
-        
         
         let lhs = peel_ref2value_const(expr.left)
         let rhs = peel_ref2value_const(expr.right)
@@ -614,7 +803,7 @@ class StyleLintVisitor : AstVisitor {
         if (empty(bit_name)) return
         let positive = expr.op == "!="    
         let suggestion = positive ? "bf.{bit_name}" : "!bf.{bit_name}"
-        style_warning("STYLE023: bitfield test via int-cast can be written directly — use '{suggestion}' instead (drop the cast and the '{expr.op} 0' compare)", expr.at)
+        style_warning("STYLE023: bitfield test via int-cast can be written directly - use '{suggestion}' instead (drop the cast and the '{expr.op} 0' compare)", expr.at)
     }
 
     def check_style022_bitfield_set_clear(expr : ExprOp2?) : void {
@@ -626,8 +815,6 @@ class StyleLintVisitor : AstVisitor {
             if (empty(name)) return
             style_warning("STYLE022: 'foo |= BfT.{name}' on a bitfield is the bit-set idiom; write 'foo.{name} = true' instead (bitfield-as-field assignment)", expr.at)
         } elif (expr.op == "&=") {
-            
-            
             
             var inner = expr.right
             if (inner != null && inner is ExprRef2Value) {
@@ -646,7 +833,6 @@ class StyleLintVisitor : AstVisitor {
             if (inner != null && inner is ExprConstBitfield) {
                 let cb = inner as ExprConstBitfield
                 let v = uint64(cb.value)
-                
                 
                 let n = uint64(length(bf_type.argNames))
                 let valid_mask = n >= 64ul ? ~0ul : ((1ul << n) - 1ul)
@@ -667,12 +853,8 @@ class StyleLintVisitor : AstVisitor {
     }
 
     
-    
-    
-    
 
     def single_terminator_body(body : Expression? const) : Expression? const {
-        
         
         if (body == null) return null
         if (body is ExprReturn || body is ExprBreak || body is ExprContinue) return body
@@ -687,8 +869,6 @@ class StyleLintVisitor : AstVisitor {
     }
 
     def terminators_payload_equal(a : Expression? const; b : Expression? const) : bool {
-        
-        
         
         if (a == null || b == null) return false
         if (a is ExprBreak) return b is ExprBreak
@@ -716,7 +896,6 @@ class StyleLintVisitor : AstVisitor {
 
     def unwrap_inner_ifte(if_false : Expression? const) : ExprIfThenElse? {
         
-        
         if (if_false == null) return null
         if (if_false is ExprIfThenElse) return (if_false as ExprIfThenElse)
         if (if_false is ExprBlock) {
@@ -730,7 +909,8 @@ class StyleLintVisitor : AstVisitor {
     }
 
     def override preVisitExprIfThenElse(ifte : ExprIfThenElse?) : void {
-        if (ifte.if_flags.isStatic) return
+        if (ifte.if_flags.isStatic || ifte.genFlags.generated) return  
+        st037_bump()
         
         var cond = ifte.cond
         if (cond is ExprConstBool) {
@@ -741,10 +921,6 @@ class StyleLintVisitor : AstVisitor {
         }
         
         let outer_term = single_terminator_body(ifte.if_true)
-        
-        
-        
-        
         
         if (ifte.if_false == null && outer_term != null && ifte.if_true is ExprBlock) {
             let blk = ifte.if_true as ExprBlock
@@ -770,7 +946,7 @@ class StyleLintVisitor : AstVisitor {
                 var b2 = false
                 if (is_const_bool_return(outer_term, b1) && is_const_bool_return(else_term, b2) && b1 != b2) {
                     let suggestion = b1 ? "return cond" : "return !cond"
-                    style_warning("STYLE017: 'if (cond) return {b1}; else return {b2}' — use '{suggestion}' directly", ifte.at)
+                    style_warning("STYLE017: 'if (cond) return {b1}; else return {b2}' - use '{suggestion}' directly", ifte.at)
                 }
             }
         }
@@ -782,10 +958,6 @@ class StyleLintVisitor : AstVisitor {
         if (v.init == null && !v.flags.generated && !v.flags.inScope && (current_function == null || current_function.fromGeneric == null)) {
             pending_uninit_vars |> push(v)
         }
-        
-        
-        
-        
         
         if (v.init != null && v._type != null && v._type.flags.ref
             && v.init.genFlags.userSaidItsSafe) {
@@ -808,13 +980,17 @@ class StyleLintVisitor : AstVisitor {
     def override preVisitExprBlock(blk : ExprBlock?) : void {
         if (blk.blockFlags.isClosure) {
             unsafe_block_stack |> push(0)
+            
+            if (!blk.genFlags.generated) complexity_stack |> push(1)
         }
         check_style012_chain_runs(blk)
+        check_style033_existing_runs(blk)
+        check_style033_existing_chain_runs(blk)
         let n = length(blk.list)
         for (i in range(n - 1)) {
             let cur = blk.list[i]
             let nxt = blk.list[i + 1]
-            if (!(cur is ExprIfThenElse)) continue
+            if (!(cur is ExprIfThenElse) || cur.genFlags.generated || nxt.genFlags.generated) continue  
             let outer_if = cur as ExprIfThenElse
             if (outer_if.if_false != null) continue
             let outer_term = single_terminator_body(outer_if.if_true)
@@ -835,7 +1011,7 @@ class StyleLintVisitor : AstVisitor {
             var b2 = false
             if (is_const_bool_return(outer_term, b1) && is_const_bool_return(nxt, b2) && b1 != b2) {
                 let suggestion = b1 ? "return cond" : "return !cond"
-                style_warning("STYLE017: 'if (cond) return {b1}; return {b2}' — use '{suggestion}' directly", outer_if.at)
+                style_warning("STYLE017: 'if (cond) return {b1}; return {b2}' - use '{suggestion}' directly", outer_if.at)
             }
         }
     }
@@ -843,6 +1019,9 @@ class StyleLintVisitor : AstVisitor {
     def override visitExprBlock(var blk : ExprBlock?) : ExpressionPtr {
         if (blk.blockFlags.isClosure) {
             unsafe_block_stack |> pop
+            if (!blk.genFlags.generated) {
+                st037_pop_and_check("closure", "extract it into a named function", blk.at)
+            }
         }
         return blk
     }
@@ -872,6 +1051,8 @@ class StyleLintVisitor : AstVisitor {
             check_style013_struct_field_init(blk, expr as ExprLet)
             check_style021_jv_table_init(blk, expr as ExprLet)
             check_style027_for_loop_comprehension(blk, expr as ExprLet)
+            check_style031_table_init(blk, expr as ExprLet)
+            check_style032_clone_init(blk, expr as ExprLet)
         }
     }
 
@@ -890,7 +1071,6 @@ class StyleLintVisitor : AstVisitor {
         }
         if (idx < 0 || idx + 1 >= n) return
         for (v in elet.variables) {
-            
             
             if (v.init != null
                 || v.flags.generated || v.flags.inScope
@@ -934,9 +1114,6 @@ class StyleLintVisitor : AstVisitor {
 
     def chain_push_receiver(stmt : Expression const?) : Expression const? {
         
-        
-        
-        
         if (stmt == null || stmt.genFlags.generated || !(stmt is ExprCall)) return null
         let call = stmt as ExprCall
         if (call.func == null || call.func.fromGeneric == null
@@ -949,7 +1126,6 @@ class StyleLintVisitor : AstVisitor {
     }
 
     def peel_chain_adapter(e0 : Expression const?) : Expression const? {
-        
         
         var e : Expression const? = e0
         while (e != null) {
@@ -965,9 +1141,6 @@ class StyleLintVisitor : AstVisitor {
     }
 
     def is_pure_chain(e0 : Expression const?) : bool {
-        
-        
-        
         
         let e = peel_chain_adapter(e0)
         if (e == null) return false
@@ -1060,11 +1233,6 @@ class StyleLintVisitor : AstVisitor {
 
     def ctor_field_state(v : Variable const?; fname : das_string) : int {
         
-        
-        
-        
-        
-        
         var st : Structure const? = null
         if (v._type != null && v._type.baseType == Type.tStructure) {
             st = v._type.structType
@@ -1094,8 +1262,6 @@ class StyleLintVisitor : AstVisitor {
 
     def emit_style012_chain(blk : ExprBlock?; idx : int; recv : Expression const?) : void {
         let head = blk.list[idx]
-        
-        
         
         if (idx > 0 && blk.list[idx - 1] is ExprLet) {
             let elet = blk.list[idx - 1] as ExprLet
@@ -1138,7 +1304,6 @@ class StyleLintVisitor : AstVisitor {
         if (idx < 0 || idx + 1 >= n) return
         for (v in elet.variables) {
             
-            
             if (v.flags.generated || v.flags.inScope
                 || !is_struct_or_struct_ptr(v._type)
                 || !is_default_struct_init(v)) continue
@@ -1148,8 +1313,6 @@ class StyleLintVisitor : AstVisitor {
                 count++
             }
             if (count >= 2) {
-                
-                
                 
                 var field_names : array<string>
                 for (j in range(idx + 1, idx + 1 + count)) {
@@ -1190,12 +1353,6 @@ class StyleLintVisitor : AstVisitor {
 
     def is_default_struct_init(v : Variable?) : bool {
         
-        
-        
-        
-        
-        
-        
         if (v.init == null) return v._type != null && v._type.baseType == Type.tStructure
         if (v.init is ExprMakeStruct) {
             var ms = v.init as ExprMakeStruct
@@ -1229,7 +1386,6 @@ class StyleLintVisitor : AstVisitor {
         return false if (lhs == null || !(lhs is ExprField))
         var src = (lhs as ExprField).value
         
-        
         if (src != null && src is ExprRef2Value) {
             src = (src as ExprRef2Value).subexpr
         }
@@ -1238,9 +1394,6 @@ class StyleLintVisitor : AstVisitor {
     }
 
     def field_name_of(stmt : Expression?) : string {
-        
-        
-        
         
         var lhs : Expression? = null
         if (stmt is ExprCopy) {
@@ -1259,10 +1412,13 @@ class StyleLintVisitor : AstVisitor {
     
 
     def is_jv_pointer_type(t : TypeDecl?) : bool {
+        
         if (t == null || t.baseType != Type.tPointer || t.firstType == null
-                || t.firstType.baseType != Type.tHandle
-                || t.firstType.annotation == null) return false
-        return t.firstType.annotation.name == "JsonValue"
+                || t.firstType.baseType != Type.tStructure
+                || t.firstType.structType == null) return false
+        return (t.firstType.structType.name == "JsonValue"
+            && t.firstType.structType._module != null
+            && t.firstType.structType._module.name == "json")
     }
 
     def is_jv_table_type(t : TypeDecl?) : bool {
@@ -1274,8 +1430,6 @@ class StyleLintVisitor : AstVisitor {
     }
 
     def is_insert_of_const_key(call : ExprCall?; target : Variable?) : bool {
-        
-        
         
         if (call.func == null || call.func.fromGeneric == null
             || call.func.fromGeneric.name != "insert"
@@ -1357,10 +1511,6 @@ class StyleLintVisitor : AstVisitor {
     def for_loop_matches_comprehension(forE : ExprFor?; target : Variable?;
                                        isArray : bool; for_budget : int) : bool {
         
-        
-        
-        
-        
         if (forE == null || forE.genFlags.generated
             || forE.body == null || !(forE.body is ExprBlock)) return false
         let blk = forE.body as ExprBlock
@@ -1396,8 +1546,6 @@ class StyleLintVisitor : AstVisitor {
     def is_named_target_call(call : ExprCall?; target : Variable?;
                              min_args : int; fname : string) : bool {
         
-        
-        
         if (call == null || call.func == null || call.func.fromGeneric == null
             || call.func.fromGeneric.name != fname
             || length(call.arguments) < min_args) return false
@@ -1410,7 +1558,6 @@ class StyleLintVisitor : AstVisitor {
     }
 
     def is_at_assign_of(stmt : Expression?; target : Variable?) : bool {
-        
         
         var lhs : Expression? = null
         if (stmt is ExprCopy) {
@@ -1433,7 +1580,6 @@ class StyleLintVisitor : AstVisitor {
 
     def is_push_or_emplace_of(call : ExprCall?; target : Variable?) : bool {
         
-        
         if (call.func == null || call.func.fromGeneric == null
             || (call.func.fromGeneric.name != "push" && call.func.fromGeneric.name != "emplace")
             || length(call.arguments) != 2) return false
@@ -1447,22 +1593,298 @@ class StyleLintVisitor : AstVisitor {
 
     
 
+    def check_style032_clone_init(blk : ExprBlock?; elet : ExprLet?) : void {
+        if (current_function != null && current_function.fromGeneric != null) return
+        var idx = -1
+        let n = length(blk.list)
+        for (k in range(n)) {
+            if (blk.list[k] == elet) {
+                idx = k
+                break
+            }
+        }
+        if (idx < 0 || idx + 1 >= n) return
+        for (v in elet.variables) {
+            
+            if (v.init != null
+                || v.flags.generated || v.flags.inScope
+                || v._type == null || v._type.baseType != Type.tArray
+                || v._type.firstType == null || !v._type.firstType.canClone) continue
+            
+            var count = 0
+            for (j in range(idx + 1, n)) {
+                let stmt = blk.list[j]
+                if (stmt == null || stmt.genFlags.generated || !(stmt is ExprCall)
+                    || !is_array_clone_init_call(stmt as ExprCall, v)) break
+                count++
+            }
+            if (count == 1) {
+                style_warning("STYLE032: array<T> '{v.name}' default-initialized then filled by a single `push_from`/`push_clone_from`; that is a clone of the source - use `var {v.name} := SRC` (clone-assign)", v.at)
+            } elif (count >= 2 && count <= MAX_CONCAT_ARITY) {
+                style_warning("STYLE033: array<T> '{v.name}' default-initialized then filled by a run of {count} `push_from`/`push_clone_from` from arrays - that is a concatenation; use `var {v.name} <- concat(s1, s2, ...)` (needs `require daslib/linq`)", v.at)
+            }
+        }
+    }
+
+    def bulk_src_matches_elem(src : Expression? const; destElem : TypeDecl? const) : bool {
+        
+        if (src == null || src._type == null || src._type.baseType != Type.tArray
+            || src._type.firstType == null || destElem == null) return false
+        return describe(src._type.firstType) == describe(destElem)
+    }
+
+    def bulk_src_matches_dest(src : Expression? const; dest : Variable? const) : bool {
+        if (dest == null || dest._type == null) return false
+        return bulk_src_matches_elem(src, dest._type.firstType)
+    }
+
+    def is_array_clone_init_call(call : ExprCall?; target : Variable?) : bool {
+        
+        if ((!is_named_target_call(call, target, 2, "push_from")
+             && !is_named_target_call(call, target, 2, "push_clone_from"))
+            || length(call.arguments) != 2) return false
+        return bulk_src_matches_dest(call.arguments[1], target)
+    }
+
+    
+
+    def bulk_from_call_target(stmt : Expression?; var fname : string&) : Variable? {
+        
+        if (stmt == null || stmt.genFlags.generated || !(stmt is ExprCall)) return null
+        let call = stmt as ExprCall
+        if (call.func == null || call.func.fromGeneric == null
+            || length(call.arguments) != 2) return null
+        let isFrom = call.func.fromGeneric.name == "push_from"
+        let isCloneFrom = call.func.fromGeneric.name == "push_clone_from"
+        if (!isFrom && !isCloneFrom) return null
+        var arg = call.arguments[0]
+        if (arg is ExprRef2Value) {
+            arg = (arg as ExprRef2Value.subexpr)
+        }
+        if (!(arg is ExprVar)
+            || !bulk_src_matches_dest(call.arguments[1], (arg as ExprVar).variable)) return null
+        fname = isFrom ? "push_from" : "push_clone_from"
+        return (arg as ExprVar).variable
+    }
+
+    def run_preceded_by_empty_array_decl(blk : ExprBlock?; runStart : int; v : Variable?) : bool {
+        
+        if (runStart <= 0) return false
+        let prev = blk.list[runStart - 1]
+        if (prev == null || !(prev is ExprLet)) return false
+        for (lv in (prev as ExprLet).variables) {
+            if (lv == v && lv.init == null
+                && lv._type != null && lv._type.baseType == Type.tArray) return true
+        }
+        return false
+    }
+
+    def check_style033_existing_runs(blk : ExprBlock?) : void {
+        if (current_function != null && current_function.fromGeneric != null) return
+        let n = length(blk.list)
+        var i = 0
+        while (i < n) {
+            var fname = ""
+            let target = bulk_from_call_target(blk.list[i], fname)
+            if (target == null) {
+                i++
+                continue
+            }
+            var count = 1
+            while (i + count < n) {
+                var fname2 = ""
+                let t2 = bulk_from_call_target(blk.list[i + count], fname2)
+                if (t2 != target || fname2 != fname) break
+                count++
+            }
+            
+            if (count >= 2 && count <= MAX_VARIADIC_PUSH_ARITY
+                && target._type != null && target._type.firstType != null
+                && target._type.firstType.canCloneFromConst
+                && !run_preceded_by_empty_array_decl(blk, i, target)) {
+                style_warning("STYLE033: run of {count} `{fname}` calls into '{target.name}' - collapse to one variadic call `{target.name} |> {fname}(s1, s2, ...)`", blk.list[i].at)
+            }
+            i += count
+        }
+    }
+
+    
+
+    def bulk_from_chain_receiver(stmt : Expression const?; var fname : string&) : Expression const? {
+        
+        if (stmt == null || stmt.genFlags.generated || !(stmt is ExprCall)) return null
+        let call = stmt as ExprCall
+        if (call.func == null || call.func.fromGeneric == null
+            || length(call.arguments) != 2) return null
+        let isFrom = call.func.fromGeneric.name == "push_from"
+        let isCloneFrom = call.func.fromGeneric.name == "push_clone_from"
+        if (!isFrom && !isCloneFrom) return null
+        let recv = call.arguments[0]
+        if (recv == null || recv._type == null || recv._type.baseType != Type.tArray
+            || !is_pure_chain(recv) || chain_link_count(recv) < 1
+            || !bulk_src_matches_elem(call.arguments[1], recv._type.firstType)) return null
+        fname = isFrom ? "push_from" : "push_clone_from"
+        return recv
+    }
+
+    def check_style033_existing_chain_runs(blk : ExprBlock?) : void {
+        if (current_function != null && current_function.fromGeneric != null) return
+        let n = length(blk.list)
+        var i = 0
+        while (i < n) {
+            var fname = ""
+            let recv = bulk_from_chain_receiver(blk.list[i], fname)
+            if (recv == null) {
+                i++
+                continue
+            }
+            var count = 1
+            while (i + count < n) {
+                var fname2 = ""
+                let nrecv = bulk_from_chain_receiver(blk.list[i + count], fname2)
+                if (nrecv == null || fname2 != fname || !chain_equal(recv, nrecv)) break
+                count++
+            }
+            if (count >= 2 && count <= MAX_VARIADIC_PUSH_ARITY
+                    && recv._type != null && recv._type.firstType != null
+                    && recv._type.firstType.canCloneFromConst) {
+                let cd = chain_describe(recv)
+                style_warning("STYLE033: run of {count} `{fname}` calls into '{cd}' - collapse to one variadic call `{cd} |> {fname}(s1, s2, ...)`", blk.list[i].at)
+            }
+            i += count
+        }
+    }
+
+    
+
+    def is_table_insert_of(call : ExprCall?; target : Variable?; nargs : int) : bool {
+        
+        if (call.func == null || call.func.fromGeneric == null
+            || call.func.fromGeneric.name != "insert"
+            || length(call.arguments) != nargs) return false
+        var arg = call.arguments[0]
+        if (arg is ExprRef2Value) {
+            arg = (arg as ExprRef2Value.subexpr)
+        }
+        if (!(arg is ExprVar)) return false
+        return (arg as ExprVar).variable == target
+    }
+
+    def at_assign_key(stmt : Expression?) : Expression? {
+        
+        var lhs : Expression? = null
+        if (stmt is ExprCopy) {
+            lhs = (stmt as ExprCopy).left
+        } elif (stmt is ExprClone) {
+            lhs = (stmt as ExprClone).left
+        } elif (stmt is ExprMove) {
+            lhs = (stmt as ExprMove).left
+        }
+        return null if (lhs == null)
+        return (lhs as ExprAt).index
+    }
+
+    def const_key_repr(key0 : Expression?) : string {  
+        
+        var key = key0
+        if (key != null && key is ExprRef2Value) {
+            key = (key as ExprRef2Value).subexpr
+        }
+        if (key == null) return ""
+        if (key is ExprConstString) return "s:{(key as ExprConstString).value}"
+        if (key is ExprConstInt) return "i:{(key as ExprConstInt).value}"
+        if (key is ExprConstUInt) return "u:{(key as ExprConstUInt).value}"
+        if (key is ExprConstInt64) return "i64:{(key as ExprConstInt64).value}"
+        if (key is ExprConstUInt64) return "u64:{(key as ExprConstUInt64).value}"
+        if (key is ExprConstFloat) return "f:{(key as ExprConstFloat).value}"
+        if (key is ExprConstDouble) return "d:{(key as ExprConstDouble).value}"
+        if (key is ExprConstBool) return "b:{(key as ExprConstBool).value}"
+        if (key is ExprConstEnumeration) return "e:{(key as ExprConstEnumeration).value}"
+        return ""
+    }
+
+    def st031_scan_insert_run(blk : ExprBlock?; idx, n : int; v : VariablePtr; isSet : bool; var dup_const_key : bool&) : int {
+        
+        var count = 0
+        var seen_keys : table<string>
+        for (j in range(idx + 1, n)) {
+            let stmt = blk.list[j]
+            var key : Expression? = null
+            if (stmt is ExprCall && is_table_insert_of(stmt as ExprCall, v, isSet ? 2 : 3)) {
+                key = (stmt as ExprCall).arguments[1]
+            } elif (!isSet && is_at_assign_of(stmt, v)) {
+                key = at_assign_key(stmt)
+            } else {
+                break
+            }
+            let repr = const_key_repr(key)
+            if (repr != "") {
+                if (key_exists(seen_keys, repr)) {
+                    dup_const_key = true
+                }
+                seen_keys |> insert(repr)
+            }
+            count++
+        }
+        delete seen_keys
+        return count
+    }
+
+    def st031_jv_const_key_run(blk : ExprBlock?; idx, n : int; v : VariablePtr) : int {
+        var jv = 0
+        for (j in range(idx + 1, n)) {
+            let stmt = blk.list[j]
+            if (!(stmt is ExprCall) || !is_insert_of_const_key(stmt as ExprCall, v)) break
+            jv++
+        }
+        return jv
+    }
+
+    def check_style031_table_init(blk : ExprBlock?; elet : ExprLet?) : void {
+        if (current_function != null && current_function.fromGeneric != null) return
+        
+        var idx = -1
+        let n = length(blk.list)
+        for (k in range(n)) {
+            if (blk.list[k] == elet) {
+                idx = k
+                break
+            }
+        }
+        if (idx < 0 || idx + 1 >= n) return
+        for (v in elet.variables) {
+            
+            if (v.init != null
+                || v.flags.generated || v.flags.inScope
+                || v._type == null || v._type.baseType != Type.tTable) continue
+            let isSet = v._type.secondType == null || v._type.secondType.baseType == Type.tVoid
+            var dup_const_key = false
+            let count = st031_scan_insert_run(blk, idx, n, v, isSet, dup_const_key)
+            
+            if (count < 2 || dup_const_key) continue
+            
+            if (is_jv_table_type(v._type)) {
+                continue if (st031_jv_const_key_run(blk, idx, n, v) >= 2)
+            }
+            if (isSet) {
+                style_warning("STYLE031: table<K> set initialized by a run of insert calls; use a set literal move-assign `var {v.name} <- \{k1, k2, ...\}`", v.at)
+            } else {
+                style_warning("STYLE031: table<K;V> initialized by a run of insert/`[]=` statements; use a table literal move-assign `var {v.name} <- \{k1 => v1, k2 => v2, ...\}`", v.at)
+            }
+        }
+    }
+
+    
+
     
 
     def st029_expr_in_scope() : bool {
-        
-        
-        
-        
-        
-        
         
         return (analyze_requires
             && (current_function == null || current_function._module == this_module))
     }
 
     def st029_note_module(m : Module const?) : void {
-        
         
         st029_note_module_name(m == null ? "" : "{m.name}")
     }
@@ -1473,8 +1895,6 @@ class StyleLintVisitor : AstVisitor {
     }
 
     def st029_record_module_getter(expr : ExprCall?) : void {
-        
-        
         
         if (expr.func == null || !st029_expr_in_scope() || empty(expr.arguments)) return
         
@@ -1494,14 +1914,11 @@ class StyleLintVisitor : AstVisitor {
     def st029_record_func(fun : Function?) : void {
         return if (fun == null)
         
-        
         if (fun.fromGeneric != null) st029_record_mod(fun.fromGeneric._module)
         else st029_record_mod(fun._module)
     }
 
     def st029_record_unresolved_call(expr : ExprCall?) : void {
-        
-        
         
         if (expr.func != null || !st029_expr_in_scope()) return
         var nm = "{expr.name}"
@@ -1515,9 +1932,6 @@ class StyleLintVisitor : AstVisitor {
     }
 
     def st030_exports_unresolved_name(mod : Module?) : bool {
-        
-        
-        
         
         if (empty(unresolved_call_names)) return false
         var seen : table<string>
@@ -1554,14 +1968,12 @@ class StyleLintVisitor : AstVisitor {
 
     def override preVisitTypeDecl(typ : TypeDeclPtr) : void {
         
-        
         if (typ.baseType == Type.tStructure && typ.structType != null) st029_record_mod(typ.structType._module)
         elif (typ.baseType == Type.tEnumeration && typ.enumType != null) st029_record_mod(typ.enumType._module)
         elif (typ.baseType == Type.tHandle && typ.annotation != null) st029_record_mod(typ.annotation._module)
     }
 
     def override preVisitStructure(var st : StructurePtr) : void {
-        
         
         if (analyze_requires && st._module == this_module) {
             if (st.parent != null) st029_note_module(st.parent._module)
@@ -1581,8 +1993,6 @@ class StyleLintVisitor : AstVisitor {
 
     def st029_module_provides_macro(mod : Module?) : bool {
         
-        
-        
         var found = false
         for_each_call_macro(mod) $(_) { found = true; }
         if (found) return true
@@ -1597,8 +2007,6 @@ class StyleLintVisitor : AstVisitor {
         for_each_typemacro(mod) $(_) { found = true; }
         if (found) return true
         
-        
-        
         for_each_pass_macro(mod) $(_) { found = true; }
         if (found) return true
         for_each_capture_macro(mod) $(_) { found = true; }
@@ -1606,17 +2014,13 @@ class StyleLintVisitor : AstVisitor {
         for_each_simulate_macro(mod) $(_) { found = true; }
         if (found) return true
         
-        
-        
         for_each_function_annotation(mod) $(_) { found = true; }
         if (found) return true
-        
         
         return module_has_comment_reader(mod)
     }
 
     def st029_module_has_init(mod : Module?) : bool {
-        
         
         var found = false
         for_each_function(mod, "") $(fn) {
@@ -1646,9 +2050,6 @@ class StyleLintVisitor : AstVisitor {
     def st029_check_requires(prog : ProgramPtr) : void {
         if (!analyze_requires || this_module == null) return
         let this_name = "{this_module.name}"
-        
-        
-        
         
         var module_files : table<string>
         let primary = string(this_module.fileName)
@@ -1683,28 +2084,37 @@ class StyleLintVisitor : AstVisitor {
             var closure : table<string; bool>
             st029_collect_public_deps(mod, closure)
             var via : array<string>
-            var used_any = false
+            var used_count = 0
             for (cm in keys(closure)) {
                 if (!key_exists(used_modules, cm)) continue
-                used_any = true
+                used_count++
                 if (closure?[cm] ?? false) via |> push(cm)
             }
             var line_at = at
-            if (!empty(via)) {
-                sort(via)
-                let mods = build_string() $(w) {
-                    for (i in range(length(via))) {
-                        if (i > 0) { w |> write(", ") }
-                        w |> write(via[i])
-                    }
-                }
-                style_warning("STYLE029: require {req_name} is used only for modules it re-exports ({mods}); require those directly and drop {req_name}", line_at)
+            
+            if (used_count == 1 && !empty(via)) {
+                let mods = via[0]
+                style_warning("STYLE029: require {req_name} is used only for the module it re-exports ({mods}); require it directly and drop {req_name}", line_at)
                 return
             }
+            return if (used_count > 0)
             
-            return if (used_any)
-            
-            style_warning("STYLE030: require {req_name} is unused — no symbol from it (or a module it re-exports) is referenced; drop it", line_at)
+            style_warning("STYLE030: require {req_name} is unused - no symbol from it (or a module it re-exports) is referenced; drop it", line_at)
+        }
+    }
+
+    def note_decl_span(var file_first_decl : table<string; uint>; var file_max_line : table<string; uint>;
+                       fname : string; s, e : uint) : void {
+        if (file_first_decl |> key_exists(fname)) {
+            if (s < file_first_decl[fname]) {
+                file_first_decl[fname] = s
+            }
+            if (e > file_max_line[fname]) {
+                file_max_line[fname] = e
+            }
+        } else {
+            file_first_decl |> insert(fname, s)
+            file_max_line |> insert(fname, e)
         }
     }
 
@@ -1724,17 +2134,7 @@ class StyleLintVisitor : AstVisitor {
             let fname = string(fn.at.fileInfo.name)
             let s = fn.at.line
             let e = fn.body.at.last_line
-            if (file_first_decl |> key_exists(fname)) {
-                if (s < file_first_decl[fname]) {
-                    file_first_decl[fname] = s
-                }
-                if (e > file_max_line[fname]) {
-                    file_max_line[fname] = e
-                }
-            } else {
-                file_first_decl |> insert(fname, s)
-                file_max_line |> insert(fname, e)
-            }
+            note_decl_span(file_first_decl, file_max_line, fname, s, e)
             fn_file |> push(fname)
             fn_starts |> push(s)
             fn_ends |> push(e)
@@ -1749,67 +2149,31 @@ class StyleLintVisitor : AstVisitor {
             }
             if (is_template_instance) return
             let fname = string(st.at.fileInfo.name)
-            let s = st.at.line
-            if (file_first_decl |> key_exists(fname)) {
-                if (s < file_first_decl[fname]) {
-                    file_first_decl[fname] = s
-                }
-                if (s > file_max_line[fname]) {
-                    file_max_line[fname] = s
-                }
-            } else {
-                file_first_decl |> insert(fname, s)
-                file_max_line |> insert(fname, s)
-            }
+            note_decl_span(file_first_decl, file_max_line, fname, st.at.line, st.at.line)
         }
         for_each_enumeration(mod) $(var en) {
             if (en.at.fileInfo == null || en.at.line == 0u) return
             let fname = string(en.at.fileInfo.name)
-            let s = en.at.line
-            if (file_first_decl |> key_exists(fname)) {
-                if (s < file_first_decl[fname]) {
-                    file_first_decl[fname] = s
-                }
-                if (s > file_max_line[fname]) {
-                    file_max_line[fname] = s
-                }
-            } else {
-                file_first_decl |> insert(fname, s)
-                file_max_line |> insert(fname, s)
-            }
+            note_decl_span(file_first_decl, file_max_line, fname, en.at.line, en.at.line)
         }
         for_each_global(mod) $(var v) {
             if (v.at.fileInfo == null || v.at.line == 0u || v.flags.generated) return
             let fname = string(v.at.fileInfo.name)
-            let s = v.at.line
-            if (file_first_decl |> key_exists(fname)) {
-                if (s < file_first_decl[fname]) {
-                    file_first_decl[fname] = s
-                }
-                if (s > file_max_line[fname]) {
-                    file_max_line[fname] = s
-                }
-            } else {
-                file_first_decl |> insert(fname, s)
-                file_max_line |> insert(fname, s)
-            }
+            note_decl_span(file_first_decl, file_max_line, fname, v.at.line, v.at.line)
         }
         for_each_typedef(mod) $(_name, value) {
             if (value.at.fileInfo == null || value.at.line == 0u) return
             let fname = string(value.at.fileInfo.name)
-            let s = value.at.line
-            if (file_first_decl |> key_exists(fname)) {
-                if (s < file_first_decl[fname]) {
-                    file_first_decl[fname] = s
-                }
-                if (s > file_max_line[fname]) {
-                    file_max_line[fname] = s
-                }
-            } else {
-                file_first_decl |> insert(fname, s)
-                file_max_line |> insert(fname, s)
-            }
+            note_decl_span(file_first_decl, file_max_line, fname, value.at.line, value.at.line)
         }
+        scan_collected_files(mod, file_first_decl, file_max_line, fn_file, fn_starts, fn_ends, fn_private)
+    }
+
+    def scan_collected_files(mod : Module?;
+                             var file_first_decl : table<string; uint>; var file_max_line : table<string; uint>;
+                             fn_file : array<string>; fn_starts, fn_ends : array<uint>;
+                             fn_private : array<bool>) : void {
+        
         var seen : table<string; bool>
         for_each_function(mod, "") $(var fn) {
             if (fn.at.fileInfo == null || fn._module != mod
@@ -1909,8 +2273,6 @@ class StyleLintVisitor : AstVisitor {
 
     def has_nolint_directive(first_line : string) : bool {
         
-        
-        
         var rest = first_line
         if (starts_with(rest, "//!")) {
             rest = slice(rest, 3)
@@ -1929,22 +2291,19 @@ class StyleLintVisitor : AstVisitor {
                           fn_file : array<string>; fn_starts, fn_ends : array<uint>;
                           fn_private : array<bool>) : void {
         
-        
         if (line_count <= 1
             || block_start < first_decl_line
             || has_nolint_directive(first_line_text)) return
         var enclosing_priv = false
         var inside_function = false
         var enclosing_size : uint = 0xFFFFFFFFu
-        for (i in range(length(fn_file))) {
-            if (fn_file[i] != file_name) continue
-            let s = fn_starts[i]
-            let e = fn_ends[i]
+        for (f_file, s, e, f_priv in fn_file, fn_starts, fn_ends, fn_private) {
+            if (f_file != file_name) continue
             if (s <= block_start && block_start <= e) {
                 let size = e - s
                 if (size < enclosing_size) {
                     enclosing_size = size
-                    enclosing_priv = fn_private[i]
+                    enclosing_priv = f_priv
                     inside_function = true
                 }
             }
@@ -1959,7 +2318,7 @@ class StyleLintVisitor : AstVisitor {
         at.last_column = 1u
         var msg = ""
         if (private_ctx) {
-            msg = "STYLE015: {line_count}-line comment inside 'def private' exceeds 1-line cap; private symbols don't get public docs — keep at most one WHY line, or suppress on the first line with '// nolint:STYLE015'"
+            msg = "STYLE015: {line_count}-line comment inside 'def private' exceeds 1-line cap; private symbols don't get public docs - keep at most one WHY line, or suppress on the first line with '// nolint:STYLE015'"
         } else {
             msg = "STYLE014: comment block of {line_count} lines exceeds 3-line cap; trim multi-paragraph prose to a 1-line WHY (move design notes to .md), or suppress on the first line with '//!@nolint' (//! blocks) or '// nolint:STYLE014' (// blocks)"
         }
@@ -2006,7 +2365,6 @@ class StyleLintVisitor : AstVisitor {
 
     def mark_non_local_let_ref_in_stack() : void {
         
-        
         let n = length(unsafe_stack)
         if (n > 0) {
             unsafe_stack[n - 1].has_non_local_let_ref = true
@@ -2019,12 +2377,6 @@ class StyleLintVisitor : AstVisitor {
     }
 
     def override visitExpression(var expr : ExpressionPtr) : ExpressionPtr {
-        
-        
-        
-        
-        
-        
         
         let n = length(unsafe_stack)
         let frame = unsafe_stack[n - 1]
@@ -2040,22 +2392,16 @@ class StyleLintVisitor : AstVisitor {
             }
         }
         
-        
-        
         if (expr.genFlags.userSaidItsSafe && !expr.genFlags.generated
             && (current_function == null || current_function.fromGeneric == null)
             && !(skip_userSaidItsSafe |> has_value(expr))
             && frame.count == 0) {
-            style_warning("STYLE024: redundant 'unsafe(...)' wrap; the inner expression has no operation that requires unsafe — drop the wrap", expr.at)
+            style_warning("STYLE024: redundant 'unsafe(...)' wrap; the inner expression has no operation that requires unsafe - drop the wrap", expr.at)
         }
         return expr
     }
 
     def override preVisitExprLet(expr : ExprLet?) : void {
-        
-        
-        
-        
         
         if (expr.genFlags.generated) return
         for (v in expr.variables) {
@@ -2110,7 +2456,6 @@ class StyleLintVisitor : AstVisitor {
     }
     def override preVisitExprSafeAsVariant(expr : ExprSafeAsVariant?) : void {
         
-        
         if (!expr.genFlags.generated) mark_unsafe_in_stack()
     }
 
@@ -2121,11 +2466,37 @@ class StyleLintVisitor : AstVisitor {
                 && (expr.castFlags.upcastCast || expr.castFlags.reinterpretCast)) {
             mark_unsafe_in_stack()
         }
+        
+        if (expr.castFlags.reinterpretCast && !expr.castFlags.fromAddrSugar
+                && !expr.genFlags.generated
+                && expr.castType != null && expr.castType.baseType == Type.tPointer
+                && expr.subexpr != null && expr.subexpr is ExprRef2Ptr
+                && !expr.subexpr.genFlags.generated) {
+            style_warning("STYLE034: reinterpret<{describe(expr.castType)}>(addr(...)) collapses to addr<{describe(expr.castType)}>(...); one unsafe() covers both halves", expr.at)
+        }
+        
+        if (!expr.genFlags.generated && expr.castType != null) {
+            let inert = style036_inert_contract(expr.castType)
+            if (!empty(inert)) {
+                let tail = inert == "-const" ? "; drop it, along with any 'const' it was meant to cancel" : "; drop it"
+                style_warning("STYLE036: '{inert}' does nothing on the already-resolved cast type {describe(expr.castType)}{tail}", expr.at)
+            }
+        }
+    }
+
+    def style036_inert_contract(t : TypeDecl?) : string {
+        
+        if (t.isAutoOrAlias) return ""
+        if (t.flags.removeConstant) return "-const"
+        if (t.flags.removeRef) return "-&"
+        if (t.flags.removeDim) return "-[]"
+        if (t.flags.removeTemporary) return "-#"
+        if (t.flags.explicitConst) return "==const"
+        if (t.flags.explicitRef) return "==&"
+        return ""
     }
 
     def override preVisitExprAt(expr : ExprAt?) : void {
-        
-        
         
         if (expr.genFlags.generated) return
         let unknown_subexpr_type = (expr.subexpr == null || expr.subexpr._type == null)
@@ -2139,9 +2510,6 @@ class StyleLintVisitor : AstVisitor {
 
     def override preVisitExprSafeAt(expr : ExprSafeAt?) : void {
         
-        
-        
-        
         if (expr.genFlags.generated) return
         if (expr.subexpr == null || expr.subexpr._type == null) {
             mark_unsafe_in_stack()
@@ -2152,16 +2520,16 @@ class StyleLintVisitor : AstVisitor {
             mark_unsafe_in_stack()
             return
         }
-        if (bt == Type.tPointer && expr.subexpr._type.firstType != null) {
-            let inner = expr.subexpr._type.firstType.baseType
-            if (inner == Type.tTable || inner == Type.tArray || inner == Type.tPointer) {
+        if (bt == Type.tPointer) {
+            
+            let inner = expr.subexpr._type.firstType
+            if (inner == null || !(inner.isVectorType || inner.baseType == Type.tFixedArray)) {
                 mark_unsafe_in_stack()
             }
         }
     }
 
     def override preVisitExprField(expr : ExprField?) : void {
-        
         
         if (!expr.genFlags.generated && expr.value != null
                 && expr.value._type != null
@@ -2200,6 +2568,7 @@ class StyleLintVisitor : AstVisitor {
     }
     def override preVisitExprOp3(expr : ExprOp3?) : void {
         st029_record_func(expr.func)
+        if (!expr.genFlags.generated) st037_bump()  
         if (!expr.genFlags.generated
                 && call_func_needs_unsafe(expr.func, expr.flags.isForLoopSource)) {
             mark_unsafe_in_stack()
@@ -2218,7 +2587,7 @@ class StyleLintVisitor : AstVisitor {
         if (expr != null && !expr.genFlags.generated
             && (current_function == null || current_function.fromGeneric == null)
             && n > 0 && unsafe_block_stack[n - 1] > 0) {
-            style_warning("STYLE026: nested 'unsafe \{ ... }' block; the outer 'unsafe' already covers this scope — drop the inner wrap", expr.at)
+            style_warning("STYLE026: nested 'unsafe \{ ... }' block; the outer 'unsafe' already covers this scope - drop the inner wrap", expr.at)
         }
         if (n > 0) {
             unsafe_block_stack[n - 1]++
@@ -2231,25 +2600,39 @@ class StyleLintVisitor : AstVisitor {
             unsafe_block_stack[n - 1]--
         }
         
-        
-        
-        
-        
-        
         if (expr == null || expr.body == null || expr.genFlags.generated
             || (current_function != null && current_function.fromGeneric != null)
             || !(expr.body is ExprBlock)) return expr
         let blk = expr.body as ExprBlock
         let frame = unsafe_frame_for(blk)
         if (frame.count == 0) {
-            style_warning("STYLE024: redundant 'unsafe \{ ... }' block; no statement requires unsafe — drop the wrap", expr.at)
+            style_warning("STYLE024: redundant 'unsafe \{ ... }' block; no statement requires unsafe - drop the wrap", expr.at)
         } elif (frame.count == 1 &&
                 !(blk.list[0] is ExprYield ||
                   blk.list[0] is ExprDelete ||
                   blk.list[0] is ExprReturn ||
                   blk.list[0] is ExprNew)
                 && !frame.has_non_local_let_ref) {
-            style_warning("STYLE025: 'unsafe \{ ... }' block scope is too broad; only one operation requires unsafe — narrow to 'unsafe(<sub-expr>)' wrapping that operation", expr.at)
+            
+            var narrowable = true
+            if (blk.list[0] is ExprFor) {
+                let fbody = (blk.list[0] as ExprFor).body
+                if (fbody != null && fbody is ExprBlock) {
+                    let fblk = fbody as ExprBlock
+                    var all_deletes = !empty(fblk.list)
+                    for (s in fblk.list) {
+                        if (!(s is ExprDelete)) {
+                            all_deletes = false
+                        }
+                    }
+                    if (all_deletes) {
+                        narrowable = false
+                    }
+                }
+            }
+            if (narrowable) {
+                style_warning("STYLE025: 'unsafe \{ ... }' block scope is too broad; only one operation requires unsafe - narrow to 'unsafe(<sub-expr>)' wrapping that operation", expr.at)
+            }
         }
         return expr
     }
@@ -2261,13 +2644,40 @@ class StyleLintVisitor : AstVisitor {
 
 def private require_analysis_enabled(disabled, enabled : table<string>) : bool {
     
-    
     var any = false
     for (code in ["STYLE029", "STYLE030"]) {
         if (key_exists(disabled, code) || (!empty(enabled) && !key_exists(enabled, code))) continue
         any = true
     }
     return any
+}
+
+def private comment_hygiene_for(prog : ProgramPtr; requested : bool) : bool {
+    
+    if (requested) return true
+    let configured = prog._options |> find_arg("_comment_hygiene")
+    if (configured is tBool) return configured as tBool
+    return is_daslib_source(prog)
+}
+
+def private ascii_strings_for(prog : ProgramPtr) : bool {
+    
+    let configured = prog._options |> find_arg("_ascii_strings")
+    if (configured is tBool) return configured as tBool
+    if (lint_config_forces_on("STYLE039")) return true
+    return is_shipped_library_source(prog)
+}
+
+def private max_complexity_for(prog : ProgramPtr) : int {
+    
+    let configured = prog._options |> find_arg("_cyclomatic_complexity") ?as tInt ?? STYLE037_DEFAULT_MAX
+    return max(configured, 0)
+}
+
+def private max_function_length_for(prog : ProgramPtr) : int {
+    
+    let configured = prog._options |> find_arg("_function_length") ?as tInt ?? STYLE038_DEFAULT_MAX_LINES
+    return max(configured, 0)
 }
 
 def public style_lint(prog : ProgramPtr; compile_time_errors : bool; comment_hygiene : bool = false) : int {
@@ -2282,15 +2692,19 @@ def public style_lint(prog : ProgramPtr; compile_time_errors : bool; disabled_co
     
     
     
-    var astVisitor = new StyleLintVisitor(compile_time_errors = compile_time_errors, comment_hygiene = comment_hygiene)
+    let hygiene = comment_hygiene_for(prog, comment_hygiene)
+    var astVisitor = new StyleLintVisitor(compile_time_errors = compile_time_errors, comment_hygiene = hygiene)
     astVisitor.disabled_codes := disabled_codes
+    astVisitor.max_complexity = max_complexity_for(prog)
+    astVisitor.max_function_length = max_function_length_for(prog)
+    astVisitor.ascii_strings = ascii_strings_for(prog)
     astVisitor.this_module = prog.getThisModule
     let empty_enabled : table<string>
     astVisitor.analyze_requires = astVisitor.this_module != null && require_analysis_enabled(disabled_codes, empty_enabled)
     make_visitor(*astVisitor) $(astVisitorAdapter) {
         visit_with_generics(prog, astVisitorAdapter)
     }
-    if (comment_hygiene) {
+    if (hygiene) {
         astVisitor->scan_long_comment_blocks(prog)
     }
     astVisitor->st029_check_requires(prog)
@@ -2316,15 +2730,19 @@ def public style_lint_collect(prog : ProgramPtr; var warnings : array<string>;
                               comment_hygiene : bool = false) : int {
     
     
-    var astVisitor = new StyleLintVisitor(compile_time_errors = false, collect_warnings = true, comment_hygiene = comment_hygiene)
+    let hygiene = comment_hygiene_for(prog, comment_hygiene)
+    var astVisitor = new StyleLintVisitor(compile_time_errors = false, collect_warnings = true, comment_hygiene = hygiene)
     astVisitor.disabled_codes := disabled_codes
     astVisitor.enabled_codes := enabled_codes
+    astVisitor.max_complexity = max_complexity_for(prog)
+    astVisitor.max_function_length = max_function_length_for(prog)
+    astVisitor.ascii_strings = ascii_strings_for(prog)
     astVisitor.this_module = prog.getThisModule
     astVisitor.analyze_requires = astVisitor.this_module != null && require_analysis_enabled(disabled_codes, enabled_codes)
     make_visitor(*astVisitor) $(astVisitorAdapter) {
         visit_with_generics(prog, astVisitorAdapter)
     }
-    if (comment_hygiene) {
+    if (hygiene) {
         astVisitor->scan_long_comment_blocks(prog)
     }
     astVisitor->st029_check_requires(prog)
@@ -2334,6 +2752,37 @@ def public style_lint_collect(prog : ProgramPtr; var warnings : array<string>;
     }
     let count = astVisitor.warning_count
     warnings |> push_from(astVisitor.warnings)
+    unsafe { delete astVisitor; }
+    return count
+}
+
+def public style_lint_collect_issues(prog : ProgramPtr; var issues : array<LintIssue>;
+                                     disabled_codes, enabled_codes : table<string>;
+                                     comment_hygiene : bool = false) : int {
+    
+    
+    let hygiene = comment_hygiene_for(prog, comment_hygiene)
+    var astVisitor = new StyleLintVisitor(compile_time_errors = false, collect_warnings = true, comment_hygiene = hygiene)
+    astVisitor.disabled_codes := disabled_codes
+    astVisitor.enabled_codes := enabled_codes
+    astVisitor.max_complexity = max_complexity_for(prog)
+    astVisitor.max_function_length = max_function_length_for(prog)
+    astVisitor.ascii_strings = ascii_strings_for(prog)
+    astVisitor.this_module = prog.getThisModule
+    astVisitor.analyze_requires = astVisitor.this_module != null && require_analysis_enabled(disabled_codes, enabled_codes)
+    make_visitor(*astVisitor) $(astVisitorAdapter) {
+        visit_with_generics(prog, astVisitorAdapter)
+    }
+    if (hygiene) {
+        astVisitor->scan_long_comment_blocks(prog)
+    }
+    astVisitor->st029_check_requires(prog)
+    
+    if (!empty(astVisitor.unsafe_stack)) {
+        panic("style_lint internal: unsafe_stack not balanced after walk (size={length(astVisitor.unsafe_stack)})")
+    }
+    let count = astVisitor.warning_count
+    issues |> push_from(astVisitor.issues)
     unsafe { delete astVisitor; }
     return count
 }

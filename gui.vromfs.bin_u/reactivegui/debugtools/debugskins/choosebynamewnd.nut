@@ -1,21 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("math")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let modalPopupWnd = require("%rGui/components/modalPopupWnd.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
+from "math" import ceil
+from "%sqstd/underscore.nut" import arrayByRows
+import "%rGui/components/modalPopupWnd.nut" as modalPopupWnd
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/style/backgrounds.nut" import bgShaded
 
-let wndUid = "chooseByName"
+
+const wndUid = "chooseByName"
 let close = @() modalPopupWnd.remove(wndUid)
-let minWidth = hdpx(700)
+const minWidth = hdpx(700)
 let maxWidth = saSize[0]
 let maxListHeight = saSize[1] - hdpx(300)
-let gap = hdpx(20)
-let vGap = 0
+const gap = hdpx(20)
+const vGap = 0
 let font = fontSmall
 
-let function valuesList(list, curValue, setValue) {
+function valuesList(list, curValue, setValue) {
   if (list.len() == 0)
     return null
 

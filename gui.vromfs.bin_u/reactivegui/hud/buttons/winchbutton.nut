@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { AB_WINCH, AB_WINCH_ATTACH, AB_WINCH_DETACH, getActionType
-} = require("%rGui/hud/actionBar/actionType.nut")
-let { actionBarItems } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { touchButtonSize, imageColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { hudPearlGrayColor, hudLightBlackColor } = require("%rGui/style/hudColors.nut")
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkGamepadHotkey
+from "%rGui/hud/actionBar/actionBarState.nut" import actionBarItems
+from "%rGui/hud/actionBar/actionType.nut" import AB_WINCH, AB_WINCH_ATTACH, AB_WINCH_DETACH, getActionType
+from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize, imageColor
+from "%rGui/style/hudColors.nut" import hudPearlGrayColor, hudLightBlackColor
 
-let borderWidth = hdpxi(1)
+
+const borderWidth = hdpxi(1)
 let colorActive = imageColor
 let colorInactive = hudPearlGrayColor
 
@@ -57,7 +57,7 @@ function winchButton(scale) {
           color
         }
         mkGamepadShortcutImage(shortcutId,
-          { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(50)] },
+          { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(50), ph(50)] },
           scale)
       ]
     })

@@ -1,18 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getBulletImage, getBulletTypeIcon } = require("%appGlobals/config/bulletsPresentation.nut")
-let { sliderValueSound } = require("%rGui/components/slider.nut")
-let { mkTabs, tabExtraWidth } = require("%rGui/components/tabs.nut")
-let { opacityTransition } = require("%rGui/components/selectedLine.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { mkBulletSlider } = require("%rGui/bullets/bulletsSlotComps.nut")
-let { BULLETS_PRIM_SLOTS } = require("%rGui/bullets/bulletsConst.nut")
-let { onBulletTabChange, setCurUnitBullets } = require("%rGui/unitMods/unitBulletsState.nut")
-let { curBulletCategoryId, unitName } = require("%rGui/unitMods/unitModsState.nut")
-let { tabH, tabW, tabContentMargin, knobSize, knobGap, tabsOvr } = require("%rGui/unitMods/unitModsConst.nut")
-let { mkBulletTypeIcon } = require("%rGui/unitMods/modsComps.nut")
-let { mkUnseenUnitBullets } = require("%rGui/unitMods/unseenBullets.nut")
-let { getAmmoTypeShortText, getAmmoNameShortText } = require("%rGui/weaponry/weaponsVisual.nut")
-let { tabBgColor } = require("%rGui/style/stdColors.nut")
+from "%appGlobals/config/bulletsPresentation.nut" import getBulletImage, getBulletTypeIcon
+from "%rGui/bullets/bulletsConst.nut" import BULLETS_PRIM_SLOTS
+from "%rGui/bullets/bulletsSlotComps.nut" import mkBulletSlider
+from "%rGui/components/selectedLine.nut" import opacityTransition
+from "%rGui/components/slider.nut" import sliderValueSound
+from "%rGui/components/tabs.nut" import mkTabs, tabExtraWidth
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/style/stdColors.nut" import tabBgColor
+from "%rGui/unitMods/modsComps.nut" import mkBulletTypeIcon
+from "%rGui/unitMods/unitBulletsState.nut" import onBulletTabChange, setCurUnitBullets
+from "%rGui/unitMods/unitModsConst.nut" import tabH, tabW, tabContentMargin, knobSize, knobGap, tabsOvr
+from "%rGui/unitMods/unitModsState.nut" import curBulletCategoryId, unitName
+from "%rGui/unitMods/unseenBullets.nut" import mkUnseenUnitBullets
+from "%rGui/weaponry/weaponsVisual.nut" import getAmmoTypeShortText, getAmmoNameShortText
 
 
 let tabContentW = tabW - tabExtraWidth

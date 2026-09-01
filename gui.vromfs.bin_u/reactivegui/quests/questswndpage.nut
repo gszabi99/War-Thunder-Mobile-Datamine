@@ -1,62 +1,59 @@
 from "%globalsDarg/darg_library.nut" import *
-let {eventbus_subscribe} = require("eventbus")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { adBudgetInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { questsBySection, unseenUnlocks, saveSeenQuestsForSection, sectionsCfg, questsCfg, mkHasReceivedAllRewards,
-  inactiveEventUnlocks, hasUnseenQuestsBySection, progressUnlockByTab, progressUnlockBySection,
-  getQuestCurrenciesInTab, curTabParams, tutorialSectionId, isSameTutorialSectionId, tutorialSectionIdWithReward,
-  getStarsTotalNonUpdatable
-} = require("%rGui/quests/questsState.nut")
-let { textButtonSecondary, textButtonInactive, textButtonPricePurchase, iconButtonCommon,
-  iconButtonInactive, textButtonPurchase
-} = require("%rGui/components/textButton.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { receiveUnlockRewards, unlockInProgress, unlockTables, unlockProgress, activeUnlocks,
-  getUnlockPrice, buyUnlock, buyUnlockReroll, allowOpenUnlock, openNextUnlockStage
-} = require("%rGui/unlocks/unlocks.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { newMark, mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap, mkTimeUntil,
-  allQuestsCompleted, mkAdsBtn, btnSize, mkQuestText, btnStyle, btnStyleSound
-} = require("%rGui/quests/questsPkg.nut")
-let { mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon, progressBarRewardSize, mkRewardsPreviewFull,
-  getRewardsPreviewInfo, getEventCurrencyReward, REWARDS_PREVIEW_SLOTS
-} = require("%rGui/quests/rewardsComps.nut")
-let { mkQuestBar, mkQuestListProgressBar } = require("%rGui/quests/questBar.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { topAreaSize } = require("%rGui/options/mkOptionsScene.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { minContentOffset, tabW } = require("%rGui/options/optionsStyle.nut")
-let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
-} = require("%rGui/shop/unseenPurchasesState.nut")
-let { defer } = require("dagor.workcycle")
-let { sendBqQuestsTask, sendBqQuestsRerollTask } = require("%rGui/quests/bqQuests.nut")
-let { PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, PURCH_SRC_OPERATION_PASS, PURCH_TYPE_QUEST_REROLL,
-  mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
-let { msgBoxText } = require("%rGui/components/msgBox.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { mkChainProgress } = require("%rGui/quests/questChain.nut")
-let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
-let { G_UNIT } = require("%appGlobals/rewardType.nut")
-let { REWARD_STYLE_VERY_TINY } = require("%rGui/rewards/rewardStyles.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
-let currencyStyles = require("%rGui/components/currencyStyles.nut")
+from "dagor.workcycle" import defer
+from "eventbus" import eventbus_subscribe
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/currenciesState.nut" import GOLD
+from "%appGlobals/pServer/campaign.nut" import campaignsList
+from "%appGlobals/pServer/pServerApi.nut" import adBudgetInProgress
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/rewardType.nut" import G_UNIT
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/battlePass/operationPassState.nut" import isOPActive, openOPPurchaseWnd
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+import "%rGui/components/currencyStyles.nut" as currencyStyles
+from "%rGui/components/msgBox.nut" import msgBoxText
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
+from "%rGui/components/selectedLine.nut" import selLineSize
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonSecondary, textButtonInactive, textButtonPricePurchase,
+  iconButtonCommon, iconButtonInactive, textButtonPurchase
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/options/mkOptionsScene.nut" import topAreaSize
+from "%rGui/options/optionsStyle.nut" import minContentOffset, tabW
+from "%rGui/quests/bqQuests.nut" import sendBqQuestsTask, sendBqQuestsRerollTask
+from "%rGui/quests/questBar.nut" import mkQuestBar, mkQuestListProgressBar
+from "%rGui/quests/questChain.nut" import mkChainProgress
+from "%rGui/quests/questsPkg.nut" import mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap,
+  mkTimeUntil, allQuestsCompleted, mkAdsBtn, btnSize, mkQuestText, btnStyle, btnStyleSound
+from "%rGui/quests/questsState.nut" import questsBySection, unseenUnlocks, saveSeenQuestsForSection, sectionsCfg,
+  questsCfg, mkHasReceivedAllRewards, inactiveEventUnlocks, hasUnseenQuestsBySection, progressUnlockByTab,
+  progressUnlockBySection, getQuestCurrenciesInTab, curTabParams, tutorialSectionId, isSameTutorialSectionId,
+  tutorialSectionIdWithReward, getStarsTotalNonUpdatable
+from "%rGui/quests/rewardsComps.nut" import mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon,
+  progressBarRewardSize, mkRewardsPreviewFull, getRewardsPreviewInfo, getEventCurrencyReward, REWARDS_PREVIEW_SLOTS
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_VERY_TINY
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, PURCH_SRC_OPERATION_PASS,
+  PURCH_TYPE_QUEST_REROLL, mkBqPurchaseInfo
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
+from "%rGui/shop/unseenPurchasesState.nut" import addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler,
+  markPurchasesSeen
+from "%rGui/style/stdColors.nut" import selectColor
+from "%rGui/unlocks/unlocks.nut" import receiveUnlockRewards, unlockInProgress, unlockTables, unlockProgress,
+  activeUnlocks, getUnlockPrice, buyUnlock, buyUnlockReroll, allowOpenUnlock, openNextUnlockStage
+from "%rGui/unlocks/userstat.nut" import userstatStatsTables
+from "%rGui/components/timerBlock.nut" import mkTimerBlock
+
+
 let { CS_COMMON } = currencyStyles
-let { isOPActive, openOPPurchaseWnd } = require("%rGui/battlePass/operationPassState.nut")
-let { selLineSize } = require("%rGui/components/selectedLine.nut")
-let { simpleHorGrad } = require("%rGui/style/gradients.nut")
 
 
-let bgColor = 0x80000000
-let unseenMarkMargin = hdpx(20)
-let pageBlocksGap = hdpx(30)
-let lockedOpacity = 0.5
+const bgColor = 0x80000000
+const unseenMarkMargin = hdpx(20)
+const pageBlocksGap = hdpx(30)
+const lockedOpacity = 0.5
 let gradientHeightBottom = saBorders[1]
 
 let contentWidth = saSize[0] - tabW - minContentOffset
@@ -66,7 +63,7 @@ let isPurchNoNeedResultWindow = @(purch) purch?.source == "userstatReward"
 let markPurchasesSeenDelayed = @(purchList) defer(@() markPurchasesSeen(purchList.keys()))
 
 let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
-let bottomPanelH = hdpx(90)
+const bottomPanelH = hdpx(90)
 
 let mkVerticalPannableAreaNoBlocks = verticalPannableAreaCtor(
   sh(100) - topAreaSize + pageBlocksGap - bottomPanelH,
@@ -78,8 +75,6 @@ let mkVerticalPannableAreaTwoBlocks = verticalPannableAreaCtor(
   sh(100) - topAreaSize - pageBlocksGap - progressBarRewardSize - sectionBtnHeight - bottomPanelH,
   [pageBlocksGap, gradientHeightBottom])
 let pannableCtors = [mkVerticalPannableAreaNoBlocks, mkVerticalPannableAreaOneBlock, mkVerticalPannableAreaTwoBlocks]
-
-let newMarkSize = calc_comp_size(newMark)
 
 function receiveReward(item, currencyReward, stageToReceive = null) {
   let stage = stageToReceive ?? item?.stage ?? 1
@@ -176,7 +171,7 @@ let mkQuestBtn = @(item, currencyReward, rewardsPreview, hasReceivedAllRewards, 
 
   let questBtn = needOPAccessMark
       ? textButtonPurchase(utf8ToUpper(loc("quests/needOP")), openOPPurchaseWnd,
-          { ovr = {size = btnSize, minWidth = btnSize[0], padding = [0, hdpx(2)]} })
+          { ovr = {size = btnSize, minWidth = btnSize[0], padding = const [0, hdpx(2)]} })
     : item?.hasReward
       ? textButtonSecondary(
           utf8ToUpper(loc("btn/receive")),
@@ -260,7 +255,7 @@ function mkItem(item, textCtor, sectionId) {
       || (item.meta?.chain_quest && item.requirement == "")
       || (unlockProgress.get()?[item.requirement].isCompleted ?? false)
   )
-  let imgLockSize = hdpxi(60)
+  const imgLockSize = hdpxi(60)
   let isUnseen = Computed(@() !item.hasReward
     && item.name in unseenUnlocks.get()
     && item.name not in inactiveEventUnlocks.get())
@@ -284,7 +279,7 @@ function mkItem(item, textCtor, sectionId) {
     ? 2 * btnSize[1] + questItemsGap
     : btnSize[1])
   let headerPadding = item.hasReward ? Watched(unseenMarkMargin * 2)
-    : Computed(@()isUnseen.get() ? newMarkSize[0] : 0)
+    : Computed(@() isUnseen.get() ? unseenMarkMargin * 2 : 0)
 
   let needOPAccessMark = Computed(@() !isOPActive.get()
     && item?.meta.personal.startswith("premium_personal_unlocks"))
@@ -295,17 +290,20 @@ function mkItem(item, textCtor, sectionId) {
     size = FLEX_H
     xmbNode = {}
     children = [
-      @() {
-        watch = isUnseen
-        size = FLEX_H
-        children = item.hasReward
-            ? {
-                margin = unseenMarkMargin
-                children = priorityUnseenMark
-              }
-          : isUnseen.get() ? newMark
-          : null
-      }
+      item.hasReward
+        ? {
+            margin = unseenMarkMargin
+            children = priorityUnseenMark
+          }
+        : @() {
+            watch = isUnseen
+            size = FLEX_H
+            children = !isUnseen.get() ? null
+              : {
+                  margin = unseenMarkMargin
+                  children = priorityUnseenMark
+                }
+          }
 
       @() {
         watch = isHiddenForReroll
@@ -374,7 +372,7 @@ function mkItem(item, textCtor, sectionId) {
                                 valign = ALIGN_CENTER
                                 children = {
                                   rendObj = ROBJ_IMAGE
-                                  size = [imgLockSize, imgLockSize]
+                                  size = const [imgLockSize, imgLockSize]
                                   image = Picture($"ui/gameuiskin#lock_icon.svg:{imgLockSize}:{imgLockSize}:P")
                                   keepAspect = true
                                 }
@@ -401,7 +399,7 @@ function mkItem(item, textCtor, sectionId) {
   }
 }
 
-let sectionPart = 0.97
+const sectionPart = 0.97
 
 let isSectionUnlockActive = @(u, unlockTablesV) u?.type == "INDEPENDENT" || (unlockTablesV?[u?.table] ?? false)
 
@@ -461,32 +459,6 @@ function questTimerUntilStart(sectionTable) {
     valign = ALIGN_CENTER
     children = timeText.get() == "" ? null
       : mkTimeUntil(timeText.get(), "quests/untilTheStart", fontMedium)
-  }
-}
-
-function questTimerUntilEnd(sectionTable) {
-  let endsAt = Computed(@() userstatStatsTables.get()?.stats[sectionTable.get()?.table]["$endsAt"] ?? 0)
-  let timeText = Computed(function() {
-    let timeLeft = endsAt.get() - serverTime.get()
-    return timeLeft > 0 ? secondsToHoursLoc(timeLeft) : ""
-  })
-
-  return @() {
-    watch = timeText
-    pos = [-(saBorders[0] + (tabW + minContentOffset) / 2 - selLineSize), 0]
-    hplace = ALIGN_LEFT
-    children = timeText.get() == "" ? null
-      : {
-          rendObj = ROBJ_IMAGE
-          image = simpleHorGrad
-          color = 0x80000000
-          flipX = true
-          padding = [hdpx(10), saBorders[0], hdpx(20), saBorders[0]]
-          children = {
-            rendObj = ROBJ_TEXT
-            text = timeText.get()
-          }.__update(fontSmall)
-        }
   }
 }
 
@@ -600,7 +572,7 @@ function questsWndPage(sections, itemCtor, tabId, isFullScreenWidth = Watched(fa
 
   let sectionTableUnlock = Computed(@() getSectionTableUnlock(questsBySection.get()?[curSectionId.get()] ?? []))
   let isCurSectionActive = Computed(@() isSectionUnlockActive(sectionTableUnlock.get(), unlockTables.get()))
-
+  let endsAtTime = Computed(@() userstatStatsTables.get()?.stats[sectionTableUnlock.get()?.table]["$endsAt"] ?? 0)
   function onSectionChange(id) {
     saveSeenQuestsForSection(curSectionId.get())
     selSectionId.set(id)
@@ -728,7 +700,8 @@ function questsWndPage(sections, itemCtor, tabId, isFullScreenWidth = Watched(fa
                 children = !isCurSectionActive.get() ? null
                   : [
                       !isFullScreenWidth.get() ? null
-                        : questTimerUntilEnd(sectionTableUnlock)
+                        : mkTimerBlock(endsAtTime,
+                            {pos = [-(saBorders[0] + (tabW + minContentOffset) / 2 - selLineSize), 0]})
                       pannableCtors[blocksOnTop.get()](
                         @() {
                           watch = questsCount

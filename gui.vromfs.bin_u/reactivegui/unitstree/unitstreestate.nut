@@ -1,9 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg
+from "%rGui/unit/unitsWndState.nut" import curSelectedUnit
+
+
 require("%rGui/onlyAfterLogin.nut")
-let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
 
 let isUnitsTreeOpen = mkWatched(persist, "isUnitsTreeOpen", false)
 let isUnitsTreeAttached = Watched(false)

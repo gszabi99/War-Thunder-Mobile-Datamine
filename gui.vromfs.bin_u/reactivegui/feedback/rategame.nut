@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { needRateGame } = require("%rGui/feedback/rateGameState.nut")
-let openReviewCueWnd = require("%rGui/feedback/reviewCueWnd.nut")
+from "dagor.workcycle" import resetTimeout
+from "%rGui/feedback/rateGameState.nut" import needRateGame
+import "%rGui/feedback/reviewCueWnd.nut" as openReviewCueWnd
+
 
 local onCloseCb = null
 

@@ -1,14 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { DBGLEVEL } = require("dagor.system")
-let { resetTimeout } = require("dagor.workcycle")
-let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
-let { can_debug_shop } = require("%appGlobals/permissions.nut")
-let { severalCheckPurchasesOnActivate } = require("%rGui/shop/checkPurchases.nut")
-let { addGoodsInfoGuids, addGoodsInfoGuid, goodsInfo } = require("%rGui/shop/byPlatform/gaijinGoodsInfo.nut")
-let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
-let { showRestorePurchasesDoneMsg } = require("%rGui/shop/byPlatform/platformGoodsCommon.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+from "dagor.system" import DBGLEVEL
+from "dagor.workcycle" import resetTimeout
+from "eventbus" import eventbus_send
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%appGlobals/pServer/campaign.nut" import campConfigs, activeOffers
+from "%appGlobals/permissions.nut" import can_debug_shop
+from "%rGui/shop/byPlatform/gaijinGoodsInfo.nut" import addGoodsInfoGuids, addGoodsInfoGuid, goodsInfo
+from "%rGui/shop/byPlatform/platformGoodsCommon.nut" import showRestorePurchasesDoneMsg
+from "%rGui/shop/checkPurchases.nut" import severalCheckPurchasesOnActivate
+from "%rGui/shop/priceExt.nut" import getPriceExtStr
+
 
 let successPaymentUrl = getCurCircuitOverride("successPaymentURL","https://store.gaijin.net/success_payment.php") 
 

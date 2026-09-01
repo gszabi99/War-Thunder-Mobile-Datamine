@@ -1,3 +1,4 @@
+from "%globalScripts/gameTypeConsts.nut" import *
 let getScoreFull = @(p) p.damage + p.score * 100
 let getScoreFullRaw = @(p) (p?.damage ?? 0) + (p?.dmgScoreBonus ?? 0) * 100 
 

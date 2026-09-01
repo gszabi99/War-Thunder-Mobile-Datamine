@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
-let { campaignPresentations, getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
+from "dagor.workcycle" import deferOnce
+from "%appGlobals/config/campaignPresentation.nut" import campaignPresentations, getCampaignPresentation
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout
+from "%appGlobals/userstats/serverTime.nut" import serverTime, isServerTimeValid
 
 
 let hasPenaltyStatus = Watched({})

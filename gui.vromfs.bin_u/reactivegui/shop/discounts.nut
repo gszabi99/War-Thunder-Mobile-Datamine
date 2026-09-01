@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
 
 
 let discountsToApply = Computed(function() {

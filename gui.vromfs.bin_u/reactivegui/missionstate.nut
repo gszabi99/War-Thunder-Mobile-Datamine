@@ -1,14 +1,16 @@
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let DataBlock  = require("DataBlock")
-let { get_game_type, get_game_mode, GM_TRAINING } = require("mission")
-let { get_current_mission_desc } = require("guiMission")
-let { register_command } = require("console")
-let { EventLevelLoaded } = require("sceneEvents")
-let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-let isAppLoaded = require("%globalScripts/isAppLoaded.nut")
-let { register_es } = require("%globalScripts/ecs.nut")
-let { hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
-let interopGet = require("%rGui/interopGen.nut")
+import "DataBlock" as DataBlock
+from "console" import register_command
+from "guiMission" import get_current_mission_desc
+from "mission" import get_game_type, get_game_mode, GM_TRAINING
+from "sceneEvents" import EventLevelLoaded
+from "%sqstd/datablock.nut" import isDataBlock, eachParam
+from "%globalScripts/ecs.nut" import register_es
+import "%globalScripts/isAppLoaded.nut" as isAppLoaded
+from "%appGlobals/clientState/missionState.nut" import hudCustomRules
+import "%rGui/interopGen.nut" as interopGet
+
 
 let gameType = Watched(get_game_type())
 let gameMode = Watched(get_game_mode())

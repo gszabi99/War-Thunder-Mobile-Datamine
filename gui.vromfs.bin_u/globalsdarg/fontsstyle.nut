@@ -1,6 +1,8 @@
+from "daRg" import Fonts
 from "math" import min
-let { Fonts } = require("daRg")
-let { hdpxi } = require("screenUnits.nut")
+from "screenUnits.nut" import hdpxi
+
+
 let { getLocalLanguage = @() "" } = require_optional("language")
 let { getCurrentLanguage = @() "" } = require_optional("dagor.localize")
 
@@ -122,8 +124,10 @@ let fontBoldVeryTinyAccented = fontVeryTinyAccented.__merge(mullerBold)
 let fontBoldSmall = fontSmall.__merge(mullerBold)
 
 let fontBoldVeryTinyShaded = fontVeryTinyShaded.__merge(mullerBold)
+let fontBoldVeryVeryTinyAccentedShaded = fontVeryVeryTinyAccentedShaded.__merge(mullerBold)
 let fontBoldTinyShaded = fontTinyShaded.__merge(mullerBold)
 let fontBoldTinyAccentedShaded = fontTinyAccentedShaded.__merge(mullerBold)
+let fontBoldVeryTinyAccentedShaded = fontVeryTinyAccentedShaded.__merge(mullerBold)
 let fontBoldSmallShaded = fontSmallShaded.__merge(mullerBold)
 
 let fontMonoVeryTiny = fontVeryTiny.__merge(mullerMonoRegular)
@@ -173,8 +177,10 @@ let fontsSets = {
   }
   boldShaded = {
     fontBoldVeryTinyShaded
+    fontBoldVeryVeryTinyAccentedShaded
     fontBoldTinyShaded
     fontBoldTinyAccentedShaded
+    fontBoldVeryTinyAccentedShaded
     fontBoldSmallShaded
   }
   monospace = {

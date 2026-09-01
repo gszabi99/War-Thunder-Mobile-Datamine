@@ -1,10 +1,10 @@
-let { Computed } = require("frp")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { campConfigs, abTests, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+from "frp" import Computed
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/pServer/campaign.nut" import campConfigs, abTests, curCampaign
+import "%appGlobals/pServer/servProfile.nut" as servProfile
 
 
-let battleRentInfo = sharedWatched("battleRentInfo", @() null)
+let battleRentInfo = hardPersistWatched("battleRentInfo", null)
 
 let rentals = Computed(@() servProfile.get()?.rentals ?? {})
 let rentalCd = Computed(@() abTests.get()?.rentShips == "true" && curCampaign.get() == "ships" ? 23 * 60 * 60

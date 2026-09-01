@@ -1,48 +1,57 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/gamercardStyle.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { mkLevelBg } = require("%rGui/components/levelBlockPkg.nut")
-let { starLevelTiny } = require("%rGui/components/starLevel.nut")
-let { can_view_player_uids } = require("%appGlobals/permissions.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { mkPublicInfo, refreshPublicInfo, mkIsPublicInfoWait } = require("%rGui/contacts/contactPublicInfo.nut")
-let { mkStatsInfo, mkIsStatsWait, refreshUserStats } = require("%rGui/contacts/userstatPublicInfo.nut")
-let { calcPosition } = require("%rGui/tooltip.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { mkBotStats, mkBotInfo } = require("%rGui/mpStatistics/botsInfoState.nut")
-let { viewStats, mkRow, mkStatRow } = require("%rGui/mpStatistics/statRow.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
-let { mkTab } = require("%rGui/controls/tabs.nut")
-let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
-let { getMedalPresentationWithCtor } = require("%rGui/mpStatistics/medalsCtors.nut")
-let { validateNickNames, Contact } = require("%rGui/contacts/contact.nut")
-let { mkExtContactActionBtn } = require("%rGui/contacts/mkContactActionBtn.nut")
-let { contactNameBlock, contactAvatar, contactLevelBlock } = require("%rGui/contacts/contactInfoPkg.nut")
-let { INVITE_TO_FRIENDS, CANCEL_INVITE, REVOKE_INVITE, INVITE_TO_SQUAD, REPORT } = require("%rGui/contacts/contactActions.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { selectedPlayerForInfo } = require("%rGui/mpStatistics/viewProfile.nut")
-let { campaignPresentations, getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { needFetchContactsInBattle } = require("%rGui/contacts/contactsState.nut")
-let { textButtonCommon, mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
-let { mkTimeToNextReport } = require("%rGui/report/reportPlayerState.nut")
-let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
-let { COMMON } = require("%rGui/components/buttonStyles.nut")
-let { copyToClipboard } = require("%rGui/components/clipboard.nut")
-let mkIconBtn = require("%rGui/components/mkIconBtn.nut")
-let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "dagor.workcycle" import deferOnce
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import arrayByRows
+from "%appGlobals/config/campaignPresentation.nut" import campaignPresentations, getCampaignPresentation
+from "%appGlobals/pServer/campaign.nut" import campaignsList
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
+from "%appGlobals/permissions.nut" import can_view_player_uids
+from "%appGlobals/timeToText.nut" import secondsToTimeAbbrString
+from "%rGui/components/buttonStyles.nut" import COMMON
+from "%rGui/components/clipboard.nut" import copyToClipboard
+from "%rGui/components/levelBlockPkg.nut" import mkLevelBg
+import "%rGui/components/mkIconBtn.nut" as mkIconBtn
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg
+from "%rGui/components/spinner.nut" import mkSpinner
+from "%rGui/components/starLevel.nut" import starLevelTiny
+from "%rGui/components/textButton.nut" import textButtonCommon, mkCustomButton, mergeStyles
+from "%rGui/contacts/contact.nut" import validateNickNames, Contact
+from "%rGui/contacts/contactActions.nut" import INVITE_TO_FRIENDS, CANCEL_INVITE, REVOKE_INVITE, INVITE_TO_SQUAD, REPORT
+from "%rGui/contacts/contactInfoPkg.nut" import contactNameBlock, contactAvatar, contactLevelBlock
+from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicInfo, mkIsPublicInfoWait
+from "%rGui/contacts/contactsState.nut" import needFetchContactsInBattle
+from "%rGui/contacts/mkContactActionBtn.nut" import mkExtContactActionBtn
+from "%rGui/contacts/userstatPublicInfo.nut" import mkStatsInfo, mkIsStatsWait, refreshUserStats
+from "%rGui/controls/tabs.nut" import mkTab
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/mpStatistics/botsInfoState.nut" import mkBotStats, mkBotInfo
+from "%rGui/mpStatistics/medalsCtors.nut" import getMedalPresentationWithCtor
+from "%rGui/mpStatistics/statRow.nut" import viewStats, mkRow, mkStatRow
+from "%rGui/mpStatistics/viewProfile.nut" import selectedPlayerForInfo, SECTION_PROFILE_IDS
+from "%rGui/report/reportPlayerState.nut" import mkTimeToNextReport
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/gradients.nut" import mkColoredGradientY
+from "%rGui/style/stdColors.nut" import selectColor
+from "%rGui/tooltip.nut" import calcPosition
 
 
-let maxMedalInRow = 7
-let defColor = 0xFFFFFFFF
+let defSections = [SECTION_PROFILE_IDS.PROFILE]
+
+const maxMedalInRow = 7
+const defColor = 0xFFFFFFFF
 let hlColor = selectColor
-let grayColor = 0x80808080
+const grayColor = 0x80808080
+const commonBgGradColor = 0x990C1113
+let secondaryGradColor = selectColor
 let iconSize = [hdpx(40), hdpx(20)]
-let rowMedalHeight = hdpx(70)
+const rowMedalHeight = hdpx(70)
+const sectionBtnHeight = hdpx(80)
+const sectionBtnGap = hdpx(10)
+const lineWidth = hdpx(5)
+let bgGradient = mkColoredGradientY(commonBgGradColor, secondaryGradColor)
 
 let mkText = @(text, color = defColor) {
   rendObj = ROBJ_TEXT
@@ -60,7 +69,7 @@ let mkTitle = @(title, ovr = {}) {
     text = (title != null && title != "") ? loc($"title/{title}") : ""
   }.__update(ovr)
 
-let starLevelOvr = { hplace = ALIGN_CENTER vplace = ALIGN_CENTER pos = [0, ph(30)] }
+let starLevelOvr = { hplace = ALIGN_CENTER vplace = ALIGN_CENTER pos = const [0, ph(30)] }
 let levelMark = @(level, starLevel) {
   size = array(2, levelHolderSize)
   children = [
@@ -279,7 +288,7 @@ let mkMedals = @(info, selCampaign) function() {
             gap = hdpx(5)
             children = arrayByRows(children, maxMedalInRow)
               .map(@(ch) {
-                size = [SIZE_TO_CONTENT, rowMedalHeight]
+                size = const [SIZE_TO_CONTENT, rowMedalHeight]
                 valign = ALIGN_CENTER
                 flow = FLOW_HORIZONTAL
                 gap = hdpx(30)
@@ -291,8 +300,131 @@ let mkMedals = @(info, selCampaign) function() {
   }
 }
 
-function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
+let mkSectionBtn = @(id, onClick, isSelected) {
+  size = const [FLEX, sectionBtnHeight]
+  behavior = Behaviors.Button
+  onClick
+  sound = { click = "choose" }
+  children = [
+    {
+      size = FLEX
+      rendObj = ROBJ_SOLID
+      color = commonBgGradColor
+    }
+    @() {
+      watch = isSelected
+      size = FLEX
+      rendObj = ROBJ_IMAGE
+      image = bgGradient
+      opacity = isSelected.get() ? 1 : 0
+      transitions = [{ prop = AnimProp.opacity, duration = 0.3, easing = InOutQuad }]
+    }
+    {
+      size = FLEX
+      margin = const [0, sectionBtnGap / 2]
+      valign = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      children = {
+        rendObj = ROBJ_TEXTAREA
+        behavior = [Behaviors.TextArea, Behaviors.Marquee]
+        delay = defMarqueeDelay
+        text = utf8ToUpper(loc($"mainmenu/profileInfo/{id}"))
+      }.__update(fontTinyAccented)
+    }
+  ]
+}
+
+let mkSectionTabs = @(sections, curSectionId = Watched(null), onSectionChange = @(_) null) {
+  size = FLEX_H
+  flow = FLOW_HORIZONTAL
+  gap = sectionBtnGap
+  rendObj = ROBJ_BOX
+  borderColor = secondaryGradColor
+  borderWidth = const [0, 0, lineWidth, 0]
+  padding = const [0, 0, lineWidth, 0]
+  children = sections.map(@(id) mkSectionBtn(id, @() onSectionChange(id), Computed(@() curSectionId.get() == id)))
+}
+
+function mkScoreSection(player, scoreStats) {
+  if (scoreStats.len() == 0)
+    return null
+  return {
+    size = FLEX_H
+    flow = FLOW_VERTICAL
+    gap = hdpx(5)
+    children = [mkText(loc("mainmenu/profileInfo/score"), hlColor).__update(fontTinyAccented)]
+      .extend(scoreStats.map(@(c) mkRow(loc(c.titleId), c.getText(player))))
+  }
+}
+
+function mkProfileSectionContent(player, info, globalStats, campaign, isInvitesAllowed) {
   let { userId = 0, isBot = false } = player
+  let isWaitInfo = mkIsPublicInfoWait(userId)
+  let publicStats = isBot ? mkBotStats(player) : mkStatsInfo(userId)
+  let isWaitStats = mkIsStatsWait(userId)
+
+  return [
+    mkTabsCampaignName
+    mkMedals(info, campaign)
+    {
+      gap = { minWidth = hdpx(50) size = FLEX }
+      minWidth = SIZE_TO_CONTENT
+      size = FLEX_H
+      children = [
+        function() {
+          let my = info.get()?.campaigns[campaign].units
+          let all = globalStats.get()?[campaign]
+          if (isWaitInfo.get())
+            return { watch = [isWaitInfo, globalStats, info], children = mkSpinner() }
+          if (!my || !all)
+            return { watch = [isWaitInfo, globalStats, info] }
+          return {
+            watch = [isWaitInfo, globalStats, info]
+            size = const [pw(45), SIZE_TO_CONTENT]
+            valign = ALIGN_CENTER
+            flow = FLOW_VERTICAL
+            gap = hdpx(5)
+            children = [
+              mkText(loc("lobby/vehicles"), hlColor).__update(fontTinyAccented)
+              mkRow(loc("stats/line"), $"{my.wp}/{all.wp}")
+              mkRow(loc("stats/maxLevel"), $"{my.maxLevel}/{my.wp + my.prem + my.rare}")
+              mkRow(loc("stats/premium"), $"{my.prem}/{all.prem}", {
+                size = iconSize
+                rendObj = ROBJ_IMAGE
+                keepAspect = KEEP_ASPECT_FIT
+                image = Picture($"ui/gameuiskin#icon_premium.svg:{iconSize[0]}:{iconSize[1]}:P")
+                vplace = ALIGN_CENTER
+              })
+              mkRow(loc("stats/rare"), $"{my.rare}")
+            ]
+          }
+        }
+        function() {
+          let stats = publicStats.get()?.stats["global"][campaign]
+          if (isWaitStats.get())
+            return { watch = [isWaitStats, publicStats], children = mkSpinner() }
+          if (!stats)
+            return { watch = [isWaitStats, publicStats] }
+          return {
+            watch = [isWaitStats, publicStats]
+            size = const [pw(45), SIZE_TO_CONTENT]
+            valign = ALIGN_CENTER
+            hplace = ALIGN_RIGHT
+            flow = FLOW_VERTICAL
+            gap = hdpx(5)
+            children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]
+              .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign)))
+          }
+        }
+      ]
+    }
+    mkButtons(userId, isInvitesAllowed)
+  ]
+}
+
+function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed, sections = null, scoreStats = null) {
+  let { userId = 0, isBot = false } = player
+  sections = sections ?? defSections
   if (!isBot) {
     refreshPublicInfo(userId)
     refreshUserStats(userId)
@@ -301,16 +433,42 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
   if (!isBot)
     validateNickNames([userId])
   let info = isBot ? mkBotInfo(player) : mkPublicInfo(userId)
-  let isWaitInfo = mkIsPublicInfoWait(userId)
-  let publicStats = isBot ? mkBotStats(player) : mkStatsInfo(userId)
-  let isWaitStats = mkIsStatsWait(userId)
+  let curSectionId = Watched(sections[0])
+
+  let sectionContentById = {
+    [SECTION_PROFILE_IDS.PROFILE] = @() mkProfileSectionContent(player, info, globalStats, campaign, isInvitesAllowed),
+    [SECTION_PROFILE_IDS.SCORE] = @() mkScoreSection(player, scoreStats ?? []),
+  }
+
+  let mkSectionLayer = @(content, isCurrent) {
+    opacity = isCurrent ? 1 : 0
+    size = FLEX_H
+    flow = FLOW_VERTICAL
+    valign = ALIGN_TOP
+    gap = hdpx(30)
+    children = content
+  }
+
+  let refSectionId = sections[0]
+  let sectionBody = @() {
+    watch = curSectionId
+    size = FLEX_H
+    children = [
+      mkSectionLayer(sectionContentById?[refSectionId](), curSectionId.get() == refSectionId)
+      curSectionId.get() == refSectionId ? null
+        : { size = FLEX, stopMouse = true }
+      curSectionId.get() == refSectionId ? null
+        : mkSectionLayer(sectionContentById?[curSectionId.get()](), true)
+    ]
+  }
+
   return modalWndBg.__merge({
     size = FLEX_H
     flow = FLOW_VERTICAL
     valign = ALIGN_TOP
     stopMouse = true
     children = [
-      modalWndHeader(loc("mainmenu/titlePlayerProfile"))
+      sections.len() > 1 ? mkSectionTabs(sections, curSectionId, @(id) curSectionId.set(id)) : null
       {
         size = const [sw(45), SIZE_TO_CONTENT]
         hplace = ALIGN_CENTER
@@ -324,69 +482,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed) {
             ? mkBotNameContent(player, info)
             : mkContactInfo(contact, info)
           mkPlayerUidInfo(player, contact)
-          mkTabsCampaignName
-          mkMedals(info, campaign)
-          {
-            gap = { minWidth = hdpx(50) size = FLEX }
-            minWidth = SIZE_TO_CONTENT
-            size = FLEX_H
-            children = [
-              function() {
-                let my = info.get()?.campaigns[campaign].units
-                let all = globalStats.get()?[campaign]
-                if (isWaitInfo.get())
-                  return {
-                    watch = [isWaitInfo, globalStats, info]
-                    children = mkSpinner()
-                  }
-                if (!my || !all)
-                  return {
-                    watch = [isWaitInfo, globalStats, info]
-                  }
-                return {
-                  watch = [isWaitInfo, globalStats, info]
-                  size = [pw(45), SIZE_TO_CONTENT]
-                  valign = ALIGN_CENTER
-                  flow = FLOW_VERTICAL
-                  gap = hdpx(5)
-                  children = [
-                    mkText(loc("lobby/vehicles"), hlColor).__update(fontTinyAccented)
-                    mkRow(loc("stats/line"), $"{my.wp}/{all.wp}")
-                    mkRow(loc("stats/maxLevel"), $"{my.maxLevel}/{my.wp + my.prem + my.rare}")
-                    mkRow(loc("stats/premium"), $"{my.prem}/{all.prem}", {
-                      size = iconSize
-                      rendObj = ROBJ_IMAGE
-                      keepAspect = KEEP_ASPECT_FIT
-                      image = Picture($"ui/gameuiskin#icon_premium.svg:{iconSize[0]}:{iconSize[1]}:P")
-                      vplace = ALIGN_CENTER
-                    })
-                    mkRow(loc("stats/rare"), $"{my.rare}")
-                  ]
-                }
-              }
-              function() {
-                let stats = publicStats.get()?.stats["global"][campaign]
-                if (isWaitStats.get())
-                  return {
-                    watch = [isWaitStats, publicStats]
-                    children = mkSpinner()
-                  }
-                if (!stats)
-                  return { watch = [isWaitStats, publicStats] }
-                return {
-                  watch = [isWaitStats, publicStats]
-                  size = [pw(45), SIZE_TO_CONTENT]
-                  valign = ALIGN_CENTER
-                  hplace = ALIGN_RIGHT
-                  flow = FLOW_VERTICAL
-                  gap = hdpx(5)
-                  children = [mkText(loc("flightmenu/btnStats"), hlColor).__update(fontTinyAccented)]
-                    .extend(viewStats.map(@(conf) mkStatRow(stats, conf, campaign)))
-                }
-              }
-            ]
-          }
-          mkButtons(userId, isInvitesAllowed)
+          sectionBody
         ]
       }
     ]
@@ -400,7 +496,7 @@ selectedPlayerForInfo.subscribe(function(v) {
   if (v == null)
     return
 
-  let { player, isInvitesAllowed = true } = v
+  let { player, isInvitesAllowed = true, sections = null, scoreStats = null } = v
   let aabb = gui_scene.getCompAABBbyKey(player.userId)
   if (aabb == null) {
     deferOnce(close)
@@ -445,7 +541,7 @@ selectedPlayerForInfo.subscribe(function(v) {
         transform = {}
         safeAreaMargin = saBordersRv
         behavior = Behaviors.BoundToArea
-        children = mkPlayerInfo(player, globalStats, selCampaign, isInvitesAllowed)
+        children = mkPlayerInfo(player, globalStats, selCampaign, isInvitesAllowed, sections, scoreStats)
       }
     })
   }))

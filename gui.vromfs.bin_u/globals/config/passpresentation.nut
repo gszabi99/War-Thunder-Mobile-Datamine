@@ -1,5 +1,6 @@
 from "%appGlobals/currenciesState.nut" import *
 
+
 let defOpPresentation = {
   icon = null
   iconVip = null

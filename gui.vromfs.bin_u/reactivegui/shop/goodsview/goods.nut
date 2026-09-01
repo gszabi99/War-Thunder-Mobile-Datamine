@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/shop/shopCommon.nut" import *
-let { getCustomGoodsNameById } = require("%appGlobals/config/goodsPresentation.nut")
-let { getLocNameDefault, mkGoodsDefault } = require("%rGui/shop/goodsView/goodsDefault.nut")
-let { getLocNameDecal, mkGoodsDecal } = require("%rGui/shop/goodsView/goodsDecal.nut")
-let { getLocNameGold, mkGoodsGold } = require("%rGui/shop/goodsView/goodsGold.nut")
-let { getLocNameWp, mkGoodsWp } = require("%rGui/shop/goodsView/goodsWp.nut")
-let { getLocNamePlatinum, mkGoodsPlatinum } = require("%rGui/shop/goodsView/goodsPlatinum.nut")
-let { getLocNamePremium, mkGoodsPremium } = require("%rGui/shop/goodsView/goodsPremium.nut")
-let { getLocNameUnit, mkGoodsUnit, mkGoodsUnitBundle, getLocBlueprintUnit, getLocBranchUnits
-} = require("%rGui/shop/goodsView/goodsUnit.nut")
-let { mkGoodsSkin, getLocNameSkin } = require("%rGui/shop/goodsView/goodsSkin.nut")
-let { getLocNameConsumables, mkGoodsConsumables } = require("%rGui/shop/goodsView/goodsConsumables.nut")
-let { getLocNameLootbox, mkGoodsLootbox } = require("%rGui/shop/goodsView/goodsLootbox.nut")
-let { getLocNameBooster, mkGoodsBooster } = require("%rGui/shop/goodsView/goodsBooster.nut")
-let { mkGoodsEventCurrency } = require("%rGui/shop/goodsView/goodsEventCurrency.nut")
-let { mkGoodsSlots } = require("%rGui/shop/goodsView/goodsSlots.nut")
-let { getLocNameDecorator, mkGoodsDecorator } = require("%rGui/shop/goodsView/goodsDecorator.nut")
+from "%appGlobals/config/goodsPresentation.nut" import getCustomGoodsNameById
+from "%rGui/shop/goodsView/goodsBooster.nut" import getLocNameBooster, mkGoodsBooster
+from "%rGui/shop/goodsView/goodsConsumables.nut" import getLocNameConsumables, mkGoodsConsumables
+from "%rGui/shop/goodsView/goodsDecal.nut" import getLocNameDecal, mkGoodsDecal
+from "%rGui/shop/goodsView/goodsDecorator.nut" import getLocNameDecorator, mkGoodsDecorator
+from "%rGui/shop/goodsView/goodsDefault.nut" import getLocNameDefault, mkGoodsDefault
+from "%rGui/shop/goodsView/goodsEventCurrency.nut" import mkGoodsEventCurrency
+from "%rGui/shop/goodsView/goodsGold.nut" import getLocNameGold, mkGoodsGold
+from "%rGui/shop/goodsView/goodsLootbox.nut" import getLocNameLootbox, mkGoodsLootbox
+from "%rGui/shop/goodsView/goodsPlatinum.nut" import getLocNamePlatinum, mkGoodsPlatinum
+from "%rGui/shop/goodsView/goodsPremium.nut" import getLocNamePremium, mkGoodsPremium
+from "%rGui/shop/goodsView/goodsSkin.nut" import mkGoodsSkin, getLocNameSkin
+from "%rGui/shop/goodsView/goodsSlots.nut" import mkGoodsSlots
+from "%rGui/shop/goodsView/goodsUnit.nut" import getLocNameUnit, mkGoodsUnit, mkGoodsUnitBundle, getLocBlueprintUnit,
+  getLocBranchUnits
+from "%rGui/shop/goodsView/goodsWp.nut" import getLocNameWp, mkGoodsWp
 
 
 let customLocId = {

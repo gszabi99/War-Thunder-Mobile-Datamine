@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let {TrackerX, TrackerY, TrackerSize, GuidanceLockState, GuidanceLockStateBlinked, TrackerVisible,
-  PointIsTarget} = require("%rGui/rocketAim/rocketAgmAimState.nut")
-let { GuidanceLockResult } = require("guidanceConstants")
+from "guidanceConstants" import GuidanceLockResult
+from "%rGui/rocketAim/rocketAgmAimState.nut" import TrackerX, TrackerY, TrackerSize, GuidanceLockState,
+  GuidanceLockStateBlinked, TrackerVisible, PointIsTarget
 
-let trackerColor = 0xFF00FF00
 
-let maxTrackerSize = 15
+const trackerColor = 0xFF00FF00
+
+const maxTrackerSize = 15
 
 let trackerPositionUpdate = @() {
   transform = {
@@ -22,7 +23,7 @@ let rocketAgmTracker = @() function() {
       watch = TrackerVisible
     }
 
-  let minMarkWidth = hdpx(20) / sw(1);
+  const minMarkWidth = hdpx(20) / sw(1);
   local width = min(maxTrackerSize, TrackerSize.get()) / sw(1)
   local height = min(maxTrackerSize, TrackerSize.get()) / sh(1)
 

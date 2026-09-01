@@ -15,23 +15,12 @@ require daslib/ast
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/defer
-require daslib/strings_boost
 
 require daslib/rtti public
 require daslib/debugger public
 
 [function_macro(name="apply_in_context")]
 class AppendCondAnnotation : AstFunctionAnnotation {
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   def override patch(var func : FunctionPtr; var group : ModuleGroup; args, progArgs : AnnotationArgumentList; var errors : das_string; var astChanged : bool&) : bool {
 

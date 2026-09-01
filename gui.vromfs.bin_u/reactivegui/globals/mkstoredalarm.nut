@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "eventbus" import eventbus_send
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+
 
 return function mkStoredAlarm(persistId, period = 604800 ) {
   let isTimerPassed = Watched(false)

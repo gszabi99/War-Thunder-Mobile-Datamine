@@ -1,13 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { OPT_AUTO_ZOOM_SHIP, OPT_CAMERA_SENSE_IN_ZOOM_SHIP, OPT_CAMERA_SENSE_SHIP, OPT_STRATEGY_CAMERA_BY_DRAG,
-  OPT_SIGHT_DISTANCE, mkOptionValue
-} = require("%rGui/options/guiOptions.nut")
-let { set_auto_zoom , CAM_TYPE_NORMAL_SHIP, CAM_TYPE_BINOCULAR_SHIP} = require("controlsOptions")
-let { optMoveCameraByDrag } = require("%rGui/hud/strategyMode/strategyState.nut")
-let { has_strategy_mode } = require("%appGlobals/permissions.nut")
-let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
-let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
+from "controlsOptions" import set_auto_zoom, CAM_TYPE_NORMAL_SHIP, CAM_TYPE_BINOCULAR_SHIP
+from "%appGlobals/pServer/bqClient.nut" import sendSettingChangeBqEvent
+from "%appGlobals/permissions.nut" import has_strategy_mode
+from "%rGui/hud/strategyMode/strategyState.nut" import optMoveCameraByDrag
+from "%rGui/options/guiOptions.nut" import OPT_AUTO_ZOOM_SHIP, OPT_CAMERA_SENSE_IN_ZOOM_SHIP, OPT_CAMERA_SENSE_SHIP,
+  OPT_STRATEGY_CAMERA_BY_DRAG, OPT_SIGHT_DISTANCE, mkOptionValue
+from "%rGui/options/options/controlsOptions.nut" import cameraSenseSlider
 
 
 let validate = @(val, list) list.contains(val) ? val : list[0]

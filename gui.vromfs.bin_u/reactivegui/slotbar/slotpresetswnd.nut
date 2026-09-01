@@ -1,53 +1,50 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { deep_clone, isEqual } = require("%sqstd/underscore.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { allow_subscriptions } = require("%appGlobals/permissions.nut")
-let { iconButtonPrimary, iconButtonCommon, textButtonPrimary, textButtonCommon,
-  textButtonPurchase
-} = require("%rGui/components/textButton.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { unitInfoPanel, mkUnitTitle, statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { unitPlateSize } = require("%rGui/slotBar/slotBarConsts.nut")
-let { mkUnitBg, bgUnit, mkUnitImage, mkUnitTexts, mkUnitPlateBorder, mkUnitLock, mkUnitSelectedGlow
-} = require("%rGui/unit/components/unitPlateComp.nut")
-let { openEditTextWnd, closeEditTextWnd } = require("%rGui/components/editTextWnd.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let panelBg = require("%rGui/components/panelBg.nut")
-let { mkSlotHeader, emptySlotText } = require("%rGui/slotBar/slotBar.nut")
-let { getSlotAnimTrigger } = require("%rGui/slotBar/slotBarState.nut")
-let { playerSelectedPresetIdx, playerSelectedSlotIdx, currentPresetName, savedSlotPresets,
-  isOpenedPresetWnd, closeSlotPresetWnd,
-  currentPresetUnits, setSavedSlotPresets, loadSlotPresets
-} = require("%rGui/slotBar/slotPresetsState.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { mkBlocksContainer } = require("%rGui/components/verticalBlocks.nut")
-let { setSlots } = require("%rGui/slotBar/slotBarUpdater.nut")
-let { hasPrem, hasVip, hasPremiumSubs } = require("%rGui/state/profilePremium.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { headerGradientBg, headerHeightInSafeArea, headerMargin } = require("%rGui/components/gradientDefComps.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import deep_clone, isEqual
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%appGlobals/permissions.nut" import allow_subscriptions
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/editTextWnd.nut" import openEditTextWnd, closeEditTextWnd
+from "%rGui/components/gradientDefComps.nut" import headerGradientBg, headerHeightInSafeArea, headerMargin
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/msgBox.nut" import openMsgBox
+import "%rGui/components/panelBg.nut" as panelBg
+from "%rGui/components/textButton.nut" import iconButtonPrimary, iconButtonCommon, textButtonPrimary,
+  textButtonCommon, textButtonPurchase
+from "%rGui/components/verticalBlocks.nut" import mkBlocksContainer
+from "%rGui/shop/goodsPreviewState.nut" import openSubsPreview
+from "%rGui/slotBar/slotBar.nut" import mkSlotHeader, emptySlotText
+from "%rGui/slotBar/slotBarConsts.nut" import unitPlateSize
+from "%rGui/slotBar/slotBarState.nut" import getSlotAnimTrigger
+from "%rGui/slotBar/slotBarUpdater.nut" import setSlots
+from "%rGui/slotBar/slotPresetsState.nut" import playerSelectedPresetIdx, playerSelectedSlotIdx, currentPresetName,
+  savedSlotPresets, isOpenedPresetWnd, closeSlotPresetWnd, currentPresetUnits, setSavedSlotPresets, loadSlotPresets
+from "%rGui/state/profilePremium.nut" import hasPrem, hasVip, hasPremiumSubs
+from "%rGui/style/backgrounds.nut" import bgShadedDark
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/unit/components/unitInfoPanel.nut" import unitInfoPanel, mkUnitTitle, statsWidth
+from "%rGui/unit/components/unitPlateComp.nut" import mkUnitBg, bgUnit, mkUnitImage, mkUnitTexts, mkUnitPlateBorder,
+  mkUnitLock, mkUnitSelectedGlow
 
 
-let WND_UID = "SLOT_PRESET_WND"
+const WND_UID = "SLOT_PRESET_WND"
 
-let MAX_TEXT_LENGTH_DEFAULT = 32
+const MAX_TEXT_LENGTH_DEFAULT = 32
 let gameProfile = Computed(@() serverConfigs.get()?.gameProfile)
 let maxPreset = Computed(@() gameProfile.get()?.maxSavedPreset ?? 5)
 let maxPresetsPrem = Computed(@() gameProfile.get()?.premiumBonuses.maxSavedPreset ?? maxPreset.get())
 let maxPresetsVip = Computed(@() gameProfile.get()?.vipBonuses.maxSavedPreset ?? maxPreset.get())
 let subIconSize = [hdpxi(50), hdpxi(30)]
-let btnMinWidth = hdpx(200)
-let btnIconSize = hdpx(70)
-let iconSize = hdpx(40)
-let btnGap = hdpx(20)
-let infoPanelPadding = hdpx(50)
+const btnMinWidth = hdpx(200)
+const btnIconSize = hdpx(70)
+const iconSize = hdpx(40)
+const btnGap = hdpx(20)
+const infoPanelPadding = hdpx(50)
 let infoPanelWidth = statsWidth + infoPanelPadding
 let presetBlockWidth = saSize[0] - infoPanelWidth - headerMargin
 let presetBlockHeight = saSize[1] - headerHeightInSafeArea - headerMargin
@@ -224,7 +221,7 @@ function mkPresetButtons(presets, presetIdx) {
           @() openSubsPreview("vip", "slot_presets"),
           {
             ovr = {
-              size = [FLEX, btnIconSize]
+              size = const [FLEX, btnIconSize]
             },
             hotkeys = ["^J:X"]
           }
@@ -233,7 +230,7 @@ function mkPresetButtons(presets, presetIdx) {
           utf8ToUpper(loc("mainmenu/btnApply")),
           @() onApply(presets.get(), presetIdx.get(), curCampaign.get(), isCurrentPreset.get()),
           {
-            ovr = {size = [FLEX, btnIconSize], minWidth = btnMinWidth},
+            ovr = {size = const [FLEX, btnIconSize], minWidth = btnMinWidth},
             childOvr = fontTinyAccentedShaded,
             hotkeyBlockOvr = {padding = 0}
             hotkeys = ["^J:X"]
@@ -265,7 +262,7 @@ let header = headerGradientBg([
   }.__update(fontMedium)
 ])
 
-let function mkPresetUnitSlot(unit, slotIdx, presetIdx, onClick, isSelected) {
+function mkPresetUnitSlot(unit, slotIdx, presetIdx, onClick, isSelected) {
   let stateFlags = Watched(0)
   if (unit == null)
     return @() {
@@ -282,6 +279,7 @@ let function mkPresetUnitSlot(unit, slotIdx, presetIdx, onClick, isSelected) {
       ]
     }
   let trigger = getSlotAnimTrigger(slotIdx, unit.name, presetIdx)
+  let isGlowing = Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER))
 
   return @() {
     watch = [isSelected, stateFlags]
@@ -294,7 +292,7 @@ let function mkPresetUnitSlot(unit, slotIdx, presetIdx, onClick, isSelected) {
     sound = { click = "choose" }
     children = [
       mkUnitBg(unit)
-      mkUnitSelectedGlow(unit, Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER)))
+      mkUnitSelectedGlow(unit, isGlowing)
       mkUnitImage(unit)
       mkUnitTexts(unit, getUnitName(unit.name))
       mkUnitLock(unit, false)
@@ -478,7 +476,7 @@ function mkSlotPresetWnd() {
                     unitInfoPanel(
                       {
                         size = [statsWidth, FLEX]
-                        padding = [infoPanelPadding, 0, 0, 0]
+                        padding = const [infoPanelPadding, 0, 0, 0]
                         hotkeys = [["^J:Y", loc("msgbox/btn_more")]]
                         animations = wndSwitchAnim
                       }, mkUnitTitle, presetSlotUnit, {})

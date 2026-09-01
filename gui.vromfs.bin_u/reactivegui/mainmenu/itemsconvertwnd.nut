@@ -1,32 +1,32 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { G_ITEM, G_BOOSTER } = require("%appGlobals/rewardType.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { convert_items, ItemConversionInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { getCurrencyImage } = require("%appGlobals/config/currencyPresentation.nut")
-let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { textColor, selectColor } = require("%rGui/style/stdColors.nut")
-let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { textButtonPrimary, textButtonInactive } = require("%rGui/components/textButton.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { mkSliderKnob, sliderWithButtons } = require("%rGui/components/slider.nut")
-let { mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
-let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/boostersPresentation.nut" import getBoosterIcon
+from "%appGlobals/config/currencyPresentation.nut" import getCurrencyImage
+from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import convert_items, ItemConversionInProgress
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/rewardType.nut" import G_ITEM, G_BOOSTER
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
+from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText
+from "%rGui/components/slider.nut" import mkSliderKnob, sliderWithButtons
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonInactive
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/gradients.nut" import mkColoredGradientY
+from "%rGui/style/stdColors.nut" import textColor, selectColor
 
 
-let WND_UID = "barter"
+const WND_UID = "barter"
 
-let leftImgSize = hdpxi(140)
-let rightImgSize = hdpxi(200)
+const leftImgSize = hdpxi(140)
+const rightImgSize = hdpxi(200)
 let knobHeight = evenPx(31)
 let sliderTouchableHeight = knobHeight + hdpx(44)
-let sliderWidth = hdpx(518)
+const sliderWidth = hdpx(518)
 
 let knobGrad = mkColoredGradientY(0xFFFFFFFF, 0xFF555555)
 
@@ -77,7 +77,7 @@ function mkFromRow(conversionInfo, fromAllTotal) {
         children = [
           @() {
             watch = imagePath
-            size = [leftImgSize, leftImgSize]
+            size = const [leftImgSize, leftImgSize]
             rendObj = ROBJ_IMAGE
             image = Picture($"{imagePath.get()}:{leftImgSize}:{leftImgSize}:P")
             keepAspect = true
@@ -138,7 +138,7 @@ function mkBarterContent(itemId, prices, fromAllTotal) {
         halign = ALIGN_CENTER
         children = [
           {
-            size = [rightImgSize, rightImgSize]
+            size = const [rightImgSize, rightImgSize]
             rendObj = ROBJ_IMAGE
             image = Picture($"{getCurrencyImage(itemId)}:{rightImgSize}:{rightImgSize}:P")
             keepAspect = true

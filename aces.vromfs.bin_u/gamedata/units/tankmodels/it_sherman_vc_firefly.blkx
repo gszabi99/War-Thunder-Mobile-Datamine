@@ -1858,9 +1858,9 @@
       "Fuel": 300.0,
       "TakeOff": 35300.0,
       "momentOfInertia": [
-        2.5,
-        2.5,
-        6.0
+        0.992,
+        3.0,
+        2.78
       ],
       "CenterOfGravity": [
         -0.1,
@@ -1871,7 +1871,7 @@
         0.0,
         0.3
       ],
-      "AdvancedMass": true,
+      "AdvancedMass": false,
       "trackMass": 1805.0
     },
     "tracks": {
@@ -1907,7 +1907,7 @@
     "mechanics": {
       "maxBrakeForce": 130000.0,
       "driveGearRadius": 0.31,
-      "mainGearRatio": 4.09,
+      "mainGearRatio": 4.35,
       "sideGearRatio": 2.74,
       "alternativeGearControl": 1.0,
       "gearRatios": {

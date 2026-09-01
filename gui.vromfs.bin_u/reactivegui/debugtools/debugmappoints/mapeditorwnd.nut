@@ -1,25 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getMapPointsPresentation } = require("%appGlobals/config/mapPointsPresentation.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { isEventMapEditorOpened, closeEventMapEditor, selectedPointId, presetMapSize, tuningPoints, selectedBgElemIdx,
-  transformInProgress, presetPointSize, presetBackground, currentPresetId, tuningBgElems, selectedElem,
-  selectedBgElem, presetGridSize, getElemKey, presetLines, selectedLineIdx, isShiftPressed,
-  ELEM_BG, ELEM_POINT, ELEM_LINE, ELEM_MIDPOINT, selectedLineMidpoints, selectedMidpointIdx,
-  scalableETypes
-} = require("%rGui/debugTools/debugMapPoints/mapEditorState.nut")
-let { shiftActions } = require("%rGui/debugTools/debugMapPoints/comboActions.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { mkText } = require("%rGui/debugTools/debugMapPoints/mapEditorComps.nut")
-let mapNet = require("%rGui/event/treeEvent/mapNet.nut")
-
-let manipulator = require("%rGui/debugTools/debugMapPoints/mapPointsManipulator.nut")
-let mapEditorHeaderOptions = require("%rGui/debugTools/debugMapPoints/mapEditorHeaderOptions.nut")
-let mapEditorSidebarOptions = require("%rGui/debugTools/debugMapPoints/mapEditorSidebarOptions.nut")
-let { mkLineCmds, mkLineCmdsOutline, editorSelLineColor, mapLineWidth
-} = require("%rGui/event/treeEvent/treeEventComps.nut")
+from "%appGlobals/config/mapPointsPresentation.nut" import getMapPointsPresentation, defaultPointView
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/debugTools/debugMapPoints/comboActions.nut" import shiftActions
+from "%rGui/debugTools/debugMapPoints/mapEditorComps.nut" import mkText, mkTextArea
+import "%rGui/debugTools/debugMapPoints/mapEditorHeaderOptions.nut" as mapEditorHeaderOptions
+import "%rGui/debugTools/debugMapPoints/mapEditorSidebarOptions.nut" as mapEditorSidebarOptions
+from "%rGui/debugTools/debugMapPoints/mapEditorState.nut" import isEventMapEditorOpened, closeEventMapEditor,
+  selectedPointId, pageMapSize, tuningPoints, selectedBgElemIdx, curEventId, transformInProgress,
+  pageBackground, currentPageId, tuningBgElems, selectedElem, selectedBgElem, pageGridSize, getElemKey, pageLines,
+  selectedLineIdx, isShiftPressed, ELEM_BG, ELEM_POINT, ELEM_LINE, ELEM_MIDPOINT, selectedLineMidpoints,
+  selectedMidpointIdx, scalableETypes, curEventNodeViews, pagePointSizes, pointViewSize, pageLineSectionLen,
+  pageRoundedDashes, pageLineType, pageLineWidth
+import "%rGui/debugTools/debugMapPoints/mapPointsManipulator.nut" as manipulator
+import "%rGui/event/treeEvent/mapNet.nut" as mapNet
+from "%rGui/event/treeEvent/treeEventComps.nut" import mkLineCmds, mkSolidLineCmds, mkLineCmdsOutline,
+  lineTypeCtors, buildLineSpline, LINE_DASHED, LINE_SOLID, editorSelLineColor
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/gamercardStyle.nut" import gamercardHeight
+from "%rGui/style/gradients.nut" import mkColoredGradientY
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
 let mapDefaultBackground = mkColoredGradientY(0xFF8A7C63, 0xFFB39B70)
@@ -30,17 +29,16 @@ let mapBlockSize = [
   sh(100) - 2 * saBorders[1] - gamercardHeight - defButtonHeight
 ]
 
-let lineColor = 0xFFFFF0D0
-let selPointColor = 0xFF2080FF
+const lineColor = 0xFFFFF0D0
+const selPointColor = 0xFF2080FF
 
-let presetInfo = @() {
-  watch = [presetMapSize, currentPresetId]
-  flow = FLOW_VERTICAL
-  children = [
-    mkText($"Current preset: {currentPresetId.get()}")
-    mkText($"Map size: {presetMapSize.get()[0]} x {presetMapSize.get()[1]}")
-  ]
-}
+let pageInfo = @() mkTextArea(
+  "\n".join([
+    $"Event: {curEventId.get()}"
+    $"Current page: {currentPageId.get()}"
+    $"Map size: {pageMapSize.get()[0]} x {pageMapSize.get()[1]}"
+  ]),
+  { watch = [pageMapSize, currentPageId, curEventId] })
 
 function selectedInfo() {
   let { id = null, eType = null, subId = null } = selectedElem.get()
@@ -54,12 +52,12 @@ function selectedInfo() {
     children.append(mkText(selectedBgElem.get()?.img ?? ""))
   }
   else if (eType == ELEM_LINE) {
-    let { from = "", to = "" } = presetLines.get()?[id]
+    let { from = "", to = "" } = pageLines.get()?[id]
     children.append(mkText(from))
     children.append(mkText(to))
   }
   else if (eType == ELEM_MIDPOINT) {
-    let { from = "", to = "" } = presetLines.get()?[subId]
+    let { from = "", to = "" } = pageLines.get()?[subId]
     children = [
       mkText($"Current {eType} ({id}) on line:")
       mkText(from)
@@ -67,7 +65,7 @@ function selectedInfo() {
     ]
   }
   return {
-    watch = [selectedBgElem, selectedElem, presetLines]
+    watch = [selectedBgElem, selectedElem, pageLines]
     hplace = ALIGN_RIGHT
     halign = ALIGN_RIGHT
     flow = FLOW_VERTICAL
@@ -81,7 +79,7 @@ let bottomBar = {
   vplace = ALIGN_BOTTOM
   valign = ALIGN_BOTTOM
   children = [
-    presetInfo
+    pageInfo
     selectedInfo
   ]
 }
@@ -115,12 +113,12 @@ let selectBorder = {
   ].map(@(ovr) point.__merge(ovr))
 }
 
-let pointSizePx = Computed(@() evenPx(presetPointSize.get()))
-function mkPoint(id, state) {
+function mkPoint(id, state, nodeViews) {
   let { view = "", pos } = state
-  let { image, color, scale } = getMapPointsPresentation(view).unlocked
+  let effView = view != "" ? view : (nodeViews?[id] ?? defaultPointView)
+  let { image, color } = getMapPointsPresentation(effView).unlocked
   let isSelected = Computed(@() selectedPointId.get() == id)
-  let sizeExt = Computed(@() scaleEven(pointSizePx.get(), scale))
+  let sizeExt = Computed(@() evenPx(pointViewSize(id, view, nodeViews, pagePointSizes.get())))
   let posExt = Computed(@() (isSelected.get() ? transformInProgress.get()?.pos : null)
     ?? pos.map(@(v) hdpx(v) - sizeExt.get() / 2))
 
@@ -181,11 +179,10 @@ function mkBgElement(state, idx) {
 }
 
 let mapPoints = @() {
-  watch = tuningPoints
+  watch = [tuningPoints, curEventNodeViews]
   size = FLEX
-  children = tuningPoints.get().reduce(@(acc, value, id) acc.append(mkPoint(id, value)), [])
+  children = tuningPoints.get().reduce(@(acc, value, id) acc.append(mkPoint(id, value, curEventNodeViews.get())), [])
 }
-
 
 let bgElements = @() {
   watch = tuningBgElems
@@ -202,10 +199,10 @@ let bgElementsOnTop = @() {
 }
 
 let mapBackground = @() {
-  watch = presetBackground
+  watch = pageBackground
   size = FLEX
   rendObj = ROBJ_IMAGE
-  image = Picture($"{presetBackground.get()}:0:P")
+  image = Picture($"{pageBackground.get()}:0:P")
   keepAspect = true
 }
 
@@ -213,7 +210,7 @@ function mkMidpoint(pRel, idx, mapSize) {
   let isSelected = Computed(@() selectedMidpointIdx.get() == idx)
   let posExt = Computed(@()
     (!isSelected.get() ? null
-      : transformInProgress.get()?.pos.map(@(v, a) v - hdpx(presetMapSize.get()[a]) / 2))
+      : transformInProgress.get()?.pos.map(@(v, a) v - hdpx(pageMapSize.get()[a]) / 2))
     ?? [pw(100.0 * (pRel[0].tofloat() / mapSize[0] - 0.5)), ph(100.0 * (pRel[1].tofloat() / mapSize[1] - 0.5))])
   return @() {
     watch = [isSelected, posExt]
@@ -231,9 +228,9 @@ function mkMidpoint(pRel, idx, mapSize) {
 }
 
 let mapMidpoints = @() {
-  watch = [selectedLineMidpoints, presetMapSize]
+  watch = [selectedLineMidpoints, pageMapSize]
   size = FLEX
-  children = selectedLineMidpoints.get().map(@(p, i) mkMidpoint(p, i, presetMapSize.get()))
+  children = selectedLineMidpoints.get().map(@(p, i) mkMidpoint(p, i, pageMapSize.get()))
 }
 
 function selectedLine(lines, points, size) {
@@ -245,32 +242,41 @@ function selectedLine(lines, points, size) {
       line = line.__merge({ midpoints = clone line.midpoints })
       line.midpoints[selectedMidpointIdx.get()] = selMidpointPos.get()
     }
-    let commands = line == null ? null : mkLineCmds(line, points, size)
+    let commands = line == null ? null
+      : pageLineType.get() == LINE_SOLID ? mkSolidLineCmds(line, points, size)
+      : mkLineCmds(line, points, size, pageLineSectionLen.get())
     if (commands == null || commands.len() == 0)
       return { watch = selectedLineIdx }
 
     return {
-      watch = [selectedLineIdx, selectedMidpointIdx, selMidpointPos]
+      watch = [selectedLineIdx, selectedMidpointIdx, selMidpointPos, pageLineSectionLen, pageLineWidth, pageLineType]
       size = FLEX
       rendObj = ROBJ_VECTOR_CANVAS
-      commands = mkLineCmdsOutline(commands, mapLineWidth + 2 * hdpxi(1), editorSelLineColor)
+      commands = mkLineCmdsOutline(commands, hdpx(pageLineWidth.get()) + 2 * hdpxi(1), editorSelLineColor)
     }
   }
 }
 
 function mapLines() {
-  let commands = []
   let points = tuningPoints.get()
-  let size = presetMapSize.get()
-  foreach (line in presetLines.get())
-    commands.extend(mkLineCmds(line, points, size))
+  let lineSplines = pageLines.get().map(@(line) { line, spline = buildLineSpline(line, points) })
+  let mkCommands = lineTypeCtors?[pageLineType.get()] ?? lineTypeCtors[LINE_DASHED]
+
   return {
-    watch = [presetLines, tuningPoints, presetMapSize]
+    watch = [pageLines, tuningPoints, pageMapSize, pageLineSectionLen, pageRoundedDashes, pageLineType, pageLineWidth]
     size = FLEX
     rendObj = ROBJ_VECTOR_CANVAS
     color = lineColor
-    commands = mkLineCmdsOutline(commands, mapLineWidth)
-    children = selectedLine(presetLines.get(), tuningPoints.get(), presetMapSize.get())
+    fillColor = lineColor
+    commands = mkCommands(lineSplines, {
+      size = pageMapSize.get()
+      width = hdpx(pageLineWidth.get())
+      sectionLen = pageLineSectionLen.get()
+      rounded = pageRoundedDashes.get()
+      points
+      colorOf = @(_) null
+    })
+    children = selectedLine(pageLines.get(), tuningPoints.get(), pageMapSize.get())
   }
 }
 
@@ -292,7 +298,7 @@ function comboHint() {
   }
 }
 
-let mapSize = Computed(@() presetMapSize.get().map(hdpx))
+let mapSize = Computed(@() pageMapSize.get().map(hdpx))
 let mapContainer = {
   size = [mapBlockSize[0], mapBlockSize[1]]
   clipChildren = true
@@ -312,7 +318,7 @@ let mapContainer = {
       children = [
         mapBackground
         bgElements
-        mapNet(presetMapSize, presetGridSize, tuningBgElems)
+        mapNet(pageMapSize, pageGridSize, tuningBgElems)
         bgElementsOnTop
         mapLines
         mapPoints

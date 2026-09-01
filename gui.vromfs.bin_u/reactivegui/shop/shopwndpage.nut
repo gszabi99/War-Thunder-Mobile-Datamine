@@ -1,47 +1,44 @@
 from "%globalsDarg/darg_library.nut" import *
-let { doesLocTextExist } = require("dagor.localize")
-let { clearTimer, setInterval } = require("dagor.workcycle")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { arrayByRows, prevIfEqual } = require("%sqstd/underscore.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { G_PREMIUM, G_CURRENCY, G_ITEM, G_SKIN, unitRewardTypes } = require("%appGlobals/rewardType.nut")
-let { SGT_UNIT, SGT_BLUEPRINTS, SGT_SKIN } = require("%rGui/shop/shopConst.nut")
-let { curCategoryId, sortGoods, shopGoods, goodsLinks, subsGroups, curShopId,
-  goodsByShop, onTabChange, getGoodsShopId, mkShopCurrenciesAndItemsList
-} = require("%rGui/shop/shopState.nut")
-let { openShopByGoods } = require("%rGui/seasonScene/seasonSceneState.nut")
-let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
-let { onSchRewardReceive } = require("%rGui/shop/schRewardsState.nut")
-let { getPersonalGoodsBaseId, pGoodsOffsets, personalGoodsCfg } = require("%rGui/shop/personalGoodsState.nut")
-let { purchasePersonalGoods } = require("%rGui/shop/personalGoodsPurchase.nut")
-let { purchasesCount, curCampaign, subscriptions } = require("%appGlobals/pServer/campaign.nut")
-let { shopPurchaseInProgress, schRewardInProgress, personalGoodsInProgress
-} = require("%appGlobals/pServer/pServerApi.nut")
-let { PURCHASING, DELAYED, HAS_PURCHASES, IS_ACTIVE, HAS_UPGRADE, NOT_READY
-} = require("%rGui/shop/goodsStates.nut")
-let { purchaseGoods } = require("%rGui/shop/purchaseGoods.nut")
-let { buyPlatformGoods, platformPurchaseInProgress, isGoodsOnlyInternalPurchase
-} = require("%rGui/shop/platformGoods.nut")
-let { mkGoods } = require("%rGui/shop/goodsView/goods.nut")
-let { mkSubscriptionCard } = require("%rGui/shop/goodsView/subscriptionCard.nut")
-let { goodsGap, goodsGlareAnimDuration, mkLimitText, bottomPad, mkGoodsTimeProgress
-} = require("%rGui/shop/goodsView/sharedParts.nut")
-let { openGoodsPreview, openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { mkItemsBalance } = require("%rGui/mainMenu/balanceComps.nut")
-let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { openMsgBox, msgBoxText } = require("%rGui/components/msgBox.nut")
-let { categoryGap, titleGap, goodsPerRow, titleH } = require("%rGui/shop/shopWndConst.nut")
-let { personalGoodsToShopGoods } = require("%rGui/shop/rewardsToShopGoods.nut")
-let { activeInternalSubs } = require("%rGui/state/profilePremium.nut")
-let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
+from "dagor.localize" import doesLocTextExist
+from "dagor.workcycle" import clearTimer, setInterval
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import arrayByRows, prevIfEqual
+from "%appGlobals/pServer/campaign.nut" import purchasesCount, curCampaign, subscriptions
+from "%appGlobals/pServer/pServerApi.nut" import shopPurchaseInProgress, schRewardInProgress, personalGoodsInProgress
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/rewardType.nut" import G_PREMIUM, G_CURRENCY, G_ITEM, G_SKIN, unitRewardTypes
+from "%appGlobals/unitTags.nut" import getUnitTagsCfg
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/currencyStyles.nut" import gamercardGap
+from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
+from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText
+from "%rGui/mainMenu/balanceComps.nut" import mkItemsBalance
+from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
+from "%rGui/seasonScene/seasonSceneState.nut" import openShopByGoods
+from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview, openSubsPreview
+from "%rGui/shop/goodsStates.nut" import PURCHASING, DELAYED, HAS_PURCHASES, IS_ACTIVE, HAS_UPGRADE, NOT_READY
+from "%rGui/shop/goodsView/goods.nut" import mkGoods
+from "%rGui/shop/goodsView/sharedParts.nut" import goodsGap, goodsGlareAnimDuration, mkLimitText, bottomPad,
+  mkGoodsTimeProgress
+from "%rGui/shop/goodsView/subscriptionCard.nut" import mkSubscriptionCard
+from "%rGui/shop/personalGoodsPurchase.nut" import purchasePersonalGoods
+from "%rGui/shop/personalGoodsState.nut" import getPersonalGoodsBaseId, pGoodsOffsets, personalGoodsCfg
+from "%rGui/shop/platformGoods.nut" import buyPlatformGoods, platformPurchaseInProgress, isGoodsOnlyInternalPurchase
+from "%rGui/shop/purchaseGoods.nut" import purchaseGoods
+from "%rGui/shop/rewardsToShopGoods.nut" import personalGoodsToShopGoods
+from "%rGui/shop/schRewardsState.nut" import onSchRewardReceive
+from "%rGui/shop/shopCommon.nut" import getGoodsType
+from "%rGui/shop/shopConst.nut" import SGT_UNIT, SGT_BLUEPRINTS, SGT_SKIN
+from "%rGui/shop/shopState.nut" import curCategoryId, sortGoods, shopGoods, goodsLinks, subsGroups,
+  curShopId, goodsByShop, onTabChange, getGoodsShopId,
+  mkShopCurrenciesAndItemsList
+from "%rGui/shop/shopWndConst.nut" import categoryGap, titleGap, goodsPerRow, titleH
+from "%rGui/state/profilePremium.nut" import activeInternalSubs
 
-let soonPersonalGoodsDelay = 7.0
-let goodsGlareRepeatDelay = 3
+
+const soonPersonalGoodsDelay = 7.0
+const goodsGlareRepeatDelay = 3
 let glareRowOffsetMul    = 0.18 * goodsGlareAnimDuration
 let glareColOffsetMul    = 0.62 * goodsGlareAnimDuration
 let glareHeaderOffsetMul = 0.06 * goodsGlareAnimDuration
@@ -78,7 +75,7 @@ function openGoodsNotAvailToPurchMsg(goods) {
   return false
 }
 
-let function purchaseFunc(goods) {
+function purchaseFunc(goods) {
   if (openGoodsNotAvailToPurchMsg(goods))
     return
   if (goods.price.price > 0 && goods.price.currencyId != "")
@@ -245,7 +242,7 @@ function mkPersonalGoodsCard(pGoods, animParams) {
     let sec = Computed(@() max(0, endTime - serverTime.get()))
     addChildren.append(mkGoodsTimeProgress(
       Computed(@() clamp(1.0 - sec.get().tofloat() / lifeTime, 0, 1)),
-      Computed(@() secondsToHoursLoc(sec.get()))
+      Watched(endTime)
     ))
   }
   else if (!isWithUnitOrSkin)

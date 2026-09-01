@@ -3,7 +3,7 @@ from "%globalsDarg/darg_library.nut" import *
 let playerPlaceIconSize = evenPx(90)
 let playerPlaceIconBigSize = evenPx(130)
 let playerPlaceIconSmallSize = evenPx(55)
-let defaultBadge = "ui/gameuiskin#player_rank_badge_grey.avif"
+const defaultBadge = "ui/gameuiskin#player_rank_badge_grey.avif"
 let placeBadges = {
   [1] = "ui/gameuiskin#player_rank_badge_gold.avif",
   [2] = "ui/gameuiskin#player_rank_badge_silver.avif",

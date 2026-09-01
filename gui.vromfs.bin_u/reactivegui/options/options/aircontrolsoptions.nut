@@ -1,28 +1,27 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { OPT_AIRCRAFT_FIXED_AIM_CURSOR, OPT_CAMERA_SENSE_IN_ZOOM_PLANE, OPT_CAMERA_SENSE_PLANE,
-  OPT_FREE_CAMERA_PLANE, OPT_CAMERA_VISC_PLANE,
-  OPT_CAMERA_VISC_IN_ZOOM_PLANE, OPT_CAMERA_VISC_PLANE_STICK, OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK,
-  OPT_AIRCRAFT_INVERTED_Y, OPT_AIRCRAFT_MOVEMENT_CONTROL, OPT_AIRCRAFT_CONTINUOUS_TURN_MODE,
-  OPT_AIRCRAFT_THROTTLE_STICK, OPT_AIRCRAFT_GYRO_CONTROL_AIM_MODE,
-  OPT_AIRCRAFT_GYRO_CONTROL_FLAG_DIRECT_CONTROL, OPT_AIRCRAFT_GYRO_CONTROL_PARAM_DEAD_ZONE,
-  OPT_AIRCRAFT_GYRO_CONTROL_PARAM_SENSITIVITY, OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_DEAD_ZONE,
-  OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_SENSITIVITY, OPT_TARGET_SELECTION_TYPE,
-  OPT_AIRCRAFT_ADDITIONAL_FLY_CONTROLS, OPT_AIRCRAFT_TARGET_FOLLOWER, USEROPT_QUIT_ZOOM_AFTER_KILL,
-  OPT_AIRCRAFT_FREE_CAMERA_BY_TOUCH, mkOptionValue, optionValues, getOptValue
-} = require("%rGui/options/guiOptions.nut")
-let { set_aircraft_continuous_turn_mode, set_aircraft_control_by_gyro, set_aircraft_control_by_gyro_mode_param,
-  CBG_PARAM_DEAD_ZONE, CBG_PARAM_SENSITIVITY, set_aircraft_fixed_aim_cursor, set_should_invert_camera,
-  set_camera_viscosity, set_camera_viscosity_in_zoom, set_target_selection_type, set_aircraft_target_follower,
-  set_quit_zoom_after_kill, set_mouse_aim, CAM_TYPE_FREE_PLANE, CAM_TYPE_NORMAL_PLANE, CAM_TYPE_BINOCULAR_PLANE
-} = require("controlsOptions")
-let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
-let { crosshairOptions } = require("%rGui/options/options/crosshairOptions.nut")
-let { isGtRace, isTutorial } = require("%rGui/missionState.nut")
-let { hudScoreAirList, hudScoreAirRaw, hudScoreAir } = require("%rGui/hud/myScores.nut")
+from "controlsOptions" import set_aircraft_continuous_turn_mode, set_aircraft_control_by_gyro,
+  set_aircraft_control_by_gyro_mode_param, CBG_PARAM_DEAD_ZONE, CBG_PARAM_SENSITIVITY, set_aircraft_fixed_aim_cursor,
+  set_should_invert_camera, set_camera_viscosity, set_camera_viscosity_in_zoom, set_target_selection_type,
+  set_aircraft_target_follower, set_quit_zoom_after_kill, set_mouse_aim, CAM_TYPE_FREE_PLANE, CAM_TYPE_NORMAL_PLANE,
+  CAM_TYPE_BINOCULAR_PLANE
+from "eventbus" import eventbus_subscribe
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/pServer/bqClient.nut" import sendSettingChangeBqEvent
+from "%rGui/hud/myScores.nut" import hudScoreAirList, hudScoreAirRaw, hudScoreAir
+from "%rGui/missionState.nut" import isGtRace, isTutorial
+from "%rGui/options/guiOptions.nut" import OPT_AIRCRAFT_FIXED_AIM_CURSOR, OPT_CAMERA_SENSE_IN_ZOOM_PLANE,
+  OPT_CAMERA_SENSE_PLANE, OPT_FREE_CAMERA_PLANE, OPT_CAMERA_VISC_PLANE, OPT_CAMERA_VISC_IN_ZOOM_PLANE,
+  OPT_CAMERA_VISC_PLANE_STICK, OPT_CAMERA_VISC_IN_ZOOM_PLANE_STICK, OPT_AIRCRAFT_INVERTED_Y,
+  OPT_AIRCRAFT_MOVEMENT_CONTROL, OPT_AIRCRAFT_CONTINUOUS_TURN_MODE, OPT_AIRCRAFT_THROTTLE_STICK,
+  OPT_AIRCRAFT_GYRO_CONTROL_AIM_MODE, OPT_AIRCRAFT_GYRO_CONTROL_FLAG_DIRECT_CONTROL,
+  OPT_AIRCRAFT_GYRO_CONTROL_PARAM_DEAD_ZONE, OPT_AIRCRAFT_GYRO_CONTROL_PARAM_SENSITIVITY,
+  OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_DEAD_ZONE, OPT_AIRCRAFT_GYRO_CONTROL_PARAM_ELEVATOR_SENSITIVITY,
+  OPT_TARGET_SELECTION_TYPE, OPT_AIRCRAFT_ADDITIONAL_FLY_CONTROLS, OPT_AIRCRAFT_TARGET_FOLLOWER,
+  USEROPT_QUIT_ZOOM_AFTER_KILL, OPT_AIRCRAFT_FREE_CAMERA_BY_TOUCH, mkOptionValue, optionValues, getOptValue
+from "%rGui/options/options/controlsOptions.nut" import cameraSenseSlider
+from "%rGui/options/options/crosshairOptions.nut" import crosshairOptions
+
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "air", v)
@@ -150,13 +149,13 @@ let controlByGyroAimMode = {
   onChangeValue = @(v) sendChange("aircraft_gyro_aim_mode", v)
   list = Computed(@() isOptAvailableControlByGyroAimMode.get() ? currentControlByGyroAimModeList : [])
   mkContentCtor = @(v, _, _) {
-    size = [FLEX, hdpx(103)]
+    size = const [FLEX, hdpx(103)]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea
     color = 0xFFFFFFFF
-    margin = [0, hdpx(10)]
+    margin = const [0, hdpx(10)]
     lineSpacing = -hdpx(5)
     text = loc($"options/{v}")
   }.__update(fontTinyAccented)
@@ -274,7 +273,7 @@ let CAM_VISC_LIMITS = {
 
 currentAircraftCtrlType.subscribe(function(_) {
   let isMouseAimV = isMouseAim.get()
-  set_mouse_aim(isMouseAimV)
+  set_mouse_aim(true)
   let optId = isMouseAimV ? OPT_CAMERA_VISC_PLANE : OPT_CAMERA_VISC_PLANE_STICK
   let limits = CAM_VISC_LIMITS[optId]
   let optValue = optionValues?[optId]

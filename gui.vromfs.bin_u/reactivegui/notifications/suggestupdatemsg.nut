@@ -1,22 +1,24 @@
 ﻿from "%globalsDarg/darg_library.nut" import *
+from "android.platform" import isDownloadedFromGooglePlay, getBuildMarket
+from "app" import get_base_game_version_str
+from "contentUpdater" import get_all_library_versions
+from "eventbus" import eventbus_send
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/platform.nut" import is_ios, is_android
+from "%sqstd/version_compare.nut" import check_version
+from "%appGlobals/clientState/clientState.nut" import isOutOfBattleAndResults, isInMenu
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox, closeFMsgBox, subscribeFMsgBtns
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/permissions.nut" import can_view_update_suggestion, allow_apk_update
+from "%rGui/notifications/updateClientBySite.nut" import updateBySite, isDownloadInProgress, canUpdateByConnectionStatus
+
+
 let logUpdate = log_with_prefix("[UPDATE]: ")
-let { get_all_library_versions } = require("contentUpdater")
-let { get_base_game_version_str } = require("app")
-let { eventbus_send } = require("eventbus")
-let { isDownloadedFromGooglePlay, getBuildMarket } = require("android.platform")
 let isHuaweiBuild = getBuildMarket() == "appgallery"
-let { is_ios, is_android } = require("%sqstd/platform.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { openFMsgBox, closeFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
-let { can_view_update_suggestion, allow_apk_update } = require("%appGlobals/permissions.nut")
-let { check_version } = require("%sqstd/version_compare.nut")
-let { isOutOfBattleAndResults, isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { needSuggestToUpdate } = isHuaweiBuild ? require("%rGui/notifications/needUpdate/needUpdateAppGallery.nut")
   : isDownloadedFromGooglePlay() ? require("%rGui/notifications/needUpdate/needUpdateGooglePlay.nut")
   : is_ios ? require("%rGui/notifications/needUpdate/needUpdateAppStore.nut")
   : require("%rGui/notifications/needUpdate/needUpdateAndroidSite.nut")
-let { updateBySite, isDownloadInProgress, canUpdateByConnectionStatus } = require("%rGui/notifications/updateClientBySite.nut")
 
 
 const SUGGEST_UPDATE = "suggest_update_msg"

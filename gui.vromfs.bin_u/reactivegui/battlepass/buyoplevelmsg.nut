@@ -1,13 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle
+from "%rGui/battlePass/operationPassState.nut" import buyOPLevel, isOPActive, progressUnlockId, curStage
+from "%rGui/components/msgBox.nut" import msgBoxText, wndWidthDefault
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_OPERATION_PASS, PURCH_TYPE_OP_LEVEL, mkBqPurchaseInfo
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
 
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
-
-let { buyOPLevel, isOPActive, progressUnlockId, curStage } = require("%rGui/battlePass/operationPassState.nut")
-let { PURCH_SRC_OPERATION_PASS, PURCH_TYPE_OP_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { mkRewardPlate } = require("%rGui/rewards/rewardPlateComp.nut")
-let { msgBoxText, wndWidthDefault } = require("%rGui/components/msgBox.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { bpCardStyle } = require("%rGui/battlePass/bpCardsStyle.nut")
 
 let textOvr = { size = FLEX_H }
 

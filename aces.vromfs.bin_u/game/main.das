@@ -19,6 +19,7 @@ def load
   if ecs_has_tag("input") || is_in_aot()
     ok = load_folder("%game/input") && ok
     ok = load_folder("%appGame/es/input") && ok
+  ok = load_optional_folder("%gameDev/es") && ok
 
   print("Das scripts are loaded")
   if !ok

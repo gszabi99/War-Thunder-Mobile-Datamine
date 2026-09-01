@@ -1,45 +1,43 @@
 from "%globalsDarg/darg_library.nut" import *
-let { canBuyUnitsStatus, US_CAN_BUY } = require("%appGlobals/unitsState.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { isUnitsTreeOpen, closeUnitsTreeWnd, unitsTreeBg, unitsTreeOpenRank, isUnitsTreeAttached,
-  isUnitPlateLevelVisible
-} = require("%rGui/unitsTree/unitsTreeState.nut")
-let { mkNodesReceiveInfo } = require("%rGui/unitsTree/unitNodesReceiveInfo.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { WP, GOLD } = require("%appGlobals/currenciesState.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { btnSize, gamercardOverlap, infoPanelWidth
-} = require("%rGui/unitsTree/unitsTreeComps.nut")
-let { animBuyRequirementsUnitId, animResearchRequirementsUnitId } = require("%rGui/unitsTree/animState.nut")
-let { unitInfoPanel, mkUnitTitle, statsWidth, scrollHandlerInfoPanel } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { curSelectedUnit } = require("%rGui/unit/unitsWndState.nut")
-let { unitActions, discountBlock } = require("%rGui/unit/unitsWndActions.nut")
-let { mkFilters, resetFilters } = require("%rGui/unit/unitsFilterState.nut")
-let { isFiltersVisible, filterStateFlags, openFilters } = require("%rGui/unit/unitsFilterPkg.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { mkUnitsTreeNodesContent, mkHasDarkScreen } = require("%rGui/unitsTree/unitsTreeNodesContent.nut")
-let { unitsResearchStatus, visibleNodes } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { rankBlockOffset } = require("%rGui/unitsTree/unitsTreeConsts.nut")
-let { isCampaignWithSlots } = require("%appGlobals/pServer/slots.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { slotBarTreeHeight } = require("%rGui/slotBar/slotBarConsts.nut")
-let { selectedTreeSlotIdx } = require("%rGui/slotBar/slotBarState.nut")
-let { researchBlock, mkBarText } = require("%rGui/unitsTree/components/researchBars.nut")
-let panelBg = require("%rGui/components/panelBg.nut")
-let { unitsBlockedByBattleMode } = require("%rGui/unit/unitAccess.nut")
-let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%appGlobals/currenciesState.nut" import WP, GOLD
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/pServer/slots.nut" import isCampaignWithSlots
+from "%appGlobals/unitsState.nut" import canBuyUnitsStatus, US_CAN_BUY
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
+import "%rGui/components/panelBg.nut" as panelBg
+from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
+from "%rGui/navState.nut" import registerScene
+from "%rGui/slotBar/slotBarConsts.nut" import slotBarTreeHeight
+from "%rGui/slotBar/slotBarState.nut" import selectedTreeSlotIdx
+from "%rGui/style/gamercardStyle.nut" import gamercardHeight
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/unit/components/unitInfoPanel.nut" import unitInfoPanel, mkUnitTitle, statsWidth, scrollHandlerInfoPanel
+from "%rGui/unit/hangarUnit.nut" import hangarUnit
+from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
+from "%rGui/unit/unitsFilterPkg.nut" import isFiltersVisible, filterStateFlags, openFilters
+from "%rGui/unit/unitsFilterState.nut" import mkFilters, resetFilters
+from "%rGui/unit/unitsWndActions.nut" import unitActions, discountBlock
+from "%rGui/unit/unitsWndState.nut" import curSelectedUnit
+from "%rGui/unitsTree/animState.nut" import animBuyRequirementsUnitId, animResearchRequirementsUnitId
+from "%rGui/unitsTree/components/researchBars.nut" import researchBlock, mkBarText
+from "%rGui/unitsTree/unitNodesReceiveInfo.nut" import mkNodesReceiveInfo
+from "%rGui/unitsTree/unitsTreeComps.nut" import btnSize, gamercardOverlap, infoPanelWidth
+from "%rGui/unitsTree/unitsTreeConsts.nut" import rankBlockOffset
+from "%rGui/unitsTree/unitsTreeNodesContent.nut" import mkUnitsTreeNodesContent, mkHasDarkScreen
+from "%rGui/unitsTree/unitsTreeNodesState.nut" import unitsResearchStatus, visibleNodes
+from "%rGui/unitsTree/unitsTreeState.nut" import isUnitsTreeOpen, closeUnitsTreeWnd, unitsTreeBg, unitsTreeOpenRank,
+  isUnitsTreeAttached, isUnitPlateLevelVisible
 
 
-let TREE_FILTERS = "tree"
-let infoPannelPadding = hdpx(30)
-let infoPanelFooterGap = hdpx(20)
-let filterIconSize = hdpxi(36)
-let clearIconSize = hdpxi(45)
-let checkIconSize = hdpxi(60)
+const TREE_FILTERS = "tree"
+const infoPannelPadding = hdpx(30)
+const infoPanelFooterGap = hdpx(20)
+const filterIconSize = hdpxi(36)
+const clearIconSize = hdpxi(45)
+const checkIconSize = hdpxi(60)
 let maxInfoPanelHeight = saSize[1] - hdpx(427)
 
 let hasSelectedUnit = Computed(@() curSelectedUnit.get() != null)
@@ -99,7 +97,7 @@ let unitFilterButton = @(filters, allUnits) @() {
       gap = hdpx(20)
       children = [
         {
-          size = [filterIconSize, filterIconSize]
+          size = const [filterIconSize, filterIconSize]
           rendObj = ROBJ_IMAGE
           image = Picture($"ui/gameuiskin#filter_icon.svg:{filterIconSize}:{filterIconSize}:P")
         }
@@ -126,7 +124,7 @@ let clearFiltersButton = {
   onClick = @() resetFilters(TREE_FILTERS)
   animations = wndSwitchAnim
   children = {
-    size = [clearIconSize, clearIconSize]
+    size = const [clearIconSize, clearIconSize]
     rendObj = ROBJ_IMAGE
     keepAspect = KEEP_ASPECT_FIT
     image = Picture($"ui/gameuiskin#btn_trash.svg:{clearIconSize}:{clearIconSize}:P")

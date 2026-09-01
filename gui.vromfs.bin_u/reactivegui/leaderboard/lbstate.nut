@@ -1,14 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { APP_ID } = require("app")
-let { setInterval, clearTimer, deferOnce } = require("dagor.workcycle")
-let { register_command } = require("console")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { curLbData, curLbSelfRow, setLbRequestData, curLbErrName,
+from "app" import APP_ID
+from "console" import register_command
+from "dagor.workcycle" import setInterval, clearTimer, deferOnce
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%rGui/leaderboard/lbConfig.nut" import lbCfgById
+from "%rGui/leaderboard/lbStateBase.nut" import curLbData, curLbSelfRow, setLbRequestData, curLbErrName,
   refreshLbData, requestSelfRow, isLbRequestInProgress
-} = require("%rGui/leaderboard/lbStateBase.nut")
-let { lbCfgById } = require("%rGui/leaderboard/lbConfig.nut")
-let { lbPageRows } = require("%rGui/leaderboard/lbStyle.nut")
-let { userstatStats, mkSeasonInterval } = require("%rGui/unlocks/userstat.nut")
+from "%rGui/leaderboard/lbStyle.nut" import lbPageRows
+from "%rGui/unlocks/userstat.nut" import userstatStats, mkSeasonInterval
 
 
 const REFRESH_PERIOD = 10.0

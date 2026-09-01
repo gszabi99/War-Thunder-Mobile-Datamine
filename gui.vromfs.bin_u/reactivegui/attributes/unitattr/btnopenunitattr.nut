@@ -1,38 +1,47 @@
 from "%globalsDarg/darg_library.nut" import *
-let { translucentButton, translucentIconButton } = require("%rGui/components/translucentButton.nut")
-let { openUnitAttrWnd, availableAttributes } = require("%rGui/attributes/unitAttr/unitAttrState.nut")
-let mkAvailAttrMark = require("%rGui/attributes/mkAvailAttrMark.nut")
-let { unseenCampUnitMods } = require("%rGui/unitMods/unseenMods.nut")
-let { setHangarUnit, hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
-let { baseUnit } = require("%rGui/unitDetails/unitDetailsState.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+import "%rGui/attributes/mkAvailAttrMark.nut" as mkAvailAttrMark
+from "%rGui/attributes/unitAttr/unitAttrState.nut" import openUnitAttrWnd, availableAttributes
+from "%rGui/components/textButton.nut" import iconTextButton, buttonStyles, mergeStyles
+from "%rGui/unit/hangarUnit.nut" import setHangarUnit
+from "%rGui/unitDetails/unitDetailsState.nut" import baseUnit
 
 
-let function onClick() {
+function onClick() {
   if (baseUnit.get())
     setHangarUnit(baseUnit.get().name)
   openUnitAttrWnd()
 }
 
-let statusUnitAttr = keepref(Computed(function() {
-  local res = availableAttributes.get().status
-  if (res == -1 && (hangarUnitName.get() in unseenCampUnitMods.get()))
-    res = 0
-  return res
-}))
+let statusUnitAttr = keepref(Computed(@() availableAttributes.get().status))
 
 let statusMark = @(sf) @() {
-  watch = statusUnitAttr
+  watch = [statusUnitAttr, sf]
   size = 0
   hplace = ALIGN_RIGHT
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  children = mkAvailAttrMark(statusUnitAttr.get(), hdpx(62), sf)
+  children = mkAvailAttrMark(statusUnitAttr.get(), hdpx(62), sf.get())
 }
 
 return {
   statusUnitAttr
-  btnOpenUnitAttr = translucentButton("ui/gameuiskin#modify.svg", onClick, null, statusMark)
-  btnOpenUnitAttrBig = translucentIconButton("ui/gameuiskin#modify.svg", onClick, hdpxi(75), [hdpx(150), hdpx(110)], statusMark)
-  btnOpenUnitAttrCustom = @(imageSize, bgSize)
-    translucentIconButton("ui/gameuiskin#modify.svg", onClick, imageSize, bgSize, statusMark)
+  mkBtnOpenUnitAttr = function(ovr) {
+    let sf = Watched(0)
+    return {
+      children = [
+        iconTextButton("ui/gameuiskin#modify.svg",
+          utf8ToUpper(loc("unit/upgrades")),
+          onClick,
+          mergeStyles(buttonStyles.COMMON,
+            {
+              stateFlags = sf
+              iconOvr = {size = hdpx(60)}
+              textOvr = fontBoldTinyAccentedShaded
+              childOvr = {gap = hdpx(20)}
+            }.__update(ovr)))
+        statusMark(sf)
+    ]
+    }
+  }
 }

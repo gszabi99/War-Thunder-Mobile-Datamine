@@ -1,49 +1,49 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { register_command } = require("console")
-let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { curCampaign, sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { secondsToTimeSimpleString, millisecondsToSecondsInt } = require("%sqstd/time.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
-let { defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { isInQueue, curQueueState, curQueue, queueInfo, QS_LEAVING, QS_ACTUALIZE, QS_ACTUALIZE_SQUAD, QS_CHECK_HOSTS,
-  QS_NOT_IN_QUEUE, QS_JOINING, QS_IN_QUEUE, QS_CHECK_PENALTY, QS_REQUEST_STATS
-} = require("%appGlobals/queueState.nut")
-let mkTextRow = require("%darg/helpers/mkTextRow.nut")
-let { get_time_msec } = require("dagor.time")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { isInJoiningGame } = require("%appGlobals/sessionLobbyState.nut")
-let helpShipParts = require("%rGui/loading/complexScreens/helpShipParts.nut")
-let helpTankControls = require("%rGui/loading/complexScreens/helpTankControls.nut")
-let helpTankCaptureZone = require("%rGui/loading/complexScreens/helpTankCaptureZone.nut")
-let helpTankParts = require("%rGui/loading/complexScreens/helpTankParts.nut")
-let helpAirAiming = require("%rGui/loading/complexScreens/helpAirAiming.nut")
-let helpEventBattleRoyale = require("%rGui/loading/complexScreens/helpEventBattleRoyale.nut")
-let helpEventChristmas2 = require("%rGui/loading/complexScreens/helpEventChristmas2.nut")
-let helpEventPirates = require("%rGui/loading/complexScreens/helpEventPirates.nut")
-let helpEventHalloween = require("%rGui/loading/complexScreens/helpEventHalloween.nut")
-let helpEventWalkers = require("%rGui/loading/complexScreens/helpEventWalkers.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { curUnitMRankRange } = require("%rGui/state/matchingRank.nut")
-let { isInSquad, isSquadLeader } = require("%appGlobals/squadState.nut")
-let { leaveSquad } = require("%rGui/squad/squadManager.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { addFpsLimit, removeFpsLimit } = require("%rGui/guiFpsLimit.nut")
-let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "eventbus" import eventbus_send
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/time.nut" import secondsToTimeSimpleString, millisecondsToSecondsInt
+import "%darg/helpers/mkTextRow.nut" as mkTextRow
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/gameModes/gameModes.nut" import allGameModes
+from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
+from "%appGlobals/pServer/campaign.nut" import curCampaign, sharedStatsByCampaign
+from "%appGlobals/queueState.nut" import isInQueue, curQueueState, curQueue, queueInfo, QS_LEAVING, QS_ACTUALIZE,
+  QS_ACTUALIZE_SQUAD, QS_CHECK_HOSTS, QS_NOT_IN_QUEUE, QS_JOINING, QS_IN_QUEUE, QS_CHECK_PENALTY, QS_REQUEST_STATS
+from "%appGlobals/sessionLobbyState.nut" import isInJoiningGame
+from "%appGlobals/squadState.nut" import isInSquad, isSquadLeader
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/buttonStyles.nut" import defButtonHeight, defButtonMinWidth
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonCommon
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/guiFpsLimit.nut" import addFpsLimit, removeFpsLimit
+import "%rGui/loading/complexScreens/helpAirAiming.nut" as helpAirAiming
+import "%rGui/loading/complexScreens/helpEventBattleRoyale.nut" as helpEventBattleRoyale
+import "%rGui/loading/complexScreens/helpEventChristmas2.nut" as helpEventChristmas2
+import "%rGui/loading/complexScreens/helpEventHalloween.nut" as helpEventHalloween
+import "%rGui/loading/complexScreens/helpEventPirates.nut" as helpEventPirates
+import "%rGui/loading/complexScreens/helpEventWalkers.nut" as helpEventWalkers
+import "%rGui/loading/complexScreens/helpShipParts.nut" as helpShipParts
+import "%rGui/loading/complexScreens/helpTankCaptureZone.nut" as helpTankCaptureZone
+import "%rGui/loading/complexScreens/helpTankControls.nut" as helpTankControls
+import "%rGui/loading/complexScreens/helpTankParts.nut" as helpTankParts
+from "%rGui/navState.nut" import registerScene
+from "%rGui/squad/squadManager.nut" import leaveSquad
+from "%rGui/state/matchingRank.nut" import curUnitMRankRange
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
-let textColor = 0xFFF0F0F0
-let timeToShowCancelJoining = 30
-let spinnerSize = hdpxi(64)
-let spinnerGap = hdpx(20)
-let hintIconSize = hdpxi(50)
-let hintIconTank = "hud_tank_binoculars.svg"
-let hintIconShip = "hud_binoculars.svg"
+
+const textColor = 0xFFF0F0F0
+const timeToShowCancelJoining = 30
+const spinnerSize = hdpxi(64)
+const spinnerGap = hdpx(20)
+const hintIconSize = hdpxi(50)
+const hintIconTank = "hud_tank_binoculars.svg"
+const hintIconShip = "hud_binoculars.svg"
 
 let queueStateLocId = {
   [QS_NOT_IN_QUEUE] = "matching/SERVER_ERROR_NOT_IN_QUEUE",
@@ -127,7 +127,7 @@ let waitCircle = {
   size = FLEX_V
   valign = ALIGN_CENTER
   children = {
-    size = [spinnerSize, spinnerSize]
+    size = const [spinnerSize, spinnerSize]
     rendObj = ROBJ_IMAGE
     image = Picture("!ui/gameuiskin#progress_bar_circle.svg")
     transform = {}
@@ -244,7 +244,7 @@ let mkText = @(text) {
 
 let hintIcon = @() {
   watch = missionCampaign
-  size = [hintIconSize, hintIconSize]
+  size = const [hintIconSize, hintIconSize]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#{missionCampaign.get() == "tanks" ? hintIconTank : hintIconShip}:{hintIconSize}:{hintIconSize}:P")
 }

@@ -316,9 +316,6 @@ class QsortMacro : AstCallMacro {
 }
 
 
-
-
-
 def private build_dispatch_call(prog : ProgramPtr; var expr : ExprCallMacro?; macroName, opName : string; takesN : bool) : ExpressionPtr {
     let expectedArgs = takesN ? 3 : 2
     let argShape = takesN ? "(value, n, block)" : "(value, block)"

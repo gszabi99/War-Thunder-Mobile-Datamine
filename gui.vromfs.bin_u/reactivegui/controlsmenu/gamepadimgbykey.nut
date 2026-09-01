@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { gamepadPreset } = require("%rGui/controlsMenu/gamepadVendor.nut")
-let allPresets = require("%rGui/controlsMenu/gamepadImagePresets.nut")
+import "%rGui/controlsMenu/gamepadImagePresets.nut" as allPresets
+from "%rGui/controlsMenu/gamepadVendor.nut" import gamepadPreset
+
+
 let preset = allPresets?[gamepadPreset] ?? allPresets.xone
 
 local dargJKeysToBtnId = {

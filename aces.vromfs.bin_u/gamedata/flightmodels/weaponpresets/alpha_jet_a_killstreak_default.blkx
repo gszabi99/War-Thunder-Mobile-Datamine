@@ -5,6 +5,10 @@
       "preset": "lau_51"
     },
     {
+      "slot": 3,
+      "preset": "gun_pod"
+    },
+    {
       "slot": 4,
       "preset": "lau_51"
     }

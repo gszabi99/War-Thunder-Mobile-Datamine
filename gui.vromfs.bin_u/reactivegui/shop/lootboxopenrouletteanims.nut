@@ -1,17 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let LIGHT_OPACITY = 0.7
+const LIGHT_OPACITY = 0.7
 
-let aTimeRouletteHide = 0.3
-let aTimeRouletteReveal = 0.6
+const aTimeRouletteHide = 0.3
+const aTimeRouletteReveal = 0.6
 
-let aTimeLightHide = 0.2
-let aTimeLightReveal = 0.05
-let aTimeLightKeep = 0.3
-let aTimeLightFade = 0.2
+const aTimeLightHide = 0.2
+const aTimeLightReveal = 0.05
+const aTimeLightKeep = 0.3
+const aTimeLightFade = 0.2
 
-let aTimeLightUpscaleX = 0.1
-let aTimeLightUpscaleY = 0.2
+const aTimeLightUpscaleX = 0.1
+const aTimeLightUpscaleY = 0.2
 
 let opacityAnim = [
   { prop = AnimProp.opacity, from = 0.0, to = 0.0, duration = aTimeRouletteHide, play = true }

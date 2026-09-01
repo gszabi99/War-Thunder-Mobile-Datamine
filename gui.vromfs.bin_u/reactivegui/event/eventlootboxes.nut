@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isEqual } = require("%sqstd/underscore.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { isServerTimeValid, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
-let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
-let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid, getServerTime
+from "%rGui/unlocks/userstat.nut" import userstatStatsTables
 
 
 let MAIN_EVENT_ID = "main"
-let L_ACTIVE = 0
-let L_NOT_STARTED = 1
-let L_FINISHED = 2
+const L_ACTIVE = 0
+const L_NOT_STARTED = 1
+const L_FINISHED = 2
 let sortLootboxes = @(a, b) (a?.meta.event ?? "") <=> (b?.meta.event ?? "") || a.name <=> b.name
 let inactiveLootboxes = Watched({})
 

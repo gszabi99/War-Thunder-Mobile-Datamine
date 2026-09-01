@@ -48,6 +48,18 @@
     0.15,
     0.12
   ],
+  "flapsLimByMach": [
+    0.95,
+    0.99,
+    1.0,
+    0.0
+  ],
+  "flapsLimByIas": [
+    270.0,
+    350.0,
+    1.0,
+    0.0
+  ],
   "maxChuteSpeed": 0.0,
   "minChuteSpeed": 0.0,
   "chuteRipSpeed": 0.0,
@@ -142,7 +154,7 @@
     "BombBayCd": 0.0,
     "FuseCd": 0.000001,
     "AirbrakeCd": 1.0,
-    "CockpitDoorCd": 0.007,
+    "CockpitDoorCd": 0.05321,
     "SweepAxisByMachAuto": [
       0.0,
       0.0,

@@ -1,34 +1,34 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { defer } = require("dagor.workcycle")
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { unitSizes } = require("%appGlobals/updater/addonsState.nut")
-let { unitRewardTypes, G_UNIT, G_UNIT_UPGRADE, G_BLUEPRINT, G_CURRENCY, G_LOOTBOX, G_PREMIUM, G_SKIN
-} = require("%appGlobals/rewardType.nut")
-let { activeOffer } = require("%rGui/shop/offerState.nut")
-let { activeOffersByGoods } = require("%rGui/shop/offerByGoodsState.nut")
-let { shopGoodsAllCampaigns, saveSeenGoods } = require("%rGui/shop/shopState.nut")
-let { personalGoodsToShopGoods } = require("%rGui/shop/rewardsToShopGoods.nut")
-let { activePersonalGoods } = require("%rGui/shop/personalGoodsState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { shopPurchaseInProgress, personalGoodsInProgress, validate_active_offer
-} = require("%appGlobals/pServer/pServerApi.nut")
-let { platformPurchaseInProgress } = require("%rGui/shop/platformGoods.nut")
-let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
-let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
+from "dagor.workcycle" import defer
+from "eventbus" import eventbus_subscribe
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import shopPurchaseInProgress, personalGoodsInProgress, validate_active_offer
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/rewardType.nut" import unitRewardTypes, G_UNIT, G_UNIT_UPGRADE, G_BLUEPRINT, G_CURRENCY, G_LOOTBOX,
+  G_PREMIUM, G_SKIN
+from "%appGlobals/updater/addonsState.nut" import unitSizes
+from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
+from "%rGui/shop/goodsUtils.nut" import getBestUnitByGoods
+from "%rGui/shop/offerByGoodsState.nut" import activeOffersByGoods
+from "%rGui/shop/offerState.nut" import activeOffer
+from "%rGui/shop/personalGoodsState.nut" import activePersonalGoods
+from "%rGui/shop/platformGoods.nut" import platformPurchaseInProgress
+from "%rGui/shop/rewardsToShopGoods.nut" import personalGoodsToShopGoods
+from "%rGui/shop/shopState.nut" import shopGoodsAllCampaigns, saveSeenGoods
+from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd
 
-let GPT_UNIT = "unit"
-let GPT_CURRENCY = "currency"
-let GPT_PREMIUM = "premium"
-let GPT_LOOTBOX = "lootbox"
-let GPT_SLOTS = "slots"
-let GPT_BLUEPRINT = "blueprint"
-let GPT_SKIN = "skin"
 
-let HIDE_PREVIEW_MODALS_ID = "goodsPreviewAnim"
+const GPT_UNIT = "unit"
+const GPT_CURRENCY = "currency"
+const GPT_PREMIUM = "premium"
+const GPT_LOOTBOX = "lootbox"
+const GPT_SLOTS = "slots"
+const GPT_BLUEPRINT = "blueprint"
+const GPT_SKIN = "skin"
+
+const HIDE_PREVIEW_MODALS_ID = "goodsPreviewAnim"
 
 let openedUnitFromTree = mkWatched(persist, "openedUnitFromTree", null)
 let openedGoodsId = mkWatched(persist, "openedGoodsId", null)

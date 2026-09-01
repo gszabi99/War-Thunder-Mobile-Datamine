@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let DataBlock = require("DataBlock")
+import "DataBlock" as DataBlock
+
 
 local explosiveBlk = null
 function getExplosiveBlk() {

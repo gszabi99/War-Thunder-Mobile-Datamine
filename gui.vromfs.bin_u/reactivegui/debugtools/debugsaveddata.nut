@@ -1,7 +1,8 @@
-let { get_settings_blk } = require("blkGetters")
-let DataBlock = require("DataBlock")
-let { eachParam } = require("%sqstd/datablock.nut")
-let { shouldDisableMenu } = require("%appGlobals/clientState/initialState.nut")
+import "DataBlock" as DataBlock
+from "blkGetters" import get_settings_blk
+from "%sqstd/datablock.nut" import eachParam
+from "%appGlobals/clientState/initialState.nut" import shouldDisableMenu
+
 
 function getDebugSavedBullets(unitName) {
   if (shouldDisableMenu)

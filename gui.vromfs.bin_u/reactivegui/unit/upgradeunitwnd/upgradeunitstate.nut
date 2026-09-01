@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+
 
 let upgradeCommonUnitName = mkWatched(persist, "upgradeCommonUnitName", null)
 

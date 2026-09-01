@@ -1,24 +1,26 @@
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { doesLocTextExist } = require("dagor.localize")
-let { roundToDigits } = require("%sqstd/math.nut")
-let { campaignPresentations, getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { orderByItems } = require("%appGlobals/itemsState.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { gradRadial } = require("%rGui/style/gradients.nut")
-let { startSound, stopSound } = require("sound_wt")
-let { playerPlaceIconSize, mkPlaceIcon } = require("%rGui/components/playerPlaceIcon.nut")
-let mkPlayersByTeam = require("%rGui/debriefing/mkPlayersByTeam.nut")
-let mkAnimatedCountText = require("%rGui/debriefing/mkAnimatedCountText.nut")
+from "dagor.localize" import doesLocTextExist
+from "sound_wt" import startSound, stopSound
+from "%sqstd/math.nut" import roundToDigits
+from "%appGlobals/config/campaignPresentation.nut" import campaignPresentations, getCampaignPresentation
+from "%appGlobals/itemsState.nut" import orderByItems
+from "%rGui/components/currencyComp.nut" import mkCurrencyImage
+from "%rGui/components/playerPlaceIcon.nut" import playerPlaceIconSize, mkPlaceIcon
+import "%rGui/debriefing/mkAnimatedCountText.nut" as mkAnimatedCountText
+import "%rGui/debriefing/mkPlayersByTeam.nut" as mkPlayersByTeam
+from "%rGui/style/gradients.nut" import gradRadial
 
-let statIncreaseAnimTimeMsec = 500
-let iconSize = hdpxi(35)
-let rowHeight = hdpx(35)
-let specialRowHeight = hdpx(65)
+
+const statIncreaseAnimTimeMsec = 500
+const iconSize = hdpxi(35)
+const rowHeight = hdpx(35)
+const specialRowHeight = hdpx(65)
 let iconInlineSize = fontTiny.fontSize
-let endHeaderLineAnim = 1.0
-let offsetTime = 0.1
+const endHeaderLineAnim = 1.0
+const offsetTime = 0.1
 
-let KG_TO_TONS = 0.001
+const KG_TO_TONS = 0.001
 
 let activeCounters = Watched({})
 let isCounterActive = keepref(Computed(@() activeCounters.get().len() > 0))
@@ -160,7 +162,7 @@ let mkAnimatedCount = @(uid, value, printVal, startTime, baseComp = animCountBas
   mkAnimatedCountText(uid, value, printVal, startTime, statIncreaseAnimTimeMsec, setCounterActive, baseComp)
 
 let mkText = @(text) {
-  size = [hdpx(620), SIZE_TO_CONTENT]
+  size = const [hdpx(620), SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXT
   color = 0xFFFFFFFF
   text
@@ -201,7 +203,7 @@ function mkItemsUsedRows(itemsUsed, delay) {
     if (!doesLocTextExist(locId))
       locId = "debriefing/spent/default"
     return {
-      size = [FLEX, rowHeight]
+      size = const [FLEX, rowHeight]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       children = [

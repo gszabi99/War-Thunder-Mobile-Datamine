@@ -1,56 +1,55 @@
 from "%globalsDarg/darg_library.nut" import *
+from "blkGetters" import get_local_custom_settings_blk
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/underscore.nut" import isEqual, prevIfEqual
+from "%appGlobals/clientState/clientState.nut" import isInLoadingScreen, isInMpBattle
+from "%appGlobals/clientState/connectionStatus.nut" import isConnectionLimited, hasConnection
+from "%appGlobals/clientState/downloadState.nut" import downloadInProgress, downloadState, totalSizeBytes,
+  toDownloadSizeBytes, getDownloadLeftMbNotUpdatable, allowLimitedDownload, ALLOW_LIMITED_DOWNLOAD_SAVE_ID
+from "%appGlobals/clientState/initialState.nut" import disableNetwork
+from "%appGlobals/gameModes/gameModes.nut" import gameModeQueueGroups, getGameModeQueueGroup
+from "%appGlobals/gameModes/newbieGameModesConfig.nut" import isNewbieMode
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/bqClient.nut" import sendLoadingAddonsBqEvent
+from "%appGlobals/pServer/campaign.nut" import isAnyCampaignSelected, curCampaign
+from "%appGlobals/pServer/profile.nut" import campMyUnits, battleUnitsMaxMRank
+from "%appGlobals/updater/addons.nut" import initialAddons, initialAddonsByCamp, latestDownloadAddonsByCamp,
+  latestDownloadAddons, localizeAddonsLimited, coopNewbieByCampaign, getAddonsSize, MB, toMB
+from "%appGlobals/updater/addonsState.nut" import hasAddons, addonsSizes, isAddonsSizesActual,
+  isAddonsAndUnitsInfoActual, isUnitSizesActual, unitSizes
+from "%appGlobals/updater/campaignAddons.nut" import getAddonCampaign, getCampaignPkgsForOnlineBattle,
+  getPkgsForCampaign, getCampaignPkgsForNewbieCoop, getCampaignPkgsForNewbieSingle, localizeUnitsResources
+from "%appGlobals/updater/gameModeAddons.nut" import allMyBattleUnits, missingUnitResourcesByRank, allUnitsRanks,
+  maxReleasedUnitRanks
+from "%appGlobals/updater/missionUnits.nut" import getMGameModeMissionUnitsAndAddons, getBotUnits
+from "%appGlobals/updater/updaterErrors.nut" import getErrorName
+from "%globalsDarg/updaterUtils.nut" import totalSizeText
+import "%rGui/components/msgBoxError.nut" as msgBoxError
+from "%rGui/gameModes/gameModeState.nut" import isRandomBattleNewbie, isRandomBattleNewbieSingle, randomBattleMode,
+  randomBattleModeCore
+from "%rGui/initHangar.nut" import curHangarAddon, soonHangarAddons
+import "%rGui/isScriptsLoading.nut" as isScriptsLoading
+from "%rGui/updater/downloadSize.nut" import mkDlSizeCompByTablesWatch
+from "%rGui/updater/randomBattleModeAddons.nut" import requiredSquadAddons
+from "types" import Bool, Table
+
+
 let logA = log_with_prefix("[ADDONS] ")
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { deferOnce } = require("dagor.workcycle")
 let { get_free_disk_space = @() -1,
-  download_content_in_background, stop_updater, is_updater_running, add_addons,
+  download_content_in_background, stop_updater, is_updater_running,
   remove_addons_resources_async = @(_) null,
   UPDATER_RESULT_SUCCESS, UPDATER_ERROR, UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
   UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH, UPDATER_DOWNLOADING, UPDATER_EVENT_INCOMPATIBLE_VERSION
 } = require("contentUpdater")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { isEqual, prevIfEqual } = require("%sqstd/underscore.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { disableNetwork } = require("%appGlobals/clientState/initialState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { isInLoadingScreen, isInMpBattle } = require("%appGlobals/clientState/clientState.nut")
-let { downloadInProgress, downloadState, totalSizeBytes, toDownloadSizeBytes, getDownloadLeftMbNotUpdatable,
-  allowLimitedDownload, ALLOW_LIMITED_DOWNLOAD_SAVE_ID
-} = require("%appGlobals/clientState/downloadState.nut")
-let { initialAddons, initialAddonsByCamp, latestDownloadAddonsByCamp, latestDownloadAddons,
-  localizeAddonsLimited, coopNewbieByCampaign, getAddonsSize, MB, toMB
-} = require("%appGlobals/updater/addons.nut")
-let { hasAddons, addonsSizes, isAddonsSizesActual, isAddonsAndUnitsInfoActual,
-  isUnitSizesActual, unitSizes
-} = require("%appGlobals/updater/addonsState.nut")
-let { getAddonCampaign, getCampaignPkgsForOnlineBattle, getPkgsForCampaign,
-  getCampaignPkgsForNewbieCoop, getCampaignPkgsForNewbieSingle, localizeUnitsResources
-} = require("%appGlobals/updater/campaignAddons.nut")
-let { allMyBattleUnits, missingUnitResourcesByRank, allUnitsRanks, maxReleasedUnitRanks
-} = require("%appGlobals/updater/gameModeAddons.nut")
-let { getErrorName } = require("%appGlobals/updater/updaterErrors.nut")
-let { gameModeQueueGroups, getGameModeQueueGroup } = require("%appGlobals/gameModes/gameModes.nut")
-let { isNewbieMode } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
-let { getMGameModeMissionUnitsAndAddons, getBotUnits } = require("%appGlobals/updater/missionUnits.nut")
-let { isAnyCampaignSelected, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { campMyUnits, battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
-let { isConnectionLimited, hasConnection } = require("%appGlobals/clientState/connectionStatus.nut")
-let { sendLoadingAddonsBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { isRandomBattleNewbie, isRandomBattleNewbieSingle, randomBattleMode, randomBattleModeCore
-} = require("%rGui/gameModes/gameModeState.nut")
-let { requiredSquadAddons } = require("%rGui/updater/randomBattleModeAddons.nut")
-let { mkDlSizeCompByTablesWatch } = require("%rGui/updater/downloadSize.nut")
-let msgBoxError = require("%rGui/components/msgBoxError.nut")
-let { totalSizeText } = require("%globalsDarg/updaterUtils.nut")
-let isScriptsLoading = require("%rGui/isScriptsLoading.nut")
-let { curHangarAddon, soonHangarAddons } = require("%rGui/initHangar.nut")
 
 
-let DOWNLOAD_ADDONS_EVENT_ID = "downloadAddonsEvent"
-let SIZE_INCREASE_MULTIPLIER = 1.2
-let DLP_COMMON = 0
-let DLP_MEDIUM = 1
-let DLP_HIGH = 2
+const DOWNLOAD_ADDONS_EVENT_ID = "downloadAddonsEvent"
+const SIZE_INCREASE_MULTIPLIER = 1.2
+const DLP_COMMON = 0
+const DLP_MEDIUM = 1
+const DLP_HIGH = 2
 
 let addonsToDownload = hardPersistWatched("updater.addonsToDownload", {})
 let unitsToDownload = hardPersistWatched("updater.unitsToDownload", {})
@@ -92,8 +91,8 @@ let progressPercent = Computed(function() {
   return clamp((100.0 + toDownloadSizeBytes.get() * (percent - 100.0) / totalSizeBytes.get() + 0.5).tointeger(), 0, 100)
 })
 
-let isAllowedDownloadUnits = Computed(@(prev) (type(prev) == "bool" && prev) || isUnitSizesActual.get())
-let isAllowedDownloadAddons = Computed(@(prev) (type(prev) == "bool" && prev) || isAddonsSizesActual.get())
+let isAllowedDownloadUnits = Computed(@(prev) (prev instanceof Bool && prev) || isUnitSizesActual.get())
+let isAllowedDownloadAddons = Computed(@(prev) (prev instanceof Bool && prev) || isAddonsSizesActual.get())
 let isStageDownloading = Computed(@() currentStage.get() == UPDATER_DOWNLOADING)
 let maxMyMRank = Computed(@() campMyUnits.get().reduce(@(res, u) max(res, u.mRank), 1))
 
@@ -251,7 +250,7 @@ let wantStartDownloadAddons = Computed(function(prev) {
 })
 
 let needStartDownloadAddons = keepref(Computed(@(prev)
-  awaitingAddonsInfoUpd.get() != null && type(prev) == "table" ? prev
+  awaitingAddonsInfoUpd.get() != null && prev instanceof Table ? prev
     : isDownloadPaused.get()
         || isInLoadingScreen.get()
         || isInMpBattle.get()
@@ -585,16 +584,6 @@ eventbus_subscribe("openDownloadAddonsWnd", function(msg) {
 function removeAddonsForCampaign(campaigns) {
   remove_addons_resources_async(getPkgsForCampaign(campaigns))
 }
-
-function createDownloadRequestForHangarAddon(addon) {
-  if (addon != null) {
-    logA($"Create download request for hangar addon: {addon}")
-    add_addons([addon])
-  }
-}
-
-createDownloadRequestForHangarAddon(curHangarAddon.get())
-curHangarAddon.subscribe(createDownloadRequestForHangarAddon)
 
 return {
   startDownloadAddons  

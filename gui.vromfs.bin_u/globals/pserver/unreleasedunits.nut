@@ -1,7 +1,7 @@
 from "frp" import Watched
-from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid, getServerTime
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid, getServerTime
 
 
 let unreleasedUnits = Watched({})

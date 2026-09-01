@@ -36,7 +36,7 @@ def sort_unique(var a : array<auto(TT)>) {
     sort(a)
     var b <- unique(a)
     delete a
-    a <- b
+    a <- b   
 }
 
 def reverse(var a : array<auto>) {

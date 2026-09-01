@@ -1,20 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_mission_time } = require("mission")
-let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { touchButtonSize, borderWidth, btnBgStyle, imageColor, imageDisabledColor,
-  borderColor, borderColorPushed, borderNoAmmoColor, textColor
-} = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
-let { unitType } = require("%rGui/hudState.nut")
-let { isHudPrimaryStyle } = require("%rGui/options/options/hudStyleOptions.nut")
-let { hudTransparentColor, hudLightBlackColor } = require("%rGui/style/hudColors.nut")
+from "mission" import get_mission_time
+from "%globalsDarg/fontScale.nut" import getScaledFont
+from "%rGui/hud/cooldownComps.nut" import mkItemWithCooldownText
+from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize, borderWidth, btnBgStyle, imageColor,
+  imageDisabledColor, borderColor, borderColorPushed, borderNoAmmoColor, textColor
+from "%rGui/hudState.nut" import unitType
+from "%rGui/options/options/hudStyleOptions.nut" import isHudPrimaryStyle
+from "%rGui/style/hudColors.nut" import hudTransparentColor, hudLightBlackColor
 
 
 let svgNullable = @(image, size) ((image ?? "") == "") ? null
   : Picture($"{image}:{size}:{size}:P")
 
 let countHeightUnderActionItem = (0.4 * touchButtonSize).tointeger()
-let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(-50)] }
+let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(50), ph(-50)] }
 
 let isAvailableActionItem = @(actionItem) (actionItem?.available ?? true)
   && ((actionItem?.count ?? 0) != 0 || actionItem?.control)

@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { addUserOption, addLocalUserOption, get_gui_option, set_gui_option } = require("guiOptions")
-let { eventbus_send } = require("eventbus")
-let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
+from "eventbus" import eventbus_send
+from "guiOptions" import addUserOption, addLocalUserOption, get_gui_option, set_gui_option
+from "%appGlobals/loginState.nut" import isSettingsAvailable
+
 
 let optionsVersion = Watched(0)
 

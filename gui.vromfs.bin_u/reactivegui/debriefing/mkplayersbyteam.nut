@@ -1,8 +1,10 @@
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { getPlayerName } = require("%appGlobals/user/nickTools.nut")
-let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
-let { genBotDecorators } = require("%appGlobals/botUtils.nut")
-let { getSortAndFillPlayerPlacesFunc } = require("%rGui/mpStatistics/playersSortFunc.nut")
+from "%appGlobals/botUtils.nut" import genBotDecorators
+from "%appGlobals/decorators/nickFrames.nut" import frameNick
+from "%appGlobals/user/nickTools.nut" import getPlayerName
+from "%rGui/mpStatistics/playersSortFunc.nut" import getSortAndFillPlayerPlacesFunc
+
 
 function mkPlayersByTeam(debrData) {
   let { gameType = 0, campaign = "", localTeam = 0, players = {}, playersCommonStats = {} } = debrData

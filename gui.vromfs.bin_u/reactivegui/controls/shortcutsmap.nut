@@ -1,6 +1,7 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%rGui/controls/shortcutConsts.nut" import *
-let { isReplayShortcuts } = require("%rGui/controls/shortcutFlags.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "%rGui/controls/shortcutFlags.nut" import isReplayShortcuts
+
 
 let allShortcuts = isReplayShortcuts ? {
   ID_MPSTATSCREEN = "J:Back | Tab"

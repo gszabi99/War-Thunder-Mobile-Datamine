@@ -1,4 +1,5 @@
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+
 
 return {
   LINK_TO_GAIJIN_ACCOUNT_URL = getCurCircuitOverride("linkToAccountURL","auto_local auto_login https://wtmobile.com/connect")

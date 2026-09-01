@@ -1,24 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { eventbus_subscribe } = require("eventbus")
-let { setInterval, clearTimer, resetTimeout } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
-let { isEqual } = require("%sqstd/underscore.nut")
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setInterval, clearTimer, resetTimeout
+from "eventbus" import eventbus_subscribe
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+import "%rGui/tutorial/hudElementsCfg.nut" as hudElementsCfg
+from "%rGui/tutorial/tutorialWnd/tutorialUtils.nut" import getBox, incBoxSize, findGoodArrowPos, sizePosToBox
+from "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" import pointerArrow
 
-let { getBox, incBoxSize, findGoodArrowPos, sizePosToBox } = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
-let { pointerArrow } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let hudElementsCfg = require("%rGui/tutorial/hudElementsCfg.nut")
+
 let { sizeIncDef } = hudElementsCfg
 let hudElements = hudElementsCfg.elements
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
 
 
-let arrowHlType = "arrow"
+const arrowHlType = "arrow"
 let highLightTypes = {
   [arrowHlType] = true
 }
 
-let staticUpdateInterval = 0.5
+const staticUpdateInterval = 0.5
 
 let isHudBlinkAttached = Watched(false)
 let activeBlinkElems = mkWatched(persist, "activeBlinkElems", {})

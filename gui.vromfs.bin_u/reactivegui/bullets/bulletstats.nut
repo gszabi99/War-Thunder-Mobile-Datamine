@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { roundToDigits } = require("%sqstd/math.nut")
-let { getArmorPiercingByDistance, getRicochetGuaranteedAngle, getTntStrengthEquivalent
-} = require("%rGui/weaponry/dmgModel.nut")
-let { getMassText } = require("%rGui/measureUnits.nut")
+from "math" import round
+from "%sqstd/math.nut" import roundToDigits
+from "%rGui/measureUnits.nut" import getMassText
+from "%rGui/weaponry/dmgModel.nut" import getArmorPiercingByDistance, getRicochetGuaranteedAngle,
+  getTntStrengthEquivalent
+
 
 const ARMOR_PENETRATION_DIST_MIN = 100
 const ARMOR_PENETRATION_DIST_MAX = 500

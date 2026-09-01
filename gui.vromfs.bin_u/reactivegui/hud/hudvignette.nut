@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-from "math" import round, ceil
 from "eventbus" import eventbus_subscribe
+from "math" import round, ceil
 from "%appGlobals/clientState/clientState.nut" import isInBattle
 from "%rGui/missionState.nut" import isGtBattleRoyale
 from "%rGui/style/gradients.nut" import simpleVerGrad
+
 
 let isPlayerOutOfMap = mkWatched(persist, "isPlayerOutOfMap", false)
 isInBattle.subscribe(@(_) isPlayerOutOfMap.set(false))

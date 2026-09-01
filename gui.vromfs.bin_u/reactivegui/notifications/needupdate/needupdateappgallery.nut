@@ -1,12 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
+from "android.platform" import checkAppUpdateOnMarket
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_subscribe
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/clientState/clientState.nut" import isInBattle, isInLoadingScreen
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout
+
+
 let logUpdate = log_with_prefix("[UPDATE]: ")
-let { eventbus_subscribe } = require("eventbus")
-let { get_time_msec } = require("dagor.time")
-let { deferOnce } = require("dagor.workcycle")
-let { checkAppUpdateOnMarket } = require("android.platform")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isInBattle, isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
-let { resetExtTimeout } = require("%appGlobals/timeoutExt.nut")
 
 
 const REQUEST_PERIOD_MSEC = 1800000

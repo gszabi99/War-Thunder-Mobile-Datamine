@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { attrPresets } = require("%rGui/attributes/attrState.nut")
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/attributes/attrState.nut" import attrPresets
+
 
 return {
   serverConfigsW = serverConfigs

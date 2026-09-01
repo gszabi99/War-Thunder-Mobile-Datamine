@@ -1,15 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
+from "sound_wt" import playSound
+from "%appGlobals/currenciesState.nut" import GOLD
+from "%appGlobals/pServer/pServerApi.nut" import buy_personal_goods, personalGoodsInProgress
+from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_SHOP, getPurchaseTypeByGoodsType, mkBqPurchaseInfo
+from "%rGui/shop/goodsView/goods.nut" import getGoodsLocName
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
+from "%rGui/shop/shopCommon.nut" import getGoodsType
+from "%rGui/style/stdColors.nut" import userlogTextColor
+
+
 let logShop = log_with_prefix("[SHOP] ")
-let { playSound } = require("sound_wt")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { buy_personal_goods, personalGoodsInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
-let { PURCH_SRC_SHOP, getPurchaseTypeByGoodsType, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
 
 
 function purchasePersonalGoods(pGoods, shopGoods) { 

@@ -1,24 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hoverColor, selectColor } = require("%rGui/style/stdColors.nut")
+from "%rGui/style/stdColors.nut" import hoverColor, selectColor
 
-let textColor = 0xFFFFFFFF
+
+const textColor = 0xFFFFFFFF
 let slotOnColor = selectColor
-let slotOffColor = 0xFF000000
-let primaryAccentColor = 0xE5818080
-let secondaryAccentColor = 0xCC668BCC
-let knobIconColor = 0xFF464646
-let iconToggleBorderColor = 0xFFDADADA
-let checkBorderWidth = hdpx(4)
+const slotOffColor = 0xFF000000
+const primaryAccentColor = 0xE5818080
+const secondaryAccentColor = 0xCC668BCC
+const knobIconColor = 0xFF464646
+const iconToggleBorderColor = 0xFFDADADA
+const checkBorderWidth = hdpx(4)
 
 let knobSize = evenPx(68)
 let toggleW = evenPx(180)
 let toggleH = knobSize
 
-let knobMoveTime = 0.1
-let activeColorTime = 0.2
+const knobMoveTime = 0.1
+const activeColorTime = 0.2
 let transEasing = InOutQuad
 
-let checkIconPath = "ui/gameuiskin#voicemsg_yes.svg"
+const checkIconPath = "ui/gameuiskin#voicemsg_yes.svg"
 
 let primaryIconToggleStyle = {
   activeBgFillColor = textColor
@@ -168,7 +169,7 @@ function iconToggle(valueW, sf, icon, sizeY = knobSize, style = primaryIconToggl
   }
 }
 
-let toggleWithLabel = @(stateFlags, valueW, children, ovr = {}) @() {
+let toggleWithLabel = @(stateFlags, valueW, childrenCtor, ovr = {}) @() {
   watch = stateFlags
   behavior = Behaviors.Button
   onElemState = @(v) stateFlags.set(v)
@@ -176,25 +177,23 @@ let toggleWithLabel = @(stateFlags, valueW, children, ovr = {}) @() {
   onClick = @() valueW.set(!valueW.get())
   valign = ALIGN_CENTER
   gap = hdpx(30)
-  children
+  children = childrenCtor(stateFlags.get())
 }.__update(ovr)
 
 function horizontalToggleWithLabel(valueW, label, textOvr = {}) {
   let stateFlags = Watched(0)
-  let children = [
-    toggle(valueW, stateFlags.get())
-    toggleLabel(label, stateFlags.get(), textOvr)
-  ]
-  return toggleWithLabel(stateFlags, valueW, children, { flow = FLOW_HORIZONTAL })
+  return toggleWithLabel(stateFlags, valueW, @(sf) [
+    toggle(valueW, sf)
+    toggleLabel(label, sf, textOvr)
+  ], { flow = FLOW_HORIZONTAL })
 }
 
 function verticalToggleWithLabel(valueW, label, textOvr = {}) {
   let stateFlags = Watched(0)
-  let children = [
-    toggleLabel(label, stateFlags.get(), textOvr)
-    toggle(valueW, stateFlags.get())
-  ]
-  return toggleWithLabel(stateFlags, valueW, children, { flow = FLOW_VERTICAL })
+  return toggleWithLabel(stateFlags, valueW, @(sf) [
+    toggleLabel(label, sf, textOvr)
+    toggle(valueW, sf)
+  ], { flow = FLOW_VERTICAL })
 }
 
 return {

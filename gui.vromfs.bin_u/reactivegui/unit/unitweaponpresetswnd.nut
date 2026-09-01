@@ -1,24 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
-
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bgShadedLight } = require("%rGui/style/backgrounds.nut")
-let { unitWeaponPresetWeaponry, curUnit, onDelete, onApply, openEditNameWnd, isCurrentPreset,
-  isNotSavedPreset, isMaxSavedPresetAmountReached } = require("%rGui/unit/unitWeaponPresetsWeaponry.nut")
-let { textButtonPrimary, textButtonCommon, iconButtonPrimary, iconButtonCommon } = require("%rGui/components/textButton.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon, iconButtonPrimary, iconButtonCommon
+from "%rGui/respawn/playerActivity.nut" import sendPlayerActivityToServer
+from "%rGui/style/backgrounds.nut" import bgShadedLight
+from "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" import mkCutBg
+from "%rGui/unit/unitWeaponPresetsWeaponry.nut" import unitWeaponPresetWeaponry, curUnit, onDelete, onApply,
+  openEditNameWnd, isCurrentPreset, isNotSavedPreset, isMaxSavedPresetAmountReached
 
 
 let isOpenedPresetWnd = Watched(false)
-let WND_UID = "PRESET_WND"
-let BTN_WIDTH = hdpx(250)
-let BTN_HEIGHT = hdpx(70)
-let BTN_ICON_SIZE = BTN_HEIGHT
-let ICON_SIZE = hdpx(40)
-let BTN_GAP = hdpx(20)
+const WND_UID = "PRESET_WND"
+const BTN_WIDTH = hdpx(250)
+const BTN_HEIGHT = hdpx(70)
+const BTN_ICON_SIZE = BTN_HEIGHT
+const ICON_SIZE = hdpx(40)
+const BTN_GAP = hdpx(20)
 
 function openUnitWeaponPresetWnd(unit) {
   sendPlayerActivityToServer()
@@ -81,7 +80,7 @@ let mkButtons = @() {
       utf8ToUpper(loc("mainmenu/btnApply")),
       onApply,
       {
-          ovr = {size = [SIZE_TO_CONTENT, BTN_HEIGHT], minWidth = BTN_WIDTH},
+          ovr = {size = const [SIZE_TO_CONTENT, BTN_HEIGHT], minWidth = BTN_WIDTH},
           childOvr = fontTinyAccentedShaded,
           hotkeys = ["^J:X"]
       },

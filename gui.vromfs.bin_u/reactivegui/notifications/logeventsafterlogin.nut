@@ -1,17 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
+from "blkGetters" import get_local_custom_settings_blk
+from "eventbus" import eventbus_send
 from "%sqstd/frp.nut" import ComputedImmediate
-let { eventbus_send } = require("eventbus")
-let { sendTelemetryEvent } = require("%rGui/notifications/logEvents.nut")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { lastBattles, sharedStats, curCampaign, campaignsList } = require("%appGlobals/pServer/campaign.nut")
-let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
-let { firstBattleTutor, tutorialMissions } = require("%rGui/tutorial/tutorialMissions.nut")
-let { isUserstatMissingData, userstatStats } = require("%rGui/unlocks/userstat.nut")
-let { curStage } = require("%rGui/battlePass/battlePassState.nut")
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import lastBattles, sharedStats, curCampaign, campaignsList
+from "%appGlobals/pServer/profile.nut" import playerLevelInfo
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/battlePass/battlePassState.nut" import curStage
+from "%rGui/debriefing/debriefingState.nut" import debriefingData
+from "%rGui/notifications/logEvents.nut" import sendTelemetryEvent
+from "%rGui/tutorial/tutorialMissions.nut" import firstBattleTutor, tutorialMissions
+from "%rGui/unlocks/userstat.nut" import isUserstatMissingData, userstatStats
 
 
 let tutorialResultEvent = keepref(Computed(function() {
@@ -39,7 +39,7 @@ function sendEventByValue(eventId, watch, valueToSend, notInitedValue = null) {
 let lastBattlesTotal = keepref(Computed(@() lastBattles.get().len()))
 sendEventByValue("played_battles_5", lastBattlesTotal, 5, 0)
 
-let LAST_SUBMITTED_COUNT_OF_BATTLES = "lastSubmittedCountOfBattles"
+const LAST_SUBMITTED_COUNT_OF_BATTLES = "lastSubmittedCountOfBattles"
 let battlesListCountToSend = [50, 100, 500, 1000, 1100, 1200, 1300, 1400, 1500, 1800, 2000]
 
 function findClosestOrEqualLowerValue(list, target) {

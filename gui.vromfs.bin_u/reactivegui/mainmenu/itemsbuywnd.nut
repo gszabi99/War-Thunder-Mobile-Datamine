@@ -1,33 +1,33 @@
 from "%globalsDarg/darg_library.nut" import *
-let { defer } = require("dagor.workcycle")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { G_ITEM } = require("%appGlobals/rewardType.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { isOpenedItemWnd, closeItemWnd, getCheapestGoods, itemsForPurchaseIds } = require("itemsBuyState.nut")
-let { warningTextColor } = require("%rGui/style/stdColors.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { mkColoredGradientY, simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { mkWaitDimmingSpinner } = require("%rGui/components/spinner.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { textButtonPricePurchase, textButtonCommon, textButtonInactive } = require("%rGui/components/textButton.nut")
-let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { tinyLimitReachedPlate } = require("%rGui/shop/goodsView/sharedParts.nut")
-let { mkImg } = require("%rGui/shop/goodsView/goodsConsumables.nut")
-let { purchaseGoods } = require("%rGui/shop/purchaseGoods.nut")
-let { shopGoods } = require("%rGui/shop/shopState.nut")
-let { addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler, markPurchasesSeen
-} = require("%rGui/shop/unseenPurchasesState.nut")
-let openBarterWnd = require("itemsConvertWnd.nut")
-let { headerGradientWithRightBlock } = require("%rGui/components/gradientDefComps.nut")
+from "dagor.workcycle" import defer
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/pServerApi.nut" import shopPurchaseInProgress
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/rewardType.nut" import G_ITEM
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
+from "%rGui/components/spinner.nut" import mkWaitDimmingSpinner
+from "%rGui/components/textButton.nut" import textButtonPricePurchase, textButtonCommon, textButtonInactive
+from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
+from "%rGui/navState.nut" import registerScene
+from "%rGui/shop/goodsView/goodsConsumables.nut" import mkImg
+from "%rGui/shop/goodsView/sharedParts.nut" import tinyLimitReachedPlate
+from "%rGui/shop/purchaseGoods.nut" import purchaseGoods
+from "%rGui/shop/shopState.nut" import shopGoods
+from "%rGui/shop/unseenPurchasesState.nut" import addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler,
+  markPurchasesSeen
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/gradients.nut" import mkColoredGradientY, simpleHorGrad
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import warningTextColor
+from "itemsBuyState.nut" import isOpenedItemWnd, closeItemWnd, getCheapestGoods, itemsForPurchaseIds
+import "itemsConvertWnd.nut" as openBarterWnd
 
 
 const btnHeight = hdpx(90)
-let borderWidth = hdpx(2)
+const borderWidth = hdpx(2)
 let bgSize = [hdpxi(296), hdpxi(330)]
 let priceBgGrad = mkColoredGradientY(0xFF72A0D0, 0xFF588090, 12)
 
@@ -40,9 +40,9 @@ let isPurchNoNeedResultWindow = @(purch) purch?.source == "purchaseInternal"
   && null == purch.goods.findvalue(@(g) g.gType != G_ITEM)
 let markPurchasesSeenDelayed = @(purchList) defer(@() markPurchasesSeen(purchList.keys()))
 
-let defImageItemOpt = { size = hdpxi(250), pos = [hdpx(60), -hdpx(15)]}
+let defImageItemOpt = { size = hdpxi(250), pos = const [hdpx(60), -hdpx(15)]}
 let largeImageItemOptDict = {
-  firework_kit = { size = hdpxi(350), pos = [hdpx(60), -hdpx(15)]}
+  firework_kit = { size = hdpxi(350), pos = const [hdpx(60), -hdpx(15)]}
 }
 
 let bgHiglight = {
@@ -75,7 +75,7 @@ let mkPricePlate = @(goods, hasLimitReached) {
 
 let gamercardPannel = @(currencies) @() {
   watch = currencies
-  size = [FLEX, SIZE_TO_CONTENT]
+  size = const [FLEX, SIZE_TO_CONTENT]
   vplace = ALIGN_TOP
   valign = ALIGN_CENTER
   children = headerGradientWithRightBlock(
@@ -161,7 +161,7 @@ let itemSlot = @(goodsInfo, count, limit, sf) {
           color = 0x80000000
           padding = hdpx(10)
           children = {
-            size = [FLEX, SIZE_TO_CONTENT]
+            size = const [FLEX, SIZE_TO_CONTENT]
             rendObj = ROBJ_TEXTAREA
             behavior = Behaviors.TextArea
             color = limit <= 0 || limit > count.get() ? 0xFFFFFFFF : warningTextColor

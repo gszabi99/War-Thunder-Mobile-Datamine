@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let modalPopupWnd = require("%rGui/components/modalPopupWnd.nut")
-let { btnBEsc } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { hoverColor, textColor } = require("%rGui/style/stdColors.nut")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { mkGradientCtorDoubleSideX, mkGradientCtorDoubleSideY, gradTexSize } = require("%rGui/style/gradients.nut")
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+import "%rGui/components/modalPopupWnd.nut" as modalPopupWnd
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEsc
+from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideX, mkGradientCtorDoubleSideY, gradTexSize
+from "%rGui/style/stdColors.nut" import hoverColor, textColor
 
 
-let menuButtonSize = hdpx(90)
-let menuButtonIconSize = hdpx(45)
-let menuButtonBorderWidth = hdpx(3)
-let buttonH = hdpx(85)
-let separatorWidth = hdpx(2)
-let optionIconSize = hdpx(40)
-let optionActiveColor = 0x80405780
-let borderColor = 0xFF8F8F8F
-let menuBgColor = 0xD60B0B10
-let menuButtonBgActiveColor = 0x990B0B10
+const menuButtonSize = hdpx(90)
+const menuButtonIconSize = hdpx(45)
+const menuButtonBorderWidth = hdpx(3)
+const buttonH = hdpx(85)
+const separatorWidth = hdpx(2)
+const optionIconSize = hdpx(40)
+const optionActiveColor = 0x80405780
+const borderColor = 0xFF8F8F8F
+const menuBgColor = 0xD60B0B10
+const menuButtonBgActiveColor = 0x990B0B10
 
 let btnGradientVert = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, 0xFF0B0B10, 0.5))
 let lineGradientVert = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, 0x80777777, 0.25))
@@ -27,7 +27,7 @@ function makeMenuBtn(onClick, icon, iconSize) {
   let stateFlags = Watched(0)
   return @() {
     watch = [stateFlags, isDropDownMenuOpened]
-    size = [menuButtonSize, menuButtonSize]
+    size = const [menuButtonSize, menuButtonSize]
     behavior = Behaviors.Button
     onClick = onClick
     onElemState = @(sf) stateFlags.set(sf)
@@ -65,7 +65,7 @@ function textButton(btn, onClick) {
     let sf = stateFlags.get()
     return {
       watch = stateFlags
-      size = [FLEX, buttonH]
+      size = const [FLEX, buttonH]
       minWidth = SIZE_TO_CONTENT
       padding = hdpx(15)
       rendObj = sf & S_HOVER ? ROBJ_BOX : ROBJ_IMAGE
@@ -82,7 +82,7 @@ function textButton(btn, onClick) {
       children = [
         icon != null
           ? {
-              size = [optionIconSize, optionIconSize]
+              size = const [optionIconSize, optionIconSize]
               rendObj = ROBJ_IMAGE
               image = Picture($"{icon}:{optionIconSize}:{optionIconSize}:P")
               keepAspect = true
@@ -98,7 +98,7 @@ function textButton(btn, onClick) {
 }
 
 let separator = @(ovr = {}) {
-  size = [FLEX, separatorWidth]
+  size = const [FLEX, separatorWidth]
   rendObj = ROBJ_IMAGE
   image = lineGradientHor()
 }.__update(ovr)
@@ -120,7 +120,7 @@ let mkDropMenu = @(columnsList) {
   borderColor = borderColor
   padding = menuButtonBorderWidth
   gap = separator({
-    size = [separatorWidth, FLEX]
+    size = const [separatorWidth, FLEX]
     image = lineGradientVert()
   })
   flow = FLOW_HORIZONTAL
@@ -128,7 +128,7 @@ let mkDropMenu = @(columnsList) {
   children = columnsList.map(mkColumn)
 }
 
-let function mkDropMenuBtn(getButtons, buttonsGeneration, icon = "ui/gameuiskin#hud_menu.svg", iconSize = menuButtonIconSize) {
+function mkDropMenuBtn(getButtons, buttonsGeneration, icon = "ui/gameuiskin#hud_menu.svg", iconSize = menuButtonIconSize) {
   let getColumnsList = @() getButtons().filter(@(col) col.len() > 0)
   return function() {
     let res = {

@@ -1,34 +1,35 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getHeroTankMaxSpeedBySteps } = require("hudState")
-let { setVirtualAxisValue, changeCruiseControl } = require("controls")
-let { lerpClamped } = require("%sqstd/math.nut")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
-let { speed, cruiseControl } = require("%rGui/hud/tankState.nut")
-let { playSound } = require("sound_wt")
-let { setInterval, resetTimeout, clearTimer } = require("dagor.workcycle")
-let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtnOutline, mkMoveVertBtnAnimBg, arrowsVerSize,
-  mkMoveVertBtnCorner, mkMoveVertBtn2step, fillMoveColorDef, mkMoveVertBtn, mkStopBtn, outlineColorDef
-} = require("%rGui/components/movementArrows.nut")
-let { playerUnitName } = require("%rGui/hudState.nut")
-let { isStickActiveByArrows, stickDelta } = require("%rGui/hud/stickState.nut")
-let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
-let { currentGearDownOnStopButtonTouch } = require("%rGui/options/chooseMovementControls/gearDownControl.nut")
-let { Point2 } = require("dagor.math")
-let { eventbus_send } = require("eventbus")
-let { hudWhiteColor, hudTransparentColor } = require("%rGui/style/hudColors.nut")
+from "controls" import setVirtualAxisValue, changeCruiseControl
+from "dagor.math" import Point2
+from "dagor.workcycle" import setInterval, resetTimeout, clearTimer
+from "eventbus" import eventbus_send
+from "hapticVibration" import registerHapticPattern, playHapticPattern
+from "hudState" import getHeroTankMaxSpeedBySteps
+from "sound_wt" import playSound
+from "%sqstd/math.nut" import lerpClamped
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/components/movementArrows.nut" import mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtnOutline,
+  mkMoveVertBtnAnimBg, arrowsVerSize, mkMoveVertBtnCorner, mkMoveVertBtn2step, fillMoveColorDef, mkMoveVertBtn,
+  mkStopBtn, outlineColorDef
+from "%rGui/hud/stickState.nut" import isStickActiveByArrows, stickDelta
+from "%rGui/hud/tankState.nut" import speed, cruiseControl
+from "%rGui/hudState.nut" import playerUnitName
+from "%rGui/options/chooseMovementControls/gearDownControl.nut" import currentGearDownOnStopButtonTouch
+from "%rGui/options/chooseMovementControls/groundMoveControlType.nut" import currentTankMoveCtrlType
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudTransparentColor
+
 
 let HAPT_FORWARD = registerHapticPattern("Forward",
   { time = 0.0, intensity = 0.5, sharpness = 0.9, duration = 0.0, attack = 0.0, release = 0.0 })
 let HAPT_BACKWARD = registerHapticPattern("Backward",
   { time = 0.0, intensity = 0.5, sharpness = 0.8, duration = 0.0, attack = 0.0, release = 0.0 })
-let deltaSteer = 0.1
-let minSteer = 0.7
+const deltaSteer = 0.1
+const minSteer = 0.7
 local curSteerValue = minSteer
 let steerWatch = Watched(0)
-let delayHigh = 0.25
-let delayLow = 0.5
-let delayReverse = 3
+const delayHigh = 0.25
+const delayLow = 0.5
+const delayReverse = 3
 
 const CRUISE_CONTROL_UNDEF = -2
 const CRUISE_CONTROL_R = -1

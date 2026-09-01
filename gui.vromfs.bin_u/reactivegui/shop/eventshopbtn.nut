@@ -1,15 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { serverTime, getServerTime } = require("%appGlobals/userstats/serverTime.nut")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop,
-  soonPersonalGoodsByShop, personalGoodsByShop
-} = require("%rGui/shop/shopState.nut")
-let { openEventShopWnd } = require("%rGui/seasonScene/seasonSceneState.nut")
-let { getShopEventName } = require("%rGui/shop/eventShopState.nut")
+from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+from "%appGlobals/userstats/serverTime.nut" import getServerTime
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/seasonScene/seasonSceneState.nut" import openEventShopWnd
+from "%rGui/shop/eventShopState.nut" import getShopEventName
+from "%rGui/shop/shopState.nut" import hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop,
+  personalGoodsByShop
+from "%rGui/components/timerBlock.nut" import mkTimer
 
-let eventShopBtnIconSize = hdpx(150)
+
+const eventShopBtnIconSize = hdpx(150)
 let inc = @(tbl, id) tbl.$rawset(id, (tbl?[id] ?? 0) + 1)
 
 function bestKey(tbl) {
@@ -73,6 +73,7 @@ function mkBtn(sId) {
       eventId = bestKey(eventIdCounts) ?? ""
     }
   })
+  let timeEndW = Computed(@() eventCfg.get().timeEnd)
   return @() {
     watch = [eventButtonSF, isEventShopHasUnseen, eventCfg, eventName]
     behavior = Behaviors.Button
@@ -87,20 +88,17 @@ function mkBtn(sId) {
     children = [
       @() {
         watch = eventCfg
-        size = [eventShopBtnIconSize, eventShopBtnIconSize]
+        size = const [eventShopBtnIconSize, eventShopBtnIconSize]
         rendObj = ROBJ_IMAGE
         image = Picture($"{getEventPresentation(eventCfg.get().eventId).image }:{eventShopBtnIconSize}:{eventShopBtnIconSize}:P")
         fallbackImage = Picture($"ui/gameuiskin/icon_event_event_black_friday_shop.avif:{eventShopBtnIconSize}:{eventShopBtnIconSize}:P")
         keepAspect = true
       }
-      @() {
-        watch = [eventCfg, serverTime]
-        size = FLEX_H
-        rendObj = ROBJ_TEXT
-        text = secondsToHoursLoc(eventCfg.get().timeEnd - serverTime.get())
-        pos = [0, eventShopBtnIconSize]
+      mkTimer(timeEndW,
+      {
+        pos = const [0, eventShopBtnIconSize]
         halign = ALIGN_CENTER
-      }.__update(fontVeryTinyAccentedShaded)
+      }, fontTinyAccentedShaded)
       !isEventShopHasUnseen.get() ? null : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, vplace = ALIGN_TOP})
     ]
   }

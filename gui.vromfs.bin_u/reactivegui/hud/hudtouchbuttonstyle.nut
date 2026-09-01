@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isHudPrimaryStyle } = require("%rGui/options/options/hudStyleOptions.nut")
-let { hudWhiteColor, hudTransparentColor, hudPearlGrayColor, hudSmokyGreyColor,
+from "%rGui/options/options/hudStyleOptions.nut" import isHudPrimaryStyle
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudTransparentColor, hudPearlGrayColor, hudSmokyGreyColor,
   hudVeilGrayColorFade, hudBlueColorFade, hudDarkOliveColor, hudExtraLightBlackColor
-} = require("%rGui/style/hudColors.nut")
+
 
 let touchButtonSize = shHud(10)
 let touchSizeForRhombButton = touchButtonSize * 0.9

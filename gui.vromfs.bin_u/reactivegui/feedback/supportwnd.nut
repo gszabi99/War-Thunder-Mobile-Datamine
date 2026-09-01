@@ -1,25 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { getLocalLanguage } = require("language")
-let { utf8ToUpper, validateEmail } = require("%sqstd/string.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { myUserIdStr, myUserName } = require("%appGlobals/profileStates.nut")
-let { sendErrorBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { textButtonPrimary, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
-let { textInput } = require("%rGui/components/textInput.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { horizontalToggleWithLabel } = require("%rGui/components/toggle.nut")
-let { canUseZendeskApi, langCfg, getCategoryLocName, fieldCategory } = require("%rGui/feedback/supportState.nut")
-let { hasLogFile } = require("%rGui/feedback/logFileAttachment.nut")
-let { requestState, submitSupportRequest, onRequestResultSeen } = require("%rGui/feedback/supportRequest.nut")
-let supportChooseCategory = require("%rGui/feedback/supportChooseCategory.nut")
-let { getCurCircuitOverride, isExternalOperator } = require("%appGlobals/curCircuitOverride.nut")
+from "eventbus" import eventbus_send
+from "language" import getLocalLanguage
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/string.nut" import utf8ToUpper, validateEmail
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride, isExternalOperator
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/bqClient.nut" import sendErrorBqEvent
+from "%appGlobals/profileStates.nut" import myUserIdStr, myUserName
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/spinner.nut" import mkSpinner
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon, buttonsHGap
+from "%rGui/components/textInput.nut" import textInput
+from "%rGui/components/toggle.nut" import horizontalToggleWithLabel
+from "%rGui/feedback/logFileAttachment.nut" import hasLogFile
+import "%rGui/feedback/supportChooseCategory.nut" as supportChooseCategory
+from "%rGui/feedback/supportRequest.nut" import requestState, submitSupportRequest, onRequestResultSeen
+from "%rGui/feedback/supportState.nut" import canUseZendeskApi, langCfg, getCategoryLocName, fieldCategory
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let onClose = @() isOpened.set(false)

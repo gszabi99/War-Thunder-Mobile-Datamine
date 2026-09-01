@@ -1,20 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/unitConst.nut" import TANK, AIR, HELICOPTER
+from "%appGlobals/unitTags.nut" import getUnitType
+from "%appGlobals/updater/campaignAddons.nut" import getCampaignRankAddons, getCampaignPkgsForNewbieSingle
+from "%appGlobals/updater/missionUnits.nut" import getMissionUnitsAndAddons, getCommonBots, addSupportUnits
+from "%rGui/components/msgBox.nut" import openMsgBox
+import "%rGui/squad/notAvailableForSquadMsg.nut" as notAvailableForSquadMsg
+from "%rGui/unitMods/unitModsSlotsState.nut" import getUnitSlotsPresetNonUpdatable
+from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd
+from "%rGui/weaponry/bulletsCalc.nut" import getDefaultBulletsForSpawn
+
+
 let logO = log_with_prefix("[OFFLINE_MISSION] ")
-let { TANK, AIR, HELICOPTER } = require("%appGlobals/unitConst.nut")
-let { getMissionUnitsAndAddons, getCommonBots, addSupportUnits } = require("%appGlobals/updater/missionUnits.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { getDefaultBulletsForSpawn } = require("%rGui/weaponry/bulletsCalc.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
-let notAvailableForSquadMsg = require("%rGui/squad/notAvailableForSquadMsg.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { getUnitSlotsPresetNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { getCampaignRankAddons, getCampaignPkgsForNewbieSingle } = require("%appGlobals/updater/campaignAddons.nut")
 
 
-let defTestFlight = "testFlight_destroyer_usa_tfs"
+const defTestFlight = "testFlight_destroyer_usa_tfs"
 let testFlightByUnitType = {
   [AIR]             = "testFlight_plane",
   [HELICOPTER]      = "testFlight_plane",

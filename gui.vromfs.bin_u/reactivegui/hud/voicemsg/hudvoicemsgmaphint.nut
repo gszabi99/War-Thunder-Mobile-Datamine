@@ -1,20 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { TANK, SHIP } = require("%appGlobals/unitConst.nut")
-let { curCampaign, lastBattles } = require("%appGlobals/pServer/campaign.nut")
-let { isInMpBattle } = require("%appGlobals/clientState/clientState.nut")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { unitType, isUnitDelayed } = require("%rGui/hudState.nut")
-let { addCommonHintWithTtl } = require("%rGui/hudHints/commonHintLogState.nut")
-let { addHudElementPointer } = require("%rGui/tutorial/hudElementPointers.nut")
-let { isGtFFA } = require("%rGui/missionState.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "eventbus" import eventbus_send
+from "%appGlobals/clientState/clientState.nut" import isInMpBattle
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
+from "%appGlobals/pServer/campaign.nut" import curCampaign, lastBattles
+from "%appGlobals/unitConst.nut" import TANK, SHIP
+from "%rGui/hudHints/commonHintLogState.nut" import addCommonHintWithTtl
+from "%rGui/hudState.nut" import unitType, isUnitDelayed
+from "%rGui/missionState.nut" import isGtFFA
+from "%rGui/tutorial/hudElementPointers.nut" import addHudElementPointer
 
-let SAVE_ID_HINT_SHOW_TIMES_LEFT = "hintMinimapVoiceMsgLeft"
 
-let SHOW_AFTER_BATTLES = 5
-let SHOW_TIMES_MAX = 3
-let HINT_TTL_SEC = 15
+const SAVE_ID_HINT_SHOW_TIMES_LEFT = "hintMinimapVoiceMsgLeft"
+
+const SHOW_AFTER_BATTLES = 5
+const SHOW_TIMES_MAX = 3
+const HINT_TTL_SEC = 15
 
 let campaignsWithMinimap = [ "tanks", "ships" ]
 let hudTypesWithMinimap = [ TANK, SHIP ]

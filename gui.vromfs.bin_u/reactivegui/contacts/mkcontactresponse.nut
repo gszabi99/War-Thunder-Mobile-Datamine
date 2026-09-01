@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { approveFriendRequest, rejectFriendRequest } = require("%rGui/contacts/contactsState.nut")
-let { iconButtonCommon } = require("%rGui/components/textButton.nut")
-let { gap, rowHeight } = require("%rGui/contacts/contactInfoPkg.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/textButton.nut" import iconButtonCommon
+from "%rGui/contacts/contactInfoPkg.nut" import gap, rowHeight
+from "%rGui/contacts/contactsState.nut" import approveFriendRequest, rejectFriendRequest
 
 
 let btnIconSize = evenPx(50)
-let btnMargin = hdpx(8)
+const btnMargin = hdpx(8)
 
 let askRejectFriendRequest = @(uid) openMsgBox({
   text = loc("contacts/askReject"),

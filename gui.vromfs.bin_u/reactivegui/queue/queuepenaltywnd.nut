@@ -1,24 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_meta_mission_info_by_name } = require("guiMission")
-let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
-let { reset_queue_penalty, isQueuePenaltyInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { msgBoxText, openMsgBox } = require("%rGui/components/msgBox.nut")
-let { removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { mkCurrencyComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
-let { showNoBalanceMsgIfNeed } = require("%rGui/shop/msgBoxPurchase.nut")
-let { mkBqPurchaseInfo, PURCH_SRC_HANGAR, PURCH_TYPE_QUEUE_PENALTY } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { penalties } = require("%rGui/mainMenu/penaltyState.nut")
-let { spendingUnlocks } = require("%rGui/unlocks/unlocks.nut")
-let { mkQuestDesc } = require("%rGui/shop/msgQuestDesc.nut")
+from "guiMission" import get_meta_mission_info_by_name
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/pServer/campaign.nut" import campaignsList
+from "%appGlobals/pServer/pServerApi.nut" import reset_queue_penalty, isQueuePenaltyInProgress
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/timeToText.nut" import secondsToTimeAbbrString
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, CS_INCREASED_ICON
+from "%rGui/components/modalWindows.nut" import removeModalWindow
+from "%rGui/components/msgBox.nut" import msgBoxText, openMsgBox
+from "%rGui/mainMenu/penaltyState.nut" import penalties
+from "%rGui/shop/bqPurchaseInfo.nut" import mkBqPurchaseInfo, PURCH_SRC_HANGAR, PURCH_TYPE_QUEUE_PENALTY
+from "%rGui/shop/msgBoxPurchase.nut" import showNoBalanceMsgIfNeed
+from "%rGui/shop/msgQuestDesc.nut" import mkQuestDesc
+from "%rGui/style/stdColors.nut" import userlogTextColor
+from "%rGui/textFormatByLang.nut" import decimalFormat
+from "%rGui/unlocks/unlocks.nut" import spendingUnlocks
+from "types" import Table
 
 
-let QUEUE_PENALTY_UID = "queue_penalty_box"
+const QUEUE_PENALTY_UID = "queue_penalty_box"
 
 function tryOpenQueuePenaltyWnd(rawCampaign, mGMode, resetPenaltyCb, cancelCb = null) {
   let missionName = mGMode?.mission_decl.missions_list.findindex(@(_) true) ?? ""
@@ -56,7 +57,7 @@ function tryOpenQueuePenaltyWnd(rawCampaign, mGMode, resetPenaltyCb, cancelCb = 
   let priceComp = mkCurrencyComp(decimalFormat(resPrice), currencyId, CS_INCREASED_ICON)
 
   let subscribtion = @(v) v <= 0 ? removeModalWindow(QUEUE_PENALTY_UID) : null
-  let penaltyCb = type(resetPenaltyCb) == "table" ? resetPenaltyCb.__merge({ mGMode }) : { id = resetPenaltyCb, mGMode }
+  let penaltyCb = resetPenaltyCb instanceof Table ? resetPenaltyCb.__merge({ mGMode }) : { id = resetPenaltyCb, mGMode }
 
   openMsgBox({
     uid = QUEUE_PENALTY_UID

@@ -1,37 +1,37 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { register_command } = require("console")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { isOPActive, openOPPurchaseWnd, selectedStage, curStage, getOPIcon,
-  OP_VIP, OP_COMMON, OP_NONE, purchasedOP, operationPassGoods, pointsCurStage, pointsPerStage,
-  receiveOPRewards, isOPRewardsInProgress, OPCampaign, opSeasonNumber, opSeasonEndTime,
-  OPLevelPrice, isOPLevelPurchaseInProgress
-} = require("%rGui/battlePass/operationPassState.nut")
-let { textButtonMultiline } = require("%rGui/components/textButton.nut")
-let { PURCHASE, defButtonHeight, defButtonMinWidth } = require("%rGui/components/buttonStyles.nut")
-let { bpCurProgressbar, bpProgressText, progressIconSize, contentH, mkRewardsPannable, mkTimeEndsAtText, mkPassIcon
-} = require("%rGui/battlePass/passPkg.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let bpProgressBar = require("%rGui/battlePass/bpProgressBar.nut")
-let operationPassRewardsList = require("%rGui/battlePass/operationPassRewardsList.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let bpRewardDesc = require("%rGui/battlePass/bpRewardDesc.nut")
-let { bgCard } = require("%rGui/battlePass/passRewardsListComp.nut")
-let { mkRewardPlate, mkRewardPlateVip, getRewardPlateSize } = require("%rGui/rewards/rewardPlateComp.nut")
-let { bpCardStyle, bpCardPadding, bpCardHeight } = require("%rGui/battlePass/bpCardsStyle.nut")
-let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
-let { isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
-let { simpleHorGrad } = require("%rGui/style/gradients.nut")
-let buyOPLevelMsg = require("%rGui/battlePass/buyOPLevelMsg.nut")
+from "console" import register_command
+from "dagor.workcycle" import resetTimeout
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle, bpCardPadding, bpCardHeight
+import "%rGui/battlePass/bpProgressBar.nut" as bpProgressBar
+import "%rGui/battlePass/bpRewardDesc.nut" as bpRewardDesc
+import "%rGui/battlePass/buyOPLevelMsg.nut" as buyOPLevelMsg
+import "%rGui/battlePass/operationPassRewardsList.nut" as operationPassRewardsList
+from "%rGui/battlePass/operationPassState.nut" import isOPActive, openOPPurchaseWnd, selectedStage, curStage,
+  getOPIcon, OP_VIP, OP_COMMON, OP_NONE, purchasedOP, operationPassGoods, pointsCurStage, pointsPerStage,
+  receiveOPRewards, isOPRewardsInProgress, OPCampaign, opSeasonNumber, opSeasonEndTime, OPLevelPrice,
+  isOPLevelPurchaseInProgress
+from "%rGui/battlePass/passPkg.nut" import bpCurProgressbar, bpProgressText, progressIconSize, contentH,
+  mkRewardsPannable, mkPassIcon
+from "%rGui/battlePass/passRewardsListComp.nut" import bgCard
+from "%rGui/components/buttonStyles.nut" import PURCHASE, defButtonHeight, defButtonMinWidth
+from "%rGui/components/gradientDefComps.nut" import doubleSideGradient
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
+from "%rGui/components/textButton.nut" import textButtonMultiline
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardPlateVip, getRewardPlateSize
+from "%rGui/rewards/rewardViewInfo.nut" import isSingleViewInfoRewardEmpty
+from "%rGui/style/gradients.nut" import simpleHorGrad
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/components/timerBlock.nut" import mkTimerBlock
 
 
-let TIME_TO_HIDE_AD = 4
-let HIDE_AD_TRIGGER = "hideOPLastReward"
-let startAdPointX = hdpx(700)
-let endAdPointX = hdpx(2000)
-let moveAdDuration = 1
+const TIME_TO_HIDE_AD = 4
+const HIDE_AD_TRIGGER = "hideOPLastReward"
+const startAdPointX = hdpx(700)
+const endAdPointX = hdpx(2000)
+const moveAdDuration = 1
 let scrollHandler = ScrollHandler()
 
 let showedAdForCampaigns = mkWatched(persist, "showedAdForCampaigns", {})
@@ -89,7 +89,7 @@ function operationPassLastRewardAd(stagesList, recommendInfo) {
       : doubleSideGradient.__merge({
           halign = ALIGN_RIGHT
           valign = ALIGN_BOTTOM
-          padding = [hdpx(10), hdpx(30)]
+          padding = const [hdpx(10), hdpx(30)]
           screenOffs = [0, hdpx(25)]
           children = {
             size = [cardWidth, bpCardHeight]
@@ -175,7 +175,7 @@ let leftMiddle = {
   flow = FLOW_VERTICAL
   gap = { size = flex() }
   children = [
-    mkTimeEndsAtText(opSeasonEndTime)
+    mkTimerBlock(opSeasonEndTime)
     levelBlock
   ]
 }

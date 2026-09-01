@@ -1,7 +1,8 @@
-let { isPlayingReplay } = require("%rGui/hudState.nut")
-let { eventbus_send } = require("eventbus")
-let { resetTimeout } = require("dagor.workcycle")
-let { isInLoadingScreen } = require("%appGlobals/clientState/clientState.nut")
+from "dagor.workcycle" import resetTimeout
+from "eventbus" import eventbus_send
+from "%appGlobals/clientState/clientState.nut" import isInLoadingScreen
+from "%rGui/hudState.nut" import isPlayingReplay
+
 
 let isReplayShortcuts = isPlayingReplay.get()
 

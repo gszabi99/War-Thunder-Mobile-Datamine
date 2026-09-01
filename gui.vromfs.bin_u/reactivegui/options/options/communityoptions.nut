@@ -8,13 +8,13 @@ from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride, isExtern
 from "%rGui/feedback/supportWnd.nut" import openSupportTicketWndOrUrl
 
 
-let iconSize = hdpxi(120)
+const iconSize = hdpxi(120)
 let itemSize = [hdpx(200), hdpx(200)]
 
 let userCountryRU = getCountryCode() == "RU"
 let canShowSocialNetworks = !is_nswitch
-let maxItemsInRow = 3
-let socialsGap = hdpx(35)
+const maxItemsInRow = 3
+const socialsGap = hdpx(35)
 
 let operatorNetowrks = getCurCircuitOverride("social_networks")
 
@@ -86,7 +86,7 @@ function mkNetworkItem(item){
     flow = FLOW_VERTICAL
     children = [
       {
-        size = [iconSize, iconSize]
+        size = const [iconSize, iconSize]
         rendObj = ROBJ_IMAGE
         image = Picture($"{image}:{iconSize}:{iconSize}:P")
       }
@@ -117,7 +117,7 @@ function mkFeedBackButtons(item){
     gap = hdpx(25)
     children = [
         {
-          size = [iconSize, iconSize]
+          size = const [iconSize, iconSize]
           rendObj = ROBJ_IMAGE
           image = Picture($"{image}:{iconSize}:{iconSize}:P")
         }

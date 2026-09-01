@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-let { defBorderGradient } = require("%rGui/components/buttonStyles.nut")
-let { mkGradient }  = require("%rGui/components/textButton.nut")
+from "%rGui/components/buttonStyles.nut" import defBorderGradient
+from "%rGui/components/textButton.nut" import mkGradient
+from "%rGui/style/stdColors.nut" import hoverColor
+from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
+
 
 let iText = {
   vplace = ALIGN_CENTER
@@ -14,7 +15,7 @@ let iText = {
 let defSize = [evenPx(70), evenPx(70)]
 let defSizeSmall = [evenPx(50), evenPx(50)]
 let defSizeMedium = [evenPx(60), evenPx(60)]
-let defTooltipSize = hdpx(40)
+const defTooltipSize = hdpx(40)
 
 let mkInfoButtonCtor = @(btnStyle) function(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize

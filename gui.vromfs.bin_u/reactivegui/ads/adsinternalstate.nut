@@ -1,23 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { getCountryCode } = require("auth_wt")
-let { isDownloadedFromGooglePlay, getBuildMarket } = require("android.platform")
-let { get_game_version_str } = require("app")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { is_ios, is_android, platformId } = require("%sqstd/platform.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { isTcfConsentEnabled } = require("%appGlobals/consent.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { myUserId } = require("%appGlobals/profileStates.nut")
-let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { isTcfConsentAutoSkipped, openTcfConsentWnd } = require("%rGui/notifications/consentTcf/consentTcfState.nut")
-let { isConsentWasAutoSkipped, needOpenConsentWnd } = require("%rGui/notifications/consentFirebase/consentState.nut")
-let { set_mute_sound } = require("soundOptions")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+from "android.platform" import isDownloadedFromGooglePlay, getBuildMarket
+from "app" import get_game_version_str
+from "auth_wt" import getCountryCode
+from "eventbus" import eventbus_send
+from "soundOptions" import set_mute_sound
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/platform.nut" import is_ios, is_android, platformId
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/consent.nut" import isTcfConsentEnabled
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/profileStates.nut" import myUserId
+from "%rGui/notifications/consentFirebase/consentState.nut" import isConsentWasAutoSkipped, needOpenConsentWnd
+from "%rGui/notifications/consentTcf/consentTcfState.nut" import isTcfConsentAutoSkipped, openTcfConsentWnd
 
-let RETRY_LOAD_TIMEOUT = 120
-let RETRY_INC_TIMEOUT = 60 
+
+const RETRY_LOAD_TIMEOUT = 120
+const RETRY_INC_TIMEOUT = 60 
 let isHuaweiBuild = getBuildMarket() == "appgallery"
 
 let isShowStarted = hardPersistWatched("ads.isShowStarted", false)
@@ -96,7 +97,7 @@ let providerPriorities = Computed(function(prev) {
     if (showCount <= 0)
       continue
     let periods = (providerShows.get()?[id] ?? 0) / showCount
-    providers[id] <- { key = p.key, periods, showCount }
+    providers[id] <- { key = p.key, periods, params = p?.params ?? {}, showCount }
     maxShowCount = max(maxShowCount, showCount)
     maxPeriods = max(maxPeriods, periods)
   }

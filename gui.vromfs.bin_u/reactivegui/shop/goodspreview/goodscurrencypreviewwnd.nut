@@ -1,35 +1,34 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { hideModals, unhideModals } = require("%rGui/components/modalWindows.nut")
-let { GPT_CURRENCY, previewType, previewGoods, closeGoodsPreview, openPreviewCount, HIDE_PREVIEW_MODALS_ID
-} = require("%rGui/shop/goodsPreviewState.nut")
-let { discountsToApply, applyDiscount } = require("%rGui/shop/discounts.nut")
-let { mkPreviewHeader, mkPriceWithTimeBlockNoOldPrice, aTimePriceFull,
-  ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimeInfoItem, aTimeInfoItemOffset, aTimeInfoLight,
+from "dagor.workcycle" import resetTimeout
+from "sound_wt" import playSound
+from "%appGlobals/rewardType.nut" import G_CURRENCY
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, CS_BIG
+from "%rGui/components/gradientDefComps.nut" import headerGradientPaddingY
+from "%rGui/components/modalWindows.nut" import hideModals, unhideModals
+from "%rGui/effects/mkLensFlare.nut" import mkLensFlare, aTimeFlareMiddle
+from "%rGui/effects/sparks.nut" import mkSparks
+from "%rGui/navState.nut" import registerScene
+from "%rGui/shop/discounts.nut" import discountsToApply, applyDiscount
+from "%rGui/shop/goodsPreview/goodsPreviewPkg.nut" import mkPreviewHeader, mkPriceWithTimeBlockNoOldPrice,
+  aTimePriceFull, ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull, aTimeInfoItem, aTimeInfoItemOffset, aTimeInfoLight,
   aTimePriceStrike, opacityAnims, colorAnims, oldPriceBlock
-} = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
-let { gradRadial, simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { headerGradientPaddingY } = require("%rGui/components/gradientDefComps.nut")
-let { mkSparks } = require("%rGui/effects/sparks.nut")
-let { playSound } = require("sound_wt")
-let { mkCurrencyComp, CS_BIG } = require("%rGui/components/currencyComp.nut")
-let { mkLensFlare, aTimeFlareMiddle } = require("%rGui/effects/mkLensFlare.nut")
-let skipOfferBtn = require("%rGui/shop/goodsPreview/skipOfferBtn.nut")
+import "%rGui/shop/goodsPreview/skipOfferBtn.nut" as skipOfferBtn
+from "%rGui/shop/goodsPreviewState.nut" import GPT_CURRENCY, previewType, previewGoods, closeGoodsPreview,
+  openPreviewCount, HIDE_PREVIEW_MODALS_ID
+from "%rGui/style/gradients.nut" import gradRadial, simpleHorGrad
 
 
 let openCount = Computed(@() previewType.get() == GPT_CURRENCY ? openPreviewCount.get() : 0)
-let imageHeight = hdpx(450)
+const imageHeight = hdpx(450)
 
 
-let aTimeImageAppear = 0.27
-let aTimeImageBounce = 0.4
+const aTimeImageAppear = 0.27
+const aTimeImageBounce = 0.4
 let aTimeImageAppearStart = aTimeFlareMiddle - 0.5 * aTimeImageAppear
 
 let aTimeHeaderStart = aTimeImageAppearStart + aTimeImageAppear + aTimeImageBounce
 let aTimeGoldStart = aTimeHeaderStart + aTimePackNameFull
-let aTimeGoldBack = 0.15
+const aTimeGoldBack = 0.15
 let aTimeGoldFull = aTimeGoldBack + aTimeInfoLight + 0.3 * aTimeInfoItem + aTimeInfoItemOffset
 let aTimePriceStart = aTimeGoldStart + aTimeGoldFull
 
@@ -78,7 +77,7 @@ function goldInfo() {
 
 let header = mkPreviewHeader(Watched(loc("offer/gold")), closeGoodsPreview, aTimeHeaderStart, [], goldInfo)
 
-let previewBgFadeColor = 0xFF707090
+const previewBgFadeColor = 0xFF707090
 let previewBg = {
   size = FLEX
   rendObj = ROBJ_IMAGE
@@ -106,7 +105,7 @@ let currencyHighlight = {
 
 let currencyImage = {
   key = {}
-  size = [imageHeight * 1142 / 612, imageHeight]
+  size = const [imageHeight * 1142 / 612, imageHeight]
   rendObj = ROBJ_IMAGE
   image = Picture("ui/images/offer_art_gold.avif:0:P")
   keepAspect = KEEP_ASPECT_FIT

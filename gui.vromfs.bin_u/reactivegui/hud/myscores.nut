@@ -1,22 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { getScaledFont, scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { mkPlaceIcon, playerPlaceIconSize } = require("%rGui/components/playerPlaceIcon.nut")
-let { shortTextFromNum } = require("%rGui/textFormatByLang.nut")
-let { battleCampaign, battleUnitClasses } = require("%appGlobals/clientState/missionState.nut")
-let { playerTeamDamageStats, localPlayerDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
-let { getScoreFull } = require("%rGui/mpStatistics/playersSortFunc.nut")
-let { OPT_HUD_TANK_SHOW_SCORE, OPT_HUD_AIR_SHOW_SCORE, mkOptionValue } = require("%rGui/options/guiOptions.nut")
-let { playerUnitName } = require("%rGui/hudState.nut")
-let { localMPlayer, addMPlayerUpdater, removeMPlayerUpdater } = require("%rGui/hud/localMPlayer.nut")
+from "dagor.workcycle" import resetTimeout
+from "%appGlobals/clientState/missionState.nut" import battleCampaign, battleUnitClasses
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%globalsDarg/fontScale.nut" import getScaledFont, scaleFontWithTransform
+from "%rGui/components/playerPlaceIcon.nut" import mkPlaceIcon, playerPlaceIconSize
+from "%rGui/hud/localMPlayer.nut" import localMPlayer, addMPlayerUpdater, removeMPlayerUpdater
+from "%rGui/hudState.nut" import playerUnitName
+from "%rGui/mpStatistics/playersDamageStats.nut" import playerTeamDamageStats, localPlayerDamageStats
+from "%rGui/mpStatistics/playersSortFunc.nut" import getScoreFull
+from "%rGui/options/guiOptions.nut" import OPT_HUD_TANK_SHOW_SCORE, OPT_HUD_AIR_SHOW_SCORE, mkOptionValue
+from "%rGui/textFormatByLang.nut" import shortTextFromNum
 
 
-let delayForUpdatePlace = 0.1
+const delayForUpdatePlace = 0.1
 let countImageSize = evenPx(60)
 let counterBgSize = evenPx(40)
-let counterOffsets = hdpx(8)
-let blinkTime = 0.3
+const counterOffsets = hdpx(8)
+const blinkTime = 0.3
 let scoreTrigger = {}
 let defValueFont = fontVeryTiny
 

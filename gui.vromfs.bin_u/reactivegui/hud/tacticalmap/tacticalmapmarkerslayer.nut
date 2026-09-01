@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { fabs } = require("math")
-let { get_time_msec } = require("dagor.time")
-let { setTimeout, setInterval, clearTimer } = require("dagor.workcycle")
-let { getPlayerMapPos, worldPosToMapPos } = require("guiTacticalMap")
-let { getMapRelativePlayerPos, worldToMap } = require("guiArtillery")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { hudWhiteColor, hudGreenColor } = require("%rGui/style/hudColors.nut")
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout, setInterval, clearTimer
+from "guiArtillery" import getMapRelativePlayerPos, worldToMap
+from "guiTacticalMap" import getPlayerMapPos, worldPosToMapPos
+from "math" import fabs
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudGreenColor
+
 
 let MARKER_TYPE = {
   RADIO_SPEAKER = 1
@@ -14,9 +15,9 @@ let MARKER_TYPE = {
   RECON_AREA = 4
 }
 
-let POS_UPDATE_INTERVAL = 0.3
-let UNNOTICABLE_MAP_POS_CHANGE = 0.0005
-let FADE_TIME = 1.0
+const POS_UPDATE_INTERVAL = 0.3
+const UNNOTICABLE_MAP_POS_CHANGE = 0.0005
+const FADE_TIME = 1.0
 
 let mapMarkers = mkWatched(persist, "mapMarkers", {})
 let usedCounterId = mkWatched(persist, "usedCounterId", 0)

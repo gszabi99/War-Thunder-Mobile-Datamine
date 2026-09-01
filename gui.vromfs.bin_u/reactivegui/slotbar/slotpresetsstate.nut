@@ -1,22 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { object_to_json_string, parse_json } = require("json")
-let { isEqual } = require("%sqstd/underscore.nut")
-let getTagsUnitName = require("%appGlobals/getTagsUnitName.nut")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "eventbus" import eventbus_send
+from "json" import object_to_json_string, parse_json
+from "%sqstd/underscore.nut" import isEqual
+import "%appGlobals/getTagsUnitName.nut" as getTagsUnitName
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "types" import String
 
-let SAVE_ID = "slotSavedPresets"
-let SLOT_PRESETS_VERSION_KEY = "slotPresetsVersion"
-let ACTUAL_VERSION = 3
-let NC_REMOVE_VERSION = 2
+
+const SAVE_ID = "slotSavedPresets"
+const SLOT_PRESETS_VERSION_KEY = "slotPresetsVersion"
+const ACTUAL_VERSION = 3
+const NC_REMOVE_VERSION = 2
 let loadedSlotPresets = mkWatched(persist, "loadedSlotPresets", {})
 
 function removeNC(sBlk) {
   let slotBlk = sBlk?[SAVE_ID]
-  if (type(slotBlk) != "string" || slotBlk == "")
+  if (!(slotBlk instanceof String) || slotBlk == "")
     return
 
   local slotPresets = {}
@@ -36,7 +38,7 @@ function removeNC(sBlk) {
 
 function removeTanksNew(sBlk) {
   let presetsStr = sBlk?[SAVE_ID]
-  if (type(presetsStr) != "string" || presetsStr.indexof("\"tanks_new\"") == null)
+  if (!(presetsStr instanceof String) || presetsStr.indexof("\"tanks_new\"") == null)
     return
   sBlk[SAVE_ID] = presetsStr.replace("\"tanks_new\"", "\"tanks\"")
 }
@@ -60,7 +62,7 @@ function loadSlotPresets() {
   let blk = get_local_custom_settings_blk()
   let settingsString = blk?[SAVE_ID]
   local res = {}
-  if (type(settingsString) != "string" || settingsString == "")
+  if (!(settingsString instanceof String) || settingsString == "")
     return loadedSlotPresets.set(res)
 
   try {

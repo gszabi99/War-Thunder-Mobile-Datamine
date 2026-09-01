@@ -1,42 +1,42 @@
+from "%globalScripts/weaponConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, deferOnce } = require("dagor.workcycle")
-let { get_mission_time } = require("mission")
-let { getNextBulletType, changeBulletType, getBulletCountByType, getBulletNameByType
-} = require("vehicleModel")
-let { PI, cos, sin } = require("%sqstd/math.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { SAILBOAT } = require("%appGlobals/unitConst.nut")
-let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { playerUnitName } = require("%rGui/hudState.nut")
-let { hudUnitType } = require("%rGui/hudStateExt.nut")
-let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { actionBarItems, updateActionBarDelayed, primaryAction, primaryExtraAction, secondaryAction, actionItemsInCd
-} = require("%rGui/hud/actionBar/actionBarState.nut")
-let { mkBigCircleBtnEditView, mkCircleProgressBg, mkBtnBorder, mkBtnImage, mkCircleGlare } = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
-let { defShortcutOvr }  = require("%rGui/hud/buttons/hudButtonsPkg.nut")
-let { isAvailableActionItem } = require("%rGui/hud/buttons/actionButtonComps.nut")
-let { borderColorPushed, borderNoAmmoColor, borderColor, btnBgStyle
-} = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { currentBulletIdxPrim, currentBulletIdxSec, bulletsInfo, bulletsInfoSec, bulletsNamePrim, bulletsNameSec
-} = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
-let { isBulletsRight } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
-let { curUnitHudTuningOptions } = require("%rGui/hudTuning/hudTuningBattleState.nut")
-let { hudSmokyGreyColor, hudWhiteColor } = require("%rGui/style/hudColors.nut")
+from "dagor.workcycle" import resetTimeout, deferOnce
+from "mission" import get_mission_time
+from "vehicleModel" import getNextBulletType, changeBulletType, getBulletCountByType, getBulletNameByType
+from "%sqstd/math.nut" import PI, cos, sin
+from "%sqstd/underscore.nut" import isEqual
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/unitConst.nut" import SAILBOAT
+from "%appGlobals/unitTags.nut" import getUnitTagsCfg
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkGamepadHotkey
+from "%rGui/hud/actionBar/actionBarState.nut" import actionBarItems, updateActionBarDelayed, primaryAction,
+  primaryExtraAction, secondaryAction, actionItemsInCd
+from "%rGui/hud/bullets/hudUnitBulletsState.nut" import currentBulletIdxPrim, currentBulletIdxSec, bulletsInfo,
+  bulletsInfoSec, bulletsNamePrim, bulletsNameSec
+from "%rGui/hud/buttons/actionButtonComps.nut" import isAvailableActionItem
+from "%rGui/hud/buttons/circleTouchHudButtons.nut" import mkBigCircleBtnEditView, mkCircleProgressBg, mkBtnBorder,
+  mkBtnImage, mkCircleGlare
+from "%rGui/hud/buttons/hudButtonsPkg.nut" import defShortcutOvr
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderColorPushed, borderNoAmmoColor, borderColor, btnBgStyle
+from "%rGui/hudState.nut" import playerUnitName
+from "%rGui/hudStateExt.nut" import hudUnitType
+from "%rGui/hudTuning/cfg/cfgOptions.nut" import isBulletsRight
+from "%rGui/hudTuning/hudTuningBattleState.nut" import curUnitHudTuningOptions
+from "%rGui/style/hudColors.nut" import hudSmokyGreyColor, hudWhiteColor
 
 
 let bigButtonSize = evenPx(150)
 let bigButtonImgSize = evenPx(112)
 let bulletsButtonSize = evenPx(74)
 let bulletsImgSize = evenPx(56)
-let bulletsPosRaidus = hdpx(140)
+const bulletsPosRaidus = hdpx(140)
 let bulletBgSize = [hdpx(140), hdpx(280)]
-let selBulletScale = 1.2
+const selBulletScale = 1.2
 let bulletBgPos = [-bulletsPosRaidus + 0.2 * bulletBgSize[0], -0.05 * bulletBgSize[1]]
-let bulletBorderWidthBase = 2
-let selBulletBorderWidthBase = 4
+const bulletBorderWidthBase = 2
+const selBulletBorderWidthBase = 4
 let disabledColor = hudSmokyGreyColor
 
 let bulletsAngles = [-1.2 * PI, -0.95 * PI, -0.71 * PI]

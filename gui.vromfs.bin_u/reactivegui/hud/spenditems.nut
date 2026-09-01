@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
-let { register_command } = require("console")
-let { EventSpendItems } = require("dasevents")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+from "console" import register_command
+from "dasevents" import EventSpendItems
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+
 
 let spendItemsQueue = Watched([])
 

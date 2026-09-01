@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { openDebugWnd } = require("%rGui/components/debugWnd.nut")
-let { userstatDescList, userstatUnlocks, userstatStats, userstatStatsTables, userstatInfoTables
-} = require("%rGui/unlocks/userstat.nut")
+from "%rGui/components/debugWnd.nut" import openDebugWnd
+from "%rGui/unlocks/userstat.nut" import userstatDescList, userstatUnlocks, userstatStats, userstatStatsTables,
+  userstatInfoTables
+
 
 let tabs = Computed(@() [
   { id = "unlocks desc", data = userstatDescList.get()?.unlocks ?? {} }

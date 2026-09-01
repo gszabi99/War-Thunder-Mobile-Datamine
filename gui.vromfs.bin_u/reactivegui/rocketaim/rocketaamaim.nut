@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+from "guidanceConstants" import GuidanceLockResult
+from "%rGui/hud/sight.nut" import crosshairLineWidth
+from "%rGui/rocketAim/rocketAamAimState.nut" import GimbalSize, GimbalVisible, GuidanceLockState, TrackerSize,
+  TrackerVisible, GuidanceLockSnr, AamSightOpacity, TrackerX, TrackerY, GimbalX, GimbalY
 
-let { GimbalSize, GimbalVisible, GuidanceLockState, TrackerSize, TrackerVisible, GuidanceLockSnr,
-  AamSightOpacity, TrackerX, TrackerY, GimbalX, GimbalY } = require("%rGui/rocketAim/rocketAamAimState.nut")
-let { crosshairLineWidth } = require("%rGui/hud/sight.nut")
-let { GuidanceLockResult } = require("guidanceConstants")
 
-let trackColor = 0xFF00FF00
-let searchColor = Color(230, 0, 0, 240)
+const trackColor = 0xFF00FF00
+const searchColor = Color(230, 0, 0, 240)
 
 let gimbalPositionUpdate = @() {
   transform = {

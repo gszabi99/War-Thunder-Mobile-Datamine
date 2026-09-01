@@ -1,31 +1,31 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("math")
-let { hasAddons } = require("%appGlobals/updater/addonsState.nut")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { getAmmoNameText, getAmmoTypeText, getAmmoAdviceText } = require("%rGui/weaponry/weaponsVisual.nut")
-let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
-let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { markShellsSeenInBattle } = require("%rGui/respawn/respawnState.nut")
-let getBulletStats = require("%rGui/bullets/bulletStats.nut")
-let mkBulletSlot = require("%rGui/bullets/mkBulletSlot.nut")
-let { BS_UNLOCKED, BS_VISIBLE, BS_ONLY_EXTERNAL_SLOT, BS_BR_PICKUP } = require("bulletsConst.nut")
-let { selectColor, textColor } = require("%rGui/style/stdColors.nut")
+from "math" import ceil
+from "%sqstd/underscore.nut" import arrayByRows
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%appGlobals/updater/addonsState.nut" import hasAddons
+import "%rGui/bullets/bulletStats.nut" as getBulletStats
+import "%rGui/bullets/mkBulletSlot.nut" as mkBulletSlot
+from "%rGui/components/unseenMark.nut" import mkPriorityUnseenMarkWatch
+from "%rGui/respawn/respawnState.nut" import markShellsSeenInBattle
+from "%rGui/style/gradients.nut" import gradTexSize, mkGradientCtorRadial
+from "%rGui/style/stdColors.nut" import selectColor, textColor
+from "%rGui/weaponry/weaponsVisual.nut" import getAmmoNameText, getAmmoTypeText, getAmmoAdviceText
+from "bulletsConst.nut" import BS_UNLOCKED, BS_VISIBLE, BS_ONLY_EXTERNAL_SLOT, BS_BR_PICKUP
 
 
 let slotBGImage = mkBitmapPictureLazy(gradTexSize, gradTexSize, mkGradientCtorRadial(selectColor, 0, 20, 55, 35, 0))
 
 let bulletSlotSize = [hdpxi(350), hdpxi(105)]
-let minWndWidth = hdpx(700)
+const minWndWidth = hdpx(700)
 let minBulletWidth = max(bulletSlotSize[0], hdpx(150))
 let bulletHeight = bulletSlotSize[1]
-let statRowHeight = hdpx(28)
-let lockedColor = 0xFFF04005
-let transDuration = 0.3
+const statRowHeight = hdpx(28)
+const lockedColor = 0xFFF04005
+const transDuration = 0.3
 let opacityTransition = [{ prop = AnimProp.opacity, duration = transDuration, easing = InOutQuad }]
 
-let maxColumns = 2
-let slotsGap = hdpx(5)
+const maxColumns = 2
+const slotsGap = hdpx(5)
 
 let bulletsColumnsCount = @(bSetsCount) min(maxColumns, bSetsCount)
 let bulletsListWidth = @(columns) max((minBulletWidth * columns) + slotsGap, minWndWidth)
@@ -41,7 +41,7 @@ let mkStatTextarea = @(text, color = 0xFFC0C0C0) {
 }.__update(fontVeryTiny)
 
 let mkStatRow = @(nameText, valText, color = 0xFFC0C0C0) {
-  size = [FLEX, statRowHeight]
+  size = const [FLEX, statRowHeight]
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   children = [
@@ -172,7 +172,7 @@ let mkBulletButton = kwarg(function mkBtn(chosenBullets, name, bSet, status, fro
           : isLockedByLevel
             ? {
                 rendObj = ROBJ_IMAGE
-                pos = [0, -hdpx(5)]
+                pos = const [0, -hdpx(5)]
                 size = hdpxi(70)
                 image = Picture("ui/gameuiskin#lock_unit.svg")
                 keepAspect = KEEP_ASPECT_FIT
@@ -182,7 +182,7 @@ let mkBulletButton = kwarg(function mkBtn(chosenBullets, name, bSet, status, fro
                   text = reqLevel
                   hplace = ALIGN_CENTER
                   vplace = ALIGN_CENTER
-                  pos = [hdpx(1), hdpx(10)]
+                  pos = const [hdpx(1), hdpx(10)]
                 }.__update(fontVeryTiny)
               }
           : null

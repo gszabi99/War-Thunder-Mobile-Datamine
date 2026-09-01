@@ -1,17 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { eventbus_send } = require("eventbus")
-let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { get_hud_crosshair_type, set_hud_crosshair_type } = require("crosshair")
-let { getHudConfigParameter } = require("%rGui/hud/hudConfigParameters.nut")
+from "crosshair" import get_hud_crosshair_type, set_hud_crosshair_type
+from "eventbus" import eventbus_send
+from "%appGlobals/loginState.nut" import isSettingsAvailable
+from "%rGui/hud/hudConfigParameters.nut" import getHudConfigParameter
 
-let btnH = hdpx(103)
+
+const btnH = hdpx(103)
 
 let aircraftCrosshairTypesList = getHudConfigParameter("crosshairAir")
-let defaultIndex = 0
+const defaultIndex = 0
 
 let mkImage = @(img, size) {
-  size = [FLEX, btnH]
+  size = const [FLEX, btnH]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = {

@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { userHoldWeapKeys, userHoldWeapInside } = require("%rGui/hud/currentWeaponsStates.nut")
-let { hasTarget, hasTargetCandidate } = require("%rGui/hudState.nut")
-let { imageColor, textDisabledColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%rGui/hud/currentWeaponsStates.nut" import userHoldWeapKeys, userHoldWeapInside
+from "%rGui/hud/hudTouchButtonStyle.nut" import imageColor, textDisabledColor
+from "%rGui/hudState.nut" import hasTarget, hasTargetCandidate
 
-let defShortcutOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, ph(-50)] }
+
+let defShortcutOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = const [0, ph(-50)] }
 
 function mkBtnZone(key, zoneRadiusX, zoneRadiusY) {
   let isVisible = Computed(@() !isGamepad.get() && (userHoldWeapKeys.get()?[key].isHold ?? false))

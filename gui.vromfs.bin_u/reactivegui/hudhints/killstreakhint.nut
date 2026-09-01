@@ -1,20 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { get_mplayer_by_id } = require("mission")
-let { register_command } = require("console")
-let { rnd_int } = require("dagor.random")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { chooseRandom } = require("%sqstd/rand.nut")
-let { localPlayerColor } = require("%rGui/style/stdColors.nut")
-let { localMPlayerTeam } = require("%appGlobals/clientState/clientState.nut")
-let { modifyOrAddEvent, removeEvent } = require("%rGui/hudHints/warningHintLogState.nut")
-let { registerHintCreator } = require("%rGui/hudHints/hintCtors.nut")
-let { teamBlueLightColor, teamRedLightColor, mySquadLightColor } = require("%rGui/style/teamColors.nut")
+from "console" import register_command
+from "dagor.random" import rnd_int
+from "dagor.workcycle" import setInterval, clearTimer
+from "eventbus" import eventbus_send
+from "mission" import get_mplayer_by_id
+from "%sqstd/rand.nut" import chooseRandom
+from "%appGlobals/clientState/clientState.nut" import localMPlayerTeam
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/hudHints/hintCtors.nut" import registerHintCreator
+from "%rGui/hudHints/warningHintLogState.nut" import modifyOrAddEvent, removeEvent
+from "%rGui/style/stdColors.nut" import localPlayerColor
+from "%rGui/style/teamColors.nut" import teamBlueLightColor, teamRedLightColor, mySquadLightColor
+from "types" import Array
 
 
-let HINT_TYPE = "killStreak"
-let iconSize = hdpxi(50)
-let unknownSize = hdpxi(30)
+const HINT_TYPE = "killStreak"
+const iconSize = hdpxi(50)
+const unknownSize = hdpxi(30)
 local dbgTimeLeft = 0
 
 const MP_TEAM_NEUTRAL = 0
@@ -32,11 +34,11 @@ function getColoredName(player) {
 }
 
 let unknownIcon = {
-  size = [iconSize, iconSize]
+  size = const [iconSize, iconSize]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = {
-    size = [unknownSize, unknownSize]
+    size = const [unknownSize, unknownSize]
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#btn_help.svg:{unknownSize}:{unknownSize}")
     color = 0xFFA0A0A0
@@ -49,7 +51,7 @@ function mkParticipantIcon(info, idx) {
   return participant == null ? unknownIcon
     : {
         key = $"{participant.team}{idx}"
-        size = [iconSize, iconSize]
+        size = const [iconSize, iconSize]
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#{imageFinal}:{iconSize}:{iconSize}")
         color = getPlayerColor(participant)
@@ -117,10 +119,10 @@ registerHintCreator(HINT_TYPE, function(data, _) {
   }
 })
 
-eventbus_subscribe("hint:event_start_time:show", function(data) {
+subscribeHudEvent("hint:event_start_time:show", function(data) {
   let { playerId = null, participant = [] }  = data
   let player = playerId != null ? get_mplayer_by_id(playerId) : null
-  let participants = (type(participant) == "array" ? participant : [participant]) 
+  let participants = (participant instanceof Array ? participant : [participant]) 
     .map(@(v) v.__merge({ participant = get_mplayer_by_id(v.participantId) }))
   if (dbgTimeLeft > 0)
     participants.each(@(v, i) v.participant = v.participant ??
@@ -133,7 +135,7 @@ eventbus_subscribe("hint:event_start_time:show", function(data) {
   })
   modifyOrAddEvent(evt, @(ev) ev?.id == HINT_TYPE)
 })
-eventbus_subscribe("hint:event_start_time:hide", @(_) removeEvent({ id = HINT_TYPE }))
+subscribeHudEvent("hint:event_start_time:hide", @(_) removeEvent({ id = HINT_TYPE }))
 
 let dbgIconsList = ["aircraft_fighter", "aircraft_attacker", "aircraft_bomber"]
 let dbgTextsList = ["hints/event_start_time", "hints/event_can_join_ally", "hints/event_can_join_enemy", "hints/event_player_start_on"]

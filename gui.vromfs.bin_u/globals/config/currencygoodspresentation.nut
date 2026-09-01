@@ -1,9 +1,9 @@
-let { max } = require("math")
-let { getBaseCurrency, getSeasonStr, getCurrencyBigIcon } = require("currencyPresentation.nut")
-let { WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILINTEL, APRILMAPPIECE, APRILDOUBLON,
-  BLACKFRIDAYBOND, HOTMAYBOND, INDEPENDENCEBOND, ANNIVERSARYBOND, ANNIVERSARYTOKEN, HALLOWEENBOND, VALENTINEBOND,
-  CANDYBOND, LOLLIPOPBOND, CHOCOLATEBOND, LUNARBOND, UKBOND, JAPANBOND
-} = require("%appGlobals/currenciesState.nut")
+from "math" import max
+from "%appGlobals/currenciesState.nut" import WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILINTEL,
+  APRILMAPPIECE, APRILDOUBLON, BLACKFRIDAYBOND, HOTMAYBOND, INDEPENDENCEBOND, ANNIVERSARYBOND, ANNIVERSARYTOKEN,
+  HALLOWEENBOND, VALENTINEBOND, CANDYBOND, LOLLIPOPBOND, CHOCOLATEBOND, LUNARBOND, UKBOND, JAPANBOND, MAPTOKEN
+from "currencyPresentation.nut" import getBaseCurrency, getSeasonStr, getCurrencyBigIcon
+
 
 let presentations = {
   [WP] = [
@@ -121,6 +121,11 @@ let presentations = {
     { img = "japanbond_goods_2026_01.avif", amountAtLeast = 0 }
     { img = "japanbond_goods_2026_02.avif", amountAtLeast = 500 }
     { img = "japanbond_goods_2026_03.avif", amountAtLeast = 1500 }
+  ],
+  [MAPTOKEN] = [
+    { img = "maptoken_01_s37.avif", amountAtLeast = 0 }
+    { img = "maptoken_02_s37.avif", amountAtLeast = 3 }
+    { img = "maptoken_03_s37.avif", amountAtLeast = 4 }
   ]
 }
 

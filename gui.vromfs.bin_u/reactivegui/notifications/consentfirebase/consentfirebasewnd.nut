@@ -1,13 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/controlsMenu/gpActBtn.nut" import EMPTY_ACTION
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
-from "%rGui/style/backgrounds.nut" import bgShaded
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
-from "%rGui/notifications/consentFirebase/consentState.nut" import isOpenedConsentFirebaseWnd, isOpenedMain, isOpenedPartners, isOpenedManage, showOptInfo
+from "%rGui/controlsMenu/gpActBtn.nut" import EMPTY_ACTION
+from "%rGui/notifications/consentFirebase/consentState.nut" import isOpenedConsentFirebaseWnd, isOpenedMain,
+  isOpenedPartners, isOpenedManage, showOptInfo
 import "%rGui/notifications/consentFirebase/mkPageMain.nut" as mkPageMain
 import "%rGui/notifications/consentFirebase/mkPageManage.nut" as mkPageManage
 import "%rGui/notifications/consentFirebase/mkPageOptInfo.nut" as mkPageOptInfo
 import "%rGui/notifications/consentFirebase/mkPagePartners.nut" as mkPagePartners
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+
 
 const key = "consentFirebase"
 

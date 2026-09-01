@@ -1,32 +1,33 @@
 from "%globalsDarg/darg_library.nut" import *
-let { campaignsList } = require("%appGlobals/pServer/campaign.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { levelMark, hlColor, iconSize, mkText, levelHolderSize } = require("%rGui/mpStatistics/playerInfo.nut")
-let { getMedalPresentationWithCtor } = require("%rGui/mpStatistics/medalsCtors.nut")
-let { actualizeStats, userstatStats } = require("%rGui/unlocks/userstat.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { viewStats, mkStatRow, mkRow, mkMarqueeText } = require("%rGui/mpStatistics/statRow.nut")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { contentWidthFull } = require("%rGui/options/optionsStyle.nut")
-let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { backButtonHeight } = require("%rGui/components/backButton.nut")
+from "%sqstd/underscore.nut" import arrayByRows
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/pServer/campaign.nut" import campaignsList
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
+from "%rGui/components/backButton.nut" import backButtonHeight
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/mpStatistics/medalsCtors.nut" import getMedalPresentationWithCtor
+from "%rGui/mpStatistics/playerInfo.nut" import levelMark, hlColor, iconSize, mkText, levelHolderSize
+from "%rGui/mpStatistics/statRow.nut" import viewStats, mkStatRow, mkRow, mkMarqueeText
+from "%rGui/options/optionsStyle.nut" import contentWidthFull
+from "%rGui/unlocks/userstat.nut" import actualizeStats, userstatStats
+
 
 let infoBlockPadding = [hdpx(5), hdpx(50), hdpx(10), hdpx(50)]
 let scrollMedalsPadding = [hdpx(20), hdpx(20), 0, hdpx(10)]
-let medalsGap = hdpx(25)
-let infoBlockPartsGap = hdpx(70)
-let infoBlockParts = 3
-let gapBackButton = hdpx(50)
+const medalsGap = hdpx(25)
+const infoBlockPartsGap = hdpx(70)
+const infoBlockParts = 3
+const gapBackButton = hdpx(50)
 
 let medalsBlockWidth = (contentWidthFull - infoBlockPadding[1] * 2 - ((infoBlockParts - 1) * infoBlockPartsGap)) / infoBlockParts
 let scrollPaddingsWidth = scrollMedalsPadding[1] + scrollMedalsPadding[3]
 
-let minMedalsInRow = 4
+const minMedalsInRow = 4
 let columns = max(((medalsBlockWidth - scrollPaddingsWidth) / (medalsGap + levelHolderSize)).tointeger(), minMedalsInRow)
 let playerStats = Computed( @() userstatStats.get()?.stats["global"])
 

@@ -1,42 +1,42 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { buy_slots_exp, registerHandler, slotInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { backButton, backButtonHeight } = require("%rGui/components/backButton.nut")
-let { slider, mkSliderOnChangeSound, sliderH } = require("%rGui/components/slider.nut")
-let { textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
-let { mkSlotLevel, mkSlotLevelIcon } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
-let { mkProgressBtnContentDec, mkProgressBtnContentInc, mkProgressBtn, knobCtor,
-  progressBtnSize
-} = require("%rGui/attributes/attrBlockComp.nut")
-let { isOpenedSlotExpWnd, curCampSlotExpId, curCampSlotExp } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
-let { bgUnit, unitPlateRatio } = require("%rGui/unit/components/unitPlateComp.nut")
-let { slotLevelsCfg, slotMaxLevel } = require("%rGui/slotBar/slotBarState.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
+from "console" import register_command
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import buy_slots_exp, registerHandler, slotInProgress
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%rGui/attributes/attrBlockComp.nut" import mkProgressBtnContentDec, mkProgressBtnContentInc, mkProgressBtn,
+  knobCtor, progressBtnSize
+from "%rGui/attributes/slotAttr/slotAttrState.nut" import isOpenedSlotExpWnd, curCampSlotExpId, curCampSlotExp
+from "%rGui/attributes/slotAttr/slotLevelComp.nut" import mkSlotLevel, mkSlotLevelIcon
+from "%rGui/components/backButton.nut" import backButton, backButtonHeight
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/slider.nut" import slider, mkSliderOnChangeSound, sliderH
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonPrimary
+from "%rGui/navState.nut" import registerScene
+from "%rGui/slotBar/slotBarState.nut" import slotLevelsCfg, slotMaxLevel
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import selectColor
+from "%rGui/textFormatByLang.nut" import decimalFormat
+from "%rGui/unit/components/unitPlateComp.nut" import bgUnit, unitPlateRatio
 
 
 let slotWidth = evenPx(370)
 let slotHeight = (slotWidth * unitPlateRatio).tointeger()
 let slotSize = [slotWidth, slotHeight]
-let gap = hdpx(20)
+const gap = hdpx(20)
 let levelImageSize = evenPx(30)
-let priceBlockWidth = hdpx(150)
+const priceBlockWidth = hdpx(150)
 let sliderWidth = saSize[0] - slotSize[0] - 6 * gap - 2 * progressBtnSize - priceBlockWidth
-let lvlProgressBorder = hdpx(2)
-let lvlProgressHeight = 5 * lvlProgressBorder
+const lvlProgressBorder = hdpx(2)
+const lvlProgressHeight = 5 * lvlProgressBorder
 
-let expIconSize = hdpx(30)
+const expIconSize = hdpx(30)
 
 let chosenExp = mkWatched(persist, "chosenExp", {})
 let curBalance = Computed(@() curCampSlotExp.get() - chosenExp.get().reduce(@(a, b) a + b, 0))
+let isSlotInProgress = Computed(@() slotInProgress.get() != null)
 
 let closeSlotExpWnd = @() isOpenedSlotExpWnd.set(false)
 
@@ -68,7 +68,7 @@ let header = {
 }
 
 let totalExpCount = @() {
-  size = [FLEX, SIZE_TO_CONTENT]
+  size = const [FLEX, SIZE_TO_CONTENT]
   padding = hdpx(20)
   rendObj = ROBJ_SOLID
   color = 0x70000000
@@ -129,7 +129,7 @@ let toValTxt = textComp(" >>> ", { color = selectColor })
 
 let mkLevel = @(level, expPart, color = 0xFFFFFFFF) {
   flow = FLOW_VERTICAL
-  padding = [lvlProgressHeight, 0, 0, 0] 
+  padding = const [lvlProgressHeight, 0, 0, 0] 
   children = [
     {
       flow = FLOW_HORIZONTAL
@@ -143,9 +143,9 @@ let mkLevel = @(level, expPart, color = 0xFFFFFFFF) {
         }.__update(fontMonoTiny)
       ]
     }
-    expPart <= 0 ? { size = [FLEX, lvlProgressHeight] }
+    expPart <= 0 ? { size = const [FLEX, lvlProgressHeight] }
       : {
-          size = [FLEX, lvlProgressHeight]
+          size = const [FLEX, lvlProgressHeight]
           padding = lvlProgressBorder
           rendObj = ROBJ_SOLID
           color = 0xFF000000
@@ -276,7 +276,7 @@ function mkSlider(idx) {
       mkProgressBtn(mkProgressBtnContentInc(canInc), @() onChange(level.get() + 1))
       @() {
         watch = incCost
-        size = [priceBlockWidth, FLEX]
+        size = const [priceBlockWidth, FLEX]
         flow = FLOW_HORIZONTAL
         vplace = ALIGN_CENTER
         valign = ALIGN_CENTER
@@ -320,7 +320,7 @@ let navBar = @() {
   watch = [curCampSlotExp, curBalance]
   size = [ FLEX, defButtonHeight ]
   children = curCampSlotExp.get() == curBalance.get() ? null
-    : mkSpinnerHideBlock(Computed(@() slotInProgress.get() != null),
+    : mkSpinnerHideBlock(isSlotInProgress,
         textButtonPrimary(utf8ToUpper(loc("msgbox/btn_confirm")), buySlotsExp),
         {
           size = [ FLEX, defButtonHeight ]

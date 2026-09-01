@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { campaignsLevelInfo } = require("%appGlobals/pServer/campaign.nut")
-let { sendTelemetryEvent, sendTelemetrySavedEvent } = require("%rGui/notifications/logEvents.nut")
+from "%appGlobals/pServer/campaign.nut" import campaignsLevelInfo
+from "%rGui/notifications/logEvents.nut" import sendTelemetryEvent, sendTelemetrySavedEvent
+
 
 
 let sendEventsOn = {

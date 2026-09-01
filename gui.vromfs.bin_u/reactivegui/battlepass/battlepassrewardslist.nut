@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { bpCardStyle, bpCardPadding, bpCardHeight, bpCardMargin} = require("%rGui/battlePass/bpCardsStyle.nut")
-let { getRewardPlateSize} = require("%rGui/rewards/rewardPlateComp.nut")
-let { receiveBpRewards, isBpRewardsInProgress, selectedStage, bpLevelPrice,
-  tutorialFreeMarkIdx
-} = require("%rGui/battlePass/battlePassState.nut")
-let { hoverCard, cardBorder, cardContent, bgCard} = require("%rGui/battlePass/passRewardsListComp.nut")
+from "%rGui/battlePass/battlePassState.nut" import receiveBpRewards, isBpRewardsInProgress, selectedStage,
+  bpLevelPrice, tutorialFreeMarkIdx
+from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle, bpCardPadding, bpCardHeight, bpCardMargin
+from "%rGui/battlePass/passRewardsListComp.nut" import hoverCard, cardBorder, cardContent, bgCard
+from "%rGui/rewards/rewardPlateComp.nut" import getRewardPlateSize
+
 
 function mkCard(stageInfo, idx) {
   let stateFlags = Watched(0)

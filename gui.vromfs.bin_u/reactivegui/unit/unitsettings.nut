@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { object_to_json_string, parse_json } = require("json")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { isDataBlock, eachParam, eachBlock } = require("%sqstd/datablock.nut")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { decalTblToBlk, decalBlkToTbl } = require("%appGlobals/decalBlkSerializer.nut")
-let { getDebugUserSettings } = require("%rGui/debugTools/debugSavedData.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "eventbus" import eventbus_send
+from "json" import object_to_json_string, parse_json
+from "%sqstd/datablock.nut" import isDataBlock, eachParam, eachBlock
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/decalBlkSerializer.nut" import decalTblToBlk, decalBlkToTbl
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
+from "%rGui/debugTools/debugSavedData.nut" import getDebugUserSettings
+from "types" import String
 
 
 const SAVE_ID = "unitSettings"
@@ -26,7 +27,7 @@ function loadUnitSettings(unitName) {
 
   let blk = get_local_custom_settings_blk()
   let settingsString = blk?[SAVE_ID][unitName]
-  if (type(settingsString) != "string" || settingsString == "")
+  if (!(settingsString instanceof String) || settingsString == "")
     return {}
 
   local res = {}
@@ -105,7 +106,7 @@ function applyCompatibility() {
   let decalsBlk = fullBlk.addBlock(DECALS_SAVE_ID)
   let upd = {}
   eachParam(sBlk, function(str, id) {
-    if (type(str) != "string" || str == "")
+    if (!(str instanceof String) || str == "")
       return
     local data = null
     try {
@@ -137,9 +138,10 @@ if (isOnlineSettingsAvailable.get())
 
 isOnlineSettingsAvailable.subscribe(function(s) {
   applyCompatibility()
-  if (loadedSettings.get().len() == 0)
-    return
-  loadedSettings.set(loadedSettings.get().map(@(_, unitName) s ? loadUnitSettings(unitName) : null))
+  if (loadedSettings.get().len() != 0)
+    loadedSettings.set(loadedSettings.get().map(@(_, unitName) s ? loadUnitSettings(unitName) : null))
+  if (loadedDecals.get().len() != 0)
+    loadedDecals.set(loadedDecals.get().map(@(_, unitName) s ? loadUnitDecals(unitName) : null))
 })
 
 function mkUnitSettingsWatch(unitNameW) {

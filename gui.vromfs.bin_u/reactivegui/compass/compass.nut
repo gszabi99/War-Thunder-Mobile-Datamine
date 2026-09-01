@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
+from "math" import fabs
+from "%rGui/compass/compassState.nut" import CompassValue, azimuthMarkersTrigger, azimuthMarkers
+from "%rGui/hud/hudTouchButtonStyle.nut" import borderColor, borderWidth
 
-let { CompassValue, azimuthMarkersTrigger, azimuthMarkers } = require("%rGui/compass/compassState.nut")
-let { borderColor, borderWidth } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { fabs } = require("math")
 
 let lineStyle = {
   fillColor = 0
@@ -10,9 +10,9 @@ let lineStyle = {
 }
 
 let compassSize = [hdpx(700), hdpx(42)]
-let marksSize = hdpx(32)
-let compasColor = 0xFF00FF00
-let compassStep = 5
+const marksSize = hdpx(32)
+const compasColor = 0xFF00FF00
+const compassStep = 5
 
 function generateCompassNumber(num, width, height, color) {
   return {
@@ -141,19 +141,21 @@ function mkAzimuthMark(size, is_selected, is_detected, is_enemy, color) {
 }
 
 function mkAircraftMark(markData, size, color) {
-  let compassAngle = (CompassValue.get() > 0 ? 360 : 0) - CompassValue.get()
-  local delta = markData.azimuthWorldDeg - compassAngle
-  let sign = (delta > 0) ? 1 : -1
-  delta = fabs(delta) > 180 ? delta - sign * 360 : delta
+  return function() {
+    let compassAngle = (CompassValue.get() > 0 ? 360 : 0) - CompassValue.get()
+    local delta = markData.azimuthWorldDeg - compassAngle
+    let sign = (delta > 0) ? 1 : -1
+    delta = fabs(delta) > 180 ? delta - sign * 360 : delta
 
-  let offset = 2 * delta * size[1] / compassStep
-  let halfImageSize = size[1] / 2
-  let posX = min(max(size[0] / 2 + offset, -halfImageSize), size[0]) - halfImageSize
-  return @() {
-    watch = CompassValue
-    color = color
-    pos = [posX, 0]
-    children = mkAzimuthMark([size[1] * 0.7, size[1]], markData.isSelected, markData.isDetected, markData.isEnemy, color)
+    let offset = 2 * delta * size[1] / compassStep
+    let halfImageSize = size[1] / 2
+    let posX = min(max(size[0] / 2 + offset, -halfImageSize), size[0]) - halfImageSize
+    return {
+      watch = CompassValue
+      color = color
+      pos = [posX, 0]
+      children = mkAzimuthMark([size[1] * 0.7, size[1]], markData.isSelected, markData.isDetected, markData.isEnemy, color)
+    }
   }
 }
 

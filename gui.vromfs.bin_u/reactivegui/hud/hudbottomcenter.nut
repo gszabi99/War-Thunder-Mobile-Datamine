@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { warningHintsBlock, commonHintsBlock } = require("%rGui/hudHints/hintBlocks.nut")
+from "%rGui/hudHints/hintBlocks.nut" import warningHintsBlock, commonHintsBlock
+
 
 return {
   size = [saSize[0] - hdpx(1100), SIZE_TO_CONTENT]

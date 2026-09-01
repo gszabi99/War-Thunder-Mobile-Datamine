@@ -859,6 +859,7 @@
           30
         ],
         "emitterGenFmt": "bone_rocket_%02d",
+        "isAutoPitch": true,
         "createGunEffects": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,

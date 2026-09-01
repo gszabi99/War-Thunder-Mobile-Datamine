@@ -61,11 +61,6 @@ var private g_json_null_sentinel : JsonValue?
 
 def json_null_sentinel : JsonValue ? {
     
-    
-    
-    
-    
-    
     if (g_json_null_sentinel == null) {
         g_json_null_sentinel = JVNull()
     }
@@ -188,7 +183,7 @@ def private next(var text : iterator<int>; var character, line, row : int&) : bo
     return false
 }
 
-def private _lexer(var stext : string implicit) {
+def private _lexer(var stext : string implicit) {  
     
     return <- generator<TokenAt> {
         var tin : iterator<int>
@@ -397,7 +392,7 @@ def private expect_symbol(var itv : iterator<TokenAt>; var ahead : TokenAt; sym 
     }
 }
 
-def private parse_value(var itv : iterator<TokenAt>; var error : string&) : JsonValue? {
+def private parse_value(var itv : iterator<TokenAt>; var error : string&) : JsonValue? {  
     
     var ahead : TokenAt
     if (!next(itv, ahead)) return null
@@ -605,6 +600,7 @@ def private write_value(var writer : StringBuilderWriter; jsv : JsonValue?; dept
     }
 }
 
+[temp_string_result]
 def write_json(val : JsonValue?) : string {
     
     let st = build_string() $(var writer) {
@@ -613,32 +609,84 @@ def write_json(val : JsonValue?) : string {
     return st
 }
 
+def private write_value_compact(var writer : StringBuilderWriter; jsv : JsonValue?) {
+    if (jsv == null) {
+        write(writer, "null")
+    } elif (jsv.value is _string) {
+        write(writer, "\"")
+        write_escape_string(writer, jsv.value as _string)
+        write(writer, "\"")
+    } elif (jsv.value is _number) {
+        if (no_trailing_zeros) {
+            write(writer, fmt(":.17f", jsv.value as _number) |> rtrim("0") |> rtrim("."))
+        } else {
+            write(writer, jsv.value as _number)
+        }
+    } elif (jsv.value is _longint) {
+        write(writer, jsv.value as _longint)
+    } elif (jsv.value is _array) {
+        write(writer, "[")
+        var first = true
+        for (elem in jsv.value as _array) {
+            if (first) {
+                first = false
+            } else {
+                write(writer, ", ")
+            }
+            write_value_compact(writer, elem)
+        }
+        write(writer, "]")
+    } elif (jsv.value is _object) {
+        write(writer, "\{")
+        var first = true
+        for (elemK, elemV in keys(jsv.value as _object), values(jsv.value as _object)) {
+            if (no_empty_arrays && elemV.value is _array && empty(elemV.value as _array)) {
+                continue
+            }
+            if (first) {
+                first = false
+            } else {
+                write(writer, ", ")
+            }
+            write(writer, "\"")
+            write_escape_string(writer, elemK)
+            write(writer, "\": ")
+            write_value_compact(writer, elemV)
+        }
+        write(writer, "\}")
+    } elif (jsv.value is _bool) {
+        write(writer, (jsv.value as _bool) ? "true" : "false")
+    } elif (jsv.value is _null) {
+        write(writer, "null")
+    } else {
+        panic("unexpected {jsv}")
+    }
+}
+
+[temp_string_result]
+def write_json_compact(val : JsonValue?) : string {
+    
+    
+    let st = build_string() $(var writer) {
+        write_value_compact(writer, val)
+    }
+    return st
+}
+
 def write_json(val : JsonValue?#) : string {
     
     unsafe {
-        return write_json(reinterpret<JsonValue?> val)
+        return write_json(reinterpret<JsonValue?>(val))
     }
 }
 
 def delete_json(var jsv : JsonValue?) {
-    
-    
-    
-    
-    
-    
-    
-    
     
     if (jsv == null || jsv == g_json_null_sentinel) return
     unsafe { delete jsv; }
 }
 
 def update(var obj : JsonValue?; key : string; var jsv : JsonValue?) {
-    
-    
-    
-    
     
     if (obj == null || !(obj.value is _object)) return
     
@@ -655,11 +703,7 @@ def update(var obj : JsonValue?; key : string; var jsv : JsonValue?) {
     (obj.value as _object) |> insert(key, jsv)
 }
 
-def try_fixing_broken_json(var bad : string) {
-    
-    
-    
-    
+def try_fixing_broken_json(var bad : string) {  
     
     return build_string() $(writer) {
         peek_data(bad) $(str) {

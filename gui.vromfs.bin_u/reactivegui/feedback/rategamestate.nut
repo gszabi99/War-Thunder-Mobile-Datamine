@@ -1,26 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
+from "app" import get_base_game_version_str, get_game_version_str
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "dagor.workcycle" import resetTimeout
+from "eventbus" import eventbus_send, eventbus_subscribe, eventbus_unsubscribe
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/platform.nut" import is_ios, is_android, is_nswitch
+from "%sqstd/version_compare.nut" import check_version
+from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath, getBlkValueByPath
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
+from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
+from "%appGlobals/pServer/campaign.nut" import lastBattles
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/permissions.nut" import allow_review_cue, enabled_gp_rate_via_web
+from "%appGlobals/profileStates.nut" import myUserIdStr
+from "%appGlobals/userstats/serverTime.nut" import serverTime, isServerTimeValid
+from "%rGui/appStoreVersion.nut" import appStoreProdVersion
+from "%rGui/debriefing/debriefingState.nut" import debriefingData
+from "%rGui/mpStatistics/playersSortFunc.nut" import getScoreFullRaw
+
+
 let logR = log_with_prefix("[Review] ")
-let { eventbus_send, eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
-let { register_command } = require("console")
-let { get_local_custom_settings_blk } = require("blkGetters")
 let { isDownloadedFromGooglePlay, getBuildMarket, getPackageName, APPREVIEW_OK = 1 } = require("android.platform")
-let { get_base_game_version_str, get_game_version_str } = require("app")
-let { resetTimeout } = require("dagor.workcycle")
-let { is_ios, is_android, is_nswitch } = require("%sqstd/platform.nut")
-let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { check_version } = require("%sqstd/version_compare.nut")
-let { allow_review_cue, enabled_gp_rate_via_web } = require("%appGlobals/permissions.nut")
-let { sendCustomBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { lastBattles } = require("%appGlobals/pServer/campaign.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { myUserIdStr } = require("%appGlobals/profileStates.nut")
-let { serverTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
-let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
-let { getScoreFullRaw } = require("%rGui/mpStatistics/playersSortFunc.nut")
-let { appStoreProdVersion } = require("%rGui/appStoreVersion.nut")
 let isHuaweiBuild = getBuildMarket() == "appgallery"
 let hasAndroidStore = is_android && (isHuaweiBuild || isDownloadedFromGooglePlay())
 
@@ -51,7 +53,7 @@ const DAYS_TO_UPGRADE_REVIEW = 30
 const REQUIRED_UNIT_RANK = 3
 const REQUIRED_WON_LAST_BATTLES_AMOUNT = 2
 
-let SAVE_ID_BLK = "rateGame"
+const SAVE_ID_BLK = "rateGame"
 let SAVE_ID_RATED = $"{SAVE_ID_BLK}/rated"
 let SAVE_ID_STORE = $"{SAVE_ID_BLK}/rated_{storeId}"
 let SAVE_ID_SEEN = $"{SAVE_ID_BLK}/seen"

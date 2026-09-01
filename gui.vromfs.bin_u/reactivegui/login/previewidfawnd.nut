@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { isPreviewIDFAShowed, isReadyForShowPreviewIdfa } = require("%appGlobals/loginState.nut")
-let { sendUiBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/loginState.nut" import isPreviewIDFAShowed, isReadyForShowPreviewIdfa
+from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/textButton.nut" import textButtonPrimary
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
-let PREWIEW_IDFA_WND_UID = "previewIDFAWnd"
+
+const PREWIEW_IDFA_WND_UID = "previewIDFAWnd"
 
 function onSubmit() {
   sendUiBqEvent("ads_consent_idfa", { id = "submit_preview" })
@@ -49,14 +50,14 @@ let showPreviewWnd = @()
         }
         {
           size = const [hdpx(425), hdpx(80)]
-          pos = [-hdpx(120), -hdpx(140)]
+          pos = const [-hdpx(120), -hdpx(140)]
           vplace = ALIGN_BOTTOM
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           children = textBlock(loc("msg/Allow"), 0xFF106099).__update(fontBig)
         }
         {
-          pos = [-hdpx(150), 0]
+          pos = const [-hdpx(150), 0]
           vplace = ALIGN_BOTTOM
           children = textButtonPrimary(utf8ToUpper(loc("msgbox/btn_continue")), onSubmit)
         }

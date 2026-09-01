@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-let { hoverColor } = require("%rGui/style/stdColors.nut")
+from "%rGui/style/stdColors.nut" import hoverColor
+from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
+
 
 let headerIconHeight = evenPx(36)
 let headerIconWidth = (1.5 * headerIconHeight).tointeger()

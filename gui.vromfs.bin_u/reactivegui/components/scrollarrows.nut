@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } =  require("math")
+from "math" import round
+
 
 let mkImage = @(path, w, h) {
   size = [w, h]

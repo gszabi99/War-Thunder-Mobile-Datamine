@@ -1,20 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { G_CURRENCY, G_PREMIUM } = require("%appGlobals/rewardType.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/rewardType.nut" import G_CURRENCY, G_PREMIUM
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+
+
 let buyPlatformGoodsIOS = require("%rGui/shop/byPlatform/goodsIos.nut").buyPlatformGoods
 let buyPlatformGoodsGaijin = require("%rGui/shop/byPlatform/goodsGaijin.nut").buyPlatformGoodsFromOtherPlatform
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
 
 let goodsToPaySpecialWnd = mkWatched(persist, "iosPaymentWaysWnd", null)
-let WND_UID = "iosPaymentWaysWnd"
-let borderRadius = hdpx(10)
-let btnH = hdpx(120)
-let btnPadding = hdpx(20)
-let boxSize = hdpx(80)
-let iconSize = hdpx(60)
+const WND_UID = "iosPaymentWaysWnd"
+const borderRadius = hdpx(10)
+const btnH = hdpx(120)
+const btnPadding = hdpx(20)
+const boxSize = hdpx(80)
+const iconSize = hdpx(60)
 
 let btnsList = [
   {
@@ -63,7 +65,7 @@ function mkBtn(params){
   let stateFlags = Watched(0)
   return @() {
     watch = stateFlags
-    size = [FLEX, btnH]
+    size = const [FLEX, btnH]
     rendObj = ROBJ_BOX
     borderRadius
     borderWidth
@@ -79,7 +81,7 @@ function mkBtn(params){
     children = [
       !image ? null
         : {
-            size = [boxSize, boxSize]
+            size = const [boxSize, boxSize]
             rendObj = ROBJ_BOX
             borderRadius
             fillColor = 0xFF000000
@@ -87,7 +89,7 @@ function mkBtn(params){
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
             children = {
-              size = [iconSize, iconSize]
+              size = const [iconSize, iconSize]
               rendObj = ROBJ_IMAGE
               image = Picture($"ui/gameuiskin#{image}:{iconSize}:{iconSize}:P")
             }

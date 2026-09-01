@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let { rnd_int } = require("dagor.random")
-let { doesLocTextExist } = require("dagor.localize")
-let { get_time_msec } = require("dagor.time")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { isEqual } = require("%sqstd/underscore.nut")
-let random_pick = require("%sqstd/random_pick.nut")
+from "dagor.localize" import doesLocTextExist
+from "dagor.random" import rnd_int
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, clearTimer
+import "%sqstd/random_pick.nut" as random_pick
+from "%sqstd/underscore.nut" import isEqual
 
 
 const GLOBAL_LOADING_TIP_BIT = 0x80000000

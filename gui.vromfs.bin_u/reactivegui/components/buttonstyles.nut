@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let defButtonHeight = hdpxi(110)
-let defButtonMinWidth = hdpxi(368)
-let defButtonBorderWidth = hdpx(3)
+const defButtonHeight = hdpxi(110)
+const defButtonMinWidth = hdpxi(368)
+const defButtonBorderWidth = hdpx(3)
 let defBorderGradient = {
   rendObj = ROBJ_9RECT
   image = Picture($"ui/gameuiskin#gradient_button.svg")
@@ -18,7 +18,7 @@ return freeze({
 
   PRIMARY = { 
     ovr = {
-      size = [SIZE_TO_CONTENT, defButtonHeight]
+      size = const [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
     }
     childOvr = fontBoldTinyAccentedShaded
@@ -28,7 +28,7 @@ return freeze({
   }
   COMMON = { 
     ovr = {
-      size = [SIZE_TO_CONTENT, defButtonHeight]
+      size = const [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
     }
     childOvr = fontBoldTinyAccentedShaded
@@ -38,7 +38,7 @@ return freeze({
   }
   SECONDARY = { 
     ovr = {
-      size = [SIZE_TO_CONTENT, defButtonHeight]
+      size = const [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
     }
     childOvr = fontBoldTinyAccentedShaded
@@ -48,7 +48,7 @@ return freeze({
   }
   INACTIVE = { 
     ovr = {
-      size = [SIZE_TO_CONTENT, defButtonHeight]
+      size = const [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
       borderColor = 0x80777777
       borderWidth = defButtonBorderWidth
@@ -63,7 +63,7 @@ return freeze({
   }
   PURCHASE = { 
     ovr = {
-      size = [SIZE_TO_CONTENT, defButtonHeight]
+      size = const [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = defButtonMinWidth
     }
     childOvr = fontBoldTinyAccentedShaded
@@ -73,7 +73,7 @@ return freeze({
   }
   BATTLE = { 
     ovr = {
-      size = [hdpx(400), defButtonHeight]
+      size = const [hdpx(400), defButtonHeight]
       minWidth = defButtonMinWidth
     }
     childOvr = fontBoldTinyAccentedShaded
@@ -84,7 +84,7 @@ return freeze({
   }
   LOGIN_BTN = {
     ovr = {
-      size = [SIZE_TO_CONTENT, defButtonHeight]
+      size = const [SIZE_TO_CONTENT, defButtonHeight]
       minWidth = hdpx(640)
       fillColor = 0xFFFFFFFF
       borderColor = Color(184, 184, 155)

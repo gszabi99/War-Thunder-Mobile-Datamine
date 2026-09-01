@@ -1,25 +1,28 @@
+from "%globalScripts/weaponConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
+from "crosshair" import DM_TEST_NOT_PENETRATE, DM_TEST_RICOCHET
+from "eventbus" import eventbus_subscribe
+from "%globalScripts/controls/shortcutActions.nut" import setShortcutOff
+from "%rGui/hud/actionBar/actionBarState.nut" import startActionBarUpdate, stopActionBarUpdate
+from "%rGui/hud/commonSight.nut" import crosshairColor, crosshairSimpleSize
+from "%rGui/hud/commonState.nut" import crosshairScreenPosition, crosshairDestinationScreenPosition
+import "%rGui/hud/hudBottomCenter.nut" as hudBottomCenter
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+import "%rGui/hud/hudTimersBlock.nut" as hudTimersBlock
+import "%rGui/hud/hudTopMainLog.nut" as hudTopMainLog
+from "%rGui/hud/hudTouchButtonStyle.nut" import getSvgImage
+from "%rGui/hud/sight.nut" import tankSight, crosshairLineWidth, crosshairLineHeight
+from "%rGui/hud/tankState.nut" import shootReadyness, primaryRocketGun, allowShoot
+from "%rGui/hudState.nut" import tankCrosshairColor, tankZoomAutoAimMode, tankCrosshairDmTestResult, isFreeCamera,
+  isInZoom
+import "%rGui/hudTuning/hudTuningElems.nut" as hudTuningElems
+from "%rGui/options/options/tankControlsOptions.nut" import currentArmorPiercingFixed
+from "%rGui/rocketAim/rocketAgmAim.nut" import rocketAgmAim
+from "%rGui/style/hudColors.nut" import hudMediumGrayColor, hudCoralRedColor, hudVeilGrayColorFade
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
-let { eventbus_subscribe } = require("eventbus")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
-let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
-let hudBottomCenter = require("%rGui/hud/hudBottomCenter.nut")
-let { tankSight, crosshairLineWidth, crosshairLineHeight } = require("%rGui/hud/sight.nut")
-let { tankCrosshairColor, tankZoomAutoAimMode, tankCrosshairDmTestResult, isFreeCamera, isInZoom
-} = require("%rGui/hudState.nut")
-let { crosshairColor, crosshairSimpleSize } = require("%rGui/hud/commonSight.nut")
-let { crosshairScreenPosition, crosshairDestinationScreenPosition } = require("%rGui/hud/commonState.nut")
-let { shootReadyness, primaryRocketGun, allowShoot } = require("%rGui/hud/tankState.nut")
-let { getSvgImage } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { startActionBarUpdate, stopActionBarUpdate } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { DM_TEST_NOT_PENETRATE, DM_TEST_RICOCHET } = require("crosshair")
-let { currentArmorPiercingFixed } = require("%rGui/options/options/tankControlsOptions.nut")
-let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
-let { setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { hudMediumGrayColor, hudCoralRedColor, hudVeilGrayColorFade } = require("%rGui/style/hudColors.nut")
+
 let { rocketAamAim } = require ("%rGui/rocketAim/rocketAamAim.nut")
-let { rocketAgmAim } = require("%rGui/rocketAim/rocketAgmAim.nut")
 let radarIndication = require ("%rGui/radar/radarIndication.nut")
 
 let crosshairReadyColor = hudCoralRedColor
@@ -197,7 +200,7 @@ let gunReadyIndicator = @() {
   children = mkReadyPart(shootReadyness.get())
 }
 
-eventbus_subscribe("LocalPlayerDead", @(_) setShortcutOff("ID_FIRE_GM_MACHINE_GUN"))
+subscribeHudEvent("LocalPlayerDead", @(_) setShortcutOff("ID_FIRE_GM_MACHINE_GUN"))
 
 return {
   size = saSize

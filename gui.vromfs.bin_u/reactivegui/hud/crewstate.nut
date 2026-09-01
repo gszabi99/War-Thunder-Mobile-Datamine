@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
+from "eventbus" import eventbus_subscribe
+
 
 let crewState = mkWatched(persist, "crewState", {})
 

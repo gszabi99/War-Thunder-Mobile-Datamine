@@ -1,36 +1,34 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { hasUnseenQuestsBySection, questsCfg, questsBySection, curTabId, isQuestsAttached,
-  COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, PERSONAL_TAB,
-  progressUnlockByTab, progressUnlockBySection, tabIdToOpen
-} = require("%rGui/quests/questsState.nut")
-let { questsWndPage, mkQuest, mkAchievement } = require("%rGui/quests/questsWndPage.nut")
-let { contentWidth, contentWidthFull, tabW, tabPadding, minContentOffset } = require("%rGui/options/optionsStyle.nut")
-let mkChildrenOptions = require("%rGui/options/mkChildrenOptions.nut")
-let mkOptionsTabs = require("%rGui/options/mkOptionsTabs.nut")
-let { SEEN, UNSEEN_HIGH } = require("%rGui/unseenPriority.nut")
-let { eventSeason, eventEndsAt, isEventActive, specialEventsOrdered, getSpecialEventName,
-  MAIN_EVENT_ID, curEvent, subEventsList
-} = require("%rGui/event/eventState.nut")
-let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
-let { getSpecialEventLocName, getSpecialEventRewardUnitName } = require("%rGui/event/eventLocName.nut")
-let { isBpSeasonActive } = require("%rGui/battlePass/battlePassState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { doesLocTextExist } = require("dagor.localize")
-let { selLineSize } = require("%rGui/components/selectedLine.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { allShopGoods } = require("%rGui/shop/shopState.nut")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { eventsPassList, getEventPassName, mkHasEpRewardsToReceive } = require("%rGui/battlePass/eventPassState.nut")
-let { hasOPRewardsToReceive, OP_EVENT_ID } = require("%rGui/battlePass/operationPassState.nut")
+from "dagor.localize" import doesLocTextExist
+from "dagor.workcycle" import deferOnce
+from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/battlePass/battlePassState.nut" import isBpSeasonActive
+from "%rGui/battlePass/eventPassState.nut" import eventsPassList, getEventPassName, mkHasEpRewardsToReceive
+from "%rGui/battlePass/operationPassState.nut" import hasOPRewardsToReceive, OP_EVENT_ID
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/selectedLine.nut" import selLineSize
+from "%rGui/event/eventLocName.nut" import getSpecialEventLocName, getSpecialEventRewardUnitName
+from "%rGui/event/eventState.nut" import eventSeason, eventEndsAt, isEventActive, specialEventsOrdered,
+  getSpecialEventName, MAIN_EVENT_ID, curEvent, subEventsList
+import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
+import "%rGui/options/mkChildrenOptions.nut" as mkChildrenOptions
+import "%rGui/options/mkOptionsTabs.nut" as mkOptionsTabs
+from "%rGui/options/optionsStyle.nut" import contentWidth, contentWidthFull, tabW, tabPadding, minContentOffset
+from "%rGui/quests/questsState.nut" import hasUnseenQuestsBySection, questsCfg, questsBySection, curTabId,
+  isQuestsAttached, COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, PERSONAL_TAB, progressUnlockByTab,
+  progressUnlockBySection, tabIdToOpen
+from "%rGui/quests/questsWndPage.nut" import questsWndPage, mkQuest, mkAchievement
+from "%rGui/shop/shopState.nut" import allShopGoods
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/unseenPriority.nut" import SEEN, UNSEEN_HIGH
+from "%rGui/components/timerBlock.nut" import mkTimer
 
-let iconSize = hdpxi(100)
-let iconColor = 0xFFFFFFFF
-let tabGap = hdpx(10)
+
+const iconSize = hdpxi(100)
+const iconColor = 0xFFFFFFFF
+const tabGap = hdpx(10)
 
 let maxTabTextWidth = tabW - iconSize - tabGap - selLineSize - tabPadding[1] * 2
 let mkTabsVerticalPannableArea = verticalPannableAreaCtor(sh(100) - hdpx(180), [hdpx(30), saBorders[1]])
@@ -85,14 +83,7 @@ function eventTabContent(){
         behavior = Behaviors.TextArea
         text = eventSeasonName.get()
       }.__update(fontTinyAccented)
-      @() {
-        watch = [eventEndsAt, serverTime]
-        size = FLEX_H
-        halign = ALIGN_RIGHT
-        rendObj = ROBJ_TEXT
-        text = !eventEndsAt.get() || (eventEndsAt.get() - serverTime.get() < 0) ? null
-          : secondsToHoursLoc(eventEndsAt.get() - serverTime.get())
-      }.__update(fontTinyAccented)
+      mkTimer(eventEndsAt, {hplace = ALIGN_RIGHT})
     ]
   }
 }
@@ -142,8 +133,6 @@ function mkSpecialEventTabContent(idx) {
   let eventNameFirstRow = Computed(@() eventNameTexts.get()?[0])
   let eventNameSecondRow = Computed(@() eventNameTexts.get()?[1])
   let image = Computed(@() getEventPresentation(specialEventsOrdered.get()?[idx].eventName).icon)
-  let timeLeft = Computed(@() !endsAt.get() || (endsAt.get() - serverTime.get() < 0) ? null
-    : secondsToHoursLoc(endsAt.get() - serverTime.get()))
 
   return {
     size = FLEX
@@ -152,7 +141,7 @@ function mkSpecialEventTabContent(idx) {
     children = [
       @() {
         watch = image
-        size = [iconSize, iconSize]
+        size = const [iconSize, iconSize]
         vplace = ALIGN_CENTER
         rendObj = ROBJ_IMAGE
         image = Picture($"{image.get()}:{iconSize}:{iconSize}:P")
@@ -165,7 +154,7 @@ function mkSpecialEventTabContent(idx) {
         children = [
           mkTabText(eventNameFirstRow)
           mkTabText(eventNameSecondRow)
-          mkTabText(timeLeft)
+          mkTimer(endsAt, {hplace = ALIGN_RIGHT})
         ]
       }
     ]
@@ -277,7 +266,12 @@ function questsWndCtor() {
 
     return tabs.findindex(@(v) (v?.isVisible.get() ?? true)) ?? 0
   }
-  let curTabIdx = Watched(findTabIdxById(tabIdToOpen.get()))
+  let curTabIdx = mkWatched(persist, "quests_curTabIdx", findTabIdxById(tabIdToOpen.get()))
+  let openTabIdx = tabIdToOpen.get() == null ? null : findTabIdxById(tabIdToOpen.get())
+  if (openTabIdx != null)
+    curTabIdx.set(openTabIdx)
+  else if (tabs?[curTabIdx.get()] == null || !(tabs?[curTabIdx.get()].isVisible.get() ?? true))
+    curTabIdx.set(findTabIdxById(null))
   clearTabIdToOpen()
   let updateCurTabId = @() curTabId.set(tabs?[curTabIdx.get()].id)
   updateCurTabId()
@@ -345,7 +339,7 @@ function questsWndCtor() {
         w.unsubscribe(onTabVisibleChange)
       isQuestsAttached.set(false)
     }
-    size = [FLEX, flex()]
+    size = const [FLEX, flex()]
     flow = FLOW_HORIZONTAL
     halign = ALIGN_CENTER
     children = [

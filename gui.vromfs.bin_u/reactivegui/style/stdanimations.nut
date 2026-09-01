@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let WND_REVEAL = 0.5
-let WND_FADE = 0.3
+const WND_REVEAL = 0.5
+const WND_FADE = 0.3
 
 let wndSwitchTrigger = {}
 let wndSwitchAnim = [

@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } =  require("math")
+from "math" import round
 
-let progressBarHeight = hdpx(25)
-let rewardTicketDefaultSlots = 2
+
+const progressBarHeight = hdpx(25)
+const rewardTicketDefaultSlots = 2
 
 function mkRewardStyle(boxSize, style, styleSmall) {
   let labelHeight = round(style.fontSize * 1.3).tointeger()

@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { registerScene } = require("%rGui/navState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { OCT_LIST } = require("%rGui/options/optCtrlType.nut")
-let mkOption = require("%rGui/options/mkOption.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { categoryList, getCategoryLocName, fieldCategory } = require("%rGui/feedback/supportState.nut")
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/feedback/supportState.nut" import categoryList, getCategoryLocName, fieldCategory
+from "%rGui/navState.nut" import registerScene
+import "%rGui/options/mkOption.nut" as mkOption
+from "%rGui/options/optCtrlType.nut" import OCT_LIST
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let onClose = @() isOpened.set(false)

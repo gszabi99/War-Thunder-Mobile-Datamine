@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { eventbus_send } = require("eventbus")
-let { eachParam, isDataBlock } = require("%sqstd/datablock.nut")
-let { curCampaign, campaignsList, firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { isOnlineSettingsAvailable } = require("%appGlobals/loginState.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import eachParam, isDataBlock
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
+from "%appGlobals/pServer/campaign.nut" import curCampaign, campaignsList, firstLoginTime
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
 
 
-let SAVE_ID = "seenCampaigns"
+const SAVE_ID = "seenCampaigns"
 let seenCampaigns = Watched({})
 
 let newReleasedCampaigns = Computed(function() {

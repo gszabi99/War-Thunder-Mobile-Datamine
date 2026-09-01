@@ -1,42 +1,41 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { playSound, startSound, stopSound } = require("sound_wt")
-let { lerpClamped } = require("%sqstd/math.nut")
-let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
-let { starLevelTiny } = require("%rGui/components/starLevel.nut")
-let { maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo, unitPlateRatio, plateTextsSmallPad,
-  unitBgImageBase, bgUnit, mkPlateText, unitPlateNameOvr
-} = require("%rGui/unit/components/unitPlateComp.nut")
-let { getSlotLevelIcon } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
-let { getLevelProgress, getNextUnitLevelWithRewards
-} = require("%rGui/debriefing/debrUtils.nut")
-let { mkTotalRewardCountsUnit } = require("%rGui/debriefing/totalRewardCounts.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
+from "dagor.workcycle" import resetTimeout
+from "sound_wt" import playSound, startSound, stopSound
+from "%sqstd/math.nut" import lerpClamped
+from "%appGlobals/unitPresentation.nut" import getUnitPresentation
+from "%rGui/attributes/slotAttr/slotLevelComp.nut" import getSlotLevelIcon
+from "%rGui/components/levelBlockPkg.nut" import maxLevelStarChar
+from "%rGui/components/starLevel.nut" import starLevelTiny
+from "%rGui/debriefing/debrUtils.nut" import getLevelProgress, getNextUnitLevelWithRewards
+from "%rGui/debriefing/totalRewardCounts.nut" import mkTotalRewardCountsUnit
+from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
+from "%rGui/unit/components/unitPlateComp.nut" import mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo, unitPlateRatio,
+  plateTextsSmallPad, unitBgImageBase, bgUnit, mkPlateText, unitPlateNameOvr
 
-let plateW = hdpx(350)
+
+const plateW = hdpx(350)
 let plateH = plateW * unitPlateRatio
 
 let slotLevelBoxSize = [evenPx(120), evenPx(40)]
 let slotLevelIconSize = evenPx(45)
 
 let unitLevelBlockSize = evenPx(46)
-let levelBlockBorderWidth = hdpx(3)
-let levelProgressBarHeight = hdpx(12)
-let levelProgressBarWidth = plateW
-let levelProgressBarFillWidth = levelProgressBarWidth
+const levelBlockBorderWidth = hdpx(3)
+const levelProgressBarHeight = hdpx(12)
+const levelProgressBarWidth = plateW
+const levelProgressBarFillWidth = levelProgressBarWidth
 
-let levelTextColor = 0xFFFFFFFF
-let levelUpTextColor = 0xFF000000
-let levelProgressBgColor = 0xFF808080
-let receivedExpProgressColor = 0xFFFFFFFF
-let nextLevelBgColor = 0xFF2B2B2B
-let slotLevelBoxOutlineColor = 0xFFA5A5A5
-let expRewardBoxColor = 0xFF434343
+const levelTextColor = 0xFFFFFFFF
+const levelUpTextColor = 0xFF000000
+const levelProgressBgColor = 0xFF808080
+const receivedExpProgressColor = 0xFFFFFFFF
+const nextLevelBgColor = 0xFF2B2B2B
+const slotLevelBoxOutlineColor = 0xFFA5A5A5
+const expRewardBoxColor = 0xFF434343
 
-let rewardAnimTime = 0.5
-let singleStepAnimTime = 0.5
-let maxTotalAnimTime = 1.5
+const rewardAnimTime = 0.5
+const singleStepAnimTime = 0.5
+const maxTotalAnimTime = 1.5
 
 let mkSlotLevelBg = @(ovr = {}) {
   size = FLEX
@@ -63,13 +62,13 @@ let mkUnitLevelBg = @(childOvr = {}) {
 }
 
 let mkProgressLevelBg = @(override = {}) {
-  size = [levelProgressBarWidth, levelProgressBarHeight]
+  size = const [levelProgressBarWidth, levelProgressBarHeight]
   rendObj = ROBJ_SOLID
   hplace = ALIGN_LEFT
   color = levelProgressBgColor
 }.__update(override)
 
-let starLevelOvr = { pos = [0, ph(56)] }
+let starLevelOvr = { pos = const [0, ph(56)] }
 let rankOvr = { padding = [plateTextsSmallPad * 0.5, plateTextsSmallPad + unitLevelBlockSize * 1.6] }
 
 let mkUnitPlateBase = @(unit, _campaign) {
@@ -144,7 +143,7 @@ let mkLevelStatusText = @(text, isOpaque, override = {}) {
   opacity = isOpaque ? 1 : 0.35
 }.__update(fontVeryTinyShaded, override)
 
-let expTextStarSize = hdpx(25)
+const expTextStarSize = hdpx(25)
 
 let mkExpText = @(exp, color) {
   hplace = ALIGN_RIGHT
@@ -254,7 +253,7 @@ let mkSlotPlateLevelComp = @(animId, curLevelIdxWatch, levelUpsArray, lineColor)
         keepAspect = true
       }
       {
-        pos = [hdpx(29), -hdpx(2)]
+        pos = const [hdpx(29), -hdpx(2)]
         rendObj = ROBJ_TEXT
         text = curLevel
         color = isLevelUpPrevSteps || isLevelUpCurStep ? levelUpTextColor : levelTextColor
@@ -445,7 +444,7 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
   ]
 
   let plateWithLevelProgressComp = {
-    size = [plateW, SIZE_TO_CONTENT]
+    size = const [plateW, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     children = [
       mkPlateWithProgress(animId, curLevelIdxWatch, levelUpsArray, lineColor, plateBaseComp, plateLevelCompCtor)
@@ -454,7 +453,7 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
         color = expRewardBoxColor
         size = [plateW, hdpx(38)]
         children = addExp <= 0 ? null : {
-          size = [plateW, SIZE_TO_CONTENT]
+          size = const [plateW, SIZE_TO_CONTENT]
           key = $"level_exp_{animId}"
           transform = {}
           animations = statusAppearAnimations
@@ -462,7 +461,7 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
         }
       }
       {
-        size = [plateW, SIZE_TO_CONTENT]
+        size = const [plateW, SIZE_TO_CONTENT]
         margin = const [hdpx(10), 0]
         minHeight = expTextStarSize
         valign = ALIGN_CENTER

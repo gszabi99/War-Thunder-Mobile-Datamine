@@ -1,25 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_meta_missions_info_by_chapters } = require("guiMission")
-let DataBlock = require("DataBlock")
-let { isDataBlock, eachBlock } = require("%sqstd/datablock.nut")
-let { getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { can_debug_configs, can_debug_missions } = require("%appGlobals/permissions.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { sortCountries } = require("%appGlobals/config/countryPresentation.nut")
-let { allGameModes } = require("%appGlobals/gameModes/gameModes.nut")
-let { getMissionLocName } = require("%rGui/globals/missionUtils.nut")
-let { startLocalMPBattleWithoutGamemode } = require("%rGui/gameModes/startOfflineMode.nut")
-let { isUnitNameMatchSearchStr } = require("%rGui/unit/unitNameSearch.nut")
-let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
+import "DataBlock" as DataBlock
+from "eventbus" import eventbus_send
+from "guiMission" import get_meta_missions_info_by_chapters
+from "%sqstd/datablock.nut" import isDataBlock, eachBlock
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/config/countryPresentation.nut" import sortCountries
+from "%appGlobals/gameModes/gameModes.nut" import allGameModes
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg
+from "%appGlobals/permissions.nut" import can_debug_configs, can_debug_missions
+from "%appGlobals/unitTags.nut" import getUnitTagsCfg
+from "%rGui/gameModes/startOfflineMode.nut" import startLocalMPBattleWithoutGamemode
+from "%rGui/globals/missionUtils.nut" import getMissionLocName
+from "%rGui/unit/unitNameSearch.nut" import isUnitNameMatchSearchStr
 
 
-let GM_DOMINATION = 12
+const GM_DOMINATION = 12
 
-let NUMBER_OF_PLAYERS = 1
-let defMaxBotsCount = 20
-let defMaxBotsRank = 5
+const NUMBER_OF_PLAYERS = 1
+const defMaxBotsCount = 20
+const defMaxBotsRank = 5
 let unitPresetsLevelList = ["min", "max"]
 
 let campaignByChapter = {

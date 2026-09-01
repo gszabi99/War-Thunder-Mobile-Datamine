@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 from  "%sqstd/ecs.nut" import *
-let { EventOnShortcutEnable, EventOnAxisEnable, EventOnAllShortcutsEnable } = require("controls")
-let { register_command } = require("console")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+from "console" import register_command
+from "controls" import EventOnShortcutEnable, EventOnAxisEnable, EventOnAllShortcutsEnable
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+
 
 let enabledControls = mkWatched(persist, "enabledControls", {})
 let isAllControlsEnabled = mkWatched(persist, "isAllControlsEnabled", true)

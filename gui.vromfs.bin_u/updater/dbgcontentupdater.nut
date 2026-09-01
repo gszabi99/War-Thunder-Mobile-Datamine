@@ -1,22 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
+from "dagor.random" import rnd_int, rnd_float
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setInterval
+from "eventbus" import eventbus_send
+from "%sqstd/rand.nut" import chooseRandom
+
+
 let { register_command  = @(_, __) null } = require_optional("console") 
-let { rnd_int, rnd_float } = require("dagor.random")
-let { get_time_msec } = require("dagor.time")
-let { eventbus_send } = require("eventbus")
-let { chooseRandom } = require("%sqstd/rand.nut")
-let { setInterval } = require("dagor.workcycle")
 
-let UPDATER_EVENT_STAGE = 0
-let UPDATER_EVENT_PROGRESS = 1
-let UPDATER_EVENT_ERROR = 2
-let UPDATER_EVENT_FINISH = 3
-let UPDATER_EVENT_DOWNLOAD_SIZE = 4
-let UPDATER_EVENT_INCOMPATIBLE_VERSION = 5
-let UPDATER_EVENT_NOT_ENOUGH_DISK_SPACE = 6
+const UPDATER_EVENT_STAGE = 0
+const UPDATER_EVENT_PROGRESS = 1
+const UPDATER_EVENT_ERROR = 2
+const UPDATER_EVENT_FINISH = 3
+const UPDATER_EVENT_DOWNLOAD_SIZE = 4
+const UPDATER_EVENT_INCOMPATIBLE_VERSION = 5
+const UPDATER_EVENT_NOT_ENOUGH_DISK_SPACE = 6
 
-let UPDATER_CHECKING = 1
-let UPDATER_DOWNLOADING = 4
-let UPDATER_COPYING = 6
+const UPDATER_CHECKING = 1
+const UPDATER_DOWNLOADING = 4
+const UPDATER_COPYING = 6
 
 function mkInitialState() {
   let total = rnd_int(10, 10000) * chooseRandom([1, 1 << 10, 1 << 20, 1 << 30])
@@ -30,8 +32,8 @@ function mkInitialState() {
 }
 
 let state = persist("state", mkInitialState)
-let tick = 0.5
-let dbgDownloadTime = 5.0
+const tick = 0.5
+const dbgDownloadTime = 5.0
 
 let sendEvent = @(data) eventbus_send("android.embedded.updater.event", data)
 let sendStageEvent = @() sendEvent({ eventType = UPDATER_EVENT_STAGE, stage = state.stage })

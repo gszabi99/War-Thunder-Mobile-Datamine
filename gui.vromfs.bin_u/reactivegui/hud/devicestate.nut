@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
-let { register_command } = require("console")
-let { get_battery, is_charging } = require("sysinfo")
-let { DBGLEVEL } = require("dagor.system")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { is_pc } = require("%sqstd/platform.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { hudWhiteColor, hudCoralRedColor } = require("%rGui/style/hudColors.nut")
+from "console" import register_command
+from "dagor.system" import DBGLEVEL
+from "dagor.workcycle" import setInterval, clearTimer
+from "eventbus" import eventbus_subscribe, eventbus_unsubscribe
+from "math" import round
+from "sysinfo" import get_battery, is_charging
+from "%sqstd/platform.nut" import is_pc
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudCoralRedColor
+
 
 const BATTERY_UPDATE_TIMEOUT_SEC = 10.0
 const UPDATE_STATUS_STRING_EVENT_ID = "updateStatusString"
@@ -17,23 +18,23 @@ const BATTERY_LEVEL_ACCEPTABLE = 0.3
 const FPS_LEVEL_ACCEPTABLE = 25
 const PL_LEVEL_ACCEPTABLE = 20
 
-let maxFpsVal = 999
-let maxPingVal = 999
-let maxPlVal = 100
+const maxFpsVal = 999
+const maxPingVal = 999
+const maxPlVal = 100
 let textsFont = fontTinyAccentedShaded
 let textsFontMono = fontMonoTinyAccentedShaded
 let defaultColor = hudWhiteColor
 let badQualityColor = hudCoralRedColor
 
-let BATTERY_BG_NORMAL = "icon_battery"
-let BATTERY_BG_CHARGING = "icon_battery_charging"
-let BATTERY_BG_NONE = ""
+const BATTERY_BG_NORMAL = "icon_battery"
+const BATTERY_BG_CHARGING = "icon_battery_charging"
+const BATTERY_BG_NONE = ""
 
 let pingIconSize = [ ((saBorders[1] - hdpxi(16)) / 0.9).tointeger(), (saBorders[1] - hdpxi(16)).tointeger()]
-let batteryIconW = hdpxi(44)
-let batteryIconH = hdpxi(22)
-let batteryFillOffset = hdpxi(6)
-let batteryFillMaxW = hdpxi(28)
+const batteryIconW = hdpxi(44)
+const batteryIconH = hdpxi(22)
+const batteryFillOffset = hdpxi(6)
+const batteryFillMaxW = hdpxi(28)
 
 let textFps = "".concat(loc("options/perfMetrics_fps"), colon)
 let textPing = "".concat(loc("mainmenu/ping"), colon)
@@ -157,7 +158,7 @@ let batteryFillWidth = Computed(@() round(clamp(batteryCharge.get(), 0.0, 1.0) *
 function batteryComp() {
   let res = { watch = [ batteryIconFn, batteryColor ] }
   return batteryIconFn.get() == BATTERY_BG_NONE ? res : res.__update({
-    size = [batteryIconW, batteryIconH]
+    size = const [batteryIconW, batteryIconH]
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#{batteryIconFn.get()}.svg:{batteryIconW}:{batteryIconH}:P")
     color = batteryColor.get()
@@ -165,7 +166,7 @@ function batteryComp() {
     children = batteryIconFn.get() != BATTERY_BG_NORMAL ? null : @() {
       watch = batteryFillWidth
       size = [batteryFillWidth.get(), batteryIconH - (2 * batteryFillOffset)]
-      pos = [batteryFillOffset, batteryFillOffset]
+      pos = const [batteryFillOffset, batteryFillOffset]
       rendObj = ROBJ_SOLID
       color = defaultColor
     }

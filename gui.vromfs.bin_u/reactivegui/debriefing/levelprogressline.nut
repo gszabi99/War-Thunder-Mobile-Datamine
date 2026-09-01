@@ -1,32 +1,33 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { playSound, startSound, stopSound } = require("sound_wt")
-let { lerpClamped } = require("%sqstd/math.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getTextScaleToFitWidth } = require("%rGui/globals/fontUtils.nut")
-let { maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
-let { starLevelMedium } = require("%rGui/components/starLevel.nut")
-let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
+from "dagor.workcycle" import resetTimeout
+from "sound_wt" import playSound, startSound, stopSound
+from "%sqstd/math.nut" import lerpClamped
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/gradientDefComps.nut" import doubleSideGradient
+from "%rGui/components/levelBlockPkg.nut" import maxLevelStarChar
+from "%rGui/components/starLevel.nut" import starLevelMedium
+from "%rGui/globals/fontUtils.nut" import getTextScaleToFitWidth
 
-let levelBlockSize = hdpx(78)
-let lightBorderWidth = hdpx(4)
-let levelProgressBarHeight = hdpx(20)
-let levelProgressBarWidth = hdpx(850)
-let levelProgressBarFillWidth = levelProgressBarWidth
-let iconPadlockW = hdpxi(38)
-let iconPadlockH = hdpxi(62)
-let rotateCompensate = 1.1
 
-let levelUpTextColor = 0xFF000000
-let levelBgColor = 0xFF000000
-let levelProgressBgColor = 0xFF808080
-let receivedExpProgressColor = 0xFFFFFFFF
-let nextLevelBgColor = levelProgressBgColor
-let nextLevelTextColor = levelBgColor
+const levelBlockSize = hdpx(78)
+const lightBorderWidth = hdpx(4)
+const levelProgressBarHeight = hdpx(20)
+const levelProgressBarWidth = hdpx(850)
+const levelProgressBarFillWidth = levelProgressBarWidth
+const iconPadlockW = hdpxi(38)
+const iconPadlockH = hdpxi(62)
+const rotateCompensate = 1.1
 
-let rewardAnimTime = 0.5
-let levelProgressSingleAnimTime = 0.5
-let maxLevelProgressAnimTime = 1.5
+const levelUpTextColor = 0xFF000000
+const levelBgColor = 0xFF000000
+const levelProgressBgColor = 0xFF808080
+const receivedExpProgressColor = 0xFFFFFFFF
+const nextLevelBgColor = levelProgressBgColor
+const nextLevelTextColor = levelBgColor
+
+const rewardAnimTime = 0.5
+const levelProgressSingleAnimTime = 0.5
+const maxLevelProgressAnimTime = 1.5
 
 let mkLevelBg = @(override = {}) {
   size = FLEX
@@ -44,13 +45,13 @@ let mkLevelBg = @(override = {}) {
 }
 
 let mkProgressLevelBg = @(override = {}) {
-  size = [levelProgressBarWidth, levelProgressBarHeight]
+  size = const [levelProgressBarWidth, levelProgressBarHeight]
   rendObj = ROBJ_SOLID
   hplace = ALIGN_LEFT
   color = levelProgressBgColor
 }.__update(override)
 
-let starLevelOvr = { pos = [0, ph(56)] }
+let starLevelOvr = { pos = const [0, ph(56)] }
 
 let mkCurLevelMark = @(lineColor, level, starLevel) {
   size = array(2, levelBlockSize)
@@ -123,7 +124,7 @@ let mkTextUnderLevelLine = @(text, color, override = {}) {
   color
 }.__update(fontVeryTiny, override)
 
-let expTextStarSize = hdpx(35)
+const expTextStarSize = hdpx(35)
 
 let mkExpText = @(exp, color) {
   flow = FLOW_HORIZONTAL
@@ -165,14 +166,14 @@ let mkLevelLineProgress = @(curLevelIdxWatch, isLevelupMomentWatch, levelUpsArra
   return {
     watch = curLevelIdxWatch
     key = $"line_{lineColor}"
-    size = [levelProgressBarWidth + 2 * rotateCompensate * levelBlockSize, SIZE_TO_CONTENT]
+    size = const [levelProgressBarWidth + 2 * rotateCompensate * levelBlockSize, SIZE_TO_CONTENT]
     hplace = ALIGN_CENTER
     valign = ALIGN_CENTER
     onAttach = @() curLevelIdxWatch.set(0)
     onDetach = stopLevelLineSound
     children = [
       mkProgressLevelBg({
-        pos = [levelBlockSize * rotateCompensate, 0]
+        pos = const [levelBlockSize * rotateCompensate, 0]
         children = [
           {
             key = $"line_{levelUpsArray[curLevelIdxWatch.get()]}"
@@ -226,7 +227,7 @@ let mkLevelLineProgress = @(curLevelIdxWatch, isLevelupMomentWatch, levelUpsArra
           : {
               children = @() {
                 watch = isLevelupMomentWatch
-                size = [iconPadlockW, iconPadlockH]
+                size = const [iconPadlockW, iconPadlockH]
                 rendObj = ROBJ_IMAGE
                 image = isLevelupMomentWatch.get()
                   ? Picture($"ui/gameuiskin#padlock_open.svg:{iconPadlockW}:{iconPadlockH}")
@@ -246,13 +247,13 @@ let mkLevelLineProgress = @(curLevelIdxWatch, isLevelupMomentWatch, levelUpsArra
 }
 
 let mkProgressTitle = @(text) {
-  pos = [hdpx(85), hdpx(-15)]
+  pos = const [hdpx(85), hdpx(-15)]
   rendObj = ROBJ_TEXT
   text
 }.__update(fontMedium)
 
 let mkProgressDesc = @(text) doubleSideGradient.__merge({
-  pos = [hdpx(39), hdpx(100)]
+  pos = const [hdpx(39), hdpx(100)]
   padding = const [hdpx(5), hdpx(50)]
   children = {
     halign = ALIGN_LEFT
@@ -263,8 +264,8 @@ let mkProgressDesc = @(text) doubleSideGradient.__merge({
   }.__update(fontVeryTiny)
 })
 
-let levelUnlocksBarW = hdpx(400)
-let levelUnlocksBarH = hdpx(64)
+const levelUnlocksBarW = hdpx(400)
+const levelUnlocksBarH = hdpx(64)
 
 local levelUnlocksTexts = {}
 function mkLevelUnlocksText(locId) {
@@ -276,7 +277,7 @@ function mkLevelUnlocksText(locId) {
       text = utf8ToUpper(loc(locId))
       color = nextLevelTextColor
     }.__update(fontSmall)
-    let textWidthMax = levelUnlocksBarW - levelUnlocksBarH - hdpx(10)
+    const textWidthMax = levelUnlocksBarW - levelUnlocksBarH - hdpx(10)
     let textScale = getTextScaleToFitWidth(comp, textWidthMax)
     comp.__update({ transform = { pivot = [0.5, 0.5], scale = [textScale, textScale] } })
     levelUnlocksTexts[locId] <- comp
@@ -285,7 +286,7 @@ function mkLevelUnlocksText(locId) {
 }
 
 let mkLevelUnlocksBar = @(locId, lineColor, isLevelUp) {
-  size = [levelUnlocksBarW, levelUnlocksBarH]
+  size = const [levelUnlocksBarW, levelUnlocksBarH]
   rendObj = ROBJ_MASK
   image = Picture($"ui/gameuiskin#debr_level_unlocks_bar_mask.svg:{levelUnlocksBarW}:{levelUnlocksBarH}")
   children = [

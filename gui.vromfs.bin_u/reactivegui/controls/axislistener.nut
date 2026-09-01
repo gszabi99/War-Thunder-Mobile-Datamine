@@ -1,6 +1,6 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%rGui/controls/shortcutConsts.nut" import *
-let { isCombinationModActive } = require("%rGui/controls/shortcutSimpleComps.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "%rGui/controls/shortcutSimpleComps.nut" import isCombinationModActive
 
 
 let axisModifiers = Computed(@() {

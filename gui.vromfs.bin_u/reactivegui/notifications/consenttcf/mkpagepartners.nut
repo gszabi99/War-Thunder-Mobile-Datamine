@@ -1,6 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkStatusContent, mkTitle, mkTextarea,
+  mkLink, openUrl, fontMinor, gapBelow
 from "%rGui/notifications/consentTcf/consentTcfState.nut" import isOpenedPartners, vendorsListsCfg, vendorsLists
-from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkStatusContent, mkTitle, mkTextarea, mkLink, openUrl, fontMinor, gapBelow
+
 
 let quitPartners = @() isOpenedPartners.set(false)
 

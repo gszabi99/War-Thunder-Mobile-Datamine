@@ -7,6 +7,7 @@ module command_line shared public
 
 
 require strings
+require fio_core
 
 
 
@@ -37,5 +38,10 @@ def get_das_exe() : string {
     if (get_platform_name() == "windows") {
         result = replace(result, "/", "\\")
     }
-    return result
+    if (fexist(result)) return result
+    let windows = get_platform_name() == "windows"
+    let self = windows ? replace(exe, "/", "\\") : exe
+    if (fexist(self)) return self
+    if (windows && fexist("{self}.exe")) return "{self}.exe"
+    return self
 }

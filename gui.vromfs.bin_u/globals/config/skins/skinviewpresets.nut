@@ -1,6 +1,7 @@
 from "%globalScripts/logs.nut" import *
 from "skinTags.nut" import *
 
+
 let skinsByTag = {
   [FOREST] = [
     "tank_skin_ussr_default_01"
@@ -342,6 +343,7 @@ let skinsByTag = {
     "camo_sea_multicolor_spots"
     "camo_blackwhite_net"
     "camo_desert_threecolors"
+    "camo_shuttle_los_angeles"
 
     "camo_arctic_minesweeper_block"
     "camo_bluegray_longspot"

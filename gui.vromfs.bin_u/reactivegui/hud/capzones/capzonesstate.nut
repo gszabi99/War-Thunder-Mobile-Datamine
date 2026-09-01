@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { getCaptureZones, CZ_IS_HIDDEN } = require("guiMission")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+from "dagor.workcycle" import setInterval, clearTimer
+from "guiMission" import getCaptureZones, CZ_IS_HIDDEN
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+
 
 let capZones = Watched([])
 

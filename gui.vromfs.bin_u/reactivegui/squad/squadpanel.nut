@@ -1,34 +1,33 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { myUserId } = require("%appGlobals/profileStates.nut")
-let { isInSquad, squadMembers, squadMembersOrder, isInvitedToSquad, squadId, squadLeaderCampaign,
-  squadLeaderReadyCheckTime, getMemberMaxMRank
-} = require("%appGlobals/squadState.nut")
-let { maxSquadSize } = require("%rGui/gameModes/gameModeState.nut")
-let { openContacts, SEARCH_TAB, FRIENDS_TAB } = require("%rGui/contacts/contactsState.nut")
-let { friendsUids, requestsToMeUids } = require("%rGui/contacts/contactLists.nut")
-let { mkPublicInfo, refreshPublicInfo } = require("%rGui/contacts/contactPublicInfo.nut")
-let { mkContactOnlineStatus } = require("%rGui/contacts/contactPresence.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
+from "dagor.workcycle" import setInterval, clearTimer
+from "%sqstd/string.nut" import utf8ToUpper
+import "%appGlobals/decorators/avatars.nut" as getAvatarImage
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/profileStates.nut" import myUserId
+from "%appGlobals/squadState.nut" import isInSquad, squadMembers, squadMembersOrder, isInvitedToSquad, squadId,
+  squadLeaderCampaign, squadLeaderReadyCheckTime, getMemberMaxMRank
+from "%rGui/components/gradTexts.nut" import mkGradRank
+from "%rGui/components/imageButton.nut" import framedImageBtn
+from "%rGui/components/spinner.nut" import mkSpinner
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark, unseenSize
+from "%rGui/contacts/contactLists.nut" import friendsUids, requestsToMeUids
+from "%rGui/contacts/contactPresence.nut" import mkContactOnlineStatus
+from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicInfo
+from "%rGui/contacts/contactsState.nut" import openContacts, SEARCH_TAB, FRIENDS_TAB
+from "%rGui/gameModes/gameModeState.nut" import maxSquadSize
+import "%rGui/invitations/invitationsBtn.nut" as invitationsBtn
+import "%rGui/squad/squadMemberInfoWnd.nut" as squadMemberInfoWnd
+from "%rGui/style/stdColors.nut" import hoverColor
 
-let { hoverColor } = require("%rGui/style/stdColors.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
-let { framedImageBtn } = require("%rGui/components/imageButton.nut")
-let invitationsBtn = require("%rGui/invitations/invitationsBtn.nut")
-let { mkGradRank } = require("%rGui/components/gradTexts.nut")
-let squadMemberInfoWnd = require("%rGui/squad/squadMemberInfoWnd.nut")
-let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { priorityUnseenMark, unseenSize } = require("%rGui/components/unseenMark.nut")
 
-let gap = hdpx(24)
+const gap = hdpx(24)
 let memberSize = evenPx(80)
-let borderWidth = hdpx(2)
-let statusSize = hdpxi(25)
+const borderWidth = hdpx(2)
+const statusSize = hdpxi(25)
 let avatarSize = memberSize - 2 * borderWidth
 
-let borderColor = 0xA0000000
-let myBorderColor = 0xFF52C7E4
+const borderColor = 0xA0000000
+const myBorderColor = 0xFF52C7E4
 
 let spinner = mkSpinner(evenPx(50))
 let statusSpinner = mkSpinner(statusSize)
@@ -69,7 +68,7 @@ let mkAvatar = @(info, onlineStatus, isInviteeV) function() {
 }
 
 let mkStatus = @(image, color = 0xFFFFFFFF) {
-  size = [statusSize, statusSize]
+  size = const [statusSize, statusSize]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#{image}:{statusSize}:{statusSize}:P")
   color

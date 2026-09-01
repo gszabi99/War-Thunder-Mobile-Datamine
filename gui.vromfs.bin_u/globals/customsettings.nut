@@ -1,3 +1,5 @@
+from "blkGetters" import get_local_custom_settings_blk
+from "eventbus" import eventbus_send
 
 
 
@@ -7,8 +9,7 @@
 
 
 
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
+
 
 function resetCustomSettings() {
   get_local_custom_settings_blk().clearData()

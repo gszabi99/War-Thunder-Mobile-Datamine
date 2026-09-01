@@ -1,35 +1,34 @@
 from "%globalsDarg/darg_library.nut" import *
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { G_LOOTBOX } = require("%appGlobals/rewardType.nut")
-let { mkCurrencyFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { REWARD_STYLE_TINY, mkRewardPlate, mkRewardFixedIcon
-} = require("%rGui/rewards/rewardPlateComp.nut")
-let { mkCustomButton, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
-let buttonStyles = require("%rGui/components/buttonStyles.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getLootboxRewardsViewInfo, canReceiveFixedReward, isRewardEmpty, NO_DROP_LIMIT, sortRewardsWithOrder
-} = require("%rGui/rewards/rewardViewInfo.nut")
-let { CS_INCREASED_ICON, CS_INACTIVE_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
-let { bestCampLevel, eventSeason, curEvent } = require("%rGui/event/eventState.nut")
-let { adsButtonCounter, isProviderInited } = require("%rGui/ads/adsState.nut")
-let { balance } = require("%appGlobals/currenciesState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { openLbWnd } = require("%rGui/leaderboard/lbState.nut")
-let { openQuestsWndOnTab } = require("%rGui/seasonScene/seasonSceneState.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { schRewards, onSchRewardReceive, adBudget } = require("%rGui/shop/schRewardsState.nut")
-let { mkLootboxImageWithSlotScale } = require("%rGui/rewards/components/lootboxView.nut")
-let { hasVip } = require("%rGui/state/profilePremium.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/currenciesState.nut" import balance
+from "%appGlobals/pServer/seasonCurrencies.nut" import mkCurrencyFullId
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/rewardType.nut" import G_LOOTBOX
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/ads/adsState.nut" import adsButtonCounter, isProviderInited
+import "%rGui/components/buttonStyles.nut" as buttonStyles
+from "%rGui/components/currencyComp.nut" import CS_INCREASED_ICON, CS_INACTIVE_ICON, mkCurrencyImage, mkCurrencyText
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/textButton.nut" import mkCustomButton, textButtonPricePurchase
+from "%rGui/event/eventState.nut" import bestCampLevel, eventSeason, curEvent
+from "%rGui/leaderboard/lbState.nut" import openLbWnd
+from "%rGui/rewards/components/lootboxView.nut" import mkLootboxImageWithSlotScale
+from "%rGui/rewards/rewardPlateComp.nut" import REWARD_STYLE_TINY, mkRewardPlate, mkRewardFixedIcon
+from "%rGui/rewards/rewardViewInfo.nut" import getLootboxRewardsViewInfo, canReceiveFixedReward, isRewardEmpty,
+  NO_DROP_LIMIT
+from "%rGui/seasonScene/seasonSceneState.nut" import openQuestsWndOnTab
+from "%rGui/shop/schRewardsState.nut" import schRewards, onSchRewardReceive, adBudget
+from "%rGui/state/profilePremium.nut" import hasVip
 
 
-let REWARDS = 3
-let fillColor = 0x70000000
-let hoverColor = 0xA0000000
+const REWARDS = 3
+const fillColor = 0x70000000
+const hoverColor = 0xA0000000
 let iconStyle = CS_INCREASED_ICON
 let iconSize = iconStyle.iconSize
-let lootboxHeight = hdpxi(320)
-let lootboxWidth = hdpxi(576) 
+const lootboxHeight = hdpxi(320)
+const lootboxWidth = hdpxi(576) 
 let rewardGap = REWARD_STYLE_TINY.boxGap
 let vipIconW = CS_INCREASED_ICON.iconSize
 let vipIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
@@ -40,7 +39,7 @@ let lootboxInfoSize = [rewardsSize * REWARDS + rewardGap * (REWARDS + 1),
 let lootboxInfoSizeBig = [rewardsSize * (REWARDS + 1) + rewardGap * (REWARDS + 2),
   (rewardsSize + rewardGap * 2) / 0.8]
 
-let aTimeOpacity = 0.4
+const aTimeOpacity = 0.4
 let revealBtnsAnimation = [
   {
     prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = aTimeOpacity,
@@ -77,7 +76,7 @@ function isDropLimitReached(reward, profile) {
 let lootboxInfo = @(lootbox, stateFlags) function() {
   local rewards = []
   local slots = 0
-  let allRewards = getLootboxRewardsViewInfo(lootbox, true).sort(sortRewardsWithOrder)
+  let allRewards = getLootboxRewardsViewInfo(lootbox, true)
   let profile = servProfile.get()
   foreach (reward in allRewards) {
     if ((reward?.isLastReward && (rewards.len() != 0 || !canReceiveLastReward(lootbox, reward, profile)))

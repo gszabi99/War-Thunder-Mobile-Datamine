@@ -1,15 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_mplayers_list, GET_MPLAYERS_LIST, get_mp_local_team } = require("mission")
-let { battleCampaign } = require("%appGlobals/clientState/missionState.nut")
-let { squadLabels } = require("%appGlobals/squadLabelState.nut")
-let { playerLevelInfo } = require("%appGlobals/pServer/profile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getUnitCfgByTagName } = require("%appGlobals/pServer/unitCfgByTagName.nut")
-let { genBotCommonStats } = require("%appGlobals/botUtils.nut")
-let { isGtFFA, gameType } = require("%rGui/missionState.nut")
-let { getSortAndFillPlayerPlacesFunc } = require("%rGui/mpStatistics/playersSortFunc.nut")
-let { playersCommonStats } = require("%rGui/mpStatistics/playersCommonStats.nut")
-let { playersDamageStats } = require("%rGui/mpStatistics/playersDamageStats.nut")
+from "mission" import get_mplayers_list, GET_MPLAYERS_LIST, get_mp_local_team
+from "%appGlobals/botUtils.nut" import genBotCommonStats
+from "%appGlobals/clientState/missionState.nut" import battleCampaign
+from "%appGlobals/pServer/profile.nut" import playerLevelInfo
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/pServer/unitCfgByTagName.nut" import getUnitCfgByTagName
+from "%appGlobals/squadLabelState.nut" import squadLabels
+from "%rGui/missionState.nut" import isGtFFA, gameType
+from "%rGui/mpStatistics/playersCommonStats.nut" import playersCommonStats
+from "%rGui/mpStatistics/playersDamageStats.nut" import playersDamageStats
+from "%rGui/mpStatistics/playersSortFunc.nut" import getSortAndFillPlayerPlacesFunc
 
 
 const STATS_UPDATE_TIMEOUT = 1.0

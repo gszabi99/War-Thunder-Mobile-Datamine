@@ -1,21 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkZoomSlider, zoomSliderEditView } = require("%rGui/hud/zoomSlider.nut")
-let { Z_ORDER, mkRBPos, mkCTPos, mkLTPos, mkRTPos } = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
-let { scoreBoardEditView, needScoreBoard, scoreBoardCfgByType, scoreBoardType } = require("%rGui/hud/scoreBoard.nut")
-let { capZonesEditView, capZonesList } = require("%rGui/hud/capZones/capZones.nut")
-let { msgBlock, msgBlockEditView } = require("%rGui/hud/eventMissionMessageBox.nut")
-let { chatLogAndKillLogPlace, chatLogAndKillLogEditView } = require("%rGui/hudHints/hintBlocks.nut")
-let { mkMenuButton, mkMenuButtonEditView } = require("%rGui/hud/menuButton.nut")
-let { raceLeadershipEditView, raceLeadershipCtor } = require("%rGui/hud/raceLeadership.nut")
-let { optFontSize, optTextWidth } = require("%rGui/hudTuning/cfg/cfgOptions.nut")
-let { isGtRace } = require("%rGui/missionState.nut")
-let { isCTFProgressType, isNotCTFProgressType } = require("%rGui/hud/missionScoreState.nut")
-let { spawnScoreEditView, hudSpawnScoreCtor } = require("%rGui/respawn/spawnScore.nut")
-let { isUseSpawnScore } = require("%rGui/respawn/respawnState.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
+from "%rGui/hud/capZones/capZones.nut" import capZonesEditView, capZonesList
+from "%rGui/hud/eventMissionMessageBox.nut" import msgBlock, msgBlockEditView
+from "%rGui/hud/menuButton.nut" import mkMenuButton, mkMenuButtonEditView
+from "%rGui/hud/missionScoreState.nut" import isCTFProgressType, isNotCTFProgressType
+from "%rGui/hud/raceLeadership.nut" import raceLeadershipEditView, raceLeadershipCtor
+from "%rGui/hud/scoreBoard.nut" import scoreBoardEditView, needScoreBoard, scoreBoardCfgByType, scoreBoardType
+from "%rGui/hud/zoomSlider.nut" import mkZoomSlider, zoomSliderEditView
+from "%rGui/hudHints/hintBlocks.nut" import chatLogAndKillLogPlace, chatLogAndKillLogEditView
+from "%rGui/hudState.nut" import isPlayingReplay
+from "%rGui/hudTuning/cfg/cfgOptions.nut" import optFontSize, optTextWidth
+from "%rGui/hudTuning/cfg/hudTuningPkg.nut" import Z_ORDER, mkRBPos, mkCTPos, mkLTPos, mkRTPos
+import "%rGui/hudTuning/cfg/initHudTuningCfg.nut" as initHudTuningCfg
+from "%rGui/missionState.nut" import isGtRace
+from "%rGui/respawn/respawnState.nut" import isUseSpawnScore
+from "%rGui/respawn/spawnScore.nut" import spawnScoreEditView, hudSpawnScoreCtor
 
 
-return {
+return initHudTuningCfg({
   zoomSlider = {
     ctor = mkZoomSlider
     defTransform = mkRBPos([hdpx(-640), hdpx(-130)])
@@ -84,4 +85,4 @@ return {
     isVisibleInBattle = isGtRace
     isVisibleInEditor = isGtRace
   }
-}
+})

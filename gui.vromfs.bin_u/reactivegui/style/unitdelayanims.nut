@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let opacityTime = 0.3
-let scaleTime = 0.3
-let moveTime = 0.5
-let moveX = hdpx(90)
-let moveY = hdpx(60)
+const opacityTime = 0.3
+const scaleTime = 0.3
+const moveTime = 0.5
+const moveX = hdpx(90)
+const moveY = hdpx(60)
 
 let appearAnimBase = [
   { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = opacityTime,

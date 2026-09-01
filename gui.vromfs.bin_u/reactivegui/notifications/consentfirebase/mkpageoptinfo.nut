@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/notifications/consentFirebase/consentState.nut" import showOptInfo
 from "%rGui/notifications/consentFirebase/consentComps.nut" import mkContent
+from "%rGui/notifications/consentFirebase/consentState.nut" import showOptInfo
+
 
 let close = @() showOptInfo.set(null)
 

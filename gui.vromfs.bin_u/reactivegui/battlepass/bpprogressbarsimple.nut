@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { bpCardStyle, bpCardPadding, bpCardMargin } = require("%rGui/battlePass/bpCardsStyle.nut")
-let { getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
-let { bpProgressbarEmpty, bpProgressbarFull, progressIconSize } = require("%rGui/battlePass/passPkg.nut")
+from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle, bpCardPadding, bpCardMargin
+from "%rGui/battlePass/passPkg.nut" import bpProgressbarEmpty, bpProgressbarFull, progressIconSize
+from "%rGui/rewards/rewardStyles.nut" import getRewardPlateSize
+
 
 let halfWidthProgressIcon = progressIconSize[0] / 2
 
@@ -63,7 +64,7 @@ function bpLineBetweenLevelIconsSimple(stage, curStage, pairedStages = null, idx
   return @() {
     watch = curStage
     size = [widthLine, hdpx(15)]
-    pos = [0, hdpx(16)]
+    pos = const [0, hdpx(16)]
     children = stage?.isVip ? null
       : (stage.progress < curStage.get() ? bpProgressbarFull : bpProgressbarEmpty)
   }

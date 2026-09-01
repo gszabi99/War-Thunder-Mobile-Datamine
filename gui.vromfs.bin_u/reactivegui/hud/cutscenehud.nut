@@ -1,18 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+import "%darg/helpers/mkTextRow.nut" as mkTextRow
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkGamepadHotkey
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+from "%rGui/hud/menuButton.nut" import mkMenuButton
+from "%rGui/hudHints/killerInfo.nut" import killerInfo
 
-let { mkMenuButton } = require("%rGui/hud/menuButton.nut")
-let killerInfo = require("%rGui/hudHints/killerInfo.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
-let mkTextRow = require("%darg/helpers/mkTextRow.nut")
 
-let defShortcutOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, ph(-20)] }
+let defShortcutOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = const [0, ph(-20)] }
 
 let showSkipHint = mkWatched(persist, "showSkipHint", false)
-eventbus_subscribe("hint:xrayCamera:showSkipHint", @(_) showSkipHint.set(true))
+subscribeHudEvent("hint:xrayCamera:showSkipHint", @(_) showSkipHint.set(true))
 
 let mkText = @(text) {
   rendObj = ROBJ_TEXT
@@ -29,7 +29,7 @@ let hintForSkip = function() {
       watch = [showSkipHint, isGamepad]
       vplace = ALIGN_BOTTOM
       hplace = ALIGN_CENTER
-      pos = [0, -sh(10)]
+      pos = const [0, -sh(10)]
       hintIcon
       flow = FLOW_HORIZONTAL
       children =  mkTextRow(hintText, mkText, { ["{shortcut}"] = hintIcon }) 
@@ -54,4 +54,3 @@ return {
     hintForSkip
   ]
 }
-

@@ -1,21 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { INVALID_USER_ID } = require("matching.errors")
-let { register_command } = require("console")
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout
+from "matching.api" import matching_notify
+from "matching.errors" import INVALID_USER_ID
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/platform.nut" import is_pc
+from "%sqstd/rand.nut" import chooseRandom
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/loginState.nut" import isContactsLoggedIn, isMatchingConnected
+from "%rGui/matching/matchingApi.nut" import matching_subscribe
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%appGlobals/pServer/bqClient.nut" import sendErrorLocIdBqEvent
+from "%appGlobals/profileStates.nut" import myUserIdStr, myInfo
+from "%rGui/contacts/contact.nut" import updateContact, updateContactNames
+from "%rGui/contacts/contactLists.nut" import contactsLists
+from "%rGui/contacts/contactPresence.nut" import presences, updatePresences
+from "%rGui/contacts/contactsClient.nut" import contactsRequest, contactsRegisterHandler
+from "%rGui/matching/matchingApi.nut" import matchingRpcCall, matchingRpcRegisterHandler
 let logC = log_with_prefix("[CONTACTS] ")
-let { is_pc } = require("%sqstd/platform.nut")
-let { contactsLists } = require("%rGui/contacts/contactLists.nut")
-let { updateContact, updateContactNames } = require("%rGui/contacts/contact.nut")
-let { myUserIdStr, myInfo } = require("%appGlobals/profileStates.nut")
-let { presences, updatePresences } = require("%rGui/contacts/contactPresence.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { isContactsLoggedIn, isMatchingConnected } = require("%appGlobals/loginState.nut")
-let { sendErrorLocIdBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { contactsRequest, contactsRegisterHandler } = require("%rGui/contacts/contactsClient.nut")
-let matching = require("%appGlobals/matching_api.nut")
-
 
 const GAME_GROUP_NAME = "warthunder"
 
@@ -23,6 +26,7 @@ const FETCH_CB = "contacts.onFetch"
 const SEARCH_TAB = "search"
 const FRIENDS_TAB = "friends"
 const SQUAD_TAB = "squad"
+const RETRY_FETCH_TIME = 60
 
 let isContactsOpened = mkWatched(persist, "isContactsOpened", false)
 let contactsOpenTabId = Watched(null)
@@ -74,29 +78,6 @@ myInfo.subscribe(function(info) {
     updateContact(userId.tostring(), realName)
 })
 
-let fetchContactsImpl = @() eventbus_send("matchingCall",
-  {
-    action = "mpresence.reload_contact_list"
-    params = {}
-    cb = FETCH_CB
-  })
-
-function fetchContacts() {
-  if (canFetchContacts.get())
-    fetchContactsImpl()
-  else
-    isFetchDelayed.set(true)
-}
-
-function fetchIfNeed() {
-  if (!canFetchContacts.get() || !isFetchDelayed.get())
-    return
-  isFetchDelayed.set(false)
-  fetchContactsImpl()
-}
-fetchIfNeed()
-canFetchContacts.subscribe(@(_) fetchIfNeed())
-
 function updatePresencesByList(newPresences) {
   logC("Update presences: ", newPresences.len() > 5 ? newPresences.len() : newPresences)
   let curPresences = presences.get()
@@ -131,7 +112,22 @@ function updateAllLists(new_contacts) {
   updateContactNames(contactNames)
 }
 
+let fetchContactsImpl = @() matchingRpcCall("mpresence.reload_contact_list", null, FETCH_CB)
+
+function fetchContacts() {
+  if (canFetchContacts.get())
+    fetchContactsImpl()
+  else
+    isFetchDelayed.set(true)
+}
+
 function onFetchContacts(result) {
+  if ("error" in result) {
+    if (!isContactsReceived.get())
+      resetTimeout(RETRY_FETCH_TIME, fetchContacts)
+    return
+  }
+
   isContactsReceived.set(true)
   if ("groups" in result)
     updateAllLists(result.groups)
@@ -141,10 +137,19 @@ function onFetchContacts(result) {
     contactsInProgress.set(contactsInProgress.get().filter(@(v) !v))
 }
 
-eventbus_subscribe(FETCH_CB, @(msg) onFetchContacts(msg.result))
+matchingRpcRegisterHandler(FETCH_CB, onFetchContacts)
 
-matching.matching_subscribe("mpresence.notify_presence_update", @(r) onFetchContacts(r))
-matching.matching_subscribe("mpresence.on_added_to_contact_list", @(_) fetchContacts())
+function fetchIfNeed() {
+  if (!canFetchContacts.get() || !isFetchDelayed.get())
+    return
+  isFetchDelayed.set(false)
+  fetchContactsImpl()
+}
+fetchIfNeed()
+canFetchContacts.subscribe(@(_) fetchIfNeed())
+
+matching_subscribe("mpresence.notify_presence_update", @(r) onFetchContacts(r))
+matching_subscribe("mpresence.on_added_to_contact_list", @(_) fetchContacts())
 
 contactsRegisterHandler("cln_find_users_by_nick_prefix_json", function(result, context) {
   if (searchedNick.get() != context?.nick)
@@ -233,8 +238,10 @@ function mkSimpleContactAction(actionId, mkData, onSucces = null) {
   }
 }
 
-let notifyFriendAdded = @(userId)
-  eventbus_send("matchingApiNotify", { name = "mpresence.notify_friend_added", params = { friendId = userId.tointeger() }})
+function notifyFriendAdded(userId) {
+  logC("matching notify friend added")
+  matching_notify("mpresence.notify_friend_added", { friendId = userId.tointeger() })
+}
 
 let notifyFriendCb = @(context) notifyFriendAdded(context.userId)
 
@@ -264,8 +271,6 @@ function openContacts(tabId = null) {
 
 
 if (is_pc) {
-  let { get_time_msec } = require("dagor.time")
-  let { chooseRandom } = require("%sqstd/rand.nut")
 
   let fakeList = Watched([])
   fakeList.subscribe(function(f) {

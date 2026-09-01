@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { campUnitsCfg, campMyUnits, curUnit } = require("%appGlobals/pServer/profile.nut")
-let unreleasedUnits = require("%appGlobals/pServer/unreleasedUnits.nut")
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg, campMyUnits, curUnit
+import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
+from "%rGui/unit/hangarUnit.nut" import setHangarUnit
 
 
 let visibleUnitsList = Computed(@() campUnitsCfg.get()

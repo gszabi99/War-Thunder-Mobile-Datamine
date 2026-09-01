@@ -1,45 +1,43 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/rewardType.nut" import *
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, clearTimer, setInterval
+from "%sqstd/string.nut" import utf8ToUpper
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/pServerApi.nut" import rewardInProgress, lootboxInProgress, apply_prize_tickets,
+  registerHandler
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon
+from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardDisabledBkg, mkRewardReceivedMark,
+  mkRewardUnitFlag
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM, getRewardPlateSize
+from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, isRewardEmpty
+from "%rGui/shop/lootboxOpenRouletteState.nut" import rouletteOpenId, nextOpenId
+from "%rGui/shop/unseenPurchasesState.nut" import unseenPurchasesExt, isShowUnseenDelayed
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/gradients.nut" import mkGradientCtorRadial, gradTexSize
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import isTutorialActive
+from "%rGui/unit/components/unitInfoPanel.nut" import unitInfoPanel, mkUnitTitle
+from "%rGui/unit/components/unitUnlockAnimation.nut" import revealAnimation
 
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { resetTimeout, clearTimer, setInterval } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
-let { utf8ToUpper } = require("%sqstd/string.nut")
 
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { rewardInProgress, lootboxInProgress, apply_prize_tickets,
-  registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
+const PRIZE_TICKETS_SELECT_WND_UID = "prizeTicketsSelectWndUid"
+const TIME_TO_DELAYED_RETRY = 30.0
+const MAX_COUNT_TO_TRY = 3
 
-let { mkRewardPlate, mkRewardDisabledBkg, mkRewardReceivedMark, mkRewardUnitFlag
-} = require("%rGui/rewards/rewardPlateComp.nut")
-let { unseenPurchasesExt, isShowUnseenDelayed } = require("%rGui/shop/unseenPurchasesState.nut")
-let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { REWARD_STYLE_MEDIUM, getRewardPlateSize } = require("%rGui/rewards/rewardStyles.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
-let { rouletteOpenId, nextOpenId } = require("%rGui/shop/lootboxOpenRouletteState.nut")
-let { getRewardsViewInfo, isRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
-let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
-let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-
-let PRIZE_TICKETS_SELECT_WND_UID = "prizeTicketsSelectWndUid"
-let TIME_TO_DELAYED_RETRY = 30.0
-let MAX_COUNT_TO_TRY = 3
-
-let selBorderColor = 0xFFFFFFFF
-let hoverBorderColor = 0x40404040
-let borderHeight = hdpx(8)
+const selBorderColor = 0xFFFFFFFF
+const hoverBorderColor = 0x40404040
+const borderHeight = hdpx(8)
 
 let notAppliedTickets = mkWatched(persist, "notAppliedTickets", {})
 let isModalAttached = Watched(false)
@@ -216,8 +214,8 @@ let mkHightlightPlate = @(isSelected) {
       opacity = 0.2
     }
     {
-      size = [FLEX, borderHeight]
-      pos = [0, -borderHeight]
+      size = const [FLEX, borderHeight]
+      pos = const [0, -borderHeight]
       rendObj = ROBJ_BOX
       hplace = ALIGN_TOP
       fillColor = isSelected ? selBorderColor : hoverBorderColor

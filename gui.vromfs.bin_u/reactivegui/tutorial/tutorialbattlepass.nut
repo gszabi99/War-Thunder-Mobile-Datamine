@@ -1,30 +1,32 @@
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "dagor.workcycle" import deferOnce, resetTimeout
+from "%appGlobals/pServer/campaign.nut" import firstLoginTime
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/squadState.nut" import isInSquad
+from "%rGui/battlePass/battlePassState.nut" import tutorialFreeMarkIdx, isBpSeasonActive
+from "%rGui/battlePass/passState.nut" import BATTLE_PASS, isPassSceneAttached
+from "%rGui/components/modalWindows.nut" import hasModalWindows
+from "%rGui/components/msgBox.nut" import openMsgBox
+import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
+from "%rGui/gameModes/newbieOfflineMissions.nut" import hasFirstBattleRewards
+from "%rGui/mainMenu/mainMenuState.nut" import isMainMenuTopScene
+from "%rGui/quests/bqQuests.nut" import sendBqQuestsTask, sendBqQuestsStage
+from "%rGui/quests/questBar.nut" import calcStageCompletion
+from "%rGui/quests/questsState.nut" import COMMON_TAB, isQuestsAttached, questsCfg, questsBySection,
+  getStarsTotalNonUpdatable, progressUnlockByTab, progressUnlockBySection, DAILY_SECTION, tutorialSectionId,
+  tutorialQuestBtnKey
+from "%rGui/quests/rewardsComps.nut" import getRewardsPreviewInfo, getEventCurrencyReward
+from "%rGui/seasonScene/seasonSceneState.nut" import openMainSeasonScene, PASS_SCENE, openQuestsWndOnTab
+from "%rGui/tutorial/completedTutorials.nut" import markTutorialCompleted, isFinishedArsenal, isFinishedBattlePass,
+  isFinishedSlotAttributes
+from "%rGui/tutorial/tutorialConst.nut" import TUTORIAL_BATTLE_PASS_ID, questTutorialOptionalTime
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import setTutorialConfig, isTutorialActive, finishTutorial,
+  activeTutorialId
+from "%rGui/unlocks/unlocks.nut" import receiveUnlockRewards, batchReceiveRewards, unlockInProgress
+
+
 let logT = log_with_prefix("[BATTLE_PASS_TUTOR] ")
-let { register_command } = require("console")
-let { deferOnce, resetTimeout } = require("dagor.workcycle")
-let { isInSquad } = require("%appGlobals/squadState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
-let { receiveUnlockRewards, batchReceiveRewards, unlockInProgress } = require("%rGui/unlocks/unlocks.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { isMainMenuTopScene } = require("%rGui/mainMenu/mainMenuState.nut")
-let { tutorialFreeMarkIdx, isBpSeasonActive
-} = require("%rGui/battlePass/battlePassState.nut")
-let { sendBqQuestsTask, sendBqQuestsStage } = require("%rGui/quests/bqQuests.nut")
-let { calcStageCompletion } = require("%rGui/quests/questBar.nut")
-let { COMMON_TAB, isQuestsAttached, questsCfg, questsBySection, getStarsTotalNonUpdatable,
-  progressUnlockByTab, progressUnlockBySection, DAILY_SECTION, tutorialSectionId, tutorialQuestBtnKey
-} = require("%rGui/quests/questsState.nut")
-let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
-let { getRewardsPreviewInfo, getEventCurrencyReward } = require("%rGui/quests/rewardsComps.nut")
-let { markTutorialCompleted,
-  isFinishedArsenal, isFinishedBattlePass, isFinishedSlotAttributes } = require("%rGui/tutorial/completedTutorials.nut")
-let { TUTORIAL_BATTLE_PASS_ID, questTutorialOptionalTime } = require("%rGui/tutorial/tutorialConst.nut")
-let { setTutorialConfig, isTutorialActive, finishTutorial, activeTutorialId } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { BATTLE_PASS, isPassSceneAttached } = require("%rGui/battlePass/passState.nut")
-let { openMainSeasonScene, PASS_SCENE, openQuestsWndOnTab } = require("%rGui/seasonScene/seasonSceneState.nut")
-let { hasFirstBattleRewards } = require("%rGui/gameModes/newbieOfflineMissions.nut")
 
 
 let isDebugMode = mkWatched(persist, "isDebugMode", false)

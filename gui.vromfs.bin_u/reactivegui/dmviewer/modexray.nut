@@ -1,18 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
-let DataBlock = require("DataBlock")
-let { DM_VIEWER_XRAY } = require("hangar")
-let { get_unittags_blk } = require("blkGetters")
-let { getUnitFileName } = require("vehicleModel")
-let { copyParamsToTable } = require("%sqstd/datablock.nut")
-let { getPartType, getPartNameLocText } = require("%globalScripts/modeXrayLib.nut")
-let { loadedHangarUnitName, hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { dmViewerMode, dmViewerUnitReady, getDmViewerUnitData, dmViewerUnitDataVer,
-  isDebugMode, isDebugBatchExportProcess
-} = require("%rGui/dmViewer/dmViewerState.nut")
-let { getSimpleUnitType, xrayCommonGetters, getDescriptionInXrayMode, collectArmorClassToSteelMuls
-} = require("%rGui/dmViewer/modeXrayUtils.nut")
-let { toggleSubscription, mkDmViewerHint, mkHintTitle, mkHintDescText
-} = require("%rGui/dmViewer/dmViewerPkg.nut")
+import "DataBlock" as DataBlock
+from "blkGetters" import get_unittags_blk
+from "hangar" import DM_VIEWER_XRAY
+from "vehicleModel" import getUnitFileName
+from "%sqstd/datablock.nut" import copyParamsToTable
+from "%globalScripts/modeXrayLib.nut" import getPartType, getPartNameLocText
+from "%rGui/dmViewer/dmViewerPkg.nut" import toggleSubscription, mkDmViewerHint, mkHintTitle, mkHintDescText
+from "%rGui/dmViewer/dmViewerState.nut" import dmViewerMode, dmViewerUnitReady, getDmViewerUnitData,
+  dmViewerUnitDataVer, isDebugMode, isDebugBatchExportProcess
+from "%rGui/dmViewer/modeXrayUtils.nut" import getSimpleUnitType, xrayCommonGetters, getDescriptionInXrayMode,
+  collectArmorClassToSteelMuls
+from "%rGui/unit/hangarUnit.nut" import loadedHangarUnitName, hangarUnit
+
 
 let isModeActive = Computed(@() dmViewerMode.get() == DM_VIEWER_XRAY)
 

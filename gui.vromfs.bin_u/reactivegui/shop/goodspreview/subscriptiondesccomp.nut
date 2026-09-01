@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
+from "%rGui/components/currencyComp.nut" import mkCurrencyImage
 
-let bonusIconSize = hdpxi(30)
-let bonusValueWidth = hdpx(80)
-let smallGap = hdpx(20)
-let marginToAlign = hdpxi(4)
-let textColor = 0xFFE0E0E0
+
+const bonusIconSize = hdpxi(30)
+const bonusValueWidth = hdpx(80)
+const smallGap = hdpx(20)
+const marginToAlign = hdpxi(4)
+const textColor = 0xFFE0E0E0
 let bonusMultText = @(v) $"{v}x"
 
 let decalsSlotImage = @() {
@@ -16,14 +17,14 @@ let decalsSlotImage = @() {
 }
 
 let mkBonusIcon = @(icon) {
-  size = [bonusIconSize, bonusIconSize]
+  size = const [bonusIconSize, bonusIconSize]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#{icon}:{bonusIconSize}:{bonusIconSize}:P")
   keepAspect = true
 }
 
 let stopIcon = {
-  size = [bonusIconSize, bonusIconSize]
+  size = const [bonusIconSize, bonusIconSize]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = max(1, (0.1 * bonusIconSize + 0.5).tointeger())
   color = 0xFFFF6060
@@ -89,7 +90,7 @@ let vipRowsCfg = [
     name = "noAds"
     bonus = @(_) ""
     icon = @() {
-      size = [bonusIconSize, bonusIconSize]
+      size = const [bonusIconSize, bonusIconSize]
       children = [
         mkBonusIcon("watch_ads.svg")
         stopIcon
@@ -114,14 +115,14 @@ let mkBonusRow = @(bonus, cfg) {
   gap = smallGap
   children = [
     {
-      size = [SIZE_TO_CONTENT, bonusIconSize + marginToAlign]
-      margin = [marginToAlign, 0, 0, 0]
+      size = const [SIZE_TO_CONTENT, bonusIconSize + marginToAlign]
+      margin = const [marginToAlign, 0, 0, 0]
       flow = FLOW_HORIZONTAL
       gap = smallGap
       valign = ALIGN_CENTER
       children = [
         {
-          size = [bonusValueWidth, SIZE_TO_CONTENT]
+          size = const [bonusValueWidth, SIZE_TO_CONTENT]
           rendObj = ROBJ_TEXT
           color = textColor
           text = bonus.bonus(cfg)

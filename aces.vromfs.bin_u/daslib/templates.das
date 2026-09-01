@@ -20,10 +20,6 @@ require daslib/ast_boost
 [call_macro(name="decltype")]
 class DecltypeMacro : AstCallMacro {
     
-    
-    
-    
-    
     remove_ref = false
     def override visit(prog : ProgramPtr; mod : Module?; var expr : ExprCallMacro?) : ExpressionPtr {
         if (expr.arguments |> length != 1) {
@@ -54,16 +50,6 @@ class DecltypeNoRefMacro : DecltypeMacro {
 [function_macro(name="template")]
 class TemplateMacro : AstFunctionAnnotation {
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     def override transform(var expr : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
         if (expr.func == null) {
             compiling_program() |> macro_error(expr.at, "expecting inferred function")
@@ -75,7 +61,7 @@ class TemplateMacro : AstFunctionAnnotation {
         if (taidx == -1) return expr
         var ffunc = expr.func
         
-        var newcall = unsafe(reinterpret<ExprCallFunc?> clone_expression(expr))
+        var newcall = unsafe(reinterpret<ExprCallFunc?>(clone_expression(expr)))
         
         var fclone = clone_function(ffunc)
         fclone.fromGeneric = ffunc

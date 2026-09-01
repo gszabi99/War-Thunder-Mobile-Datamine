@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-let { MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
+from "%rGui/event/eventState.nut" import MAIN_EVENT_ID
 
 
 

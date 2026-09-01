@@ -1,24 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { shortcutsByUnitTypes, pages } = require("%rGui/controls/help/controlsCfg.nut")
-let { hangarUnitName } = require("%rGui/unit/hangarUnit.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { unitType } = require("%rGui/hudState.nut")
-let mkControlsHelpXone = require("%rGui/controls/help/mkControlsHelpXone.nut")
-let mkControlsHelpSony = require("%rGui/controls/help/mkControlsHelpSony.nut")
-let mkControlsHelpNintendo = require("%rGui/controls/help/mkControlsHelpNintendo.nut")
-let { gamepadShortcuts, gamepadAxes } = require("%rGui/controls/shortcutsMap.nut")
-let { axisToHotkey } = require("%rGui/controls/axisToHotkey.nut")
-let listButton = require("%rGui/components/listButton.nut")
-let { gamepadPreset } = require("%rGui/controlsMenu/gamepadVendor.nut")
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
-let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/unitTags.nut" import getUnitType
+from "%rGui/components/backButton.nut" import backButton
+import "%rGui/components/listButton.nut" as listButton
+from "%rGui/controls/axisToHotkey.nut" import axisToHotkey
+from "%rGui/controls/help/controlsCfg.nut" import shortcutsByUnitTypes, pages
+import "%rGui/controls/help/mkControlsHelpNintendo.nut" as mkControlsHelpNintendo
+import "%rGui/controls/help/mkControlsHelpSony.nut" as mkControlsHelpSony
+import "%rGui/controls/help/mkControlsHelpXone.nut" as mkControlsHelpXone
+from "%rGui/controls/shortcutsMap.nut" import gamepadShortcuts, gamepadAxes
+from "%rGui/controlsMenu/gamepadVendor.nut" import gamepadPreset
+from "%rGui/hudState.nut" import unitType
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/gradients.nut" import mkGradientCtorRadial, gradTexSize
+from "%rGui/style/hudColors.nut" import hudWhiteColor
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import selectColor
+from "%rGui/unit/hangarUnit.nut" import hangarUnitName
+
 
 let typeGamepad = {
   xone = mkControlsHelpXone

@@ -1,18 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
-let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { mergeStyles, mkCustomButton } = require("%rGui/components/textButton.nut")
-let buttonStyles = require("%rGui/components/buttonStyles.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
-let { PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { buy_upgrade_unit, registerHandler} = require("%appGlobals/pServer/pServerApi.nut")
-let { infoCommonButton } = require("%rGui/components/infoButton.nut")
-let { upgradeCommonUnitName } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { ovrBuyBtn, fontIconPreview, offerCardWidth, cardHPadding } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitWndPkg.nut")
+from "%appGlobals/currenciesState.nut" import GOLD
+from "%appGlobals/pServer/pServerApi.nut" import buy_upgrade_unit, registerHandler
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg
+from "%appGlobals/unitPresentation.nut" import getUnitPresentation
+import "%rGui/components/buttonStyles.nut" as buttonStyles
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/infoButton.nut" import infoCommonButton
+from "%rGui/components/textButton.nut" import mergeStyles, mkCustomButton
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT, mkBqPurchaseInfo
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
+from "%rGui/style/stdColors.nut" import userlogTextColor
+from "%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut" import upgradeCommonUnitName
+from "%rGui/unit/upgradeUnitWnd/upgradeUnitWndPkg.nut" import ovrBuyBtn, fontIconPreview, offerCardWidth, cardHPadding
+from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
 
 
 let close = @() upgradeCommonUnitName.set(null)

@@ -1,23 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ComputedImmediate } = require("%sqstd/frp.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let { buy_unit_level, unitInProgress, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { buttonsHGap } = require("%rGui/components/textButton.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT_LEVEL, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { generateDataDiscount, mkLevelBlock } = require("%rGui/attributes/buyLevelComp.nut")
-let { getSpCostText } = require("%rGui/attributes/attrState.nut")
+from "%sqstd/frp.nut" import ComputedImmediate
+from "%appGlobals/currenciesState.nut" import GOLD
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/pServerApi.nut" import buy_unit_level, unitInProgress, registerHandler
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/attributes/attrState.nut" import getSpCostText
+from "%rGui/attributes/buyLevelComp.nut" import generateDataDiscount, mkLevelBlock
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
+from "%rGui/components/textButton.nut" import buttonsHGap
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_UNIT_UPGRADES, PURCH_TYPE_UNIT_LEVEL, mkBqPurchaseInfo
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import userlogTextColor, selectColor
+from "%rGui/tutorial/tutorialConst.nut" import TUTORIAL_ATTRIBUTES_ID
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import activeTutorialId
 
 
-let WND_UID = "buyUnitLevelWnd" 
+const WND_UID = "buyUnitLevelWnd" 
+const FREE_LEVELS_TO_BUY = 5
 
 let unitName = mkWatched(persist, "unitName", null)
 let unit = Computed(@() campMyUnits.get()?[unitName.get()])
@@ -25,6 +28,8 @@ let unitLevels = Computed(@() campConfigs.get()?.unitLevels[unit.get()?.levelPre
 let maxLevel = Computed(@() unit.get()?.maxLevel ?? unitLevels.get().len()) 
 let levelsToMax = Computed(@() maxLevel.get() - (unit.get()?.level ?? 0))
 let needShowWnd = keepref(ComputedImmediate(@() levelsToMax.get() > 0))
+
+let hasFreeLevelsToBuy = Computed(@() activeTutorialId.get() == TUTORIAL_ATTRIBUTES_ID)
 
 let close = @() unitName.set(null)
 
@@ -63,7 +68,10 @@ function wndContent() {
           levelsCfg = unitLevels.get()
         },
         unitInProgress,
-        onClickPurchase))
+        onClickPurchase,
+        selectColor,
+        v.levels == FREE_LEVELS_TO_BUY ? hasFreeLevelsToBuy : Watched(false),
+        v.levels == FREE_LEVELS_TO_BUY ? { key = "attrOneLevelBtn" } : {}))
   })
 }
 

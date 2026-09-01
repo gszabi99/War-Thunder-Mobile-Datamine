@@ -1,16 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { setInterval, clearTimer, deferOnce } = require("dagor.workcycle")
-let { addModalWindow, removeModalWindow, MWP_ALWAYS_TOP } = require("%rGui/components/modalWindows.nut")
-let tutorialWndDefStyle = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let { isTutorialActive, tutorialConfigVersion, getTutorialConfig, stepIdx, WND_UID,
-  nextStep, nextStepByDefaultHotkey, skipStep, getTimeAfterStepStart
-} = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { getBox, incBoxSize, createHighlight, findGoodPos, findGoodArrowPos, sizePosToBox,
-  hasInteractions, getNotInterractPos, findGoodPosX
-} = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
+from "dagor.workcycle" import setInterval, clearTimer, deferOnce
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow, MWP_ALWAYS_TOP
+from "%rGui/tutorial/tutorialWnd/tutorialUtils.nut" import getBox, incBoxSize, createHighlight, findGoodPos,
+  findGoodArrowPos, sizePosToBox, hasInteractions, getNotInterractPos, findGoodPosX
+import "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" as tutorialWndDefStyle
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import isTutorialActive, tutorialConfigVersion,
+  getTutorialConfig, stepIdx, WND_UID, nextStep, nextStepByDefaultHotkey, skipStep, getTimeAfterStepStart
+from "types" import Array
 
 
-let charBestPosOffsetX = hdpxi(330)
+const charBestPosOffsetX = hdpxi(330)
 
 let boxUpdateCount = Watched(0)
 let boxUpdateCountWithStep = Computed(@() boxUpdateCount.get() + stepIdx.get())
@@ -50,14 +49,14 @@ let bgContinueButton = @(hasNextKey) !hasNextKey ? null
 
 function mkArrowLinks(stepData, boxes, style) {
   let { arrowLinks = null } = stepData
-  if (type(arrowLinks) != "array")
+  if (!(arrowLinks instanceof Array))
     return null
 
   let { mkLinkArrow } = style
   let linkBoxes = []
   let linkComps = []
   foreach (link in arrowLinks) {
-    if (type(link) != "array" || link.len() != 2) {
+    if (!(link instanceof Array) || link.len() != 2) {
       logerr($"Bad arrow link in tutorial: {link}. Expected array with length 2.")
       continue
     }

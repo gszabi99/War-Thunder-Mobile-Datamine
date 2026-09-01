@@ -1,9 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let dasRadarHud = load_das("%rGui/radar/radar.das")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
+from "%globalsDarg/screenMath.nut" import scaleArr
 
-let radarColor = 0xFF00FF00
-let radarColorEdit = 0x80008000
+
+let dasRadarHud = load_das("%rGui/radar/radar.das")
+
+const radarColor = 0xFF00FF00
+const radarColorEdit = 0x80008000
 let radarSize = [hdpx(325), hdpx(325)]
 
 let radarHudCtor = @(scale) {
@@ -50,7 +52,7 @@ let radarHudEditView = {
       size = 0
       hplace = ALIGN_RIGHT
       children = {
-        pos = [-hdpx(45), 0]
+        pos = const [-hdpx(45), 0]
         rendObj = ROBJ_TEXT
         color = radarColorEdit
         text = loc("measureUnits/km_dist")

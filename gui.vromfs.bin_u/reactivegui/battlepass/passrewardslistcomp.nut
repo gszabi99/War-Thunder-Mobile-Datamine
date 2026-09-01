@@ -1,25 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { bpCardStyle, bpCardPadding, bpCardGap, bpCardFooterHeight, bpCardHeight, bpCardMargin
-} = require("%rGui/battlePass/bpCardsStyle.nut")
-let { mkRewardPlate, mkRewardPlateVip, mkRewardReceivedMark
-} = require("%rGui/rewards/rewardPlateComp.nut")
-let { textButtonBattle } = require("%rGui/components/textButton.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
-let { REWARD_STYLE_MEDIUM } = require("%rGui/rewards/rewardStyles.nut")
-let { isSingleViewInfoRewardEmpty } = require("%rGui/rewards/rewardViewInfo.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle, bpCardPadding, bpCardGap, bpCardFooterHeight,
+  bpCardHeight, bpCardMargin
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonBattle
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardPlateVip, mkRewardReceivedMark
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM
+from "%rGui/rewards/rewardViewInfo.nut" import isSingleViewInfoRewardEmpty
+from "%rGui/style/gradients.nut" import mkColoredGradientY
+
 
 let rewardBoxSize = bpCardStyle.boxSize
 let emptySlot = { size = array(2, rewardBoxSize) }
 let lockedMarkIconSize = [hdpxi(25), hdpxi(32)]
-let purchBtnHeight = hdpx(60)
+const purchBtnHeight = hdpx(60)
 
 let bgCard = mkColoredGradientY(0xFFC49E4B, 0xFFCB7119)
 
 function markAvailableReward(slot){
-  let defaulScale = 1.25
+  const defaulScale = 1.25
   let widthScale = (defaulScale - 1) / slot
   return{
     key = {}

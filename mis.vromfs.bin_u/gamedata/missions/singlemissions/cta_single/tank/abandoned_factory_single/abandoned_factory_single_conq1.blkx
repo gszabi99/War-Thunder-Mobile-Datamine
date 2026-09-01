@@ -107,7 +107,8 @@
       "country_allies": "ussr",
       "restoreType": "attempts",
       "optionalTakeOff": false,
-      "ctaPenaltyInactive": false
+      "ctaPenaltyInactive": false,
+      "useAIForCollectiveDetection": true
     },
     "spectator_points": {},
     "briefing": {

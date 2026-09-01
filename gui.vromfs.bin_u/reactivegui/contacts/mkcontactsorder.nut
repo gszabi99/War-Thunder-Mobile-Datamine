@@ -1,7 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { isEqual } = require("%sqstd/underscore.nut")
-let { allContacts } = require("%rGui/contacts/contact.nut")
-let { onlineStatus } = require("%rGui/contacts/contactPresence.nut")
+from "%sqstd/underscore.nut" import isEqual
+from "%rGui/contacts/contact.nut" import allContacts
+from "%rGui/contacts/contactPresence.nut" import onlineStatus
+from "types" import Table
+
 
 let priorityByStatus = {
   [true] = 2,
@@ -9,7 +11,7 @@ let priorityByStatus = {
 }
 
 let mkContactsOrderImpl = @(uids) Computed(function(prev) {
-  let uidsArr = type(uids.get()) == "table" ? uids.get().keys() : uids.get()
+  let uidsArr = uids.get() instanceof Table ? uids.get().keys() : uids.get()
   let priorities = {}
   foreach(uid in uidsArr)
     priorities[uid] <- priorityByStatus?[onlineStatus.get()?[uid]] ?? -1

@@ -45,6 +45,10 @@ require daslib/linq_boost public
 
 
 
+
+
+
+
 def private is_ident_byte(c : int) : bool {
     return is_alnum(c) || c == '_'
 }
@@ -110,10 +114,6 @@ def private find_kw_depth0(q : string; kw : string; from : int) : int {
             if (c == '"') { inStr = true; prevSig2 = prevSig; prevSig = c; i++; continue }
             if (c == '(' || c == '[' || c == '{') { depth++; prevSig2 = prevSig; prevSig = c; i++; continue }
             if (c == ')' || c == ']' || c == '}') { depth--; prevSig2 = prevSig; prevSig = c; i++; continue }
-            
-            
-            
-            
             
             let afterPipeTail = prevSig == '>' && (prevSig2 == '|' || prevSig2 == '=' || prevSig2 == '-')
             let atWordStart = is_ident_byte(c) && ((i == 0) || !is_ident_byte(int(arr[i - 1]))) && prevSig != '.' && !afterPipeTail
@@ -234,21 +234,11 @@ def private strip_trailing_keyword(text : string; kw : string) : tuple<string; b
 }
 
 
-
-
-
-
-
 def private build_src(rowType : string; srcText : string; fused : bool) : string {
-    if (rowType == "") return fused ? "each({srcText})" : "({srcText})"
+    if (rowType == "") return fused ? "from_in({srcText})" : "({srcText})"
     if (srcText == "decs") return "from_decs_template(type<{rowType}>)"
     return "from_in({srcText}, type<{rowType}>)"
 }
-
-
-
-
-
 
 
 def private substitute_idents(text : string; subs : table<string; string>) : string {
@@ -320,10 +310,6 @@ def private rewrite_idents(text : string; names : array<string>; prefix : string
 }
 
 
-
-
-
-
 def private mentions_ident(text : string; name : string) : bool {
     var found = false
     let m = length(name)
@@ -379,27 +365,10 @@ def private mentions_ident(text : string; name : string) : bool {
 }
 
 
-
-
-
 let JOIN_TI = "linq_join_ti"
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def private emit_two_source(q : string; nq : int; varName : string; var2Name : string; srcA : string;
+def private emit_two_source(q : string; nq : int; varName : string; var2Name : string; srcA : string;   
                             isJoin : bool; keyA : string; srcBForJoin : string; rowType2 : string;
                             secondIntroPos : int; tailStart : int; firstWhere : int;
                             prog : ProgramPtr; at : LineInfo) : string {
@@ -412,58 +381,49 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
         return "(0)"
     }
     
-    
-    
     let intoPos = find_kw_depth0(q, "into", tailStart)
     if (intoPos >= 0 && !isJoin) {
-        macro_error(prog, at, "linq: 'into' over a second 'from' is not supported — group-join 'into' works after a 'join … on … equals …' clause; query-continuation 'into' works on single-source queries")
+        macro_error(prog, at, "linq: 'into' over a second 'from' is not supported - group-join 'into' works after a 'join ... on ... equals ...' clause; query-continuation 'into' works on single-source queries")
         return "(0)"
     }
     let orderByPos = find_kw_depth0(q, "orderby", tailStart)
     let selectPos = find_kw_depth0(q, "select", tailStart)
     let groupPos = find_kw_depth0(q, "group", tailStart)
     if (selectPos < 0 && groupPos < 0) {
-        macro_error(prog, at, "linq: query must end with a 'select' or 'group … by …' clause")
+        macro_error(prog, at, "linq: query must end with a 'select' or 'group ... by ...' clause")
         return "(0)"
     }
     if (selectPos >= 0 && groupPos >= 0) {
-        macro_error(prog, at, "linq: query cannot have both 'select' and 'group' — they are alternative terminals")
+        macro_error(prog, at, "linq: query cannot have both 'select' and 'group' - they are alternative terminals")
         return "(0)"
     }
     let isGroup = groupPos >= 0
     let termPos = isGroup ? groupPos : selectPos
     
-    
-    
-    
     let postTermInto = find_kw_depth0(q, "into", isGroup ? groupPos + 5 : selectPos + 6)
     if (postTermInto >= 0) {
-        macro_error(prog, at, "linq: query-continuation 'into' after the 'select'/'group' terminal is not supported on a 'join' or multiple-'from' query — it works on single-source queries; a group-join 'into' goes before the terminal (`join … equals … into g select …`)")
+        macro_error(prog, at, "linq: query-continuation 'into' after the 'select'/'group' terminal is not supported on a 'join' or multiple-'from' query - it works on single-source queries; a group-join 'into' goes before the terminal (`join ... equals ... into g select ...`)")
         return "(0)"
     }
     if (isGroup && orderByPos >= 0) {
-        macro_error(prog, at, "linq: 'orderby' before 'group' is not supported — order the groups after a 'select', or drop the 'orderby'")
+        macro_error(prog, at, "linq: 'orderby' before 'group' is not supported - order the groups after a 'select', or drop the 'orderby'")
         return "(0)"
     }
-    
-    
-    
-    
     
     var groupIntoVar = ""
     let groupInto = intoPos >= 0 && intoPos < termPos
     if (groupInto) {
         if (isGroup) {
-            macro_error(prog, at, "linq: 'group' after 'join … into' is not yet supported — 'select' the group (e.g. `select (key, g |> length)`), or use the pipe form")
+            macro_error(prog, at, "linq: 'group' after 'join ... into' is not yet supported - 'select' the group (e.g. `select (key, g |> length)`), or use the pipe form")
             return "(0)"
         }
         if (orderByPos >= 0) {
-            macro_error(prog, at, "linq: 'orderby' after 'join … into g' is not yet supported — the (outer, g) pair can't be carried (g is a non-copyable array); materialize then sort, or use the pipe form")
+            macro_error(prog, at, "linq: 'orderby' after 'join ... into g' is not yet supported - the (outer, g) pair can't be carried (g is a non-copyable array); materialize then sort, or use the pipe form")
             return "(0)"
         }
         let iv = read_ident(q, intoPos + 4)
         if (iv._0 == "") {
-            macro_error(prog, at, "linq: 'join … into' requires a group variable (e.g. `join b in B on … equals … into g select …`)")
+            macro_error(prog, at, "linq: 'join ... into' requires a group variable (e.g. `join b in B on ... equals ... into g select ...`)")
             return "(0)"
         }
         if (iv._0 == JOIN_TI || iv._0 == varName || iv._0 == var2Name) {
@@ -471,7 +431,7 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
             return "(0)"
         }
         if (strip(slice(q, iv._1, termPos)) != "") {
-            macro_error(prog, at, "linq: a 'where' after 'join … into g' is not yet supported — the (outer, g) pair can't be carried; filter with a pre-'join' 'where', or use the pipe form")
+            macro_error(prog, at, "linq: a 'where' after 'join ... into g' is not yet supported - the (outer, g) pair can't be carried; filter with a pre-'join' 'where', or use the pipe form")
             return "(0)"
         }
         groupIntoVar = iv._0
@@ -480,13 +440,10 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
     if (isJoin) {
         let equals2 = find_kw_depth0(q, "equals", tailStart)
         if (equals2 >= 0 && equals2 < termPos) {
-            macro_error(prog, at, "linq: join 'on' supports a single equi-key only — composite keys (`a equals b && c equals d`) need raw SQL")
+            macro_error(prog, at, "linq: join 'on' supports a single equi-key only - composite keys (`a equals b && c equals d`) need raw SQL")
             return "(0)"
         }
     }
-    
-    
-    
     
     var preWheres : array<string>
     var postWheres : array<string>
@@ -516,7 +473,7 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
     }
     let hasPostWhere = !empty(postWheres)
     if (groupInto && hasPostWhere) {
-        macro_error(prog, at, "linq: a 'where' after 'join … into g' is not yet supported — the (outer, g) pair can't be carried; filter with a pre-'join' 'where', or use the pipe form")
+        macro_error(prog, at, "linq: a 'where' after 'join ... into g' is not yet supported - the (outer, g) pair can't be carried; filter with a pre-'join' 'where', or use the pipe form")
         return "(0)"
     }
     
@@ -530,7 +487,7 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
     var correlated = false
     if (isJoin) {
         if (keyA == "" || tail == "") {
-            macro_error(prog, at, "linq: empty join key — expected `on <keyA> equals <keyB>`")
+            macro_error(prog, at, "linq: empty join key - expected `on <keyA> equals <keyB>`")
             return "(0)"
         }
         onLambda = "$({varName}, {var2Name}) => {keyA} == {tail}"
@@ -539,10 +496,6 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
             macro_error(prog, at, "linq: empty source expression after the second 'in'")
             return "(0)"
         }
-        
-        
-        
-        
         
         correlated = mentions_ident(tail, varName)
         if (!correlated) {
@@ -563,7 +516,7 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
             macro_error(prog, at, "linq: 'orderby' supports at most 4 keys (got {length(op.keys)})")
             return "(0)"
         }
-        orderKeys <- op.keys
+        orderKeys <- op.keys   
         orderDescMask = op.descMask
     }
     var projText = ""
@@ -578,14 +531,14 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
         }
         let elem = strip(slice(groupBody, 0, byPos))
         if (elem != varName) {
-            macro_error(prog, at, "linq: 'group' element must be the range variable '{varName}' — element selectors are not yet supported (write `group {varName} by …`)")
+            macro_error(prog, at, "linq: 'group' element must be the range variable '{varName}' - element selectors are not yet supported (write `group {varName} by ...`)")
             return "(0)"
         }
         let gk = strip_trailing_keyword(strip(slice(groupBody, byPos + 2, length(groupBody))), "iterator")
         groupKey = gk._0
         wantIterator = gk._1
         if (groupKey == "") {
-            macro_error(prog, at, "linq: empty 'group … by' key expression")
+            macro_error(prog, at, "linq: empty 'group ... by' key expression")
             return "(0)"
         }
     } else {
@@ -598,31 +551,21 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
         }
     }
     
-    
-    
-    
-    
     if (correlated) {
         if (orderByPos >= 0) {
-            macro_error(prog, at, "linq: 'orderby' over a correlated 'from … from' (flatten) is not supported — the outer row '{varName}' is non-copyable, so the ordered pairs can't be carried; materialize the result then sort, or restructure as a 'join'")
+            macro_error(prog, at, "linq: 'orderby' over a correlated 'from ... from' (flatten) is not supported - the outer row '{varName}' is non-copyable, so the ordered pairs can't be carried; materialize the result then sort, or restructure as a 'join'")
             return "(0)"
         }
         if (isGroup) {
-            macro_error(prog, at, "linq: 'group' over a correlated 'from … from' (flatten) is not supported — the outer row '{varName}' is non-copyable; 'select' the fields you need instead")
+            macro_error(prog, at, "linq: 'group' over a correlated 'from ... from' (flatten) is not supported - the outer row '{varName}' is non-copyable; 'select' the fields you need instead")
             return "(0)"
         }
         for (pred in postWheres) {
             if (mentions_ident(pred, varName)) {
-                macro_error(prog, at, "linq: a post-'from' 'where' over a correlated 'from … from' may reference only the inner range variable '{var2Name}' (it is pushed into the collection before flattening) — referencing the outer '{varName}' would require carrying the non-copyable outer row; filter the outer with a pre-'from' 'where', or restructure")
+                macro_error(prog, at, "linq: a post-'from' 'where' over a correlated 'from ... from' may reference only the inner range variable '{var2Name}' (it is pushed into the collection before flattening) - referencing the outer '{varName}' would require carrying the non-copyable outer row; filter the outer with a pre-'from' 'where', or restructure")
                 return "(0)"
             }
         }
-        
-        
-        
-        
-        
-        
         
         srcB = build_string() $(var sw) {
             sw |> write("$({varName}) => unsafe(each({tail}))")
@@ -635,11 +578,7 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
     let names <- [varName, var2Name]
     let hasOrderBy = orderByPos >= 0
     
-    
-    
     let useTI = !correlated && (hasPostWhere || hasOrderBy || isGroup)
-    
-    
     
     let opName = groupInto ? "_group_join" : (isJoin ? "_join" : (correlated ? "_select_many" : "_cross_join"))
     let onLambdaPart = isJoin ? "{onLambda}, " : ""
@@ -650,15 +589,11 @@ def private emit_two_source(q : string; nq : int; varName : string; var2Name : s
         }
         if (!useTI) {
             
-            
-            
-            
             let rv2 = groupInto ? groupIntoVar : var2Name
             let p1 = mentions_ident(projText, varName) ? varName : "_{varName}"
             let p2 = mentions_ident(projText, rv2) ? rv2 : "_{rv2}"
             w |> write(" |> {opName}({srcB}, {onLambdaPart}$({p1}, {p2}) => {projText})")
         } else {
-            
             
             w |> write(" |> {opName}({srcB}, {onLambdaPart}{carryLambda})")
             for (pred in postWheres) {
@@ -743,13 +678,6 @@ def private transpile_join(q : string; nq : int; varName : string; rowType : str
 }
 
 
-
-
-
-
-
-
-
 def private transpile_cross(q : string; nq : int; varName : string; rowType : string;
                             srcStart : int; secondFromPos : int; prog : ProgramPtr; at : LineInfo) : string {
     if (find_kw_depth0(q, "from", secondFromPos + 4) >= 0) {
@@ -805,20 +733,11 @@ def private next_clause_kw(q : string; from : int) : int {
 }
 
 
-
-
-
-
-
-
-
-
 def private extract_lets(q : string; bodyStart : int; rangeVar : string;
                          prog : ProgramPtr; at : LineInfo) : tuple<bool; string> {
     var subs : table<string; string>        
     var cuts : array<tuple<int; int; string>>   
     let srcEnd = next_clause_kw(q, bodyStart)   
-    
     
     let joinPos = find_kw_depth0(q, "join", bodyStart)
     let secondFromPos = find_kw_depth0(q, "from", bodyStart)
@@ -862,10 +781,8 @@ def private extract_lets(q : string; bodyStart : int; rangeVar : string;
             return (false, "")
         }
         
-        
-        
         if (rhsEnd >= length(q)) {
-            macro_error(prog, at, "linq: 'let {name}' has no following clause — a 'let' must precede the 'select'/'group' terminal")
+            macro_error(prog, at, "linq: 'let {name}' has no following clause - a 'let' must precede the 'select'/'group' terminal")
             return (false, "")
         }
         if (!empty(subs)) { rhs = substitute_idents(rhs, subs) }   
@@ -874,7 +791,6 @@ def private extract_lets(q : string; bodyStart : int; rangeVar : string;
         searchFrom = rhsEnd
     }
     if (empty(subs)) return (true, q)
-    
     
     let body = build_string() $(var w) {
         var active : table<string; string>
@@ -891,12 +807,9 @@ def private extract_lets(q : string; bodyStart : int; rangeVar : string;
 }
 
 
-
-
-
 def private rewrite_group_var(text : string; gname : string) : string {
     return build_string() $(var w) {
-        peek_data(text) $(arr) {
+        peek_data(text) $(arr) {   
             let n = length(arr)
             var i = 0
             var inStr = false   
@@ -941,8 +854,6 @@ def private rewrite_group_var(text : string; gname : string) : string {
                     while (j < n && is_ident_byte(int(arr[j]))) { j++ }
                     let word = slice(text, i, j)
                     if (prevSig != '.' && word == gname) {
-                        
-                        
                         
                         let dotFollows = j < n && int(arr[j]) == '.'
                         var keyEnd = -1
@@ -998,16 +909,15 @@ struct private QueryStage {
 
 
 
-def private parse_one_stage(q : string; nq : int; start : int; rangeVar : string; isGroupVar : bool;
+def private parse_one_stage(q : string; nq : int; start : int; rangeVar : string; isGroupVar : bool;   
                             prog : ProgramPtr; at : LineInfo; var stage : QueryStage) : bool {
     stage.rangeVar = rangeVar
     stage.isGroupVar = isGroupVar
     
-    
     let selectPos = find_kw_depth0(q, "select", start)
     let groupPos = find_kw_depth0(q, "group", start)
     if (selectPos < 0 && groupPos < 0) {
-        macro_error(prog, at, "linq: query must end with a 'select' or 'group … by …' clause")
+        macro_error(prog, at, "linq: query must end with a 'select' or 'group ... by ...' clause")
         return false
     }
     let isGroup = groupPos >= 0 && (selectPos < 0 || groupPos < selectPos)
@@ -1018,14 +928,10 @@ def private parse_one_stage(q : string; nq : int; start : int; rangeVar : string
     let intoPos = find_kw_depth0(q, "into", termKwEnd)
     let termEnd = intoPos >= 0 ? intoPos : nq
     if (otherPos >= 0 && otherPos < termEnd) {
-        macro_error(prog, at, "linq: query cannot have both 'select' and 'group' — they are alternative terminals")
+        macro_error(prog, at, "linq: query cannot have both 'select' and 'group' - they are alternative terminals")
         return false
     }
     stage.isGroup = isGroup
-    
-    
-    
-    
     
     var wherePos = find_kw_depth0(q, "where", start)
     while (wherePos >= 0 && wherePos < termPos) {
@@ -1041,7 +947,7 @@ def private parse_one_stage(q : string; nq : int; start : int; rangeVar : string
     let orderByPos = find_kw_depth0(q, "orderby", start)
     stage.hasOrderBy = orderByPos >= 0 && orderByPos < termPos
     if (isGroup && stage.hasOrderBy) {
-        macro_error(prog, at, "linq: 'orderby' before 'group' is not supported — order the groups after a 'select', or drop the 'orderby'")
+        macro_error(prog, at, "linq: 'orderby' before 'group' is not supported - order the groups after a 'select', or drop the 'orderby'")
         return false
     }
     if (stage.hasOrderBy) {
@@ -1072,14 +978,14 @@ def private parse_one_stage(q : string; nq : int; start : int; rangeVar : string
         }
         let elem = strip(slice(groupBody, 0, byPos))
         if (elem != rangeVar) {
-            macro_error(prog, at, "linq: 'group' element must be the range variable '{rangeVar}' — element selectors are not yet supported (write `group {rangeVar} by …`)")
+            macro_error(prog, at, "linq: 'group' element must be the range variable '{rangeVar}' - element selectors are not yet supported (write `group {rangeVar} by ...`)")
             return false
         }
         let gk = strip_trailing_keyword(strip(slice(groupBody, byPos + 2, length(groupBody))), "iterator")
         let groupKey = gk._0
         stage.wantIterator = gk._1
         if (groupKey == "") {
-            macro_error(prog, at, "linq: empty 'group … by' key expression")
+            macro_error(prog, at, "linq: empty 'group ... by' key expression")
             return false
         }
         stage.groupKey = isGroupVar ? rewrite_group_var(groupKey, rangeVar) : groupKey
@@ -1096,12 +1002,12 @@ def private parse_one_stage(q : string; nq : int; start : int; rangeVar : string
     }
     if (intoPos >= 0) {
         if (stage.wantIterator) {
-            macro_error(prog, at, "linq: 'iterator' must be the final clause — it cannot precede an 'into' continuation")
+            macro_error(prog, at, "linq: 'iterator' must be the final clause - it cannot precede an 'into' continuation")
             return false
         }
         let iv = read_ident(q, intoPos + 4)
         if (iv._0 == "") {
-            macro_error(prog, at, "linq: 'into' requires a continuation range variable (e.g. `… into g select …`)")
+            macro_error(prog, at, "linq: 'into' requires a continuation range variable (e.g. `... into g select ...`)")
             return false
         }
         if (iv._0 == JOIN_TI) {
@@ -1109,7 +1015,7 @@ def private parse_one_stage(q : string; nq : int; start : int; rangeVar : string
             return false
         }
         if (strip(slice(q, iv._1, nq)) == "") {
-            macro_error(prog, at, "linq: 'into {iv._0}' has no continuation — add a 'where'/'orderby'/'select'/'group' after it")
+            macro_error(prog, at, "linq: 'into {iv._0}' has no continuation - add a 'where'/'orderby'/'select'/'group' after it")
             return false
         }
         stage.intoVar = iv._0
@@ -1123,7 +1029,7 @@ def private parse_one_stage(q : string; nq : int; start : int; rangeVar : string
 
 
 
-def private transpile_query(query : string; prog : ProgramPtr; at : LineInfo) : string {
+def private transpile_query(query : string; prog : ProgramPtr; at : LineInfo) : string {   
     var q = strip(strip_query_comments(query))
     let fromWord = read_ident(q, 0)
     if (fromWord._0 != "from") {
@@ -1156,15 +1062,12 @@ def private transpile_query(query : string; prog : ProgramPtr; at : LineInfo) : 
         return "(0)"
     }
     
-    
     let srcStart = inPos + 2
-    
     
     let lets = extract_lets(q, srcStart, varName, prog, at)
     if (!lets._0) return "(0)"
     q = lets._1
     let nq = length(q)
-    
     
     let joinPos = find_kw_depth0(q, "join", srcStart)
     let secondFromPos = find_kw_depth0(q, "from", srcStart)
@@ -1183,8 +1086,6 @@ def private transpile_query(query : string; prog : ProgramPtr; at : LineInfo) : 
         return "(0)"
     }
     let srcBuild = build_src(rowType, srcText, true)
-    
-    
     
     var stages : array<QueryStage>
     var curVar = varName
@@ -1231,19 +1132,31 @@ def private transpile_query(query : string; prog : ProgramPtr; at : LineInfo) : 
 [call_macro(name="from_in")]
 class FromInMacro : AstCallMacro {
     
-    
-    
-    
-    
     def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : ExpressionPtr {
-        if (length(call.arguments) != 2) {
-            macro_error(prog, call.at, "from_in(src, type<Row>): expected 2 arguments")
-            return call
+        
+        if (length(call.arguments) != 1 && length(call.arguments) != 2) {
+            macro_error(prog, call.at, "from_in(src[, type<Row>]): expected 1 or 2 arguments")
+            return null
         }
         let srcT = call.arguments[0]._type
-        if (srcT == null) {
+        if (srcT == null || srcT.isAutoOrAlias) {
             macro_error(prog, call.at, "from_in: source type is not inferred")
-            return call
+            return null
+        }
+        if (length(call.arguments) == 1) {
+            
+            if (srcT.isGoodTableType) {
+                if (srcT.secondType == null || srcT.secondType.baseType == Type.tVoid)
+                    return qmacro(unsafe($c("keys")($e(call.arguments[0]))))
+                return qmacro(unsafe($c("each_kv")($e(call.arguments[0]))))
+            }
+            return qmacro(unsafe($c("each")($e(call.arguments[0]))))
+        }
+        
+        
+        if (srcT.isGoodTableType) {
+            macro_error(prog, call.at, "linq: a table source takes no row-type annotation - write `from kv in <tab>` (kv.key / kv.value)")
+            return null
         }
         
         if (srcT.structType != null && srcT.structType.name == "SqlRunner"
@@ -1260,25 +1173,13 @@ class FromInMacro : AstCallMacro {
                 && srcT.firstType.structType.name == "JsonValue"
                 && srcT.firstType.structType._module != null && srcT.firstType.structType._module.name == "json")
             return qmacro(unsafe($c("from_json")($e(call.arguments[0]), $e(call.arguments[1]))))
-        macro_error(prog, call.at, "linq: unsupported source for `from c : Row in <src>` — expected a SQL runner, an XML node, or a JSON value (use `in decs` for decs, or an array for the untyped `from c in <arr>` form)")
-        return call
+        macro_error(prog, call.at, "linq: unsupported source for `from c : Row in <src>` - expected a SQL runner, an XML node, or a JSON value (use `in decs` for decs; arrays and tables use the untyped `from c in <src>` form)")
+        return null
     }
 }
 
 [reader_macro(name=linq)]
 class LinqDasReader : AstReaderMacro {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     def override accept(prog : ProgramPtr; mod : Module?; var expr : ExprReader?; ch : int; info : LineInfo) : bool {
         append(expr.sequence, ch)

@@ -1,21 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
 from "math" import ceil
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { getLootboxName, getLootboxPreviewBg } = require("%appGlobals/config/lootboxPresentation.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { headerGradientBg, headerMargin, headerHeightInSafeArea } = require("%rGui/components/gradientDefComps.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow, scrollArrowImageVerySmall } = require("%rGui/components/scrollArrows.nut")
-let { registerScene, setSceneBg, setSceneBgFallback } = require("%rGui/navState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { previewLootbox, isLootboxPreviewOpen, closeLootboxPreview } = require("%rGui/shop/lootboxPreviewState.nut")
-let { getLootboxRewardsAutoLast, lootboxImageWithTimer, mkReward } = require("%rGui/shop/lootboxPreviewContent.nut")
-let { REWARD_STYLE_TINY_SMALL_GAP, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM
-} = require("%rGui/rewards/rewardStyles.nut")
+from "%appGlobals/config/lootboxPresentation.nut" import getLootboxName, getLootboxPreviewBg
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/gradientDefComps.nut" import headerGradientBg, headerMargin, headerHeightInSafeArea
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageVerySmall
+from "%rGui/navState.nut" import registerScene, setSceneBg, setSceneBgFallback
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_TINY_SMALL_GAP, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM
+from "%rGui/shop/lootboxPreviewContent.nut" import getLootboxRewardsAutoLast, lootboxImageWithTimer, mkReward
+from "%rGui/shop/lootboxPreviewState.nut" import previewLootbox, isLootboxPreviewOpen, closeLootboxPreview
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
-let infoBlockWidth = hdpx(500)
+const infoBlockWidth = hdpx(500)
 let rewardsMaxWidth = saSize[0] - infoBlockWidth - headerMargin
 let rewardsMaxHeight = saSize[1] - headerHeightInSafeArea - headerMargin
 let rewardsGradientSize = [headerMargin, saBorders[1]]
@@ -23,7 +22,7 @@ let rewardsGradientSize = [headerMargin, saBorders[1]]
 let infoFont = fontSmallShaded
 let infoTextHeight = calc_str_box("A", infoFont)[1]
 
-let defaultBgImage = "ui/images/event_bg.avif"
+const defaultBgImage = "ui/images/event_bg.avif"
 let bgImage = keepref(Computed(@() getLootboxPreviewBg(previewLootbox.get()?.name) ?? { bg = defaultBgImage}))
 
 let pannableArea = verticalPannableAreaCtor(rewardsMaxHeight + rewardsGradientSize[0] + rewardsGradientSize[1],
@@ -160,7 +159,7 @@ let lootboxPreviewWnd = @() {
   animations = wndSwitchAnim
 }
 
-let sceneId = "lootboxPreviewWnd"
+const sceneId = "lootboxPreviewWnd"
 registerScene(sceneId, lootboxPreviewWnd, closeLootboxPreview, isLootboxPreviewOpen)
 setSceneBgFallback(sceneId, defaultBgImage)
 setSceneBg(sceneId, bgImage.get().bg, bgImage.get()?.bgColor)

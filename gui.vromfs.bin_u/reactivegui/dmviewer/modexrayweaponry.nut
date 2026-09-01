@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_game_params_blk } = require("blkGetters")
-let { get_option_torpedo_dive_depth_auto, get_option_torpedo_dive_depth } = require("weaponryOptions")
-let { doesLocTextExist } = require("dagor.localize")
-let { round, round_by_value } = require("%sqstd/math.nut")
-let { blkOptFromPath, eachBlock } = require("%sqstd/datablock.nut")
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
-let { compareWeaponFunc, S_SHIP, S_BOAT, S_SUBMARINE } = require("%globalScripts/modeXrayLib.nut")
-let { getUnitAttrValRaw } = require("%rGui/dmViewer/modeXrayAttr.nut")
+from "blkGetters" import get_game_params_blk
+from "dagor.localize" import doesLocTextExist
+from "weaponryOptions" import get_option_torpedo_dive_depth_auto, get_option_torpedo_dive_depth
+from "%sqstd/datablock.nut" import blkOptFromPath, eachBlock
+from "%sqstd/math.nut" import round, round_by_value
+from "%globalScripts/modeXrayLib.nut" import compareWeaponFunc, S_SHIP, S_BOAT, S_SUBMARINE
+from "%rGui/dmViewer/modeXrayAttr.nut" import getUnitAttrValRaw
 
-let CANNON_CALIBER_MIN = 15
+
+const CANNON_CALIBER_MIN = 15
 let isCaliberCannon = @(v) v >= CANNON_CALIBER_MIN
 
 local torpedoSpeedMult = null
@@ -21,9 +21,16 @@ function getTorpedoSpeedMult() {
   return torpedoSpeedMult
 }
 
+function appendWeaponOnce(arr, v) {
+  foreach (obj in arr)
+    if (compareWeaponFunc(obj, v))
+      return
+  arr.append(v)
+}
+
 let collectWeapons = @(weaponsArr, blk)
   eachBlock(blk, @(weapon) (weapon?.blk != null && !weapon?.dummy)
-    ? appendOnce(weapon, weaponsArr, false, compareWeaponFunc)
+    ? appendWeaponOnce(weaponsArr, weapon)
     : null)
 
 function getCommonWeapons(unitBlk, _primaryMod) {
@@ -40,7 +47,7 @@ function getUnitWeaponsList(commonData) {
     if (unitBlk != null) {
       collectWeapons(weaponBlkList, unitBlk?.commonWeapons)
       eachBlock(unitBlk?.WeaponSlots, @(wSlot) collectWeapons(weaponBlkList, wSlot?.WeaponPreset))
-      eachBlock(unitBlk?.modifications, @(mod) collectWeapons(weaponBlkList, mod?.effects.commonWeaponss))
+      eachBlock(unitBlk?.modifications, @(mod) collectWeapons(weaponBlkList, mod?.effects.commonWeapons))
     }
     unitDataCache.weaponBlkList <- weaponBlkList
   }

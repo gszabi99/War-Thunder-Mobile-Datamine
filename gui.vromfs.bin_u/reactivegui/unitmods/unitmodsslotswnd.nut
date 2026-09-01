@@ -1,65 +1,61 @@
 from "%globalsDarg/darg_library.nut" import *
-let { HangarCameraControl } = require("wt.behaviors")
-let { deferOnce } = require("dagor.workcycle")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { modsInProgress, buy_unit_mod, registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { mkGamercardUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
-let { unitModSlotsOpenCount, closeUnitModsSlotsWnd, curUnit, weaponSlots, curSlotIdx, curWeapons,
-  curWeaponIdx, curWeapon, equippedWeaponsBySlots, equippedWeaponId, setCurSlotIdx, setCurBeltsWeaponIdx,
-  curWeaponMod, curWeaponModName, curWeaponReqLevel, curWeaponIsLocked, curWeaponIsPurchased,
-  unequipCurWeapon, unequipCurWeaponFromWings, curSlotUnitModCostCfg, beltWeapons, curBeltsWeaponIdx, isOwn, getConflictsList,
-  curWeaponBeltsOrdered, curBeltIdx, curBelt, equippedBeltId, equipCurBelt, getEquippedBelt, curUnseenMods,
-  chosenBelts, mkWeaponBelts, equippedWeaponIdCount, curBeltWeapon, overloadInfo, fixCurPresetOverload,
-  isUnitModSlotsAttached, equipBelt, equipWeaponList, equipWeaponListWithMirrors, mirrorIdx,
-  isEmptyBomber, setDefaultSecondaryWeapon
-} = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { loadUnitWeaponSlots, mustSlotHaveDefault } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { equipCurWeaponMsg, customEquipCurWeaponMsg } = require("%rGui/unitMods/equipSlotWeaponMsgBox.nut")
-let { getModCost } = require("%rGui/unitMods/unitModsState.nut")
-let { getWeaponShortNameWithCount, getBulletBeltShortName, getWeaponShortNamesList
-} = require("%rGui/weaponry/weaponsVisual.nut")
-let { mkSlotWeapon, mkWeaponImage, mkWeaponDesc, mkEmptyText, weaponTotalH, weaponGap,
-  mkSlotText, mkBeltImage, mkSlotBelt, mkConflictsBorder, eqIconSize
-} = require("%rGui/unitMods/slotWeaponCard.nut")
-let { mkBeltDesc, mkSlotWeaponDesc } = require("%rGui/unitMods/unitModsSlotsDesc.nut")
-let { textButtonPrimary, textButtonCommon, textButtonPurchase, iconButtonCommon
-} = require("%rGui/components/textButton.nut")
-let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
-let { defButtonMinWidth, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { mkSpinner } = require("%rGui/components/spinner.nut")
-let { tabsGap, bgColor, tabExtraWidth, mkTabs } = require("%rGui/components/tabs.nut")
-let panelBg = require("%rGui/components/panelBg.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { openMsgBoxPurchase } = require("%rGui/shop/msgBoxPurchase.nut")
-let { openUnitWeaponPresetWnd } = require("%rGui/unit/unitWeaponPresetsWnd.nut")
-let { PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { userlogTextColor, badTextColor2, commonTextColor } = require("%rGui/style/stdColors.nut")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { mkGradientCtorDoubleSideX, mkGradientCtorDoubleSideY } = require("%rGui/style/gradients.nut")
-let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { mkUnseenModIndicator, mkVerticalPannableArea, verticalGradientLine,
+from "dagor.workcycle" import deferOnce
+from "wt.behaviors" import HangarCameraControl
+from "%sqstd/string.nut" import utf8ToUpper
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import modsInProgress, buy_unit_mod, registerHandler
+import "%rGui/attributes/unitAttr/buyUnitLevelWnd.nut" as buyUnitLevelWnd
+from "%rGui/components/buttonStyles.nut" import defButtonMinWidth, defButtonHeight
+from "%rGui/components/msgBox.nut" import openMsgBox
+import "%rGui/components/panelBg.nut" as panelBg
+from "%rGui/components/spinner.nut" import mkSpinner
+from "%rGui/components/tabs.nut" import tabsGap, bgColor, tabExtraWidth, mkTabs
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon, textButtonPurchase, iconButtonCommon
+from "%rGui/mainMenu/gamercard.nut" import mkGamercardUnitCampaign
+from "%rGui/navState.nut" import registerScene
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, mkBqPurchaseInfo
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
+from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideX, mkGradientCtorDoubleSideY
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import userlogTextColor, badTextColor2, commonTextColor
+from "%rGui/unit/components/textButtonWithLevel.nut" import textButtonVehicleLevelUp
+from "%rGui/unit/unitWeaponPresetsWnd.nut" import openUnitWeaponPresetWnd
+from "%rGui/unitMods/equipSlotWeaponMsgBox.nut" import equipCurWeaponMsg, customEquipCurWeaponMsg
+from "%rGui/unitMods/modsComps.nut" import mkUnseenModIndicator, mkVerticalPannableArea, verticalGradientLine,
   mkCarouselPannableArea, catsPanelBg
-} = require("%rGui/unitMods/modsComps.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { carouselScrollHandler } = require("%rGui/unitMods/unitModsScroll.nut")
-let { blocksLineSize, blocksPadding, blocksGap, tabW, tabH, contentGamercardGap, slotsBlockMargin, catsBlockHeight
-} = require("%rGui/unitMods/unitModsConst.nut")
+from "%rGui/unitMods/slotWeaponCard.nut" import mkSlotWeapon, mkWeaponImage, mkWeaponDesc, mkEmptyText, weaponTotalH,
+  weaponGap, mkSlotText, mkBeltImage, mkSlotBelt, mkConflictsBorder, eqIconSize
+from "%rGui/unitMods/unitModsConst.nut" import blocksLineSize, blocksPadding, blocksGap, tabW, tabH,
+  contentGamercardGap, slotsBlockMargin, catsBlockHeight
+from "%rGui/unitMods/unitModsScroll.nut" import carouselScrollHandler
+from "%rGui/unitMods/unitModsSlotsDesc.nut" import mkBeltDesc, mkSlotWeaponDesc
+from "%rGui/unitMods/unitModsSlotsState.nut" import unitModSlotsOpenCount, closeUnitModsSlotsWnd, curUnit,
+  weaponSlots, curSlotIdx, curWeapons, curWeaponIdx, curWeapon, equippedWeaponsBySlots, equippedWeaponId, setCurSlotIdx,
+  setCurBeltsWeaponIdx, curWeaponMod, curWeaponModName, curWeaponReqLevel, curWeaponIsLocked, curWeaponIsPurchased,
+  unequipCurWeapon, unequipCurWeaponFromWings, curSlotUnitModCostCfg, beltWeapons, curBeltsWeaponIdx, isOwn,
+  getConflictsList, curWeaponBeltsOrdered, curBeltIdx, curBelt, equippedBeltId, equipCurBelt, getEquippedBelt,
+  curUnseenMods, chosenBelts, mkWeaponBelts, equippedWeaponIdCount, curBeltWeapon, overloadInfo, fixCurPresetOverload,
+  isUnitModSlotsAttached, equipBelt, equipWeaponList, equipWeaponListWithMirrors, mirrorIdx, isEmptyBomber,
+  setDefaultSecondaryWeapon
+from "%rGui/unitMods/unitModsState.nut" import getModCost
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitWeaponSlots, mustSlotHaveDefault
+from "%rGui/weaponry/weaponsVisual.nut" import getWeaponShortNameWithCount, getBulletBeltShortName,
+  getWeaponShortNamesList
 
 
 let slotPadding = [hdpx(10), hdpx(30)]
-let headerHeight = hdpx(70)
+const headerHeight = hdpx(70)
 let headerHeightWithGap = headerHeight + tabsGap
 let weaponHWithGap = tabH + tabsGap
 let maxSlotsNoScroll = ((catsBlockHeight - tabsGap - 2 * headerHeightWithGap) / weaponHWithGap).tointeger()
-let descWidth = hdpx(600)
+const descWidth = hdpx(600)
 let maxOverloadInfoWidth = min(hdpx(1650), saSize[0] - descWidth - tabW - tabExtraWidth - 4 * panelBg.padding - 2 * blocksGap - blocksLineSize)
 
-let vertIndent = hdpx(100)
-let vertIndentThroughHeader = vertIndent + headerHeight / 2
+const vertIndent = hdpx(100)
+const vertIndentThroughHeader = vertIndent + headerHeight / 2
 
 let pageWidth = saSize[0] + saBorders[0] - tabW - blocksLineSize - blocksGap
 let pageScrollXMiddle = blocksGap / pageWidth

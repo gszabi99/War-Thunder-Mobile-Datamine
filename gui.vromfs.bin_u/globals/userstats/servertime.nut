@@ -1,10 +1,11 @@
-let { Watched } = require("frp")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
-let { get_time_msec } = require("dagor.time")
-let { setInterval } = require("dagor.workcycle")
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setInterval
+from "frp" import Watched
+from "%sqstd/globalState.nut" import hardPersistWatched
 
-let gameStartServerTimeMsec = sharedWatched("gameStartServerTimeMsec", @() 0)
-let lastReceivedServerTime = sharedWatched("lastReceivedServerTime", @() 0)
+
+let gameStartServerTimeMsec = hardPersistWatched("gameStartServerTimeMsec", 0)
+let lastReceivedServerTime = hardPersistWatched("lastReceivedServerTime", 0)
 
 let serverTime = Watched(0)
 let isServerTimeValid = Watched(false)

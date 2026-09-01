@@ -1,37 +1,34 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/options/optCtrlType.nut" import *
-let { 
-  OPT_TARGET_TRACKING, OPT_SHOW_MOVE_DIRECTION, OPT_SHOW_MOVE_DIRECTION_IN_SIGHT, OPT_ARMOR_PIERCING_FIXED,
-  OPT_AUTO_ZOOM_TANK, OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_TANK_ALTERNATIVE_CONTROL_TYPE,
-  OPT_TANK_AUTO_TURNER, OPT_CAMERA_SENSE_TANK, OPT_FREE_CAMERA_TANK,
-  OPT_SHOW_RETICLE, OPT_SHOW_GRASS_IN_TANK_VISION, USEROPT_ENABLE_AUTO_HEALING,
+from "%rGui/options/guiOptions.nut" import  OPT_TARGET_TRACKING,
+  OPT_SHOW_MOVE_DIRECTION, OPT_SHOW_MOVE_DIRECTION_IN_SIGHT, OPT_ARMOR_PIERCING_FIXED, OPT_AUTO_ZOOM_TANK,
+  OPT_CAMERA_SENSE_IN_ZOOM_TANK, OPT_TANK_ALTERNATIVE_CONTROL_TYPE, OPT_TANK_AUTO_TURNER, OPT_CAMERA_SENSE_TANK,
+  OPT_FREE_CAMERA_TANK, OPT_SHOW_RETICLE, OPT_SHOW_GRASS_IN_TANK_VISION, USEROPT_ENABLE_AUTO_HEALING,
   OPT_TANK_LEAVE_ZOOM_ON_KILL, mkOptionValue
-} = require("%rGui/options/guiOptions.nut")
-let { deferOnce } = require("dagor.workcycle")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle, set_enable_auto_healing, get_enable_auto_healing,
-  set_auto_zoom, CAM_TYPE_NORMAL_TANK, CAM_TYPE_BINOCULAR_TANK, CAM_TYPE_FREE_TANK
-} = require("controlsOptions")
-let { has_option_tank_alternative_control } = require("%appGlobals/permissions.nut")
-let { sendSettingChangeBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { firstLoginTime } = require("%appGlobals/pServer/campaign.nut")
-let { isLoggedIn, isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { hudScoreList, hudScoreTankRaw, hudScoreTank } = require("%rGui/hud/myScores.nut")
-let { cameraSenseSlider } =  require("%rGui/options/options/controlsOptions.nut")
-let { groundMoveCtrlTypesList, currentTankMoveCtrlType, ctrlTypeToString
-} = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
-let { gearDownOnStopButtonList, currentGearDownOnStopButtonTouch, showGearDownControl
-} = require("%rGui/options/chooseMovementControls/gearDownControl.nut")
-let { openChooseMovementControls
-} = require("%rGui/options/chooseMovementControls/chooseMovementControlsState.nut")
-let { WALKER } = require("%appGlobals/unitConst.nut")
-let { unitType } = require("%rGui/hudState.nut")
+from "%rGui/options/optCtrlType.nut" import *
+from "blkGetters" import get_local_custom_settings_blk
+from "controlsOptions" import set_should_target_tracking, set_armor_piercing_fixed, set_show_reticle,
+  set_enable_auto_healing, get_enable_auto_healing, set_auto_zoom, CAM_TYPE_NORMAL_TANK, CAM_TYPE_BINOCULAR_TANK,
+  CAM_TYPE_FREE_TANK
+from "dagor.workcycle" import deferOnce
+from "%appGlobals/loginState.nut" import isLoggedIn, isSettingsAvailable
+from "%appGlobals/pServer/bqClient.nut" import sendSettingChangeBqEvent
+from "%appGlobals/pServer/campaign.nut" import firstLoginTime
+from "%appGlobals/permissions.nut" import has_option_tank_alternative_control
+from "%appGlobals/unitConst.nut" import WALKER
+from "%rGui/hud/myScores.nut" import hudScoreList, hudScoreTankRaw, hudScoreTank
+from "%rGui/hudState.nut" import unitType
+from "%rGui/options/chooseMovementControls/chooseMovementControlsState.nut" import openChooseMovementControls
+from "%rGui/options/chooseMovementControls/gearDownControl.nut" import gearDownOnStopButtonList,
+  currentGearDownOnStopButtonTouch, showGearDownControl
+from "%rGui/options/chooseMovementControls/groundMoveControlType.nut" import groundMoveCtrlTypesList,
+  currentTankMoveCtrlType, ctrlTypeToString
+from "%rGui/options/options/controlsOptions.nut" import cameraSenseSlider
 
 
-let OPTION_VERSION_KEY = "tankControlsOptionsVersion"
-let ACTUAL_VERSION = 1
+const OPTION_VERSION_KEY = "tankControlsOptionsVersion"
+const ACTUAL_VERSION = 1
 
-let autoZoomDefaultTrueStart = 1699894800 
+const autoZoomDefaultTrueStart = 1699894800 
 let sendChange = @(id, v) sendSettingChangeBqEvent(id, "tanks", v)
 
 let validate = @(val, list) list.contains(val) ? val : list[0]

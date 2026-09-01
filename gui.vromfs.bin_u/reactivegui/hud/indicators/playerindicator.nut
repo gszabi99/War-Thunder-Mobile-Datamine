@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let DataBlock = require("DataBlock")
-let { AIR, HELICOPTER, TANK, SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
+import "DataBlock" as DataBlock
+from "%appGlobals/unitConst.nut" import AIR, HELICOPTER, TANK, SHIP, BOAT, SUBMARINE
 
-let DEF_TITLE_SHOW_DIST = 1000.0
-let COMMON = "common"
+
+const DEF_TITLE_SHOW_DIST = 1000.0
+const COMMON = "common"
 
 let cfgNameToCfgType = {
   indicatorsForPlanes = AIR,

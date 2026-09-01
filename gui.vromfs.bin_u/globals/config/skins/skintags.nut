@@ -1,9 +1,10 @@
-let { loc } = require("dagor.localize")
+from "dagor.localize" import loc
 
-let NO_TAG = ""
-let WINTER = "winter"
-let DESERT = "desert"
-let FOREST = "forest"
+
+const NO_TAG = ""
+const WINTER = "winter"
+const DESERT = "desert"
+const FOREST = "forest"
 
 let tagsLocId = {
   [NO_TAG] = "skins/noTag"

@@ -1,15 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { DEBR_TAB_MPSTATS, DEBR_TAB_QUESTS, DEBR_TAB_CAMPAIGN, DEBR_TAB_UNIT, DEBR_TAB_SCORES
-} = require("%rGui/debriefing/debriefingState.nut")
-let { tabFinalPauseTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
-let mkDebriefingWndTabMpStats = require("%rGui/debriefing/debriefingWndTabMpStats.nut")
-let debriefingWndTabQuests = require("%rGui/debriefing/debriefingWndTabQuests.nut")
-let mkDebriefingWndTabResearch = require("%rGui/debriefing/debriefingWndTabResearch.nut")
-let mkDebriefingWndTabUnit = require("%rGui/debriefing/debriefingWndTabUnit.nut")
-let mkDebriefingWndTabUnitSet = require("%rGui/debriefing/debriefingWndTabUnitSet.nut")
-let mkDebriefingWndTabScores = require("%rGui/debriefing/debriefingWndTabScores.nut")
-let { getUnitsSet } = require("%rGui/debriefing/debrUtils.nut")
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%rGui/debriefing/debrUtils.nut" import getUnitsSet
+from "%rGui/debriefing/debriefingState.nut" import DEBR_TAB_MPSTATS, DEBR_TAB_QUESTS, DEBR_TAB_CAMPAIGN,
+  DEBR_TAB_UNIT, DEBR_TAB_SCORES
+from "%rGui/debriefing/debriefingWndConsts.nut" import tabFinalPauseTime
+import "%rGui/debriefing/debriefingWndTabMpStats.nut" as mkDebriefingWndTabMpStats
+import "%rGui/debriefing/debriefingWndTabQuests.nut" as debriefingWndTabQuests
+import "%rGui/debriefing/debriefingWndTabResearch.nut" as mkDebriefingWndTabResearch
+import "%rGui/debriefing/debriefingWndTabScores.nut" as mkDebriefingWndTabScores
+import "%rGui/debriefing/debriefingWndTabUnit.nut" as mkDebriefingWndTabUnit
+import "%rGui/debriefing/debriefingWndTabUnitSet.nut" as mkDebriefingWndTabUnitSet
+
 
 let tabsCfgOrdered = [
   {

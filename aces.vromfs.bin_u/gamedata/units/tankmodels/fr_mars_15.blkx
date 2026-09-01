@@ -1916,19 +1916,23 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 420.0,
-      "maxRPM": 2400.0,
+      "horsePowers": 400.0,
+      "maxRPM": 2900.0,
       "minRPM": 600.0
     },
     "mechanics": {
       "maxBrakeForce": 100000.0,
       "driveGearRadius": 0.3,
-      "mainGearRatio": 0.92,
-      "sideGearRatio": 5.0,
+      "mainGearRatio": 5.55,
+      "sideGearRatio": 1.0,
       "alternativeGearControl": 3.0,
       "gearRatios": {
         "ratio": [
+          -0.787,
+          -1.0,
+          -1.5,
           -2.4,
+          -3.6,
           -6.7,
           0.0,
           6.7,

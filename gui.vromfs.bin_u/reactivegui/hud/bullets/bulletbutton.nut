@@ -1,19 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { touchButtonSize, borderColorPushed } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { currentBulletName, toggleNextBullet, bulletsInfo, nextBulletName, mainBulletInfo, extraBulletInfo,
-  mainBulletCount, extraBulletCount, withExtraPrimary, nextBulletIdx
-} = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
-let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { getFontToFitWidth } = require("%rGui/globals/fontUtils.nut")
-let { getAmmoTypeShortText } = require("%rGui/weaponry/weaponsVisual.nut")
-let { hudVeilGrayColorFade, hudPearlGrayColor, hudLightBlackColor } = require("%rGui/style/hudColors.nut")
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%globalsDarg/fontScale.nut" import getScaledFont
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkGamepadHotkey
+from "%rGui/globals/fontUtils.nut" import getFontToFitWidth
+from "%rGui/hud/bullets/hudUnitBulletsState.nut" import currentBulletName, toggleNextBullet, bulletsInfo,
+  nextBulletName, mainBulletInfo, extraBulletInfo, mainBulletCount, extraBulletCount, withExtraPrimary, nextBulletIdx
+from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize, borderColorPushed
+from "%rGui/style/hudColors.nut" import hudVeilGrayColorFade, hudPearlGrayColor, hudLightBlackColor
+from "%rGui/weaponry/weaponsVisual.nut" import getAmmoTypeShortText
+
 
 let colorActive = hudPearlGrayColor
 let colorInactive = hudVeilGrayColorFade
-let borderWidth = hdpxi(1)
-let borderWidthCurrent = hdpxi(3)
+const borderWidth = hdpxi(1)
+const borderWidthCurrent = hdpxi(3)
 let imgSizeBase = (touchButtonSize * 0.75).tointeger()
 
 function onToggleBullet(isNext, isCurrent) {
@@ -75,7 +75,7 @@ let bulletStatusFont = fontCurrent.fontSize < fontNext.fontSize ? fontCurrent : 
 let bulletStatus = @(isNext, isCurrent, scale) {
   rendObj = ROBJ_TEXT
   hplace = ALIGN_CENTER
-  pos = [0, ph(100)]
+  pos = const [0, ph(100)]
   padding = const [hdpx(6), 0, 0, 0]
   text = isCurrent ? loc("hint/currentBullet/short")
     : isNext ? loc("hint/nextBullet/short")
@@ -99,7 +99,7 @@ function bulletButton(bulletInfo, bulletCount, scale, idx) {
       bulletName(name.get(), scale)
       bulletStatus(isNext.get(), isCurrent.get(), scale)
       mkGamepadShortcutImage("ID_NEXT_BULLET_TYPE",
-        { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [pw(50), ph(50)] },
+        { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(50), ph(50)] },
         scale)
       @() bulletCount.get() < 0 ? { watch = bulletCount } : {
         watch = bulletCount

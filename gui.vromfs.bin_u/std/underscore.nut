@@ -8,16 +8,28 @@
 
 
 
+from "types" import Table, Array, String, Function, Integer, Float, Null, Bool, Class, Generator, UserData, Thread, WeakRef
 
 
 
 
-let isTable = @(v) type(v)=="table"
-let isArray = @(v) type(v)=="array"
-let isString = @(v) type(v)=="string"
-let isFunction = @(v) type(v)=="function"
 
-function isDataBlock(obj) {
+let isTable = @(v) v instanceof Table
+let isArray = @(v) v instanceof Array
+let isString = @(v) v instanceof String
+let isFunction = @(v) v instanceof Function
+let isInteger = @(v) v instanceof Integer
+let isFloat = @(v) v instanceof Float
+let isNull = @(v) v instanceof Null
+let isBool = @(v) v instanceof Bool
+
+let isInstance = @(v) type(v) == "instance"
+let isGenerator = @(v) v instanceof Generator
+let isUserdata = @(v) v instanceof UserData
+let isThread = @(v) v instanceof Thread
+let isWeakref = @(v) v instanceof WeakRef
+
+function isDataBlock(obj): bool {
   
   if (obj?.paramCount!=null && obj?.blockCount != null)
     return true
@@ -27,7 +39,7 @@ function isDataBlock(obj) {
 let callableTypes = const ["function","table","instance"].totable()
 let recursivetypes = const ["table","array","class"].totable()
 
-function isCallable(v) {
+function isCallable(v): bool {
   let typ = typeof v
   return typ=="function" || (typ in callableTypes && (v.getfuncinfos() != null))
 }
@@ -47,7 +59,7 @@ function mkIteratee(func){
 
 
 
-function funcCheckArgsNum(func, numRequired){
+function funcCheckArgsNum(func, numRequired): bool {
   let infos = func.getfuncinfos()
   let params = infos.parameters
   local plen = params.len() - 1
@@ -75,7 +87,7 @@ function funcCheckArgsNum(func, numRequired){
 
 
 
-function partition(list, predicate){
+function partition(list, predicate): array {
   let ok = []
   let not_ok = []
   predicate = mkIteratee(predicate)
@@ -121,7 +133,7 @@ function pluck(list, propertyName){
 
 
 
-function invert(table) {
+function invert(table): table {
   let res = {}
   foreach (key, val in table)
     res[val] <- key
@@ -133,7 +145,7 @@ function invert(table) {
 
 
 
-function tablesCombine(tbl1, tbl2, func=null, defValue = null, addParams = true) {
+function tablesCombine(tbl1, tbl2, func=null, defValue = null, addParams = true): table {
   let res = {}
   if (func == null)
     func = function (_val1, val2) {return val2}
@@ -147,7 +159,7 @@ function tablesCombine(tbl1, tbl2, func=null, defValue = null, addParams = true)
   return res
 }
 
-function isEqual(val1, val2, customIsEqual={}){
+function isEqual(val1, val2, customIsEqual = const {}){
   if (val1 == val2)
     return true
   let valType = type(val1)
@@ -170,9 +182,14 @@ function isEqual(val1, val2, customIsEqual={}){
   }
 
   if (valType == "instance") {
-    foreach(classRef, func in customIsEqual)
-      if (val1 instanceof classRef && val2 instanceof classRef)
+    if ("isEqual" in val1)
+      return val1.isEqual(val2)
+    foreach(classRef, func in customIsEqual) {
+      if (classRef instanceof Function && classRef(val1) && classRef(val2))
         return func(val1, val2)
+      if (classRef instanceof Class && val1 instanceof classRef && val2 instanceof classRef)
+        return func(val1, val2)
+    }
     return false
   }
 
@@ -183,7 +200,35 @@ function isEqual(val1, val2, customIsEqual={}){
 
 
 
-function unique(list, hashfunc=null, replace=false){
+
+function isEmpty(val, customIsEmpty = const {}) {
+  if (!val)
+    return true
+  let valType = type(val)
+  if (valType == "string" || valType == "table" || valType == "array")
+    return val.len() == 0
+  if (valType == "instance") {
+    if ("isEmpty" in val)
+      return val.isEmpty()
+    if (isDataBlock(val))
+      return val.paramCount() && val.blockCount()
+    if ("len" in val && val.len instanceof Function)
+      return val.len()==0
+    foreach(classRef, func in customIsEmpty) {
+      if (classRef instanceof Function && classRef(val))
+        return func(val)
+      if (classRef instanceof Class && val instanceof classRef)
+        return func(val)
+    }
+  }
+  return false
+}
+
+
+
+
+
+function unique(list, hashfunc=null, replace=false): array {
   let values = {}
 
   let res = []
@@ -221,7 +266,7 @@ function range(m, n=null, step=1) {
 }
 
 
-function isEqualSimple(list1, list2, compareFunc=null) {
+function isEqualSimple(list1, list2, compareFunc=null): bool {
   compareFunc = compareFunc ?? @(a,b) a!=b
   if (list1 == list2)
     return true
@@ -235,7 +280,7 @@ function isEqualSimple(list1, list2, compareFunc=null) {
 }
 
 
-function arrayByRows(arr, columns) {
+function arrayByRows(arr, columns): array {
   let res = []
   for(local i = 0; i < arr.len(); i += columns)
     res.append(arr.slice(i, i + columns))
@@ -246,7 +291,7 @@ function arrayByRows(arr, columns) {
 
 
 
-function chunk(list, count) {
+function chunk(list, count): array {
   if (count == null || count < 1) return []
   let result = []
   local i = 0
@@ -264,7 +309,7 @@ function chunk(list, count) {
 
 
 
-function indexBy(list, iteratee) {
+function indexBy(list, iteratee): table {
   let res = {}
   if (isString(iteratee)){
     foreach (val in list)
@@ -371,10 +416,10 @@ function flatten(list, depth = -1, level=0){
 
 function do_in_scope(obj, doFn){
   assert(
-    (type(obj)=="instance" || type(obj)=="table") &&  "__enter__" in obj && "__exit__" in obj,
+    (type(obj)=="instance" || obj instanceof Table) &&  "__enter__" in obj && "__exit__" in obj,
     "to support 'do_in_scope' object passed as first argument should implement '__enter__' and '__exit__' methods"
   )
-  assert(type(doFn) == "function", "function should be passed as second argument")
+  assert(doFn instanceof Function, "function should be passed as second argument")
 
   let scope = obj.__enter__()
   let defErr = {}
@@ -396,7 +441,7 @@ function do_in_scope(obj, doFn){
   return res
 }
 
-function insertGap(list, gap){
+function insertGap(list, gap): array {
   let res = []
   let len = list.len()
   foreach (idx, l in list){
@@ -424,6 +469,7 @@ return freeze({
   invert
   tablesCombine
   isEqual
+  isEmpty
   isEqualSimple
   prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur
   funcCheckArgsNum
@@ -435,12 +481,6 @@ return freeze({
   unique_override
   arrayByRows
   chunk
-  isTable
-  isArray
-  isString
-  isFunction
-  isCallable
-  isDataBlock
   indexBy
   deep_clone
   deep_update
@@ -449,4 +489,19 @@ return freeze({
   insertGap
   getSubArray
   getSubTable
+  isInteger
+  isFloat
+  isTable
+  isArray
+  isString
+  isFunction
+  isCallable
+  isDataBlock
+  isNull
+  isBool
+  isInstance
+  isGenerator
+  isUserdata
+  isThread
+  isWeakref
 })

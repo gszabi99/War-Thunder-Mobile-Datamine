@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkColoredGradientY } = require("%rGui/style/gradients.nut")
+from "%rGui/style/gradients.nut" import mkColoredGradientY
+
 
 return freeze({
   rendObj = ROBJ_IMAGE

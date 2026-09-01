@@ -1,10 +1,12 @@
 from "%appGlobals/unitConst.nut" import *
 from "%globalScripts/logs.nut" import *
 from "blkGetters" import get_unittags_blk
+from "%sqstd/datablock.nut" import blk2SquirrelObjNoArrays, isDataBlock, eachBlock
 from "%sqstd/functools.nut" import memoize
-let { blk2SquirrelObjNoArrays, isDataBlock, eachBlock } = require("%sqstd/datablock.nut")
-let { isReadyToFullLoad, isLoginRequired, isLoginStarted } = require("%appGlobals/loginState.nut")
-let { unitClassFontIcons } = require("%appGlobals/unitPresentation.nut")
+from "%appGlobals/loginState.nut" import isReadyToFullLoad, isLoginRequired, isLoginStarted
+from "%appGlobals/unitPresentation.nut" import unitClassFontIcons
+from "types" import Table
+
 
 let unitTagsCfg = {}
 
@@ -19,14 +21,14 @@ function gatherUnitTagsCfg(unitName) {
   res.tags <- (res?.tags ?? {}).filter(@(v) v)
   res.unitType <- calcUnitTypeFromTags(blk)
 
-  let blockName = "bullets"
+  const blockName = "bullets"
   let bulletsBlk = blk?.bullets ?? blk?.Shop.weapons
 
   if (isDataBlock(bulletsBlk)) {
     res.bulletsOrder <- {}
     if (blockName not in res)
       res[blockName] <- res?.Shop.weapons ?? {}
-    res.bullets = res.bullets.filter(@(v) type(v) == "table")
+    res.bullets = res.bullets.filter(@(v) v instanceof Table)
     foreach (id, bList in res.bullets) {
       if ("default" in bList)
         bList[""] <- bList.$rawdelete("default")

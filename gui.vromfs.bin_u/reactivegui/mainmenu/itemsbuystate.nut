@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { specialEventGamercardItems } = require("%rGui/event/eventState.nut")
-let { itemsOrder } = require("%appGlobals/itemsState.nut")
-let { isItemAllowedForUnit } = require("%rGui/unit/unitItemAccess.nut")
-let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
+from "%appGlobals/itemsState.nut" import itemsOrder
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%rGui/event/eventState.nut" import specialEventGamercardItems
+from "%rGui/unit/hangarUnit.nut" import hangarUnit
+from "%rGui/unit/unitItemAccess.nut" import isItemAllowedForUnit
+
 
 let isOpenedItemWnd = mkWatched(persist, "isOpenedItemWnd", false)
 let closeItemWnd = @() isOpenedItemWnd.set(false)

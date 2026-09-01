@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { chat_set_mode, chat_on_text_update, chat_on_send, CHAT_MODE_ALL, CHAT_MODE_TEAM, CHAT_MODE_SQUAD
-} = require("chat")
-let { isInBattle, isInMpBattle } = require("%appGlobals/clientState/clientState.nut")
-let { addEvent } = require("%rGui/hudHints/killLogState.nut")
-let mkChatLogText = require("%rGui/chat/mkChatLogText.nut")
+from "chat" import chat_set_mode, chat_on_text_update, chat_on_send, CHAT_MODE_ALL, CHAT_MODE_TEAM, CHAT_MODE_SQUAD
+from "console" import register_command
+from "%appGlobals/clientState/clientState.nut" import isInBattle, isInMpBattle
+import "%rGui/chat/mkChatLogText.nut" as mkChatLogText
+from "%rGui/hudHints/killLogState.nut" import addEvent
 
-let MAX_LOG_SIZE = 100
-let CMD_MSG_PREFIX = ":cmd:"
+
+const MAX_LOG_SIZE = 100
+const CMD_MSG_PREFIX = ":cmd:"
 
 let chatModes = [
   CHAT_MODE_ALL

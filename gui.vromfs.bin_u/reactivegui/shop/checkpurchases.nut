@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
+from "dagor.time" import get_time_msec
+from "eventbus" import eventbus_subscribe
+from "%appGlobals/loginState.nut" import isLoggedIn
+import "%appGlobals/menuAutoRefreshTimer.nut" as menuAutoRefreshTimer
+from "%appGlobals/pServer/pServerApi.nut" import check_purchases
 
-let { eventbus_subscribe } = require("eventbus")
-let { get_time_msec } = require("dagor.time")
-let { check_purchases } = require("%appGlobals/pServer/pServerApi.nut")
-let menuAutoRefreshTimer = require("%appGlobals/menuAutoRefreshTimer.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
 let { refreshOnWindowActivate, refreshIfWindowActive } = menuAutoRefreshTimer({
   refresh = check_purchases

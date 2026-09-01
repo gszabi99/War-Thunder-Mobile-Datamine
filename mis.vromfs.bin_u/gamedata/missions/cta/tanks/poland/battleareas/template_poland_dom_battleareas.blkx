@@ -16,20 +16,40 @@
     }
   },
   "imports": {
-    "import_record": {
-      "file": "gameData/missions/cta/tanks/poland/tank_spawns/template_poland_Dom_tank_spawns.blk",
-      "importAreas": true,
-      "importUnits": true,
-      "importTriggers": true,
-      "importMissionObjectives": true,
-      "importWayPoints": true,
-      "showAreas": true,
-      "showUnits": true,
-      "showTriggers": true,
-      "showMissionObjectives": true,
-      "showWayPoints": true,
-      "excludes": {}
-    }
+    "import_record": [
+      {
+        "file": "gameData/missions/cta/tanks/poland/tank_spawns/template_poland_Dom_tank_spawns.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/cta/tanks/poland/battleareas/template_poland_battlearea_exclude.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
   },
   "triggers": {
     "isCategory": true,
@@ -73,7 +93,8 @@
           "squad_members": [
             "t1_killarea_block01",
             "t1_killarea_block02",
-            "t1_killarea_block03"
+            "t1_killarea_block03",
+            "t1_killarea_block04"
           ]
         }
       },
@@ -105,7 +126,8 @@
           "squad_members": [
             "t2_killarea_block01",
             "t2_killarea_block02",
-            "t2_killarea_block03"
+            "t2_killarea_block03",
+            "t2_killarea_block04"
           ]
         }
       }
@@ -139,7 +161,7 @@
       "objLayer": 4,
       "props": {}
     },
-    "t2_killarea_block02": {
+    "t1_killarea_block01": {
       "type": "Cylinder",
       "tm": [
         [
@@ -158,9 +180,9 @@
           150.0
         ],
         [
-          1677.06,
+          2366.07,
           8.04999,
-          2053.89
+          1926.01
         ]
       ],
       "objLayer": 0,
@@ -220,7 +242,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "t1_killarea_block01": {
+    "t2_killarea_block02": {
       "type": "Cylinder",
       "tm": [
         [
@@ -239,9 +261,36 @@
           150.0
         ],
         [
-          2366.07,
+          1677.06,
           8.04999,
-          1926.01
+          2053.89
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_killarea_block03": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          150.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          150.0
+        ],
+        [
+          2376.11,
+          8.04999,
+          2204.86
         ]
       ],
       "objLayer": 0,
@@ -274,13 +323,13 @@
       "objLayer": 0,
       "props": {}
     },
-    "t1_killarea_block03": {
-      "type": "Cylinder",
+    "t1_killarea_block04": {
+      "type": "Box",
       "tm": [
         [
-          150.0,
+          0.00012207,
           0.0,
-          0.0
+          1200.0
         ],
         [
           0.0,
@@ -288,17 +337,44 @@
           0.0
         ],
         [
+          -400.0,
           0.0,
-          0.0,
-          150.0
+          0.00004069
         ],
         [
-          2376.11,
-          8.04999,
-          2204.86
+          2471.9,
+          7.8,
+          2031.35
         ]
       ],
-      "objLayer": 0,
+      "objLayer": 4,
+      "props": {}
+    },
+    "t2_killarea_block04": {
+      "type": "Box",
+      "tm": [
+        [
+          0.00012207,
+          0.0,
+          1200.0
+        ],
+        [
+          0.0,
+          100.0,
+          0.0
+        ],
+        [
+          -400.0,
+          0.0,
+          0.00004069
+        ],
+        [
+          1539.65,
+          7.8,
+          2031.35
+        ]
+      ],
+      "objLayer": 4,
       "props": {}
     }
   },

@@ -1,27 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
+from "%sqstd/string.nut" import utf8ToUpper
 
-let bgImage = "!ui/images/help/help_parts_ship.avif"
+
+const bgImage = "!ui/images/help/help_parts_ship.avif"
 let bgSize = [3282, 1041]
 
-let imgSize = hdpxi(32)
+const imgSize = hdpxi(32)
 let lineWidth = evenPx(4)
-let borderWidth = hdpx(2)
-let blockPadding = hdpx(10)
+const borderWidth = hdpx(2)
+const blockPadding = hdpx(10)
 let pointSize = lineWidth + 2 * hdpxi(3)
-let offsetX = 30
-let bottomRowY = 846
-let topRowY = 260
+const offsetX = 30
+const bottomRowY = 846
+const topRowY = 260
 let adaptiveFont = isWidescreen ? fontTiny : fontVeryTiny
-let fillColor = 0x8015191C
-let maxWidth = hdpx(430)
+const fillColor = 0x8015191C
+const maxWidth = hdpx(430)
 
 let mkSizeByParent = @(size) [pw(100.0 * size[0] / bgSize[0]), ph(100.0 * size[1] / bgSize[1])]
 let mkLines = @(lines) lines.map(@(v, i) 100.0 * v / bgSize[i % 2])
 
 let mkIcon = @(img) {
-  size = [imgSize, imgSize]
-  margin = [0, 0, 0, 0.2 * imgSize]
+  size = const [imgSize, imgSize]
+  margin = const [0, 0, 0, 0.2 * imgSize]
   rendObj = ROBJ_IMAGE
   image = Picture($"{img}:{imgSize}:{imgSize}")
   keepAspect = KEEP_ASPECT_FIT
@@ -47,8 +48,8 @@ let mkCol = @(children) {
   children
 }
 
-let turretY1 = 590
-let turretY2 = topRowY
+const turretY1 = 590
+const turretY2 = topRowY
 let turretHint = {
   header = "help/mainTurrets"
   color = 0xFFA8A3FF
@@ -58,16 +59,16 @@ let turretHint = {
     ])
 }
 
-let ammoY1 = 740
-let ammoY2 = 605
+const ammoY1 = 740
+const ammoY2 = 605
 let ammoHint = {
   header = "help/ship/ammo_storage"
   color = 0xFFC958CD
   content = mkRow([mkText(loc("help/explosion_damage")), mkIcon("ui/gameuiskin#dmg_ship_explosion.svg")])
 }
 
-let elevatorY1 = 665
-let elevatorY2 = 415
+const elevatorY1 = 665
+const elevatorY2 = 415
 let elevatorHint = {
   header = "dmg_msg_short/ship_elevator"
   color = 0xFFF94984
@@ -246,7 +247,7 @@ function makeScreen() {
     color = 0xFF000000
     children = {
       size = [sw(100), sw(100).tofloat() / bgSize[0] * bgSize[1]]
-      pos = [0, -sh(1.5)]
+      pos = const [0, -sh(1.5)]
       rendObj = ROBJ_IMAGE
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER

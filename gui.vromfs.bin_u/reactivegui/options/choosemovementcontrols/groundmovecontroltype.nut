@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { OPT_TANK_MOVEMENT_CONTROL, OPT_WALKER_MOVEMENT_CONTROL, mkOptionValue } = require("%rGui/options/guiOptions.nut")
+from "%rGui/options/guiOptions.nut" import OPT_TANK_MOVEMENT_CONTROL, OPT_WALKER_MOVEMENT_CONTROL, mkOptionValue
+
 
 let groundMoveCtrlTypesList = ["stick_static", "stick", "arrows"]
 let currentTankMoveCtrlType = mkOptionValue(OPT_TANK_MOVEMENT_CONTROL, null,

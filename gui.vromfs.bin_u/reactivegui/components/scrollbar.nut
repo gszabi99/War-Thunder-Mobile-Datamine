@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
+from "types" import Array
 
-let minKnobSizePart = 0.005
+const minKnobSizePart = 0.005
 
 let defStyle = {
   scrollbarWidth = hdpxi(10)
@@ -143,7 +144,7 @@ function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
   let isVertical = orientation == O_VERTICAL
 
   let rootBhv = [Behaviors.WheelScroll, Behaviors.ScrollEvent]
-  if (type(rootBase?.behavior) == "array")
+  if (rootBase?.behavior instanceof Array)
     rootBhv.extend(rootBase.behavior)
   else if (rootBase?.behavior != null)
     rootBhv.append(rootBase.behavior)
@@ -201,7 +202,7 @@ function makeHVScrolls(content, options = {}) {
   let { rootBase = defStyle.rootBase, scrollHandler = ScrollHandler() } = options
 
   let rootBhv = [Behaviors.WheelScroll, Behaviors.ScrollEvent]
-  if (type(rootBase?.behavior) == "array")
+  if (rootBase?.behavior instanceof Array)
     rootBhv.extend(rootBase.behavior)
   else if (rootBase?.behavior != null)
     rootBhv.append(rootBase.behavior)

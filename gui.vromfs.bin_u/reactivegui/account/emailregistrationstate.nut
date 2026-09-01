@@ -1,26 +1,27 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { defer, resetTimeout, clearTimer } = require("dagor.workcycle")
-let { register_command } = require("console")
-let { getPlayerSsoShortTokenAsync, YU2_OK, renewToken, get_player_tags, get_authenticated_url_sso
-} = require("auth_wt")
-let { object_to_json_string } = require("json")
-let logGuest = log_with_prefix("[GUEST] ")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { is_nswitch } = require("%sqstd/platform.nut")
-let { can_link_to_gaijin_account } = require("%appGlobals/permissions.nut")
-let { authTags, isLoginByGajin, isLoggedIn } = require("%appGlobals/loginState.nut")
-let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { isInLoadingScreen, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { windowActive } = require("%appGlobals/windowState.nut")
-let { accountLink } = require("%rGui/contacts/contactLists.nut")
-let { isContactsReceived } = require("%rGui/contacts/contactsState.nut")
-let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { isInMenuNoModals } = require("%rGui/mainMenu/mainMenuState.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+from "auth_wt" import getPlayerSsoShortTokenAsync, YU2_OK, renewToken, get_player_tags, get_authenticated_url_sso
+from "console" import register_command
+from "dagor.workcycle" import defer, resetTimeout, clearTimer
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "json" import object_to_json_string
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/platform.nut" import is_nswitch
+from "%appGlobals/clientState/clientState.nut" import isInLoadingScreen, isInDebriefing
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%appGlobals/loginState.nut" import authTags, isLoginByGajin, isLoggedIn
+from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
+from "%appGlobals/permissions.nut" import can_link_to_gaijin_account
+from "%appGlobals/windowState.nut" import windowActive
+from "%rGui/contacts/contactLists.nut" import accountLink
+from "%rGui/contacts/contactsState.nut" import isContactsReceived
+from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import isTutorialActive
 
-let AUTH_TAG_REQUEST_TIME = 60
-let MAX_ATTEMPTS_TO_UPDATE_TAGS = 3
+
+let logGuest = log_with_prefix("[GUEST] ")
+
+const AUTH_TAG_REQUEST_TIME = 60
+const MAX_ATTEMPTS_TO_UPDATE_TAGS = 3
 
 let isGuestLoginBase = Computed(@() authTags.get().contains("guestlogin")
   || authTags.get().contains("firebaselogin"))

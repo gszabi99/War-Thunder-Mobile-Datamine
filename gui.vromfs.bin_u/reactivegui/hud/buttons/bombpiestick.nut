@@ -1,58 +1,58 @@
 from "%globalsDarg/darg_library.nut" import *
-let { playSound } = require("sound_wt")
-let { get_mission_time } = require("mission")
-let { playHapticPattern } = require("hapticVibration")
-let { lowerAircraftCamera } = require("camera_control")
-let { TouchScreenStick } = require("wt.behaviors")
-let { radToDeg } = require("%sqstd/math_ex.nut")
-let { atan2, abs } = require("math")
-let { Point2 } = require("dagor.math")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { BombsState, hasBombs } = require("%rGui/hud/airState.nut")
-let { defShortcutOvr }  = require("%rGui/hud/buttons/hudButtonsPkg.nut")
-let { mkCircleProgressBgWeapon, mkBorderPlane, mkCircleGlare, mkBtnImage, mkCountTextLeft, mkCircleBg,
-  circleBtnPlaneEditViewCtor, mkBtnBg
-}  = require("%rGui/hud/buttons/circleTouchHudButtons.nut")
-let { mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { allShortcutsUp } = require("%rGui/controls/shortcutsMap.nut")
-let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
-let { getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT } = require("%rGui/options/guiOptions.nut")
-let { HAPT_SHOOT_ITEM } = require("%rGui/hud/hudHaptic.nut")
-let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { updateActionBarDelayed } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { btnBgStyle, imageColor, imageDisabledColor } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { isHudPrimaryStyle } = require("%rGui/options/options/hudStyleOptions.nut")
-let { hudWhiteColor, hudSmokyGreyColor, hudVeilGrayColorFade, hudDarkGrayColor, hudLightBlackColor } = require("%rGui/style/hudColors.nut")
+from "camera_control" import lowerAircraftCamera
+from "dagor.math" import Point2
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "hapticVibration" import playHapticPattern
+from "math" import atan2, abs
+from "mission" import get_mission_time
+from "sound_wt" import playSound
+from "wt.behaviors" import TouchScreenStick
+from "%sqstd/math_ex.nut" import radToDeg
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut, setShortcutOn, setShortcutOff
+from "%rGui/controls/disabledControls.nut" import mkIsControlDisabled
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage
+from "%rGui/controls/shortcutsMap.nut" import allShortcutsUp
+from "%rGui/hud/actionBar/actionBarState.nut" import updateActionBarDelayed
+from "%rGui/hud/airState.nut" import BombsState, hasBombs
+from "%rGui/hud/buttons/circleTouchHudButtons.nut" import mkCircleProgressBgWeapon, mkBorderPlane, mkCircleGlare,
+  mkBtnImage, mkCountTextLeft, mkCircleBg, circleBtnPlaneEditViewCtor, mkBtnBg
+from "%rGui/hud/buttons/hudButtonsPkg.nut" import defShortcutOvr
+from "%rGui/hud/hudHaptic.nut" import HAPT_SHOOT_ITEM
+from "%rGui/hud/hudTouchButtonStyle.nut" import btnBgStyle, imageColor, imageDisabledColor
+from "%rGui/options/guiOptions.nut" import getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT
+from "%rGui/options/options/hudStyleOptions.nut" import isHudPrimaryStyle
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudSmokyGreyColor, hudVeilGrayColorFade, hudDarkGrayColor,
+  hudLightBlackColor
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
-let BOMB_STICK_HOLDING = 0x01
-let BOMB_STICK_ACTIVE = 0x02
+const BOMB_STICK_HOLDING = 0x01
+const BOMB_STICK_ACTIVE = 0x02
 let emptyWithBackground = hudVeilGrayColorFade
 let background = hudDarkGrayColor
 
 let touchMargin = sh(2.5).tointeger()
-let squareLimitCalcError = hdpx(1)
-let buttonSize = hdpxi(120)
-let buttonSizeRadius = buttonSize / 2
+const squareLimitCalcError = hdpx(1)
+const buttonSize = hdpxi(120)
+const buttonSizeRadius = buttonSize / 2
 let buttonImgSize = (0.65 * buttonSize + 0.5).tointeger()
 let disabledColor = hudSmokyGreyColor
-let HOLDING_ANIM_DURATION = 0.1
+const HOLDING_ANIM_DURATION = 0.1
 
 let oneBombShortcutId = "ID_BOMBS"
-let seriesBombShortcutId = "ID_BOMBS_SERIES"
-let oneBombImg = "ui/gameuiskin#hud_bomb.svg"
-let seriesBombImg = "ui/gameuiskin#hud_bomb_multiple.svg"
+const seriesBombShortcutId = "ID_BOMBS_SERIES"
+const oneBombImg = "ui/gameuiskin#hud_bomb.svg"
+const seriesBombImg = "ui/gameuiskin#hud_bomb_multiple.svg"
 let startAnimTrigger = $"{oneBombShortcutId}_START_TRIGGER"
 let endAnimTrigger = $"{oneBombShortcutId}_END_TRIGGER"
 
 let getAngle = @(x, y) radToDeg(atan2(x, y))
 
-let seriesButtonX = hdpx(100)
-let seriesButtonY = hdpx(100)
-let borderAddAndle = 30
-let distanceBetweenButtonsMultiplier = 1.25
-let backgroundPadding = hdpx(12)
+const seriesButtonX = hdpx(100)
+const seriesButtonY = hdpx(100)
+const borderAddAndle = 30
+const distanceBetweenButtonsMultiplier = 1.25
+const backgroundPadding = hdpx(12)
 
 function useShortcut(shortcutId) {
   toggleShortcut(shortcutId)

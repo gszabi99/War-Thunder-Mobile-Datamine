@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { loadUnitWeaponSlots, loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitWeaponSlots, loadUnitBulletsChoice
+
 
 function mkBattleResultUnitWeaponry(unitName) {
   let weaponPresets = {}

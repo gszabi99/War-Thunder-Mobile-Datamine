@@ -24,7 +24,8 @@
       "retryWaitTime": 4000,
       "curlConnectionTimeout": 10,
       "curlProcessingTimeout": 20,
-      "fastModeTimeout": 3
+      "fastModeTimeout": 3,
+      "vromRequestTimeout": 30
     }
   },
   "_common": {
@@ -107,7 +108,6 @@
   },
   "wtm-dev": {
     "appPerm": 72,
-    "matchServer": "match-dev-wtm-im-ru-01.warthunder.com:7852",
     "useTamVoice": true,
     "circuitPostfix": "-wtm-dev",
     "queryTimeoutMs": 180000,
@@ -122,6 +122,9 @@
     "zendeskApiUploadsURL": "https://support.gaijin.net/api/v2/uploads.json?filename={0}",
     "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
     "giftsURL": "https://api-gotest.gaijinent.com/user_gift.php",
+    "matching": {
+      "server": "wss://match-wtm-non-prod-lw-nl-01.warthunder.com:8080"
+    },
     "androidExitOnANR": {
       "APP_CMD_INIT_WINDOW": true,
       "APP_CMD_TERM_WINDOW": true
@@ -130,6 +133,9 @@
       "APP_CMD_INIT_WINDOW": true,
       "APP_CMD_WINDOW_RESIZED": true,
       "APP_CMD_WINDOW_REDRAW_NEEDED": true
+    },
+    "syncVroms": {
+      "mandatorySync": true
     },
     "contentUpdater": {
       "strictVersionCheck": false,
@@ -143,17 +149,17 @@
     },
     "inventory": {
       "servers": {
-        "url": "https://common-char-nightly-lw-nl-01.gaijin.net:3443/char"
+        "url": "https://inventory-nightly-01.gaijin.net:3443/char"
       }
     },
     "contacts": {
       "servers": {
-        "url": "https://common-char-nightly-lw-nl-01.gaijin.net:4443/json"
+        "url": "https://contact-nightly-01.gaijin.net:4443/json"
       }
     },
     "userstat": {
       "servers": {
-        "url": "https://common-char-nightly-lw-nl-01.gaijin.net:5443/char"
+        "url": "https://userstat-nightly-01.gaijin.net:5443/char"
       }
     },
     "nickserver": {
@@ -163,18 +169,17 @@
     },
     "profile_server": {
       "servers": {
-        "url": "https://common-char-nightly-lw-nl-01.gaijin.net:6443/json-rpc"
+        "url": "https://profile-nightly-01.gaijin.net:6443/json-rpc"
       }
     },
     "cloud_server": {
       "servers": {
-        "url": "https://common-char-nightly-lw-nl-01.gaijin.net:18443/char"
+        "url": "https://cloud-nightly-01.gaijin.net:18443/char"
       }
     }
   },
   "wtm-staging": {
     "appPerm": 73,
-    "matchServer": "match-dev-wtm-im-ru-01.warthunder.com:7853",
     "useTamVoice": true,
     "circuitPostfix": "-wtm-stable",
     "queryTimeoutMs": 180000,
@@ -187,6 +192,9 @@
     "zendeskApiUploadsURL": "https://support.gaijin.net/api/v2/uploads.json?filename={0}",
     "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
     "giftsURL": "https://api.gaijinent.com/user_gift.php",
+    "matching": {
+      "server": "wss://match-wtm-non-prod-lw-nl-01.warthunder.com:8085"
+    },
     "contentUpdater": {
       "shouldLogToCrashlytics": true,
       "flag": [
@@ -206,24 +214,24 @@
     "inventory": {
       "servers": {
         "url": [
-          "https://inventory-staging-sv-lx-134.gaijin.net:443/char",
-          "https://inventory-staging-sv-lx-135.gaijin.net:443/char"
+          "https://inventory-staging-01.gaijin.net:8443/char",
+          "https://inventory-staging-02.gaijin.net:8443/char"
         ]
       }
     },
     "contacts": {
       "servers": {
         "url": [
-          "https://contact-staging-sv-lx-136.gaijin.net:443/json",
-          "https://contact-staging-sv-lx-137.gaijin.net:443/json"
+          "https://contact-staging-01.gaijin.net:7443/json",
+          "https://contact-staging-02.gaijin.net:7443/json"
         ]
       }
     },
     "userstat": {
       "servers": {
         "url": [
-          "https://userstat-staging-sv-lx-132.gaijin.net:443/char",
-          "https://userstat-staging-sv-lx-133.gaijin.net:443/char"
+          "https://userstat-staging-01.gaijin.net:9443/char",
+          "https://userstat-staging-02.gaijin.net:9443/char"
         ]
       }
     },
@@ -235,8 +243,8 @@
     "profile_server": {
       "servers": {
         "url": [
-          "https://profile-staging-sv-lx-136.gaijin.net:10443/json-rpc",
-          "https://profile-staging-sv-lx-137.gaijin.net:10443/json-rpc"
+          "https://profile-staging-01.gaijin.net:10443/json-rpc",
+          "https://profile-staging-02.gaijin.net:10443/json-rpc"
         ]
       }
     },
@@ -251,7 +259,6 @@
   },
   "wtm-stable": {
     "appPerm": 50074,
-    "matchServer": "match-dev-wtm-im-ru-01.warthunder.com:7854",
     "useTamVoice": true,
     "circuitPostfix": "-wtm-stable",
     "queryTimeoutMs": 180000,
@@ -264,6 +271,9 @@
     "zendeskApiUploadsURL": "https://support.gaijin.net/api/v2/uploads.json?filename={0}",
     "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
     "giftsURL": "https://api.gaijinent.com/user_gift.php",
+    "matching": {
+      "server": "wss://match-wtm-non-prod-lw-nl-01.warthunder.com:8086"
+    },
     "contentUpdater": {
       "shouldLogToCrashlytics": true,
       "addons": {
@@ -271,6 +281,9 @@
       },
       "background_addons": {
         "requireSameGameVersion": false
+      },
+      "optional_game_resources": {
+        "shouldReportIncompatibleVersion": true
       }
     },
     "webVromfs": {
@@ -309,7 +322,6 @@
   },
   "wtm-submission": {
     "appPerm": 50102,
-    "matchServer": "match-wtm-submission-sv-lx-01.warthunder.com:7854",
     "useTamVoice": true,
     "circuitPostfix": "-wtm-submission",
     "queryTimeoutMs": 180000,
@@ -322,6 +334,9 @@
     "zendeskApiUploadsURL": "https://support.gaijin.net/api/v2/uploads.json?filename={0}",
     "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
     "giftsURL": "https://api.gaijinent.com/user_gift.php",
+    "matching": {
+      "server": "wss://match-wtm-non-prod-lw-nl-01.warthunder.com:8087"
+    },
     "contentUpdater": {
       "enabled": true,
       "shouldLogToCrashlytics": true,

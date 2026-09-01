@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { resetTimeout } = require("dagor.workcycle")
-let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "%rGui/debriefing/debriefingWndConsts.nut" import buttonsShowTime
+
 
 let debriefingData = mkWatched(persist, "debriefingData", null)
 let isDebriefingAnimFinished = Watched(true)
@@ -11,11 +12,11 @@ let isNoExtraScenesAfterDebriefing = mkWatched(persist, "isNoExtraScenesAfterDeb
 eventbus_subscribe("BattleResult", @(res) debriefingData.set(res))
 eventbus_send("RequestBattleResult", {})
 
-let DEBR_TAB_MPSTATS  = 1
-let DEBR_TAB_QUESTS   = 2
-let DEBR_TAB_CAMPAIGN = 3
-let DEBR_TAB_UNIT     = 4
-let DEBR_TAB_SCORES   = 5
+const DEBR_TAB_MPSTATS  = 1
+const DEBR_TAB_QUESTS   = 2
+const DEBR_TAB_CAMPAIGN = 3
+const DEBR_TAB_UNIT     = 4
+const DEBR_TAB_SCORES   = 5
 
 let curDebrTabId = mkWatched(persist, "curDebrTabId", DEBR_TAB_MPSTATS)
 
@@ -31,9 +32,9 @@ let nextDebrTabId = Computed(function() {
 
 let stopDebriefingAnimation = @() isDebriefingAnimFinished.set(true)
 
-let maxDebrAnimTime = 20 
-let maxDelayWithPause = 60
-let btnActivationDelay = 300
+const maxDebrAnimTime = 20 
+const maxDelayWithPause = 60
+const btnActivationDelay = 300
 
 let finalTabId = Computed(@() debrTabsShowTime.get()?[debrTabsShowTime.get().len() - 1].id ?? DEBR_TAB_SCORES)
 

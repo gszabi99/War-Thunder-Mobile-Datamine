@@ -1,4 +1,4 @@
-let unknownBooster = "ui/gameuiskin#icon_primary_attention.svg"
+const unknownBooster = "ui/gameuiskin#icon_primary_attention.svg"
 
 let icons = {
   wp =        "ui/gameuiskin#wp_booster.avif"

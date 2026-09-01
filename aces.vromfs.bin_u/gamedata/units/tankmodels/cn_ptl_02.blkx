@@ -2106,9 +2106,9 @@
       "Fuel": 500.0,
       "TakeOff": 19000.0,
       "momentOfInertia": [
-        2.0,
-        2.0,
-        4.0
+        1.14,
+        3.8,
+        3.7
       ],
       "CenterOfGravity": [
         0.0,
@@ -2141,24 +2141,25 @@
     },
     "mechanics": {
       "steerType": "double_differential",
-      "maxBrakeForce": 180000.0,
+      "maxBrakeForce": 85000.0,
       "driveGearRadius": 0.6,
-      "mainGearRatio": 6.6,
+      "mainGearRatio": 6.65,
       "sideGearRatio": 1.0,
       "doubleDiffGearRatio": 30.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [
-          -12.03,
+          -11.772,
           0.0,
-          8.66,
-          6.18,
-          4.48,
-          3.51,
-          2.53,
-          1.8,
-          1.31,
-          1.02
+          13.04,
+          8.863,
+          6.287,
+          4.707,
+          3.43,
+          2.584,
+          1.833,
+          1.372,
+          1.0
         ]
       }
     },
@@ -2170,8 +2171,8 @@
       ],
       "defaultGearRadius": 0.6,
       "defaultDampeningForce": [
-        180000.0,
-        180000.0
+        90000.0,
+        90000.0
       ],
       "hasSuspensionOnDriveGear": true,
       "dampeningRelaxationRatio": 0.15,

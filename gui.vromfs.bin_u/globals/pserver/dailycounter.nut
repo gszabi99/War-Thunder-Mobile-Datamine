@@ -1,6 +1,7 @@
-let { Computed } = require("frp")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverTimeDay, getDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
+from "frp" import Computed
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, getDay, dayOffset
+
 
 let dailyCounter = Computed(function() {
   let day = serverTimeDay.get()

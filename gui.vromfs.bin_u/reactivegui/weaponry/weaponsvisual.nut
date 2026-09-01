@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { format } = require("string")
-let { doesLocTextExist } = require("dagor.localize")
-let { getWeaponId } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { getLocIdPrefixByCaliber } = require("%appGlobals/config/bulletsPresentation.nut")
+from "dagor.localize" import doesLocTextExist
+from "string" import format
+from "%appGlobals/config/bulletsPresentation.nut" import getLocIdPrefixByCaliber
+from "%rGui/weaponry/loadUnitBullets.nut" import getWeaponId
+
 
 function getAmmoNameForLoc(bSet) {
   let { isBulletBelt = false } = bSet

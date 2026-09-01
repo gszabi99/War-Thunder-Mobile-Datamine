@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
-let { G_BOOSTER } = require("%appGlobals/rewardType.nut")
-let { LIMIT_REACHED } = require("%rGui/shop/goodsStates.nut")
-let { mkGoodsWrap, borderBg, mkCurrencyAmountTitleArea, mkPricePlate, mkGoodsCommonParts,
-  mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTimeExt,
-  titleFontGradConsumables, mkBorderByCurrency, disabledBg
-} = require("%rGui/shop/goodsView/sharedParts.nut")
-let { gradCircularSmallHorCorners, gradCircCornerOffset } = require("%rGui/style/gradients.nut")
+from "%appGlobals/config/boostersPresentation.nut" import getBoosterIcon
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/rewardType.nut" import G_BOOSTER
+from "%rGui/shop/goodsStates.nut" import LIMIT_REACHED
+from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, borderBg, mkCurrencyAmountTitleArea, mkPricePlate,
+  mkGoodsCommonParts, mkSlotBgImg, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg,
+  mkGoodsLimitAndEndTimeExt, titleFontGradConsumables, mkBorderByCurrency, disabledBg
+from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset
 
-let iconSize = hdpxi(187)
+
+const iconSize = hdpxi(187)
 
 let slotNameBG = {
   hplace = ALIGN_RIGHT
@@ -30,7 +30,7 @@ let bgHiglight = {
 
 
 let boosterImage = @(id){
-  size = [iconSize, iconSize]
+  size = const [iconSize, iconSize]
   rendObj = ROBJ_IMAGE
   image = Picture($"{getBoosterIcon(id)}:{iconSize}:{iconSize}:P")
 }

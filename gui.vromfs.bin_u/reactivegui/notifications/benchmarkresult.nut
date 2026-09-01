@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
+from "eventbus" import eventbus_subscribe
+from "%sqstd/math.nut" import round_by_value
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/msgBox.nut" import mkCustomMsgBoxWnd, mkMsgBoxBtnsSet
+from "%rGui/style/backgrounds.nut" import bgShaded
 
-let { eventbus_subscribe } = require("eventbus")
-let { round_by_value } = require("%sqstd/math.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { mkCustomMsgBoxWnd, mkMsgBoxBtnsSet } = require("%rGui/components/msgBox.nut")
 
-let wndUid = "benchmarkResult"
-let statColor = 0xFFA0A0A0
+const wndUid = "benchmarkResult"
+const statColor = 0xFFA0A0A0
 
 let result = mkWatched(persist, "result", null)
 let close = @() result.set(null)

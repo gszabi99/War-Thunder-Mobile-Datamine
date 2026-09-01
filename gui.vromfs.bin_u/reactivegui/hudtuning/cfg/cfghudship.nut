@@ -1,33 +1,34 @@
 from "%globalsDarg/darg_library.nut" import *
-let { has_strategy_mode } = require("%appGlobals/permissions.nut")
-let { SHIP } = require("%appGlobals/unitConst.nut")
-let { EII_SMOKE_SCREEN, EII_TOOLKIT, EII_ELECTRONIC_WARFARE, EII_IRCM, EII_CIWS
-} = require("%rGui/hud/weaponsButtonsConfig.nut")
+from "%appGlobals/permissions.nut" import has_strategy_mode
+from "%appGlobals/unitConst.nut" import SHIP
+from "%rGui/components/movementArrows.nut" import moveArrowsViewWithMode
+from "%rGui/hud/buttons/rhombTouchHudButtons.nut" import mkRhombFireworkBtn, mkRhombZoomButton, mkSupportPlaneBtn,
+  mkAntiairButton, mkRhombSimpleActionBtn
+from "%rGui/hud/fireworkState.nut" import fwVisibleInEditor, fwVisibleInBattle
+import "%rGui/hud/shipMovementBlock.nut" as shipMovementBlock
+import "%rGui/hud/supportPlaneConfig.nut" as supportPlaneConfig
+from "%rGui/hud/voiceMsg/voiceMsgStick.nut" import voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
+from "%rGui/hud/weaponsButtonsConfig.nut" import EII_SMOKE_SCREEN, EII_TOOLKIT, EII_ELECTRONIC_WARFARE, EII_IRCM,
+  EII_CIWS
+from "%rGui/hudState.nut" import isPlayingReplay
+import "%rGui/hudTuning/cfg/cfgHudCommon.nut" as cfgHudCommon
+import "%rGui/hudTuning/cfg/cfgHudCommonNaval.nut" as cfgHudCommonNaval
+from "%rGui/hudTuning/cfg/hudTuningPkg.nut" import Z_ORDER, mkRBPos, mkLBPos, weaponryButtonDynamicCtor,
+  withActionBarButtonCtor, withActionButtonScaleCtor
+import "%rGui/hudTuning/cfg/initHudTuningCfg.nut" as initHudTuningCfg
+from "%rGui/hudTuning/weaponBtnEditView.nut" import mkWeaponBtnEditView, mkNumberedWeaponEditView
+
+
 let { AB_FIREWORK, AB_SUPPORT_PLANE, AB_SUPPORT_PLANE_2, AB_SUPPORT_PLANE_3,
 
 
 
 } = require("%rGui/hud/actionBar/actionType.nut")
-let cfgHudCommon = require("%rGui/hudTuning/cfg/cfgHudCommon.nut")
-let cfgHudCommonNaval = require("%rGui/hudTuning/cfg/cfgHudCommonNaval.nut")
-let { mkWeaponBtnEditView, mkNumberedWeaponEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
-let { Z_ORDER, mkRBPos, mkLBPos, weaponryButtonDynamicCtor,
-  withActionBarButtonCtor, withActionButtonScaleCtor
-} = require("%rGui/hudTuning/cfg/hudTuningPkg.nut")
-let shipMovementBlock = require("%rGui/hud/shipMovementBlock.nut")
-let { moveArrowsViewWithMode } = require("%rGui/components/movementArrows.nut")
-let { voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
-} = require("%rGui/hud/voiceMsg/voiceMsgStick.nut")
-let { mkRhombFireworkBtn, mkRhombZoomButton, mkSupportPlaneBtn, mkAntiairButton, mkRhombSimpleActionBtn
-} = require("%rGui/hud/buttons/rhombTouchHudButtons.nut")
-let { fwVisibleInEditor, fwVisibleInBattle } = require("%rGui/hud/fireworkState.nut")
-let supportPlaneConfig = require("%rGui/hud/supportPlaneConfig.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
 
 
-let consumableStart = hdpx(-372)
+const consumableStart = hdpx(-372)
 let consumableGap = isWidescreen ? hdpx(-150) : hdpx(-128)
-return cfgHudCommon.__merge(cfgHudCommonNaval, {
+return cfgHudCommon.__merge(cfgHudCommonNaval, initHudTuningCfg({
   zoom = {
     ctor = mkRhombZoomButton
     defTransform = mkRBPos([hdpx(-380), hdpx(-220)])
@@ -157,4 +158,4 @@ return cfgHudCommon.__merge(cfgHudCommonNaval, {
     editView = moveArrowsViewWithMode
     priority = Z_ORDER.STICK
   }
-})
+}))

@@ -1,13 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "dagor.workcycle" import resetTimeout
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import unseenPurchases, lootboxes
+from "%appGlobals/pServer/pServerApi.nut" import clear_unseen_purchases
+from "%appGlobals/rewardType.nut" import G_STAT_SET, G_STAT_ADD, G_MEDAL
+from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
+import "%rGui/shop/unseenPurchasesDebug.nut" as unseenPurchasesDebug
+from "types" import Function
+
+
 let logR = log_with_prefix("[UNSEEN_REWARDS] ")
-let { resetTimeout } = require("dagor.workcycle")
-let { register_command } = require("console")
-let { unseenPurchases, lootboxes } = require("%appGlobals/pServer/campaign.nut")
-let { clear_unseen_purchases } = require("%appGlobals/pServer/pServerApi.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { G_STAT_SET, G_STAT_ADD, G_MEDAL } = require("%appGlobals/rewardType.nut")
-let unseenPurchasesDebug = require("%rGui/shop/unseenPurchasesDebug.nut")
-let { subscribeResetProfile } = require("%rGui/account/resetProfileDetector.nut")
 
 let invisibleGoodsTypes = [G_STAT_SET, G_STAT_ADD, G_MEDAL] 
   .reduce(@(res, v) res.$rawset(v, true), {})
@@ -52,7 +55,7 @@ let activeUnseenPurchasesGroup = Computed(function() {
     foreach(group in unseenGroups) {
       let list = unseenPurchasesExt.get().filter(group.isFit)
       if (list.len() > 0)
-        return group.filter(@(v) type(v) != "function")
+        return group.filter(@(v) !(v instanceof Function))
           .__update({ list })
     }
   return { list = unseenPurchasesExt.get() }

@@ -1,14 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { fabs } = require("math")
-let { get_time_msec } = require("dagor.time")
-let { clearTimer, setInterval } = require("dagor.workcycle")
-let { tabsGap } = require("%rGui/components/tabs.nut")
-let { tabH, modW, modsWidth, modsGap, knobSize, knobGap, catsBlockHeight
-} = require("%rGui/unitMods/unitModsConst.nut")
-let { curBulletCategoryId, curModCategoryId, modsCategories, isOwn
-} = require("%rGui/unitMods/unitModsState.nut")
-let { choiceCount, bulletTotalSteps, choiceSecCount, bulletSecTotalSteps, choiceSpecCount, bulletSpecTotalSteps
-} = require("%rGui/unitMods/unitBulletsState.nut")
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import clearTimer, setInterval
+from "math" import fabs
+from "%rGui/components/tabs.nut" import tabsGap
+from "%rGui/unitMods/unitBulletsState.nut" import choiceCount, bulletTotalSteps, choiceSecCount, bulletSecTotalSteps,
+  choiceSpecCount, bulletSpecTotalSteps
+from "%rGui/unitMods/unitModsConst.nut" import tabH, modW, modsWidth, modsGap, knobSize, knobGap, catsBlockHeight
+from "%rGui/unitMods/unitModsState.nut" import curBulletCategoryId, curModCategoryId, modsCategories, isOwn
 
 
 let catsScrollHandler = ScrollHandler()
@@ -16,8 +14,8 @@ let carouselScrollHandler = ScrollHandler()
 
 local carouselAnimScrollCfg = null
 local catsAnimScrollCfg = null
-let aTimeScroll = 0.5
-let minScrollSpeed = hdpxi(1)
+const aTimeScroll = 0.5
+const minScrollSpeed = hdpxi(1)
 
 let catsHeight = Computed(function() {
   let blockH = tabH + tabsGap
@@ -50,7 +48,7 @@ function startCarouselAnimScroll(posX2Raw, scrollSpeed = minScrollSpeed) {
   let scrollWidth = (carouselScrollHandler.elem?.getContentWidth() ?? 0) - (carouselScrollHandler.elem?.getWidth() ?? 0)
   let posX2 = posX2Raw - scrollWidth
   let posX1 = carouselScrollHandler.elem?.getScrollOffsX() ?? 0
-  let time = (1000 * min(aTimeScroll, max(fabs(posX1 - posX2), fabs(posX1 - posX2)) / max(fabs(scrollSpeed), minScrollSpeed)))
+  let time = (1000 * min(aTimeScroll, fabs(posX1 - posX2) / max(fabs(scrollSpeed), minScrollSpeed)))
     .tointeger()
   if (time <= 0)
     return
@@ -80,7 +78,7 @@ function updateCatsAnimScroll() {
 
 function startCatsAnimScroll(posY2, scrollSpeed = minScrollSpeed) {
   let posY1 = catsScrollHandler.elem?.getScrollOffsY() ?? 0
-  let time = (1000 * min(aTimeScroll, max(fabs(posY1 - posY2), fabs(posY1 - posY2)) / max(fabs(scrollSpeed), minScrollSpeed)))
+  let time = (1000 * min(aTimeScroll, fabs(posY1 - posY2) / max(fabs(scrollSpeed), minScrollSpeed)))
     .tointeger()
   if (time <= 0)
     return

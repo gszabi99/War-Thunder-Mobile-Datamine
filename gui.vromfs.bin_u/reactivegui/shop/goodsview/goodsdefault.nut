@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getCustomGoodsNameById } = require("%appGlobals/config/goodsPresentation.nut")
-let { mkGoodsWrap, txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg, mkGoodsLimitAndEndTime
-} = require("%rGui/shop/goodsView/sharedParts.nut")
+from "%appGlobals/config/goodsPresentation.nut" import getCustomGoodsNameById
+from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, txt, mkPricePlate, mkGoodsCommonParts,
+  underConstructionBg, mkGoodsLimitAndEndTime
+
 
 let getLocNameDefault = @(goods) getCustomGoodsNameById(goods.id) ?? loc($"shop/{goods.id}")
 

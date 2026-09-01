@@ -1,6 +1,6 @@
+from "frp" import Computed
+from "%sqstd/globalState.nut" import hardPersistWatched
 
-let { Computed } = require("frp")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
 
 let queueStates = {
   QS_NOT_IN_QUEUE = 0
@@ -15,11 +15,11 @@ let queueStates = {
 }
 let { QS_NOT_IN_QUEUE } = queueStates
 
-let curQueue = sharedWatched("curQueue", @() null)
-let queueInfo = sharedWatched("queueInfo", @() null)
+let curQueue = hardPersistWatched("curQueue", null)
+let queueInfo = hardPersistWatched("queueInfo", null)
 let curQueueState = Computed(@() curQueue.get()?.state ?? QS_NOT_IN_QUEUE)
-let myQueueToken = sharedWatched("myQueueToken", @() "")
-let jwtUserstat = sharedWatched("jwtUserstat", @() "")
+let myQueueToken = hardPersistWatched("myQueueToken", "")
+let jwtUserstat = hardPersistWatched("jwtUserstat", "")
 
 return queueStates.__merge({
   queueStates

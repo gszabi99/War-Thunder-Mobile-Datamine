@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { textButtonCommon, buttonStyles, mergeStyles, mkCustomButton, buttonsHGap
-} = require("%rGui/components/textButton.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { mkPieMenu, defaultPieMenuParams, mkPieMenuItemIcon, mkPieMenuItemText } = require("%rGui/hud/pieMenu.nut")
-let { voiceMsgCfg, voiceMsgPieOrder, voiceMsgPieHidden, mkVoiceMsgCfgItem,
-  resetVoiceMsgPieUserConfig, saveVoiceMsgPieUserConfig
-} = require("%rGui/hud/voiceMsg/voiceMsgState.nut")
-let { pieRadius, pieIconSizeMul } = defaultPieMenuParams
-let { hudWhiteColor } = require("%rGui/style/hudColors.nut")
-let { selectColor } = require("%rGui/style/stdColors.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/textButton.nut" import textButtonCommon, buttonStyles, mergeStyles, mkCustomButton, buttonsHGap
+from "%rGui/hud/pieMenu.nut" import mkPieMenu, defaultPieMenuParams, mkPieMenuItemIcon, mkPieMenuItemText
+from "%rGui/hud/voiceMsg/voiceMsgState.nut" import voiceMsgCfg, voiceMsgPieOrder, voiceMsgPieHidden,
+  mkVoiceMsgCfgItem, resetVoiceMsgPieUserConfig, saveVoiceMsgPieUserConfig
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/hudColors.nut" import hudWhiteColor
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import selectColor
 
-let rowHeight = hdpx(80)
-let DISABLED_OPACITY = 0.5
+
+let { pieRadius, pieIconSizeMul } = defaultPieMenuParams
+
+const rowHeight = hdpx(80)
+const DISABLED_OPACITY = 0.5
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let onClose = @() isOpened.set(false)
@@ -87,7 +87,7 @@ function mkItemRow(idx) {
   let isHovered = Computed(@() stateFlags.get() & S_HOVER)
   return @() {
     watch = stateFlags
-    size = [FLEX, rowHeight]
+    size = const [FLEX, rowHeight]
 
     behavior = Behaviors.Button
     onClick = @() selectItem(idx)

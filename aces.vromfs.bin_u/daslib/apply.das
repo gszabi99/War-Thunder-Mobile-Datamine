@@ -59,11 +59,6 @@ def private field_rtti_annotations(fld : FieldDeclaration) : ExpressionPtr {
 }
 
 
-
-
-
-
-
 [macro_function]
 def private inline_apply_field(nameStr : string; var access : ExpressionPtr; fieldType : TypeDeclPtr;
                                isConst : bool; hasExtraArg : bool; var annExpr : ExpressionPtr;
@@ -99,12 +94,6 @@ def private inline_apply_field(nameStr : string; var access : ExpressionPtr; fie
     }
     return imb._block
 }
-
-
-
-
-
-
 
 
 [macro_function]
@@ -207,9 +196,6 @@ def generateApplyVisitTuple(stype : TypeDeclPtr; fnname : string; at : LineInfo)
 }
 
 
-
-
-
 [macro_function]
 def generateApplyVisitVariant(stype : TypeDeclPtr; frange : range; fnname : string; at : LineInfo; var names : array<string>) {
     assert(stype.baseType == Type.tVariant)
@@ -298,9 +284,6 @@ class FindEscapingReturn : AstVisitor {
 }
 
 
-
-
-
 [macro_function]
 def private apply_block_inline_safe(blk : ExpressionPtr) : bool {
     if (!(blk is ExprMakeBlock)) {
@@ -319,25 +302,6 @@ def private apply_block_inline_safe(blk : ExpressionPtr) : bool {
 
 [call_macro(name = "apply")]  
 class ApplyMacro : AstCallMacro {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     def override visit(prog : ProgramPtr; mod : Module?; var expr : ExprCallMacro?) : ExpressionPtr {
         macro_verify(expr.arguments |> length == 2, prog, expr.at, "expecting apply(value, block)")
@@ -373,14 +337,10 @@ class ApplyMacro : AstCallMacro {
 def private inline_apply(var expr : ExprCallMacro?; argT : TypeDeclPtr; hasExtraArg : bool) : ExpressionPtr {
     let selfIsConst = argT.flags.constant
     
-    
-    
-    
     var selfPeeled = expr.arguments[0]
     while (selfPeeled != null && selfPeeled is ExprRef2Value) {
         selfPeeled = (selfPeeled as ExprRef2Value).subexpr
     }
-    
     
     let selfIsRef = selfPeeled != null && (selfPeeled is ExprVar || selfPeeled is ExprField
         || selfPeeled is ExprSafeField || selfPeeled is ExprAt || selfPeeled is ExprSafeAt || selfPeeled is ExprSwizzle)
@@ -512,14 +472,6 @@ def private inline_apply_imm_field(fldname : string; var fieldAccess : Expressio
 
 [call_macro(name = "apply_imm")]  
 class ApplyImmMacro : AstCallMacro {
-    
-    
-    
-    
-    
-    
-    
-    
     
     def override visit(prog : ProgramPtr; mod : Module?; var expr : ExprCallMacro?) : ExpressionPtr {
         macro_verify(expr.arguments |> length == 2, prog, expr.at, "expecting apply_imm(value, block)")

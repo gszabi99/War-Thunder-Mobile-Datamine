@@ -1,24 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let { number_of_set_bits, is_bit_set } = require("%sqstd/math.nut")
-let { is_pc } = require("%sqstd/platform.nut")
-let { OCT_TEXTINPUT, OCT_MULTISELECT, OCT_MULTISELECT_MASK } = require("%rGui/options/optCtrlType.nut")
-let { textInput } = require("%rGui/components/textInput.nut")
-let { infoTooltipButton } = require("%rGui/components/infoButton.nut")
-let { mkOvrTooltipContent } = require("%rGui/options/tooltipCtors.nut")
+from "%sqstd/math.nut" import number_of_set_bits, is_bit_set
+from "%sqstd/platform.nut" import is_pc
+from "%rGui/components/infoButton.nut" import infoTooltipButton
+from "%rGui/components/textInput.nut" import textInput
+from "%rGui/options/optCtrlType.nut" import OCT_TEXTINPUT, OCT_MULTISELECT, OCT_MULTISELECT_MASK
+from "%rGui/options/tooltipCtors.nut" import mkOvrTooltipContent
 
-let textColor = 0xFFFFFFFF
-let inactiveTextColor = 0xFFD96363
-let checkBorderColor = 0xFF9FA7AF
-let ctrlHeight = hdpx(70)
-let vGap = hdpx(15)
-let hGap = hdpx(15)
-let incHGap = hdpx(30)
-let inputFullHeight = hdpx(60)
+
+const textColor = 0xFFFFFFFF
+const inactiveTextColor = 0xFFD96363
+const checkBorderColor = 0xFF9FA7AF
+const ctrlHeight = hdpx(70)
+const vGap = hdpx(15)
+const hGap = hdpx(15)
+const incHGap = hdpx(30)
+const inputFullHeight = hdpx(60)
 let inputPadding = [hdpx(10), hdpx(20)]
-let checkIconSize = hdpxi(60)
-let closeIconSize = hdpxi(80)
-let clearIconSize = hdpxi(50)
-let leftColWidth = hdpx(1500)
+const checkIconSize = hdpxi(60)
+const closeIconSize = hdpxi(80)
+const clearIconSize = hdpxi(50)
+const leftColWidth = hdpx(1500)
 
 
 let mkCheckIcon = @(isChecked, isActive, opacity, inBoxValue) {
@@ -127,7 +128,7 @@ function allToggleBtn(allValues, activeFiltersW, handleClick) {
       valign = ALIGN_CENTER
       padding = inputPadding
       children = {
-        size = [checkIconSize, checkIconSize]
+        size = const [checkIconSize, checkIconSize]
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
         rendObj = ROBJ_IMAGE
@@ -144,7 +145,7 @@ function allToggleBtn(allValues, activeFiltersW, handleClick) {
 let filterCtors = {
   [OCT_TEXTINPUT] = @(filter, _) textInput(filter.value, {
     ovr = {
-      size = [leftColWidth, inputFullHeight]
+      size = const [leftColWidth, inputFullHeight]
       padding = inputPadding
       fillColor = 0xFF606060
     }
@@ -206,7 +207,7 @@ let filterCtors = {
 
 let mkFilter = @(filter) {
   key = filter?.id
-  size = [leftColWidth, SIZE_TO_CONTENT]
+  size = const [leftColWidth, SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   gap = hdpx(5)
   children = [
@@ -224,7 +225,7 @@ let mkFilter = @(filter) {
         !filter?.tooltipCtorId ? null
           : infoTooltipButton(mkOvrTooltipContent(filter.tooltipCtorId, filter.allValues),
               { flowOffset = hdpx(100) },
-              { margin = [0, 0, hdpx(15), 0] })
+              { margin = const [0, 0, hdpx(15), 0] })
       ]
     }
     filterCtors?[filter.ctrlType](filter, leftColWidth)
@@ -277,7 +278,7 @@ function mkUnitsFilter(options, allUnits, closeFilters, clearFilters, fillFilter
             .extend(filters.map(@(f) mkFilter(f)))
         }
         {
-          size = [closeIconSize, FLEX]
+          size = const [closeIconSize, FLEX]
           flow = FLOW_VERTICAL
           gap = hdpx(10)
           halign = ALIGN_RIGHT

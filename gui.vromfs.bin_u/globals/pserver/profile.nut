@@ -1,10 +1,10 @@
-let { deferOnce } = require("dagor.workcycle")
-let { Computed, Watched } = require("frp")
-let { min, max } = require("math")
-let { units, levelInfo, campConfigs } = require("campaign.nut")
-let { curCampaignSlotUnits } = require("slots.nut")
-let { curUnitInProgress } = require("pServerApi.nut")
-let { battleRentInfo } = require("%appGlobals/rentalState.nut")
+from "dagor.workcycle" import deferOnce
+from "frp" import Computed, Watched
+from "math" import min, max
+from "%appGlobals/rentalState.nut" import battleRentInfo
+from "campaign.nut" import units, levelInfo, campConfigs
+from "pServerApi.nut" import curUnitInProgress
+from "slots.nut" import curCampaignSlotUnits
 
 
 let defaultProfileLevelInfo = {

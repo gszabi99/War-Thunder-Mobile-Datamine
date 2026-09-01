@@ -1,15 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let { mkCustomButton, mergeStyles, buttonStyles } = require("%rGui/components/textButton.nut")
-let { mkPriorityUnseenMarkWatch } = require("%rGui/components/unseenMark.nut")
-let { slider, sliderValueSound, sliderBtn, mkSliderKnob } = require("%rGui/components/slider.nut")
-let { bg, bulletsBlockWidth, headerSlotHeight } = require("%rGui/respawn/respawnComps.nut")
-let { bulletsAABB } = require("%rGui/respawn/respawnAnimState.nut")
-let { showRespChooseWnd } = require("%rGui/respawn/respawnChooseBulletWnd.nut")
-let mkBulletSlot = require("%rGui/bullets/mkBulletSlot.nut")
-let { hoverColor } = require("%rGui/style/stdColors.nut")
+from "dagor.workcycle" import deferOnce
+import "%rGui/bullets/mkBulletSlot.nut" as mkBulletSlot
+from "%rGui/components/slider.nut" import slider, sliderValueSound, sliderBtn, mkSliderKnob
+from "%rGui/components/textButton.nut" import mkCustomButton, mergeStyles, buttonStyles
+from "%rGui/components/unseenMark.nut" import mkPriorityUnseenMarkWatch
+from "%rGui/respawn/respawnAnimState.nut" import bulletsAABB
+from "%rGui/respawn/respawnChooseBulletWnd.nut" import showRespChooseWnd
+from "%rGui/respawn/respawnComps.nut" import bg, bulletsBlockWidth, headerSlotHeight
+from "%rGui/style/stdColors.nut" import hoverColor
 
-let padding = hdpx(8)
+
+const padding = hdpx(8)
 let btnSize = evenPx(70)
 let knobSize = evenPx(50)
 let sliderGap = knobSize / 2 + (0.1 * btnSize).tointeger()
@@ -88,7 +89,7 @@ let mkBtnTextCtor = @(override) @(ovrW) @(sf) @() {
   rendObj = ROBJ_TEXT
   color = sf & S_HOVER ? hoverColor : 0xFFFFFFFF
 }.__update(fontMedium, override, ovrW.get())
-let btnTextDec = mkBtnTextCtor({ text = "-", pos = [0, -hdpx(4)] })
+let btnTextDec = mkBtnTextCtor({ text = "-", pos = const [0, -hdpx(4)] })
 let btnTextInc = mkBtnTextCtor({ text = "+" })
 
 let mkKnobCtor = @(sliderKnobSize) @(relValue, stateFlags, fullW)
@@ -140,7 +141,7 @@ function mkBulletSliderWithBtns(bSlot, maxCount, maxBullets, withExtraBullets, b
     halign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = sliderGap
-    padding = [padding, 0]
+    padding = const [padding, 0]
     children = [
       sliderBtn(btnTextDec(minOvr),
         @() onChange(count.get() - bStep.get()),

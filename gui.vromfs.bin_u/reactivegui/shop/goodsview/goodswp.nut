@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { mkFontGradient } = require("%rGui/style/gradients.nut")
-let { mkGoodsWrap, mkSlotBgImg, borderBg, mkGoodsImg, mkCurrencyAmountTitle, mkGoodsLimitAndEndTime,
-  mkPricePlate, mkGoodsCommonParts, goodsSmallSize, goodsBgH, mkBgParticles, underConstructionBg,
-  mkBorderByCurrency
-} = require("%rGui/shop/goodsView/sharedParts.nut")
-let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
-let { WP } = require("%appGlobals/currenciesState.nut")
+import "%appGlobals/config/currencyGoodsPresentation.nut" as getCurrencyGoodsPresentation
+from "%appGlobals/currenciesState.nut" import WP
+from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, mkSlotBgImg, borderBg, mkGoodsImg,
+  mkCurrencyAmountTitle, mkGoodsLimitAndEndTime, mkPricePlate, mkGoodsCommonParts, goodsSmallSize, goodsBgH,
+  mkBgParticles, underConstructionBg, mkBorderByCurrency
+from "%rGui/style/gradients.nut" import mkFontGradient
+from "%rGui/textFormatByLang.nut" import decimalFormat
+
 
 let titleFontGrad = mkFontGradient(0xFFDADADA, 0xFF848484, 11, 6, 2)
 
@@ -25,7 +25,7 @@ function getLocNameWp(goods) {
 }
 
 function mkGoodsWp(goods, onClick, state, animParams, addChildren) {
-  let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {} } = goods
+  let { viewBaseValue = 0, isShowDebugOnly = false, isFreeReward = false, price = {}, id } = goods
   let wp = goods.rewards?[0].count ?? 0
   let bgParticles = mkBgParticles([goodsSmallSize[0], goodsBgH])
   let border = mkBorderByCurrency(borderBg, isFreeReward, price?.currencyId)
@@ -43,7 +43,8 @@ function mkGoodsWp(goods, onClick, state, animParams, addChildren) {
       mkCurrencyAmountTitle(wp, viewBaseValue, titleFontGrad)
       mkGoodsLimitAndEndTime(goods)
     ].extend(mkGoodsCommonParts(goods, state), addChildren),
-    mkPricePlate(goods, state, animParams),  {size = goodsSmallSize})
+    mkPricePlate(goods, state, animParams),
+      { size = goodsSmallSize, key = isFreeReward ? $"shop_card_{id}" : null }) 
 }
 
 return {

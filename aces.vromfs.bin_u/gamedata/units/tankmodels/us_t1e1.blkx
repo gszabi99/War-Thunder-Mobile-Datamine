@@ -2095,9 +2095,9 @@
       "Fuel": 1000.0,
       "TakeOff": 60400.0,
       "momentOfInertia": [
-        2.5,
-        2.5,
-        6.0
+        1.4,
+        4.264,
+        3.764
       ],
       "CenterOfGravity": [
         0.1,

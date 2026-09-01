@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { OPT_AUTO_UPDATE_ENABLED, mkOptionValue } = require("%rGui/options/guiOptions.nut")
+from "%rGui/options/guiOptions.nut" import OPT_AUTO_UPDATE_ENABLED, mkOptionValue
 
-let AU_NOT_ALLOW = "not_allow"
-let AU_ALLOW_ONLY_WIFI = "allow_only_wifi"
-let AU_ALLOW_ALWAYS = "allow_always"
+
+const AU_NOT_ALLOW = "not_allow"
+const AU_ALLOW_ONLY_WIFI = "allow_only_wifi"
+const AU_ALLOW_ALWAYS = "allow_always"
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 let gameAutoUpdateList = [AU_NOT_ALLOW, AU_ALLOW_ONLY_WIFI, AU_ALLOW_ALWAYS]

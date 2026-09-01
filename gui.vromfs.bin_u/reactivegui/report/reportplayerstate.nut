@@ -1,17 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let utf8 = require("utf8")
-let { deferOnce } = require("dagor.workcycle")
-let { eventbus_send } = require("eventbus")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { getLocalLanguage } = require("language")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { contactsRequest, contactsRegisterHandler } = require("%rGui/contacts/contactsClient.nut")
-let { battleSessionId, isInBattle, isInDebriefing } = require("%appGlobals/clientState/clientState.nut")
-let { Contact } = require("%rGui/contacts/contact.nut")
-let { debriefingData } = require("%rGui/debriefing/debriefingState.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_send
+from "language" import getLocalLanguage
+import "utf8" as utf8
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/clientState/clientState.nut" import battleSessionId, isInBattle, isInDebriefing
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/modalWindows.nut" import removeModalWindow
+from "%rGui/contacts/contact.nut" import Contact
+from "%rGui/contacts/contactsClient.nut" import contactsRequest, contactsRegisterHandler
+from "%rGui/debriefing/debriefingState.nut" import debriefingData
+
 
 let session = Computed(@() (isInBattle.get() || isInDebriefing.get()) ? battleSessionId.get() : -1)
 
@@ -20,20 +21,20 @@ let langCfg = {
   Russian = { locale = "ru-RU", lang = "russian" }
 }
 
-let MAX_ACTIVE_REPORTS = 5
-let MAX_REPORTS_IN_SESSION = 15
-let TIME_TO_NEXT_BATTLE_REPORT = 30 * 60
-let TIME_TO_NEXT_MENU_REPORT = 12 * 3600
-let TIME_TO_NEXT_REPORT_BAN = 48 * 3600
-let SHADOW_REPORT_BAN_TIME = "shadowReportBanTime"
-let BATTLE_REPORT = "battleReport"
-let MENU_REPORT = "menuReport"
+const MAX_ACTIVE_REPORTS = 5
+const MAX_REPORTS_IN_SESSION = 15
+const TIME_TO_NEXT_BATTLE_REPORT = 30 * 60
+const TIME_TO_NEXT_MENU_REPORT = 12 * 3600
+const TIME_TO_NEXT_REPORT_BAN = 48 * 3600
+const SHADOW_REPORT_BAN_TIME = "shadowReportBanTime"
+const BATTLE_REPORT = "battleReport"
+const MENU_REPORT = "menuReport"
 
-let MAX_MESSAGE_CHARS = 256
+const MAX_MESSAGE_CHARS = 256
 
-let SUCCESS_WND_UID = "successReportWindow"
-let REPORT_WND_UID = "playerReportWindow"
-let REJECT_WND_UID = "rejectReportWindow"
+const SUCCESS_WND_UID = "successReportWindow"
+const REPORT_WND_UID = "playerReportWindow"
+const REJECT_WND_UID = "rejectReportWindow"
 
 let categoryCfg = ["OTHER", "CHEAT", "TEAMKILL", "SKIN"]
 

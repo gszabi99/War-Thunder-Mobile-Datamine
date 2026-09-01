@@ -1,9 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
+import "DataBlock" as DataBlock
+from "blkGetters" import get_decals_blk
+from "eventbus" import eventbus_subscribe
+from "%appGlobals/loginState.nut" import isLoggedIn
+
+
 let logD = log_with_prefix("[DECALS] ")
-let DataBlock = require("DataBlock")
-let { eventbus_subscribe } = require("eventbus")
-let { get_decals_blk } = require("blkGetters")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
 
 
 local decalsByCategories = null

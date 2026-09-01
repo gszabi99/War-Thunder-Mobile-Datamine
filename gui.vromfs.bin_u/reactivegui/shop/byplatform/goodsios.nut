@@ -1,31 +1,33 @@
 from "%globalsDarg/darg_library.nut" import *
-let logG = log_with_prefix("[GOODS] ")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { setTimeout, resetTimeout, clearTimer } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
-let { YU2_OK, YU2_EXPIRED, YU2_WRONG_PAYMENT, YU2_ALREADY, registerApplePurchase, getCountryCode
-} = require("auth_wt")
-let { is_pc } = require("%sqstd/platform.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { parse_duration } = require("%sqstd/iso8601.nut")
-let { getYu2CodeName, yu2BadConnectionCodes } = require("%appGlobals/yu2ErrCodes.nut")
-let { campConfigs, activeOffers } = require("%appGlobals/pServer/campaign.nut")
-let { isAuthorized, isLoggedIn } = require("%appGlobals/loginState.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { can_debug_shop } = require("%appGlobals/permissions.nut")
-let { startSeveralCheckPurchases } = require("%rGui/shop/checkPurchases.nut")
-let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
-let { openFMsgBox, subscribeFMsgBtns } = require("%appGlobals/openForeignMsgBox.nut")
-let { object_to_json_string, parse_json } = require("json")
-let { logFirebaseEventWithJson } = require("%rGui/notifications/logEvents.nut")
-let { showRestorePurchasesDoneMsg } = require("%rGui/shop/byPlatform/platformGoodsCommon.nut")
-let { DBGLEVEL } = require("dagor.system")
+from "auth_wt" import YU2_OK, YU2_EXPIRED, YU2_WRONG_PAYMENT, YU2_ALREADY, registerApplePurchase, getCountryCode
+from "dagor.system" import DBGLEVEL
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout, resetTimeout, clearTimer
+from "eventbus" import eventbus_send, eventbus_subscribe
+import "ios.billing.appstore" as billingModule
+from "json" import object_to_json_string, parse_json
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/iso8601.nut" import parse_duration
+from "%sqstd/platform.nut" import is_pc
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/loginState.nut" import isAuthorized, isLoggedIn
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox, subscribeFMsgBtns
+from "%appGlobals/pServer/campaign.nut" import campConfigs, activeOffers
+from "%appGlobals/permissions.nut" import can_debug_shop
+from "%appGlobals/yu2ErrCodes.nut" import getYu2CodeName, yu2BadConnectionCodes
+from "%rGui/notifications/logEvents.nut" import logFirebaseEventWithJson
+from "%rGui/shop/byPlatform/platformGoodsCommon.nut" import showRestorePurchasesDoneMsg
+from "%rGui/shop/checkPurchases.nut" import startSeveralCheckPurchases
+from "%rGui/shop/priceExt.nut" import getPriceExtStr
+from "types" import Integer, Array
 
-let APPSTORE_PAYMENTS_IN_RUSSIA_URL = "auto_login https://wtmobile.com/news/important-about-app-store-payments?skin_lang=ru"
+
+let logG = log_with_prefix("[GOODS] ")
+
+const APPSTORE_PAYMENTS_IN_RUSSIA_URL = "auto_login https://wtmobile.com/news/important-about-app-store-payments?skin_lang=ru"
 
 let getDebugPrice = @(id) 0.01 * (id.hash() % 100000)
-let billingModule = require("ios.billing.appstore")
 let { AS_OK, AS_CANCELED, AS_NOT_INITED, AS_FAILED, AS_CANT_BUY } = billingModule
 let dbgPurchAnswers = [
   { status = AS_OK, id = "id1", data = "receipt_or_error" },
@@ -105,7 +107,7 @@ let nextRefreshTime = Watched(-1)
 
 let statusNames = {}
 foreach(id, val in billingModule)
-  if (type(val) == "integer" && id.startswith("AS_"))
+  if (val instanceof Integer && id.startswith("AS_"))
     statusNames[val] <- id
 let getStatusName = @(status) statusNames?[status] ?? status
 
@@ -356,9 +358,9 @@ eventbus_subscribe("ios.billing.onInitAndDataRequested", function(result) {
   if (status != AS_OK)
     return
   local items = value
-  if (type(items) != "array") {
+  if (!(items instanceof Array)) {
     items = parse_json(value)
-    if (type(items) != "array") {
+    if (!(items instanceof Array)) {
       logerr($"Bad format of ios.billing.onInitAndDataRequested: type of parsed value is {type(value)}")
       return
     }

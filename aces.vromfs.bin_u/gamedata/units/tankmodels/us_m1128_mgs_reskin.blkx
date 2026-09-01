@@ -2133,12 +2133,12 @@
       ],
       "defaultGearRadius": 0.566,
       "defaultDampeningForce": [
-        150000.0,
-        150000.0
+        25000.0,
+        25000.0
       ],
       "hasSuspensionOnDriveGear": true,
-      "dampeningRelaxationRatio": 0.4,
-      "dampeningCompressionRatio": 0.15,
+      "dampeningRelaxationRatio": 0.15,
+      "dampeningCompressionRatio": 0.05,
       "brokenWheelSteeringDeflection": -15.0,
       "steeringNodes": {
         "wheel_r_01": "bone_wheel_r_01",

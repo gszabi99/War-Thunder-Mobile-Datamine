@@ -1,19 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { arrayByRows } = require("%sqstd/underscore.nut")
-let { getMissionUnitsAndAddons } = require("%appGlobals/updater/missionUnits.nut")
-let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
-let { benchmarkGameModes } = require("%rGui/gameModes/gameModeState.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { closeButton } = require("%rGui/components/debugWnd.nut")
-let { textButtonCommon } = require("%rGui/components/textButton.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import arrayByRows
+from "%appGlobals/updater/missionUnits.nut" import getMissionUnitsAndAddons
+from "%rGui/components/debugWnd.nut" import closeButton
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/textButton.nut" import textButtonCommon
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/gameModes/gameModeState.nut" import benchmarkGameModes
+from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd
 
-let wndUid = "chooseBenchmark"
+
+const wndUid = "chooseBenchmark"
 let close = @() removeModalWindow(wndUid)
 
-let gap = hdpx(10)
+const gap = hdpx(10)
 
 let benchmarksList = Watched([])
 eventbus_subscribe("benchmarksList", @(msg) benchmarksList.set(msg.benchmarks))

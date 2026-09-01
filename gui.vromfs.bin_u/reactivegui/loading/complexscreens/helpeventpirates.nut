@@ -1,17 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { mkScreenHints } = require("%rGui/components/screenHintsLib.nut")
-let { gradRadial } = require("%rGui/style/gradients.nut")
+from "math" import round
+from "%rGui/components/screenHintsLib.nut" import mkScreenHints
+from "%rGui/style/gradients.nut" import gradRadial
 
-let bgImage = "ui/images/help/help_event_pirates.avif"
+
+const bgImage = "ui/images/help/help_event_pirates.avif"
 let bgSize = [3282, 1041]
 
 let mkSizeByParent = @(size) [pw(100.0 * size[0] / bgSize[0]), ph(100.0 * size[1] / bgSize[1])]
 let mkLines = @(lines) lines.map(@(v, i) 100.0 * v / bgSize[i % 2])
 
-let whiteColor = 0xFFFFFFFF
-let transpColor = 0x00000000
-let hintBgColor = 0xCC052737
+const whiteColor = 0xFFFFFFFF
+const transpColor = 0x00000000
+const hintBgColor = 0xCC052737
 
 let mkTextarea = @(text, maxWidth, ovr = {}) {
   maxWidth
@@ -31,7 +32,7 @@ let mkImg = @(sizeX, sizeY, icon, color, ovr) {
   color
 }.__update(ovr)
 
-let icoSize = hdpx(60)
+const icoSize = hdpx(60)
 let icoShadeSize = (icoSize * 1.6).tointeger()
 let icoPosX = (icoSize * -1.4).tointeger()
 let icoPosY = (icoSize * -0.2).tointeger()
@@ -41,7 +42,7 @@ let iconShade = mkImg(icoShadeSize, icoShadeSize, "", hintBgColor, { image = gra
 let mkTextareaWithIcon = @(text, icon, maxWidth)
   mkTextarea(text, maxWidth, {
     children = {
-      size = [icoSize, icoSize]
+      size = const [icoSize, icoSize]
       hplace = ALIGN_LEFT
       vplace = ALIGN_TOP
       pos = [icoPosX, icoPosY]
@@ -52,7 +53,7 @@ let mkTextareaWithIcon = @(text, icon, maxWidth)
     }
   })
 
-let fireCircleSz = hdpx(90)
+const fireCircleSz = hdpx(90)
 let ammoArcH = round(fireCircleSz * 1.86).tointeger()
 let ammoArcW = round(ammoArcH * 0.5).tointeger()
 let ammoArcPosX = round(fireCircleSz * -0.73).tointeger()
@@ -65,8 +66,8 @@ let ammo2PosX = round(ammoArcH * -0.09).tointeger()
 let ammo2PosY = round(ammoArcH * -0.015).tointeger()
 let ammo3PosX = round(ammoArcH * -0.01).tointeger()
 let ammo3PosY = round(ammoArcH * 0.34).tointeger()
-let circleOutlineWidth = hdpx(1.5)
-let circleOutlineActiveWidth = hdpx(3)
+const circleOutlineWidth = hdpx(1.5)
+const circleOutlineActiveWidth = hdpx(3)
 
 let mkOutline = @(size, color, lineWidth) {
   size = [size, size]
@@ -147,18 +148,18 @@ function mkFireAndWeaponsComp(pos, isRight) {
   }
 }
 
-let fireRX = 2682
-let fireRY = 712
-let fireLX = 2400
-let fireLY = 787
-let hintFireLShiftY = 240
+const fireRX = 2682
+const fireRY = 712
+const fireLX = 2400
+const fireLY = 787
+const hintFireLShiftY = 240
 
-let hintW = hdpx(400)
-let hintAmmoW = hdpx(350)
+const hintW = hdpx(400)
+const hintAmmoW = hdpx(350)
 
-let hintAmmoX = 2480
-let hintAmmo1Y = 300
-let hintAmmo2Y = hintAmmo1Y + 20
+const hintAmmoX = 2480
+const hintAmmo1Y = 300
+const hintAmmo2Y = hintAmmo1Y + 20
 
 
 let bgItems = [
@@ -166,9 +167,9 @@ let bgItems = [
   mkFireAndWeaponsComp(mkSizeByParent([fireLX, fireLY]), false)
 ]
 
-let pointAimX = 2090
-let pointAimY = 410
-let hintAimPosX = 920
+const pointAimX = 2090
+const pointAimY = 410
+const hintAimPosX = 920
 
 let hints = [
   {
@@ -223,7 +224,7 @@ function makeScreen() {
     color = 0xFF000000
     children = {
       size = [sw(100), sw(100) / bgSize[0] * bgSize[1]]
-      pos = [0, -sh(1.5)]
+      pos = const [0, -sh(1.5)]
       rendObj = ROBJ_IMAGE
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER

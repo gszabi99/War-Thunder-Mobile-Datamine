@@ -1,43 +1,43 @@
 from "%globalsDarg/darg_library.nut" import *
-let logT = log_with_prefix("[ARSENAL_TUTOR] ")
-let { register_command } = require("console")
-let { deferOnce, resetTimeout } = require("dagor.workcycle")
-let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
-let { balance } = require("%appGlobals/currenciesState.nut")
-let { curUnit } = require("%appGlobals/pServer/profile.nut")
-let { buy_unit_mod } = require("%appGlobals/pServer/pServerApi.nut")
-let { sharedStatsByCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curCampaignSlots } = require("%appGlobals/pServer/slots.nut")
-let { isInSquad } = require("%appGlobals/squadState.nut")
-let { hasModalWindows, moveModalToTop } = require("%rGui/components/modalWindows.nut")
-let { isMainMenuAttached } = require("%rGui/mainMenu/mainMenuState.nut")
-let { setTutorialConfig, isTutorialActive, finishTutorial, goToStep,
-  activeTutorialId, WND_UID } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { selectedSlotIdx, slotBarArsenalKey, slotBarSlotKey, visibleNewModsSlots, actualSlotIdx,
-  attachedSlotBarArsenalIdx
-} = require("%rGui/slotBar/slotBarState.nut")
-let { curWeaponIdx, curBeltIdx, setCurSlotIdx, setCurBeltsWeaponIdx, isUnitModSlotsAttached, openUnitModsSlotsWnd,
-  slotWeaponKey, slotBeltKey, groupedCurUnseenMods, curWeaponBeltsOrdered, curWeaponsOrdered,
-  curWeapon, curWeaponModName, curBelt, equippedWeaponId, equippedBeltId, curWeaponMod, curSlotIdx,
+from "console" import register_command
+from "dagor.workcycle" import deferOnce, resetTimeout
+from "%appGlobals/currenciesState.nut" import balance
+from "%appGlobals/pServer/campaign.nut" import sharedStatsByCampaign
+from "%appGlobals/pServer/pServerApi.nut" import buy_unit_mod
+from "%appGlobals/pServer/profile.nut" import curUnit
+from "%appGlobals/pServer/slots.nut" import curCampaignSlots
+from "%appGlobals/squadState.nut" import isInSquad
+from "%appGlobals/unitsState.nut" import setCurrentUnit
+from "%rGui/components/modalWindows.nut" import hasModalWindows, moveModalToTop
+from "%rGui/components/msgBox.nut" import closeMsgBox
+from "%rGui/mainMenu/mainMenuState.nut" import isMainMenuAttached
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase, PURCHASE_BOX_UID
+from "%rGui/slotBar/slotBarState.nut" import selectedSlotIdx, slotBarArsenalKey, slotBarSlotKey, visibleNewModsSlots,
+  actualSlotIdx, attachedSlotBarArsenalIdx
+from "%rGui/style/stdColors.nut" import userlogTextColor
+from "%rGui/tutorial/completedTutorials.nut" import markTutorialCompleted, isFinishedArsenal, isFinishedUnitsResearch
+from "%rGui/tutorial/tutorialConst.nut" import TUTORIAL_ARSENAL_ID
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import setTutorialConfig, isTutorialActive, finishTutorial,
+  goToStep, activeTutorialId, WND_UID
+from "%rGui/unitMods/unitModsConst.nut" import modW, modsGap
+from "%rGui/unitMods/unitModsScroll.nut" import carouselScrollHandler
+from "%rGui/unitMods/unitModsSlotsState.nut" import curWeaponIdx, curBeltIdx, setCurSlotIdx, setCurBeltsWeaponIdx,
+  isUnitModSlotsAttached, openUnitModsSlotsWnd, slotWeaponKey, slotBeltKey, groupedCurUnseenMods, curWeaponBeltsOrdered,
+  curWeaponsOrdered, curWeapon, curWeaponModName, curBelt, equippedWeaponId, equippedBeltId, curWeaponMod, curSlotIdx,
   curBeltWeapon, findSlotWeaponsToBuyNonUpdatable, isHangarUnitHasWeaponSlots, curSlotUnitModCostCfg
-} = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { carouselScrollHandler } = require("%rGui/unitMods/unitModsScroll.nut")
-let { modW, modsGap } = require("%rGui/unitMods/unitModsConst.nut")
-let { getBulletBeltShortName, getWeaponShortNamesList } = require("%rGui/weaponry/weaponsVisual.nut")
-let { getModCost, slotModKey, curModId, modsSorted, unseenModsByCategory, mods, hasEnoughCurrencies
-  curModCategoryId, curBulletCategoryId, isUnitModAttached, curUnitModCostCfg, curMod, openUnitModsWnd
-} = require("%rGui/unitMods/unitModsState.nut")
-let { openMsgBoxPurchase, PURCHASE_BOX_UID } = require("%rGui/shop/msgBoxPurchase.nut")
-let { closeMsgBox } = require("%rGui/components/msgBox.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { markTutorialCompleted, isFinishedArsenal, isFinishedUnitsResearch } = require("%rGui/tutorial/completedTutorials.nut")
-let { TUTORIAL_ARSENAL_ID } = require("%rGui/tutorial/tutorialConst.nut")
+from "%rGui/unitMods/unitModsState.nut" import getModCost, slotModKey, curModId, modsSorted, unseenModsByCategory,
+  mods, hasEnoughCurrencies, curModCategoryId, curBulletCategoryId, isUnitModAttached, curUnitModCostCfg, curMod,
+  openUnitModsWnd
+from "%rGui/weaponry/weaponsVisual.nut" import getBulletBeltShortName, getWeaponShortNamesList
 
 
-let STEP_OPEN_ARSENAL_BUTTON = "s2_open_arsenal_button"
-let STEP_FINISH = "s9_finish_arsenal_tutorial"
+let logT = log_with_prefix("[ARSENAL_TUTOR] ")
 
-let MIN_BATLES_TO_START = 4
+
+const STEP_OPEN_ARSENAL_BUTTON = "s2_open_arsenal_button"
+const STEP_FINISH = "s9_finish_arsenal_tutorial"
+
+const MIN_BATLES_TO_START = 4
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 
 let hasUnitModifications = Computed(@() visibleNewModsSlots.get().len() > 0)
@@ -81,7 +81,7 @@ function findModsToBuyNonUpdatable() {
 
   let isBelt = beltUnseenMods.len() > 0
   let unseenMods = isBelt ? beltUnseenMods : secondaryUnseenMods
-  let firstAvaialableGroupIdx = 0
+  const firstAvaialableGroupIdx = 0
   let index = unseenMods.keys()?[firstAvaialableGroupIdx]
   return { isBelt, index, modsToShow = unseenMods?[index] ?? {} }
 }

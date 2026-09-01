@@ -1,40 +1,42 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_meta_mission_info_by_name } = require("guiMission")
-let { chooseRandom } = require("%sqstd/rand.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { rentals } = require("%appGlobals/rentalState.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { isInSquad, isSquadLeader, isReady } = require("%appGlobals/squadState.nut")
-let { curUnit, curUnits } = require("%appGlobals/pServer/profile.nut")
-let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { registerHandler } = require("%appGlobals/pServer/pServerApi.nut")
-let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
-let { newbieGameModesConfig } = require("%appGlobals/gameModes/newbieGameModesConfig.nut")
-let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
-let { getCampaignPkgsForNewbieSingle } = require("%appGlobals/updater/campaignAddons.nut")
-let { getMissionUnitsAndAddons, addSupportUnits } = require("%appGlobals/updater/missionUnits.nut")
-let buttonStyles = require("%rGui/components/buttonStyles.nut")
-let { textButtonBattle, textButtonCommon, textButtonPrimary, mkCustomButton, mergeStyles
-} = require("%rGui/components/textButton.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { hangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { firstBattleTutor, needFirstBattleTutor, startTutor } = require("%rGui/tutorial/tutorialMissions.nut")
-let { randomBattleMode, shouldStartNewbieSingleOnline, isGameModesReceived, allGameModes
-} = require("%rGui/gameModes/gameModeState.nut")
-let { startTestFlight, startNewbieOfflineBattle } = require("%rGui/gameModes/startOfflineMode.nut")
-let { newbieOfflineMissions, startCurNewbieMission, newbieLocalMP, isNextBattleNewbieOffline
-} = require("%rGui/gameModes/newbieOfflineMissions.nut")
-let setReady = require("%rGui/squad/setReady.nut")
-let { needReadyCheckButton, initiateReadyCheck, isReadyCheckSuspended } = require("%rGui/squad/readyCheck.nut")
-let showNoPremMessageIfNeed = require("%rGui/shop/missingPremiumAccWnd.nut")
-let offerMissingUnitItemsMessage = require("%rGui/shop/offerMissingUnitItemsMessage.nut")
-let tryOpenQueuePenaltyWnd = require("%rGui/queue/queuePenaltyWnd.nut")
-let { battleBtnCampaign, penaltyTimerIcon } = require("%rGui/queue/penaltyComps.nut")
-let { isNeedAddonsForRandomBattle } = require("%rGui/updater/randomBattleModeAddons.nut")
-let { mkMRankRange } = require("%rGui/state/matchingRank.nut")
+from "eventbus" import eventbus_send
+from "guiMission" import get_meta_mission_info_by_name
+from "%sqstd/rand.nut" import chooseRandom
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/clientState/initialState.nut" import isOfflineMenu
+from "%appGlobals/gameModes/newbieGameModesConfig.nut" import newbieGameModesConfig
+from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import registerHandler
+from "%appGlobals/pServer/profile.nut" import curUnit, curUnits
+from "%appGlobals/rentalState.nut" import rentals
+from "%appGlobals/squadState.nut" import isInSquad, isSquadLeader, isReady
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/updater/addonsState.nut" import hasAddons, unitSizes
+from "%appGlobals/updater/campaignAddons.nut" import getCampaignPkgsForNewbieSingle
+from "%appGlobals/updater/missionUnits.nut" import getMissionUnitsAndAddons, addSupportUnits
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+import "%rGui/components/buttonStyles.nut" as buttonStyles
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/textButton.nut" import textButtonBattle, textButtonCommon, textButtonPrimary, mkCustomButton,
+  mergeStyles
+from "%rGui/gameModes/gameModeState.nut" import randomBattleMode, shouldStartNewbieSingleOnline, isGameModesReceived,
+  allGameModes
+from "%rGui/gameModes/newbieOfflineMissions.nut" import newbieOfflineMissions, startCurNewbieMission, newbieLocalMP,
+  isNextBattleNewbieOffline
+from "%rGui/gameModes/startOfflineMode.nut" import startTestFlight, startNewbieOfflineBattle
+from "%rGui/queue/penaltyComps.nut" import battleBtnCampaign, penaltyTimerIcon
+import "%rGui/queue/queuePenaltyWnd.nut" as tryOpenQueuePenaltyWnd
+import "%rGui/shop/missingPremiumAccWnd.nut" as showNoPremMessageIfNeed
+import "%rGui/shop/offerMissingUnitItemsMessage.nut" as offerMissingUnitItemsMessage
+from "%rGui/squad/readyCheck.nut" import needReadyCheckButton, initiateReadyCheck, isReadyCheckSuspended
+import "%rGui/squad/setReady.nut" as setReady
+from "%rGui/state/matchingRank.nut" import mkMRankRange
+from "%rGui/tutorial/tutorialMissions.nut" import firstBattleTutor, needFirstBattleTutor, startTutor
+from "%rGui/unit/hangarUnit.nut" import hangarUnit
+from "%rGui/updater/randomBattleModeAddons.nut" import isNeedAddonsForRandomBattle
+from "types" import Table
+
 
 let randomBattleButtonDownloading = Watched({})
 
@@ -55,7 +57,7 @@ let battleBtnPenaltyOvr = @(campaign, penaltyId = "") {
 }
 let toBattleText = utf8ToUpper(loc("mainmenu/toBattle/short"))
 let toBattleContent = {
-  pos = [0, hdpx(10)]
+  pos = const [0, hdpx(10)]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -165,8 +167,8 @@ function toRandomBattle() {
     logerr($"Unable to start battle because no units (unit in hangar = {hangarUnit.get()?.name})")
 }
 
-let cbRandomBattleId = "onResetPenaltyToRandomBattle"
-let cbReadyId = "onResetPenaltyReady"
+const cbRandomBattleId = "onResetPenaltyToRandomBattle"
+const cbReadyId = "onResetPenaltyReady"
 registerHandler(cbRandomBattleId, @(res) res?.error == null ? toRandomBattle() : null)
 registerHandler(cbReadyId, @(res, context) res?.error == null
   ? showNoPremMessageIfNeed(@() offerMissingUnitItemsMessage(curUnits.get(), @() setReady(true, context?.mGMode)))
@@ -282,7 +284,7 @@ let toBattleButtonForRandomBattles = @() {
 function mkToBattleButtonWithSquadManagement(toBattleFunc, bModeOrId = null, ovr = {}) {
   let battleMode = bModeOrId == null ? randomBattleMode
     : bModeOrId instanceof Watched ? bModeOrId
-    : type(bModeOrId) == "table" ? Watched(bModeOrId)
+    : bModeOrId instanceof Table ? Watched(bModeOrId)
     : Computed(@() allGameModes.get()?[bModeOrId])
   let toBattleButton = mkToBattleButtonNoAddons(toBattleFunc, battleMode, ovr)
   return @() {

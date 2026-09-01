@@ -1,19 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { touchButtonSize, borderColorPushed } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { mkNextBulletArrow } = require("%rGui/hud/bullets/bulletNextArrow.nut")
-let { mainBulletInfoSec, extraBulletInfoSec, mainBulletCountSec, extraBulletCountSec,
-  currentBulletIdxSec, nextBulletIdxSec, selectBulletSec, bulletsInfoSec,
-  mainBulletInfoSpec, extraBulletInfoSpec, mainBulletCountSpec, extraBulletCountSpec,
-  currentBulletIdxSpec, nextBulletIdxSpec, selectBulletSpec, bulletsInfoSpec, isFakeSecondary
-} = require("%rGui/hud/bullets/hudUnitBulletsState.nut")
-let { hudVeilGrayColorFade, hudPearlGrayColor, hudLightBlackColor } = require("%rGui/style/hudColors.nut")
-let { getAmmoTypeShortText } = require("%rGui/weaponry/weaponsVisual.nut")
+from "%globalsDarg/fontScale.nut" import getScaledFont
+from "%rGui/hud/bullets/bulletNextArrow.nut" import mkNextBulletArrow
+from "%rGui/hud/bullets/hudUnitBulletsState.nut" import mainBulletInfoSec, extraBulletInfoSec, mainBulletCountSec,
+  extraBulletCountSec, currentBulletIdxSec, nextBulletIdxSec, selectBulletSec, bulletsInfoSec, mainBulletInfoSpec,
+  extraBulletInfoSpec, mainBulletCountSpec, extraBulletCountSpec, currentBulletIdxSpec, nextBulletIdxSpec,
+  selectBulletSpec, bulletsInfoSpec, isFakeSecondary
+from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize, borderColorPushed
+from "%rGui/style/hudColors.nut" import hudVeilGrayColorFade, hudPearlGrayColor, hudLightBlackColor
+from "%rGui/weaponry/weaponsVisual.nut" import getAmmoTypeShortText
+
 
 let colorActive = hudPearlGrayColor
 let colorInactive = hudVeilGrayColorFade
-let borderWidth = hdpxi(1)
-let borderWidthCurrent = hdpxi(3)
+const borderWidth = hdpxi(1)
+const borderWidthCurrent = hdpxi(3)
 let imgSizeBase = (touchButtonSize * 0.75).tointeger()
 
 let activeInfoMain = Computed(@() isFakeSecondary.get() ? mainBulletInfoSpec.get() : mainBulletInfoSec.get())

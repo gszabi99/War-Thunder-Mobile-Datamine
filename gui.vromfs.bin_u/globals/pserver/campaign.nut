@@ -1,13 +1,15 @@
-let { Computed } = require("frp")
-let { serverConfigs } = require("servConfigs.nut")
-let servProfile = require("servProfile.nut")
-let { set_current_campaign } = require("pServerApi.nut")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
-let { resetTimeout } = require("dagor.workcycle")
+from "dagor.workcycle" import resetTimeout
+from "frp" import Computed
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "pServerApi.nut" import set_current_campaign
+from "servConfigs.nut" import serverConfigs
+import "servProfile.nut" as servProfile
+from "types" import String
 
-let defaultCampaign = "tanks"
 
-let selectedCampaign = sharedWatched("selectedCampaign", @() null) 
+const defaultCampaign = "tanks"
+
+let selectedCampaign = hardPersistWatched("selectedCampaign", null) 
 let campaignsLevelInfo = Computed(@()(servProfile.get()?.levelInfo ?? {}))
 let savedCampaign = Computed(@() campaignsLevelInfo.get().findindex(@(i) i?.isCurrent ?? false)) 
 let isAnyCampaignSelected = Computed(@() (selectedCampaign.get() ?? savedCampaign.get()) != null)
@@ -16,7 +18,7 @@ let campaignsList = Computed(@() serverConfigs.get()?.circuit.campaigns.availabl
 
 let curCampaign = Computed(function(prev) {
   if (servProfile.get().len() == 0)
-    return type(prev) == "string" ? prev : campaignsList.get()?[0]  
+    return prev instanceof String ? prev : campaignsList.get()?[0]  
   if (campaignsList.get().contains(selectedCampaign.get()))
     return selectedCampaign.get()
   let saved = savedCampaign.get()
@@ -28,6 +30,9 @@ let curCampaign = Computed(function(prev) {
 })
 
 let curCampaignBit = Computed(@() serverConfigs.get()?.campaignCfg[curCampaign.get()].bit ?? 0)
+
+let allCampaignsBitmask = Computed(@() campaignsList.get()
+  .reduce(@(mask, c) mask | (serverConfigs.get()?.campaignCfg?[c].bit ?? 0), 0))
 
 function setCampaign(campaign) {
   selectedCampaign.set(campaign)
@@ -170,6 +175,7 @@ return exportProfile.__update({
   setCampaign
   campaignsList
   isAnyCampaignSelected
+  allCampaignsBitmask
   campConfigs
   campProfile
 })

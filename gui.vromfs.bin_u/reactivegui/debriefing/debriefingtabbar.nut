@@ -1,16 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
 from "math" import round
-from "%rGui/debriefing/debriefingState.nut" import curDebrTabId, nextDebrTabId,
-  isDebriefingAnimFinished, stopDebriefingAnimation
+from "%rGui/debriefing/debriefingState.nut" import curDebrTabId, nextDebrTabId, isDebriefingAnimFinished,
+  stopDebriefingAnimation
+
 
 let tabSize = hdpx(75).tointeger()
-let tabGap = hdpx(30)
-let tabLineGap = hdpx(0)
-let tabLineH = hdpx(10)
+const tabGap = hdpx(30)
+const tabLineGap = hdpx(0)
+const tabLineH = hdpx(10)
 let tabBarHeight = tabSize + tabLineGap + tabLineH
 
-let activeColor = 0xFFFFFFFF
-let fadedColor = 0x80808080
+const activeColor = 0xFFFFFFFF
+const fadedColor = 0x80808080
 
 function tabBase(info, debrData, sf, isSelected, isInAnim) {
   let isActive = isSelected || (sf & S_ACTIVE) != 0

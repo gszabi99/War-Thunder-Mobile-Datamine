@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-let { OPT_GEAR_DOWN_ON_STOP_BUTTON, mkOptionValue } = require("%rGui/options/guiOptions.nut")
-let { currentTankMoveCtrlType } = require("%rGui/options/chooseMovementControls/groundMoveControlType.nut")
+from "%rGui/options/chooseMovementControls/groundMoveControlType.nut" import currentTankMoveCtrlType
+from "%rGui/options/guiOptions.nut" import OPT_GEAR_DOWN_ON_STOP_BUTTON, mkOptionValue
 
 
 let validate = @(val, list) list.contains(val) ? val : list[0]

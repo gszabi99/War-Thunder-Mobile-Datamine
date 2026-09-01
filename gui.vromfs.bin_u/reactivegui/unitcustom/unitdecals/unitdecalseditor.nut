@@ -1,27 +1,26 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { TouchScreenStick } = require("wt.behaviors")
-let { Point2 } = require("dagor.math")
-let { sqrt, fabs } = require("math")
-let { get_decal_pos } = require("unitCustomization")
-let { exitDecalMode, rotateDecalMode, moveDecalMode, scaleDecalMode,
-  rotateDecal, moveDecal, scaleDecal, curDecalPosition, isManipulatorInProgress
-} = require("%rGui/unitCustom/unitDecals/unitDecalsState.nut")
-let { textButtonPrimary } = require("%rGui/components/textButton.nut")
-let { textColor } = require("%rGui/style/stdColors.nut")
-let decalSideOptions = require("%rGui/unitCustom/unitDecals/decalSideOptions.nut")
+from "dagor.math" import Point2
+from "math" import sqrt, fabs
+from "unitCustomization" import get_decal_pos
+from "wt.behaviors" import TouchScreenStick
+from "%sqstd/string.nut" import utf8ToUpper
+from "%rGui/components/textButton.nut" import textButtonPrimary
+from "%rGui/style/stdColors.nut" import textColor
+import "%rGui/unitCustom/unitDecals/decalSideOptions.nut" as decalSideOptions
+from "%rGui/unitCustom/unitDecals/unitDecalsState.nut" import exitDecalMode, rotateDecalMode, moveDecalMode,
+  scaleDecalMode, rotateDecal, moveDecal, scaleDecal, curDecalPosition, isManipulatorInProgress
 
 
-let actionsGap = hdpx(30)
-let optContainerBtnSize = hdpx(300)
-let optBtnSize = hdpx(90)
-let optBorderWidth = hdpxi(4)
-let optImgSize = hdpx(50)
-let optBorderRadius = optBtnSize / 2
-let stickRadius = sw(100)
-let optBtnRadius = optBtnSize / 2
-let centerLinksDistance = optContainerBtnSize / 2 - optBtnRadius
-let lengthBetweenBnts = centerLinksDistance * sqrt(2)
+const actionsGap = hdpx(30)
+const optContainerBtnSize = hdpx(300)
+const optBtnSize = hdpx(90)
+const optBorderWidth = hdpxi(4)
+const optImgSize = hdpx(50)
+const optBorderRadius = optBtnSize / 2
+const stickRadius = sw(100)
+const optBtnRadius = optBtnSize / 2
+const centerLinksDistance = optContainerBtnSize / 2 - optBtnRadius
+const lengthBetweenBnts = centerLinksDistance * sqrt(2)
 let lengthLink = ((lengthBetweenBnts - optBtnSize) / 1.9).tointeger()
 let displaceManipulator = [-optContainerBtnSize / 2 - optBtnSize, -optContainerBtnSize / 2 - optBtnSize / 2]
 let rotateOffset = Point2(hdpx(63), -hdpx(63))
@@ -95,9 +94,9 @@ let decalActions = @() {
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
         children = [
-          mkBtnLink(0xFFED1C24, { pos = [hdpx(43), -hdpx(43)] })
+          mkBtnLink(0xFFED1C24, { pos = const [hdpx(43), -hdpx(43)] })
           moveButton(0xFFED1C24)
-          mkBtnLink(0xFFED1C24, { pos = [-hdpx(43), hdpx(43)] })
+          mkBtnLink(0xFFED1C24, { pos = const [-hdpx(43), hdpx(43)] })
         ]
       }
       {
@@ -105,7 +104,7 @@ let decalActions = @() {
         valign = ALIGN_BOTTOM
         halign = ALIGN_LEFT
         children = [
-          mkBtnLink(0xFF3F48CC, { pos = [-hdpx(63), hdpx(63)] })
+          mkBtnLink(0xFF3F48CC, { pos = const [-hdpx(63), hdpx(63)] })
           sizeButton(0xFF3F48CC)
         ]
       }
@@ -114,7 +113,7 @@ let decalActions = @() {
   behavior = Behaviors.RtPropUpdate
   update = function() {
     let projPos = get_decal_pos()
-    let decalPos = projPos.x > 0 ? projPos : Point2(sw(50), sh(50))
+    let decalPos = projPos.x >= 0 ? projPos : Point2(sw(50), sh(50))
     if (fabs(curDecalPosition.get().x - decalPos.x) > 1 || fabs(curDecalPosition.get().y - decalPos.y) > 1) {
       curDecalPosition.set(decalPos)
       return {

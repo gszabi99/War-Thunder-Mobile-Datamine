@@ -1,38 +1,35 @@
 from "%globalsDarg/darg_library.nut" import *
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { PASS_SCENE, QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB, BATTLE_TAB,
-  questTabsByEventId, isSeasonTabVisible, seasonShopId
-} = require("%rGui/seasonScene/seasonSceneState.nut")
-let { passSceneWnd } = require("%rGui/battlePass/passScene.nut")
-let { visibleTabs, BATTLE_PASS, OPERATION_PASS, closePassScene, passPageId, seenPasses, isPassGoodsUnseen
-} = require("%rGui/battlePass/passState.nut")
-let { hasBpRewardsToReceive, battlePassGoods, bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpProgressUnlock
-} = require("%rGui/battlePass/battlePassState.nut")
-let { hasOPRewardsToReceive, operationPassGoods, OP_EVENT_ID, OPFreeRewardsUnlock,
-  OPPaidRewardsUnlock, OPProgressUnlock
-} = require("%rGui/battlePass/operationPassState.nut")
-let { hasEpRewardsToReceive, hasEpRewardsToReceiveByTableId, eventsPassList, allEventPassGoods,
-  eventFreeRewardsUnlock, eventPaidRewardsUnlock, eventProgressUnlock
-} = require("%rGui/battlePass/eventPassState.nut")
-let { curEventCurrencies, MAIN_EVENT_ID, specialEvents, unseenLootboxes, unseenLootboxesShowOnce,
-  subEventsByMain
-} = require("%rGui/event/eventState.nut")
-let gmEventWnd = require("%rGui/event/gmEventWnd.nut")
-let { openedGmEventId } = require("%rGui/event/gmEventState.nut")
-let { isEventWndLootboxOpen, closeEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
-let { hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop, personalGoodsByShop,
-  shopCurCategories
-} = require("%rGui/shop/shopState.nut")
-let { getShopIdForEventId } = require("%rGui/shop/eventShopState.nut")
-let eventShopTabContent = require("%rGui/shop/shopWnd.nut")
-let { mkShopHeaderRight } = require("%rGui/shop/shopWndPage.nut")
-let questsWndCtor = require("%rGui/quests/questsWnd.nut")
-let { questsCfg, curTabParams, progressUnlockByTab, hasUnseenQuestsBySection, progressUnlockBySection
-} = require("%rGui/quests/questsState.nut")
-let { getAllUnlockCurrencies } = require("%rGui/unlocks/unlocks.nut")
-let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
-let eventWnd = require("%rGui/event/eventWnd.nut")
+from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/battlePass/battlePassState.nut" import hasBpRewardsToReceive, battlePassGoods, bpFreeRewardsUnlock,
+  bpPaidRewardsUnlock, bpProgressUnlock
+from "%rGui/battlePass/eventPassState.nut" import hasEpRewardsToReceive, hasEpRewardsToReceiveByTableId,
+  eventsPassList, allEventPassGoods, eventFreeRewardsUnlock, eventPaidRewardsUnlock, eventProgressUnlock
+from "%rGui/battlePass/operationPassState.nut" import hasOPRewardsToReceive, operationPassGoods, OP_EVENT_ID,
+  OPFreeRewardsUnlock, OPPaidRewardsUnlock, OPProgressUnlock
+from "%rGui/battlePass/passScene.nut" import passSceneWnd
+from "%rGui/battlePass/passState.nut" import visibleTabs, BATTLE_PASS, OPERATION_PASS, closePassScene, passPageId,
+  seenPasses, isPassGoodsUnseen
+from "%rGui/event/eventState.nut" import curEventCurrencies, MAIN_EVENT_ID, specialEvents, unseenLootboxes,
+  unseenLootboxesShowOnce, subEventsByMain
+import "%rGui/event/eventWnd.nut" as eventWnd
+from "%rGui/event/treeEvent/treeEventWnd.nut" import treeEventMapWnd, contentOverlayShadeColor
+from "%rGui/event/treeEvent/treeEventState.nut" import curEventMapCurrencies
+from "%rGui/event/gmEventState.nut" import openedGmEventId
+import "%rGui/event/gmEventWnd.nut" as gmEventWnd
+from "%rGui/quests/questsState.nut" import questsCfg, curTabParams, progressUnlockByTab, hasUnseenQuestsBySection,
+  hasRewardQuestsBySection, progressUnlockBySection
+import "%rGui/quests/questsWnd.nut" as questsWndCtor
+from "%rGui/seasonScene/seasonSceneState.nut" import PASS_SCENE, QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB, BATTLE_TAB,
+  MAP_TAB, questTabsByEventId, isSeasonTabVisible, seasonShopId
+from "%rGui/shop/eventShopState.nut" import getShopIdForEventId
+from "%rGui/shop/lootboxPreviewState.nut" import isEventWndLootboxOpen, closeEventWndLootbox
+from "%rGui/shop/shopState.nut" import hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop,
+  personalGoodsByShop, shopCurCategories
+import "%rGui/shop/shopWnd.nut" as eventShopTabContent
+from "%rGui/shop/shopWndPage.nut" import mkShopHeaderRight
+from "%rGui/unlocks/unlocks.nut" import getAllUnlockCurrencies
+from "%rGui/unlocks/userstat.nut" import userstatStatsTables
 
 
 let contentCfgDefaults = {
@@ -44,6 +41,7 @@ let contentCfgDefaults = {
   onTabClose = null 
   onBack = null 
   mkHasUnseen = null 
+  sceneShadeColor = null 
 }
 
 let getQuestTabs = @(eventId, subEventsByMainV)
@@ -105,8 +103,13 @@ let sceneContentCfg = {
     label = "tasks"
     currencies = Computed(@() curTabParams.get()?.currencies)
     content = questsWndCtor
-    mkHasUnseen = @(eventId) Computed(@() hasQuestsUnseen(getQuestTabs(eventId.get(), subEventsByMain.get()),
-      questsCfg.get(), progressUnlockByTab.get(), hasUnseenQuestsBySection.get(), progressUnlockBySection.get()))
+    mkHasUnseen = @(eventId) Computed(function() {
+      let bySection = eventId.get() in questTabsByEventId
+        ? hasUnseenQuestsBySection.get()
+        : hasRewardQuestsBySection.get()
+      return hasQuestsUnseen(getQuestTabs(eventId.get(), subEventsByMain.get()),
+        questsCfg.get(), progressUnlockByTab.get(), bySection, progressUnlockBySection.get())
+    })
   },
   [EVENT_SHOP_TAB] = {
     icon = "ui/gameuiskin#icon_shop.svg"
@@ -139,6 +142,19 @@ let sceneContentCfg = {
     icon = Computed(@() getEventPresentation(openedGmEventId.get()).icon)
     label = "mainmenu/toBattle/short"
     content = @() gmEventWnd
+  },
+  [MAP_TAB] = {
+    icon = "ui/gameuiskin#data_mark_geo.svg"
+    label = "mainmenu/treeEvent"
+    currencies = Computed(function() {
+      let res = clone curEventCurrencies.get()
+      foreach (c in curEventMapCurrencies.get())
+        if (!res.contains(c))
+          res.append(c)
+      return res
+    })
+    content = @() treeEventMapWnd
+    sceneShadeColor = contentOverlayShadeColor
   }
 }
   .map(@(c, id) contentCfgDefaults.__merge(c, { isVisible = isSeasonTabVisible[id].watched }))

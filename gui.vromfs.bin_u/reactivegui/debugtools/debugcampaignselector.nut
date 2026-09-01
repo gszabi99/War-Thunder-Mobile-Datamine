@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let listButton = require("%rGui/components/listButton.nut")
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+import "%rGui/components/listButton.nut" as listButton
+
 
 let isForCampaign = mkWatched(persist, "isForCampaign", true)
 

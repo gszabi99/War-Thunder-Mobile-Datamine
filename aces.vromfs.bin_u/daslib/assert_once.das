@@ -24,11 +24,6 @@ def public assert_once(expr : bool; message : string = "") {
 [tag_function_macro(tag="asset_once_tag")]
 class AssertOnceMacro : AstFunctionAnnotation {
     
-    
-    
-    
-    
-    
     def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
         let once_name = make_unique_private_name("__assert_once", call.at)
         if (!compiling_module() |> add_global_private_var(once_name, call.at) <| quote(true)) {

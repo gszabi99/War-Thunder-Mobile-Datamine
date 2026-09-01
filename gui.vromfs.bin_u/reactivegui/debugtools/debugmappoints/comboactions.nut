@@ -1,9 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { transformInProgress, ELEM_POINT, ELEM_LINE, ELEM_BG, addLine, changeLine, presetLines,
-  tuningPoints, tuningBgElems
-} = require("%rGui/debugTools/debugMapPoints/mapEditorState.nut")
-let { getClosestSegment } = require("%rGui/event/treeEvent/segmentMath.nut")
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%rGui/debugTools/debugMapPoints/mapEditorState.nut" import transformInProgress, ELEM_POINT, ELEM_LINE, ELEM_BG,
+  addLine, changeLine, pageLines, tuningPoints, tuningBgElems
+from "%rGui/event/treeEvent/segmentMath.nut" import getClosestSegment
 
 
 let bgElemIdxToId = @(id) id in tuningPoints.get() ? id
@@ -37,7 +36,7 @@ let shiftActions = {
     info = "Hold Shift and click on the map to add midpoint to selected line"
     shiftInfo = "Click on the map to add midpoint to selected line"
     function process(lineIdx, _, getMapRelCoords) {
-      let line = clone presetLines.get()?[lineIdx]
+      let line = clone pageLines.get()?[lineIdx]
       if (line == null)
         return false
       let [x, y] = getMapRelCoords()

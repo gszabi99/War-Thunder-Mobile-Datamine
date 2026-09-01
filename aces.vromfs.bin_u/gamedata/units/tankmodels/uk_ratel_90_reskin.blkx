@@ -1772,9 +1772,9 @@
       "Fuel": 500.0,
       "TakeOff": 20100.0,
       "momentOfInertia": [
-        2.0,
-        2.0,
-        4.0
+        1.0,
+        4.7,
+        4.5
       ],
       "CenterOfGravity": [
         0.12,
@@ -1800,32 +1800,38 @@
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 282.0,
-      "maxRPM": 2400.0,
+      "horsePowers": 310.0,
+      "maxRPM": 2200.0,
       "minRPM": 600.0,
       "rpmTau": 1.9
     },
     "mechanics": {
       "steerType": "double_differential",
-      "maxBrakeForce": 96400.0,
+      "maxBrakeForce": 81000.0,
       "driveGearRadius": 0.6,
-      "mainGearRatio": 7.7,
+      "mainGearRatio": 6.31,
       "sideGearRatio": 1.0,
       "doubleDiffGearRatio": 30.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [
-          -4.0,
-          -10.0,
+          -4.68,
+          -5.705,
+          -6.73,
+          -13.46,
           0.0,
-          15.0,
-          8.0,
-          6.0,
+          9.36,
           4.68,
-          3.31,
-          2.31,
-          1.0,
-          0.67
+          3.96,
+          3.24,
+          2.745,
+          2.25,
+          1.82,
+          1.57,
+          1.325,
+          1.08,
+          0.915,
+          0.75
         ]
       }
     },
@@ -1835,10 +1841,10 @@
         -0.12,
         0.1
       ],
-      "defaultGearRadius": 0.55,
+      "defaultGearRadius": 0.58,
       "defaultDampeningForce": [
-        36138.0,
-        36138.0
+        65000.0,
+        65000.0
       ],
       "hasSuspensionOnDriveGear": true,
       "dampeningRelaxationRatio": 0.4,

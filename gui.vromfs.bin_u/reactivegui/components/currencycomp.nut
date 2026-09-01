@@ -1,10 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { decimalFormat, shortTextFromNum } = require("%rGui/textFormatByLang.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getIconSize, currencyIconsColor, getCurrencyImage, getCurrencyFallback
-} = require("%appGlobals/config/currencyPresentation.nut")
-let { getPriceExtStr } = require("%rGui/shop/priceExt.nut")
-let currencyStyles = require("%rGui/components/currencyStyles.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/currencyPresentation.nut" import getIconSize, currencyIconsColor, getCurrencyImage,
+  getCurrencyFallback
+import "%rGui/components/currencyStyles.nut" as currencyStyles
+from "%rGui/shop/priceExt.nut" import getPriceExtStr
+from "%rGui/textFormatByLang.nut" import decimalFormat, shortTextFromNum
+from "types" import Integer
+
+
 let { CS_COMMON, CS_GAMERCARD } = currencyStyles
 
 
@@ -21,7 +24,7 @@ function mkCurrencyImage (id, size, ovr = {}) {
   }.__update(ovr)
 }
 
-let currencyFormat = @(v) type(v) != "integer" ? v
+let currencyFormat = @(v) !(v instanceof Integer) ? v
   : v > 100000000 ? shortTextFromNum(v)
   : decimalFormat(v)
 
@@ -134,7 +137,7 @@ function mkExp(value, color, style = CS_GAMERCARD) {
       }
       {
         rendObj = ROBJ_TEXT
-        text = type(value) == "integer" ? decimalFormat(value) : value
+        text = value instanceof Integer ? decimalFormat(value) : value
         color
         fontFxColor = style.fontFxColor
         fontFxFactor = style.fontFxFactor

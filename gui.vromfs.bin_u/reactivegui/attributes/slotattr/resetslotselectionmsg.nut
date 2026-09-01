@@ -1,25 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { reset_slots_level } = require("%appGlobals/pServer/pServerApi.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { CS_INCREASED_ICON, CS_INACTIVE_ICON, mkCurrencyImage, mkCurrencyText } = require("%rGui/components/currencyComp.nut")
-let { isOpenedSlotSelection, resetSlotSelectionData } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
-let { buttonsHGap, textButtonPricePurchase } = require("%rGui/components/textButton.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg, modalWndHeaderWithClose } = require("%rGui/components/modalWnd.nut")
-let { bgUnit, unitPlateRatio } = require("%rGui/unit/components/unitPlateComp.nut")
-let { revealAnimation } = require("%rGui/unit/components/unitUnlockAnimation.nut")
-let { mkGradientCtorRadial, gradTexSize } = require("%rGui/style/gradients.nut")
-let { mkSlotLevel } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
-let { slotLevelsCfg } = require("%rGui/slotBar/slotBarState.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let buttonStyles = require("%rGui/components/buttonStyles.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%appGlobals/pServer/pServerApi.nut" import reset_slots_level
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%rGui/attributes/slotAttr/slotAttrState.nut" import isOpenedSlotSelection, resetSlotSelectionData
+from "%rGui/attributes/slotAttr/slotLevelComp.nut" import mkSlotLevel
+import "%rGui/components/buttonStyles.nut" as buttonStyles
+from "%rGui/components/currencyComp.nut" import CS_INCREASED_ICON, CS_INACTIVE_ICON, mkCurrencyImage, mkCurrencyText
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
+from "%rGui/components/textButton.nut" import buttonsHGap, textButtonPricePurchase
+from "%rGui/slotBar/slotBarState.nut" import slotLevelsCfg
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/gradients.nut" import mkGradientCtorRadial, gradTexSize
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/textFormatByLang.nut" import decimalFormat
+from "%rGui/unit/components/unitPlateComp.nut" import bgUnit, unitPlateRatio
+from "%rGui/unit/components/unitUnlockAnimation.nut" import revealAnimation
 
 
-let RESET_SLOT_SELECTION_UID = "resetSlotSelection"
+const RESET_SLOT_SELECTION_UID = "resetSlotSelection"
 
 let iconStyle = CS_INCREASED_ICON
 let iconSize = iconStyle.iconSize
@@ -27,10 +27,10 @@ let slotWidth = evenPx(370)
 let slotHeight = (slotWidth * unitPlateRatio).tointeger()
 let slotSize = [slotWidth, slotHeight]
 let levelImageSize = evenPx(30)
-let selBorderColor = 0xFFFFFFFF
-let hoverBorderColor = 0x40404040
-let borderHeight = hdpx(8)
-let checkIconSize = hdpxi(80)
+const selBorderColor = 0xFFFFFFFF
+const hoverBorderColor = 0x40404040
+const borderHeight = hdpx(8)
+const checkIconSize = hdpxi(80)
 let highlight = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(0xFFFFFFFF, 0, 25, 22, 31,-22))
 
@@ -67,7 +67,7 @@ let mkSlotInfo = @(slot, idx) {
   halign = ALIGN_RIGHT
   children = [
     {
-      padding = [hdpx(5), hdpx(10)]
+      padding = const [hdpx(5), hdpx(10)]
       children = textComp(loc("gamercard/slot/title", { idx = idx + 1 }), fontVeryTinyAccented)
     }
     { size = FLEX }
@@ -88,8 +88,8 @@ let mkHightlightPlate = @(isSelected) {
       opacity = 0.2
     }
     {
-      size = [FLEX, borderHeight]
-      pos = [0, -borderHeight]
+      size = const [FLEX, borderHeight]
+      pos = const [0, -borderHeight]
       rendObj = ROBJ_BOX
       hplace = ALIGN_TOP
       fillColor = isSelected ? selBorderColor : hoverBorderColor
@@ -97,7 +97,7 @@ let mkHightlightPlate = @(isSelected) {
     !isSelected ? null
       : {
           size = checkIconSize
-          margin = [0, hdpx(10)]
+          margin = const [0, hdpx(10)]
           rendObj = ROBJ_IMAGE
           hplace = ALIGN_LEFT
           vplace = ALIGN_TOP

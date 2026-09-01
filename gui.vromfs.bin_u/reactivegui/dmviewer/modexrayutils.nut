@@ -1,20 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { getUnitFileName } = require("vehicleModel")
-let { blkOptFromPath } = require("%sqstd/datablock.nut")
-let { S_UNDEFINED, S_AIRCRAFT, S_HELICOPTER, S_TANK, S_SHIP, S_BOAT, S_SUBMARINE,
-  mkTankCrewMemberDesc, mkGunnerDesc, mkPilotDesc, mkEngineDesc, mkTransmissionDesc, mkDriveTurretDesc,
+from "vehicleModel" import getUnitFileName
+from "%sqstd/datablock.nut" import blkOptFromPath
+from "%globalScripts/modeXrayLib.nut" import S_UNDEFINED, S_AIRCRAFT, S_HELICOPTER, S_TANK, S_SHIP, S_BOAT,
+  S_SUBMARINE, mkTankCrewMemberDesc, mkGunnerDesc, mkPilotDesc, mkEngineDesc, mkTransmissionDesc, mkDriveTurretDesc,
   mkAircraftFuelTankDesc, mkWeaponDesc, mkAmmoDesc, mkTankArmorPartDesc, mkCoalBunkerDesc, mkSensorDesc,
   mkCountermeasureDesc, mkApsSensorDesc, mkApsLauncherDesc, mkAvionicsDesc, mkCommanderPanoramicSightDesc,
   mkFireDirecirOrRangefinderDesc, mkFireControlRoomOrBridgeDesc, mkPowerSystemDesc, mkFireControlSystemDesc,
-  mkHydraulicsSystemDesc, mkElectronicEquipmentDesc, mkSimpleDescByPartType
-} = require("%globalScripts/modeXrayLib.nut")
-let { AIR, HELICOPTER, TANK, SHIP, BOAT, SUBMARINE } = require("%appGlobals/unitConst.nut")
-let sharedWatches = require("%rGui/dmViewer/sharedWatches.nut")
-let { getUnitStats } = require("%rGui/dmViewer/modeXrayAttr.nut")
-let { getCommonWeapons, getUnitWeaponsList, getWeaponNameByBlkPath, getWeaponLocNameCustom,
-  getWeaponDescTextByWeaponInfoBlk, shouldShowAmmoAndShotFreq,
-  isCaliberCannon, toStr_speed, toStr_horsePowers, toStr_thrustKgf, toStr_distance
-} = require("%rGui/dmViewer/modeXrayWeaponry.nut")
+  mkHydraulicsSystemDesc, mkElectronicEquipmentDesc, mkSimpleDescByPartType, mkOpticBodyDesc
+from "%appGlobals/unitConst.nut" import AIR, HELICOPTER, TANK, SHIP, BOAT, SUBMARINE
+from "%rGui/dmViewer/modeXrayAttr.nut" import getUnitStats
+from "%rGui/dmViewer/modeXrayWeaponry.nut" import getCommonWeapons, getUnitWeaponsList, getWeaponNameByBlkPath,
+  getWeaponLocNameCustom, getWeaponDescTextByWeaponInfoBlk, shouldShowAmmoAndShotFreq, isCaliberCannon, toStr_speed,
+  toStr_horsePowers, toStr_thrustKgf, toStr_distance
+import "%rGui/dmViewer/sharedWatches.nut" as sharedWatches
 
 
 let unitTypeToSimpleUnitTypeMap = {
@@ -75,6 +73,7 @@ let xrayDescCtorsMap = {
   composite_armor_turret = mkTankArmorPartDesc
   ex_era_hull = mkTankArmorPartDesc
   ex_era_turret = mkTankArmorPartDesc
+  ex_skirt_composite_armor = mkTankArmorPartDesc
   coal_bunker = mkCoalBunkerDesc
   
   radar = mkSensorDesc
@@ -82,6 +81,7 @@ let xrayDescCtorsMap = {
   antenna_target_tagging = mkSensorDesc
   antenna_target_tagging_mount = mkSensorDesc
   optic_gun = mkSensorDesc
+  optic_body = mkOpticBodyDesc
   countermeasure = mkCountermeasureDesc
   aps_sensor = mkApsSensorDesc
   aps_launcher = mkApsLauncherDesc
@@ -89,7 +89,8 @@ let xrayDescCtorsMap = {
   
   electronic_block = mkAvionicsDesc
   optic_block = mkAvionicsDesc
-  cockpit_countrol = mkAvionicsDesc
+  cockpit_countrol = mkAvionicsDesc 
+  cockpit_control = mkAvionicsDesc
   ircm = mkAvionicsDesc
   
   commander_panoramic_sight = mkCommanderPanoramicSightDesc
@@ -175,6 +176,7 @@ let xrayCommonGetters = {
   getUnitFmBlk
   getUnitWeaponsList
   getAircraftFuelTankPartInfo = @(_commonData, _partName) null
+  getShopDevMode = @() false
 
   sharedWatches
 

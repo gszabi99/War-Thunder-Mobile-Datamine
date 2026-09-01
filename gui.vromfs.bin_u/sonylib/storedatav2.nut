@@ -2,6 +2,7 @@ import "statsd" as statsd
 import "DataBlock" as datablock
 from "%sqstd/datablock.nut" import fillBlock
 import "webApi.nut" as psn
+from "types" import Array, String
 
 let stdLog = require("%sqstd/log.nut")()
 let log = stdLog.with_prefix("[PSN: Shop Data: V2] ")
@@ -113,7 +114,7 @@ requestCategoryFullLinksList = @(category) psn.send(psn.inGameCatalog.get([categ
     statsd.send_counter("sq.ingame_store.v2.request", 1,
       {status = "success", request = "category_full_links_list", category = category})
 
-    if (type(response) != "array") 
+    if (!(response instanceof Array)) 
       response = [response]
 
     fillBlock("links", categoriesData[category], response[0].children)
@@ -130,7 +131,7 @@ collectCategories = function(response, err = null) {
     statsd.send_counter("sq.ingame_store.v2.request", 1,
       {status = "error", request = "dig_category", error = err.code})
 
-    if (type(err.code) == "string" || err.code < 500 || err.code >= 600)
+    if (err.code instanceof String || err.code < 500 || err.code >= 600)
       logerr($"PSN: Shop Data: Dig Category: received error: {err}")
     finalizeCollectData()
     return
@@ -209,7 +210,7 @@ function updateSpecificItemInfo(idsArray, onSuccessCb, onErrorCb = @(_r, _err) n
       statsd.send_counter("sq.ingame_store.v2.request", 1,
         {status = "success", request = "update_specific_item_info"})
 
-      if (type(response) != "array") 
+      if (!(response instanceof Array)) 
         response = [response]
 
       let res = []

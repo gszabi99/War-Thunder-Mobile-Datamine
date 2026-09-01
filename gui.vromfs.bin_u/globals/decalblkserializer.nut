@@ -1,6 +1,8 @@
-let { Point2, Point3, Point4 } = require("dagor.math")
-let DataBlock = require("DataBlock")
-let { copyParamsToTable } = require("%sqstd/datablock.nut")
+import "DataBlock" as DataBlock
+from "dagor.math" import Point2, Point3, Point4
+from "%sqstd/datablock.nut" import copyParamsToTable
+from "types" import Array
+
 
 let pointToArrayMap = {
   [Point2] = @(v) [v.x, v.y],
@@ -18,7 +20,7 @@ let pointToArray = @(value) type(value) == "instance"
   ? (pointToArrayMap?[value.getclass()](value) ?? value)
   : value
 
-let arrayToPoint = @(value) type(value) == "array"
+let arrayToPoint = @(value) value instanceof Array
   ? (arrayToPointMap?[value.len()](value) ?? value)
   : value
 

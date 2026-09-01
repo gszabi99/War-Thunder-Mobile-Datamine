@@ -1,50 +1,47 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-
-let { getSlotAttrBg, getAttrTabPresentation } = require("%appGlobals/config/slotAttrPresentation.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { slotInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { orderByCurrency, GOLD } = require("%appGlobals/currenciesState.nut")
-
-let { lastModifiedAttr, curCategoryId, getSpCostText } = require("%rGui/attributes/attrState.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let { selectedSlotIdx, slotLevelsCfg } = require("%rGui/slotBar/slotBarState.nut")
-let { textButtonPrimary, textButtonCommon, buttonsHGap } = require("%rGui/components/textButton.nut")
-let { slotAttrPage } = require("%rGui/attributes/slotAttr/slotAttrWndPage.nut")
-let { doubleSideGradient } = require("%rGui/components/gradientDefComps.nut")
-let { rowHeight, pageWidth } = require("%rGui/attributes/attrBlockComp.nut")
-let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
-let { sendTelemetryEvent } = require("%rGui/notifications/logEvents.nut")
-let { defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { textColor, badTextColor } = require("%rGui/style/stdColors.nut")
-let { gamercardGap } = require("%rGui/components/currencyStyles.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { isSlotAttrOpened, attrSlotData, slotUnitName, slotLevel, curCampSlotExp,
-  curCategory, applyAttributes, selAttrSpCost, slotLevelsToMax, openSlotExpWnd, openSlotResetWnd,
-  isSlotMaxSkills, mkUnseenSlotAttrByIdx, resetAttrState, leftSlotSp, isResetSlotLevelAllowed,
-  isResetSlotSkillsAllowed, markSlotAttributesSeen, isSlotAttrAttached, hasUpgradedAttrUnitNotUpdatable,
-  slotLevelResetPrice, slotSkillsResetPrice
-} = require("%rGui/attributes/slotAttr/slotAttrState.nut")
-let { mkAttrTabs } = require("%rGui/attributes/attrWndTabs.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { mkSlotLevelBlock } = require("%rGui/attributes/slotAttr/slotLevelComp.nut")
-let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
-let panelBg = require("%rGui/components/panelBg.nut")
-let { registerScene, setSceneBg } = require("%rGui/navState.nut")
-let buySlotLevelWnd = require("%rGui/attributes/slotAttr/buySlotLevelWnd.nut")
-let { tooltipBg } = require("%rGui/tooltip.nut")
-let { openShopWndByCurrencyId } = require("%rGui/shop/shopState.nut")
-let { mkCurrencyBalance } = require("%rGui/mainMenu/balanceComps.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/config/slotAttrPresentation.nut" import getSlotAttrBg, getAttrTabPresentation
+from "%appGlobals/currenciesState.nut" import orderByCurrency, GOLD
+from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import slotInProgress
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/attributes/attrBlockComp.nut" import rowHeight, pageWidth
+from "%rGui/attributes/attrState.nut" import lastModifiedAttr, curCategoryId, getSpCostText
+from "%rGui/attributes/attrWndTabs.nut" import mkAttrTabs
+import "%rGui/attributes/slotAttr/buySlotLevelWnd.nut" as buySlotLevelWnd
+from "%rGui/attributes/slotAttr/slotAttrState.nut" import isSlotAttrOpened, attrSlotData, slotUnitName, slotLevel,
+  curCampSlotExp, curCategory, applyAttributes, selAttrSpCost, slotLevelsToMax, openSlotExpWnd, openSlotResetWnd,
+  isSlotMaxSkills, mkUnseenSlotAttrByIdx, resetAttrState, leftSlotSp, isResetSlotLevelAllowed, isResetSlotSkillsAllowed,
+  markSlotAttributesSeen, isSlotAttrAttached, hasUpgradedAttrUnitNotUpdatable, slotLevelResetPrice,
+  slotSkillsResetPrice, isApplyBtnAttached
+from "%rGui/attributes/slotAttr/slotAttrWndPage.nut" import slotAttrPage
+from "%rGui/attributes/slotAttr/slotLevelComp.nut" import mkSlotLevelBlock
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/backButtonBlink.nut" import backButtonBlink
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/currencyStyles.nut" import gamercardGap
+from "%rGui/components/gradientDefComps.nut" import doubleSideGradient
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
+import "%rGui/components/panelBg.nut" as panelBg
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon, buttonsHGap
+from "%rGui/mainMenu/balanceComps.nut" import mkCurrencyBalance
+from "%rGui/navState.nut" import registerScene, setSceneBg
+from "%rGui/notifications/logEvents.nut" import sendTelemetryEvent
+from "%rGui/shop/shopState.nut" import openShopWndByCurrencyId
+from "%rGui/slotBar/slotBarState.nut" import selectedSlotIdx, slotLevelsCfg
+from "%rGui/style/gamercardStyle.nut" import gamercardHeight
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import textColor, badTextColor
+from "%rGui/tooltip.nut" import tooltipBg
+from "%rGui/unit/components/textButtonWithLevel.nut" import textButtonVehicleLevelUp
 
 
-let SLOT_ATTR_WND_MSG_UID = "msgSlotAttrWnd"
+const SLOT_ATTR_WND_MSG_UID = "msgSlotAttrWnd"
 
 slotInProgress.subscribe(@(_) closeMsgBox(SLOT_ATTR_WND_MSG_UID))
 isSlotAttrOpened.subscribe(function(v) {
@@ -52,12 +49,12 @@ isSlotAttrOpened.subscribe(function(v) {
   sendNewbieBqEvent(v ? "openSlotAttributesWnd" : "closeSlotAttributesWnd")
 })
 
-let attrDetailsWidth = hdpx(650)
-let connectLineWidth = hdpx(50)
-let tabW = hdpx(460)
+const attrDetailsWidth = hdpx(650)
+const connectLineWidth = hdpx(50)
+const tabW = hdpx(460)
 
-let rowHighlightAnimDuration = 0.1
-let attrRowHighlightColor = 0x052E2E2E
+const rowHighlightAnimDuration = 0.1
+const attrRowHighlightColor = 0x052E2E2E
 
 let isAttrDetailsVisible = Watched(false)
 let showAttrStateFlags = Watched(0)
@@ -100,10 +97,10 @@ function categoriesBlock() {
 }
 
 let connectLine = tooltipBg.__merge({
-  size = [connectLineWidth, hdpxi(4)]
+  size = const [connectLineWidth, hdpxi(4)]
   vplace = ALIGN_CENTER
   hplace = ALIGN_RIGHT
-  pos = [connectLineWidth, 0]
+  pos = const [connectLineWidth, 0]
   padding = 0
 })
 
@@ -136,11 +133,11 @@ function mkAttrDetailsRow(attrId, lastModifiedAttrId) {
 
 let attrDetails = @() {
   watch = isAttrDetailsVisible
-  pos = [-(attrDetailsWidth + connectLineWidth), 0]
+  pos = const [-(attrDetailsWidth + connectLineWidth), 0]
   children = isAttrDetailsVisible.get()
     ? @() tooltipBg.__merge({
         watch = [curCategory, lastModifiedAttr, isAttrDetailsVisible]
-        size = [attrDetailsWidth, SIZE_TO_CONTENT]
+        size = const [attrDetailsWidth, SIZE_TO_CONTENT]
         padding = 0
         margin = const [hdpx(20),0,0]
         fillColor = 0xA0000000
@@ -216,19 +213,27 @@ let actionButtons = @() {
     slotLevelsToMax.get() <= 0 ? null
       : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
           slotLevel.get() + 1,
-          @() buySlotLevelWnd(selectedSlotIdx.get()), { hotkeys = ["^J:Y"], color = 0xFF65BC82})
+          @() buySlotLevelWnd(selectedSlotIdx.get()),
+          {
+            hotkeys = ["^J:Y"],
+            color = 0xFF65BC82,
+            ovr = { key = "slotAttrLevelBoostBtn" } 
+          })
     curCampSlotExp.get() <= 0 || slotLevelsToMax.get() <= 0 ? null
       : textButtonPrimary(utf8ToUpper(loc("mainmenu/btnBoostLevel")),
           openSlotExpWnd,
           { hotkeys = ["^J:RB"] })
     selAttrSpCost.get() <= 0 ? null
-      : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAction, {
-          ovr = {
-            sound = { click  = "characteristics_apply" }
-            key = "slotAttrApplyBtn" 
-          }.__update(isWidescreen ? {} : { minWidth = hdpx(250) })
-          hotkeys = ["^J:X"]
-        })
+      : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAction,
+          {
+            ovr = {
+              sound = { click = "characteristics_apply" }
+              key = "slotAttrApplyBtn" 
+              onAttach = @() isApplyBtnAttached.set(true)
+              onDetach = @() isApplyBtnAttached.set(false)
+            }.__update(isWidescreen ? {} : { minWidth = hdpx(250) })
+            hotkeys = ["^J:X"]
+          })
   ]
 }
 
@@ -278,7 +283,7 @@ let slotTitle = @(slot, text) {
   minWidth = hdpx(500)
   children = [
     {
-      pos = [0, -hdpx(10)]
+      pos = const [0, -hdpx(10)]
       rendObj = ROBJ_TEXT
       color = textColor
       text
@@ -292,7 +297,7 @@ let gamercardSlotLevelLine = @(slot, keyHintText, idx, slotNameBlock){
     slotTitle(slot, loc("gamercard/slot/title", { idx = idx + 1 }))
     doubleSideGradient.__merge({
       padding = const [hdpx(5), 0]
-      pos = [0, hdpx(55)]
+      pos = const [0, hdpx(55)]
       flow = FLOW_VERTICAL
       gap = hdpx(10)
       children = [
@@ -377,7 +382,7 @@ let slotAttrWnd = {
           size = FLEX
           flow = FLOW_VERTICAL
           children = mkVerticalPannableArea(categoriesBlock, {
-            size = [ tabW, FLEX ]
+            size = const [ tabW, FLEX ]
           })
         }
         {
@@ -400,7 +405,7 @@ let slotAttrWnd = {
 
 let getBackground = @() getSlotAttrBg(getCampaignPresentation(curCampaign.get()).campaign)
 
-let sceneId = "slotAttrWnd"
+const sceneId = "slotAttrWnd"
 registerScene(sceneId, slotAttrWnd, @() isSlotAttrOpened.set(false), isSlotAttrOpened, false, @() selAttrSpCost.get() <= 0)
 setSceneBg(sceneId, getBackground())
 isSlotAttrOpened.subscribe(@(_) setSceneBg(sceneId, getBackground()))

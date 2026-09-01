@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { HUD_MSG_STREAK_EX } = require("hudMessages")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
+from "hudMessages" import HUD_MSG_STREAK_EX
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
+
 
 let state = require("%sqstd/mkEventLogState.nut")({
   persistId = "resultsHintLogState"
@@ -9,7 +10,7 @@ let state = require("%sqstd/mkEventLogState.nut")({
   isEventsEqual = @(a, b) "id" in a ? a?.id == b?.id : a?.text == b?.text
 })
 
-eventbus_subscribe("HudMessage", function(data){
+subscribeHudEvent("HudMessage", function(data){
   if (data?.type == HUD_MSG_STREAK_EX) {
     let { unlockId = "" } = data
     state.addEvent(data.__merge({

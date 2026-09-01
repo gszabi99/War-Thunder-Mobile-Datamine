@@ -45,6 +45,7 @@
           "killArea": true,
           "detectionArea": false,
           "killOutOfBattleArea": false,
+          "approachWarning": false,
           "area": "@battlearea_exclude_squad_name",
           "team": "Both"
         }

@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
-let { MAIN_EVENT_ID } = require("%rGui/event/eventState.nut")
-let shouldShowEventMechanics = require("%rGui/event/shouldShowEventMechanics.nut")
-let { openSeasonScene, LOOTBOX_TAB, openGmEventWnd } = require("%rGui/seasonScene/seasonSceneState.nut")
-let { openEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
-let { gmEventsList } = require("%rGui/event/gmEventState.nut")
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%rGui/event/eventLootboxes.nut" import eventLootboxesRaw
+from "%rGui/event/eventState.nut" import MAIN_EVENT_ID
+from "%rGui/event/gmEventState.nut" import gmEventsList
+import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
+from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, LOOTBOX_TAB, openGmEventWnd
+from "%rGui/shop/lootboxPreviewState.nut" import openEventWndLootbox
+
 
 let actions = {
   open_event_lootbox = { 

@@ -2,8 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/activeControls.nut" import needCursorForActiveInputDevice
 from "%rGui/dmViewer/dmViewerState.nut" import needDmViewerPointerControl, pointerScreenX, pointerScreenY
 
-let DEV_ID_MOUSE = 2
-let DEV_ID_GAMEPAD = 3
+const DEV_ID_MOUSE = 2
+const DEV_ID_GAMEPAD = 3
 
 let defProcessorState = {
   devId = null

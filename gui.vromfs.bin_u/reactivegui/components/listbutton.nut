@@ -1,12 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
-let { selectedLineHorSolid, opacityTransition } = require("%rGui/components/selectedLine.nut")
-let { selectColor, tabBgColor } = require("%rGui/style/stdColors.nut")
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%rGui/components/selectedLine.nut" import selectedLineHorSolid, opacityTransition
+from "%rGui/style/gradients.nut" import gradTexSize, mkGradientCtorRadial
+from "%rGui/style/stdColors.nut" import selectColor, tabBgColor
+from "types" import Function, Table
 
-let btnH = hdpx(103)
 
-let textColor = 0xFFFFFFFF
+const btnH = hdpx(103)
+
+const textColor = 0xFFFFFFFF
 
 let btnGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(selectColor, 0, 35, 15, 30, -35))
@@ -32,10 +34,10 @@ function btnBase(textOrCtor, sf, isSelected) {
           : 0
         transitions = opacityTransition
       }
-      type(textOrCtor) == "table" ? textOrCtor
-        : type(textOrCtor) != "function"
+      textOrCtor instanceof Table ? textOrCtor
+        : !(textOrCtor instanceof Function)
           ? {
-              size = [FLEX, btnH]
+              size = const [FLEX, btnH]
               halign = ALIGN_CENTER
               valign = ALIGN_CENTER
               rendObj = ROBJ_TEXTAREA

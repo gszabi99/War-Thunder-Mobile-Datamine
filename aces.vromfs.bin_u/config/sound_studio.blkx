@@ -534,6 +534,10 @@
     "eventRocketPassBy": "rocket_passby",
     "eventBulletHitOutside": "bullethit_camera",
     "eventBulletRicochetOutside": "bullet_rico_camera",
+    "eventBulletHitCockpit": "bullethit_cockpit",
+    "eventBulletRicochetCockpit": "bullet_rico_cockpit",
+    "eventBulletHitCockpitMetal": "bullethit_cockpit_metal",
+    "eventBulletHitCockpitGlass": "bullethit_cockpit_glass",
     "eventBulletHitUnit": "bullethit_unit",
     "eventBulletHitPlane": "bullethit_plane",
     "eventBulletHitTankMgun": "hit_mgun",
@@ -1349,6 +1353,29 @@
       "eventBack": "engine_jet_ai",
       "eventSurround": "",
       "eventLod1": "engine_jet_ai",
+      "rpmSmooth": 0.005,
+      "loadScale": 6.0,
+      "loadSmooth": 0.05,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 1.0
+    }
+  },
+  "engine_bomber_jet_ai": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine_bomber_jet_ai",
+      "eventSurround": "",
+      "eventLod1": "engine_bomber_jet_ai",
       "rpmSmooth": 0.005,
       "loadScale": 6.0,
       "loadSmooth": 0.05,
@@ -3146,6 +3173,31 @@
       "eventBack": "engine_jet",
       "eventSurround": "",
       "eventLod1": "engine_jet",
+      "rpmSmooth": 0.001,
+      "loadScale": 1.0,
+      "loadSmooth": 0.005,
+      "distSmooth": 0.9,
+      "distScaleOnNotHero": 0.8
+    }
+  },
+  "engine_bomber_jet": {
+    "effects": {
+      "path": "aircraft/engines",
+      "wep": "engine_wep",
+      "overheatOutside": "engine_overheat_camera",
+      "overheatCockpit": "engine_overheat_cockpit",
+      "dive": "engine_dive",
+      "timeFallingDown": 2.0,
+      "engineVolumeOnOverheat": 0.8,
+      "eventStart": "engine_bomber_jet_start",
+      "eventStop": "engine_bomber_jet_stop"
+    },
+    "outside": {
+      "path": "aircraft/engines",
+      "eventFront": "",
+      "eventBack": "engine_bomber_jet",
+      "eventSurround": "",
+      "eventLod1": "engine_bomber_jet",
       "rpmSmooth": 0.001,
       "loadScale": 1.0,
       "loadSmooth": 0.005,
@@ -9327,12 +9379,16 @@
         "missionVictory": {
           "event": "11_battle_end/voice_message_chief_battle_win",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 0.0,
+          "isUrgent": true
         },
         "missionFailed": {
           "event": "11_battle_end/voice_message_chief_battle_loose",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 0.0,
+          "isUrgent": true
         },
         "battleStartTank": {
           "event": "01_battle_start/voice_message_chief_battle_start",
@@ -9452,7 +9508,8 @@
           "playerRole": "driver",
           "player": -1,
           "minSpeechInterval": 0.0,
-          "delayTime": 1.0
+          "delayTime": 1.0,
+          "isUrgent": true
         },
         "correctionHit": {
           "event": "06_shooting_results/voice_message_driver_correction_hit",
@@ -11079,12 +11136,16 @@
         "missionVictory": {
           "event": "10_battle_end_win/voice_message_commander_we_won",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 0.0,
+          "isUrgent": true
         },
         "missionFailed": {
           "event": "11_battle_end_loose/voice_message_commander_we_lost",
           "playerRole": "commander",
-          "player": -1
+          "player": -1,
+          "minSpeechInterval": 0.0,
+          "isUrgent": true
         },
         "submarineTorpedoAway": {
           "event": "05_submarine_activities/voice_message_sailor_submarine_torpedo_away",

@@ -1,20 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
-let { statsWidth } = require("%rGui/unit/components/unitInfoPanel.nut")
+from "eventbus" import eventbus_subscribe, eventbus_unsubscribe
+from "%rGui/unit/components/unitInfoPanel.nut" import statsWidth
 
-let hintMaxWidth = hdpx(600)
-let hintShiftX = hdpx(150)
-let hintShiftY = hdpx(-100)
-let hintPad = hdpx(20)
-let hitTitleGap = hdpx(7)
+
+const hintMaxWidth = hdpx(600)
+const hintShiftX = hdpx(150)
+const hintShiftY = hdpx(-100)
+const hintPad = hdpx(20)
+const hitTitleGap = hdpx(7)
 let hintRightAlignedMaxX = sw(100) - hintShiftX - hintMaxWidth - statsWidth
-let unitStatusTextMaxWidth = hdpx(600)
+const unitStatusTextMaxWidth = hdpx(600)
 
-let accentColor = 0xFFFFFF80
-let hintBgColor = 0xC0181818
+const accentColor = 0xFFFFFF80
+const hintBgColor = 0xC0181818
 
-let hitProbPossibleColor = 0xFFFFE000
-let hitProbMinorColor = 0xFF808080
+const hitProbPossibleColor = 0xFFFFE000
+const hitProbMinorColor = 0xFF808080
 
 function toggleSubscription(event, func, isEnable) {
   let toggleFunc = isEnable ? eventbus_subscribe : eventbus_unsubscribe
@@ -30,7 +31,7 @@ let mkDmViewerHint = @(isVisible, x, y, children) @() !isVisible.get() ? { watch
     pos = [x.get() + (hintShiftX * (x.get() < hintRightAlignedMaxX ? 1 : -1)), y.get() + hintShiftY]
     halign = x.get() < hintRightAlignedMaxX ? ALIGN_LEFT : ALIGN_RIGHT
     children = {
-      padding = [hintPad - hitTitleGap, hintPad, hintPad, hintPad]
+      padding = const [hintPad - hitTitleGap, hintPad, hintPad, hintPad]
       rendObj = ROBJ_SOLID
       color = hintBgColor
       children
@@ -52,7 +53,7 @@ let mkHintTitle = @(textW) @() textW.get() == "" ? { watch = textW } : {
 
 let mkHintDescText = @(textW) @() textW.get() == "" ? { watch = textW } : {
   watch = textW
-  margin = [hitTitleGap, 0, 0, 0]
+  margin = const [hitTitleGap, 0, 0, 0]
   text = textW.get()
 }.__update(txtBase, fontVeryTiny)
 

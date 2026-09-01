@@ -1,122 +1,120 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
-let { frnd } = require("dagor.random")
-let { parse_json } = require("json")
-let { doesLocTextExist } = require("dagor.localize")
-let { arrayByRows, isEqual } = require("%sqstd/underscore.nut")
-let { ComputedImmediate } = require("%sqstd/frp.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { rewardTypeByValue, G_UNIT, G_UNIT_UPGRADE, G_BOOSTER, G_ITEM, G_LOOTBOX, G_CURRENCY
-} = require("%appGlobals/rewardType.nut")
-let { mkCurrencyFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { isInMenu } = require("%appGlobals/clientState/clientState.nut")
-let { isInQueue } = require("%appGlobals/queueState.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { activeUnseenPurchasesGroup, markPurchasesSeen, hasActiveCustomUnseenView,
-  skipUnseenMessageAnimOnce, isUnseenGoodsVisible, unseenPurchaseUnitPlateKey
-} = require("%rGui/shop/unseenPurchasesState.nut")
-let { orderByItems } = require("%appGlobals/itemsState.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { lootboxes, curCampaign, campaignsList } = require("%appGlobals/pServer/campaign.nut")
-let { curCampaignSlots, curSlots } = require("%appGlobals/pServer/slots.nut")
-let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
-let { setCurrentUnit } = require("%appGlobals/unitsState.nut")
-let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { locColorTable } = require("%rGui/style/stdColors.nut")
-let { getTextScaleToFitWidth } = require("%rGui/globals/fontUtils.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { getBoosterIcon } = require("%appGlobals/config/boostersPresentation.nut")
-let { getUnitPresentation, getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo
-} = require("%rGui/unit/components/unitPlateComp.nut")
-let { requestOpenUnitPurchEffect } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { allDecorators } = require("%rGui/decorators/decoratorState.nut")
-let { frameNick } = require("%appGlobals/decorators/nickFrames.nut")
-let getAvatarImage = require("%appGlobals/decorators/avatars.nut")
-let { isTutorialActive } = require("%rGui/tutorial/tutorialWnd/tutorialWndState.nut")
-let { setHangarUnit } = require("%rGui/unit/hangarUnit.nut")
-let { tryResetToMainScene, canResetToMainScene } = require("%rGui/navState.nut")
-let { lbCfgOrdered } = require("%rGui/leaderboard/lbConfig.nut")
-let getCurrencyGoodsPresentation = require("%appGlobals/config/currencyGoodsPresentation.nut")
-let { getSkinPresentation } = require("%appGlobals/config/skinPresentation.nut")
-let { getBattleModPresentation } = require("%appGlobals/config/battleModPresentation.nut")
-let { mkBattleModEventUnitText } = require("%rGui/rewards/battleModComp.nut")
-let { REWARD_STYLE_MEDIUM, getRewardPlateSize, rewardTicketDefaultSlots } = require("%rGui/rewards/rewardStyles.nut")
-let { ignoreSubIdRTypes, getRewardsViewInfo, isSingleRewardEmpty
-} = require("%rGui/rewards/rewardViewInfo.nut")
-let { mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar, mkProgressBarText,
-  mkRewardPlate, mkRewardUnitFlag, mkRewardPlateUnknownImage
-} = require("%rGui/rewards/rewardPlateComp.nut")
-let { mkGradRankSmall } = require("%rGui/components/gradTexts.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { mkMsgConvert, mkMsgDiscount } = require("%rGui/shop/unseenPurchaseAddMessage.nut")
-let { showPrizeSelectDelayed, ticketToShow } = require("%rGui/rewards/rewardPrizeSelect.nut")
-let { getCurrencyBigIcon } = require("%appGlobals/config/currencyPresentation.nut")
-let { getLootboxName } = require("%appGlobals/config/lootboxPresentation.nut")
-let { mkLootboxImage } = require("%rGui/rewards/components/lootboxView.nut")
-let { openSelectUnitToSlotWnd, canOpenSelectUnitWithModal } = require("%rGui/slotBar/slotBarState.nut")
-let { textButtonPrimary, textButtonCommon } = require("%rGui/components/textButton.nut")
-let { unitInfoPanel, mkUnitTitle } = require("%rGui/unit/components/unitInfoPanel.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/tooltip.nut")
-let { curUnitInProgress, enable_unit_skin, skinsInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { allShopGoods } = require("%rGui/shop/shopState.nut")
-let { sendTelemetrySavedEvent } = require("%rGui/notifications/logEvents.nut")
-let { mkGradText } =  require("%rGui/unitCustom/unitCustomComps.nut")
-let { mkDecalIcon } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
+from "dagor.localize" import doesLocTextExist
+from "dagor.random" import frnd
+from "json" import parse_json
+from "math" import round
+from "%sqstd/frp.nut" import ComputedImmediate
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import arrayByRows, isEqual
+from "%appGlobals/clientState/clientState.nut" import isInMenu
+from "%appGlobals/config/battleModPresentation.nut" import getBattleModPresentation
+from "%appGlobals/config/boostersPresentation.nut" import getBoosterIcon
+import "%appGlobals/config/currencyGoodsPresentation.nut" as getCurrencyGoodsPresentation
+from "%appGlobals/config/currencyPresentation.nut" import getCurrencyBigIcon
+from "%appGlobals/config/lootboxPresentation.nut" import getLootboxName
+from "%appGlobals/config/skinPresentation.nut" import getSkinPresentation
+from "%appGlobals/currenciesState.nut" import orderByCurrency
+import "%appGlobals/decorators/avatars.nut" as getAvatarImage
+from "%appGlobals/decorators/nickFrames.nut" import frameNick
+from "%appGlobals/itemsState.nut" import orderByItems
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import lootboxes, curCampaign, campaignsList
+from "%appGlobals/pServer/pServerApi.nut" import curUnitInProgress, enable_unit_skin, skinsInProgress
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/seasonCurrencies.nut" import mkCurrencyFullId
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/slots.nut" import curCampaignSlots, curSlots
+from "%appGlobals/queueState.nut" import isInQueue
+from "%appGlobals/rewardType.nut" import rewardTypeByValue, G_UNIT, G_UNIT_UPGRADE, G_BOOSTER, G_ITEM, G_LOOTBOX,
+  G_CURRENCY
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitName
+from "%appGlobals/unitsState.nut" import setCurrentUnit
+from "%rGui/components/gradTexts.nut" import mkGradRankSmall
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon
+from "%rGui/decorators/decoratorState.nut" import allDecorators
+from "%rGui/globals/fontUtils.nut" import getTextScaleToFitWidth
+from "%rGui/leaderboard/lbConfig.nut" import lbCfgOrdered
+from "%rGui/navState.nut" import tryResetToMainScene, canResetToMainScene
+from "%rGui/notifications/logEvents.nut" import sendTelemetrySavedEvent
+from "%rGui/rewards/battleModComp.nut" import mkBattleModEventUnitText
+from "%rGui/rewards/components/lootboxView.nut" import mkLootboxImage
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar,
+  mkProgressBarText, mkRewardPlate, mkRewardUnitFlag, mkRewardPlateUnknownImage
+from "%rGui/rewards/rewardPrizeSelect.nut" import showPrizeSelectDelayed, ticketToShow
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM, getRewardPlateSize, rewardTicketDefaultSlots
+from "%rGui/rewards/rewardViewInfo.nut" import ignoreSubIdRTypes, getRewardsViewInfo, isSingleRewardEmpty
+from "%rGui/shop/shopState.nut" import allShopGoods
+from "%rGui/shop/unseenPurchaseAddMessage.nut" import mkMsgConvert, mkMsgDiscount
+from "%rGui/shop/unseenPurchasesState.nut" import activeUnseenPurchasesGroup, markPurchasesSeen,
+  hasActiveCustomUnseenView, skipUnseenMessageAnimOnce, isUnseenGoodsVisible, unseenPurchaseUnitPlateKey
+from "%rGui/slotBar/slotBarState.nut" import openSelectUnitToSlotWnd, canOpenSelectUnitWithModal
+from "%rGui/style/backgrounds.nut" import bgShadedDark
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import locColorTable
+from "%rGui/textFormatByLang.nut" import decimalFormat
+from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
+from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import isTutorialActive
+from "%rGui/unit/components/unitInfoPanel.nut" import unitInfoPanel, mkUnitTitle
+from "%rGui/unit/components/unitPlateComp.nut" import unitPlateWidth, unitPlateHeight, mkUnitBg, mkUnitImage,
+  mkUnitTexts, mkUnitInfo
+from "%rGui/unit/hangarUnit.nut" import setHangarUnit
+from "%rGui/unit/unitPurchaseEffectScene.nut" import requestOpenUnitPurchEffect
+from "%rGui/unitCustom/unitCustomComps.nut" import mkGradText
+from "%rGui/unitCustom/unitDecals/unitDecalsComps.nut" import mkDecalIcon
+from "types" import Array, Float, Integer
 
 
 let wndWidth = saSize[0]
-let contentPaddingX = hdpx(20)
+const contentPaddingX = hdpx(20)
 let maxWndHeight = saSize[1]
-let rewBlockWidth = hdpx(340)
-let rewBlocksVGap = hdpx(60)
-let rewIconSize = hdpxi(200)
-let rewIconToTextGap = hdpx(29)
+const rewBlockWidth = hdpx(340)
+const rewBlocksVGap = hdpx(60)
+const rewIconSize = hdpxi(200)
+const rewIconToTextGap = hdpx(29)
 let rewIconsPerRow = (wndWidth / (rewBlockWidth + rewIconToTextGap)).tointeger()
-let rewTextMaxWidth = rewBlockWidth - hdpx(10)
-let unitPlatesGap = hdpx(40)
+const rewTextMaxWidth = rewBlockWidth - hdpx(10)
+const unitPlatesGap = hdpx(40)
 let unitsPerRow = (wndWidth / (unitPlateWidth + unitPlatesGap)).tointeger()
-let trashIconSize = hdpx(50)
+const trashIconSize = hdpx(50)
 
-let textColor = 0xFFE0E0E0
+const textColor = 0xFFE0E0E0
 let ANIM_SKIP = {}
 let ANIM_SKIP_DELAY = {}
 
-let aIntroTime = 0.2
-let aRewardOpacityTime = 0.2
-let aRewardScaleDelay = 0.05
-let aRewardScaleUpTime = 0.05
-let aRewardScaleDownTime = 0.23
-let aRewardAnimTotalTime = aRewardScaleDelay + aRewardScaleUpTime + aRewardScaleDownTime
-let aFlareDelay = 0.3
-let aFlareUpTime = 0.2
-let aFlareStayTime = 0.25
-let aFlareDownTime = 0.2
-let aFlareScaleMin = 0.1
-let aFlareRotationSpeed = 500
-let aFlareOpacityMax = 0.9
-let aRewardIconSelfScale = 1.4
-let aRewardIconFlareScale = 5.0
-let aUnitPlateFlareScale = 6.0
-let aUnitPlateSelfScale = 1.1
-let aRewardLabelDelay = aFlareDelay + aFlareUpTime + aFlareStayTime + 0.5 * aFlareDownTime
-let aRewardLabelOpacityTime = 0.5 * aFlareDownTime
-let aOutroExtraDelay = 1.5
-let aTitleOpacityTime = 0.05
-let aTitleScaleDelayTime = aTitleOpacityTime
-let aTitleScaleUpTime = 0.15
-let aTitleScaleDownTime = aTitleScaleUpTime
-let aTitleScaleMin = 0.75
-let aTitleScaleMax = 1.1
+const aIntroTime = 0.2
+const aRewardOpacityTime = 0.2
+const aRewardScaleDelay = 0.05
+const aRewardScaleUpTime = 0.05
+const aRewardScaleDownTime = 0.23
+const aRewardAnimTotalTime = aRewardScaleDelay + aRewardScaleUpTime + aRewardScaleDownTime
+const aFlareDelay = 0.3
+const aFlareUpTime = 0.2
+const aFlareStayTime = 0.25
+const aFlareDownTime = 0.2
+const aFlareScaleMin = 0.1
+const aFlareRotationSpeed = 500
+const aFlareOpacityMax = 0.9
+const aRewardIconSelfScale = 1.4
+const aRewardIconFlareScale = 5.0
+const aUnitPlateFlareScale = 6.0
+const aUnitPlateSelfScale = 1.1
+const aRewardLabelDelay = aFlareDelay + aFlareUpTime + aFlareStayTime + 0.5 * aFlareDownTime
+const aRewardLabelOpacityTime = 0.5 * aFlareDownTime
+const aOutroExtraDelay = 1.5
+const aTitleOpacityTime = 0.05
+const aTitleScaleDelayTime = aTitleOpacityTime
+const aTitleScaleUpTime = 0.15
+const aTitleScaleDownTime = aTitleScaleUpTime
+const aTitleScaleMin = 0.75
+const aTitleScaleMax = 1.1
 
-let telemetrySaveId = "DefaultSkinWasReplaced"
+const telemetrySaveId = "DefaultSkinWasReplaced"
 
 let infoTextBySource = {
   premium_convert_by_subscription = @(count) loc("reward/premium_convert_by_subscription/desc",
@@ -228,7 +226,7 @@ let stackData = Computed(function() {
   battleMod.each(@(v) v.idx <- ++lastIdx)
   rewardIcons.each(@(v) v.idx <- ++lastIdx)
 
-  let unitPlatesStartDelay = aIntroTime
+  const unitPlatesStartDelay = aIntroTime
   let bModeStartDelay = unitPlatesStartDelay + unitPlates.len() * aRewardAnimTotalTime
   let rewardIconsStartDelay = bModeStartDelay + battleMod.len() * aRewardAnimTotalTime
   let outroDelay = rewardIconsStartDelay + rewardIcons.len() * aRewardAnimTotalTime + aOutroExtraDelay
@@ -267,8 +265,8 @@ let addWndOpenedFor = mkWatched(persist, "addWndOpenedFor", {})
 let needShowCommonWnd = keepref(Computed(@() needShowAny.get() && addWndOpenedFor.get().len() == 0 && needShowCommon.get()))
 let needShowAddWnd = keepref(Computed(@() needShowAny.get() && (addWndOpenedFor.get().len() != 0 || !needShowCommon.get())))
 
-let WND_UID = "unseenPurchaseWindow"
-let WND_ADD_UID = "unseenPurchaseWindow_add"
+const WND_UID = "unseenPurchaseWindow"
+const WND_ADD_UID = "unseenPurchaseWindow_add"
 
 let close = @() removeModalWindow(WND_UID)
 
@@ -350,7 +348,7 @@ function mkRewardIcon(startDelay, imgPath, aspectRatio = 1.0, sizeMul = 1.0, shi
   let imgW = round(rewIconSize * sizeMul).tointeger()
   let imgH = round(imgW / aspectRatio).tointeger()
   return {
-    size = [rewIconSize, rewIconSize]
+    size = const [rewIconSize, rewIconSize]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
@@ -373,7 +371,7 @@ function mkCommonCurrencyIcon(startDelay, curId, amount, scale = 1.0) {
   let cfg = Computed(@() getCurrencyGoodsPresentation(fullId.get(), amount))
   return @() {
     watch = cfg
-    size = [rewIconSize, rewIconSize]
+    size = const [rewIconSize, rewIconSize]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
@@ -423,7 +421,7 @@ function mkDecoratorRewardIcon(startDelay, decoratorId) {
   let decoratorType = Computed(@() allDecorators.get()?[decoratorId].dType)
   return @() {
     watch = decoratorType
-    size = [SIZE_TO_CONTENT, rewIconSize]
+    size = const [SIZE_TO_CONTENT, rewIconSize]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
@@ -477,7 +475,7 @@ let mkTrashIcon = @(startDelay) {
 }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
 
 let mkRewardLostText = @(startDelay, text) {
-  size = [rewBlockWidth, SIZE_TO_CONTENT]
+  size = const [rewBlockWidth, SIZE_TO_CONTENT]
   behavior = Behaviors.TextArea
   rendObj = ROBJ_TEXTAREA
   halign = ALIGN_CENTER
@@ -498,7 +496,7 @@ let mkPrizeTicketLabel = @(startDelay, text) {
 
 function mkRewardLabelMultiline(startDelay, text, ovr = {}) {
   let res = {
-    size = [rewTextMaxWidth, SIZE_TO_CONTENT]
+    size = const [rewTextMaxWidth, SIZE_TO_CONTENT]
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea
     halign = ALIGN_CENTER
@@ -535,14 +533,14 @@ function mkSkinEquipButton(unitName, skinName) {
     children = !unit.get() ? null
       : skinsInProgress.get() ? spinner
       : currentSkin.get() == skinName
-        ? mkGradText(utf8ToUpper(loc("skins/applied"))).__update({ size = [FLEX, hdpx(70)], minWidth = 0, padding = hdpx(10) })
+        ? mkGradText(utf8ToUpper(loc("skins/applied"))).__update({ size = const [FLEX, hdpx(70)], minWidth = 0, padding = hdpx(10) })
       : textButtonPrimary(utf8ToUpper(loc("mainmenu/btnApply")),
           function() {
             enable_unit_skin(unitName, unitName, skinName)
             if (skinName != "")
               sendTelemetrySavedEvent("skin_equiped_1", telemetrySaveId)
           },
-          { ovr = { size = [FLEX, hdpx(70)], minWidth = 0 } })
+          { ovr = { size = const [FLEX, hdpx(70)], minWidth = 0 } })
   }
 }
 
@@ -551,7 +549,7 @@ let skinIconBroderRadius = round(skinIconSize*0.2).tointeger()
 function mkSkinRewardIcon(startDelay, unitName, skinName) {
   let skinPresentation = getSkinPresentation(unitName, skinName)
   return {
-    size = [SIZE_TO_CONTENT, rewIconSize]
+    size = const [SIZE_TO_CONTENT, rewIconSize]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
@@ -601,7 +599,7 @@ function mkBlueprintPlateTexts(r, rStyle) {
         padding = const [0, hdpx(5)]
         children = [
           unitRank.get()
-            ? mkGradRankSmall(unitRank.get()).__update({ fontSize = rStyle.textStyle.fontSize, pos = [0, hdpx(5)] })
+            ? mkGradRankSmall(unitRank.get()).__update({ fontSize = rStyle.textStyle.fontSize, pos = const [0, hdpx(5)] })
             : null
           mkProgressBarText(r, rStyle)
         ]
@@ -665,7 +663,7 @@ let mkPrizeTicketIcon = @(rewardInfo, rStyle) mkCustomIcon(rewardInfo, rStyle, {
 let mkDiscountIcon = @(rewardInfo, rStyle) mkCustomIcon(rewardInfo, rStyle)
 
 let mkLootboxIcon = @(startDelay, id) mkCustomCurrencyIcon?[id](id, startDelay) ?? {
-  size = [rewIconSize, rewIconSize]
+  size = const [rewIconSize, rewIconSize]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [
@@ -675,7 +673,7 @@ let mkLootboxIcon = @(startDelay, id) mkCustomCurrencyIcon?[id](id, startDelay) 
 }
 
 let mkDecalIconWithAnim = @(startDelay, id) {
-  size = [rewIconSize, rewIconSize]
+  size = const [rewIconSize, rewIconSize]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [
@@ -689,7 +687,7 @@ let rewardCtors = {
     mkIcon = @(rewardInfo) mkCurrencyIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.count)
     mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, decimalFormat(rewardInfo.count))
     mkFirstPuchaseRow = @(rewardInfo) {
-      size = [rewTextMaxWidth, SIZE_TO_CONTENT]
+      size = const [rewTextMaxWidth, SIZE_TO_CONTENT]
       vplace = ALIGN_BOTTOM
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
@@ -746,7 +744,7 @@ let rewardCtors = {
   skin = {
     mkIcon = @(rewardInfo) mkSkinRewardIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.subId)
     mkText = @(rewardInfo) {
-      size = [rewBlockWidth, SIZE_TO_CONTENT]
+      size = const [rewBlockWidth, SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER
       gap = hdpx(10)
@@ -786,21 +784,21 @@ let rewardCtors = {
 function mkRewardIconComp(rewardInfo) {
   let { mkIcon, mkText, mkFirstPuchaseRow = @(_) null } = rewardCtors[rewardInfo.gType]
   let iconComp = {
-    size = [rewBlockWidth, rewIconSize]
+    size = const [rewBlockWidth, rewIconSize]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = mkIcon(rewardInfo)
   }
 
   return {
-    size = [rewBlockWidth, SIZE_TO_CONTENT]
+    size = const [rewBlockWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     gap = rewIconToTextGap
     children = [
       !rewardInfo?.isFirstPurchase ? iconComp
         : {
-            size = [rewBlockWidth, SIZE_TO_CONTENT]
+            size = const [rewBlockWidth, SIZE_TO_CONTENT]
             halign = ALIGN_CENTER
             children = [
               iconComp
@@ -904,20 +902,20 @@ function mkBattleModText(bmp, reward) {
   let { icon = null, locId = "unknown" } = bmp
   let { startDelay } = reward
   return {
-    size = [rewBlockWidth, SIZE_TO_CONTENT]
+    size = const [rewBlockWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     gap = rewIconToTextGap
     children = [
       {
-        size = [rewIconSize, rewIconSize]
+        size = const [rewIconSize, rewIconSize]
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         children = [
           mkHighlight(startDelay, aRewardIconFlareScale)
           icon == null ? mkRewardPlateUnknownImage({ slots = 2 }, REWARD_STYLE_MEDIUM)
             : {
-                size = [rewIconSize, rewIconSize]
+                size = const [rewIconSize, rewIconSize]
                 rendObj = ROBJ_IMAGE
                 image = Picture($"{icon}:{rewIconSize}:{rewIconSize}:P")
                 keepAspect = true
@@ -1007,7 +1005,7 @@ let mkTitleAnimations = @(startDelay) [
 ]
 
 let lbValueFields = ["tillPlaces", "place", "tillPercent", "percent"]
-let LB_BIG = 100000000
+const LB_BIG = 100000000
 function getLbRewardTexts(activeGroup) {
   let { sourcePrefix = "", list } = activeGroup
   let processed = {}
@@ -1017,7 +1015,7 @@ function getLbRewardTexts(activeGroup) {
       continue
     processed[purch.source] <- true
     let cfgList = parse_json(purch.source.slice(sourcePrefix.len()))
-    if (type(cfgList) != "array") {
+    if (!(cfgList instanceof Array)) {
       logerr($"Wrong type of leaderboard reward source json (array required): {purch.source}")
       continue
     }
@@ -1030,11 +1028,11 @@ function getLbRewardTexts(activeGroup) {
 
       foreach(key in lbValueFields) {
         local value = cfg?[key]
-        if (type(value) == "array")
+        if (value instanceof Array)
           value = value.reduce(@(a, b) b <= 0 ? a
             : a <= 0 ? b
             : min(a, b))
-        if (type(value) != "float" && type(value) != "integer")
+        if (!(value instanceof Float) && !(value instanceof Integer))
           continue
         if (key not in modeBest)
           modeBest[key] <- value
@@ -1260,7 +1258,7 @@ function mkMsgContent(stackDataV, purchGroup, onClick) {
     onAttach = @() canOpenSelectUnitWithModal.set(true)
     onDetach = @() canOpenSelectUnitWithModal.set(false)
     minWidth = hdpx(1100)
-    padding = [0, contentPaddingX, hdpx(38), contentPaddingX]
+    padding = const [0, contentPaddingX, hdpx(38), contentPaddingX]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     behavior = Behaviors.Button

@@ -1,31 +1,32 @@
-from "%globalsDarg/darg_library.nut" import *
 from "%rGui/controls/shortcutConsts.nut" import *
-let { setVirtualAxisValue } = require("controls")
-let { SUBMARINE } = require("%appGlobals/unitConst.nut")
-let { lerpClamped, round } = require("%sqstd/math.nut")
-let { scaleArr } = require("%globalsDarg/screenMath.nut")
-let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { dfAnimBottomLeft } = require("%rGui/style/unitDelayAnims.nut")
-let { setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
-let { speedValue, speedUnits, averageSpeed, machineSpeedLoc, isStoppedSpeedStep, machineSpeedDirection
-} = require("%rGui/hud/shipStateView.nut")
-let { getHeroShipMaxSpeedBySteps } = require("hudState")
-let { registerHapticPattern, playHapticPattern } = require("hapticVibration")
-let { playerUnitName, isUnitDelayed } = require("%rGui/hudState.nut")
-let { speed, hasDebuffEngines, hasDebuffMoveControl, currentMaxThrottle } = require("%rGui/hud/shipState.nut")
-let { playSound } = require("sound_wt")
-let { btnBgStyle } = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnAnimBg, mkMoveVertBtnOutline,
-  mkMoveVertBtnCorner, mkMoveVertBtn2step, fillMoveColorDef, fillMoveColorBlocked, arrowsVerSize, outlineColorDef
-} = require("%rGui/components/movementArrows.nut")
-let { mkGamepadShortcutImage } = require("%rGui/controls/shortcutSimpleComps.nut")
-let axisListener = require("%rGui/controls/axisListener.nut")
-let { gamepadAxes } = require("%rGui/controls/shortcutsMap.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { eventbus_send } = require("eventbus")
-let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
-let { isPieMenuActive } = require("%rGui/hud/pieMenu.nut")
-let { hudWhiteColor, hudSmokyGreyColor, hudTransparentColor } = require("%rGui/style/hudColors.nut")
+from "%globalsDarg/darg_library.nut" import *
+from "controls" import setVirtualAxisValue
+from "eventbus" import eventbus_send
+from "hapticVibration" import registerHapticPattern, playHapticPattern
+from "hudState" import getHeroShipMaxSpeedBySteps
+from "sound_wt" import playSound
+from "%sqstd/math.nut" import lerpClamped, round
+from "%globalScripts/controls/shortcutActions.nut" import setShortcutOn, setShortcutOff
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%appGlobals/unitConst.nut" import SUBMARINE
+from "%globalsDarg/fontScale.nut" import getScaledFont
+from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/components/movementArrows.nut" import mkMoveLeftBtn, mkMoveRightBtn, mkMoveVertBtn, mkMoveVertBtnAnimBg,
+  mkMoveVertBtnOutline, mkMoveVertBtnCorner, mkMoveVertBtn2step, fillMoveColorDef, fillMoveColorBlocked, arrowsVerSize,
+  outlineColorDef
+import "%rGui/controls/axisListener.nut" as axisListener
+from "%rGui/controls/disabledControls.nut" import mkIsControlDisabled
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage
+from "%rGui/controls/shortcutsMap.nut" import gamepadAxes
+from "%rGui/hud/hudTouchButtonStyle.nut" import btnBgStyle
+from "%rGui/hud/pieMenu.nut" import isPieMenuActive
+from "%rGui/hud/shipState.nut" import speed, hasDebuffEngines, hasDebuffMoveControl, currentMaxThrottle
+from "%rGui/hud/shipStateView.nut" import speedValue, speedUnits, averageSpeed, machineSpeedLoc, isStoppedSpeedStep,
+  machineSpeedDirection
+from "%rGui/hudState.nut" import playerUnitName, isUnitDelayed
+from "%rGui/style/hudColors.nut" import hudWhiteColor, hudSmokyGreyColor, hudTransparentColor
+from "%rGui/style/unitDelayAnims.nut" import dfAnimBottomLeft
+
 
 let HAPT_FORWARD = registerHapticPattern("Forward", { time = 0.0, intensity = 0.5, sharpness = 0.9, duration = 0.0, attack = 0.0, release = 0.0 })
 let HAPT_BACKWARD = registerHapticPattern("Backward", { time = 0.0, intensity = 0.5, sharpness = 0.8, duration = 0.0, attack = 0.0, release = 0.0 })
@@ -33,7 +34,7 @@ let HAPT_BACKWARD = registerHapticPattern("Backward", { time = 0.0, intensity = 
 let speedHeight = shHud(2.8)
 let speedImageHeight = (0.7 * speedHeight).tointeger()
 let speedImageWidth = (0.73 * speedImageHeight).tointeger()
-let speedImagePadding = hdpxi(10)
+const speedImagePadding = hdpxi(10)
 
 let isMoveCtrlHitShowed = Watched(false)
 function showCtrlHint() {
@@ -108,7 +109,7 @@ let mkBackwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
             mkMoveVertBtnCorner(true,
               Computed(@() averageSpeedDirection.get() == "back" ? hudWhiteColor : outlineColorDef.get()),
               verSize)
-            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(50)] }, scale)
+            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(50)] }, scale)
           ]
     }
   })
@@ -155,7 +156,7 @@ let mkForwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
               Computed(@() averageSpeedDirection.get() == "forward2" ? fillColor.get() : hudTransparentColor),
               verSize,
               fillColor)
-            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-50)] }, scale)
+            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(-50)] }, scale)
           ]
     }
   })

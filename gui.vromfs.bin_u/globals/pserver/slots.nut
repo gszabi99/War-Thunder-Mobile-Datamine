@@ -1,11 +1,11 @@
-let { Computed } = require("frp")
-let { isEqual } = require("%sqstd/underscore.nut")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
-let { isLoggedIn } = require("%appGlobals/loginState.nut")
-let { campConfigs, campProfile, curCampaign } = require("%appGlobals/pServer/campaign.nut")
+from "frp" import Computed
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/loginState.nut" import isLoggedIn
+from "%appGlobals/pServer/campaign.nut" import campConfigs, campProfile, curCampaign
 
 
-let slotsSelectedByUser = sharedWatched("slotsSelectedByUser", @() {})
+let slotsSelectedByUser = hardPersistWatched("slotsSelectedByUser", {})
 
 let isCampaignWithSlots = Computed(@() (campConfigs.get()?.campaignCfg.totalSlots ?? 0) > 0)
 let curCampaignSlots = Computed(function() {

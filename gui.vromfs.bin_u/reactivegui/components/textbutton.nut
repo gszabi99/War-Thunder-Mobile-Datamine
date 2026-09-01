@@ -1,24 +1,25 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%appGlobals/activeControls.nut" import isGamepad
+import "%rGui/components/buttonStyles.nut" as buttonStyles
+from "%rGui/components/glare.nut" import commonGlare
+from "%rGui/controlsMenu/dargHotkeys.nut" import getGamepadHotkey
+from "%rGui/controlsMenu/gamepadImgByKey.nut" import mkBtnImageComp
+from "%rGui/controlsMenu/gpActBtn.nut" import btnA
+from "%rGui/tooltip.nut" import mkButtonHoldTooltip, REPAY_TIME
+from "types" import Float, Table, Integer
+
+
 let { cursorOverClickable } = gui_scene
-let buttonStyles = require("%rGui/components/buttonStyles.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let { mkBtnImageComp } = require("%rGui/controlsMenu/gamepadImgByKey.nut")
-let { btnA } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { getGamepadHotkey } = require("%rGui/controlsMenu/dargHotkeys.nut")
-let { mkButtonHoldTooltip, REPAY_TIME } = require("%rGui/tooltip.nut")
-let { commonGlare } = require("%rGui/components/glare.nut")
 
 
-let calc_content_size2 = require("daRg")?.calc_content_size ?? calc_comp_size
-
-let ICON_SIZE = hdpx(70)
-let buttonsHGap = hdpx(64)
-let buttonsVGap = hdpx(20)
-let paddingX = hdpx(38)
+const ICON_SIZE = hdpx(70)
+const buttonsHGap = hdpx(64)
+const buttonsVGap = hdpx(20)
+const paddingX = hdpx(38)
 let hotkeySize = evenPx(50)
 let hotkeyGap = evenPx(10)
 let paddingXWithHotkey = paddingX - (hotkeySize + hotkeyGap) / 2
-let textButtonUnseenMargin = hdpx(15)
+const textButtonUnseenMargin = hdpx(15)
 
 let { defButtonHeight, defButtonMinWidth } = buttonStyles
 let buttonTextWidth = defButtonMinWidth - 2 * paddingX
@@ -65,16 +66,16 @@ function mkButtonText(text, style, ovr = {}) {
     text
   }.__update(fontBoldSmallShaded, ovr)
   let paddingSizeX = (style?.ovr.padding[1] ?? style?.ovr.padding ?? paddingX) * 2
-  let btnWidth = type(style?.ovr.size[0]) == "float" ? style.ovr.size[0]
+  let btnWidth = style?.ovr.size[0] instanceof Float ? style.ovr.size[0]
     : (style?.ovr.minWidth ?? 0) > 0 ? style.ovr.minWidth
     : defButtonMinWidth
   let txtWidth = btnWidth - paddingSizeX
 
-  if (useFlexText || calc_content_size2(res)[0] <= txtWidth)
+  if (useFlexText || calc_content_size(res)[0] <= txtWidth)
     return res
   let multTxtComp = mkButtonTextMultiline(text, {}.__update(ovr, {size = [txtWidth, SIZE_TO_CONTENT]}))
-  let contentSize = calc_content_size2(multTxtComp)
-  let txtHeigth = (type(style?.ovr.size[1]) == "float" ? style.ovr.size[1] : defButtonHeight) - (style?.ovr.padding[0] ?? 0) * 2
+  let contentSize = calc_content_size(multTxtComp)
+  let txtHeigth = (style?.ovr.size[1] instanceof Float ? style.ovr.size[1] : defButtonHeight) - (style?.ovr.padding[0] ?? 0) * 2
 
   if (contentSize[0] <= txtWidth && contentSize[1] <= txtHeigth)
     return multTxtComp
@@ -232,7 +233,7 @@ function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
   if (ovr?.padding == 0 || ovr?.padding[1] == 0)
     wrapperOvr.padding <- ovr.padding
   let contentExt = mkButtonContentWithHotkey(stateFlags, hotkeys,
-    (type(content) == "table") ? content.__merge(childOvr) : content,
+    (content instanceof Table) ? content.__merge(childOvr) : content,
     wrapperOvr
   )
 
@@ -244,7 +245,7 @@ function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
   }
 
   let contentW = calc_comp_size(contentExt)[0]
-  if ((type(ovrSize?[0]) != "integer" && type(ovrSize?[0]) != "float" && ovr?.minWidth != null && contentW > ovr.minWidth))
+  if ((!(ovrSize?[0] instanceof Integer) && !(ovrSize?[0] instanceof Float) && ovr?.minWidth != null && contentW > ovr.minWidth))
     ovrExt = ovrExt.__merge({ minWidth = contentW })
 
   let key = ovrExt?.key ?? {}

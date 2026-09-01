@@ -1,38 +1,37 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { AIR, TANK } = require("%appGlobals/unitConst.nut")
-let { getBattleModPresentationForOffer } = require("%appGlobals/config/battleModPresentation.nut")
-let { getGoodsAsOfferIcon, getGoodsIcon, getCustomGoodsNameById } = require("%appGlobals/config/goodsPresentation.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { getUnitPresentation, getUnitClassFontIcon, getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { SPARE } = require("%appGlobals/itemsState.nut")
-let { EVENT_KEY, PLATINUM, GOLD, WARBOND } = require("%appGlobals/currenciesState.nut")
-let { G_CURRENCY, G_ITEM, G_BATTLE_MOD, unitRewardTypes } = require("%appGlobals/rewardType.nut")
-let { mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate, mkSquareIconBtn,
-  mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, mkAirBranchOfferTexts, underConstructionBg, goodsH, goodsSmallSize, offerPad,
-  offerW, offerH, borderBg, mkBorderByCurrency, mkEndTime, goodsBgH, txt
-} = require("%rGui/shop/goodsView/sharedParts.nut")
-let { premiumTextColor } = require("%rGui/style/stdColors.nut")
-let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { discountTagBig, discountTag } = require("%rGui/components/discountTag.nut")
-let { openUnitDetailsWnd } = require("%rGui/unitDetails/unitDetailsState.nut")
-let { mkCurrencyImage } = require("%rGui/components/currencyComp.nut")
-let { saveSeenGoods } = require("%rGui/shop/shopState.nut")
-let { discountsToApply, applyDiscount } = require("%rGui/shop/discounts.nut")
-let { mkGradRank } = require("%rGui/components/gradTexts.nut")
-let { mkRewardCurrencyImage } = require("%rGui/rewards/rewardPlateComp.nut")
-let { getBestUnitByGoods } = require("%rGui/shop/goodsUtils.nut")
-let { mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
-let { ALL_PURCHASED } = require("%rGui/shop/goodsStates.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/battleModPresentation.nut" import getBattleModPresentationForOffer
+from "%appGlobals/config/goodsPresentation.nut" import getGoodsAsOfferIcon, getGoodsIcon, getCustomGoodsNameById
+from "%appGlobals/currenciesState.nut" import EVENT_KEY, PLATINUM, GOLD, WARBOND
+from "%appGlobals/itemsState.nut" import SPARE
+from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/rewardType.nut" import G_CURRENCY, G_ITEM, G_BATTLE_MOD, unitRewardTypes
+from "%appGlobals/unitConst.nut" import AIR, TANK
+from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitClassFontIcon, getUnitName
+from "%rGui/components/currencyComp.nut" import mkCurrencyImage
+from "%rGui/components/discountTag.nut" import discountTagBig, discountTag
+from "%rGui/components/gradTexts.nut" import mkGradRank
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardCurrencyImage
+from "%rGui/shop/discounts.nut" import discountsToApply, applyDiscount
+from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
+from "%rGui/shop/goodsStates.nut" import ALL_PURCHASED
+from "%rGui/shop/goodsUtils.nut" import getBestUnitByGoods
+from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, mkOfferWrap, mkBgImg, mkFitCenterImg, mkPricePlate,
+  mkSquareIconBtn, mkGoodsCommonParts, mkOfferCommonParts, mkOfferTexts, mkAirBranchOfferTexts, underConstructionBg,
+  goodsH, goodsSmallSize, offerPad, offerW, offerH, borderBg, mkBorderByCurrency, mkEndTime, goodsBgH, txt
+from "%rGui/shop/shopState.nut" import saveSeenGoods
+from "%rGui/style/stdColors.nut" import premiumTextColor
+from "%rGui/unit/components/unitPlateComp.nut" import mkUnitInfo
+from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
 
 
-let fonticonPreview = "⌡"
-let consumableSize = hdpx(80)
+const fonticonPreview = "⌡"
+const consumableSize = hdpx(80)
 let eliteMarkSize = [hdpxi(70), hdpxi(45)]
-let currencyIconSize = hdpxi(170)
+const currencyIconSize = hdpxi(170)
 
-let unitImgScaleDefault = 1
+const unitImgScaleDefault = 1
 let unitImgScaleWithConsumableByType = {
   [AIR] = 0.8
 }
@@ -64,7 +63,7 @@ let discountTagUnit = @(percentW) @() discountTag(percentW.get(), {
   watch = percentW
   hplace = ALIGN_LEFT
   vplace = ALIGN_TOP
-  pos = [0, 0]
+  pos = const [0, 0]
   size = const [hdpx(93), hdpx(46)]
 })
 
@@ -158,7 +157,7 @@ let mkConsumableIcons = @(items) {
   children = items?.map(@(item)
     mkCurrencyImage(item.id, consumableSize, {
       children = {
-        pos = [-consumableSize * 0.9, -consumableSize * 0.1]
+        pos = const [-consumableSize * 0.9, -consumableSize * 0.1]
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
         rendObj = ROBJ_TEXT
@@ -213,7 +212,7 @@ function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
         { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
       mkConsumableIcons(consumableItems)
       mkMRank(unit?.mRank)
-      mkEndTime(goods, { pos = [hdpx(-50), 0] })
+      mkEndTime(goods, { pos = const [hdpx(-50), 0] })
       border
     ].extend(mkGoodsCommonParts(goods, ovrState), addChildren),
     mkPricePlate(goods, ovrState, animParams),
@@ -291,6 +290,9 @@ function mkOfferUnit(goods, onClick, state) {
   let imageOffset = currencyId == null || unit?.unitType == TANK? 0
     : hdpx(40)
   let discountInPercent = Computed(@() applyDiscount(goods, discountsToApply.get()).discountInPercent)
+  let offerTexts = unit == null ? null
+    : mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer")
+      : getUnitName(unit), goods)
   return mkOfferWrap(onClick,
     unit == null ? null : @(sf) [
       mkBgImg(bgImg)
@@ -298,7 +300,7 @@ function mkOfferUnit(goods, onClick, state) {
       sf & S_HOVER ? bgHiglight : null
       currencyId == null ? null : mkCurrencyIcon(currencyId, currencyAmount)
       imageOffset == 0 ? image : image.__update({ margin = [0, imageOffset, 0, 0] })
-      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getUnitName(unit), goods)
+      offerTexts
       mkUnitInfo(unit).__update({ margin = offerPad, padding = null })
       discountTagUnit(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))
@@ -316,13 +318,16 @@ function mkOfferBlueprint(goods, onClick, state){
     imageHalign = ALIGN_CENTER
     imageValign = ALIGN_CENTER
   }
+  let offerTexts = unit == null ? null
+    : mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer")
+      : getUnitName(unit), goods)
   return mkOfferWrap(onClick,
     unit == null ? null : @(sf) [
       mkBgImg(bgImg)
       isShowDebugOnly ? underConstructionBg : null
       sf & S_HOVER ? bgHiglight : null
       image
-      mkOfferTexts(offerClass == "seasonal" ? loc("seasonalOffer") : getUnitName(unit), goods)
+      offerTexts
       @() discountTagBig(discountInPercent.get(), { watch = discountInPercent })
     ].extend(mkOfferCommonParts(goods, state)))
 
@@ -362,6 +367,7 @@ function mkOfferBattleMode(goods, onClick, state) {
   let { currencyId = null, currencyAmount = 0 } = getCurrencyOnOfferBanner(goods)
   let image = mkFitCenterImg(getUnitPresentation(unit)?.image, branchOfferImageOvr)
   let discountInPercent = Computed(@() applyDiscount(goods, discountsToApply.get()).discountInPercent)
+  let offerTexts = unit == null ? null : mkOfferTexts(loc("offer/earlyAccess"), goods)
   return mkOfferWrap(onClick,
     unit == null ? null : @(sf) [
       mkBgImg(bgImg)
@@ -369,7 +375,7 @@ function mkOfferBattleMode(goods, onClick, state) {
       sf & S_HOVER ? bgHiglight : null
       currencyId == null ? null : mkCurrencyIcon(currencyId, currencyAmount)
       image
-      mkOfferTexts(loc("offer/earlyAccess"), goods)
+      offerTexts
       mkUnitInfo(unit).__update({ margin = offerPad, padding = null })
       discountTagUnit(discountInPercent)
     ].extend(mkOfferCommonParts(goods, state)))

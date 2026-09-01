@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 
 
-let goodsGap = hdpx(20)
-let goodsSmallSizeW = hdpxi(488)
-let goodsPerRow = 3
-let iconSize = hdpxi(106)
-let iconMarginW = hdpx(16)
-let tabW = iconSize + iconMarginW * 2
+const goodsGap = hdpx(20)
+const goodsSmallSizeW = hdpxi(488)
+const goodsPerRow = 3
+const iconSize = hdpxi(106)
+const iconMarginW = hdpx(16)
+const tabW = iconSize + iconMarginW * 2
 
 
 return {

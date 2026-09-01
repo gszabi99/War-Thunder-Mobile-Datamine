@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
+import "%rGui/interopGen.nut" as interopGen
 
-let interopGen = require("%rGui/interopGen.nut")
 
 let agmAimState = {
   TrackerX = Watched(0.0)

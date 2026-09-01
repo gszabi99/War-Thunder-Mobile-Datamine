@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let interopGet = require("%rGui/interopGen.nut")
-let { Point2 } = require("dagor.math")
+from "dagor.math" import Point2
+import "%rGui/interopGen.nut" as interopGet
+
 
 let middle = Point2(sw(50), sh(50))
 let commonState = {

@@ -1,22 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkScreenHints } = require("%rGui/components/screenHintsLib.nut")
-let { teamBlueColor, teamRedColor } = require("%rGui/style/teamColors.nut")
+from "%rGui/components/screenHintsLib.nut" import mkScreenHints
+from "%rGui/style/teamColors.nut" import teamBlueColor, teamRedColor
 
-let bgImage = "!ui/images/help/help_tank_mission2.avif"
+
+const bgImage = "!ui/images/help/help_tank_mission2.avif"
 let bgSize = [3282, 1041]
 
-let borderOffs = 45
-let zoneX = 1723
-let zoneY = 154
-let zoneSize = hdpxi(50)
+const borderOffs = 45
+const zoneX = 1723
+const zoneY = 154
+const zoneSize = hdpxi(50)
 
-let neutralColor = 0xFFFFFFFF
+const neutralColor = 0xFFFFFFFF
 
 let mkSizeByParent = @(size) [pw(100.0 * size[0] / bgSize[0]), ph(100.0 * size[1] / bgSize[1])]
 let mkLines = @(lines) lines.map(@(v, i) 100.0 * v / bgSize[i % 2])
 
 let zoneIcon = {
-  size = [zoneSize, zoneSize]
+  size = const [zoneSize, zoneSize]
   rendObj = ROBJ_IMAGE
   color = teamBlueColor
   image = Picture($"ui/gameuiskin#basezone_small_mark_a.svg:{zoneSize}:{zoneSize}")
@@ -94,7 +95,7 @@ function makeScreen() {
     color = 0xFF000000
     children = {
       size = [sw(100), sw(100).tofloat() / bgSize[0] * bgSize[1]]
-      pos = [0, -sh(1.5)]
+      pos = const [0, -sh(1.5)]
       rendObj = ROBJ_IMAGE
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER

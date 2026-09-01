@@ -1,22 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
-let { unitExpColor, slotExpColor } = require("%rGui/components/levelBlockPkg.nut")
-let { buttonsShowTime } = require("%rGui/debriefing/debriefingWndConsts.nut")
-let { mkMissionResultTitle } = require("%rGui/debriefing/missionResultTitle.nut")
-let { getUnitsSet, getUnitRewards, getSlotExpByUnit, getSlotLevelCfg, getLevelProgress,
-  getNextUnitLevelWithRewards, getSlotOrUnitLevelUnlockRewards, sortUnitMods,
-} = require("%rGui/debriefing/debrUtils.nut")
-let mkPlateWithLevelProgress = require("%rGui/debriefing/mkPlateWithLevelProgress.nut")
-let { getLevelUnlockLineAnimTime, mkLevelUnlockLinesContainer, mkDebrLineMod, mkDebrLineWeapon,
-  mkDebrLineAmmo, mkDebrLinePoints, mkDebrLineBullet
-} = require("%rGui/debriefing/debrLevelUnlockLines.nut")
-let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
+from "%rGui/components/levelBlockPkg.nut" import unitExpColor, slotExpColor
+from "%rGui/debriefing/debrLevelUnlockLines.nut" import getLevelUnlockLineAnimTime, mkLevelUnlockLinesContainer,
+  mkDebrLineMod, mkDebrLineWeapon, mkDebrLineAmmo, mkDebrLinePoints, mkDebrLineBullet
+from "%rGui/debriefing/debrUtils.nut" import getUnitsSet, getUnitRewards, getSlotExpByUnit, getSlotLevelCfg,
+  getLevelProgress, getNextUnitLevelWithRewards, getSlotOrUnitLevelUnlockRewards, sortUnitMods
+from "%rGui/debriefing/debriefingWndConsts.nut" import buttonsShowTime
+from "%rGui/debriefing/missionResultTitle.nut" import mkMissionResultTitle
+import "%rGui/debriefing/mkPlateWithLevelProgress.nut" as mkPlateWithLevelProgress
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitBulletsChoice
 
-let levelProgressAnimStartTime = 0.0
-let levelUnlocksAnimStartTime = 1.0
 
-let columnWidth = hdpx(350)
-let columnGap = hdpx(50)
+const levelProgressAnimStartTime = 0.0
+const levelUnlocksAnimStartTime = 1.0
+
+const columnWidth = hdpx(350)
+const columnGap = hdpx(50)
 
 function mkLevelUnlockLines(list, delay) {
   let res = {
@@ -151,7 +150,7 @@ function mkColumn(plateWithLevelProgressComp, levelProgressAnimTime, levelUnlock
     )
 
   let columnComp = {
-    size = [columnWidth, FLEX]
+    size = const [columnWidth, FLEX]
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     children = [

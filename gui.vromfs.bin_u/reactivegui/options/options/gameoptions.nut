@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
-let { set_hud_show_unit_model_name_online } = require("gameOptions")
-let { can_view_jip_setting, has_decals, allow_clusters_selection } = require("%appGlobals/permissions.nut")
-let { USEROPT_ALLOW_JIP, mkOptionValue, OPT_HUD_SHOW_UNIT_MODEL_NAME_ONLINE, USEROPT_IS_ORIGINAL_DECALS,
-  OPT_AUTO_OFFER_TO_BUY_UNIT } = require("%rGui/options/guiOptions.nut")
-let { openClustersOptions } = require("%rGui/options/clustersOptionsScene.nut")
+from "gameOptions" import set_hud_show_unit_model_name_online
+from "%appGlobals/permissions.nut" import can_view_jip_setting, has_decals, allow_clusters_selection
+from "%rGui/options/clustersOptionsScene.nut" import openClustersOptions
+from "%rGui/options/guiOptions.nut" import USEROPT_ALLOW_JIP, mkOptionValue, OPT_HUD_SHOW_UNIT_MODEL_NAME_ONLINE,
+  USEROPT_IS_ORIGINAL_DECALS, OPT_AUTO_OFFER_TO_BUY_UNIT
+
 
 let validate = @(val, list) list.contains(val) ? val : list[0]
 let allowJipList = [false, true]

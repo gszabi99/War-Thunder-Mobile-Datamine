@@ -1,20 +1,22 @@
 from "%globalScripts/logs.nut" import *
+from "dagor.localize" import getLocTextForLang
+from "dagor.time" import get_time_msec
+from "eventbus" import eventbus_send
 from "math" import min, max
-let { eventbus_send } = require("eventbus")
-let { getLocTextForLang } = require("dagor.localize")
-let { get_time_msec } = require("dagor.time")
-let { get_platform_string_id } = require("platform")
-let { send_to_bq_offer } = require("pServerApi.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { getServerTime } = require("%appGlobals/userstats/serverTime.nut")
-let { sharedStatsByCampaign, campProfile, receivedMissionRewards, curCampaign
-} = require("%appGlobals/pServer/campaign.nut")
+from "platform" import get_platform_string_id
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/connectionStatus.nut" import connectionStatus
+from "%appGlobals/clientState/downloadState.nut" import downloadInProgress, allowLimitedDownload
+from "%appGlobals/pServer/campaign.nut" import sharedStatsByCampaign, campProfile, receivedMissionRewards, curCampaign
+from "%appGlobals/updater/gameModeAddons.nut" import allUnitsRanks
+from "%appGlobals/userstats/serverTime.nut" import getServerTime
+from "pServerApi.nut" import send_to_bq_offer
+import "servProfile.nut" as servProfile
+from "types" import Integer, Float, String, Bool
+
+
 let { get_user_system_info = @() null } = require_optional("sysinfo")
-let servProfile = require("servProfile.nut")
 let { get_game_version_str = @() "-" } = require_optional("app") 
-let { connectionStatus } = require("%appGlobals/clientState/connectionStatus.nut")
-let { downloadInProgress, allowLimitedDownload } = require("%appGlobals/clientState/downloadState.nut")
-let { allUnitsRanks } = require("%appGlobals/updater/gameModeAddons.nut")
 
 
 function addEventTime(data, key = "eventTime") {
@@ -38,13 +40,13 @@ let sendUiBqEvent = @(event, data = {}) eventbus_send("sendBqEvent",
 
 function sendSettingChangeBqEvent(event, category, value){
   let data = addEventTime({ event, category })
-  if(type(value) == "integer")
+  if(value instanceof Integer)
     data.paramInt <- value
-  else if(type(value) == "float")
+  else if(value instanceof Float)
     data.paramFloat <- value
-  else if(type(value) == "string")
+  else if(value instanceof String)
     data.paramStr <- value
-  else if(type(value) == "bool")
+  else if(value instanceof Bool)
     data.paramInt <- value ? 1 : 0
   else
     logerr($"Unknown value type for sendSettingChangeBqEvent")

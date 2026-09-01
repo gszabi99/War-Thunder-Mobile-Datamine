@@ -8,7 +8,7 @@ let catIcons = {
   smoke = "hud_smoke_grenade_tank.svg"
 }
 
-let catIconDefault = "modify.svg"
+const catIconDefault = "modify.svg"
 
 let getCatIcon = @(cat) $"ui/gameuiskin#{cat in catIcons ? catIcons?[cat] : catIconDefault}:0:P"
 

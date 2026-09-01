@@ -1,18 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { subscribeFMsgBtns, openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { isInSquad, isSquadLeader, isReady, squadLeaderCampaign } = require("%appGlobals/squadState.nut")
-let { curCampaign, campaignsList, setCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { localizeAddons } = require("%appGlobals/updater/addons.nut")
-let { localizeUnitsResources } = require("%appGlobals/updater/campaignAddons.nut")
-let { hasAddons, unitSizes } = require("%appGlobals/updater/addonsState.nut")
-let { allUnitsRanks, allBattleUnits, missingUnitResourcesByRank, getModeAddonsInfo, maxReleasedUnitRanks
-} = require("%appGlobals/updater/gameModeAddons.nut")
-let { gameModeQueueGroups, getGameModeQueueGroup } = require("%appGlobals/gameModes/gameModes.nut")
-let { openDownloadAddonsWnd } = require("%rGui/updater/updaterState.nut")
-let { requiredSquadAddons } = require("%rGui/updater/randomBattleModeAddons.nut")
+from "eventbus" import eventbus_subscribe
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/gameModes/gameModes.nut" import gameModeQueueGroups, getGameModeQueueGroup
+from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
+from "%appGlobals/pServer/campaign.nut" import curCampaign, campaignsList, setCampaign
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/squadState.nut" import isInSquad, isSquadLeader, isReady, squadLeaderCampaign
+from "%appGlobals/updater/addons.nut" import localizeAddons
+from "%appGlobals/updater/addonsState.nut" import hasAddons, unitSizes
+from "%appGlobals/updater/campaignAddons.nut" import localizeUnitsResources
+from "%appGlobals/updater/gameModeAddons.nut" import allUnitsRanks, allBattleUnits, missingUnitResourcesByRank,
+  getModeAddonsInfo, maxReleasedUnitRanks
+from "%rGui/updater/randomBattleModeAddons.nut" import requiredSquadAddons
+from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd
 
 
 subscribeFMsgBtns({

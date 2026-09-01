@@ -1,27 +1,29 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkUnitBonuses, mkBonusTiny } = require("%rGui/unit/components/unitInfoComps.nut")
-let { campConfigs, curCampaign} = require("%appGlobals/pServer/campaign.nut")
-let { campUnitsCfg, campMyUnits } = require("%appGlobals/pServer/profile.nut")
-let { premiumTextColor, userlogTextColor, selectColor } = require("%rGui/style/stdColors.nut")
-let { unitPlateHeight, unitPlateWidth, mkUnitBg, mkUnitImage, mkUnitTexts,
-  mkUnitInfo } = require("%rGui/unit/components/unitPlateComp.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { unitInProgress, levelInProgress} = require("%appGlobals/pServer/pServerApi.nut")
-let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { upgradeCommonUnitName, isChosenUnitUpgarde } = require("%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut")
-let { mkLevelBg, maxLevelStarChar } = require("%rGui/components/levelBlockPkg.nut")
-let { wpOfferCard, premOfferCard, battleRewardsTitle, cardHPadding, offerCardHeight} = require("%rGui/unit/upgradeUnitWnd/upgradeUnitWndPkg.nut")
-let mkBuyUpgardeUnit = require("%rGui/unit/upgradeUnitWnd/mkBuyUpgardeUnit.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { gamercardBalanceBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import unitInProgress, levelInProgress
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg, campMyUnits
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/levelBlockPkg.nut" import mkLevelBg, maxLevelStarChar
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/mainMenu/gamercard.nut" import gamercardBalanceBtns
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/backgrounds.nut" import bgShadedDark
+from "%rGui/style/gamercardStyle.nut" import gamercardHeight
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import premiumTextColor, userlogTextColor, selectColor
+from "%rGui/unit/components/unitInfoComps.nut" import mkUnitBonuses, mkBonusTiny
+from "%rGui/unit/components/unitPlateComp.nut" import unitPlateHeight, unitPlateWidth, mkUnitBg, mkUnitImage,
+  mkUnitTexts, mkUnitInfo
+import "%rGui/unit/upgradeUnitWnd/mkBuyUpgardeUnit.nut" as mkBuyUpgardeUnit
+from "%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut" import upgradeCommonUnitName, isChosenUnitUpgarde
+from "%rGui/unit/upgradeUnitWnd/upgradeUnitWndPkg.nut" import wpOfferCard, premOfferCard, battleRewardsTitle,
+  cardHPadding, offerCardHeight
 
-let WND_UID = "chooseUpgradeUnitWnd"
+
+const WND_UID = "chooseUpgradeUnitWnd"
 
 function close() {
   upgradeCommonUnitName.set(null)
@@ -85,7 +87,7 @@ function mkLevelMark(unit) {
             rendObj = ROBJ_TEXT
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
-            pos = [0, -hdpx(2)]
+            pos = const [0, -hdpx(2)]
             text = level.get()
           }.__update(fontTiny)}
       }

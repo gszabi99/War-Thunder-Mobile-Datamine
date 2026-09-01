@@ -1,28 +1,30 @@
 from "%globalsDarg/darg_library.nut" import *
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import isDataBlock, eachParam
+from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+from "%appGlobals/currenciesState.nut" import balance
+from "%appGlobals/loginState.nut" import isSettingsAvailable
+from "%appGlobals/pServer/campaign.nut" import campaignsLevelInfo, campaignsList, curCampaign
+from "%appGlobals/pServer/profileSeasons.nut" import curSeasons
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/unitConst.nut" import eventUnitTypes
+from "%rGui/battlePass/operationPassState.nut" import OP_EVENT_ID, isOPSeasonActive
+from "%rGui/event/eventLootboxes.nut" import eventLootboxesRaw, orderLootboxesBySlot
+from "%rGui/gameModes/gameModeState.nut" import separateEventModes
+from "%rGui/shop/lootboxPreviewState.nut" import closeEventWndLootbox
+from "%rGui/unlocks/unlocks.nut" import unlockTables, activeUnlocks
+from "%rGui/unlocks/unlocksConst.nut" import MAIN_EVENT_ID
+from "%rGui/unlocks/userstat.nut" import userstatStatsTables
+
+
 let logE = log_with_prefix("[EVENTS] ")
-let { eventbus_send } = require("eventbus")
-let { register_command } = require("console")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
-let { eventUnitTypes } = require("%appGlobals/unitConst.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { campaignsLevelInfo, campaignsList, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { curSeasons } = require("%appGlobals/pServer/profileSeasons.nut")
-let { eventLootboxesRaw, orderLootboxesBySlot } = require("%rGui/event/eventLootboxes.nut")
-let { userstatStatsTables } = require("%rGui/unlocks/userstat.nut")
-let { balance } = require("%appGlobals/currenciesState.nut")
-let { unlockTables, activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
-let { MAIN_EVENT_ID } = require("%rGui/unlocks/unlocksConst.nut")
-let { closeEventWndLootbox } = require("%rGui/shop/lootboxPreviewState.nut")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { separateEventModes } = require("%rGui/gameModes/gameModeState.nut")
-let { OP_EVENT_ID, isOPSeasonActive } = require("%rGui/battlePass/operationPassState.nut")
 
 
-let SEEN_LOOTBOXES = "seenLootboxes"
-let LOOTBOXES_AVAILABILITY = "lootboxesAvailability"
+const SEEN_LOOTBOXES = "seenLootboxes"
+const LOOTBOXES_AVAILABILITY = "lootboxesAvailability"
 let getSeasonPrefix = @(n) $"season_{n}"
 let getSpecialEventName = @(n) $"special_event_{n}"
 

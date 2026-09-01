@@ -1,18 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let { commonTextColor } = require("%rGui/style/stdColors.nut")
-let { simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { sizePosToBox, getLinkArrowMiddleCfg, createHighlight, incBoxSizeUnlimited } = require("%rGui/tutorial/tutorialWnd/tutorialUtils.nut")
-let { btnAUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+from "dagor.workcycle" import deferOnce
+from "%rGui/controlsMenu/gpActBtn.nut" import btnAUp
+from "%rGui/style/gradients.nut" import simpleHorGrad
+from "%rGui/style/stdColors.nut" import commonTextColor
+from "%rGui/tutorial/tutorialWnd/tutorialUtils.nut" import sizePosToBox, getLinkArrowMiddleCfg, createHighlight,
+  incBoxSizeUnlimited
 
 
-let borderWidth = hdpx(1)
+const borderWidth = hdpx(1)
 let defMsgPadding = [hdpx(20), hdpx(40)] 
 let characterSize = [hdpxi(644), hdpxi(914)]
-let shadeColor = 0xC0020B19
-let msgBgColor = 0xCC000000
-let msgBorderColor = 0x60484848
-let msgBorderWidth = hdpxi(3)
+const shadeColor = 0xC0020B19
+const msgBgColor = 0xCC000000
+const msgBorderColor = 0x60484848
+const msgBorderWidth = hdpxi(3)
 
 let characters = {
   mary_with_notebook = "review_cue_1.avif"
@@ -63,7 +64,7 @@ let nextKeyHintCtor = @(canSkipByClick, onClick) onClick == null || !canSkipByCl
       valign = ALIGN_CENTER
       children = [
         {
-          size = [FLEX, msgBorderWidth]
+          size = const [FLEX, msgBorderWidth]
           rendObj = ROBJ_IMAGE
           image = simpleHorGrad
           color = msgBorderColor
@@ -160,8 +161,8 @@ let skipBtnClickCtor = @(skipStep, key) {
 }.__update(fontSmall)
 
 let pointerSize = hdpx(70).tointeger()
-let pointerAnimTime = 1.0
-let pointerAnimOffset = hdpx(25)
+const pointerAnimTime = 1.0
+const pointerAnimOffset = hdpx(25)
 let pointerArrowContent = {
   size = [pointerSize, pointerSize]
   rendObj = ROBJ_IMAGE

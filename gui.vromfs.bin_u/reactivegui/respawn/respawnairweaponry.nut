@@ -1,22 +1,20 @@
 from "%globalsDarg/darg_library.nut" import *
-let { format } = require("string")
-let { isBattleDataFake } = require("%appGlobals/clientState/respawnStateBase.nut")
-let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { isBeltWeapon, mkWeaponBelts, getEquippedBelt } = require("%rGui/unitMods/unitModsSlotsState.nut")
-let { getEquippedWeapon, getEqippedWithoutOverload } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
-let { mkWeaponPreset, mkChosenBelts } = require("%rGui/unit/unitSettings.nut")
+from "string" import format
+from "%appGlobals/clientState/respawnStateBase.nut" import isBattleDataFake
+from "%rGui/respawn/respawnAirChooseState.nut" import selectedBeltWeaponId
+from "%rGui/respawn/respawnAirChooseWeaponWnd.nut" import showAirRespChooseSecWnd, showAirRespChooseBeltWnd
+from "%rGui/respawn/respawnComps.nut" import headerText, header, headerHeight, bulletsBlockMargin, unitListHeight,
+  textColor, secondaryMenuKey, weaponSize, weaponGroupWidth, gap, commonWeaponIcon, caliberTitle, secondaryTitleKey,
+  courseMenuKey, courseTitleKey, turretMenuKey, turretTitleKey, mkBeltImage
+from "%rGui/respawn/respawnState.nut" import respawnSlots, unitListScrollHandler
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/unit/components/unitPlateComp.nut" import unitPlateSmall
+from "%rGui/unit/unitSettings.nut" import mkWeaponPreset, mkChosenBelts
+from "%rGui/unitMods/equippedSecondaryWeapons.nut" import getEquippedWeapon, getEqippedWithoutOverload
+from "%rGui/unitMods/unitModsSlotsState.nut" import isBeltWeapon, mkWeaponBelts, getEquippedBelt
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitWeaponSlots
+from "%rGui/weaponry/weaponsVisual.nut" import getBulletBeltShortName
 
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { headerText, header, headerHeight, bulletsBlockMargin, unitListHeight, textColor, secondaryMenuKey,
-  weaponSize, weaponGroupWidth, gap, commonWeaponIcon,
-  caliberTitle, secondaryTitleKey, courseMenuKey, courseTitleKey, turretMenuKey, turretTitleKey,
-  mkBeltImage
-} = require("%rGui/respawn/respawnComps.nut")
-let { getBulletBeltShortName } = require("%rGui/weaponry/weaponsVisual.nut")
-let { unitPlateSmall } = require("%rGui/unit/components/unitPlateComp.nut")
-let { respawnSlots, unitListScrollHandler } = require("%rGui/respawn/respawnState.nut")
-let { selectedBeltWeaponId } = require("%rGui/respawn/respawnAirChooseState.nut")
-let { showAirRespChooseSecWnd, showAirRespChooseBeltWnd } = require("%rGui/respawn/respawnAirChooseWeaponWnd.nut")
 
 let mkCardTitle = @(title) title == "" ? null
   : {

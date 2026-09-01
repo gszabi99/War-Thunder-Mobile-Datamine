@@ -1,13 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-from "eventbus" import eventbus_subscribe
-from "dagor.workcycle" import deferOnce
 from "contentUpdater" import get_total_size_async
-from "%appGlobals/updater/addonsState.nut" import isAddonsAndUnitsInfoActual, unitSizes
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_subscribe
 from "%appGlobals/updater/addons.nut" import toMB
+from "%appGlobals/updater/addonsState.nut" import isAddonsAndUnitsInfoActual, unitSizes
+
+
 let logA = log_with_prefix("[ADDONS_INFO] ")
 
 
-let DL_SIZE_EVENT_ID = "onDlSizeUpdate"
+const DL_SIZE_EVENT_ID = "onDlSizeUpdate"
 
 let dlSizes = Watched({})
 

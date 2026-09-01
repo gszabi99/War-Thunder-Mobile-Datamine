@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { sqrt, fabs } = require("math")
+from "math" import sqrt, fabs
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+
 
 let getDistance = @(x, y) sqrt(x * x + y * y)
 

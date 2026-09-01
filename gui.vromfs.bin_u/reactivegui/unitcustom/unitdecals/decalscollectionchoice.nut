@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { mkDecalCard, decalCardWidth, commonBgColor, decalsGap } = require("%rGui/unitCustom/unitDecals/unitDecalsComps.nut")
-let { decalsCfg } = require("%rGui/unitCustom/unitDecals/unitDecalsState.nut")
-let { gamercardHeight } = require("%rGui/unitCustom/unitCustomComps.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { mkFoldableList } = require("%rGui/components/foldableSelector.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { markDecalsSeen } = require("%rGui/unitCustom/unitDecals/unseenDecals.nut")
+from "%rGui/components/foldableSelector.nut" import mkFoldableList
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/unitCustom/unitCustomComps.nut" import gamercardHeight
+from "%rGui/unitCustom/unitDecals/unitDecalsComps.nut" import mkDecalCard, decalCardWidth, commonBgColor, decalsGap
+from "%rGui/unitCustom/unitDecals/unitDecalsState.nut" import decalsCfg
+from "%rGui/unitCustom/unitDecals/unseenDecals.nut" import markDecalsSeen
 
 
 let pannableHeight = saSize[1] - (gamercardHeight + decalCardWidth + (decalsGap * 4 + saBorders[1] * 2))
@@ -48,7 +48,7 @@ function mkFoldableHeader(unseenDecals, category) {
 
 function mkFoldableContent(decals, availableDecals, selectedDecal, unseenDecals, onSelect) {
   return {
-    size = [FLEX, SIZE_TO_CONTENT]
+    size = const [FLEX, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     gap = decalsGap
     children = decals == null ? null

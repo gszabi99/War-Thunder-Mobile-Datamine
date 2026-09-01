@@ -1,14 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
-let { onSchRewardReceive } = require("%rGui/shop/schRewardsState.nut")
-let { spinner } = require("%rGui/components/spinner.nut")
-let { schRewardInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { priorityUnseenMark } = require("%rGui/components/unseenMark.nut")
-let { opacityAnims, aTimePackNameFull, ANIM_SKIP_DELAY, ANIM_SKIP } = require("%rGui/shop/goodsPreview/goodsPreviewPkg.nut")
+from "%appGlobals/pServer/pServerApi.nut" import schRewardInProgress
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/shop/goodsPreview/goodsPreviewPkg.nut" import opacityAnims, aTimePackNameFull, ANIM_SKIP_DELAY, ANIM_SKIP
+from "%rGui/shop/schRewardsState.nut" import onSchRewardReceive
+
 
 function mkGiftSchRewardBtn(giftSchReward, aTimeHeaderStart, skipAnimsOnce = null) {
   if (!giftSchReward?.isReady)
     return null
-  let giftBoxAnimDur = 0.2
+  const giftBoxAnimDur = 0.2
   let giftBoxAnimDelay = aTimeHeaderStart + 0.5
   let isPurchasing = Computed(@() giftSchReward.id in schRewardInProgress.get())
   return {

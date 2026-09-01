@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
-let { defer } = require("dagor.workcycle")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { bulletsInfo, bulletsSecInfo, bulletsSpecInfo, chosenBullets, chosenBulletsSec, chosenBulletsSpec, setOrSwapCurUnitBullet,
-  bulletsStatus, bulletsStatusSec, bulletsStatusSpec, secBulletsSlots
-} = require("%rGui/respawn/bulletsChoiceState.nut")
-let { selSlot, hasUnseenShellsBySlot } = require("%rGui/respawn/respawnState.nut")
-let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let { textButtonCommon, textButtonPrimary, textButtonInactive } = require("%rGui/components/textButton.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { sendPlayerActivityToServer } = require("%rGui/respawn/playerActivity.nut")
-let { BULLETS_PRIM_SLOTS, BS_UNLOCKED } = require("%rGui/bullets/bulletsConst.nut")
-let { mkBulletsList, mkCurListBulletInfo } = require("%rGui/bullets/bulletsSelectorComps.nut")
+from "dagor.workcycle" import defer
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import isEqual
+from "%rGui/bullets/bulletsConst.nut" import BULLETS_PRIM_SLOTS, BS_UNLOCKED
+from "%rGui/bullets/bulletsSelectorComps.nut" import mkBulletsList, mkCurListBulletInfo
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary, textButtonInactive
+from "%rGui/respawn/bulletsChoiceState.nut" import bulletsInfo, bulletsSecInfo, bulletsSpecInfo, chosenBullets,
+  chosenBulletsSec, chosenBulletsSpec, setOrSwapCurUnitBullet, bulletsStatus, bulletsStatusSec, bulletsStatusSpec,
+  secBulletsSlots
+from "%rGui/respawn/playerActivity.nut" import sendPlayerActivityToServer
+from "%rGui/respawn/respawnState.nut" import selSlot, hasUnseenShellsBySlot
+from "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" import mkCutBg
 
 
-let WND_UID = "respawn_choose_bullet_wnd"
+const WND_UID = "respawn_choose_bullet_wnd"
 let wndKey = {}
 
 let openedSlot = Watched(-1)

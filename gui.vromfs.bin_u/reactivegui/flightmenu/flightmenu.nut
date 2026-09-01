@@ -1,45 +1,47 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%globalScripts/sharedEnums.nut" import CtrlsInGui
+from "%rGui/controls/allowedControlsMask.nut" import addControlsMask, removeControlsMask
 from "%globalScripts/ecs.nut" import *
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { get_game_mode, GM_TRAINING, get_local_mplayer } = require("mission")
-let { is_ready_to_die, restart_replay } = require("guiMission")
-let { getSpareSlotsMask } = require("guiRespawn")
-let { get_current_mission_info_cached } = require("blkGetters")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { btnBEscUp, EMPTY_ACTION, btnB } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { myUserId } = require("%appGlobals/profileStates.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { battleCampaign, hudCustomRules } = require("%appGlobals/clientState/missionState.nut")
-let { canBailoutFromFlightMenu, isSingleMissionOverrided } = require("%appGlobals/clientState/clientState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { campConfigs, curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { textButtonPrimary, textButtonCommon, textButtonMultiline, buttonsVGap, mergeStyles
-} = require("%rGui/components/textButton.nut")
-let { backButton, backButtonWidth } = require("%rGui/components/backButton.nut")
-let { devMenuContent, openDevMenuButton, needShowDevMenu } = require("%rGui/flightMenu/devFlightMenu.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let { mkCustomMsgBoxWnd, openMsgBox } = require("%rGui/components/msgBox.nut")
-let { modalWndBg, modalWndHeaderBg } = require("%rGui/components/modalWnd.nut")
-let optionsScene = require("%rGui/options/optionsScene.nut")
-let { isGamepad } = require("%appGlobals/activeControls.nut")
-let controlsHelpWnd = require("%rGui/controls/help/controlsHelpWnd.nut")
-let { COMMON, PRIMARY, defButtonHeight } = require("%rGui/components/buttonStyles.nut")
-let { isUnitDelayed, isUnitAlive, isPlayingReplay, unitType } = require("%rGui/hudState.nut")
-let { respawnSlots, canUseSpare, isBailoutDeserter, spawnScoreCosts } = require("%rGui/respawn/respawnState.nut")
-let { resetGravityAxesZero } = require("%rGui/hud/aircraftMovementBlock.nut")
-let { isAircraftControlByGyro } = require("%rGui/options/options/airControlsOptions.nut")
-let { AIR } = require("%appGlobals/unitConst.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { mySpawnScore } = require("%rGui/hud/localMPlayer.nut")
+from "blkGetters" import get_current_mission_info_cached
+from "dagor.workcycle" import setInterval, clearTimer
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "guiMission" import is_ready_to_die, restart_replay
+from "guiRespawn" import getSpareSlotsMask
+from "mission" import get_game_mode, GM_TRAINING, get_local_mplayer
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/activeControls.nut" import isGamepad
+from "%appGlobals/clientState/clientState.nut" import canBailoutFromFlightMenu, isSingleMissionOverrided
+from "%appGlobals/clientState/missionState.nut" import battleCampaign, hudCustomRules
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign
+from "%appGlobals/profileStates.nut" import myUserId
+from "%appGlobals/unitConst.nut" import AIR
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/backButton.nut" import backButton, backButtonWidth
+from "%rGui/components/buttonStyles.nut" import COMMON, PRIMARY, defButtonHeight
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderBg
+from "%rGui/components/msgBox.nut" import mkCustomMsgBoxWnd, openMsgBox
+from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon, textButtonMultiline, buttonsVGap,
+  mergeStyles
+import "%rGui/controls/help/controlsHelpWnd.nut" as controlsHelpWnd
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp, EMPTY_ACTION, btnB
+from "%rGui/flightMenu/devFlightMenu.nut" import devMenuContent, openDevMenuButton, needShowDevMenu
+from "%rGui/hud/aircraftMovementBlock.nut" import resetGravityAxesZero
+from "%rGui/hud/localMPlayer.nut" import mySpawnScore
+from "%rGui/hudState.nut" import isUnitDelayed, isUnitAlive, isPlayingReplay, unitType
+from "%rGui/options/options/airControlsOptions.nut" import isAircraftControlByGyro
+import "%rGui/options/optionsScene.nut" as optionsScene
+from "%rGui/respawn/respawnState.nut" import respawnSlots, canUseSpare, isBailoutDeserter, spawnScoreCosts
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
-let LEAVE_BATTLE_MSG_UID = "leaveBattleMsgUID"
+const LEAVE_BATTLE_MSG_UID = "leaveBattleMsgUID"
 
-let flightMenuWidth = hdpx(600)
-let buttonsPadding = hdpx(40)
-let menuBtnWidth = flightMenuWidth - 2 * buttonsPadding
+const flightMenuWidth = hdpx(600)
+const buttonsPadding = hdpx(40)
+const menuBtnWidth = flightMenuWidth - 2 * buttonsPadding
 let backButtonSize = [backButtonWidth / 2, backButtonWidth / 2]
 
 let deserterLockStart = Watched(0)
@@ -182,23 +184,31 @@ let gyroButtons = @() {
 
 let refreshSpawnInfo = @() eventbus_send("getLocalPlayerSpawnInfo", {})
 
+let flightMenuControlsMask = CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
+                           | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
+                           | CtrlsInGui.CTRL_IN_FLIGHT_MENU
+
 let flightMenu = @() bgShaded.__merge({
   watch = [canDeserter, battleCampaign]
   key = needShowDevMenu
   function onAttach() {
     refreshSpawnInfo()
     setInterval(1.0, refreshSpawnInfo)
+    addControlsMask("flightmenu", flightMenuControlsMask)
   }
-  onDetach = @() clearTimer(refreshSpawnInfo)
+  function onDetach() {
+    clearTimer(refreshSpawnInfo)
+    removeControlsMask("flightmenu")
+  }
   size = FLEX
   padding = saBordersRv
   children = modalWndBg.__merge({
-    size = [flightMenuWidth, SIZE_TO_CONTENT]
+    size = const [flightMenuWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     children = [
       modalWndHeaderBg.__merge({
         size = FLEX_H
-        padding = [hdpx(20), buttonsPadding]
+        padding = const [hdpx(20), buttonsPadding]
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         children = [

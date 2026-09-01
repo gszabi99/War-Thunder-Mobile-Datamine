@@ -3893,7 +3893,8 @@
     "type": "TpsTargetFlightCameraReplay",
     "freeCamOrientInert": 0.5,
     "freeCamPosInert": 1.2,
-    "freeCamOrientMaxSpeed": 2.0
+    "freeCamOrientMaxSpeed": 2.0,
+    "freeCamMaxAlt": 5000.0
   },
   "artillery_crosshair": {
     "type": "ArtilleryViewCamera",

@@ -1829,7 +1829,7 @@
       "fricSideRotAlternative": [
         5.0,
         0.0,
-        1.2,
+        0.9,
         0.3
       ]
     },
@@ -1846,7 +1846,7 @@
     "mechanics": {
       "maxBrakeForce": 250000.0,
       "driveGearRadius": 0.37,
-      "mainGearRatio": 2.16,
+      "mainGearRatio": 2.46,
       "sideGearRatio": 6.25,
       "alternativeGearControl": 1.0,
       "gearRatios": {
@@ -1872,7 +1872,7 @@
         0.127
       ],
       "defaultGearRadius": 0.27,
-      "frontBackGearRadius": 0.27,
+      "frontBackGearRadius": 0.28,
       "topGearRadius": 0.19,
       "defaultDampeningForce": [
         150000.0,

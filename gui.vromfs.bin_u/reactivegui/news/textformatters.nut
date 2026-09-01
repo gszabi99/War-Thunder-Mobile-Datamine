@@ -1,47 +1,49 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { platformId, aliases } = require("%sqstd/platform.nut")
-let { toIntegerSafe } = require("%sqstd/string.nut")
-let mkFormatAst = require("%darg/helpers/mkFormatAst.nut")
-let urlAliases = require("%rGui/news/urlAliases.nut")
-let wordHyphenation = require("%globalScripts/wordHyphenation.nut")
-let { locColorTable } = require("%rGui/style/stdColors.nut")
-let { expandArrow, defaultExpandAnimationDuration } = require("%rGui/components/expandArrow.nut")
+from "eventbus" import eventbus_send
+from "%sqstd/platform.nut" import platformId, aliases
+from "%sqstd/string.nut" import toIntegerSafe
+import "%darg/helpers/mkFormatAst.nut" as mkFormatAst
+import "%globalScripts/wordHyphenation.nut" as wordHyphenation
+from "%rGui/components/expandArrow.nut" import expandArrow, defaultExpandAnimationDuration
+import "%rGui/news/urlAliases.nut" as urlAliases
+from "%rGui/style/stdColors.nut" import locColorTable
+from "types" import String, Table, Array
 
-let selectorBtnW = hdpx(465)
+
+const selectorBtnW = hdpx(465)
 let widthImgMax = saSize[0] - saBordersRv[1]*2 - selectorBtnW
 let insideBlockPadding = [hdpx(10), hdpx(20)]
-let blockInterval = hdpx(6)
-let headerMargin = 2 * blockInterval
-let urlLineWidth = hdpx(1)
-let borderWidth = hdpx(1)
+const blockInterval = hdpx(6)
+const headerMargin = 2 * blockInterval
+const urlLineWidth = hdpx(1)
+const borderWidth = hdpx(1)
 
-let listInnerMargin = hdpx(25)
+const listInnerMargin = hdpx(25)
 
 let spoilerWidth = saSize[0] - saBordersRv[0]*2 - selectorBtnW - hdpx(124)
-let contentBackground = 0x66000000
+const contentBackground = 0x66000000
 
-let btnActive = 0xFFCFCFCF
-let btnHovActive = 0xFFFFFFFF
-let btnDef = 0xFF507878
-let btnHovDef = 0xFF709898
+const btnActive = 0xFFCFCFCF
+const btnHovActive = 0xFFFFFFFF
+const btnDef = 0xFF507878
+const btnHovDef = 0xFF709898
 
-let commonTextColor = 0xFFC0C0C0
-let activeTextColor = 0xFF333333
-let urlColor = 0xFF17C0FC
-let urlHoverColor = 0xFF84E0FA
-let separatorColor = 0x33333333
+const commonTextColor = 0xFFC0C0C0
+const activeTextColor = 0xFF333333
+const urlColor = 0xFF17C0FC
+const urlHoverColor = 0xFF84E0FA
+const separatorColor = 0x33333333
 let accentDefaultColor = locColorTable.info
 
-let emphasisStyle = { color = activeTextColor, margin = [headerMargin, 0] }
+let emphasisStyle = { color = activeTextColor, margin = const [headerMargin, 0] }
 let noteStyle = { color = 0xFF808080 }.__update(fontTiny)
 
 let openUrl = @(url) eventbus_send("openUrl", { baseUrl = urlAliases?[url] ?? url })
 
 let getFontByType = @(style, t)
-  t == "h1" ? { color = 0xFFDCDCFA, margin = [headerMargin, 0] }.__update(style?.h1Font ?? fontBig)
-    : t == "h2" ? { color = 0xFFDCDCFA, margin = [headerMargin, 0] }.__update(style?.h2Font ?? fontMedium)
-    : t == "h3" ? { color = 0xFFDCDCFA, margin = [headerMargin, 0] }.__update(style?.h3Font ?? fontSmallAccented)
+  t == "h1" ? { color = 0xFFDCDCFA, margin = const [headerMargin, 0] }.__update(style?.h1Font ?? fontBig)
+    : t == "h2" ? { color = 0xFFDCDCFA, margin = const [headerMargin, 0] }.__update(style?.h2Font ?? fontMedium)
+    : t == "h3" ? { color = 0xFFDCDCFA, margin = const [headerMargin, 0] }.__update(style?.h3Font ?? fontSmallAccented)
     : style?.font ?? fontSmall
 
 let textArea = @(params, style) {
@@ -71,7 +73,7 @@ function url(data, _, style) {
       onClick
 
       children = {
-        size = [FLEX, urlLineWidth]
+        size = const [FLEX, urlLineWidth]
         vplace = ALIGN_BOTTOM
         rendObj = ROBJ_SOLID
         color
@@ -83,7 +85,7 @@ function url(data, _, style) {
 function objUListToArrayWithLevels(obj, txtFmt, ulElement) {
   let result = []
   foreach (elem in obj.v) {
-    if (type(elem) == "string") {
+    if (elem instanceof String) {
       let txtElem = txtFmt(elem)
       if (txtElem == null)
         continue
@@ -92,12 +94,12 @@ function objUListToArrayWithLevels(obj, txtFmt, ulElement) {
         flow = FLOW_HORIZONTAL
         children = [ulElement, txtElem]
       })
-    } else if (type(elem) == "table" && "v" in elem) {
+    } else if (elem instanceof Table && "v" in elem) {
       let contentElem = txtFmt(elem)
       result.append({
         size = FLEX_H
         flow = FLOW_VERTICAL
-        margin = [0, 0, 0, listInnerMargin]
+        margin = const [0, 0, 0, listInnerMargin]
         children = contentElem
       })
     }
@@ -115,7 +117,7 @@ function objOListToArrayWithLevels(obj, fmtFunc, style, parentOrder = "") {
   let result = []
   local order = obj?.start ?? 1
   foreach (elem in obj.v) {
-    if (type(elem) == "string") {
+    if (elem instanceof String) {
       let elemTxt = fmtFunc(elem)
       if (elemTxt == null)
         continue
@@ -134,18 +136,18 @@ function objOListToArrayWithLevels(obj, fmtFunc, style, parentOrder = "") {
       result.append({
         size = FLEX_H
         flow = FLOW_VERTICAL
-        margin = [0, 0, 0, listInnerMargin]
+        margin = const [0, 0, 0, listInnerMargin]
         children = objOListToArrayWithLevels(elem, fmtFunc, style, $"{parentOrder}{order - 1}.")
       })
     }
-    else if (type(elem) == "table" && "v" in elem) {
+    else if (elem instanceof Table && "v" in elem) {
       let elemContent = fmtFunc(elem)
       if (elem == null)
         continue
       result.append({
         size = FLEX_H
         flow = FLOW_VERTICAL
-        margin = [0, 0, 0, listInnerMargin]
+        margin = const [0, 0, 0, listInnerMargin]
         children = elemContent
       })
     }
@@ -169,14 +171,14 @@ let indent = mkUList(ulNoBullet)
 let list = @(obj, formatTextFunc, style) obj?.type == "olist" ? numeric(obj, formatTextFunc, style) : bullets(obj, formatTextFunc, style)
 
 let separator = {
-  size = [FLEX, urlLineWidth]
-  margin = [blockInterval, blockInterval, hdpx(20), 0]
+  size = const [FLEX, urlLineWidth]
+  margin = const [blockInterval, blockInterval, hdpx(20), 0]
   rendObj = ROBJ_SOLID
   color = separatorColor
 }
 let textParsed = @(text, style) text == "----" ? separator : textArea({ text }, style)
 
-let formatList = @(v, formatTextFunc) type(v) != "array" ? formatTextFunc(v)
+let formatList = @(v, formatTextFunc) !(v instanceof Array) ? formatTextFunc(v)
   : v.map(@(elem) formatTextFunc(elem))
 
 let horizontal = @(obj, formatTextFunc, _) obj.__merge({
@@ -343,7 +345,7 @@ function spoiler(obj, formatTextFunc, style) {
   return @() {
     watch = isExpanded
     size = FLEX_H
-    margin = [headerMargin, 0]
+    margin = const [headerMargin, 0]
     behavior = Behaviors.TransitionSize
     orientation = O_VERTICAL
     speed = hdpx(2000)
@@ -391,7 +393,7 @@ function tabs(obj, formatTextFunc, style) {
   return @() {
     watch = currentTab
     size = FLEX_H
-    margin = [headerMargin, 0]
+    margin = const [headerMargin, 0]
     flow = FLOW_VERTICAL
     rendObj = ROBJ_BOX
     children = [

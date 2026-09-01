@@ -1,10 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { pow } = require("math")
-let { G_UNIT_UPGRADE, G_LOOTBOX, G_SKIN, unitRewardTypes } = require("%appGlobals/rewardType.nut")
-let { getDay } = require("%appGlobals/userstats/serverTimeDay.nut")
-let { RewardSearcher } = require("%rGui/rewards/lootboxesRewards.nut")
-let { orderByCurrency } = require("%appGlobals/currenciesState.nut")
-
+from "math" import pow
+from "%appGlobals/currenciesState.nut" import orderByCurrency
+from "%appGlobals/rewardType.nut" import G_UNIT_UPGRADE, G_LOOTBOX, G_SKIN, unitRewardTypes
+from "%appGlobals/userstats/serverTimeDay.nut" import getDay
+from "%rGui/rewards/lootboxesRewards.nut" import RewardSearcher
 
 function tryApplyUnitSkinFromGoods(unit, goods) {
   let unitName = unit?.name ?? ""

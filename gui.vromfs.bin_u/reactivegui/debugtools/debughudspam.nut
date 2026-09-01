@@ -1,14 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command, command
+from "dagor.random" import rnd_float
+from "dagor.workcycle" import setInterval, clearTimer, defer
+from "eventbus" import eventbus_send
+from "guiMission" import MISSION_CAPTURING_ZONE
+from "hitCamera" import HIT_CAMERA_START, HIT_CAMERA_FINISH, DM_HIT_RESULT_NONE, DM_HIT_RESULT_KILL
+from "hudMessages" import HUD_MSG_STREAK_EX
+from "mission" import get_mission_time
+from "%sqstd/rand.nut" import chooseRandom
 
-let { get_mission_time } = require("mission")
-let { eventbus_send } = require("eventbus")
-let { register_command, command } = require("console")
-let { MISSION_CAPTURING_ZONE } = require("guiMission")
-let { HIT_CAMERA_START, HIT_CAMERA_FINISH, DM_HIT_RESULT_NONE, DM_HIT_RESULT_KILL } = require("hitCamera")
-let { setInterval, clearTimer, defer } = require("dagor.workcycle")
-let { rnd_float } = require("dagor.random")
-let { chooseRandom } = require("%sqstd/rand.nut")
-let { HUD_MSG_STREAK_EX } = require("hudMessages")
 
 const DEFAULT_FREQUENCY = 10
 
@@ -88,11 +88,11 @@ let testsCfg = {
   }
   hitCam = {
     possibility = approximateIntervalSec(5.0)
-    show = @() eventbus_send("hitCamera", chooseRandom([
+    show = @() eventbus_send("on_hit_camera_event", chooseRandom([
       { mode = HIT_CAMERA_START, result = DM_HIT_RESULT_KILL, info = {} }
       { mode = HIT_CAMERA_FINISH, result = DM_HIT_RESULT_NONE, info = {} }
     ]))
-    hide = @() eventbus_send("hitCamera", { mode = HIT_CAMERA_FINISH, result = DM_HIT_RESULT_NONE, info = {} })
+    hide = @() eventbus_send("on_hit_camera_event", { mode = HIT_CAMERA_FINISH, result = DM_HIT_RESULT_NONE, info = {} })
   }
   hintStreak = {
     possibility = approximateIntervalSec(5.0)

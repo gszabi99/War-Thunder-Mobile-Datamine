@@ -1,8 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { get_cam_angles, set_camera_angle, reset_camera_pos_dir } = require("hangar")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { scenesOrder } = require("%rGui/navState.nut")
+from "hangar" import get_cam_angles, set_camera_angle, reset_camera_pos_dir
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%rGui/components/modalWindows.nut" import hasModalWindows
+from "%rGui/navState.nut" import scenesOrder
+
 
 let isMainMenuAttached = Watched(false)
 let isMainMenuTopScene = Computed(@() isMainMenuAttached.get() && !scenesOrder.get().len())

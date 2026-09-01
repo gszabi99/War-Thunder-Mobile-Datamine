@@ -1,13 +1,15 @@
-
-
-
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { hangar_load_model } = require("hangar")
-let { gatherUnitStatsLimits } = require("%rGui/unit/unitStats.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getUnitTags, getUnitTagsCfg } = require("%appGlobals/unitTags.nut")
-let { startTestFlightByName } = require("%rGui/gameModes/startOfflineMode.nut")
+from "console" import register_command
+from "hangar" import hangar_load_model
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/unitTags.nut" import getUnitTags, getUnitTagsCfg
+from "%rGui/gameModes/startOfflineMode.nut" import startTestFlightByName
+from "%rGui/unit/unitStats.nut" import gatherUnitStatsLimits
+from "types" import String
+
+
+
+
 
 function debugUnitStats() {
   let { allUnits = {} } = serverConfigs.get()
@@ -23,8 +25,8 @@ function debugUnitStats() {
   log("Unit stats ranges:", stats)
 }
 
-let isFilledString = @(unitName) type(unitName) == "string" && unitName.len() != 0
-let invalidStrParamMsg = "ERROR: Param {0} should be a non empty string in double quotes."
+let isFilledString = @(unitName) unitName instanceof String && unitName.len() != 0
+const invalidStrParamMsg = "ERROR: Param {0} should be a non empty string in double quotes."
 
 function debug_show_unit(unitName) {
   if (!isFilledString(unitName))

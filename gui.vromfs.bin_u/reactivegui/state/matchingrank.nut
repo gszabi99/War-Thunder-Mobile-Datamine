@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { battleUnitsMaxMRank } = require("%appGlobals/pServer/profile.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { squadLeaderCampaign, isInSquad } = require("%appGlobals/squadState.nut")
-let { allBattleUnits, maxReleasedUnitRanks } = require("%appGlobals/updater/gameModeAddons.nut")
-let { getRomanNumeral } = require("%sqstd/math.nut")
-let mkTextRow = require("%darg/helpers/mkTextRow.nut")
+from "%sqstd/math.nut" import getRomanNumeral
+import "%darg/helpers/mkTextRow.nut" as mkTextRow
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/profile.nut" import battleUnitsMaxMRank
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/squadState.nut" import squadLeaderCampaign, isInSquad
+from "%appGlobals/updater/gameModeAddons.nut" import allBattleUnits, maxReleasedUnitRanks
 
 
 let maxSquadMRank = Computed(@() !isInSquad.get() ? null

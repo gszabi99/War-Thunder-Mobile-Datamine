@@ -1,13 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { currentWeaponNameText } = require("%rGui/hud/weaponryBlockImpl.nut")
-let hudTopMainLog = require("%rGui/hud/hudTopMainLog.nut")
-let hudBottomCenter = require("%rGui/hud/hudBottomCenter.nut")
-let { shipSight } = require("%rGui/hud/sight.nut")
-let hudTuningElems = require("%rGui/hudTuning/hudTuningElems.nut")
-let { startActionBarUpdate, stopActionBarUpdate } = require("%rGui/hud/actionBar/actionBarState.nut")
-let hudTimersBlock = require("%rGui/hud/hudTimersBlock.nut")
-let { threatTorpedosBlock } = require("%rGui/hud/hudThreatTorpedosBlock.nut")
+from "%rGui/hud/actionBar/actionBarState.nut" import startActionBarUpdate, stopActionBarUpdate
+import "%rGui/hud/hudBottomCenter.nut" as hudBottomCenter
+from "%rGui/hud/hudThreatTorpedosBlock.nut" import threatTorpedosBlock
+import "%rGui/hud/hudTimersBlock.nut" as hudTimersBlock
+import "%rGui/hud/hudTopMainLog.nut" as hudTopMainLog
+from "%rGui/hud/sight.nut" import shipSight
+from "%rGui/hud/weaponryBlockImpl.nut" import currentWeaponNameText
+import "%rGui/hudTuning/hudTuningElems.nut" as hudTuningElems
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+
 
 return {
   size = saSize

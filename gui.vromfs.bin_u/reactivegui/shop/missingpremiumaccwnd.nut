@@ -1,34 +1,35 @@
 from "%globalsDarg/darg_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getSubsPresentation } = require("%appGlobals/config/subsPresentation.nut")
-let { bgShadedDark } = require("%rGui/style/backgrounds.nut")
-let { modalWndBg, modalWndHeader } = require("%rGui/components/modalWnd.nut")
-let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { allow_subscriptions } = require("%appGlobals/permissions.nut")
-let { TIME_DAY_IN_SECONDS } = require("%sqstd/time.nut")
-let { get_local_custom_settings_blk } = require("blkGetters")
-let { textButtonPurchase, textButtonBattle } = require("%rGui/components/textButton.nut")
-let { urlLikeButton } = require("%rGui/components/urlText.nut")
-let { openShopWnd, subsByCategory } = require("%rGui/shop/shopState.nut")
-let { openSubsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { SC_PREMIUM } = require("%rGui/shop/shopCommon.nut")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
-let { havePremium, premiumEndsAt, isSubsWasActive } = require("%rGui/state/profilePremium.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { register_command } = require("console")
-let { premiumRowsCfg, vipRowsCfg, mkBonusRow, textColor } = require("%rGui/shop/goodsPreview/subscriptionDescComp.nut")
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/time.nut" import TIME_DAY_IN_SECONDS
+from "%appGlobals/config/subsPresentation.nut" import getSubsPresentation
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/permissions.nut" import allow_subscriptions
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
+from "%rGui/components/textButton.nut" import textButtonPurchase, textButtonBattle
+from "%rGui/components/urlText.nut" import urlLikeButton
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
+from "%rGui/shop/goodsPreview/subscriptionDescComp.nut" import premiumRowsCfg, vipRowsCfg, mkBonusRow, textColor
+from "%rGui/shop/goodsPreviewState.nut" import openSubsPreview
+from "%rGui/shop/shopCommon.nut" import SC_PREMIUM
+from "%rGui/shop/shopState.nut" import openShopWnd, subsByCategory
+from "%rGui/state/profilePremium.nut" import havePremium, premiumEndsAt, isSubsWasActive
+from "%rGui/style/backgrounds.nut" import bgShadedDark
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
-let premIconW = hdpxi(182)
-let premIconH = hdpxi(126)
-let subsIconW = premIconW * 2
-let subsIconH = premIconH * 2
+
+const premIconW = hdpxi(182)
+const premIconH = hdpxi(126)
+const subsIconW = premIconW * 2
+const subsIconH = premIconH * 2
 let TIME_RESHOWING_WND = 7 * TIME_DAY_IN_SECONDS
 
-let WND_UID = "notPremWnd"
-let SAVE_TIME_LAST_PREM_WND_SHOW = "timeLastPremWndShow"
+const WND_UID = "notPremWnd"
+const SAVE_TIME_LAST_PREM_WND_SHOW = "timeLastPremWndShow"
 
 function close() {
   removeModalWindow(WND_UID)
@@ -76,7 +77,7 @@ let mkBonusRows = function(rowsCfg, cfgWatch) {
   let hiddenAdvCount = rowsCfg.len() - rowsToShow.len() + vipRowsCfg.len()
   return @() {
     watch = cfgWatch
-    size = [hdpx(900), SIZE_TO_CONTENT]
+    size = const [hdpx(900), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     gap = hdpx(10)
     children = rowsToShow.map(@(a) mkBonusRow(a, cfgWatch.get()))

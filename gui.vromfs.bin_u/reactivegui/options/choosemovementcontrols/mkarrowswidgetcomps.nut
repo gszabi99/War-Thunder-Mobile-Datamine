@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } = require("math")
+from "math" import round
 
-let bgColor = 0x50000000
-let outlineColor = 0x58585858
-let cornerColor = 0xFFFFFFFF
-let highlightColor = 0x60606060
+
+const bgColor = 0x50000000
+const outlineColor = 0x58585858
+const cornerColor = 0xFFFFFFFF
+const highlightColor = 0x60606060
 
 let horAnimSizeMul = [0.175, 0.17]
 let verCornerSizeMul = [0.61, 0.24]

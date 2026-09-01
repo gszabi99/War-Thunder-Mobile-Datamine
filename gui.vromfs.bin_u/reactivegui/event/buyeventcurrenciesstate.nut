@@ -1,18 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { sortByCurrencyId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
-let { allShopGoods, finishedGoodsByTime, inactiveGoodsByTime, soonGoodsByTime, shopGoods
-} = require("%rGui/shop/shopState.nut")
-let { getEventPresentationId, eventSeason, allSpecialEvents, MAIN_EVENT_ID, isEventActive
-} = require("%rGui/event/eventState.nut")
-let { mkEventLocComp } = require("%rGui/event/eventLocName.nut")
-let { getEventPresentation } = require("%appGlobals/config/eventSeasonPresentation.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { G_CURRENCY } = require("%appGlobals/rewardType.nut")
-let { activeUnlocks, allUnlocksDesc, hasUnlockReward } = require("%rGui/unlocks/unlocks.nut")
-let { eventLootboxesRaw } = require("%rGui/event/eventLootboxes.nut")
+from "%appGlobals/clientState/initialState.nut" import isOfflineMenu
+from "%appGlobals/config/currencyPresentation.nut" import getBaseCurrency
+from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%appGlobals/pServer/seasonCurrencies.nut" import sortByCurrencyId
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/rewardType.nut" import G_CURRENCY
+from "%rGui/event/eventLocName.nut" import mkEventLocComp
+from "%rGui/event/eventLootboxes.nut" import eventLootboxesRaw
+from "%rGui/event/eventState.nut" import getEventPresentationId, eventSeason, allSpecialEvents, MAIN_EVENT_ID,
+  isEventActive
+from "%rGui/shop/shopState.nut" import allShopGoods, finishedGoodsByTime, inactiveGoodsByTime, soonGoodsByTime,
+  shopGoods
+from "%rGui/unlocks/unlocks.nut" import activeUnlocks, allUnlocksDesc, hasUnlockReward
+from "types" import Integer
 
 
 let currencyIdToOpen = mkWatched(persist, "currencyIdToOpen", null)
@@ -66,7 +67,7 @@ let currencyId = Computed(@() (parentEventName.get() != null || isParentEventAct
 let currencyWndOpenCount = Computed(function(prev) {
   if (currencyId.get() == null)
     return 0
-  return type(prev) == "integer" ? prev + 1 : 1
+  return prev instanceof Integer ? prev + 1 : 1
 })
 
 let isGoodsFit = @(goods, cId)
@@ -88,7 +89,7 @@ let buyCurrencyWndGamercardCurrencies = Computed(function() {
     .reduce(@(res, v) res.$rawset(v.price.currencyId, true), {})
     .keys()
   priceCurrencies.sort(@(a, b) sortByCurrencyId(b, a)) 
-  return [ currencyId.get() ].extend(priceCurrencies)
+  return (currencyId.get() == null ? [] : [ currencyId.get() ]).extend(priceCurrencies)
 })
 
 let bgImage = Computed(@()

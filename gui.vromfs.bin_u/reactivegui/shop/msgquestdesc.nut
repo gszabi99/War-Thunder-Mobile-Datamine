@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { campaignActiveUnlocks } = require("%rGui/unlocks/unlocks.nut")
+from "%rGui/style/stdColors.nut" import userlogTextColor
+from "%rGui/unlocks/unlocks.nut" import campaignActiveUnlocks
 
-let questsIconSize = hdpxi(50)
-let questsIconSizeSmall = hdpxi(30)
+
+const questsIconSize = hdpxi(50)
+const questsIconSizeSmall = hdpxi(30)
 
 let mkFlagImage = @(country, size) {
   size

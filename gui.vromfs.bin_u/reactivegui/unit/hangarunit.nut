@@ -1,33 +1,33 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
+import "DataBlock" as DataBlock
 from "blkGetters" import get_unittags_blk
 from "console" import register_command
+from "dagor.random" import rnd_int
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_subscribe
+from "hangar" import hangar_load_model_with_skin, hangar_move_cam_to_unit_place, hangar_get_current_unit_name,
+  hangar_get_loaded_unit_name, change_background_models_list_with_skin, change_one_background_model_with_skin,
+  hangar_get_current_unit_skin, get_current_background_models_list, hangar_force_reload_model, set_allowed_decals_count
+from "unitCustomization" import set_weapon_visual_custom_blk, apply_skin_decals_blk, set_default_skin_decals
+from "%sqstd/underscore.nut" import prevIfEqual, isEqual
+from "%appGlobals/clientState/clientState.nut" import isInMenu, isInMpSession, isInLoadingScreen, isInBattle
+from "%appGlobals/clientState/initialState.nut" import isOfflineMenu
+from "%appGlobals/decalBlkSerializer.nut" import decalTblToBlk
+from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%appGlobals/profileStates.nut" import myUserId
+from "%appGlobals/updater/addonsState.nut" import mkHasUnitsResources
+from "%rGui/state/profilePremium.nut" import havePremium
+from "%rGui/unit/unitSettings.nut" import mkWeaponPreset, mkDecalsPresets, getDecalsPresets
+from "%rGui/unitMods/equippedSecondaryWeapons.nut" import getEqippedWithoutOverload, getEquippedWeapon
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitWeaponSlots
+
+
 require("%rGui/onlyAfterLogin.nut")
 let logH = log_with_prefix("[HANGAR] ")
-let DataBlock = require("DataBlock")
-let { set_weapon_visual_custom_blk, apply_skin_decals_blk, set_default_skin_decals } = require("unitCustomization")
-let { eventbus_subscribe } = require("eventbus")
-let { deferOnce } = require("dagor.workcycle")
-let { hangar_load_model_with_skin, hangar_move_cam_to_unit_place,
-  hangar_get_current_unit_name, hangar_get_loaded_unit_name, change_background_models_list_with_skin,
-  change_one_background_model_with_skin, hangar_get_current_unit_skin, get_current_background_models_list,
-  hangar_force_reload_model, set_allowed_decals_count
-} = require("hangar")
-let { rnd_int } = require("dagor.random")
-let { prevIfEqual, isEqual } = require("%sqstd/underscore.nut")
-let { decalTblToBlk } = require("%appGlobals/decalBlkSerializer.nut")
-let { myUserId } = require("%appGlobals/profileStates.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { isInMenu, isInMpSession, isInLoadingScreen, isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { mkHasUnitsResources } = require("%appGlobals/updater/addonsState.nut")
-let { isOfflineMenu } = require("%appGlobals/clientState/initialState.nut")
-let { mkWeaponPreset, mkDecalsPresets, getDecalsPresets } = require("%rGui/unit/unitSettings.nut")
-let { getEqippedWithoutOverload, getEquippedWeapon } = require("%rGui/unitMods/equippedSecondaryWeapons.nut")
-let { loadUnitWeaponSlots } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { havePremium } = require("%rGui/state/profilePremium.nut")
 
 const MAX_DECAL_SLOTS_COUNT = 4
 

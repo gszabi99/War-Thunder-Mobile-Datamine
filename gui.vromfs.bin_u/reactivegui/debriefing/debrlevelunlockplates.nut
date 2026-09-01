@@ -1,31 +1,31 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round, ceil } = require("math")
-let { getUnitPresentation } = require("%appGlobals/unitPresentation.nut")
-let { makeSideScroll } = require("%rGui/components/scrollbar.nut")
-let { mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock, mkUnitSlotLockedLine,
-  platoonPlatesGap, unitPlateRatio, mkUnitInfo, unitPlateSmall
-} = require("%rGui/unit/components/unitPlateComp.nut")
-let { mkModImage, bgShade } = require("%rGui/unitMods/modsComps.nut")
-let { getSpCostText } = require("%rGui/attributes/attrState.nut")
-let { tabBgColor } = require("%rGui/style/stdColors.nut")
+from "math" import round, ceil
+from "%appGlobals/unitPresentation.nut" import getUnitPresentation
+from "%rGui/attributes/attrState.nut" import getSpCostText
+from "%rGui/components/scrollbar.nut" import makeSideScroll
+from "%rGui/style/stdColors.nut" import tabBgColor
+from "%rGui/unit/components/unitPlateComp.nut" import mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitLock,
+  mkUnitSlotLockedLine, platoonPlatesGap, unitPlateRatio, mkUnitInfo, unitPlateSmall
+from "%rGui/unitMods/modsComps.nut" import mkModImage, bgShade
 
-let levelUnlockPlateTime = 0.5
-let levelUnlockPlatesTotalTimeMax = 1.0
-let plateBlinkTime = 0.5
+
+const levelUnlockPlateTime = 0.5
+const levelUnlockPlatesTotalTimeMax = 1.0
+const plateBlinkTime = 0.5
 
 let plateW = unitPlateSmall[0]
 let plateH = plateW * unitPlateRatio
-let platesGap = hdpx(20)
-let plateBlinkScale = 1.25
+const platesGap = hdpx(20)
+const plateBlinkScale = 1.25
 
 let getLevelUnlockPlateAnimTime = @(count) count == 0 ? 0
   : min(levelUnlockPlateTime, levelUnlockPlatesTotalTimeMax / count)
 
 
 
-let platoonFramesGapMul = 0.7
+const platoonFramesGapMul = 0.7
 let platoonPlatesCustomGap = round(platoonPlatesGap * platoonFramesGapMul)
-let maxPlatoonExtraPlatesCount = 3
+const maxPlatoonExtraPlatesCount = 3
 let scrollBoxMarginR = ceil(plateW * (plateBlinkScale - 1) / 2) + hdpx(2)
 let scrollBoxMarginV = ceil(plateH * (plateBlinkScale - 1) / 2) + hdpx(2)
 let scrollBoxMarginL = scrollBoxMarginR + (platoonPlatesCustomGap * maxPlatoonExtraPlatesCount)
@@ -124,7 +124,7 @@ let mkDebrPlateMod = @(mod, isUnlocked, unlockDelay) {
 let upgradePointsIcon = {
   size = const [hdpx(90), hdpx(70)]
   vplace = ALIGN_CENTER
-  pos = [pw(8), ph(14)]
+  pos = const [pw(8), ph(14)]
   rendObj = ROBJ_IMAGE
   image = Picture("ui/gameuiskin#upgrade_points.avif:P")
   color = 0xFFFFFFFF
@@ -133,7 +133,7 @@ let upgradePointsIcon = {
 let mkUpgradePointsText = @(sp) {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  pos = [pw(3), ph(10)]
+  pos = const [pw(3), ph(10)]
   rendObj = ROBJ_TEXT
   text = "".concat("+", getSpCostText(sp))
 }.__update(fontMediumShaded)

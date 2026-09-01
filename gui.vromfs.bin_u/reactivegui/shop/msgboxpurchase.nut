@@ -1,26 +1,28 @@
 from "%globalsDarg/darg_library.nut" import *
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { unitRewardTypes, statRewardTypes, G_CURRENCY } = require("%appGlobals/rewardType.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { balance, WP, GOLD, PLATINUM } = require("%appGlobals/currenciesState.nut")
-let { getBaseCurrency } = require("%appGlobals/config/currencyPresentation.nut")
-let { activeOffers, purchasesCount, todayPurchasesCount, goodsLimitReset } = require("%appGlobals/pServer/campaign.nut")
-let { serverTimeDay, dayOffset } = require("%appGlobals/userstats/serverTimeDay.nut")
-let { getGoodsByCurrencyId } = require("%rGui/shop/goodsUtils.nut")
-let { commonTextColor } = require("%rGui/style/stdColors.nut")
-let { mkCurrencyComp, CS_NO_BALANCE, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
-let { openMsgBox, msgBoxText, closeMsgBox, wndWidthDefault } = require("%rGui/components/msgBox.nut")
-let mkTextRow = require("%darg/helpers/mkTextRow.nut")
-let { openShopWndByCurrencyId, shopGoods } = require("%rGui/shop/shopState.nut")
-let { openGoodsPreview } = require("%rGui/shop/goodsPreviewState.nut")
-let { openBuyEventCurrenciesWnd } = require("%rGui/event/buyEventCurrenciesState.nut")
-let { decimalFormat } = require("%rGui/textFormatByLang.nut")
-let { spendingUnlocks } = require("%rGui/unlocks/unlocks.nut")
-let { mkQuestDesc } = require("%rGui/shop/msgQuestDesc.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+import "%darg/helpers/mkTextRow.nut" as mkTextRow
+from "%appGlobals/config/currencyPresentation.nut" import getBaseCurrency
+from "%appGlobals/currenciesState.nut" import balance, WP, GOLD, PLATINUM
+from "%appGlobals/pServer/campaign.nut" import activeOffers, purchasesCount, todayPurchasesCount, goodsLimitReset
+from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/rewardType.nut" import unitRewardTypes, statRewardTypes, G_CURRENCY
+from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, dayOffset
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, CS_NO_BALANCE, CS_INCREASED_ICON
+from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText, closeMsgBox, wndWidthDefault
+from "%rGui/event/buyEventCurrenciesState.nut" import openBuyEventCurrenciesWnd
+from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
+from "%rGui/shop/goodsUtils.nut" import getGoodsByCurrencyId
+from "%rGui/shop/msgQuestDesc.nut" import mkQuestDesc
+from "%rGui/shop/shopState.nut" import openShopWndByCurrencyId, shopGoods
+from "%rGui/style/stdColors.nut" import commonTextColor
+from "%rGui/textFormatByLang.nut" import decimalFormat
+from "%rGui/unlocks/unlocks.nut" import spendingUnlocks
+from "types" import String, Array
 
 
-let NO_BALANCE_UID = "no_balance_msg"
-let PURCHASE_BOX_UID = "purchase_msg_box"
+const NO_BALANCE_UID = "no_balance_msg"
+const PURCHASE_BOX_UID = "purchase_msg_box"
 
 let openBuyWnd = {
   [WP] = @(bqInfo) openShopWndByCurrencyId(WP, bqInfo),
@@ -35,7 +37,8 @@ let mkText = @(text) {
 }.__update(fontSmall)
 
 function showNoBalanceMsg(price, currencyId, bqInfo, onGoToShop, onCancel = null) {
-  let notEnough = Computed(@() price - (balance.get()?[currencyId] ?? 0))
+  let balanceId = Computed(@() currencyToFullId.get()?[currencyId] ?? currencyId)
+  let notEnough = Computed(@() price - (balance.get()?[balanceId.get()] ?? 0))
   notEnough.subscribe(@(v) v <= 0 ? closeMsgBox(NO_BALANCE_UID) : null)
   let replaceTable = {
     ["{price}"] = mkCurrencyComp(price, currencyId), 
@@ -88,7 +91,8 @@ function showNoBalanceMsg(price, currencyId, bqInfo, onGoToShop, onCancel = null
 }
 
 function showNoBalanceMsgIfNeed(price, currencyId, bqInfo, onGoToShop = null, onCancel = null) {
-  let hasBalance = (balance.get()?[currencyId] ?? 0) >= price
+  let balanceId = currencyToFullId.get()?[currencyId] ?? currencyId
+  let hasBalance = (balance.get()?[balanceId] ?? 0) >= price
   if (hasBalance)
     return false
 
@@ -125,7 +129,7 @@ let msgContent = @(text, priceComp, limitCountText, price, goodsId, spendingCoun
   flow = FLOW_VERTICAL
   gap = hdpx(25)
   children = [
-    type(text) == "string" ? msgBoxText(text, { size = FLEX_H }) : text
+    text instanceof String ? msgBoxText(text, { size = FLEX_H }) : text
     {
       flow = FLOW_HORIZONTAL
       gap = hdpx(32)
@@ -154,7 +158,7 @@ function openMsgBoxPurchase(
   spendingCountry = null,
 ) {
   let priceComp = []
-  let priceList = type(price) == "array" ? price : [price]
+  let priceList = price instanceof Array ? price : [price]
   foreach(p in priceList) {
     if (showNoBalanceMsgIfNeed(p.price, p.currencyId, bqInfo, onGoToShop, onCancel))
       return

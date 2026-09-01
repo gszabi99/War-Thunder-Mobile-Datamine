@@ -1,35 +1,38 @@
 from "%globalsDarg/darg_library.nut" import *
-let { file } = require("io")
-let { scan_folder, read_text_from_file, remove_file } = require("dagor.fs")
-let { register_command } = require("console")
-let { object_to_json_string, parse_json } = require("json")
-let { get_settings_blk } = require("blkGetters")
-let { eventbus_send } = require("eventbus")
-let { get_time_msec } = require("dagor.time")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { isEqual, deep_clone } = require("%sqstd/underscore.nut")
-let { openFMsgBox } = require("%appGlobals/openForeignMsgBox.nut")
-let { activeUnlocks } = require("%rGui/unlocks/unlocks.nut")
-let { specialEventsWithTree } = require("%rGui/event/eventState.nut")
-let { updatePresetByUnlocks, loadPresetOnce } = require("%rGui/event/treeEvent/treeEventUtils.nut")
+from "blkGetters" import get_settings_blk
+from "console" import register_command
+from "dagor.fs" import scan_folder, read_text_from_file, remove_file
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setInterval, clearTimer
+from "eventbus" import eventbus_send
+from "io" import file
+from "json" import object_to_json_string, parse_json
+from "%sqstd/underscore.nut" import isEqual, deep_clone
+from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/config/mapPointsPresentation.nut" import getDefaultPointSize, defaultPointView
+from "%rGui/event/treeEvent/treeEventUtils.nut" import updatePresetByTree, findLineIdx, mkDefaultLine,
+  getEventMapNodes, getTreeNodeViews, lineSectionLen, LINE_DASHED
+from "types" import Table, String, Array, Integer, Float
 
-const SAVE_PATH = "../../skyquake/prog/scripts/wtm/globals/config/eventMapPresets"
+
+const SAVE_PATH = "../../skyquake/prog/scripts/wtm/globals/config/eventMapPages"
 const SAVE_EXT = ".json"
-const BG_ELEMS_COLLECTION = "../../skyquake/prog/scripts/wtm/globals/config/eventMapPresets/_bg_elems_collection.json"
+const BG_ELEMS_COLLECTION = "../../skyquake/prog/scripts/wtm/globals/config/eventMapPages/_bg_elems_collection.json"
 const MAX_HISTORY_LEN = 50
 const AUTO_SAVE_INTERVAL = 5
 
-let ELEM_POINT = "Point"
-let ELEM_BG = "Bg Elem"
-let ELEM_LINE = "Line"
-let ELEM_MIDPOINT = "Midpoint"
+const ELEM_POINT = "Point"
+const ELEM_BG = "Bg Elem"
+const ELEM_LINE = "Line"
+const ELEM_MIDPOINT = "Midpoint"
 
 let scalableETypes = [ELEM_BG].reduce(@(res, v) res.$rawset(v, true), {})
 
 let defaultMapSize = [2000, 1000]
-let defaultGridSize = 200
-let defaultPointSize = 50
-let defaultMapBg = ""
+const defaultGridSize = 200
+const defaultLineWidth = 9
+const defaultMapBg = ""
 
 let isEventMapEditorOpened = mkWatched(persist, "isEventMapEditorOpened", false)
 let isHeaderOptionsOpen = mkWatched(persist, "isHeaderOptionsOpen", true)
@@ -37,27 +40,35 @@ let isSidebarOptionsOpen = mkWatched(persist, "isSidebarOptionsOpen", true)
 
 let needUseAutoSave = mkWatched(persist, "needUseAutoSave", false)
 
-let loadedPresetWithLastChange = mkWatched(persist, "loadedPresetWithLastChange", null)
-let savedPresets = mkWatched(persist, "savedPresets", {})
+let loadedPageWithLastChange = mkWatched(persist, "loadedPageWithLastChange", null)
+let savedPages = mkWatched(persist, "savedPages", {})
 let bgCollection = mkWatched(persist, "bgCollection", {})
 let historyMapElements = mkWatched(persist, "historyMapElements", [])
 
 let selectedElem = mkWatched(persist, "selectedElem", null)
-let currentPresetId = mkWatched(persist, "currentPresetId", null)
+let currentPageId = mkWatched(persist, "currentPageId", null)
+let curEventId = mkWatched(persist, "curEventId", null)
+let availableEvents = Computed(@() (serverConfigs.get()?.eventMapTree ?? {}).keys().sort())
+let curEventPages = Computed(@() savedPages.get().filter(@(p) p?.event == curEventId.get()))
+let curEventNodeViews = Computed(@() getTreeNodeViews(getEventMapNodes(serverConfigs.get(), curEventId.get()), curEventId.get()))
 
 let hasViewChanges = Watched(false) 
 let transformInProgress = Watched(null)
 let isShiftPressed = Watched(false)
 
-let loadedPreset = Computed(@() loadedPresetWithLastChange.get()?.mes)
-let tuningPoints = Computed(@() loadedPreset.get()?.points ?? {})
-let tuningBgElems = Computed(@() loadedPreset.get()?.bgElements ?? [])
-let presetLines = Computed(@() loadedPreset.get()?.lines ?? [])
-let presetBackground = Computed(@() loadedPreset.get()?.bg ?? defaultMapBg)
-let presetMapSize = Computed(@() loadedPreset.get()?.mapSize ?? defaultMapSize)
-let presetGridSize = Computed(@() loadedPreset.get()?.gridSize ?? defaultGridSize)
-let presetPointSize = Computed(@() loadedPreset.get()?.pointSize ?? defaultPointSize)
-let curHistoryIdx = Computed(@() historyMapElements.get().findindex(@(h) h.mes == loadedPreset.get()))
+let loadedPage = Computed(@() loadedPageWithLastChange.get()?.mes)
+let tuningPoints = Computed(@() loadedPage.get()?.points ?? {})
+let tuningBgElems = Computed(@() loadedPage.get()?.bgElements ?? [])
+let pageLines = Computed(@() loadedPage.get()?.lines ?? [])
+let pageBackground = Computed(@() loadedPage.get()?.bg ?? defaultMapBg)
+let pageMapSize = Computed(@() loadedPage.get()?.mapSize ?? defaultMapSize)
+let pageGridSize = Computed(@() loadedPage.get()?.gridSize ?? defaultGridSize)
+let pageLineSectionLen = Computed(@() loadedPage.get()?.lineSectionLen ?? lineSectionLen)
+let pageRoundedDashes = Computed(@() loadedPage.get()?.roundedDashes ?? true)
+let pageLineType = Computed(@() loadedPage.get()?.lineType ?? LINE_DASHED)
+let pageLineWidth = Computed(@() loadedPage.get()?.lineWidth ?? defaultLineWidth)
+let pagePointSizes = Computed(@() loadedPage.get()?.pointSizes ?? {})
+let curHistoryIdx = Computed(@() historyMapElements.get().findindex(@(h) h.mes == loadedPage.get()))
 
 let selectedPointId = Computed(@()
   selectedElem.get()?.id not in tuningPoints.get() || selectedElem.get()?.eType != ELEM_POINT ? null
@@ -67,22 +78,20 @@ let selectedBgElemIdx = Computed(@()
     : selectedElem.get().id)
 let selectedBgElem = Computed(@() tuningBgElems.get()?[selectedBgElemIdx.get()])
 let selectedLineIdx = Computed(@()
-  (selectedElem.get()?.eType == ELEM_LINE && selectedElem.get()?.id in presetLines.get())
+  (selectedElem.get()?.eType == ELEM_LINE && selectedElem.get()?.id in pageLines.get())
       ? selectedElem.get().id
-    : (selectedElem.get()?.eType == ELEM_MIDPOINT && selectedElem.get()?.subId in presetLines.get())
+    : (selectedElem.get()?.eType == ELEM_MIDPOINT && selectedElem.get()?.subId in pageLines.get())
       ? selectedElem.get().subId
     : null)
-let selectedLineMidpoints = Computed(@() presetLines.get()?[selectedLineIdx.get()].midpoints ?? [])
+let selectedLineMidpoints = Computed(@() pageLines.get()?[selectedLineIdx.get()].midpoints ?? [])
 let selectedMidpointIdx = Computed(@()
   selectedElem.get()?.eType != ELEM_MIDPOINT || selectedElem.get()?.id  not in selectedLineMidpoints.get() ? null
     : selectedElem.get()?.id)
 
-let curSavedPreset = Computed(@() savedPresets.get()?[currentPresetId.get()])
-let isCurPresetChanged = Computed(@() loadedPreset.get() != null
-  && currentPresetId.get() != null
-  && !isEqual(loadedPreset.get(), curSavedPreset.get()))
-
-let hasEventUnlocks = Computed(@() !!specialEventsWithTree.get())
+let curSavedPage = Computed(@() savedPages.get()?[currentPageId.get()])
+let isCurPageChanged = Computed(@() loadedPage.get() != null
+  && currentPageId.get() != null
+  && !isEqual(loadedPage.get(), curSavedPage.get()))
 
 let isEditAllowed = get_settings_blk()?.debug.useAddonVromSrc ?? false
 
@@ -93,7 +102,7 @@ let keyByElemId = {
 let getElemKey = @(id, eType) keyByElemId?[eType](id) ?? id
 
 local lastHistoryIdx = curHistoryIdx.get()
-loadedPresetWithLastChange.subscribe(function(t) {
+loadedPageWithLastChange.subscribe(function(t) {
   if (t == null || curHistoryIdx.get() != null) {
     lastHistoryIdx = curHistoryIdx.get()
     return
@@ -117,43 +126,53 @@ loadedPresetWithLastChange.subscribe(function(t) {
   historyMapElements.set(h)
 })
 
-let mkEmptyPreset = @() {
+let mkEmptyPage = @() {
   bg = defaultMapBg
   mapSize = defaultMapSize
   gridSize = defaultGridSize
-  pointSize = defaultPointSize
+  lineSectionLen
+  roundedDashes = true
+  lineType = LINE_DASHED
+  lineWidth = defaultLineWidth
+  pointSizes = {}
   points = {}
   bgElements = []
   lines = []
 }
 
 let setMapElementsState = @(mes, id = "")
-  loadedPresetWithLastChange.set({ mes, id, timeEnd = get_time_msec() })
+  loadedPageWithLastChange.set({ mes, id, timeEnd = get_time_msec() })
 
-function changeCurPresetField(key, value) {
-  if (loadedPreset.get() != null)
-    setMapElementsState(loadedPreset.get().__merge({ [key] = value }))
+function changeCurPageField(key, value) {
+  if (loadedPage.get() != null)
+    setMapElementsState(loadedPage.get().__merge({ [key] = value }))
 }
 
-let clearPointsState = @() setMapElementsState(mkEmptyPreset())
+let clearPointsState = @() setMapElementsState(mkEmptyPage())
 
-function loadPreset(id, useCurrentId = false) {
+function loadPage(id, useCurrentId = false) {
   if (!useCurrentId)
-    currentPresetId.set(id)
+    currentPageId.set(id)
 
   historyMapElements.set([])
-  setMapElementsState(mkEmptyPreset().__merge(savedPresets.get()?[currentPresetId.get()] ?? {}))
+  setMapElementsState(mkEmptyPage().__merge(savedPages.get()?[currentPageId.get()] ?? {}))
 }
-currentPresetId.whiteListMutatorClosure(loadPreset)
+currentPageId.whiteListMutatorClosure(loadPage)
 
-function writePresetToFile(id, preset) {
-  let presetfile = file($"{SAVE_PATH}/{id}{SAVE_EXT}", "wt+")
-  presetfile.writestring(object_to_json_string(preset, true))
-  presetfile.close()
-  dlog($"Saved to: wtm/globals/config/eventMapPresets/{id}") 
+function selectEvent(eventId) {
+  curEventId.set(eventId)
+  let firstPage = savedPages.get().filter(@(p) p?.event == eventId).keys().sort()?[0]
+  loadPage(firstPage)
 }
 
-function deleteFileByPresetId(id) {
+function writePageToFile(id, page) {
+  let pagefile = file($"{SAVE_PATH}/{id}{SAVE_EXT}", "wt+")
+  pagefile.writestring(object_to_json_string(page, true))
+  pagefile.close()
+  dlog($"Saved to: wtm/globals/config/eventMapPages/{id}") 
+}
+
+function deleteFileByPageId(id) {
   let path = $"{SAVE_PATH}/{id}{SAVE_EXT}"
   let status = remove_file(path)
   if (status)
@@ -162,13 +181,13 @@ function deleteFileByPresetId(id) {
     logerr($"Error while trying to delete file: {path}")
 }
 
-function savePreset(id, preset) {
+function savePage(id, page) {
   hasViewChanges.set(true)
-  savedPresets.set(savedPresets.get().__merge({ [id] = preset }))
-  writePresetToFile(id, preset)
+  savedPages.set(savedPages.get().__merge({ [id] = page }))
+  writePageToFile(id, page)
 }
 
-function getPresetsDataFromFiles(files) {
+function getPagesDataFromFiles(files) {
   let res = {}
 
   foreach(fileName in files) {
@@ -179,35 +198,37 @@ function getPresetsDataFromFiles(files) {
       continue
     try {
       let fileContent = read_text_from_file(fileName)
-      let preset = parse_json(fileContent)
-      if (type(preset) == "table")
-        res[id] <- preset
+      let page = parse_json(fileContent)
+      if (page instanceof Table)
+        res[id] <- page
     }
     catch(e)
-      logerr($"Failed to parse preset {fileName} from file: {e}")
+      logerr($"Failed to parse page {fileName} from file: {e}")
   }
 
   return res
 }
 
-function selectAndLoadFirstPreset() {
-  let firstPreset = savedPresets.get().findindex(@(_) true)
-  loadPreset(firstPreset, true)
+function selectAndLoadFirstPage() {
+  let pages = savedPages.get()
+  let cur = currentPageId.get()
+  let id = (cur != null && cur in pages) ? cur : pages.findindex(@(_) true)
+  loadPage(id)
 }
 
 let bgFieldErrors = {
-  img = @(v) type(v) != "string" ? "should be a string" : null
-  size = @(v) type(v) != "array" || v.len() != 2 || null != v.findindex(@(c) type(c) != "integer")
+  img = @(v) !(v instanceof String) ? "should be a string" : null
+  size = @(v) !(v instanceof Array) || v.len() != 2 || null != v.findindex(@(c) !(c instanceof Integer))
     ? "should be an array of 2 integers"
     : null
-  rotate = @(v) v != null && type(v) != "integer" && type(v) != "float" ? "should be numeric" : null
+  rotate = @(v) v != null && !(v instanceof Integer) && !(v instanceof Float) ? "should be numeric" : null
 }
 
 function reloadBgElemsCollection() {
   try {
     let fileContent = read_text_from_file(BG_ELEMS_COLLECTION)
     let collection = parse_json(fileContent)
-    if (type(collection) == "table")
+    if (collection instanceof Table)
       bgCollection.set(collection.filter(function(e, id) {
         foreach (key, getErr in bgFieldErrors) {
           let err = getErr(e?[key])
@@ -228,31 +249,39 @@ function reloadBgElemsCollection() {
 
 isEventMapEditorOpened.subscribe(function(v) {
   if (v) {
-    let presetFiles = scan_folder({ root = SAVE_PATH, vromfs = true, realfs = true, recursive = false })
+    let pageFiles = scan_folder({ root = SAVE_PATH, vromfs = true, realfs = true, recursive = false })
 
-    savedPresets.set(getPresetsDataFromFiles(presetFiles))
-    selectAndLoadFirstPreset()
+    savedPages.set(getPagesDataFromFiles(pageFiles))
+
+    let events = availableEvents.get()
+    let ev = (curEventId.get() != null && events.contains(curEventId.get())) ? curEventId.get() : events?[0]
+    if (ev != null)
+      selectEvent(ev)
+    else
+      selectAndLoadFirstPage()
+
     reloadBgElemsCollection()
   } else if (hasViewChanges.get())
     eventbus_send("reloadDargVM", { msg = "debug event map points apply" })
 })
 
-function addOrEditPreset(id, bg, mapSize) {
-  loadPreset(id)
-  setMapElementsState(loadedPreset.get().__merge({ bg, mapSize, gridSize = mapSize[0] / 10 }))
+function addOrEditPage(id, bg, mapSize) {
+  loadPage(id)
+  let event = loadedPage.get()?.event ?? curEventId.get()
+  setMapElementsState(loadedPage.get().__merge({ bg, mapSize, gridSize = mapSize[0] / 10, event }))
 }
 
-function deletePreset(id) {
+function deletePage(id) {
   hasViewChanges.set(true)
 
-  let presets = clone savedPresets.get()
-  presets.$rawdelete(id)
-  savedPresets.set(presets)
-  deleteFileByPresetId(id)
+  let pages = clone savedPages.get()
+  pages.$rawdelete(id)
+  savedPages.set(pages)
+  deleteFileByPageId(id)
 
-  let newCurrenPreset = savedPresets.get().findvalue(@(_) true) ?? {}
+  let newCurrenPage = savedPages.get().findvalue(@(_) true) ?? {}
 
-  loadPreset(newCurrenPreset?.id)
+  loadPage(newCurrenPage?.id)
 }
 
 let selectElem = @(id, eType = ELEM_POINT, subId = null) selectedElem.set(id == null ? null : { id, eType, subId })
@@ -264,7 +293,7 @@ function getMiddleScreenMapPos(size) {
   let aabb = gui_scene.getCompAABBbyKey("mapEditorMap")
   if (aabb == null)
     return [0, 0]
-  let mapSize = presetMapSize.get()
+  let mapSize = pageMapSize.get()
   let { t, l, r } = aabb
   let posPx = [sw(50) - l, sh(50) - t]
   let scale = mapSize[0].tofloat() / max(1, r - l)
@@ -272,37 +301,42 @@ function getMiddleScreenMapPos(size) {
 }
 
 function editBgElement(idx, id, img, size, rotate) {
-  if (loadedPreset.get() == null)
+  if (loadedPage.get() == null)
     return
 
-  let updatedElems = clone loadedPreset.get().bgElements
+  let updatedElems = clone loadedPage.get().bgElements
   if (idx not in updatedElems)
     return
   updatedElems[idx] = updatedElems[idx].__merge({ id, img, size, rotate })
-  changeCurPresetField("bgElements", updatedElems)
+  changeCurPageField("bgElements", updatedElems)
 }
 
 function addBgElement(id, img, size, rotate) {
-  if (loadedPreset.get() == null)
+  if (loadedPage.get() == null)
     return null
 
-  let updatedElems = clone loadedPreset.get().bgElements
+  let updatedElems = clone loadedPage.get().bgElements
   updatedElems.append({ id, pos = getMiddleScreenMapPos(size), img, size, rotate })
-  changeCurPresetField("bgElements", updatedElems)
+  changeCurPageField("bgElements", updatedElems)
   return updatedElems.len() - 1
 }
 
+function pointViewSize(id, view, nodeViews, sizes) {
+  let effView = (view ?? "") != "" ? view : (nodeViews?[id] ?? defaultPointView)
+  return sizes?[effView] ?? getDefaultPointSize(effView)
+}
+
 function addOrEditPoint(id, view) {
-  if (loadedPreset.get() == null)
+  if (loadedPage.get() == null)
     clearPointsState()
 
-  let mes = loadedPreset.get()
+  let mes = loadedPage.get()
   let updatedPoints = clone mes.points
 
   if (id in updatedPoints)
     updatedPoints[id] = updatedPoints[id].__merge({ view })
   else {
-    let size = presetPointSize.get()
+    let size = pointViewSize(id, view, curEventNodeViews.get(), pagePointSizes.get())
     updatedPoints[id] <- { pos = getMiddleScreenMapPos([size, size]), view }
   }
 
@@ -315,34 +349,34 @@ function deleteElement(id, eType, subId) {
   if (eType == ELEM_BG) {
     if (id not in tuningBgElems.get())
       return
-    let bgElements = clone loadedPreset.get().bgElements
+    let bgElements = clone loadedPage.get().bgElements
     bgElements.remove(id)
-    changeCurPresetField("bgElements", bgElements)
+    changeCurPageField("bgElements", bgElements)
     return
   }
 
   if (eType == ELEM_POINT) {
     if (id not in tuningPoints.get())
       return
-    let points = clone loadedPreset.get().points
+    let points = clone loadedPage.get().points
     points.$rawdelete(id)
-    changeCurPresetField("points", points)
+    changeCurPageField("points", points)
     return
   }
 
   if (eType == ELEM_LINE) {
-    if (id not in presetLines.get())
+    if (id not in pageLines.get())
       return
-    let lines = clone loadedPreset.get().lines
+    let lines = clone loadedPage.get().lines
     lines.remove(id)
-    changeCurPresetField("lines", lines)
+    changeCurPageField("lines", lines)
     return
   }
 
   if (eType == ELEM_MIDPOINT) {
-    if (id not in presetLines.get()?[subId].midpoints)
+    if (id not in pageLines.get()?[subId].midpoints)
       return
-    let lines = clone loadedPreset.get().lines
+    let lines = clone loadedPage.get().lines
     let midpoints = clone lines[subId].midpoints
     let { from, to } = lines[subId]
     let count = midpoints.len() + (from in tuningPoints.get() ? 1 : 0) + (to in tuningPoints.get() ? 1 : 0)
@@ -354,7 +388,7 @@ function deleteElement(id, eType, subId) {
 
     midpoints.remove(id)
     lines[subId] = lines[subId].__merge({ midpoints })
-    changeCurPresetField("lines", lines)
+    changeCurPageField("lines", lines)
     selectElem(subId, ELEM_LINE) 
     return
   }
@@ -368,7 +402,7 @@ function copyElement(id, eType) {
     let bgElements = clone tuningBgElems.get()
     elem.pos = elem.pos.map(@(v) v + 20)
     bgElements.append(elem)
-    changeCurPresetField("bgElements", bgElements)
+    changeCurPageField("bgElements", bgElements)
     selectElem(bgElements.len() - 1, eType)
     return
   }
@@ -377,31 +411,31 @@ function copyElement(id, eType) {
 function setByHistory(historyIdx) {
   let h = historyMapElements.get()?[historyIdx]
   if (h != null)
-    loadedPresetWithLastChange.set(h)
+    loadedPageWithLastChange.set(h)
 }
 
-function saveCurrentPreset() {
-  if (currentPresetId.get() != null && loadedPreset.get() != null)
-    savePreset(currentPresetId.get(), loadedPreset.get())
+function saveCurrentPage() {
+  if (currentPageId.get() != null && loadedPage.get() != null)
+    savePage(currentPageId.get(), loadedPage.get())
 }
 
-let delayedAutoSave = @() isCurPresetChanged.get() ? saveCurrentPreset() : null
+let delayedAutoSave = @() isCurPageChanged.get() ? saveCurrentPage() : null
 needUseAutoSave.subscribe(@(v) v ? setInterval(AUTO_SAVE_INTERVAL, delayedAutoSave) : clearTimer(delayedAutoSave))
 
 function applyTransformProgress() {
-  if (loadedPreset.get() == null || transformInProgress.get() == null)
+  if (loadedPage.get() == null || transformInProgress.get() == null)
     return
 
   let { id = null, eType = null, subId = null } = selectedElem.get()
   let { pos, mapSizePx, size = null, flip = null } = transformInProgress.get()
   transformInProgress.set(null)
-  let { mapSize } = loadedPreset.get()
+  let { mapSize } = loadedPage.get()
   let posExt = pos.map(@(v, i) (v.tofloat() * mapSize[i] / mapSizePx[i] + 0.5).tointeger())
   let sizeExt = size == null ? null
     : size.map(@(v, i) (v.tofloat() * mapSize[i] / mapSizePx[i] + 0.5).tointeger())
 
   if (eType == ELEM_BG) {
-    let bgElements = clone loadedPreset.get().bgElements
+    let bgElements = clone loadedPage.get().bgElements
     if (id in bgElements) {
       let { flipX = false, flipY = false } = bgElements[id]
       bgElements[id] = bgElements[id].__merge({
@@ -414,49 +448,43 @@ function applyTransformProgress() {
         if (!bgElements[id][f])
           bgElements[id].$rawdelete(f)
 
-      changeCurPresetField("bgElements", bgElements)
+      changeCurPageField("bgElements", bgElements)
     }
     return
   }
 
   if (eType == ELEM_POINT) {
-    let points = clone loadedPreset.get().points
+    let points = clone loadedPage.get().points
     if (id in points) {
-      points[id] = points[id].__merge({ pos = posExt.map(@(v) (v + presetPointSize.get() / 2).tointeger()) })
-      changeCurPresetField("points", points)
+      let viewSize = pointViewSize(id, points[id]?.view, curEventNodeViews.get(), pagePointSizes.get())
+      points[id] = points[id].__merge({ pos = posExt.map(@(v) (v + viewSize / 2).tointeger()) })
+      changeCurPageField("points", points)
     }
     return
   }
 
   if (eType == ELEM_MIDPOINT) {
-    if (id not in presetLines.get()?[subId].midpoints)
+    if (id not in pageLines.get()?[subId].midpoints)
       return
-    let lines = clone loadedPreset.get().lines
+    let lines = clone loadedPage.get().lines
     let midpoints = clone lines[subId].midpoints 
     midpoints[id] = posExt
     lines[subId] = lines[subId].__merge({ midpoints }) 
-    changeCurPresetField("lines", lines)
+    changeCurPageField("lines", lines)
     return
   }
 }
 
-function makePresetFilesByUnlocks(presets) {
-  foreach (id, preset in presets) {
-    let presetfile = file($"{SAVE_PATH}/{id}{SAVE_EXT}", "wt+")
-    presetfile.writestring(object_to_json_string(preset, true))
-    presetfile.close()
+function makePageFiles(pages) {
+  foreach (id, page in pages) {
+    let pagefile = file($"{SAVE_PATH}/{id}{SAVE_EXT}", "wt+")
+    pagefile.writestring(object_to_json_string(page, true))
+    pagefile.close()
   }
 }
 
-let mkDefaultLine = @(from, to) { from, to }
-
-let findLineIdx = @(point1, point2, lines)
-  lines.findindex(@(l)
-    (l.from == point1 && l.to == point2)
-    || (l.from == point2 && l.to == point1))
-
 function addLine(from, to) {
-  let idx = findLineIdx(from, to, presetLines.get())
+  let idx = findLineIdx(from, to, pageLines.get())
   if (idx != null)
     return "Line already exists"
 
@@ -469,32 +497,46 @@ function addLine(from, to) {
       line.midpoints <- (line?.midpoints ?? []).append(pos.map(@(v, a) v + size[a] / 2))
     }
 
-  let lines = clone presetLines.get()
+  let lines = clone pageLines.get()
   lines.append(line)
-  changeCurPresetField("lines", lines)
+  changeCurPageField("lines", lines)
   selectElem(lines.len() - 1, ELEM_LINE)
   return ""
 }
 
 function changeLine(idx, line) {
-  if (idx not in presetLines.get())
+  if (idx not in pageLines.get())
     return
 
-  let lines = clone presetLines.get()
+  let lines = clone pageLines.get()
   lines[idx] = line
-  changeCurPresetField("lines", lines)
+  changeCurPageField("lines", lines)
 }
 
-function createPresetsByUnlocks() {
-  let treeEventPresets = activeUnlocks.get().filter(@(unlock) unlock?.meta.quest_cluster)
 
-  let presets = {}
-  foreach (presetId, _ in treeEventPresets)
-    presets[presetId] <- updatePresetByUnlocks(presetId, loadPresetOnce(presetId) ?? {})
+function createPageByTree(eventId) {
+  let tree = serverConfigs.get()?.eventMapTree[eventId]
+  if (tree == null)
+    return
 
-  savedPresets.set(savedPresets.get().__merge(presets))
-  selectAndLoadFirstPreset()
-  makePresetFilesByUnlocks(presets)
+  let nodesByPage = {}
+  foreach (nodeId, node in tree?.nodes ?? {}) {
+    let page = node?.page ?? ""
+    if (page not in nodesByPage)
+      nodesByPage[page] <- {}
+    nodesByPage[page][nodeId] <- node
+  }
+
+  let pages = {}
+  foreach (page, pageNodes in nodesByPage) {
+    let pageId = $"{eventId}_{page}"
+    pages[pageId] <- updatePresetByTree(pageNodes, savedPages.get()?[pageId] ?? {})
+      .__merge({ event = eventId })
+  }
+
+  savedPages.set(savedPages.get().__merge(pages))
+  makePageFiles(pages)
+  selectEvent(eventId)
 }
 
 register_command(@() isEventMapEditorOpened.set(true), "ui.debug.event_map_editor")
@@ -503,27 +545,32 @@ return {
   isEventMapEditorOpened
   isHeaderOptionsOpen
   isSidebarOptionsOpen
-  isCurPresetChanged
+  isCurPageChanged
   isEditAllowed
 
-  currentPresetId
-  savedPresets
-  addOrEditPreset
-  loadPreset
-  deletePreset
+  currentPageId
+  curEventId
+  availableEvents
+  curEventPages
+  curEventNodeViews
+  selectEvent
+  savedPages
+  addOrEditPage
+  loadPage
+  deletePage
 
   transformInProgress
   isShiftPressed
   applyTransformProgress
-  saveCurrentPreset
+  saveCurrentPage
 
-  loadedPreset
-  changeCurPresetField
+  loadedPage
+  changeCurPageField
 
   selectedPointId
   addOrEditPoint
   tuningPoints
-  presetLines
+  pageLines
   addLine
   changeLine
 
@@ -531,11 +578,15 @@ return {
   setByHistory
   curHistoryIdx
 
-  presetMapSize
-  presetGridSize
-  presetBackground
-  presetPointSize
-  defaultPointSize
+  pageMapSize
+  pageGridSize
+  pageLineSectionLen
+  pageRoundedDashes
+  pageLineType
+  pageLineWidth
+  pageBackground
+  pagePointSizes
+  pointViewSize
 
   selectedElem
   selectedLineIdx
@@ -554,8 +605,7 @@ return {
   bgCollection
 
   needUseAutoSave
-  createPresetsByUnlocks
-  hasEventUnlocks
+  createPageByTree
   closeEventMapEditor = @() isEventMapEditorOpened.set(false)
 
   ELEM_POINT

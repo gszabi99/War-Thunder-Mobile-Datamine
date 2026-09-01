@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ALIGN_RB, ALIGN_LB, ALIGN_RT, ALIGN_LT, ALIGN_CT, ALIGN_CB } = require("%rGui/hudTuning/hudTuningConsts.nut")
-let { actionBarItems, emptyActionItem } = require("%rGui/hud/actionBar/actionBarState.nut")
-let weaponsButtonsConfig = require("%rGui/hud/weaponsButtonsConfig.nut")
-let { visibleWeaponsDynamic } = require("%rGui/hud/currentWeaponsStates.nut")
-let weaponsButtonsView = require("%rGui/hud/weaponsButtonsView.nut")
-let { mkNumberedWeaponEditView } = require("%rGui/hudTuning/weaponBtnEditView.nut")
-let { mkActionItemEditView } = require("%rGui/hud/buttons/actionButtonComps.nut")
+from "%rGui/hud/actionBar/actionBarState.nut" import actionBarItems, emptyActionItem
+from "%rGui/hud/buttons/actionButtonComps.nut" import mkActionItemEditView
+from "%rGui/hud/currentWeaponsStates.nut" import visibleWeaponsDynamic
+import "%rGui/hud/weaponsButtonsConfig.nut" as weaponsButtonsConfig
+import "%rGui/hud/weaponsButtonsView.nut" as weaponsButtonsView
+from "%rGui/hudTuning/hudTuningConsts.nut" import ALIGN_RB, ALIGN_LB, ALIGN_RT, ALIGN_LT, ALIGN_CT, ALIGN_CB
+from "%rGui/hudTuning/weaponBtnEditView.nut" import mkNumberedWeaponEditView
+
 
 enum Z_ORDER {
   DEFAULT

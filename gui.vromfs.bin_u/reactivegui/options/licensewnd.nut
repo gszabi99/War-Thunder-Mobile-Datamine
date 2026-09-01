@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 from "app" import is_dev_version
-let { registerScene } = require("%rGui/navState.nut")
-let { read_text_from_file_on_disk, file_exists } = require("dagor.fs")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { bgShaded } = require("%rGui/style/backgrounds.nut")
-let scrollbar = require("%rGui/components/scrollbar.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
+from "dagor.fs" import read_text_from_file_on_disk, file_exists
+from "%rGui/components/backButton.nut" import backButton
+import "%rGui/components/scrollbar.nut" as scrollbar
+from "%rGui/navState.nut" import registerScene
+from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+
 
 let licenseFileName = is_dev_version() ? "LICENSE-aces-dev" : "LICENSE-aces"
 

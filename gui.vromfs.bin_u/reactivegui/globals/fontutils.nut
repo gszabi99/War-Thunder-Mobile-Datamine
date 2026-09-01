@@ -1,11 +1,10 @@
-from "math" import min, max
 from "daRg" import *
+from "math" import min, max
 
-let calc_content_size2 = require("daRg")?.calc_content_size ?? calc_comp_size
 
 function getTextCompFullWidthPx(textOrTextareaComp) {
   let textComp = textOrTextareaComp.__merge({ size = SIZE_TO_CONTENT })
-  return calc_content_size2(textComp)[0]
+  return calc_content_size(textComp)[0]
 }
 
 

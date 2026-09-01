@@ -215,7 +215,6 @@
       "unitSlots:list<t>": {},
       "commonStats:object": {}
     },
-    "unitDailyApplied:object": {},
     "battleData:object": {}
   },
   "wtm_local_player": {

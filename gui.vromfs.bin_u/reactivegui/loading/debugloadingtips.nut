@@ -1,16 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/unitConst.nut" import *
-let { getAllTips, GLOBAL_LOADING_TIP_BIT } = require("%globalsDarg/loading/loadingTips.nut")
-let { unitTypeFontIcons, unitTypeColors } = require("%appGlobals/unitPresentation.nut")
-let { register_command } = require("console")
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindows.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbar.nut")
-let { btnBEscUp } = require("%rGui/controlsMenu/gpActBtn.nut")
+from "console" import register_command
+from "%appGlobals/unitPresentation.nut" import unitTypeFontIcons, unitTypeColors
+from "%globalsDarg/loading/loadingTips.nut" import getAllTips, GLOBAL_LOADING_TIP_BIT
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
+from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 
 
-let wndUid = "debugLoadingTips"
-let iconColorDefault = 0xFF808080
-let textColor = 0xFFE0E0E0
+const wndUid = "debugLoadingTips"
+const iconColorDefault = 0xFF808080
+const textColor = 0xFFE0E0E0
 
 function getTipsList() {
   let tipsLocId = getAllTips()
@@ -37,7 +37,7 @@ let tipsText = @(tips) {
 }.__update(fontTiny)
 
 let tipsWnd = @(tips) {
-  size = [min(sw(95), hdpx(1600)), sh(95)]
+  size = const [min(sw(95), hdpx(1600)), sh(95)]
   padding = hdpx(20)
   rendObj = ROBJ_SOLID
   color = 0xFF000000

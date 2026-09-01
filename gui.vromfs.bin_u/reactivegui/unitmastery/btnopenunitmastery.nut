@@ -1,32 +1,32 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/string.nut" import utf8ToUpper
-from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/pServer/campaign.nut" import campConfigs
-from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/pServer/pServerApi.nut" import increase_vehicle_mastery_tier, unitMasteryTierInProgress
-from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
-from "%rGui/components/textButton.nut" import mkCustomButton, buttonStyles, mergeStyles,
-  textButtonSecondary, textButtonInactive
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/components/levelBlockPkg.nut" import maxLevelStarChar
 from "%rGui/components/masteryTierComp.nut" import mkMasteryTierColorIcon, mkMasteryTierIcon
 from "%rGui/components/modalWindows.nut" import addModalWindowWithHeader
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import mkCustomButton, buttonStyles, mergeStyles, textButtonSecondary,
+  textButtonInactive
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
-from "%rGui/unit/components/unitPlateComp.nut" import mkUnitInfo, mkUnitBg, mkUnitImage,
-  mkUnitTexts, mkUnitPlateBorder, mkUnitLevel
-from "%rGui/slotBar/slotBarConsts.nut" import unitPlateSize
-from "%rGui/quests/questsPkg.nut" import mkQuestText, btnSize, btnStyleSound, btnStyle
 from "%rGui/quests/questBar.nut" import mkQuestBar
-from "%rGui/components/levelBlockPkg.nut" import maxLevelStarChar
+from "%rGui/quests/questsPkg.nut" import mkQuestText, btnSize, btnStyleSound, btnStyle
+from "%rGui/slotBar/slotBarConsts.nut" import unitPlateSize
+from "%rGui/unit/components/unitPlateComp.nut" import mkUnitInfo, mkUnitBg, mkUnitImage, mkUnitTexts,
+  mkUnitPlateBorder, mkUnitLevel
 
 
-let MASTERY_WND = "masteryWnd"
+const MASTERY_WND = "masteryWnd"
 
-let singleStarIconSize = hdpxi(80)
-let singleStarMargin = hdpxi(12)
+const singleStarIconSize = hdpxi(80)
+const singleStarMargin = hdpxi(12)
 
-let imgLockSize = hdpxi(60)
-let btnIconSize = hdpxi(80)
-let smallGap = hdpx(12)
-let smallPadding = hdpx(40)
+const imgLockSize = hdpxi(60)
+const btnIconSize = hdpxi(80)
+const smallGap = hdpx(12)
+const smallPadding = hdpx(40)
 
 let mkDefQuestData = @(quest) {
   required = quest?.amount ?? 0

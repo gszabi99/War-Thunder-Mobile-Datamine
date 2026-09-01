@@ -1,29 +1,29 @@
 from "%globalsDarg/darg_library.nut" import *
-let { round } =  require("math")
-let { get_mission_time } = require("mission")
-let { playSound } = require("sound_wt")
-let { getScaledFont } = require("%globalsDarg/fontScale.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { mkIsControlDisabled } = require("%rGui/controls/disabledControls.nut")
-let { updateActionBarDelayed, actionBarItems, actionItemsInCd } = require("%rGui/hud/actionBar/actionBarState.nut")
-let { touchButtonSize, touchSizeForRhombButton, imageColor, imageDisabledColor, borderWidth, btnBgStyle,
-  borderColorPushed, borderColor, borderNoAmmoColor, textColor, textDisabledColor,
-} = require("%rGui/hud/hudTouchButtonStyle.nut")
-let { canZoom, isInZoom, groupIsInAir, group2IsInAir, group3IsInAir, group4IsInAir, isInAntiairMode
-} = require("%rGui/hudState.nut")
-let { hasAimingModeForWeapon, markWeapKeyHold, unmarkWeapKeyHold } = require("%rGui/hud/currentWeaponsStates.nut")
-let { addCommonHint } = require("%rGui/hudHints/commonHintLogState.nut")
-let { mkGamepadShortcutImage, mkGamepadHotkey } = require("%rGui/controls/shortcutSimpleComps.nut")
-let { mkActionBtnGlare, mkConsumableSpend } = require("%rGui/hud/weaponsButtonsAnimations.nut")
-let { mkItemWithCooldownText } = require("%rGui/hud/cooldownComps.nut")
-let { isAvailableActionItem } = require("%rGui/hud/buttons/actionButtonComps.nut")
-let { isHudPrimaryStyle } = require("%rGui/options/options/hudStyleOptions.nut")
-let { hudLightBlackColor } = require("%rGui/style/hudColors.nut")
+from "math" import round
+from "mission" import get_mission_time
+from "sound_wt" import playSound
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%globalsDarg/fontScale.nut" import getScaledFont
+from "%rGui/controls/disabledControls.nut" import mkIsControlDisabled
+from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkGamepadHotkey
+from "%rGui/hud/actionBar/actionBarState.nut" import updateActionBarDelayed, actionBarItems, actionItemsInCd
+from "%rGui/hud/buttons/actionButtonComps.nut" import isAvailableActionItem
+from "%rGui/hud/cooldownComps.nut" import mkItemWithCooldownText
+from "%rGui/hud/currentWeaponsStates.nut" import hasAimingModeForWeapon, markWeapKeyHold, unmarkWeapKeyHold
+from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize, touchSizeForRhombButton, imageColor,
+  imageDisabledColor, borderWidth, btnBgStyle, borderColorPushed, borderColor, borderNoAmmoColor, textColor,
+  textDisabledColor
+from "%rGui/hud/weaponsButtonsAnimations.nut" import mkActionBtnGlare, mkConsumableSpend
+from "%rGui/hudHints/commonHintLogState.nut" import addCommonHint
+from "%rGui/hudState.nut" import canZoom, isInZoom, groupIsInAir, group2IsInAir, group3IsInAir, group4IsInAir,
+  isInAntiairMode
+from "%rGui/options/options/hudStyleOptions.nut" import isHudPrimaryStyle
+from "%rGui/style/hudColors.nut" import hudLightBlackColor
 
 
 let cooldownImgSize = (1.42 * touchButtonSize).tointeger()
-let rotatedShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = [0, ph(-70)] }
+let rotatedShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(-70)] }
 let defImageSize = (0.75 * touchButtonSize).tointeger()
 
 function useShortcut(shortcutId) {

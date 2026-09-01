@@ -1,13 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("math")
-let { AIR, SAILBOAT } = require("%appGlobals/unitConst.nut")
-let { getUnitType } = require("%appGlobals/unitTags.nut")
-let { loadUnitBulletsChoice } = require("%rGui/weaponry/loadUnitBullets.nut")
-let { getUnitBeltsNonUpdatable } = require("%rGui/unitMods/unitModsSlotsState.nut")
+from "math" import ceil
+from "%appGlobals/unitConst.nut" import AIR, SAILBOAT
+from "%appGlobals/unitTags.nut" import getUnitType
+from "%rGui/unitMods/unitModsSlotsState.nut" import getUnitBeltsNonUpdatable
+from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitBulletsChoice
 
 
-let MAX_SLOTS = 2
-let MAX_SLOTS_SAILBOAT = 3
+const MAX_SLOTS = 2
+const MAX_SLOTS_SAILBOAT = 3
 
 function collectBulletsCount(bulletsCfg, level, maxSlots, mods) {
   let { fromUnitTags, bulletsOrder, total, catridge, guns } = bulletsCfg

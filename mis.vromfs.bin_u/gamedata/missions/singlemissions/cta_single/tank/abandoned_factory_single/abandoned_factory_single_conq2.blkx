@@ -108,6 +108,7 @@
       "showTacticalMapCellSize": true,
       "checkFriendlyFireAlsoFromAircrafts": true,
       "ctaPenaltyInactive": false,
+      "useAIForCollectiveDetection": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": true,

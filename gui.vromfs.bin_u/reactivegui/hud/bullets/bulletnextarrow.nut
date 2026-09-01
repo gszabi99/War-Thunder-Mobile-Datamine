@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { PI, sin, cos } = require("%sqstd/math.nut")
-let { hudPearlGrayColor } = require("%rGui/style/hudColors.nut")
+from "%sqstd/math.nut" import PI, sin, cos
+from "%rGui/style/hudColors.nut" import hudPearlGrayColor
 
 
-let DEG_TO_RAD = PI / 180.0
+const DEG_TO_RAD = PI / 180.0
 
 function mkNextBulletArrow(size, rotateDeg, ovr = {}) {
   let dist = (size * 0.2).tointeger()

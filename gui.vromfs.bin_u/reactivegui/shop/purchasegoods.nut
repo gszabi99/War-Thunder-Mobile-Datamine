@@ -1,34 +1,37 @@
 from "%globalsDarg/darg_library.nut" import *
+from "sound_wt" import playSound
+from "%appGlobals/currenciesState.nut" import GOLD
+from "%appGlobals/pServer/campaign.nut" import campConfigs
+from "%appGlobals/pServer/pServerApi.nut" import shopPurchaseInProgress, buy_goods, buy_offer, registerHandler,
+  get_profile, get_all_configs
+from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/rewardType.nut" import G_UNIT, G_UNIT_UPGRADE, G_CURRENCY, G_BOOSTER, unitRewardTypes
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, CS_INCREASED_ICON
+from "%rGui/components/msgBox.nut" import msgBoxText, openMsgBox
+from "%rGui/navState.nut" import tryResetToMainScene
+from "%rGui/rewards/rewardViewInfo.nut" import isEmptyByRType
+from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_SHOP, getPurchaseTypeByGoodsType, mkBqPurchaseInfo
+from "%rGui/shop/discounts.nut" import discountsToApply, applyDiscount
+from "%rGui/shop/goodsView/goods.nut" import getGoodsLocName
+from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase, closePurchaseAndBalanceBoxes
+from "%rGui/shop/offerState.nut" import activeOffer
+from "%rGui/shop/personalGoodsPurchase.nut" import purchasePersonalGoods
+from "%rGui/shop/personalGoodsState.nut" import activePersonalGoods
+from "%rGui/shop/rewardsToShopGoods.nut" import personalGoodsToShopGoods
+from "%rGui/shop/shopCommon.nut" import getGoodsType
+from "%rGui/shop/shopConst.nut" import SGT_EVT_CURRENCY
+from "%rGui/shop/shopState.nut" import shopGoodsAllCampaigns
+from "%rGui/style/stdColors.nut" import userlogTextColor
+from "%rGui/unit/unseenUnits.nut" import markUnitsUnseen
+from "types" import String
+
+
 let logShop = log_with_prefix("[SHOP] ")
-let { campConfigs } = require("%appGlobals/pServer/campaign.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { shopPurchaseInProgress, buy_goods, buy_offer, registerHandler, get_profile, get_all_configs
-} = require("%appGlobals/pServer/pServerApi.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { currencyToFullId } = require("%appGlobals/pServer/seasonCurrencies.nut")
-let { G_UNIT, G_UNIT_UPGRADE, G_CURRENCY, G_BOOSTER, unitRewardTypes } = require("%appGlobals/rewardType.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
-let { shopGoodsAllCampaigns } = require("%rGui/shop/shopState.nut")
-let { getGoodsType } = require("%rGui/shop/shopCommon.nut")
-let { tryResetToMainScene } = require("%rGui/navState.nut")
-let { getGoodsLocName } = require("%rGui/shop/goodsView/goods.nut")
-let { activeOffer } = require("%rGui/shop/offerState.nut")
-let { activePersonalGoods } = require("%rGui/shop/personalGoodsState.nut")
-let { personalGoodsToShopGoods } = require("%rGui/shop/rewardsToShopGoods.nut")
-let { purchasePersonalGoods } = require("%rGui/shop/personalGoodsPurchase.nut")
-let { openMsgBoxPurchase, closePurchaseAndBalanceBoxes } = require("%rGui/shop/msgBoxPurchase.nut")
-let { PURCH_SRC_SHOP, getPurchaseTypeByGoodsType, mkBqPurchaseInfo } = require("%rGui/shop/bqPurchaseInfo.nut")
-let { discountsToApply, applyDiscount } = require("%rGui/shop/discounts.nut")
-let { msgBoxText, openMsgBox } = require("%rGui/components/msgBox.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { playSound } = require("sound_wt")
-let { GOLD } = require("%appGlobals/currenciesState.nut")
-let { mkCurrencyComp, CS_INCREASED_ICON } = require("%rGui/components/currencyComp.nut")
-let { SGT_EVT_CURRENCY } = require("%rGui/shop/shopConst.nut")
-let { markUnitsUnseen } = require("%rGui/unit/unseenUnits.nut")
-let { isEmptyByRType } = require("%rGui/rewards/rewardViewInfo.nut")
 
 
 function getCantPurchaseReason(goods) {
@@ -52,7 +55,7 @@ function getCantPurchaseReason(goods) {
 }
 
 function onGoodsError(err) {
-  let errStr = type(err) == "string" ? err : err?.message ?? ""
+  let errStr = err instanceof String ? err : err?.message ?? ""
   if (errStr.startswith("Wrong pay data")) {
     openMsgBox({ text = loc("error/Wrong pay data") })
     get_profile()

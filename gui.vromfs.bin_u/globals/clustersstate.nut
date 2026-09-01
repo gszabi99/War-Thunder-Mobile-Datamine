@@ -1,13 +1,14 @@
 from "%globalScripts/logs.nut" import *
-from "frp" import Computed
-from "eventbus" import eventbus_send
-from "blkGetters" import get_local_custom_settings_blk
 from "auth_wt" import getCountryCode
+from "blkGetters" import get_local_custom_settings_blk
+from "eventbus" import eventbus_send
+from "frp" import Computed
 from "%sqstd/datablock.nut" import copyParamsToTable
-import "%globalScripts/sharedWatched.nut" as sharedWatched
-from "%appGlobals/permissions.nut" import allow_clusters_selection
-from "%appGlobals/loginState.nut" import isSettingsAvailable
+from "%sqstd/globalState.nut" import hardPersistWatched
 from "%appGlobals/defaultClusters.nut" import getClustersByCountry
+from "%appGlobals/loginState.nut" import isSettingsAvailable
+from "%appGlobals/permissions.nut" import allow_clusters_selection
+
 
 const OPTIMAL_RTT_LIMIT_MS = 100 
 const OPTIMAL_RTT_LIMIT_MS_SQUAD = 150 
@@ -17,14 +18,14 @@ const CAN_USER_DISABLE_FASTEST_CLUSTER = false
 const USER_CLUSTERS_SAVE_ID = "clusters"
 const CURRENT_SAVE_CFG_VERSION = 2
 
-let clustersRaw = sharedWatched("matching.clusters", @() [])
-let clusterStats = sharedWatched("clusterStats", @() [])
-let optimalClusters = sharedWatched("optimalClusters", @() [])
-let unreachableHosts = sharedWatched("unreachableHosts", @() [])
-let lastReachabilityUpdateTimeMs = sharedWatched("lastReachabilityUpdateTimeMs", @() 0)
+let clustersRaw = hardPersistWatched("matching.clusters", [])
+let clusterStats = hardPersistWatched("clusterStats", [])
+let optimalClusters = hardPersistWatched("optimalClusters", [])
+let unreachableHosts = hardPersistWatched("unreachableHosts", [])
+let lastReachabilityUpdateTimeMs = hardPersistWatched("lastReachabilityUpdateTimeMs", 0)
 let fastestClusterId = Computed(@() clusterStats.get()?[0].clusterId ?? "")
-let userPreferredClusters = sharedWatched("userPreferredClusters", @() {})
-let isWaitingManualRefresh = sharedWatched("isWaitingManualRefresh", @() false)
+let userPreferredClusters = hardPersistWatched("userPreferredClusters", {})
+let isWaitingManualRefresh = hardPersistWatched("isWaitingManualRefresh", false)
 
 let selClusters = Computed(function() {
   local res = []

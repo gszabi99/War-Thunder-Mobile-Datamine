@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
+from "eventbus" import eventbus_send
+from "soundOptions" import SND_TYPE_MASTER, SND_TYPE_MUSIC, SND_TYPE_MENU_MUSIC, SND_TYPE_SFX, SND_TYPE_ENGINE,
+  SND_TYPE_MY_ENGINE, SND_TYPE_GUNS, SND_TYPE_DIALOGS, SND_TYPE_RADIO, is_sound_inited, get_sound_volume,
+  set_sound_volume, get_option_voice_message_voice, set_option_voice_message_voice
+from "%appGlobals/loginState.nut" import isSettingsAvailable
+from "%rGui/options/guiOptions.nut" import registerOptionStorageChangeCb
 from "%rGui/options/optCtrlType.nut" import OCT_SLIDER, OCT_LIST
-from "soundOptions" import SND_TYPE_MASTER, SND_TYPE_MUSIC, SND_TYPE_MENU_MUSIC, SND_TYPE_SFX,
-  SND_TYPE_ENGINE, SND_TYPE_MY_ENGINE, SND_TYPE_GUNS, SND_TYPE_DIALOGS, SND_TYPE_RADIO,
-  is_sound_inited, get_sound_volume, set_sound_volume, get_option_voice_message_voice, set_option_voice_message_voice
-let { eventbus_send } = require("eventbus")
-let { isSettingsAvailable } = require("%appGlobals/loginState.nut")
-let { registerOptionStorageChangeCb } = require("%rGui/options/guiOptions.nut")
 
 
 const SOUND_MAX = 100 

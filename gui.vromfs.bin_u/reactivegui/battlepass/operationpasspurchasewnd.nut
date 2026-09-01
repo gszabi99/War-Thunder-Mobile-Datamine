@@ -1,52 +1,53 @@
 from "%globalsDarg/darg_library.nut" import *
-let { ceil } = require("math")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { shopPurchaseInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { registerScene, setSceneBg } = require("%rGui/navState.nut")
-let { isOPPurchaseWndOpened, closeOPPurchaseWnd, isOPSeasonActive, curStage, sendOPBqEvent,
-  purchasedOP, OPPurchasedUnlock, OPPaidRewardsUnlock, OPFreeRewardsUnlock, operationPassGoods, getOPIcon,
-  OP_NONE, OP_COMMON, OP_VIP, getOPName, opSeasonEndTime, opSeasonName, OP_MAX_LEVELS_TO_ADD, opSeasonUnitName,
-  OPCampaign
-} = require("%rGui/battlePass/operationPassState.nut")
-let { purchaseGoods, purchaseGoodsSeq } = require("%rGui/shop/purchaseGoods.nut")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { getRewardsViewInfo, shopGoodsToRewardsViewInfo, joinViewInfo, sortRewardsViewInfo, isSingleViewInfoRewardEmpty
-} = require("%rGui/rewards/rewardViewInfo.nut")
-let { mkCurrenciesBtns } = require("%rGui/mainMenu/gamercard.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { gamercardHeight } = require("%rGui/style/gamercardStyle.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let battlePassSeason = require("%rGui/battlePass/battlePassSeason.nut")
-let { mkRewardPlate, mkRewardPlateVip } = require("%rGui/rewards/rewardPlateComp.nut")
-let { bpCardStyle } = require("%rGui/battlePass/bpCardsStyle.nut")
-let { textButtonPricePurchase, buttonStyles, mergeStyles, mkCustomButton } = require("%rGui/components/textButton.nut")
+from "math" import ceil
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/currenciesState.nut" import PLATINUM
+from "%appGlobals/pServer/pServerApi.nut" import shopPurchaseInProgress
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/timeToText.nut" import secondsToHoursLoc
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+import "%rGui/battlePass/battlePassSeason.nut" as battlePassSeason
+from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle
+from "%rGui/battlePass/operationPassState.nut" import isOPPurchaseWndOpened, closeOPPurchaseWnd, isOPSeasonActive,
+  curStage, sendOPBqEvent, purchasedOP, OPPurchasedUnlock, OPPaidRewardsUnlock, OPFreeRewardsUnlock, operationPassGoods,
+  getOPIcon, OP_NONE, OP_COMMON, OP_VIP, getOPName, opSeasonEndTime, opSeasonName, OP_MAX_LEVELS_TO_ADD,
+  opSeasonUnitName, OPCampaign
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp
+from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonPricePurchase, buttonStyles, mergeStyles, mkCustomButton
+from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
+from "%rGui/navState.nut" import registerScene, setSceneBg
+from "%rGui/quests/questsState.nut" import questsBySection
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardPlateVip
+from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, shopGoodsToRewardsViewInfo, joinViewInfo,
+  sortRewardsViewInfo, isSingleViewInfoRewardEmpty
+from "%rGui/seasonScene/seasonSceneState.nut" import bgScene
+from "%rGui/shop/purchaseGoods.nut" import purchaseGoods, purchaseGoodsSeq
+from "%rGui/style/gamercardStyle.nut" import gamercardHeight
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import userlogTextColor
+from "%rGui/unlocks/userstat.nut" import registerUnlocksSceneToUpdate
+
+
 let { defButtonHeight, PRIMARY } = buttonStyles
-let { mkCurrencyComp } = require("%rGui/components/currencyComp.nut")
-let { verticalPannableAreaCtor } = require("%rGui/components/pannableArea.nut")
-let { mkScrollArrow, scrollArrowImageSmall } = require("%rGui/components/scrollArrows.nut")
-let { PLATINUM } = require("%appGlobals/currenciesState.nut")
-let { userlogTextColor } = require("%rGui/style/stdColors.nut")
-let { secondsToHoursLoc } = require("%appGlobals/timeToText.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { questsBySection } = require("%rGui/quests/questsState.nut")
-let { registerUnlocksSceneToUpdate } = require("%rGui/unlocks/userstat.nut")
-let { bgScene } = require("%rGui/seasonScene/seasonSceneState.nut")
 
 
 isOPSeasonActive.subscribe(@(isActive) isActive ? null : closeOPPurchaseWnd())
 
 let { boxSize, boxGap } = bpCardStyle
 let rewardsListGap = 1.5 * boxGap
-let bpIconSize = hdpxi(400)
+const bpIconSize = hdpxi(400)
 let blocksGap = isWidescreen ? 3 * boxGap : boxGap
 
-let rightBlockWidth = 1.5 * bpIconSize
+const rightBlockWidth = 1.5 * bpIconSize
 let rewardSlotsInRow = (saSize[0] - rightBlockWidth - blocksGap + boxGap) / (boxSize + boxGap)
-let swIconSz = hdpx(70)
+const swIconSz = hdpx(70)
 
-let contentGap = hdpx(25)
+const contentGap = hdpx(25)
 let wndContentHeight = saSize[1] - gamercardHeight - contentGap
 let contentGradientSize = [contentGap, saBorders[1]]
 
@@ -268,7 +269,7 @@ let operationPassIcon = @(bpList, selBpInfo) function() {
     let isCurrent = bp == selBpInfo.get()
     let child = {
       key = bp.bpType
-      size = [bpIconSize, bpIconSize]
+      size = const [bpIconSize, bpIconSize]
       pos = [idx * bpIconSize / 2, 0]
       rendObj = ROBJ_IMAGE
       image = Picture($"{getOPIcon(bp.bpType, OPCampaign.get())}:{bpIconSize}:{bpIconSize}:P")
@@ -323,7 +324,7 @@ let buyBlock = @(bpList, selBpInfo) function() {
       bpList.get().len() <= 1 ? null
         : mkCustomButton(
             {
-              size = [swIconSz, swIconSz]
+              size = const [swIconSz, swIconSz]
               rendObj = ROBJ_IMAGE
               image = Picture($"ui/gameuiskin#decor_change_icon.svg:{swIconSz}:{swIconSz}:P")
               keepAspect = true
@@ -361,7 +362,7 @@ let buyBlock = @(bpList, selBpInfo) function() {
 }
 
 let rightBlock = @(bpList, selBpInfo) {
-  size = [rightBlockWidth, FLEX]
+  size = const [rightBlockWidth, FLEX]
   flow = FLOW_VERTICAL
   gap = { size = FLEX }
   children = [
@@ -400,7 +401,7 @@ let content = @(bpList, selBpInfo) {
 
 let mkGoodsCfg = @(bpType, goods, price, purchList = null) { bpType, goods, price, purchList }
 
-let function opPurchaseWnd() {
+function opPurchaseWnd() {
   let bpList = Computed(function() {
     let res = []
     let goodsCommon = operationPassGoods.get()[OP_COMMON]
@@ -439,7 +440,7 @@ let function opPurchaseWnd() {
   }
 }
 
-let sceneId = "opPurchaseWnd"
+const sceneId = "opPurchaseWnd"
 registerScene(sceneId, opPurchaseWnd, closeOPPurchaseWnd, isOPPurchaseWndOpened)
 setSceneBg(sceneId, bgScene.get()?.bg, bgScene.get()?.bgColor)
 bgScene.subscribe(@(v) setSceneBg(sceneId, v?.bg, v?.bgColor))

@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-let { scaleFontWithTransform } = require("%globalsDarg/fontScale.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { isGtBattleRoyale } = require("%rGui/missionState.nut")
-let { crewState } = require("%rGui/hud/crewState.nut")
-let { hudGrassColor } = require("%rGui/style/hudColors.nut")
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%globalsDarg/fontScale.nut" import scaleFontWithTransform
+from "%rGui/hud/crewState.nut" import crewState
+from "%rGui/missionState.nut" import isGtBattleRoyale
+from "%rGui/style/hudColors.nut" import hudGrassColor
 
 
 let iconSize = evenPx(50)

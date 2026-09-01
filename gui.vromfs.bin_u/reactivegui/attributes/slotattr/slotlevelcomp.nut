@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { format } = require("string")
-let { mkProgressLevelBg, slotExpColor, levelProgressBorderWidth, levelProgressBarHeight } = require("%rGui/components/levelBlockPkg.nut")
+from "string" import format
+from "%rGui/components/levelBlockPkg.nut" import mkProgressLevelBg, slotExpColor, levelProgressBorderWidth,
+  levelProgressBarHeight
 
 
 let levelHolderSize = [evenPx(120), evenPx(40)]
-let STEP_ICON_COUNT = 5
+const STEP_ICON_COUNT = 5
 
 let levelBg = {
   size = FLEX
@@ -32,7 +33,7 @@ let mkSlotLevel = @(level, imageSize, ovr = {}, bgOvr = {}) {
     padding = const [0, hdpx(10)]
     valign = ALIGN_CENTER
     children = [
-      mkSlotLevelIcon(level, imageSize, { pos = [hdpx(10), 0] })
+      mkSlotLevelIcon(level, imageSize, { pos = const [hdpx(10), 0] })
       {
         hplace = ALIGN_RIGHT
         rendObj = ROBJ_TEXT

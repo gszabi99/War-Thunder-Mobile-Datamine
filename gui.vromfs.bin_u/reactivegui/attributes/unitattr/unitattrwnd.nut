@@ -1,39 +1,37 @@
 from "%globalsDarg/darg_library.nut" import *
-let { HangarCameraControl } = require("wt.behaviors")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { getCampaignPresentation } = require("%appGlobals/config/campaignPresentation.nut")
-let { wndSwitchAnim } = require("%rGui/style/stdAnimations.nut")
-let { registerScene } = require("%rGui/navState.nut")
-let { mkGamercardUnitCampaign } = require("%rGui/mainMenu/gamercard.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { unitInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { textButtonPrimary, buttonsHGap, paddingX, mkCustomButton, mergeStyles } = require("%rGui/components/textButton.nut")
-let { textButtonVehicleLevelUp } = require("%rGui/unit/components/textButtonWithLevel.nut")
-let { defButtonHeight, defButtonMinWidth, COMMON } = require("%rGui/components/buttonStyles.nut")
-let { isUnitAttrOpened, attrUnitData, attrUnitName, attrUnitLevelsToMax, curCategory, selAttrSpCost,
-  leftUnitSp, isUnitMaxSkills, availableAttributes, resetAttrState, applyAttributes,
-} = require("%rGui/attributes/unitAttr/unitAttrState.nut")
-let { hasUpgradedAttrUnitNotUpdatable } = require("%rGui/attributes/slotAttr/slotAttrState.nut")
-let { mkAttrTabs, contentMargin } = require("%rGui/attributes/attrWndTabs.nut")
-let { unitAttrPage } = require("%rGui/attributes/unitAttr/unitAttrWndPage.nut")
-let { openMsgBox, closeMsgBox } = require("%rGui/components/msgBox.nut")
-let buyUnitLevelWnd = require("%rGui/attributes/unitAttr/buyUnitLevelWnd.nut")
-let { textColor, badTextColor } = require("%rGui/style/stdColors.nut")
-let { backButtonBlink } = require("%rGui/components/backButtonBlink.nut")
-let { gradTranspDoubleSideX, gradDoubleTexOffset } = require("%rGui/style/gradients.nut")
-let panelBg = require("%rGui/components/panelBg.nut")
-let { tooltipBg } = require("%rGui/tooltip.nut")
-let btnOpenUnitMods = require("%rGui/unitMods/btnOpenUnitMods.nut")
-let { sendNewbieBqEvent } = require("%appGlobals/pServer/bqClient.nut")
-let { curCampaign } = require("%appGlobals/pServer/campaign.nut")
-let { sendTelemetryEvent } = require("%rGui/notifications/logEvents.nut")
-let { lastModifiedAttr, curCategoryId, getSpCostText } = require("%rGui/attributes/attrState.nut")
-let { rowHeight, pageWidth } = require("%rGui/attributes/attrBlockComp.nut")
-let { defCategoryImage, categoryImages } = require("%rGui/attributes/attrValues.nut")
-let { mainHangarUnit } = require("%rGui/unit/hangarUnit.nut")
+from "wt.behaviors" import HangarCameraControl
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import unitInProgress
+from "%rGui/attributes/attrBlockComp.nut" import rowHeight, pageWidth
+from "%rGui/attributes/attrState.nut" import lastModifiedAttr, curCategoryId, getSpCostText
+from "%rGui/attributes/attrValues.nut" import defCategoryImage, categoryImages
+from "%rGui/attributes/attrWndTabs.nut" import mkAttrTabs
+from "%rGui/attributes/slotAttr/slotAttrState.nut" import hasUpgradedAttrUnitNotUpdatable
+import "%rGui/attributes/unitAttr/buyUnitLevelWnd.nut" as buyUnitLevelWnd
+from "%rGui/attributes/unitAttr/unitAttrState.nut" import isUnitAttrOpened, attrUnitData, attrUnitName,
+  attrUnitLevelsToMax, curCategory, selAttrSpCost, leftUnitSp, isUnitMaxSkills, availableAttributes, resetAttrState,
+  applyAttributes
+from "%rGui/attributes/unitAttr/unitAttrWndPage.nut" import unitAttrPage
+from "%rGui/components/backButtonBlink.nut" import backButtonBlink
+from "%rGui/components/buttonStyles.nut" import defButtonHeight, defButtonMinWidth, COMMON
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
+import "%rGui/components/panelBg.nut" as panelBg
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonPrimary, buttonsHGap, paddingX, mkCustomButton, mergeStyles
+from "%rGui/mainMenu/gamercard.nut" import mkGamercardUnitCampaign
+from "%rGui/navState.nut" import registerScene
+from "%rGui/notifications/logEvents.nut" import sendTelemetryEvent
+from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdColors.nut" import textColor, badTextColor
+from "%rGui/tooltip.nut" import tooltipBg
+from "%rGui/unit/components/textButtonWithLevel.nut" import textButtonVehicleLevelUp
 
 
-let UNIT_ATTR_WND_MSG_UID = "msgUnitAttrWnd"
+const UNIT_ATTR_WND_MSG_UID = "msgUnitAttrWnd"
 
 unitInProgress.subscribe(@(_) closeMsgBox(UNIT_ATTR_WND_MSG_UID))
 isUnitAttrOpened.subscribe(function(v) {
@@ -41,12 +39,12 @@ isUnitAttrOpened.subscribe(function(v) {
   sendNewbieBqEvent(v ? "openUnitAttributesWnd" : "closeUnitAttributesWnd")
 })
 
-let attrDetailsWidth = hdpx(650)
-let connectLineWidth = hdpx(50)
-let tabW = hdpx(460)
+const attrDetailsWidth = hdpx(650)
+const connectLineWidth = hdpx(50)
+const tabW = hdpx(460)
 
-let rowHighlightAnimDuration = 0.1
-let attrRowHighlightColor = 0x052E2E2E
+const rowHighlightAnimDuration = 0.1
+const attrRowHighlightColor = 0x052E2E2E
 
 let isAttrDetailsVisible = Watched(false)
 let showAttrStateFlags = Watched(0)
@@ -86,10 +84,10 @@ let categoriesBlock = @() {
 }
 
 let connectLine = tooltipBg.__merge({
-  size = [connectLineWidth, hdpxi(4)]
+  size = const [connectLineWidth, hdpxi(4)]
   vplace = ALIGN_CENTER
   hplace = ALIGN_RIGHT
-  pos = [connectLineWidth, 0]
+  pos = const [connectLineWidth, 0]
   padding = 0
 })
 
@@ -122,11 +120,11 @@ function mkAttrDetailsRow(attrId, lastModifiedAttrId) {
 
 let attrDetails = @() {
   watch = isAttrDetailsVisible
-  pos = [-(attrDetailsWidth + connectLineWidth), 0]
+  pos = const [-(attrDetailsWidth + connectLineWidth), 0]
   children = isAttrDetailsVisible.get()
     ? @() tooltipBg.__merge({
         watch = [curCategory, lastModifiedAttr, isAttrDetailsVisible]
-        size = [attrDetailsWidth, SIZE_TO_CONTENT]
+        size = const [attrDetailsWidth, SIZE_TO_CONTENT]
         padding = 0
         margin = const [hdpx(20),0,0]
         fillColor = 0xA0000000
@@ -156,9 +154,13 @@ let pageBlock = {
         padding = const [hdpx(20), 0, hdpx(20), hdpx(130)]
         flow = FLOW_HORIZONTAL
         children = [
-          txt({ text = "".concat(loc("unit/upgradePoints"), loc("ui/colon")) })
+          txt({
+            key = "unitUpgradePoints" 
+            text = "".concat(loc("unit/upgradePoints"), loc("ui/colon"))
+          })
           @() txt({
             watch = leftUnitSp
+            key = "unitUpgradePointsValue" 
             text = getSpCostText(leftUnitSp.get())
             color = leftUnitSp.get() > 0 ? textColor : badTextColor
           })
@@ -208,8 +210,9 @@ let actionButtons = @() {
       mergeStyles(COMMON, { hotkeys = ["^J:RB"], stateFlags = showAttrStateFlags}))
     attrUnitLevelsToMax.get() <= 0 ? null
       : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
-        (attrUnitData.get()?.unit.level ?? 0) + 1,
-        @() buyUnitLevelWnd(attrUnitName.get()), { hotkeys = ["^J:Y"] })
+          (attrUnitData.get()?.unit.level ?? 0) + 1,
+          @() buyUnitLevelWnd(attrUnitName.get()),
+          { hotkeys = ["^J:Y"], ovr = { key = "attrLevelBoostBtn" }}) 
     selAttrSpCost.get() <= 0 ? null
       : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAction, {
           ovr = { sound = { click  = "characteristics_apply" } }.__update(isWidescreen ? {} : { minWidth = hdpx(250) })
@@ -265,26 +268,10 @@ let unitAttrWnd = {
       flow = FLOW_HORIZONTAL
       gap = hdpx(20)
       children = [
-        {
-          size = FLEX
-          flow = FLOW_VERTICAL
-          children = [
-            mkVerticalPannableArea(categoriesBlock, {
-              size = [ tabW, FLEX ]
-              margin = const [ hdpx(24), 0, 0, 0 ]
-            })
-            @() {
-              watch = mainHangarUnit
-              children = btnOpenUnitMods(mainHangarUnit, {
-                hotkeys = ["^J:X"],
-                ovr = {
-                  margin = [0, 0, 0, contentMargin]
-                  size = [isWidescreen ? (tabW - contentMargin) : SIZE_TO_CONTENT, defButtonHeight]
-                },
-              })
-            }
-          ]
-        }
+        mkVerticalPannableArea(categoriesBlock, {
+          size = const [ tabW, FLEX ]
+          margin = const [ hdpx(24), 0, 0, 0 ]
+        })
         {
           size = FLEX
           flow = FLOW_VERTICAL

@@ -1,21 +1,23 @@
 from "%globalsDarg/darg_library.nut" import *
-let { resetTimeout, setInterval, clearTimer } = require("dagor.workcycle")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { curSlots } = require("%appGlobals/pServer/slots.nut")
-let { campMyUnits, campUnitsCfg } = require("%appGlobals/pServer/profile.nut")
-let { getUnitName } = require("%appGlobals/unitPresentation.nut")
-let { isInBattle } = require("%appGlobals/clientState/clientState.nut")
-let { addModalWindow, removeModalWindow, hasModalWindows } = require("%rGui/components/modalWindows.nut")
-let { modalWndBg } = require("%rGui/components/modalWnd.nut")
-let { slotBarSelectWnd } = require("%rGui/slotBar/slotBar.nut")
-let { selectedUnitToSlot, closeSelectUnitToSlotWnd, canOpenSelectUnitWithModal, selectedUnitAABBKey } = require("%rGui/slotBar/slotBarState.nut")
-let { isPurchEffectVisible } = require("%rGui/unit/unitPurchaseEffectScene.nut")
-let { setUnitToScroll } = require("%rGui/unitsTree/unitsTreeNodesState.nut")
-let { mkCutBg } = require("%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut")
-let { mkTreeNodesUnitPlate } = require("%rGui/unitsTree/mkUnitPlate.nut")
-let { unitPlateWidth, unitPlateHeight, unitPlateTiny } = require("%rGui/unit/components/unitPlateComp.nut")
+from "dagor.workcycle" import resetTimeout, setInterval, clearTimer
+from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg
+from "%appGlobals/pServer/slots.nut" import curSlots
+from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow, hasModalWindows
+from "%rGui/components/modalWnd.nut" import modalWndBg
+from "%rGui/slotBar/slotBar.nut" import slotBarSelectWnd
+from "%rGui/slotBar/slotBarState.nut" import selectedUnitToSlot, closeSelectUnitToSlotWnd, canOpenSelectUnitWithModal,
+  selectedUnitAABBKey
+from "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" import mkCutBg
+from "%rGui/unit/components/unitPlateComp.nut" import unitPlateWidth, unitPlateHeight, unitPlateTiny
+from "%rGui/unit/unitPurchaseEffectScene.nut" import isPurchEffectVisible
+from "%rGui/unitsTree/mkUnitPlate.nut" import mkTreeNodesUnitPlate
+from "%rGui/unitsTree/unitsTreeNodesState.nut" import setUnitToScroll
 
-let WND_UID = "selectUnitToSlot"
+
+const WND_UID = "selectUnitToSlot"
 
 let needOpen = Computed(@() selectedUnitToSlot.get() != null
   && !isPurchEffectVisible.get()
