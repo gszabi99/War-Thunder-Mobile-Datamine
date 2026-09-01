@@ -2512,7 +2512,6 @@
             "entry": {
               "driverMaxVer0": 512,
               "driverMaxVer1": 676,
-              "gpu": "740",
               "data": {
                 "VK_EXT_extended_dynamic_state": false
               }
@@ -2668,15 +2667,6 @@
               },
               {
                 "gpu": [
-                  "G57",
-                  "G52"
-                ],
-                "data": {
-                  "VK_KHR_buffer_device_address": false
-                }
-              },
-              {
-                "gpu": [
                   "G52",
                   "G72"
                 ],
@@ -2685,6 +2675,26 @@
                 "data": {
                   "VK_KHR_buffer_device_address": false,
                   "VK_EXT_extended_dynamic_state": false
+                }
+              },
+              {
+                "gpu": [
+                  "G57",
+                  "G52"
+                ],
+                "driverMaxVer0": 37,
+                "data": {
+                  "VK_KHR_buffer_device_address": false
+                }
+              },
+              {
+                "gpu": [
+                  "G57",
+                  "G52"
+                ],
+                "driverMinVer0": 43,
+                "data": {
+                  "VK_KHR_buffer_device_address": false
                 }
               }
             ]
