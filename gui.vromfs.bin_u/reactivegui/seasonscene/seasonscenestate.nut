@@ -126,7 +126,7 @@ let bgScene = Computed(function() {
 })
 
 let hasBattleTab = isSeasonTabVisible[BATTLE_TAB].watched
-let newsTag = Computed(@() hasBattleTab.get() ? curEvent.get() : null)
+let newsTag = Computed(@() (hasBattleTab.get() || seasonPageId.get() == MAP_TAB) ? curEvent.get() : null)
 
 let openSeasonTab = @(id) playerSelectedSeasonTab.set(id)
 

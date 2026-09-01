@@ -108,6 +108,19 @@ let nodeStatusKind = Computed(function() {
   return res
 })
 
+let lockedPages = Computed(function() {
+  let kinds = nodeStatusKind.get()
+  let res = {}
+  foreach (id, node in curEventMapNodes.get()) {
+    let page = node?.page ?? ""
+    if (page not in res)
+      res[page] <- true
+    if (kinds[id] != NODE_LOCKED)
+      res[page] = false
+  }
+  return res
+})
+
 let pagesList = Computed(function() {
   let seen = {}
   let res = []
@@ -183,6 +196,7 @@ return {
   nodeViewTypes
   pageStartNodes
   nodeStatusKind
+  lockedPages
   NODE_QUESTS
   NODE_REWARD
   NODE_INTERMEDIATE

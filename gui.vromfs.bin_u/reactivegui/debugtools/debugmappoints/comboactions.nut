@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
 from "%rGui/debugTools/debugMapPoints/mapEditorState.nut" import transformInProgress, ELEM_POINT, ELEM_LINE, ELEM_BG,
   addLine, changeLine, pageLines, tuningPoints, tuningBgElems
-from "%rGui/event/treeEvent/segmentMath.nut" import getClosestSegment
+from "%rGui/event/treeEvent/segmentMath.nut" import getClosestSegment, getLineEndPoints, mkLineSplinePoints
 
 
 let bgElemIdxToId = @(id) id in tuningPoints.get() ? id
@@ -44,17 +44,10 @@ let shiftActions = {
 
       local mIdx = 0
       if (midpoints.len() > 0) {
-        let allPoints = clone midpoints
-        let { from, to } = line
-        let p1 = tuningPoints.get()?[from].pos
-        let p2 = tuningPoints.get()?[to].pos
-        if (p1 != null)
-          allPoints.insert(0, p1)
-        if (p2 != null)
-          allPoints.append(p2)
+        let allPoints = mkLineSplinePoints(line, tuningPoints.get())
         let cIdx = getClosestSegment(allPoints, x, y).idx
         if (cIdx >= 0)
-          mIdx = cIdx + (p1 == null ? 1 : 0)
+          mIdx = cIdx + (getLineEndPoints(line, tuningPoints.get()).from == null ? 1 : 0)
       }
 
       midpoints.insert(mIdx, [(x + 0.5).tointeger(), (y + 0.5).tointeger()])

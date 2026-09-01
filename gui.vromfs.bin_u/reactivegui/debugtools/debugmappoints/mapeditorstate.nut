@@ -13,6 +13,7 @@ from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/config/mapPointsPresentation.nut" import getDefaultPointSize, defaultPointView
 from "%rGui/event/treeEvent/treeEventUtils.nut" import updatePresetByTree, findLineIdx, mkDefaultLine,
   getEventMapNodes, getTreeNodeViews, lineSectionLen, LINE_DASHED
+from "%rGui/event/treeEvent/segmentMath.nut" import getLineEndPoints
 from "types" import Table, String, Array, Integer, Float
 
 
@@ -26,6 +27,11 @@ const ELEM_POINT = "Point"
 const ELEM_BG = "Bg Elem"
 const ELEM_LINE = "Line"
 const ELEM_MIDPOINT = "Midpoint"
+const ELEM_LINE_END = "Line End"
+
+const LINE_END_FROM = "from"
+const LINE_END_TO = "to"
+let lineEndPosField = { [LINE_END_FROM] = "fromPos", [LINE_END_TO] = "toPos" }
 
 let scalableETypes = [ELEM_BG].reduce(@(res, v) res.$rawset(v, true), {})
 
@@ -80,13 +86,31 @@ let selectedBgElem = Computed(@() tuningBgElems.get()?[selectedBgElemIdx.get()])
 let selectedLineIdx = Computed(@()
   (selectedElem.get()?.eType == ELEM_LINE && selectedElem.get()?.id in pageLines.get())
       ? selectedElem.get().id
-    : (selectedElem.get()?.eType == ELEM_MIDPOINT && selectedElem.get()?.subId in pageLines.get())
+    : ((selectedElem.get()?.eType == ELEM_MIDPOINT || selectedElem.get()?.eType == ELEM_LINE_END)
+        && selectedElem.get()?.subId in pageLines.get())
       ? selectedElem.get().subId
     : null)
 let selectedLineMidpoints = Computed(@() pageLines.get()?[selectedLineIdx.get()].midpoints ?? [])
 let selectedMidpointIdx = Computed(@()
   selectedElem.get()?.eType != ELEM_MIDPOINT || selectedElem.get()?.id  not in selectedLineMidpoints.get() ? null
     : selectedElem.get()?.id)
+
+let selectedLineEnds = Computed(function() {
+  let line = pageLines.get()?[selectedLineIdx.get()]
+  if (line == null)
+    return []
+  let ends = getLineEndPoints(line, tuningPoints.get())
+  let res = []
+  foreach (endId in [LINE_END_FROM, LINE_END_TO]) {
+    let pos = ends[endId]
+    if (pos != null)
+      res.append({ id = endId, pos })
+  }
+  return res
+})
+let selectedLineEndId = Computed(@() selectedElem.get()?.eType != ELEM_LINE_END
+  ? null
+  : selectedElem.get()?.id)
 
 let curSavedPage = Computed(@() savedPages.get()?[currentPageId.get()])
 let isCurPageChanged = Computed(@() loadedPage.get() != null
@@ -97,7 +121,8 @@ let isEditAllowed = get_settings_blk()?.debug.useAddonVromSrc ?? false
 
 let keyByElemId = {
   [ELEM_BG] = @(id) $"bg_elem_{id}",
-  [ELEM_MIDPOINT] = @(id) $"midpoint_{id}"
+  [ELEM_MIDPOINT] = @(id) $"midpoint_{id}",
+  [ELEM_LINE_END] = @(id) $"line_end_{id}"
 }
 let getElemKey = @(id, eType) keyByElemId?[eType](id) ?? id
 
@@ -392,6 +417,20 @@ function deleteElement(id, eType, subId) {
     selectElem(subId, ELEM_LINE) 
     return
   }
+
+  if (eType == ELEM_LINE_END) {
+    if (subId not in pageLines.get())
+      return
+    let field = lineEndPosField[id]
+    let lines = clone loadedPage.get().lines
+    let line = clone lines[subId]
+    if (field in line)
+      line.$rawdelete(field)
+    lines[subId] = line
+    changeCurPageField("lines", lines)
+    selectElem(subId, ELEM_LINE) 
+    return
+  }
 }
 
 function copyElement(id, eType) {
@@ -455,11 +494,26 @@ function applyTransformProgress() {
 
   if (eType == ELEM_POINT) {
     let points = clone loadedPage.get().points
-    if (id in points) {
-      let viewSize = pointViewSize(id, points[id]?.view, curEventNodeViews.get(), pagePointSizes.get())
-      points[id] = points[id].__merge({ pos = posExt.map(@(v) (v + viewSize / 2).tointeger()) })
-      changeCurPageField("points", points)
+    if (id not in points)
+      return
+    let viewSize = pointViewSize(id, points[id]?.view, curEventNodeViews.get(), pagePointSizes.get())
+    let oldPos = points[id].pos
+    let newPos = posExt.map(@(v) (v + viewSize / 2).tointeger())
+    points[id] = points[id].__merge({ pos = newPos })
+
+    let dx = newPos[0] - oldPos[0]
+    let dy = newPos[1] - oldPos[1]
+    let lines = clone loadedPage.get().lines
+    foreach (i, line in lines) {
+      local upd = null
+      if (line.from == id && line?.fromPos != null)
+        upd = { fromPos = [line.fromPos[0] + dx, line.fromPos[1] + dy] }
+      if (line.to == id && line?.toPos != null)
+        upd = (upd ?? {}).__merge({ toPos = [line.toPos[0] + dx, line.toPos[1] + dy] })
+      if (upd != null)
+        lines[i] = line.__merge(upd)
     }
+    setMapElementsState(loadedPage.get().__merge({ points, lines }))
     return
   }
 
@@ -470,6 +524,15 @@ function applyTransformProgress() {
     let midpoints = clone lines[subId].midpoints 
     midpoints[id] = posExt
     lines[subId] = lines[subId].__merge({ midpoints }) 
+    changeCurPageField("lines", lines)
+    return
+  }
+
+  if (eType == ELEM_LINE_END) {
+    if (subId not in pageLines.get())
+      return
+    let lines = clone loadedPage.get().lines
+    lines[subId] = lines[subId].__merge({ [lineEndPosField[id]] = posExt }) 
     changeCurPageField("lines", lines)
     return
   }
@@ -592,6 +655,8 @@ return {
   selectedLineIdx
   selectedLineMidpoints
   selectedMidpointIdx
+  selectedLineEnds
+  selectedLineEndId
   selectElem
   deselectElem
   deleteElement
@@ -612,6 +677,7 @@ return {
   ELEM_BG
   ELEM_LINE
   ELEM_MIDPOINT
+  ELEM_LINE_END
   scalableETypes
   getElemKey
 }

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%appGlobals/config/mapPointsPresentation.nut" import getMapPointsPresentation, defaultPointView
+from "%appGlobals/config/mapPointsPresentation.nut" import getMapPointsPresentation, getPointOffset, defaultPointView
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/debugTools/debugMapPoints/comboActions.nut" import shiftActions
 from "%rGui/debugTools/debugMapPoints/mapEditorComps.nut" import mkText, mkTextArea
@@ -8,9 +8,9 @@ import "%rGui/debugTools/debugMapPoints/mapEditorSidebarOptions.nut" as mapEdito
 from "%rGui/debugTools/debugMapPoints/mapEditorState.nut" import isEventMapEditorOpened, closeEventMapEditor,
   selectedPointId, pageMapSize, tuningPoints, selectedBgElemIdx, curEventId, transformInProgress,
   pageBackground, currentPageId, tuningBgElems, selectedElem, selectedBgElem, pageGridSize, getElemKey, pageLines,
-  selectedLineIdx, isShiftPressed, ELEM_BG, ELEM_POINT, ELEM_LINE, ELEM_MIDPOINT, selectedLineMidpoints,
-  selectedMidpointIdx, scalableETypes, curEventNodeViews, pagePointSizes, pointViewSize, pageLineSectionLen,
-  pageRoundedDashes, pageLineType, pageLineWidth
+  selectedLineIdx, isShiftPressed, ELEM_BG, ELEM_POINT, ELEM_LINE, ELEM_MIDPOINT, ELEM_LINE_END, selectedLineMidpoints,
+  selectedMidpointIdx, selectedLineEnds, selectedLineEndId, scalableETypes, curEventNodeViews, pagePointSizes,
+  pointViewSize, pageLineSectionLen, pageRoundedDashes, pageLineType, pageLineWidth
 import "%rGui/debugTools/debugMapPoints/mapPointsManipulator.nut" as manipulator
 import "%rGui/event/treeEvent/mapNet.nut" as mapNet
 from "%rGui/event/treeEvent/treeEventComps.nut" import mkLineCmds, mkSolidLineCmds, mkLineCmdsOutline,
@@ -31,6 +31,7 @@ let mapBlockSize = [
 
 const lineColor = 0xFFFFF0D0
 const selPointColor = 0xFF2080FF
+const selMarkerColor = 0xFFFF2020
 
 let pageInfo = @() mkTextArea(
   "\n".join([
@@ -56,7 +57,7 @@ function selectedInfo() {
     children.append(mkText(from))
     children.append(mkText(to))
   }
-  else if (eType == ELEM_MIDPOINT) {
+  else if (eType == ELEM_MIDPOINT || eType == ELEM_LINE_END) {
     let { from = "", to = "" } = pageLines.get()?[subId]
     children = [
       mkText($"Current {eType} ({id}) on line:")
@@ -117,6 +118,7 @@ function mkPoint(id, state, nodeViews) {
   let { view = "", pos } = state
   let effView = view != "" ? view : (nodeViews?[id] ?? defaultPointView)
   let { image, color } = getMapPointsPresentation(effView).unlocked
+  let offset = getPointOffset(effView)
   let isSelected = Computed(@() selectedPointId.get() == id)
   let sizeExt = Computed(@() evenPx(pointViewSize(id, view, nodeViews, pagePointSizes.get())))
   let posExt = Computed(@() (isSelected.get() ? transformInProgress.get()?.pos : null)
@@ -127,16 +129,17 @@ function mkPoint(id, state, nodeViews) {
     return {
       watch = [posExt, sizeExt]
       pos = posExt.get()
-      size = [size, size]
+      size
       children = @() {
         key = id
         watch = isSelected
         size = FLEX
         children = [
           {
-            size = [size, size]
+            size
+            pos = [offset[0] * size, offset[1] * size]
             rendObj = ROBJ_IMAGE
-            image = Picture($"{image}:{size}:{size}:P")
+            image = Picture($"{image}:{size}:P")
             color
             keepAspect = true
           }
@@ -206,21 +209,20 @@ let mapBackground = @() {
   keepAspect = true
 }
 
-function mkMidpoint(pRel, idx, mapSize) {
-  let isSelected = Computed(@() selectedMidpointIdx.get() == idx)
+function mkMarker(isSelected, key, pRel, mapSize, unselColor) {
   let posExt = Computed(@()
     (!isSelected.get() ? null
       : transformInProgress.get()?.pos.map(@(v, a) v - hdpx(pageMapSize.get()[a]) / 2))
     ?? [pw(100.0 * (pRel[0].tofloat() / mapSize[0] - 0.5)), ph(100.0 * (pRel[1].tofloat() / mapSize[1] - 0.5))])
   return @() {
     watch = [isSelected, posExt]
-    key = getElemKey(idx, ELEM_MIDPOINT)
+    key
     size = [midpointSize, midpointSize]
     pos = posExt.get()
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     rendObj = ROBJ_VECTOR_CANVAS
-    color = isSelected.get() ? editorSelLineColor : lineColor
+    color = isSelected.get() ? selMarkerColor : unselColor
     fillColor = 0x00202020
     lineWidth = hdpx(6)
     commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
@@ -230,18 +232,30 @@ function mkMidpoint(pRel, idx, mapSize) {
 let mapMidpoints = @() {
   watch = [selectedLineMidpoints, pageMapSize]
   size = FLEX
-  children = selectedLineMidpoints.get().map(@(p, i) mkMidpoint(p, i, pageMapSize.get()))
+  children = selectedLineMidpoints.get().map(@(p, i) mkMarker(Computed(@() selectedMidpointIdx.get() == i),
+    getElemKey(i, ELEM_MIDPOINT), p, pageMapSize.get(), lineColor))
+}
+
+let mapLineEnds = @() {
+  watch = [selectedLineEnds, pageMapSize]
+  size = FLEX
+  children = selectedLineEnds.get().map(@(e) mkMarker(Computed(@() selectedLineEndId.get() == e.id),
+    getElemKey(e.id, ELEM_LINE_END), e.pos, pageMapSize.get(), selPointColor))
 }
 
 function selectedLine(lines, points, size) {
-  let selMidpointPos = Computed(@() selectedMidpointIdx.get() == null ? null
-    : transformInProgress.get()?.pos.map(@(v, a) v.tofloat() * size[a] / hdpx(size[a])))
+  let dragMapPos = Computed(@() transformInProgress.get()?.pos.map(@(v, a) v.tofloat() * size[a] / hdpx(size[a])))
   return function() {
     local line = lines?[selectedLineIdx.get()]
-    if (selMidpointPos.get() != null && selectedMidpointIdx.get() in line?.midpoints) {
+    let dragPos = dragMapPos.get()
+    let midIdx = selectedMidpointIdx.get()
+    let endId = selectedLineEndId.get()
+    if (dragPos != null && midIdx != null && midIdx in line?.midpoints) {
       line = line.__merge({ midpoints = clone line.midpoints })
-      line.midpoints[selectedMidpointIdx.get()] = selMidpointPos.get()
+      line.midpoints[midIdx] = dragPos
     }
+    if (dragPos != null && endId != null && line != null)
+      line = line.__merge({ [endId == "from" ? "fromPos" : "toPos"] = dragPos })
     let commands = line == null ? null
       : pageLineType.get() == LINE_SOLID ? mkSolidLineCmds(line, points, size)
       : mkLineCmds(line, points, size, pageLineSectionLen.get())
@@ -249,7 +263,8 @@ function selectedLine(lines, points, size) {
       return { watch = selectedLineIdx }
 
     return {
-      watch = [selectedLineIdx, selectedMidpointIdx, selMidpointPos, pageLineSectionLen, pageLineWidth, pageLineType]
+      watch = [selectedLineIdx, selectedMidpointIdx, selectedLineEndId, dragMapPos,
+        pageLineSectionLen, pageLineWidth, pageLineType]
       size = FLEX
       rendObj = ROBJ_VECTOR_CANVAS
       commands = mkLineCmdsOutline(commands, hdpx(pageLineWidth.get()) + 2 * hdpxi(1), editorSelLineColor)
@@ -259,8 +274,10 @@ function selectedLine(lines, points, size) {
 
 function mapLines() {
   let points = tuningPoints.get()
-  let lineSplines = pageLines.get().map(@(line) { line, spline = buildLineSpline(line, points) })
-  let mkCommands = lineTypeCtors?[pageLineType.get()] ?? lineTypeCtors[LINE_DASHED]
+  let lineType = pageLineType.get()
+  let mkCommands = lineTypeCtors?[lineType] ?? lineTypeCtors[LINE_DASHED]
+  let needSpline = lineType != LINE_SOLID
+  let lineSplines = pageLines.get().map(@(line) { line, spline = needSpline ? buildLineSpline(line, points) : null })
 
   return {
     watch = [pageLines, tuningPoints, pageMapSize, pageLineSectionLen, pageRoundedDashes, pageLineType, pageLineWidth]
@@ -323,6 +340,7 @@ let mapContainer = {
         mapLines
         mapPoints
         mapMidpoints
+        mapLineEnds
         manipulator
       ]
     }

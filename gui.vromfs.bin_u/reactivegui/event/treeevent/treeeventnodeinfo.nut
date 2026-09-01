@@ -8,6 +8,7 @@ from "%rGui/event/treeEvent/treeEventState.nut" import curEventMapNodes, curEven
   getEventNodeType, getClusterQuests, NODE_QUESTS, NODE_REWARD, NODE_INTERMEDIATE, curEventMapStatus, isUnlocked,
   openedTreeEventId, eventMapNodeInProgress, isPurchased, isRewardsReceived, nodeViewTypes, pageStartNodes
 from "%rGui/event/treeEvent/treeEventUtils.nut" import VIEW_START, VIEW_REWARD, VIEW_QUESTS, VIEW_NEXT_PAGE
+from "%rGui/event/treeEvent/treeEventComps.nut" import mkLockIcon
 import "%rGui/components/buttonStyles.nut" as buttonStyles
 from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonInactive, textButtonPricePurchase
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp
@@ -63,7 +64,6 @@ let getNodeDesc = @(id, viewTypes) loc(nodeDescLocId?[viewTypes?[id]] ?? defNode
 let getNodeBlockedDesc = @(id, pageStarts) loc(pageStarts?[id]
   ? "treeEvent/nodeDesc/blockedStart"
   : "treeEvent/nodeDesc/blocked")
-let getNodeName = @(id, node) loc(node?.meta.lang_id ?? id)
 
 registerHandler("closeNodeInfoModal", @(res) res?.error == null ? selectedPointId.set(null) : null)
 
@@ -74,7 +74,7 @@ function openNodePurchase(id, eventId, node) {
   let { price, currencyId } = node
   let currencyFullId = currencyToFullIdOnlyActive.get()?[currencyId] ?? currencyId
   openMsgBoxPurchase({
-    text = loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, getNodeName(id, node)) })
+    text = loc("shop/needMoneyQuestion", { item = colorize(userlogTextColor, getNodeTitle(id, nodeViewTypes.get())) })
     price = { price, currencyId = currencyFullId }
     purchase = @() buy_event_map_node(eventId, id, currencyFullId, price, "closeNodeInfoModal")
     bqInfo = mkBqPurchaseInfo(PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, id)
@@ -135,12 +135,7 @@ let chainLockIcon = {
   size = btnSize
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  children = {
-    rendObj = ROBJ_IMAGE
-    size = questLockIconSize
-    image = Picture($"ui/gameuiskin#lock_icon.svg:{questLockIconSize}:P")
-    keepAspect = true
-  }
+  children = mkLockIcon(questLockIconSize)
 }
 
 let isChainReachable = @(q) q?.meta.chain_quest == null

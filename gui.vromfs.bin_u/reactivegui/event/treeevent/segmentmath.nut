@@ -35,15 +35,22 @@ function getClosestSegment(points, x, y) {
   return { dist, idx }
 }
 
+function getLineEndPoints(line, allPoints) {
+  let { from, to, fromPos = null, toPos = null } = line
+  return {
+    from = fromPos ?? allPoints?[from].pos
+    to = toPos ?? allPoints?[to].pos
+  }
+}
+
 function mkLineSplinePoints(line, allPoints) {
-  let { from, to, midpoints = [] } = line
-  let pFrom = allPoints?[from].pos
-  let pTo = allPoints?[to].pos
+  let { midpoints = [] } = line
+  let ends = getLineEndPoints(line, allPoints)
   let res = clone midpoints
-  if (pFrom != null)
-    res.insert(0, pFrom)
-  if (pTo != null)
-    res.append(pTo)
+  if (ends.from != null)
+    res.insert(0, ends.from)
+  if (ends.to != null)
+    res.append(ends.to)
   return res
 }
 
@@ -51,4 +58,5 @@ return {
   getDistToSegment
   getClosestSegment
   mkLineSplinePoints
+  getLineEndPoints
 }

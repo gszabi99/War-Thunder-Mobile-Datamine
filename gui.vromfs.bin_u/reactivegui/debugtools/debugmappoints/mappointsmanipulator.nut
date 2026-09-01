@@ -4,8 +4,9 @@ from "math" import abs
 from "%rGui/debugTools/debugMapPoints/comboActions.nut" import shiftActions
 from "%rGui/debugTools/debugMapPoints/mapEditorConsts.nut" import INC_AREA, START_MOVE_TIME_MSEC, MOVE_MIN_THRESHOLD
 from "%rGui/debugTools/debugMapPoints/mapEditorState.nut" import transformInProgress, applyTransformProgress,
-  tuningPoints, tuningBgElems, selectedElem, ELEM_POINT, ELEM_BG, ELEM_LINE, ELEM_MIDPOINT, selectElem, getElemKey,
-  pageLines, pageMapSize, isShiftPressed, selectedLineIdx, selectedLineMidpoints, scalableETypes
+  tuningPoints, tuningBgElems, selectedElem, ELEM_POINT, ELEM_BG, ELEM_LINE, ELEM_MIDPOINT, ELEM_LINE_END, selectElem,
+  getElemKey, pageLines, pageMapSize, isShiftPressed, selectedLineIdx, selectedLineMidpoints, selectedLineEnds,
+  scalableETypes
 from "%rGui/event/treeEvent/segmentMath.nut" import getClosestSegment, mkLineSplinePoints
 
 
@@ -14,7 +15,7 @@ const M_SCALE = "scale"
 
 let pointer = Watched(null)
 let emptyAABB = { l = 0, t = 0, r = 0, b = 0 }
-let isMovable = [ELEM_POINT, ELEM_BG, ELEM_MIDPOINT].reduce(@(res, v) res.$rawset(v, true), {})
+let isMovable = [ELEM_POINT, ELEM_BG, ELEM_MIDPOINT, ELEM_LINE_END].reduce(@(res, v) res.$rawset(v, true), {})
 
 let isHit = @(aabb, x, y) aabb.l <= x && aabb.r >= x && aabb.t <= y && aabb.b >= y
 let isHitInc = @(aabb, x, y) aabb.l - INC_AREA <= x && aabb.r + INC_AREA >= x
@@ -52,6 +53,7 @@ function findElemInScene(x, y, isNext, isFit = @(_) true) {
     return null
 
   let list = [].extend(
+    selectedLineEnds.get().map(@(e) { id = e.id, eType = ELEM_LINE_END, subId = selectedLineIdx.get() })
     selectedLineMidpoints.get().map(@(_, i) { id = i, eType = ELEM_MIDPOINT, subId = selectedLineIdx.get() })
     tuningPoints.get().reduce(@(acc, _, id) acc.append({ id, eType = ELEM_POINT }), []),
     tuningBgElems.get().map(@(_, i) { id = i, eType = ELEM_BG }),

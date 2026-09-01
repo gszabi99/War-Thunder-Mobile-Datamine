@@ -56,7 +56,7 @@ function isSeasonCurrent(unlock, seasons) {
   let season = seasons?[table] ?? -1
   return season >= 0
     && (start_index ?? season) <= season
-    && (end_index ?? season) <= season
+    && (end_index ?? season) >= season
 }
 
 let inactiveEventUnlocks = Computed(@() allUnlocksDesc.get()

@@ -14,7 +14,7 @@ function mkNodeView(artPrefix, artType) {
 
   return {
     locked = mkState(img, colorActive, 0.5)
-    unlocked = mkState(img)
+    unlocked = mkState(active)
     completed = mkState(img)
     finished = mkState(img)
     selected = mkState(active)

@@ -4,14 +4,14 @@ from "%sqstd/underscore.nut" import isEqual
 from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
 import "%rGui/event/treeEvent/mapNet.nut" as mapNet
 from "%rGui/event/treeEvent/treeEventComps.nut" import lineTypeCtors, LINE_DASHED, mkLinePresetColor,
-  mkPoint, mkBgElement, mkNodeMarkerPreview, buildLineSpline, splineCenter, resolveNodeView
+  mkPoint, mkBgElement, mkNodeMarkerPreview, buildLineSpline, splineCenter, resolveNodeView, mkLockIcon, isLineLocked
 from "%appGlobals/config/mapPointsPresentation.nut" import getPointLineStartOffset
 from "%rGui/event/treeEvent/treeEventNodeInfo.nut" import mkNodeInfoWnd
 from "%rGui/event/treeEvent/treeEventState.nut" import openedTreeEventId, curEventMapNodes,
   curPageBgElems, curPageBackground, curPageMapSize, selectedPointId, curPagePoints, nodeViews,
   curPageGridSize, curPageLines, curPageLineSectionLen, curPageRoundedDashes, curPageLineType, curPageLineWidth,
-  nodeStatusKind, pagesList, curPage, curPageResolved, NODE_LOCKED, NODE_RECEIVED,
-  curEventUnlocks
+  nodeStatusKind, pagesList, curPage, curPageResolved, NODE_RECEIVED,
+  curEventUnlocks, lockedPages
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/components/tabs.nut" import tabExtraWidth
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
@@ -253,7 +253,7 @@ function mapLineLocks() {
   let poses = []
   foreach (ls in curPageLineSplines.get()) {
     let { line } = ls
-    if ((kinds?[line.from] ?? NODE_LOCKED) != NODE_LOCKED || (kinds?[line.to] ?? NODE_LOCKED) != NODE_LOCKED)
+    if (!isLineLocked(line.from, line.to, kinds))
       continue
     let center = splineCenter(ls.spline)
     if (center == null)
@@ -264,14 +264,7 @@ function mapLineLocks() {
   return {
     watch = [nodeStatusKind, curPageLineSplines]
     size = FLEX
-    children = poses.map(@(pos) {
-      pos
-      size = lineLockSize
-      rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#lock_icon.svg:{lineLockSize}:P")
-      keepAspect = true
-      color = 0xFFA0A0A0
-    })
+    children = poses.map(@(pos) mkLockIcon(lineLockSize, { pos }))
   }
 }
 
@@ -310,18 +303,30 @@ function mapContainer(viewportSize) {
   }
 }
 
+let mkTabPageLock = @(page) @() {
+  watch = lockedPages
+  size = FLEX_H
+  halign = ALIGN_RIGHT
+  children = (lockedPages.get()?[page] ?? false) ? mkLockIcon(lineLockSize) : null
+}
+
 let mkTabLabel = @(page) {
   size = FLEX
   halign = ALIGN_RIGHT
   valign = ALIGN_TOP
-  children = {
-    size = FLEX_H
-    rendObj = ROBJ_TEXTAREA
-    behavior = [Behaviors.TextArea, Behaviors.Marquee]
-    halign = ALIGN_RIGHT
-    color = 0xFFFFFFFF
-    text = loc("mainmenu/page", { page })
-  }.__update(fontTinyAccented)
+  flow = FLOW_VERTICAL
+  gap = hdpx(10)
+  children = [
+    {
+      size = FLEX_H
+      rendObj = ROBJ_TEXTAREA
+      behavior = [Behaviors.TextArea, Behaviors.Marquee]
+      halign = ALIGN_RIGHT
+      color = 0xFFFFFFFF
+      text = loc("mainmenu/page", { page })
+    }.__update(fontTinyAccented)
+    mkTabPageLock(page)
+  ]
 }
 
 let mkTabsVerticalPannableArea = verticalPannableAreaCtor(

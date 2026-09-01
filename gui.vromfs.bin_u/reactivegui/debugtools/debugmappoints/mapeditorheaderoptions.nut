@@ -399,9 +399,10 @@ let lineSettingContent = @() modalBg.__merge({
       : mkTextOptionBtn("Line dashes",
           @() addModalWindowWithHeader(LINE_DASH_SETTING_WND, "Change line dash frequency", lineDashSettingContent),
           { size = [FLEX, optionBtnSize] })
-    mkTextOptionBtn("Line ends: round / square",
-      @() changeCurPageField("roundedDashes", !pageRoundedDashes.get()),
-      { size = [FLEX, optionBtnSize] })
+    pageLineType.get() == LINE_SOLID ? null
+      : mkTextOptionBtn("Line ends: round / square",
+          @() changeCurPageField("roundedDashes", !pageRoundedDashes.get()),
+          { size = [FLEX, optionBtnSize] })
     mkTextOptionBtn("Line width",
       @() addModalWindowWithHeader(LINE_WIDTH_SETTING_WND, "Change line width", lineWidthSettingContent),
       { size = [FLEX, optionBtnSize] })

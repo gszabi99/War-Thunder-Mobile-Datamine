@@ -23,10 +23,11 @@ const splineTension = -0.5
 const linePeriod = lineDashSections + lineSpaceSections
 const minBgElemSizeSqForComplexView = hdpx(200) * hdpx(200)
 const completedIconSize = evenPx(40)
+const defNodeCompletedIconSize = evenPx(30)
 
 const editorSelLineColor = 0xC01860C0
 const lineToCompletedColor = 0xFF7FAEFF
-const lineToUnlockedColor = 0x80405780
+const lineToUnlockedColor = 0xFF7FAEFF
 const lineToLockedColor = 0x33192333
 
 const defOutlineColor = 0x80000000
@@ -47,15 +48,26 @@ let variantFieldByKind = {
   [NODE_LOCKED] = "locked",
 }
 
-let completedMark = {
-  size = completedIconSize
-  pos = const [hdpx(4), -hdpx(4)]
+let mkCompletedMark = @(size) {
+  size
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#daily_mark_claimed.avif:{completedIconSize}:P")
+  image = Picture($"ui/gameuiskin#check.svg:{size}:P")
   keepAspect = true
 }
+
+let completedMarkSizeFor = @(effView) effView == defaultPointView
+  ? defNodeCompletedIconSize
+  : completedIconSize
+
+let mkLockIcon = @(size, ovr = {}) {
+  size
+  rendObj = ROBJ_IMAGE
+  image = Picture($"ui/gameuiskin#lock_icon.svg:{size}:P")
+  keepAspect = true
+  color = 0xFFFFFFFF
+}.__update(ovr)
 
 let rewardPlateBase = getRewardPlateSize(1, REWARD_STYLE_VERY_TINY)
 
@@ -88,7 +100,7 @@ function getPointState(id) {
 let mkRewardPlate = @(r, rStyle) {
   transform = {}
   children = [
-    mkRewardPlateBg(r, rStyle)
+    mkRewardPlateBg(r, rStyle, { padding = 0 })
     mkRewardPlateImage(r, rStyle.__merge({ iconShiftY = 0 })) 
   ]
 }
@@ -100,6 +112,7 @@ function mkNodeMarkerLayers(node, sizePx, marker, isCompleted, imgOffset) {
   let reward = rewards.findvalue(@(r) (r?.slots ?? 1) == 1)
   let plateScale = sizePx.tofloat() * 0.6 / rewardPlateBase[0]
   let questsIconSize = sizePx / 2
+  let iconOpacity =  isCompleted ? 0.5 : opacity
 
   return [
     {
@@ -117,7 +130,7 @@ function mkNodeMarkerLayers(node, sizePx, marker, isCompleted, imgOffset) {
           size = sizePx
           hplace = ALIGN_CENTER
           vplace = ALIGN_CENTER
-          opacity = isCompleted ? 0.5 : 1
+          opacity = iconOpacity
           children = {
             size = rewardPlateBase
             hplace = ALIGN_CENTER
@@ -130,7 +143,7 @@ function mkNodeMarkerLayers(node, sizePx, marker, isCompleted, imgOffset) {
       ? null
       : {
           size = questsIconSize
-          opacity = isCompleted ? 0.5 : 1
+          opacity = iconOpacity
           hplace = ALIGN_CENTER
           vplace = ALIGN_CENTER
           rendObj = ROBJ_IMAGE
@@ -150,7 +163,7 @@ function mkNodeMarkerPreview(node, effView, box, isCompleted = false) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = mkNodeMarkerLayers(node, sizePx, presentation.selected, isCompleted, getPointOffset(effView))
-      .append(!isCompleted ? null : completedMark)
+      .append(!isCompleted ? null : mkCompletedMark(completedMarkSizeFor(effView)))
   }
 }
 
@@ -193,7 +206,7 @@ function mkPoint(state) {
               vplace = ALIGN_CENTER
               children = mkSpinner(sizePx / 2)
             },
-        !isCompleted ? null : completedMark)
+        !isCompleted ? null : mkCompletedMark(completedMarkSizeFor(effView)))
     }
   }
 }
@@ -224,16 +237,22 @@ function mkBgElement(state) {
 let lineKindRank = [NODE_LOCKED, NODE_AVAILABLE, NODE_PURCHASED, NODE_RECEIVED]
   .reduce(@(res, v, i) res.$rawset(v, i), {})
 
-function mkLinePresetColor(fromId, toId, statusKinds) {
+function getLineKind(fromId, toId, statusKinds) {
   let kindFrom = statusKinds?[fromId] ?? NODE_LOCKED
   let kindTo = statusKinds?[toId] ?? NODE_LOCKED
-  let kind = (lineKindRank?[kindFrom] ?? 0) <= (lineKindRank?[kindTo] ?? 0) ? kindFrom : kindTo
+  return (lineKindRank?[kindFrom] ?? 0) <= (lineKindRank?[kindTo] ?? 0) ? kindFrom : kindTo
+}
+
+function mkLinePresetColor(fromId, toId, statusKinds) {
+  let kind = getLineKind(fromId, toId, statusKinds)
   return [VECTOR_COLOR,
     (kind == NODE_PURCHASED || kind == NODE_RECEIVED) ? lineToCompletedColor
       : kind == NODE_AVAILABLE ? lineToUnlockedColor
       : lineToLockedColor
   ]
 }
+
+let isLineLocked = @(fromId, toId, statusKinds) getLineKind(fromId, toId, statusKinds) == NODE_LOCKED
 
 function buildLineSpline(line, points) {
   let all = mkLineSplinePoints(line, points)
@@ -358,11 +377,13 @@ return {
   mkLineCmdsOutline
   lineTypeCtors
   mkLinePresetColor
+  isLineLocked
   buildLineSpline
   splineCenter
   mkPoint
   mkNodeMarkerPreview
   mkBgElement
+  mkLockIcon
   resolveNodeView
 
   LINE_DASHED

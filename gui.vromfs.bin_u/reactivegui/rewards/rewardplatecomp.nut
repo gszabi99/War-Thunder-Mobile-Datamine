@@ -63,7 +63,7 @@ let iconBase = {
   keepAspect = true
 }
 
-let mkRewardPlateBgImpl = @(size, bgImg) {
+let mkRewardPlateBgImpl = @(size, bgImg, ovr = {}) {
   size
   rendObj = ROBJ_BOX
   fillColor = 0xFFB9B9B9
@@ -80,7 +80,7 @@ let mkRewardPlateBgImpl = @(size, bgImg) {
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#{bgImg}")
     }
-  }
+  }.__update(ovr)
 }
 
 let mkCommonLabelText = @(text, rStyle) {
@@ -868,8 +868,8 @@ function mkRewardPlateUnknownImage(r, rStyle) {
 
 
 
-let mkRewardPlateBg = @(r, rStyle)
-  mkRewardPlateBgImpl(getRewardPlateSize(r.slots, rStyle), "offer_item_slot_bg.avif")
+let mkRewardPlateBg = @(r, rStyle, ovr = {})
+  mkRewardPlateBgImpl(getRewardPlateSize(r.slots, rStyle), "offer_item_slot_bg.avif", ovr)
 
 let mkRewardPlateBgVip = @(r, rStyle)
   mkRewardPlateBgImpl(getRewardPlateSize(r.slots, rStyle), "offer_item_slot_bg_vip.avif")

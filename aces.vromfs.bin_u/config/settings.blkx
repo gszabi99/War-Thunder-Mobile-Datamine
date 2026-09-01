@@ -2674,11 +2674,20 @@
                   "G72"
                 ],
                 "driverMinVer0": 38,
-                "driverMinVer1": 1,
-                "driverMaxVer0": 38,
-                "driverMaxVer1": 1,
+                "driverMinVer1": 0,
+                "driverMaxVer0": 42,
+                "driverMaxVer1": 0,
                 "data": {
                   "VK_KHR_buffer_device_address": false,
+                  "VK_EXT_extended_dynamic_state": false
+                }
+              },
+              {
+                "driverMinVer0": 38,
+                "driverMinVer1": 0,
+                "driverMaxVer0": 42,
+                "driverMaxVer1": 0,
+                "data": {
                   "VK_EXT_extended_dynamic_state": false
                 }
               }
