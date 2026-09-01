@@ -83,7 +83,6 @@ let presentations = {
   }
   season_37_main_event = {
     icon = "ui/gameuiskin#icon_event_april_2025.svg"
-    bg = "ui/images/bg_main.avif"
     mapSceneBg = "ui/images/event_s37_background.avif"
     bgMap = {
       image = "ui/images/event_s37_monitor.avif"

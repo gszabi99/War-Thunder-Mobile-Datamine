@@ -2660,7 +2660,7 @@
             "entry": [
               {
                 "driverMinVer0": 38,
-                "driverMaxVer0": 42,
+                "driverMaxVer0": 49,
                 "data": {
                   "VK_EXT_extended_dynamic_state": false
                 }
@@ -2671,7 +2671,7 @@
                   "G72"
                 ],
                 "driverMinVer0": 38,
-                "driverMaxVer0": 42,
+                "driverMaxVer0": 49,
                 "data": {
                   "VK_KHR_buffer_device_address": false,
                   "VK_EXT_extended_dynamic_state": false
@@ -2692,7 +2692,7 @@
                   "G57",
                   "G52"
                 ],
-                "driverMinVer0": 43,
+                "driverMinVer0": 50,
                 "data": {
                   "VK_KHR_buffer_device_address": false
                 }

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/string.nut" import utf8ToUpper
 import "%appGlobals/config/currencyGoodsPresentation.nut" as getCurrencyGoodsPresentation
-from "%appGlobals/config/currencyPresentation.nut" import getCurrencyConvertInfo
+from "%appGlobals/config/currencyPresentation.nut" import getCurrencyConvertInfo, getCurrencyLoc
 from "%appGlobals/pServer/seasonCurrencies.nut" import mkCurrencyFullId, currencyToFullId, sortByCurrencyId,
   currencySeasons
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
@@ -224,13 +224,16 @@ function mkEventCurrenciesGoods() {
 }
 
 let buyEventCurrenciesHeader = @() {
-  watch = [currencyId, parentEventLoc]
+  watch = [currencyId, currencyToFullId, parentEventLoc]
   size = FLEX_V
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  text = utf8ToUpper(loc($"events/buyCurrency/{currencyId.get()}", { name = parentEventLoc.get() }))
+  text = currencyId.get() == null ? ""
+    : utf8ToUpper(getCurrencyLoc("events/buyCurrency",
+        currencyToFullId.get()?[currencyId.get()] ?? currencyId.get(),
+        { name = parentEventLoc.get() }))
 }.__update(fontBig)
 
 let hasLootboxesForConvertion = @(cId, inactLootboxes, servConfigs) !!servConfigs?.lootboxesCfg

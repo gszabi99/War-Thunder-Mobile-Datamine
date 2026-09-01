@@ -90,6 +90,14 @@ let nodeViewTypes = Computed(@() getTreeNodeViewTypes(curEventMapNodes.get()))
 let nodeViews = Computed(@() composeNodeViews(nodeViewTypes.get(), openedTreeEventId.get()))
 let pageStartNodes = Computed(@() getNodePageStarts(curEventMapNodes.get()))
 
+let startNodeIds = Computed(function() {
+  let res = clone pageStartNodes.get()
+  foreach (id, node in curEventMapNodes.get())
+    if (node?.isStart)
+      res[id] <- true
+  return res
+})
+
 let isUnlocked = @(status) ((status ?? 0) & NS_UNLOCKED) != 0
 let isPurchased = @(status) ((status ?? 0) & NS_PURCHASED) != 0
 let isRewardsReceived = @(status) ((status ?? 0) & NS_REWARDS_RECEIVED) != 0
@@ -195,6 +203,7 @@ return {
   nodeViews
   nodeViewTypes
   pageStartNodes
+  startNodeIds
   nodeStatusKind
   lockedPages
   NODE_QUESTS

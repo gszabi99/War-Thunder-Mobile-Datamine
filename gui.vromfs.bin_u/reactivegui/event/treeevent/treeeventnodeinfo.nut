@@ -24,12 +24,11 @@ from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/gradients.nut" import mkColoredGradientY
 from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, sortRewardsViewInfo
 from "%rGui/components/scrollbar.nut" import makeVertScroll
-from "%rGui/components/modalWnd.nut" import modalWndHeaderWithClose
+from "%rGui/components/modalWnd.nut" import modalWndHeaderWithClose, wndHeaderHeight
 from "%rGui/shop/bqPurchaseInfo.nut" import mkBqPurchaseInfo, PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
 from "%rGui/style/stdColors.nut" import userlogTextColor
 from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideX, gradTexSize
-from "%rGui/components/gradientDefComps.nut" import headerHeightInSafeArea, headerMargin
 
 
 const infoPanelWidth = hdpx(550)
@@ -39,8 +38,7 @@ const purchaseBtnPadding = [hdpx(16), 0, hdpx(20), 0]
 let bgNodeCardGrad = mkColoredGradientY(0xFF304453, 0xFF030C13)
 let nodeInfoPanelSize = [infoPanelWidth, SIZE_TO_CONTENT]
 
-let questScrollMaxHeight = saSize[1] - headerHeightInSafeArea - headerMargin
-  - buttonStyles.defButtonHeight - purchaseBtnPadding[0] - purchaseBtnPadding[2]
+let questScrollMaxHeight = saSize[1] - wndHeaderHeight - buttonStyles.defButtonHeight
 let lineGradientHor = mkBitmapPicture(4, gradTexSize, mkGradientCtorDoubleSideX(0, 0x80777777, 0.25))
 
 const defNodeTitleLocId = "treeEvent/nodeTitle/point"
@@ -200,14 +198,17 @@ function mkQuestsInfo(title, node, id) {
   if (clusterId == null)
     return null
 
-  return mkNodeInfoPanel(title, id, {
+  let nodeStatus = nodeStatusById(id)
+  return mkNodeInfoPanel(title, id, @() {
+    watch = [nodeStatus, pageStartNodes]
     size = [questPopupWidth, SIZE_TO_CONTENT]
     children = makeVertScroll({
       size = [questPopupWidth, SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
       padding = hdpx(20)
       gap = separator
-      children = getClusterQuests(clusterId).keys().sort().map(mkQuestRow)
+      children = getClusterQuests(clusterId).keys().sort().map(mkQuestRow).extend(isUnlocked(nodeStatus.get()) ? []
+        : [mkText(getNodeBlockedDesc(id, pageStartNodes.get()), { hplace = ALIGN_CENTER }.__update(fontTiny))])
     }, { size = SIZE_TO_CONTENT, maxHeight = questScrollMaxHeight, isBarOutside = true })
   })
 }

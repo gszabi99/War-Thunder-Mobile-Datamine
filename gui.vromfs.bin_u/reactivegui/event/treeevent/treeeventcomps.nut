@@ -8,7 +8,7 @@ from "%rGui/event/treeEvent/treeEventUtils.nut" import lineSectionLen, lineOutli
   LINE_DASHED, LINE_SOLID
 from "%rGui/event/treeEvent/treeEventState.nut" import curEventMapNodes, curEventMapStatus, selectedPointId,
   getEventNodeType, nodeStatusKind, nodeViews, curPagePointSizes, eventMapNodeInProgress, isRewardsReceived,
-  NODE_QUESTS, NODE_REWARD, NODE_LOCKED, NODE_AVAILABLE, NODE_PURCHASED, NODE_RECEIVED, isPurchased
+  NODE_QUESTS, NODE_REWARD, NODE_LOCKED, NODE_AVAILABLE, NODE_PURCHASED, NODE_RECEIVED, isPurchased, startNodeIds
 from "%rGui/components/spinner.nut" import mkSpinner
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_VERY_TINY
@@ -153,7 +153,7 @@ function mkNodeMarkerLayers(node, sizePx, marker, isCompleted, imgOffset) {
   ]
 }
 
-function mkNodeMarkerPreview(node, effView, box, isCompleted = false) {
+function mkNodeMarkerPreview(node, effView, box, isCompleted = false, isStart = false) {
   let presentation = getMapPointsPresentation(effView)
   let sizePx = (box.r - box.l + 0.5).tointeger()
 
@@ -163,7 +163,8 @@ function mkNodeMarkerPreview(node, effView, box, isCompleted = false) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = mkNodeMarkerLayers(node, sizePx, presentation.selected, isCompleted, getPointOffset(effView))
-      .append(!isCompleted ? null : mkCompletedMark(completedMarkSizeFor(effView)))
+      .append((!isCompleted || isStart) ? null
+        : mkCompletedMark(completedMarkSizeFor(effView)))
   }
 }
 
@@ -179,9 +180,10 @@ function mkPoint(state) {
     let marker = isSelected.get() ? presentation.selected : variant
     let sizePx = evenPx(curPagePointSizes.get()?[effView] ?? getDefaultPointSize(effView))
     let isCompleted = curKind == NODE_RECEIVED
+    let isStart = startNodeIds.get()?[id] ?? false
 
     return {
-      watch = [kind, isSelected, node, nodeViews, curPagePointSizes, isNodeInProgress, hasUnseenReward]
+      watch = [kind, isSelected, node, nodeViews, curPagePointSizes, isNodeInProgress, hasUnseenReward, startNodeIds]
       key = id
       pos = pos.map(@(v) hdpx(v) - sizePx / 2)
       size = sizePx
@@ -206,7 +208,8 @@ function mkPoint(state) {
               vplace = ALIGN_CENTER
               children = mkSpinner(sizePx / 2)
             },
-        !isCompleted ? null : mkCompletedMark(completedMarkSizeFor(effView)))
+        (!isCompleted || isStart) ? null
+          : mkCompletedMark(completedMarkSizeFor(effView)))
     }
   }
 }
@@ -236,11 +239,20 @@ function mkBgElement(state) {
 
 let lineKindRank = [NODE_LOCKED, NODE_AVAILABLE, NODE_PURCHASED, NODE_RECEIVED]
   .reduce(@(res, v, i) res.$rawset(v, i), {})
+let rankOf = @(kind) lineKindRank?[kind] ?? 0
+let boughtRank = lineKindRank[NODE_PURCHASED]
 
 function getLineKind(fromId, toId, statusKinds) {
   let kindFrom = statusKinds?[fromId] ?? NODE_LOCKED
   let kindTo = statusKinds?[toId] ?? NODE_LOCKED
-  return (lineKindRank?[kindFrom] ?? 0) <= (lineKindRank?[kindTo] ?? 0) ? kindFrom : kindTo
+  let rankFrom = rankOf(kindFrom)
+  let rankTo = rankOf(kindTo)
+  if (rankFrom >= boughtRank && rankTo >= boughtRank)
+    return NODE_PURCHASED
+  let kindLess = rankFrom <= rankTo ? kindFrom : kindTo
+  if ((rankFrom >= boughtRank || rankTo >= boughtRank) && kindLess == NODE_AVAILABLE)
+    return NODE_AVAILABLE
+  return NODE_LOCKED
 }
 
 function mkLinePresetColor(fromId, toId, statusKinds) {

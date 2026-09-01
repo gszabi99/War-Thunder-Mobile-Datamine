@@ -1,5 +1,5 @@
 from "%globalScripts/logs.nut" import *
-from "dagor.localize" import loc
+from "dagor.localize" import loc, doesLocTextExist
 from "math" import max
 from "%sqstd/functools.nut" import memoize
 from "%sqstd/string.nut" import isStringInteger
@@ -150,6 +150,12 @@ let getCurrencyBigIcon = @(id) id in bigIcons ? bigIcons[id]
   : getCurrencyImage(id)
 let getCurrencyConvertInfo = @(targetCurrency) loc(currencyConvertInfo?[targetCurrency] ?? currencyConvertInfo?[""])
 
+function getCurrencyLoc(keyPrefix, id, params = null) {
+  let key = doesLocTextExist($"{keyPrefix}/{id}") ? $"{keyPrefix}/{id}"
+    : $"{keyPrefix}/{getBaseCurrency(id)}"
+  return params == null ? loc(key) : loc(key, params)
+}
+
 return {
   getIconSize
   currencyIconsColor
@@ -158,6 +164,7 @@ return {
   getCurrencyBigIcon
   maxIconsScale
   getCurrencyConvertInfo
+  getCurrencyLoc
   getBaseCurrency
   getSeasonStr
 }

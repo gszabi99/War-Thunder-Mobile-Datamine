@@ -67,8 +67,6 @@ let getRoseCenter = @(rose) rose == null ? [0, 0] : rose.pos.map(@(v, a) v + ros
 
 let mapNet = @(mapSize, cellSize, bgElems) {
   size = FLEX
-  rendObj = ROBJ_MASK
-  image = Picture("ui/images/pirates/mapGridNoise.avif")
   children = function() {
     let rose = bgElems.get().findvalue(@(b) b.id == "compass_rose")
     return {

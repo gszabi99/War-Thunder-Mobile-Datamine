@@ -10,8 +10,8 @@ from "%rGui/event/treeEvent/treeEventNodeInfo.nut" import mkNodeInfoWnd
 from "%rGui/event/treeEvent/treeEventState.nut" import openedTreeEventId, curEventMapNodes,
   curPageBgElems, curPageBackground, curPageMapSize, selectedPointId, curPagePoints, nodeViews,
   curPageGridSize, curPageLines, curPageLineSectionLen, curPageRoundedDashes, curPageLineType, curPageLineWidth,
-  nodeStatusKind, pagesList, curPage, curPageResolved, NODE_RECEIVED,
-  curEventUnlocks, lockedPages
+  nodeStatusKind, pagesList, curPage, curPageResolved, NODE_RECEIVED, NODE_QUESTS, getEventNodeType,
+  curEventUnlocks, lockedPages, startNodeIds
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/components/tabs.nut" import tabExtraWidth
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
@@ -123,7 +123,9 @@ function nodeInfoBlock() {
   return {
     watch = [focusedNodeId, curEventMapNodes]
     size = FLEX
-    padding = nodeInfoWndPadding
+    padding = node != null && getEventNodeType(node) == NODE_QUESTS
+      ? saBordersRv
+      : nodeInfoWndPadding
     vplace = ALIGN_BOTTOM
     halign = ALIGN_LEFT
     children = node == null
@@ -138,7 +140,7 @@ function nodeInfoBlock() {
 }
 
 function nodeFocusContent() {
-  let watch = [focusedNodeId, curEventMapNodes, focusGeom, nodeStatusKind, focusedNodeEffView]
+  let watch = [focusedNodeId, curEventMapNodes, focusGeom, nodeStatusKind, focusedNodeEffView, startNodeIds]
   let id = focusedNodeId.get()
   let node = id != null ? curEventMapNodes.get()?[id] : null
   if (node == null)
@@ -147,6 +149,7 @@ function nodeFocusContent() {
   let effView = focusedNodeEffView.get()
   let curKind = nodeStatusKind.get()?[id]
   let isCompleted = curKind == NODE_RECEIVED
+  let isStart = startNodeIds.get()?[id] ?? false
   let { nodeBox, showNode } = focusGeom.get()
   return {
     watch
@@ -158,7 +161,8 @@ function nodeFocusContent() {
         color = modalOverlayShadeColor
         animations = wndSwitchAnim
       }
-      !showNode ? null : mkNodeMarkerPreview(node, effView, nodeBox, isCompleted)
+      !showNode ? null
+        : mkNodeMarkerPreview(node, effView, nodeBox, isCompleted, isStart)
       focusLines
       nodeInfoBlock
     ]
