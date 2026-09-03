@@ -101,7 +101,7 @@
       200.0,
       1000.0
     ],
-    "maxDeltaAngle": 2.5,
+    "maxDeltaAngle": 1.3,
     "explosionEffect": "explosion_midair_tiny",
     "groundCollisionEffect": "hit_59_80mm_dirt_he",
     "ricochetEffect": "hit_59_80mm_metal_ap",

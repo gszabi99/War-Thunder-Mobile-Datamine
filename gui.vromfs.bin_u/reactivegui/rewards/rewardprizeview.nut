@@ -1,8 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
+import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/rewardType.nut" import *
 from "%rGui/components/modalWindows.nut" import removeModalWindow
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM, getRewardPlateSize
 from "%rGui/rewards/rewardsPreviewModal.nut" import openRewardsPreviewModal
+from "%rGui/rewards/rewardViewInfo.nut" import isRewardEmpty
 from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
 
 
@@ -48,19 +50,39 @@ let mkPrizeTicketsContent = @(content, style) {
   children = content
 }
 
-function openRewardPrizeView(rewards, rewardCtors) {
-  let mkRewardPlateImage = @(r, rStyle) (rewardCtors?[r?.rType] ?? rewardCtors.unknown).image(r, rStyle)
-  let mkRewardPlateTexts = @(r, rStyle) (rewardCtors?[r?.rType] ?? rewardCtors.unknown).texts(r, rStyle)
+function mkRewardReceivedMark(rStyle) {
+  let iconSize = 2 * (rStyle.boxSize * 0.3 + 0.5).tointeger()
+  return {
+    size = FLEX
+    rendObj = ROBJ_SOLID
+    color = 0x80000000
+    children = {
+      size = [iconSize, iconSize]
+      pos = const [hdpx(10), -hdpx(10)]
+      rendObj = ROBJ_IMAGE
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      image = Picture($"ui/gameuiskin#daily_mark_claimed.avif:{iconSize}:{iconSize}")
+      keepAspect = true
+    }
+  }
+}
 
-  let mkRewardPlate = @(r, rStyle) {
+function mkRewardPlate(r, rStyle, rewardCtors) {
+  let isPurchased = Computed(@() isRewardEmpty([{ gType = r.rType }.__merge(r)], servProfile.get()))
+  return @() {
+    watch = isPurchased
     transform = {}
     children = [
-      mkRewardPlateBg(r, rStyle)
-      mkRewardPlateImage(r, rStyle)
-      mkRewardPlateTexts(r, rStyle)
+      mkRewardPlateBg(r, rStyle),
+      (rewardCtors?[r?.rType] ?? rewardCtors.unknown).image(r, rStyle),
+      (rewardCtors?[r?.rType] ?? rewardCtors.unknown).texts(r, rStyle),
+      isPurchased.get() ? mkRewardReceivedMark(rStyle) : null,
     ]
   }
+}
 
+function openRewardPrizeView(rewards, rewardCtors) {
   let content = rewards.map(@(reward) {
     function onClick() {
       mkPlateClickByType?[reward.rType](reward)
@@ -68,7 +90,7 @@ function openRewardPrizeView(rewards, rewardCtors) {
     }
     sound = { click = "click" }
     behavior = Behaviors.Button
-    children = mkRewardPlate(reward, REWARD_STYLE_MEDIUM)
+    children = mkRewardPlate(reward, REWARD_STYLE_MEDIUM, rewardCtors)
   })
 
   openRewardsPreviewModal(WND_UID, mkPrizeTicketsContent(content, REWARD_STYLE_MEDIUM), loc("events/prizesToChoose"))

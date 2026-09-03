@@ -78,6 +78,7 @@
       "explosiveType": "comp_b",
       "explosiveMass": 524.0,
       "maxDeltaAngle": 0.02,
+      "thrustDeviation": 0.01,
       "dragCx": 0.02,
       "spawnExplosionWreckage": false,
       "spawnExplosionFx": false,

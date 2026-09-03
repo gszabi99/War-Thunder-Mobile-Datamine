@@ -52,7 +52,7 @@
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
     "explosiveMass": 0.54,
-    "maxDeltaAngle": 2.5,
+    "maxDeltaAngle": 1.3,
     "dragCx": 0.003,
     "hitPowerMult": 1.0,
     "nearHitPower": [

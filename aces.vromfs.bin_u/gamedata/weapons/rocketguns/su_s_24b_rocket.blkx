@@ -102,7 +102,7 @@
     "ricochetEffect": "hit_59_80mm_metal_ap",
     "waterCollisionEffect": "hit_59_80mm_water",
     "explosionPatchRadius": 4.5,
-    "maxDeltaAngle": 0.0,
+    "maxDeltaAngle": 1.0,
     "fireEffect": "rocket_fire_dark_multiple",
     "smokeEffect": "",
     "hazeEffect": "haze_missile",

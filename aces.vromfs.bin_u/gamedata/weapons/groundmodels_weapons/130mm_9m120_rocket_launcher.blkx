@@ -67,6 +67,7 @@
     "waterCollisionEffect": "hit_59_80mm_water",
     "explosionPatchRadius": 3.4,
     "maxDeltaAngle": 0.02,
+    "thrustDeviation": 0.01,
     "maxDistance": 6000.0,
     "minDistance": 30.0,
     "mass": 33.5,

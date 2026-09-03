@@ -106,7 +106,7 @@
     "smokeEffect": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.2,
-    "maxDeltaAngle": 0.0,
+    "maxDeltaAngle": 1.0,
     "damage": {
       "explosive": {
         "offset": 0.3
