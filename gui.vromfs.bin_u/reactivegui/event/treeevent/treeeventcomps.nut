@@ -119,7 +119,7 @@ function mkNodeMarkerLayers(node, sizePx, marker, isCompleted, imgOffset) {
       size = sizePx
       pos = [imgOffset[0] * sizePx, imgOffset[1] * sizePx]
       rendObj = ROBJ_IMAGE
-      image = Picture($"{image}:{sizePx}:P")
+      image = Picture($"{image}:{sizePx}")
       color
       opacity
       keepAspect = true
@@ -153,6 +153,25 @@ function mkNodeMarkerLayers(node, sizePx, marker, isCompleted, imgOffset) {
   ]
 }
 
+let nodePulseAnimations = [
+  { prop = AnimProp.scale, from = [1, 1], to = [1.4, 1.4], duration = 2,
+    play = true, loop = true, globalTimer = true, easing = OutCubic }
+  { prop = AnimProp.opacity, from = 1, to = 0, duration = 2,
+    play = true, loop = true, globalTimer = true, easing = OutCubic }
+]
+
+let mkNodePulse = @(id, marker, sizePx, imgOffset) {
+  key = $"{id}_pulse"
+  size = sizePx
+  pos = [imgOffset[0] * sizePx, imgOffset[1] * sizePx]
+  rendObj = ROBJ_IMAGE
+  image = Picture($"{marker.image}:{sizePx}")
+  color = marker.color
+  keepAspect = true
+  transform = { pivot = [0.5, 0.5] }
+  animations = nodePulseAnimations
+}
+
 function mkNodeMarkerPreview(node, effView, box, isCompleted = false, isStart = false) {
   let presentation = getMapPointsPresentation(effView)
   let sizePx = (box.r - box.l + 0.5).tointeger()
@@ -181,6 +200,8 @@ function mkPoint(state) {
     let sizePx = evenPx(curPagePointSizes.get()?[effView] ?? getDefaultPointSize(effView))
     let isCompleted = curKind == NODE_RECEIVED && allQuestsDone.get()
     let isStart = startNodeIds.get()?[id] ?? false
+    let imgOffset = getPointOffset(effView)
+    let showPulse = curKind == NODE_RECEIVED && !allQuestsDone.get()
 
     return {
       watch = [kind, isSelected, node, nodeViews, curPagePointSizes, isNodeInProgress, hasUnseenReward, startNodeIds,
@@ -194,7 +215,9 @@ function mkPoint(state) {
       sound = { click = "click" }
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      children = mkNodeMarkerLayers(node.get(), sizePx, marker, isCompleted, getPointOffset(effView)).append(
+      children = mkNodeMarkerLayers(node.get(), sizePx, marker, isCompleted, imgOffset).append(
+        !showPulse ? null
+          : mkNodePulse(id, presentation.selected, sizePx, imgOffset),
         !hasUnseenReward.get() ? null
           : {
               size = sizePx

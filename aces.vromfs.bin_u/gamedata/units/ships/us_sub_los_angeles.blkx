@@ -470,7 +470,7 @@
   },
   "ShipPhys": {
     "floodControl": 0.005,
-    "minBuoyancyMult": 1.0,
+    "minBuoyancyMult": 0.33,
     "helmLimit": 1.0,
     "helmVerticalLimit": 0.0,
     "maxPitch": 0.0,
