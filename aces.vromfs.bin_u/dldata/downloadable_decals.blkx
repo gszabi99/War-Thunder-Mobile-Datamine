@@ -2718,5 +2718,21 @@
     "lod0": "xviupiv2puiuw63pufziv6jxvxnjvj2q-ecoi",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "ri7qnsjtkepmv6p7ssxjl6dlbcfusbh6-bfgq"
+  },
+  "s37_alien_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "4gbjokyh4asks3c4sntzxvaorhmfk6rs-fndi",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "5znyezzmon62y32pflaj75ncfhapc5yf-bqwq"
+  },
+  "s37_constellation_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "gc32jt43yxsra3zxgcsrgkraadifnjpm-fcli",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "bdetkfbyd3gqelib2peud5bvf43qxeoh-bn3a"
   }
 }

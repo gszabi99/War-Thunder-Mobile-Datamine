@@ -74,21 +74,23 @@ function getQuestSubSectionLocName(quest) {
 }
 
 function getQuestLocName(quest) {
-  let { achievement = false, tree_quest = false, lang_id = quest.name, masteryUnitName = null } = quest?.meta
+  let { achievement = false, tree_quest = false, lang_id = quest.name, masteryUnitName = null,
+    quests = null } = quest?.meta
   if (masteryUnitName != null)
     return ": ".join([
       getUnitName(masteryUnitName),
       loc($"mastery/task/{lang_id}")
     ])
-  let isHeaderDesc = achievement || tree_quest
+  let isHeaderDesc = achievement || tree_quest || quests != null
   return loc(isHeaderDesc ? $"{lang_id}/desc" : lang_id)
 }
 
 function getQuestLocDesc(quest) {
-  let { achievement = false, tree_quest = false, lang_id = quest.name, masteryUnitName = null } = quest?.meta
+  let { achievement = false, tree_quest = false, lang_id = quest.name, masteryUnitName = null,
+    quests = null } = quest?.meta
   if (masteryUnitName != null)
     return loc($"mastery/task/{lang_id}/desc", { amountTxt = decimalFormat(quest.required), amount = quest.required })
-  let isHeaderDesc = achievement || tree_quest
+  let isHeaderDesc = achievement || tree_quest || quests != null
   return isHeaderDesc ? "" : loc($"{lang_id}/desc")
 }
 

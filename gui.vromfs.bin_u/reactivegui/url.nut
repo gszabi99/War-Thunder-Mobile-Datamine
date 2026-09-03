@@ -13,7 +13,7 @@ from "%sqstd/string.nut" import clearBorderSymbols, lastIndexOf
 from "%sqstd/underscore.nut" import isEqual
 from "%appGlobals/loginState.nut" import isAuthorized
 from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
-from "%rGui/language.nut" import getShortName
+from "%rGui/language.nut" import gjNetLngId
 from "urlType.nut" import getUrlType
 from "types" import String
 
@@ -28,17 +28,11 @@ const URL_TAG_NO_ENCODING = "no_encoding"
 
 const AUTH_ERROR_LOG_COLLECTION = "log"
 
-let qrRedirectSupportedLangs = ["ru", "en", "fr", "de", "es", "pl", "cs", "pt", "ko", "tr"]
-const QR_REDIRECT_URL = "https://login.gaijin.net/{0}/qr/{1}"
+const QR_REDIRECT_URL = "https://login.gaijin.net/{lang}/qr/{encUrl}" 
 
 let isDebugSsoLogin = mkWatched(persist, "isDebugSsoLogin", false)
 
-function getUrlWithQrRedirect(url) {
-  local lang = getShortName()
-  if (!qrRedirectSupportedLangs.contains(lang))
-    lang = "en"
-  return QR_REDIRECT_URL.subst(lang, base64.encodeString(url))
-}
+let getUrlWithQrRedirect = @(url) QR_REDIRECT_URL.subst({ lang = gjNetLngId, encUrl = base64.encodeString(url) })
 
 let openUrlExternalImpl = @(url)
   shell_launch(!isDebugSsoLogin.get() ? url

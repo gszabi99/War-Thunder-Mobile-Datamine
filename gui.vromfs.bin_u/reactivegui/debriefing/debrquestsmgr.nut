@@ -19,8 +19,8 @@ let prevProgress = keepref(hardPersistWatched("prevProgress", null))
 function getTreeEventQuests() {
   let res = {}
   foreach (name, u in activeUnlocks.get()) {
-    let { event_id = null, tree_quest = false } = u?.meta
-    if (tree_quest && event_id != null) {
+    let { event_id = null, tree_quest = false, quests = null } = u?.meta
+    if ((tree_quest || quests != null) && event_id != null) {
       if (event_id not in res)
         res[event_id] <- {}
       res[event_id][name] <- u
@@ -75,7 +75,7 @@ let questProgressDiff = keepref(Computed(function(prev) {
   let res = {}
   foreach (section in {}.__merge(questsBySection.get(), getTreeEventQuests()))
     foreach (id, quest in section) {
-      let previous = prevValues?[id]
+      let previous = prevValues?[id] ?? (quest?.meta.quests != null ? 0 : null)
       if (previous != null && quest.current > previous) {
         let extraParams = { _previous = previous }
         let specialEventRewardUnitName = mkSpecialEventRewardUnitName(quest)

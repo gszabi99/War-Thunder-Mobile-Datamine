@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/string.nut" import utf8ToUpper
 import "%darg/helpers/mkTextRow.nut" as mkTextRow
-from "%appGlobals/legal.nut" import legalToApprove
+from "%rGui/legal.nut" import legalToApprove
 from "%appGlobals/loginState.nut" import isOpenedLegalWnd
 from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow

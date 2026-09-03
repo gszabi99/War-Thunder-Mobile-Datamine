@@ -12,6 +12,7 @@ from "%appGlobals/loginState.nut" import authTags, isLoginByGajin, isLoggedIn
 from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
 from "%appGlobals/permissions.nut" import can_link_to_gaijin_account
 from "%appGlobals/windowState.nut" import windowActive
+from "%rGui/language.nut" import gjNetLngId
 from "%rGui/contacts/contactLists.nut" import accountLink
 from "%rGui/contacts/contactsState.nut" import isContactsReceived
 from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
@@ -55,7 +56,7 @@ let needShowModalToRelogin = keepref(Computed(@() isInMenuNoModals.get()
 let openGuestEmailRegistrationImpl = @(stoken) eventbus_send("openUrl", {
   baseUrl = getCurCircuitOverride("guestLinkURL",
     "https://login.gaijin.net/{lang}/guest?stoken={stoken}") 
-      .subst({ lang = loc("current_lang"), stoken })
+      .subst({ lang = gjNetLngId, stoken })
 })
 
 eventbus_subscribe("onGetStokenForGuestEmail", function(msg) {
@@ -85,7 +86,7 @@ function reloginToLinkedEmail(needShowMsg = true) {
 
 function openVerifyEmail() {
   logGuest("Open verify message")
-  let url = getCurCircuitOverride("verifyEmailURL",$"https://store.gaijin.net/user.php?skin_lang={loc("current_lang")}")
+  let url = getCurCircuitOverride("verifyEmailURL",$"https://store.gaijin.net/user.php?skin_lang={gjNetLngId}")
   get_authenticated_url_sso(url, "", "", "onAuthenticatedUrlResult", object_to_json_string({ notAuthUrl = url }))
 }
 

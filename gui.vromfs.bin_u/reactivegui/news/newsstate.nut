@@ -15,6 +15,7 @@ from "%sqstd/platform.nut" import platformId
 from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath, getBlkValueByPath
 from "%appGlobals/loginState.nut" import isLoggedIn, isOnlineSettingsAvailable
 from "%appGlobals/pServer/campaign.nut" import sharedStats
+from "%rGui/language.nut" import wtmobLngId
 from "%rGui/components/modalWindows.nut" import hasModalWindows
 from "%rGui/mainMenu/mainMenuState.nut" import isMainMenuAttached
 from "types" import Integer, String
@@ -30,9 +31,7 @@ const MSEC_BETWEEN_REQUESTS = 600000
 const MIN_SESSIONS_TO_FORCE_SHOW = 5
 const EMPTY_PAGE_ID = -1
 
-
-
-let shortLang = loc("current_lang")
+let shortLang = wtmobLngId
 let newsPlatform = platformId == "android" ? "android" : "ios"
 let cfgId = get_cur_circuit_name().indexof("production") != null || get_cur_circuit_name().indexof("stable") != null
   ? "wtm_production" : "wtm_test"

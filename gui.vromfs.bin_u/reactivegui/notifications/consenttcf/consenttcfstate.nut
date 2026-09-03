@@ -14,6 +14,7 @@ from "%appGlobals/consent.nut" import isTcfConsentEnabled
 from "%appGlobals/loginState.nut" import isReadyForTcfConsent, isTcfConsentAllowLogin, TCF_CONSENT_ACCEPTED_SAVE_ID
 from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
 from "%appGlobals/permissions.nut" import request_firebase_consent_eu_only
+from "%rGui/language.nut" import iso639p1LngId
 from "%rGui/login/stateIDFA.nut" import isIdfaDenied
 from "%rGui/style/stdAnimations.nut" import WND_REVEAL
 from "types" import String
@@ -55,7 +56,7 @@ let PURPOSES_WITH_LEGITIMATE_INTEREST = [
   11, 
 ]
 
-let userLangId = loc("current_lang")
+let userLangId = iso639p1LngId
 const PRIVACY_CHOICES_SAVED_MONTHS = 13
 
 let isOpenForProfileWnd = mkWatched(persist, "isOpenForProfileWnd", false)

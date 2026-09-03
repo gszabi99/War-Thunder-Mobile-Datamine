@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%appGlobals/legal.nut" import PRIVACY_POLICY_URL
+from "%rGui/legal.nut" import PRIVACY_POLICY_URL
 from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkIntroButtons, mkTextarea,
   mkTextareaWithLinks, mkLink, openUrl, gapAbove, gapBelow, gapAboveAndBelow
 from "%rGui/notifications/consentTcf/consentTcfState.nut" import isOpenedPartners, isOpenedManage, totalPartners,

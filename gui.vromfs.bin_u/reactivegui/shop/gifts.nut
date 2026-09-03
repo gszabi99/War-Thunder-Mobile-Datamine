@@ -13,6 +13,7 @@ from "%appGlobals/pServer/pServerApi.nut" import check_purchases
 from "%appGlobals/queueState.nut" import isInQueue
 from "%appGlobals/timeToText.nut" import secondsToHoursLoc
 from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/language.nut" import gjNetLngId
 from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText
 from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
 from "%rGui/shop/httpRequest.nut" import requestData
@@ -42,7 +43,7 @@ let actualGifts = hardPersistWatched("gift.actualGifts", [])
 let resetRequestedFlag = @() isGiftInfoRequested.set(false)
 
 let createGiftRequestParams = @(action, giftId = null)
-  $"token={get_user_info().token}&act={action}&game=wtm&lang={loc("current_lang")}{giftId == null ? "" : $"&id={giftId}"}"
+  $"token={get_user_info().token}&act={action}&game=wtm&lang={gjNetLngId}{giftId == null ? "" : $"&id={giftId}"}"
 
 function makeGiftRequest(onSuccess, onFailure, action = GIFT_ACTION.INFO, giftId = null) {
   let giftsURL = get_network_block()?[get_cur_circuit_name()].giftsURL

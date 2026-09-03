@@ -65325,3 +65325,9 @@ global_amb_desert
 ../../skyquake/prog/scripts/wtm/game_pkg_dev
 game_pkg_dev
 selectTargetOnLockUp
+s37_alien_decal
+s37_constellation_decal
+4gbjokyh4asks3c4sntzxvaorhmfk6rs-fndi
+5znyezzmon62y32pflaj75ncfhapc5yf-bqwq
+gc32jt43yxsra3zxgcsrgkraadifnjpm-fcli
+bdetkfbyd3gqelib2peud5bvf43qxeoh-bn3a

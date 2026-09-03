@@ -7,7 +7,7 @@ from "math" import round
 from "%sqstd/platform.nut" import is_nswitch, is_ios
 from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
-from "%appGlobals/legal.nut" import TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL, FORGOT_PASSWORD_URL, REGISTER_URL
+from "%rGui/legal.nut" import TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL, FORGOT_PASSWORD_URL, REGISTER_URL
 from "%appGlobals/loginState.nut" import LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_APPLE, LT_FIREBASE, LT_VKID, LT_GUEST,
   LT_FACEBOOK, LT_NSWITCH, SST_MAIL, SST_UNKNOWN, availableLoginTypes, isLoginByGajin
 from "%rGui/components/buttonStyles.nut" import defButtonHeight, LOGIN_BTN

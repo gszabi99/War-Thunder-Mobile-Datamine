@@ -15,7 +15,7 @@ from "json" import parse_json
 from "statsd" import send_counter
 from "%sqstd/platform.nut" import is_ios, is_android
 from "%appGlobals/curCircuitOverride.nut" import isExternalOperator, getCurCircuitOverride
-from "%appGlobals/legal.nut" import FORGOT_PASSWORD_URL
+from "%rGui/legal.nut" import FORGOT_PASSWORD_URL
 from "%appGlobals/loginState.nut" import LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_FACEBOOK, LT_APPLE,
   LT_NSWITCH, LT_FIREBASE, LT_VKID, LT_GUEST, SST_MAIL, SST_GA, SST_GP, SST_UNKNOWN, curLoginType, authTags
 from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox

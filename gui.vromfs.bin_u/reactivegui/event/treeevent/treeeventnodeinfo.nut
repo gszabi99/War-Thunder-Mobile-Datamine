@@ -6,7 +6,8 @@ from "%appGlobals/pServer/pServerApi.nut" import registerHandler, buy_event_map_
 from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullIdOnlyActive
 from "%rGui/event/treeEvent/treeEventState.nut" import curEventMapNodes, curEventUnlocks, selectedPointId,
   getEventNodeType, getClusterQuests, NODE_QUESTS, NODE_REWARD, NODE_INTERMEDIATE, curEventMapStatus, isUnlocked,
-  openedTreeEventId, eventMapNodeInProgress, isPurchased, isRewardsReceived, nodeViewTypes, pageStartNodes
+  openedTreeEventId, eventMapNodeInProgress, isPurchased, isRewardsReceived, nodeViewTypes, pageStartNodes,
+  mkNodeAllQuestsDone
 from "%rGui/event/treeEvent/treeEventUtils.nut" import VIEW_START, VIEW_REWARD, VIEW_QUESTS, VIEW_NEXT_PAGE
 from "%rGui/event/treeEvent/treeEventComps.nut" import mkLockIcon
 import "%rGui/components/buttonStyles.nut" as buttonStyles
@@ -89,6 +90,7 @@ let separator = {
 function mkNodePurchaseBtn(id) {
   let node = nodeById(id)
   let nodeStatus = nodeStatusById(id)
+  let allQuestsDone = mkNodeAllQuestsDone(id)
 
   return function() {
     let n = node.get()
@@ -96,27 +98,33 @@ function mkNodePurchaseBtn(id) {
     let currencyId = n?.currencyId ?? ""
     let eventId = openedTreeEventId.get()
     let needPurchase = price > 0 && currencyId != ""
+    let purchased = isPurchased(nodeStatus.get())
     let canBuy = isUnlocked(nodeStatus.get()) && eventMapNodeInProgress.get() == null
+    let completedLocId = n?.meta.quests != null ? "quests/allCompleted" : "quests/completed"
+
+    let completedComp = @() {
+      padding = purchaseBtnPadding
+      rendObj = ROBJ_TEXT
+      text = utf8ToUpper(loc(completedLocId))
+    }.__update(fontTinyAccented)
+
+    let purchaseComp = @() {
+      hplace = ALIGN_CENTER
+      padding = purchaseBtnPadding
+      children = textButtonPricePurchase(
+        utf8ToUpper(loc("mainmenu/btnBuy")),
+        mkCurrencyComp(price, currencyId, canBuy ? CS_COMMON : CS_INACTIVE_ICON),
+        canBuy ? @() openNodePurchase(id, eventId, n) : @() null,
+        canBuy ? { hotkeys = ["^J:X"] } : buttonStyles.INACTIVE
+      )
+    }
 
     return {
-      watch = [node, nodeStatus, eventMapNodeInProgress, openedTreeEventId]
+      watch = [node, nodeStatus, eventMapNodeInProgress, openedTreeEventId, allQuestsDone]
       hplace = ALIGN_CENTER
-      children = isPurchased(nodeStatus.get())
-          ? {
-              padding = purchaseBtnPadding
-              rendObj = ROBJ_TEXT
-              text = utf8ToUpper(loc("quests/completed"))
-            }.__update(fontTinyAccented)
-        : !needPurchase
-          ? null
-        : {
-            hplace = ALIGN_CENTER
-            padding = purchaseBtnPadding
-            children = textButtonPricePurchase(utf8ToUpper(loc("mainmenu/btnBuy")),
-              mkCurrencyComp(price, currencyId, canBuy ? CS_COMMON : CS_INACTIVE_ICON),
-              canBuy ? @() openNodePurchase(id, eventId, n) : @() null,
-              canBuy ? { hotkeys = ["^J:X"] } : buttonStyles.INACTIVE)
-          }
+      children = !purchased
+        ? (needPurchase ? purchaseComp() : null)
+        : (allQuestsDone.get() ? completedComp() : null)
     }
   }
 }

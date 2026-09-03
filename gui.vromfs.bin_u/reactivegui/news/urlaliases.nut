@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%rGui/language.nut" import wtLngId
 
-let shortLang = loc("current_lang")
 return {
-  ["url/news"] = $"https://warthunder.com/{shortLang}/game/changelog/"
+  ["url/news"] = $"https://warthunder.com/{wtLngId}/game/changelog/"
 }

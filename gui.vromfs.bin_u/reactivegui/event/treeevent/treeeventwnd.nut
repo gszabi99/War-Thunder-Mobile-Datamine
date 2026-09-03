@@ -4,14 +4,16 @@ from "%sqstd/underscore.nut" import isEqual
 from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
 import "%rGui/event/treeEvent/mapNet.nut" as mapNet
 from "%rGui/event/treeEvent/treeEventComps.nut" import lineTypeCtors, LINE_DASHED, mkLinePresetColor,
-  mkPoint, mkBgElement, mkNodeMarkerPreview, buildLineSpline, splineCenter, resolveNodeView, mkLockIcon, isLineLocked
+  mkPoint, mkBgElement, mkNodeMarkerPreview, buildLineSpline, splineCenter, resolveNodeView, mkLockIcon, isLineLocked,
+  mkCheckIcon
 from "%appGlobals/config/mapPointsPresentation.nut" import getPointLineStartOffset
 from "%rGui/event/treeEvent/treeEventNodeInfo.nut" import mkNodeInfoWnd
 from "%rGui/event/treeEvent/treeEventState.nut" import openedTreeEventId, curEventMapNodes,
   curPageBgElems, curPageBackground, curPageMapSize, selectedPointId, curPagePoints, nodeViews,
   curPageGridSize, curPageLines, curPageLineSectionLen, curPageRoundedDashes, curPageLineType, curPageLineWidth,
-  nodeStatusKind, pagesList, curPage, curPageResolved, NODE_RECEIVED, NODE_QUESTS, getEventNodeType,
-  curEventUnlocks, lockedPages, startNodeIds
+  nodeStatusKind, pagesList, curPage, curPageResolved, NODE_QUESTS, NODE_RECEIVED, getEventNodeType,
+  curEventUnlocks, lockedPages, startNodeIds, mkNodeAllQuestsDone, pagesWithUnseenReward, mkPageCompleted
+from "%rGui/unseenPriority.nut" import SEEN, UNSEEN_HIGH
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/components/tabs.nut" import tabExtraWidth
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
@@ -49,6 +51,9 @@ let focusedNodeId = Computed(function() {
   let id = selectedPointId.get()
   return (id != null && id in curEventMapNodes.get()) ? id : null
 })
+
+let mkTabUnseen = @(page)
+  Computed(@() (pagesWithUnseenReward.get()?[page] ?? false) ? UNSEEN_HIGH : SEEN)
 
 function refreshFocusBoxes(id) {
   let boxes = {
@@ -140,39 +145,38 @@ function nodeInfoBlock() {
 }
 
 function nodeFocusContent() {
-  let watch = [focusedNodeId, curEventMapNodes, focusGeom, nodeStatusKind, focusedNodeEffView, startNodeIds]
   let id = focusedNodeId.get()
-  let node = id != null ? curEventMapNodes.get()?[id] : null
-  if (node == null)
-    return { watch, size = FLEX }
+  let node = Computed(@() curEventMapNodes.get()?[id])
+  let allQuestsDone = mkNodeAllQuestsDone(id)
+  let isCompleted = Computed(@() nodeStatusKind.get()?[id] == NODE_RECEIVED && allQuestsDone.get())
+  let isStart = Computed(@() startNodeIds.get()?[id] ?? false)
 
-  let effView = focusedNodeEffView.get()
-  let curKind = nodeStatusKind.get()?[id]
-  let isCompleted = curKind == NODE_RECEIVED
-  let isStart = startNodeIds.get()?[id] ?? false
-  let { nodeBox, showNode } = focusGeom.get()
-  return {
-    watch
-    size = FLEX
-    children = [
-      {
-        size = FLEX
-        rendObj = ROBJ_SOLID
-        color = modalOverlayShadeColor
-        animations = wndSwitchAnim
-      }
-      !showNode ? null
-        : mkNodeMarkerPreview(node, effView, nodeBox, isCompleted, isStart)
-      focusLines
-      nodeInfoBlock
-    ]
+  return function() {
+    let { nodeBox, showNode } = focusGeom.get()
+    return {
+      watch = [node, isCompleted, isStart, focusGeom, focusedNodeEffView]
+      size = FLEX
+      children = node.get() == null ? null
+        : [
+            {
+              size = FLEX
+              rendObj = ROBJ_SOLID
+              color = modalOverlayShadeColor
+              animations = wndSwitchAnim
+            }
+            !showNode ? null
+              : mkNodeMarkerPreview(node.get(), focusedNodeEffView.get(), nodeBox, isCompleted.get(), isStart.get())
+            focusLines
+            nodeInfoBlock
+          ]
+    }
   }
 }
 
 let openNodeFocus = @() addModalWindow({
   key = NODE_FOCUS_WND_UID
   size = FLEX
-  children = nodeFocusContent
+  children = nodeFocusContent()
   onClick = @() selectedPointId.set(null)
 })
 
@@ -314,6 +318,17 @@ let mkTabPageLock = @(page) @() {
   children = (lockedPages.get()?[page] ?? false) ? mkLockIcon(lineLockSize) : null
 }
 
+function mkTabPageDone(page) {
+  let isDone = mkPageCompleted(page)
+
+  return @() {
+    watch = isDone
+    size = FLEX_H
+    halign = ALIGN_RIGHT
+    children = isDone.get() ? mkCheckIcon(lineLockSize) : null
+  }
+}
+
 let mkTabLabel = @(page) {
   size = FLEX
   halign = ALIGN_RIGHT
@@ -330,6 +345,7 @@ let mkTabLabel = @(page) {
       text = loc("mainmenu/page", { page })
     }.__update(fontTinyAccented)
     mkTabPageLock(page)
+    mkTabPageDone(page)
   ]
 }
 
@@ -410,6 +426,7 @@ function treeEventMapWnd() {
             children = tabsList(pagesList.get().map(@(p) {
               image = eventPres.image
               tabContent = mkTabLabel(p)
+              unseen = mkTabUnseen(p)
             }))
           }
     ]

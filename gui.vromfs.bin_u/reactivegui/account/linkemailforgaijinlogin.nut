@@ -6,12 +6,13 @@ from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "%appGlobals/loginState.nut" import authTags, curLoginType, LT_GOOGLE, LT_APPLE, LT_HUAWEI
 from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
 from "%appGlobals/permissions.nut" import can_link_email_for_gaijin_login
+from "%rGui/language.nut" import gjNetLngId
 
 
 let logLinkEFGL = log_with_prefix("[LINKEFGL] ")
 
 
-let lang = loc("current_lang")
+let lang = gjNetLngId
 let emailLinkUrlsCfg = {
   [LT_GOOGLE] = {
     noEmailTag = "gplogin",

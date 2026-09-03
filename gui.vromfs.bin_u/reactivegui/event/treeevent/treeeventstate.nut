@@ -7,7 +7,7 @@ from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
 from "%rGui/event/eventState.nut" import curEvent, MAIN_EVENT_ID
 from "%rGui/event/treeEvent/treeEventUtils.nut" import loadPresetOnce, updatePresetByTree, getEventMapNodes,
   resolveTreeEventId, nextTreeBoundary, getTreeNodeViewTypes, getNodePageStarts, composeNodeViews, lineSectionLen,
-  mapLineWidth, LINE_DASHED
+  mapLineWidth, LINE_DASHED, VIEW_NEXT_PAGE
 from "%rGui/unlocks/unlocks.nut" import activeUnlocks
 
 
@@ -174,7 +174,74 @@ let curPageLineWidth = Computed(function() {
 })
 let curPagePointSizes = Computed(@() currentPageState.get()?.pointSizes ?? {})
 
-let getClusterQuests = @(clusterId) curEventUnlocks.get().filter(@(u) u?.meta.quests == clusterId)
+let curEventUnlocksByCluster = keepref(Computed(function() {
+  let res = {}
+  foreach (name, u in curEventUnlocks.get()) {
+    let clusterId = u?.meta.quests
+    if (clusterId == null)
+      continue
+    getSubTable(res, clusterId)[name] <- u
+  }
+  return res
+}))
+
+let getClusterQuests = @(clusterId) curEventUnlocksByCluster.get()?[clusterId] ?? {}
+
+let mkNodeAllQuestsDone = @(id) Computed(function() {
+  let clusterId = curEventMapNodes.get()?[id].meta.quests
+  if (clusterId == null)
+    return true
+  let quests = curEventUnlocksByCluster.get()?[clusterId]
+  return quests == null || quests.findvalue(@(q) !(q?.isCompleted ?? false)) == null
+})
+
+function nodeHasUnseenReward(node, status, unlocksByCluster) {
+  if (!isPurchased(status))
+    return false
+  let clusterId = node?.meta.quests
+  if (clusterId == null)
+    return !isRewardsReceived(status)
+  let quests = unlocksByCluster?[clusterId]
+  return quests != null && quests.findvalue(@(u) u?.hasReward ?? false) != null
+}
+
+let mkNodeHasUnseenReward = @(id) Computed(@()
+  nodeHasUnseenReward(curEventMapNodes.get()?[id], curEventMapStatus.get()?[id], curEventUnlocksByCluster.get()))
+
+let pagesWithUnseenReward = Computed(function() {
+  let status = curEventMapStatus.get()
+  let unlocksByCluster = curEventUnlocksByCluster.get()
+  let res = {}
+  foreach (id, node in curEventMapNodes.get())
+    if (nodeHasUnseenReward(node, status?[id], unlocksByCluster))
+      res[node?.page ?? ""] <- true
+  return res
+})
+
+let mkEventMapHasUnseen = @(eventId) Computed(@() eventId.get() == curEvent.get()
+  && pagesWithUnseenReward.get().len() > 0)
+
+function isPageCompleted(page, nodes, status, unlocksByCluster, viewTypes) {
+  foreach (id, node in nodes) {
+    if ((node?.page ?? "") != page)
+      continue
+    let st = status?[id]
+    let clusterId = node?.meta.quests
+    if (clusterId != null) {
+      let quests = unlocksByCluster?[clusterId]
+      if (quests == null || quests.findvalue(@(q) !(q?.isCompleted ?? false) || (q?.hasReward ?? false)) != null)
+        return false
+    }
+    else if ((node?.rewards ?? []).len() > 0 && !isRewardsReceived(st))
+      return false
+    if (viewTypes?[id] == VIEW_NEXT_PAGE && !isPurchased(st))
+      return false
+  }
+  return true
+}
+
+let mkPageCompleted = @(page) Computed(@()
+  isPageCompleted(page, curEventMapNodes.get(), curEventMapStatus.get(), curEventUnlocksByCluster.get(), nodeViewTypes.get()))
 
 openedTreeEventId.subscribe(function(_) {
   selectedPointId.set(null)
@@ -226,6 +293,11 @@ return {
   curPagePointSizes
 
   getClusterQuests
+  mkNodeAllQuestsDone
+  mkNodeHasUnseenReward
+  pagesWithUnseenReward
+  mkEventMapHasUnseen
+  mkPageCompleted
 
   eventMapNodeInProgress
 }

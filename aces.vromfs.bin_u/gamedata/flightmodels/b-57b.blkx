@@ -2150,7 +2150,7 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 4010.0,
+    "maxloadMass": 4130.0,
     "maxloadMassLeftConsoles": 2000.0,
     "maxloadMassRightConsoles": 2000.0,
     "maxDisbalance": 1600.0,
@@ -2782,6 +2782,7 @@
             "iconType": "gun_12mm",
             "name": "browning_50m",
             "hasMirrored": false,
+            "isDefault": true,
             "ShowNodes": {
               "node": [
                 "m3_cannon_r",

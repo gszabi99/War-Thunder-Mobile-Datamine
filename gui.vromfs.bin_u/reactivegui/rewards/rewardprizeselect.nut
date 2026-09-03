@@ -15,7 +15,6 @@ from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
 from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
 from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon
-from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
 from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardDisabledBkg, mkRewardReceivedMark,
   mkRewardUnitFlag
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM, getRewardPlateSize
@@ -58,7 +57,6 @@ let ticketToShow = Computed(@() prizeTicketId.get() != null
 let canShowWithoutWindows = Computed(@() canSelectTicket.get()
   && isLoggedIn.get()
   && unseenPurchasesExt.get().len() == 0
-  && isInMenuNoModals.get()
   && !isShowUnseenDelayed.get()
   && !isTutorialActive.get())
 

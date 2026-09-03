@@ -5,7 +5,7 @@ from "%sqstd/string.nut" import utf8ToUpper
 from "%sqstd/time.nut" import TIME_DAY_IN_SECONDS_F
 import "%darg/helpers/mkTextRow.nut" as mkTextRow
 from "%appGlobals/config/subsPresentation.nut" import getSubsPresentation, getSubsName
-from "%appGlobals/legal.nut" import PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL
+from "%rGui/legal.nut" import PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL
 from "%appGlobals/pServer/campaign.nut" import subscriptions
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/permissions.nut" import can_upgrade_subscription

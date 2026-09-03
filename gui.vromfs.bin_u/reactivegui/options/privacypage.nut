@@ -3,7 +3,7 @@ from "dagor.fs" import file_exists
 from "eventbus" import eventbus_send
 from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/consent.nut" import isTcfConsentEnabled
-from "%appGlobals/legal.nut" import PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL
+from "%rGui/legal.nut" import PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL
 from "%rGui/components/buttonStyles.nut" import PRIMARY
 from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon, buttonsVGap, mkCustomButton,

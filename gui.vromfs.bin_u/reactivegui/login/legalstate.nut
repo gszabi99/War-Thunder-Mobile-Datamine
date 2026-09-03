@@ -11,7 +11,8 @@ from "%sqstd/datablock.nut" import isDataBlock, eachBlock
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%sqstd/underscore.nut" import isEqual
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
-from "%appGlobals/legal.nut" import legalToApprove, legalLang
+from "%rGui/language.nut" import legalApiLngId
+from "%rGui/legal.nut" import legalToApprove
 from "%appGlobals/loginState.nut" import legalListForApprove, isAuthorized, isOnlineSettingsAvailable
 from "%appGlobals/pServer/bqClient.nut" import sendErrorBqEvent
 let saveProfile = @() eventbus_send("saveProfile", {})
@@ -36,8 +37,8 @@ let isAcceptedVerActual = @(acceptedVers, requiredVer) acceptedVers.contains(req
   || (requiredVer == UNKNOWN_REQ_VER && acceptedVers.len() != 0)
 
 let requiredVersionsByLangOnline = hardPersistWatched("requiredVersionsByLangOnline", {})
-let requiredVersions = Computed(@() requiredVersionsByLangOnline.get()?[legalLang] != null
-  ? legalToApprove.map(@(_, id) requiredVersionsByLangOnline.get()?[legalLang][id] ?? UNKNOWN_REQ_VER)
+let requiredVersions = Computed(@() requiredVersionsByLangOnline.get()?[legalApiLngId] != null
+  ? legalToApprove.map(@(_, id) requiredVersionsByLangOnline.get()?[legalApiLngId][id] ?? UNKNOWN_REQ_VER)
   : null)
 let acceptedVersionListsOnline = hardPersistWatched("acceptedVersionListsOnline", {})
 let acceptedVersionListsTemporary = hardPersistWatched("acceptedVersionListsTemporary", {})
@@ -170,13 +171,13 @@ eventbus_subscribe(RESP_GET_REQUIRED_VERSIONS, mkJsonHttpRequestCb(
       requiredVersionsByLangOnline.mutate(@(v) v[lang] <- {})
   }))
 function requestRequiredVersionsOncePerLang() {
-  if ((requiredVersionsByLangOnline.get()?[legalLang].len() ?? 0) != 0)
+  if ((requiredVersionsByLangOnline.get()?[legalApiLngId].len() ?? 0) != 0)
     return
   httpRequest({
     method = "GET"
-    url = GET_REQ_VERSIONS_URL.subst({ lang = legalLang })
+    url = GET_REQ_VERSIONS_URL.subst({ lang = legalApiLngId })
     respEventId = RESP_GET_REQUIRED_VERSIONS
-    context = legalLang
+    context = legalApiLngId
   })
 }
 if (isAuthorized.get())
@@ -292,9 +293,9 @@ register_command(
   function() {
     httpRequest({
       method = "GET"
-      url = GET_REQ_VERSIONS_URL.subst({ lang = legalLang })
+      url = GET_REQ_VERSIONS_URL.subst({ lang = legalApiLngId })
       callback = debugRequestCb
-      context = legalLang
+      context = legalApiLngId
     })
   }
   "debug.legalApiV2.printReqVersionsForCurLang")

@@ -14,7 +14,7 @@ from "%rGui/event/eventState.nut" import curEventCurrencies, MAIN_EVENT_ID, spec
   unseenLootboxesShowOnce, subEventsByMain
 import "%rGui/event/eventWnd.nut" as eventWnd
 from "%rGui/event/treeEvent/treeEventWnd.nut" import treeEventMapWnd, contentOverlayShadeColor
-from "%rGui/event/treeEvent/treeEventState.nut" import curEventMapCurrencies
+from "%rGui/event/treeEvent/treeEventState.nut" import curEventMapCurrencies, mkEventMapHasUnseen
 from "%rGui/event/gmEventState.nut" import openedGmEventId
 import "%rGui/event/gmEventWnd.nut" as gmEventWnd
 from "%rGui/quests/questsState.nut" import questsCfg, curTabParams, progressUnlockByTab, hasUnseenQuestsBySection,
@@ -155,6 +155,7 @@ let sceneContentCfg = {
     })
     content = @() treeEventMapWnd
     sceneShadeColor = contentOverlayShadeColor
+    mkHasUnseen = mkEventMapHasUnseen
   }
 }
   .map(@(c, id) contentCfgDefaults.__merge(c, { isVisible = isSeasonTabVisible[id].watched }))

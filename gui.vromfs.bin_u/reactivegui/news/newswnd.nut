@@ -8,6 +8,7 @@ from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
 from "%rGui/components/mkDropDownMenu.nut" import mkDropMenuBtn
 import "%rGui/components/scrollbar.nut" as scrollbar
 from "%rGui/components/spinner.nut" import spinner
+from "%rGui/language.nut" import wtmobLngId
 from "%rGui/navState.nut" import registerScene
 from "%rGui/news/newsState.nut" import isNewsWndOpened, curArticleId, curArticleIdx, playerSelectedArticleId,
   nextArticle, prevArticle, newsfeed, curArticleContent, articlesPerPage, pagesCount, curPageIdx, unreadArticles,
@@ -33,7 +34,7 @@ let selectorBtnGap = Watched(selectorBtnMinGap)
 const selectorImgSize = hdpxi(92)
 
 let scrollWatch = Watched(0)
-let moreInfoUrl = $"https://wtmobile.com/{loc("current_lang")}"
+let moreInfoUrl = $"https://wtmobile.com/{wtmobLngId}"
 
 const pagesStripW = hdpx(11)
 const pagesStripGap = hdpx(30)

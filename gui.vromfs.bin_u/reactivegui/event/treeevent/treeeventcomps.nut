@@ -6,9 +6,10 @@ from "%appGlobals/config/mapPointsPresentation.nut" import getMapPointsPresentat
 from "%rGui/event/treeEvent/segmentMath.nut" import mkLineSplinePoints
 from "%rGui/event/treeEvent/treeEventUtils.nut" import lineSectionLen, lineOutlineWidth, mapLineWidth,
   LINE_DASHED, LINE_SOLID
-from "%rGui/event/treeEvent/treeEventState.nut" import curEventMapNodes, curEventMapStatus, selectedPointId,
-  getEventNodeType, nodeStatusKind, nodeViews, curPagePointSizes, eventMapNodeInProgress, isRewardsReceived,
-  NODE_QUESTS, NODE_REWARD, NODE_LOCKED, NODE_AVAILABLE, NODE_PURCHASED, NODE_RECEIVED, isPurchased, startNodeIds
+from "%rGui/event/treeEvent/treeEventState.nut" import curEventMapNodes, selectedPointId,
+  getEventNodeType, nodeStatusKind, nodeViews, curPagePointSizes, eventMapNodeInProgress,
+  NODE_QUESTS, NODE_REWARD, NODE_LOCKED, NODE_AVAILABLE, NODE_PURCHASED, NODE_RECEIVED, startNodeIds,
+  mkNodeAllQuestsDone, mkNodeHasUnseenReward
 from "%rGui/components/spinner.nut" import mkSpinner
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_VERY_TINY
@@ -48,14 +49,14 @@ let variantFieldByKind = {
   [NODE_LOCKED] = "locked",
 }
 
-let mkCompletedMark = @(size) {
+let mkCheckIcon = @(size, ovr = {}) {
   size
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#check.svg:{size}:P")
   keepAspect = true
-}
+}.__update(ovr)
+
+let mkCompletedMark = @(size) mkCheckIcon(size, { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER })
 
 let completedMarkSizeFor = @(effView) effView == defaultPointView
   ? defNodeCompletedIconSize
@@ -83,15 +84,14 @@ function getPointState(id) {
     return pointStateCache[id]
 
   let node = Computed(@() curEventMapNodes.get()?[id])
-  let nodeStatus = Computed(@() curEventMapStatus.get()?[id])
 
   let res = {
     node
-    nodeStatus
     kind = Computed(@() nodeStatusKind.get()?[id] ?? NODE_LOCKED)
     isSelected = Computed(@() id == selectedPointId.get())
     isNodeInProgress = Computed(@() eventMapNodeInProgress.get() == id)
-    hasUnseenReward = Computed(@() isPurchased(nodeStatus.get()) && !isRewardsReceived(nodeStatus.get()))
+    hasUnseenReward = mkNodeHasUnseenReward(id)
+    allQuestsDone = mkNodeAllQuestsDone(id)
   }
   pointStateCache[id] <- res.weakref()
   return res
@@ -170,7 +170,7 @@ function mkNodeMarkerPreview(node, effView, box, isCompleted = false, isStart = 
 
 function mkPoint(state) {
   let { id, view = "", pos } = state 
-  let { node, kind, isSelected, isNodeInProgress, hasUnseenReward } = getPointState(id)
+  let { node, kind, isSelected, isNodeInProgress, hasUnseenReward, allQuestsDone } = getPointState(id)
 
   return function() {
     let effView = resolveNodeView(id, view, nodeViews.get())
@@ -179,11 +179,12 @@ function mkPoint(state) {
     let variant = presentation[variantFieldByKind?[curKind] ?? "locked"]
     let marker = isSelected.get() ? presentation.selected : variant
     let sizePx = evenPx(curPagePointSizes.get()?[effView] ?? getDefaultPointSize(effView))
-    let isCompleted = curKind == NODE_RECEIVED
+    let isCompleted = curKind == NODE_RECEIVED && allQuestsDone.get()
     let isStart = startNodeIds.get()?[id] ?? false
 
     return {
-      watch = [kind, isSelected, node, nodeViews, curPagePointSizes, isNodeInProgress, hasUnseenReward, startNodeIds]
+      watch = [kind, isSelected, node, nodeViews, curPagePointSizes, isNodeInProgress, hasUnseenReward, startNodeIds,
+        allQuestsDone]
       key = id
       pos = pos.map(@(v) hdpx(v) - sizePx / 2)
       size = sizePx
@@ -394,6 +395,7 @@ return {
   splineCenter
   mkPoint
   mkNodeMarkerPreview
+  mkCheckIcon
   mkBgElement
   mkLockIcon
   resolveNodeView

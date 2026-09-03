@@ -18,45 +18,61 @@ from "%rGui/clientState/saveProfile.nut" import saveProfile
 
 
 
+
+
+
+
 let allLangs = [
-  { id = "English",     chatId = "en", hasUnitSpeech = true }
-  { id = "Russian",     chatId = "ru", hasUnitSpeech = true }
-  { id = "French",      chatId = "fr", hasUnitSpeech = true }
-  { id = "Italian",     chatId = "it" }
-  { id = "German",      chatId = "de", hasUnitSpeech = true }
-  { id = "Spanish",     chatId = "es" }
-  { id = "Portuguese",  chatId = "pt" }
-  { id = "Greek",       chatId = "el" }
-  { id = "Polish",      chatId = "pl" }
-  { id = "Ukrainian",   chatId = "uk" }
-  { id = "Czech",       chatId = "cs" }
-  { id = "Turkish",     chatId = "tr" }
-  { id = "Indonesian",  chatId = "id" }
-  { id = "Chinese",     chatId = "zh", hasUnitSpeech = true }
-  { id = "TChinese",    chatId = "zh" }
-  { id = "Korean",      chatId = "ko" }
-  { id = "Japanese",    chatId = "jp", hasUnitSpeech = true }
-  { id = "Thai",        chatId = "th" }
+  { id = "English",     iso639p1LngId = "en", hasUnitSpeech = true }
+  { id = "Russian",     iso639p1LngId = "ru", hasUnitSpeech = true,
+      gjNetLngId = "ru", wtmobLngId = "ru", wtLngId = "ru", cmntLngId = "ru", legalApiLngId = "ru" }
+  { id = "French",      iso639p1LngId = "fr", hasUnitSpeech = true,
+      gjNetLngId = "fr", wtmobLngId = "fr", wtLngId = "fr", legalApiLngId = "fr" }
+  { id = "Italian",     iso639p1LngId = "it",
+      gjNetLngId = "it", legalApiLngId = "it" }
+  { id = "German",      iso639p1LngId = "de", hasUnitSpeech = true,
+      gjNetLngId = "de", wtmobLngId = "de", wtLngId = "de", legalApiLngId = "de" }
+  { id = "Spanish",     iso639p1LngId = "es",
+      gjNetLngId = "es", wtmobLngId = "es", wtLngId = "es", legalApiLngId = "es" }
+  { id = "Portuguese",  iso639p1LngId = "pt",
+      gjNetLngId = "pt", wtLngId = "pt", legalApiLngId = "pt" }
+  { id = "Greek",       iso639p1LngId = "el",
+      legalApiLngId = "el" }
+  { id = "Polish",      iso639p1LngId = "pl",
+      gjNetLngId = "pl", wtmobLngId = "pl", wtLngId = "pl", legalApiLngId = "pl" }
+  { id = "Ukrainian",   iso639p1LngId = "uk",
+      wtmobLngId = "ua", legalApiLngId = "ua" }
+  { id = "Czech",       iso639p1LngId = "cs",
+      gjNetLngId = "cs", wtLngId = "cz", legalApiLngId = "cs" }
+  { id = "Turkish",     iso639p1LngId = "tr",
+      gjNetLngId = "tr", wtmobLngId = "tr", legalApiLngId = "tr" }
+  { id = "Indonesian",  iso639p1LngId = "id",
+      legalApiLngId = "id" }
+  { id = "Chinese",     iso639p1LngId = "zh", hasUnitSpeech = true,
+      gjNetLngId = "zh", wtmobLngId = "zh", wtLngId = "zh", legalApiLngId = "zh" }
+  { id = "TChinese",    iso639p1LngId = "zh",
+      gjNetLngId = "zh", wtmobLngId = "zh", wtLngId = "zh", legalApiLngId = "zh" }
+  { id = "Korean",      iso639p1LngId = "ko",
+      gjNetLngId = "ko", wtLngId = "ko", legalApiLngId = "ko" }
+  { id = "Japanese",    iso639p1LngId = "ja", hasUnitSpeech = true,
+      gjNetLngId = "ja", legalApiLngId = "ja" }
+  { id = "Thai",        iso639p1LngId = "th",
+      legalApiLngId = "th" }
 ]
   .map(function(lang) {
     let { id } = lang
     return {
       title = loc($"language/{id}")
-      chatId = "en"
       hasUnitSpeech = false
+      gjNetLngId    = "en"
+      wtmobLngId    = "en"
+      wtLngId       = "en"
+      cmntLngId     = "en"
+      legalApiLngId = "en"
     }.__update(lang)
   })
 
-
-
-local shortLangName = loc("current_lang")
-
-function saveLanguage(langName) {
-  if (currentLanguage.get() == langName)
-    return
-  currentLanguage.set(langName)
-  shortLangName = loc("current_lang")
-}
+let saveLanguage = @(langName) currentLanguage.set(langName)
 
 let langsById = {}
 local isListInited = false
@@ -91,7 +107,7 @@ function checkInitList() {
   let ttBlk = locBlk?.text_translation ?? DataBlock()
   let existingLangs = ttBlk % "lang"
 
-  langsList.replace(allLangs.filter(@(l) existingLangs.contains(l.id)))
+  langsList.replace(allLangs.filter(@(l) existingLangs.contains(l.id) || l.id == "English"))
   langsById.clear()
   foreach (lang in langsList)
     langsById[lang.id] <- lang
@@ -110,13 +126,10 @@ isReadyToFullLoad.subscribe(function(v) {
 
 saveLanguage(getLocalLanguage())
 
-let getShortName = @() shortLangName
-
 function getGameLocalizationInfo() {
   checkInitList()
   return langsList
 }
-
 
 
 eventbus_subscribe("on_language_changed", function on_language_changed(...) {
@@ -138,8 +151,17 @@ eventbus_subscribe("language.setWithReloadScene", function(msg) {
 
 register_command(@() reload(), "ui.language_reload")
 
+let curLangInfo = allLangs.findvalue(@(v) v.id == currentLanguage.get()) ?? allLangs.findvalue(@(v) v.id == "English")
+let { gjNetLngId, wtmobLngId, wtLngId, cmntLngId, legalApiLngId, iso639p1LngId } = curLangInfo 
 return {
-  getShortName
   setGameLocalization
   getGameLocalizationInfo
+  curLangInfo
+
+  gjNetLngId
+  wtmobLngId
+  wtLngId
+  cmntLngId
+  legalApiLngId
+  iso639p1LngId
 }
