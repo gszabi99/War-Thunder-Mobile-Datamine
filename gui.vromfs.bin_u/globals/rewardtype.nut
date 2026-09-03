@@ -25,9 +25,13 @@ let allTypes = {
 let rewardTypeByValue = allTypes.reduce(@(res, v, k) res.$rawset(v, k), {})
 let unitRewardTypes = [allTypes.G_UNIT, allTypes.G_UNIT_UPGRADE, allTypes.G_BLUEPRINT].totable()
 let statRewardTypes = [allTypes.G_STAT_SET, allTypes.G_STAT_ADD].totable()
+let oneTimeRewardTypes = [allTypes.G_UNIT, allTypes.G_UNIT_UPGRADE, allTypes.G_SKIN, allTypes.G_DECORATOR,
+  allTypes.G_DECAL, allTypes.G_DISCOUNT
+].totable()
 
 return allTypes.__merge({
   rewardTypeByValue
   unitRewardTypes
   statRewardTypes
+  oneTimeRewardTypes
 })

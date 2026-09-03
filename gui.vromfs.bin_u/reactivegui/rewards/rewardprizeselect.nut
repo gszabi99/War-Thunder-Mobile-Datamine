@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%appGlobals/rewardType.nut" import *
+from "%appGlobals/rewardType.nut" import G_BLUEPRINT, G_UNIT, G_UNIT_UPGRADE, oneTimeRewardTypes
 from "dagor.time" import get_time_msec
 from "dagor.workcycle" import resetTimeout, clearTimer, setInterval
 from "%sqstd/string.nut" import utf8ToUpper
@@ -75,6 +75,8 @@ let currentVariants = Computed(function() {
   return res
 })
 
+let isRepeatableTicket = Computed(@() currentVariants.get().findvalue(@(v) v?.gType not in oneTimeRewardTypes) != null)
+
 let currentTicketCounts = Computed(function(){
   if (!isModalAttached.get() || prizeTicketId.get() == null)
     return { lastReward = 0, availableVariants = 0 }
@@ -86,6 +88,11 @@ let currentTicketCounts = Computed(function(){
     if (!isRewardEmpty([variant], servProfile.get()))
       availableVariantsCount += 1
 
+  if (isRepeatableTicket.get())
+    return {
+      lastReward = availableVariantsCount > 0 ? 0 : 1,
+      availableVariants = availableVariantsCount > 0 ? 1 : 0
+    }
   return {
     lastReward = count <= availableVariantsCount ? 0 : count - availableVariantsCount,
     availableVariants = count <= availableVariantsCount ? count : availableVariantsCount
@@ -93,6 +100,12 @@ let currentTicketCounts = Computed(function(){
 })
 let hasLastReward = Computed(@() currentTicketCounts.get().lastReward > 0)
 let lastReward = Computed(@() hasLastReward.get() ? ticketToShow.get()?.lastReward : null)
+let ticketsRemaining = Computed(function() {
+  if (prizeTicketId.get() == null)
+    return 0
+  let count = prizeTicketsProfile.get()?[prizeTicketId.get()] ?? 0
+  return count > 1 ? count - 1 : 0
+})
 
 let closeModalWnd = @() removeModalWindow(PRIZE_TICKETS_SELECT_WND_UID)
 
@@ -180,12 +193,12 @@ registerHandler("onPrizeTicketsApplied", function(res, context) {
     onTicketNotApplied(context)
 
   selIndexes.set([])
-  closeModalWnd()
+  if (prizeTicketId.get() == null)
+    closeModalWnd()
 })
 
 function applyPrizeTickets() {
-  local indexes = selIndexes.get()
-
+  let indexes = clone selIndexes.get()
   if (hasLastReward.get())
     indexes.extend(array(currentTicketCounts.get().lastReward, -1))
 
@@ -242,16 +255,21 @@ let mkPrizeTicketsContent = @(content, title)
         children = content
       }
       @() {
-        watch = [selIndexes, currentTicketCounts]
+        watch = [isRepeatableTicket, ticketsRemaining, selIndexes, currentTicketCounts]
         size = const [FLEX, hdpx(50)]
         halign = ALIGN_CENTER
         valign = ALIGN_TOP
         rendObj = ROBJ_TEXT
-        text = currentTicketCounts.get().availableVariants <= 1 ? null
-          : loc("events/countPrizesChoosen", {
-              maxCount = currentTicketCounts.get().availableVariants,
-              count = selIndexes.get().len()
-            })
+        text = isRepeatableTicket.get()
+          ? (ticketsRemaining.get() > 0
+              ? loc("events/prizesToChooseCount", { count = ticketsRemaining.get() })
+              : null)
+          : (currentTicketCounts.get().availableVariants <= 1
+              ? null
+              : loc("events/countPrizesChoosen", {
+                  maxCount = currentTicketCounts.get().availableVariants,
+                  count = selIndexes.get().len()
+                }))
       }.__update(fontTinyAccented)
     ]
   })
