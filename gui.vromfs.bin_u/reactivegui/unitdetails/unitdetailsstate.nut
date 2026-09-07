@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/pServer/profile.nut" import campMyUnits
-from "%rGui/unit/hangarUnit.nut" import setCustomHangarUnit, resetCustomHangarUnit
+from "%rGui/unit/hangarUnit.nut" import setCustomHangarUnit
 from "%rGui/unit/unitList.nut" import mkBaseUnit
 
 
@@ -11,22 +11,12 @@ let isWindowAttached = Watched(false)
 let isCustomizationWndAttached = Watched(false)
 let isOwnUnit = Computed(@() (openUnitOvr.get()?.canShowOwnUnit ?? true) && openUnitOvr.get()?.name in campMyUnits.get())
 
-function setUnit(unit) {
-  if (unit != null)
-    setCustomHangarUnit(unit)
-  else
-    resetCustomHangarUnit()
-}
-
 let baseUnit = mkBaseUnit(openUnitOvr)
-let unitToShow = Computed(@() baseUnit.get() == null || curSelectedUnitSkin.get() == null
-  ? baseUnit.get()
+let unitToShow = Computed(@() !isWindowAttached.get() && !isCustomizationWndAttached.get() ? null
+  : baseUnit.get() == null || curSelectedUnitSkin.get() == null ? baseUnit.get()
   : baseUnit.get().__merge({ skin = curSelectedUnitSkin.get() }))
-unitToShow.subscribe(function(u) {
-  if (isWindowAttached.get() || isCustomizationWndAttached.get())
-    setUnit(u)
-})
-isWindowAttached.subscribe(@(v) !v ? null : setUnit(unitToShow.get()))
+
+unitToShow.subscribe(@(u) u != null ? setCustomHangarUnit(u) : null)
 
 function openUnitDetailsWnd(unitOvr = {}) {
   openUnitOvr.set(unitOvr)
@@ -36,7 +26,6 @@ function openUnitDetailsWnd(unitOvr = {}) {
 function closeUnitDetailsWnd() {
   openUnitOvr.set(null)
   unitDetailsOpenCount.set(0)
-  resetCustomHangarUnit()
 }
 
 return {

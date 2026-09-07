@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%sqstd/platform.nut" import is_ios
 from "app" import exitGame
 from "auth_wt" import resetLoginPass, signOut
 from "eventbus" import eventbus_subscribe, eventbus_send
 from "gameplayBinding" import isInFlight
 from "multiplayer" import destroy_session
-from "%sqstd/platform.nut" import is_ios, is_android
 from "%appGlobals/clientState/initialState.nut" import isOfflineMenu
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "%appGlobals/loginState.nut" import loginState, LOGIN_STATE, isLoggedIn, curLoginType, authTags, isLoginStarted,
@@ -20,9 +20,9 @@ from "autoLogin.nut" import isAutologinUsed, setAutologinEnabled, isAutologinEna
 
 let openUrl = @(baseUrl) eventbus_send("openUrl", { baseUrl })
 
-let { logoutFB = @() null } = is_ios ? require("ios.account.facebook")
-      : is_android ? require("android.account.fb")
-      : {}
+
+let { logoutFB } = require_optional("mobile.facebook")
+  ?? (is_ios ? require("ios.account.facebook") : require("android.account.fb"))
 
 
 const DELETE_ACCOUNT_URL = "auto_local auto_login https://store.gaijin.net/login.php?return_enc=L3Byb2ZpbGUucGhwP3Byb2ZpbGVTZXR0aW5ncz1wcm9maWxlLXNldHRpbmdzX2RlbGV0ZSZ2aWV3PXNldHRpbmdz"

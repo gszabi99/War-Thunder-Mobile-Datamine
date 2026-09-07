@@ -83,9 +83,9 @@ function openRegionalAppPageInGooglePlay() {
     eventbus_send("openUrl", { baseUrl = info.REGIONAL_APP_GOOGLEPLAY_URL })
 }
 
-function openPixelSitePage() {
-  if (info?.PIXEL_SITE_URL != null)
-    eventbus_send("openUrl", { baseUrl = info.PIXEL_SITE_URL })
+function openRegionalAppApkPageOnSite() {
+  if (info?.REGIONAL_APP_APK_URL != null)
+    eventbus_send("openUrl", { baseUrl = info.REGIONAL_APP_APK_URL })
 }
 
 function upgradeGuestAccount() {
@@ -244,9 +244,9 @@ let mkSuggestMigrationContentWnd = @() modalWndBg.__merge({
               size = FLEX
               flow = FLOW_VERTICAL
               children = [
-                mkUrlLink(info?.btnApp ?? "", openRegionalAppPageInGooglePlay)
+                mkUrlLink(info?.btnAppGP ?? "", openRegionalAppPageInGooglePlay)
                 { size = FLEX }
-                mkUrlLink(info?.btnPix ?? "", openPixelSitePage)
+                mkUrlLink(info?.btnAppApk ?? "", openRegionalAppApkPageOnSite)
               ]
             }
             textButtonBattle(utf8ToUpper(info?.btnMigrate ?? ""), onMigrateClick)

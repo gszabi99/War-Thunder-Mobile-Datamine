@@ -66,30 +66,30 @@ let airState = {
   RocketsState
   TorpedoesState
 
-  Fuel = Watched(0)
-  FuelState = Watched(0)
-  HasExternalFuel = Watched(false)
-  ExternalFuel = Watched(0)
+  Fuel = 0
+  FuelState = 0
+  HasExternalFuel = false
+  ExternalFuel = 0
 
   hasBombs = Computed(@() (MainMask.get() & (1 << BOMBS)) != 0)
   hasRockets = Computed(@() (MainMask.get() & (1 << ROCKET)) != 0)
   hasTorpedos = Computed(@() (MainMask.get() & (1 << TORPEDO)) != 0)
   hasFlare = Computed(@() (MainMask.get() & (1 << FLARES)) != 0)
 
-  DistanceToGround = Watched(0)
-  Spd = Watched(0)
-  IsSpdCritical = Watched(false)
+  DistanceToGround = 0
+  Spd = 0
+  IsSpdCritical = false
 
-  TargetLockTime = Watched(0)
+  TargetLockTime = 0
   DmStateMask
   isTorpedoReady
 
-  HasBooster = Watched(false)
-  IsBoosterActive = Watched(false)
+  HasBooster = false
+  IsBoosterActive = false
 
   FlaresState
-  IsPeriodicFlaresEnabled = Watched(false)
-}
+  IsPeriodicFlaresEnabled = false
+}.map(@(v, k) v instanceof Watched ? v : mkWatched(persist, k, v))
 
 interopGen({
   stateTable = airState

@@ -19,7 +19,7 @@ from "%rGui/shop/goodsPreview/unitCutscene.nut" import unitForCutscene
 from "%rGui/shop/goodsPreviewState.nut" import GPT_SKIN, previewType, previewGoods, previewGoodsUnit,
   closeGoodsPreview, openPreviewCount, HIDE_PREVIEW_MODALS_ID
 from "%rGui/unit/components/unitInfoPanel.nut" import mkUnitTitle
-from "%rGui/unit/hangarUnit.nut" import setCustomHangarUnit, resetCustomHangarUnit, hangarUnitDataBackup
+from "%rGui/unit/hangarUnit.nut" import setCustomHangarUnit
 from "%rGui/unit/unitPurchaseEffectScene.nut" import isPurchEffectVisible
 from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
 
@@ -99,12 +99,7 @@ let unitForShow = Computed(function() {
   return res
 })
 
-unitForShow.subscribe(function(unit) {
-  if (unit != null)
-    setCustomHangarUnit(unit)
-  else
-    resetCustomHangarUnit()
-})
+unitForShow.subscribe(@(unit) unit != null ? setCustomHangarUnit(unit) : null)
 
 let unitForCutsceneExt = keepref(Computed(@(prev) prev == unitForShow.get() ? prev
   : !needShowUi.get() && !skipAnimsOnce.get() ? unitForShow.get()
@@ -118,7 +113,6 @@ previewGoodsUnit.subscribe(function(unit) {
 
 function openDetailsWnd() {
   let { name } = unitForShow.get()
-  hangarUnitDataBackup.set({ name, custom = unitForShow.get() })
   let cfg = {
     name
     isUpgraded = previewGoodsUnit.get()?.isUpgraded ?? false

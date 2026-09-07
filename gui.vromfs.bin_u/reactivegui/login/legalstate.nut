@@ -6,7 +6,7 @@ from "dagor.http" import httpRequest, HTTP_SUCCESS
 from "dagor.workcycle" import resetTimeout
 from "eventbus" import eventbus_subscribe, eventbus_send
 from "json" import parse_json
-from "auth_wt" import getPlayerTokenGlobal
+from "auth_wt" import getPlayerToken
 from "%sqstd/datablock.nut" import isDataBlock, eachBlock
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%sqstd/underscore.nut" import isEqual
@@ -26,6 +26,7 @@ const RESP_GET_REQUIRED_VERSIONS = "legal.respGetReqVers"
 const RESP_GET_ACCEPTED_VERSIONS = "legal.respGetAccVers"
 const RESP_ACCEPT_ACTION = "legal.respAcceptVer"
 const UNKNOWN_REQ_VER = "unknown"
+const FAILED_ACC_VER = "failed"
 const ACCEPT_CALLBACKS_WAIT_TIME_SEC = 3.0
 
 let GET_REQ_VERSIONS_URL = getCurCircuitOverride("legalApiV2GetReqVersURL", "https://legal.gaijin.net/api/v2/documents?lang={lang}") 
@@ -47,7 +48,7 @@ let acceptedVersionLists = Computed(@()
   acceptedVersionListsOnline.get().len() != legalToApprove.len() || acceptedVersionListsBackup.get() == null
     ? null
     : acceptedVersionListsOnline.get().map(function(v, id) {
-        let res = clone (v.len() != 0 ? v : (acceptedVersionListsBackup.get()?[id] ?? []))
+        let res = clone (!v.contains(FAILED_ACC_VER) ? v : (acceptedVersionListsBackup.get()?[id] ?? []))
         return res.extend(acceptedVersionListsTemporary.get()?[id] ?? [])
       }))
 let needApprove = Computed(@() requiredVersions.get() == null || acceptedVersionLists.get() == null 
@@ -57,7 +58,7 @@ let isAcceptLegalsInProgress = Watched(false)
 let needSyncBackup = Computed(@() isOnlineSettingsAvailable.get()
   && acceptedVersionListsBackup.get() != null
   && acceptedVersionListsOnline.get().len() == legalToApprove.len()
-  && acceptedVersionListsOnline.get().findvalue(@(vers) vers.len() == 0) == null
+  && acceptedVersionListsOnline.get().findvalue(@(vers) vers.contains(FAILED_ACC_VER)) == null
   && !isEqual(acceptedVersionListsBackup.get(), acceptedVersionListsOnline.get()))
 let isLoginAllowed = Computed(@() legalToApprove.findvalue(@(_, id) (acceptedVersionLists.get()?[id].len() ?? 0) == 0) == null)
 
@@ -110,7 +111,7 @@ needSyncBackup.subscribe(@(v) v ? resetTimeout(ACCEPT_CALLBACKS_WAIT_TIME_SEC, s
 
 
 
-let mkAuthRequestHeaders = @() { Authorization = $"Bearer {getPlayerTokenGlobal()}" }
+let mkAuthRequestHeaders = @() { Authorization = $"Bearer {getPlayerToken()}" }
 
 let mkJsonHttpRequestCb = @(onSuccess, onFailure) function(response) {
   let { status = -1, http_code = -1, body = null, context = null } = response
@@ -198,7 +199,7 @@ eventbus_subscribe(RESP_GET_ACCEPTED_VERSIONS, mkJsonHttpRequestCb(
     let id = context
     if (needSendBQ)
       sendErrorBqEvent($"Legal: GetAccVers {id} {errId}")
-    acceptedVersionListsOnline.mutate(@(v) v[id] <- [])
+    acceptedVersionListsOnline.mutate(@(v) v[id] <- [ FAILED_ACC_VER ])
   }))
 function requestAcceptedVersions() {
   if (!isAuthorized.get())
@@ -236,6 +237,9 @@ eventbus_subscribe(RESP_ACCEPT_ACTION, mkJsonHttpRequestCb(
     acceptedVersionListsOnline.mutate(function(v) {
       if (id not in v)
         return
+      let failedIdx = v[id].indexof(FAILED_ACC_VER)
+      if (failedIdx != null)
+        v[id].remove(failedIdx)
       if (!v[id].contains(version))
         v[id].append(version)
     })

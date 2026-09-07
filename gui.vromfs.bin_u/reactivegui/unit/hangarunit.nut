@@ -44,7 +44,6 @@ let loadedInfo = Watched({
 let loadedHangarUnitName = Computed(@() loadedInfo.get().name)
 let loadedHangarUnitSkin = Computed(@() loadedInfo.get().skin)
 let hangarUnitData = mkWatched(persist, "hangarUnitData", null)
-let hangarUnitDataBackup = mkWatched(persist, "hangarUnitDataBackup", null)
 let hangarUnitName = Computed(@() hangarUnitData.get()?.name ?? loadedHangarUnitName.get() ?? "")
 let lastHangarUnitBattleData = mkWatched(persist, "hangarUnitBattleData", null)
 let isCustomHangarUnitData = Computed(@() hangarUnitData.get()?.custom != null)
@@ -279,18 +278,7 @@ function setHangarUnitGroup(unitList, needRandomize, chosenIdx = null) {
   return mainIdx
 }
 
-function setCustomHangarUnit(customUnit) {
-  if (hangarUnitDataBackup.get() == null)
-    hangarUnitDataBackup.set(hangarUnitData.get())
-  hangarUnitData.set({ name = customUnit.name, custom = customUnit })
-}
-
-function resetCustomHangarUnit() {
-  if (hangarUnitDataBackup.get()) {
-    hangarUnitData.set(hangarUnitDataBackup.get())
-    hangarUnitDataBackup.set(null)
-  }
-}
+let setCustomHangarUnit = @(customUnit) hangarUnitData.set({ name = customUnit.name, custom = customUnit })
 
 let hangarBattleData = Computed(function(prev) {
   if (mainHangarUnit.get() == null)
@@ -400,13 +388,11 @@ return {
   hangarUnitName 
   hangarUnit 
   hangarUnitSkin
-  hangarUnitDataBackup
 
   setHangarUnit  
   setHangarUnitWithSkin
   setHangarUnitGroup
   setCustomHangarUnit  
-  resetCustomHangarUnit 
   isHangarUnitLoaded
 
   mainHangarUnit

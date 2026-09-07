@@ -13,7 +13,7 @@ import "ios.account.apple" as appleAccount
 from "ios.platform" import getUUID
 from "json" import parse_json
 from "statsd" import send_counter
-from "%sqstd/platform.nut" import is_ios, is_android
+from "%sqstd/platform.nut" import is_android, is_ios
 from "%appGlobals/curCircuitOverride.nut" import isExternalOperator, getCurCircuitOverride
 from "%rGui/legal.nut" import FORGOT_PASSWORD_URL
 from "%appGlobals/loginState.nut" import LOGIN_STATE, LT_GAIJIN, LT_GOOGLE, LT_HUAWEI, LT_FACEBOOK, LT_APPLE,
@@ -30,7 +30,9 @@ let openUrl = @(baseUrl, isAlreadyAuthenticated = false, biqQueryKey = "")
   eventbus_send("openUrl", { baseUrl, isAlreadyAuthenticated, biqQueryKey })
 
 let guestFirebaseAccount = require_optional("android.account.guest")
-let fbAccount = is_ios ? require("ios.account.facebook") : require("android.account.fb")
+
+let fbAccount = require_optional("mobile.facebook")
+  ?? (is_ios ? require("ios.account.facebook") : require("android.account.fb"))
 let vkid = is_android ? require("android.account.vkid") : {}
 let { logStage, onlyActiveStageCb, export, finalizeStage, interruptStage} = require("mkStageBase.nut")("auth", LOGIN_STATE.LOGIN_STARTED, LOGIN_STATE.AUTHORIZED)
 
@@ -177,24 +179,27 @@ eventbus_subscribe("android.account.vkid.onSignInCallback",
     check_login_pass_async("CheckLoginPassDone.VKid", token, getCurCircuitOverride("vkidClientId","0"), "vk", "vk", false, false)
   }))
 
-eventbus_subscribe(is_android ? "android.account.fb.onSignInCallback" : "ios.account.facebook.onSignInCallback",
-  onlyActiveStageCb(function(msg) {
-    let { token, status, isLimited = false } = msg
-    if (status != fbAccount.FB_RESULT_OK) {
-      send_counter("auth.fb_signin_errors", 1, { error = status })
-      interruptStage({ error = $"Facebook sign in failed: {status}" })
-      if (status != fbAccount.FB_RESULT_CANCEL) {
-        errorMsgBox(YU2_UNKNOWN,
-          [
-            { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }
-            { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
-          ])
-      }
-      return
+function onFacebookSignIn(msg) {
+  let { token, status, isLimited = false } = msg
+  if (status != fbAccount.FB_RESULT_OK) {
+    send_counter("auth.fb_signin_errors", 1, { error = status })
+    interruptStage({ error = $"Facebook sign in failed: {status}" })
+    if (status != fbAccount.FB_RESULT_CANCEL) {
+      errorMsgBox(YU2_UNKNOWN,
+        [
+          { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }
+          { id = "tryAgain", styleId = "PRIMARY", isDefault = true }
+        ])
     }
-    logStage("Facebook check_login_pass_async")
-    check_login_pass_async("CheckLoginPassDone.Facebook", token, "", "facebook", isLimited ? "facebook-limited" : "facebook", false, false)
-  }))
+    return
+  }
+  logStage("Facebook check_login_pass_async")
+  check_login_pass_async("CheckLoginPassDone.Facebook", token, "", "facebook", isLimited ? "facebook-limited" : "facebook", false, false)
+}
+
+eventbus_subscribe("mobile.facebook.onSignInCallback", onlyActiveStageCb(onFacebookSignIn))
+
+eventbus_subscribe(is_ios ? "ios.account.facebook.onSignInCallback" : "android.account.fb.onSignInCallback" , onlyActiveStageCb(onFacebookSignIn))
 
 eventbus_subscribe("android.account.huawei.onSignInCallback",
   onlyActiveStageCb(function(msg) {

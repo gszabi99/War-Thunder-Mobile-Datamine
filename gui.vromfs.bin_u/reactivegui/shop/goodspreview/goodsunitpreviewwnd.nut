@@ -50,7 +50,7 @@ from "%rGui/style/gradients.nut" import simpleHorGrad
 from "%rGui/unit/components/unitInfoPanel.nut" import unitInfoPanel, mkUnitTitle
 from "%rGui/unit/components/unitPlateComp.nut" import unitPlateTiny, mkUnitInfo, mkUnitBg, mkUnitSelectedGlow,
   mkUnitImage, mkUnitTexts, unitPlateWidth, unitPlateHeight
-from "%rGui/unit/hangarUnit.nut" import setCustomHangarUnit, resetCustomHangarUnit, hangarUnitDataBackup
+from "%rGui/unit/hangarUnit.nut" import setCustomHangarUnit
 from "%rGui/unit/unitPurchaseEffectScene.nut" import isPurchEffectVisible, requestOpenUnitPurchEffect
 from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
 from "%rGui/unitsTree/components/unitPlateNodeComp.nut" import animatedProgressBar
@@ -144,12 +144,7 @@ let unitForShow = Computed(function() {
   return res
 })
 
-unitForShow.subscribe(function(unit) {
-  if (unit != null)
-    setCustomHangarUnit(unit)
-  else
-    resetCustomHangarUnit()
-})
+unitForShow.subscribe(@(unit) unit != null ? setCustomHangarUnit(unit) : null)
 
 let unitForCutsceneExt = keepref(Computed(@(prev) prev == unitForShow.get() ? prev
   : !needShowUi.get() && !skipAnimsOnce.get() ? unitForShow.get()
@@ -163,7 +158,6 @@ previewGoodsUnit.subscribe(function(unit) {
 
 function openDetailsWnd() {
   let { name } = unitForShow.get()
-  hangarUnitDataBackup.set({ name, custom = unitForShow.get() })
   let cfg = {
     name
     isUpgraded = previewGoodsUnit.get()?.isUpgraded ?? false
@@ -602,15 +596,15 @@ let previewWnd = @() {
   stopHotkeys = true
 
   function onAttach() {
-    addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
     isWindowAttached.set(true)
+    addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
     if (activeOffer.get()?.id != null && activeOffer.get()?.id == previewGoods.get()?.id)
       mark_offer_seen(activeOffer.get().campaign, activeOffer.get().id)
   }
 
   function onDetach() {
-    removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
     isWindowAttached.set(false)
+    removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
   }
 
   children = !needShowUi.get() ? doubleClickListener(@() needShowUi.set(true))

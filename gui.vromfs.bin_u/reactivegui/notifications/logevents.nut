@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 from "adjust" import logAdjustEvent
-from "android.account.fb" import logEventFB
 from "app" import get_cur_circuit_name
 from "blkGetters" import get_common_local_settings_blk, get_local_custom_settings_blk
 from "console" import register_command
@@ -17,6 +16,8 @@ from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
 
 
 let { logEvent, setAppsFlyerCUID, setUserEmail = @(_) null } = require("appsFlyer")
+
+let { logEventFB = @(_) null } = require_optional("mobile.facebook") ?? (is_ios ? require("ios.account.facebook") : require("android.account.fb"))
 let { setBillingUUID = @(_) null } = is_ios ? require("ios.billing.appstore") : {}
 let { getLogin = @() "" } = require("auth_wt")
 let { sha256 = @(_) "" } =  require("hash")

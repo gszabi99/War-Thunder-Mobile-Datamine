@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/string.nut" import utf8ToUpper
 import "%darg/helpers/mkTextRow.nut" as mkTextRow
-from "%rGui/legal.nut" import legalToApprove
+from "%rGui/legal.nut" import legalByType
 from "%appGlobals/loginState.nut" import isOpenedLegalWnd
 from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
@@ -52,8 +52,8 @@ let legalList = {
         mkTextarea
         {
           ["{btnText}"] = mkTextarea(utf8ToUpper(loc("terms_wnd/accept/noNewLine"))), 
-          ["{termsOfServiceUrl}"] = legalInfoUrl(legalToApprove["termsofservice"]), 
-          ["{privacyPolicyUrl}"] = legalInfoUrl(legalToApprove["privacypolicy"]) 
+          ["{termsOfServiceUrl}"] = legalInfoUrl(legalByType.tos), 
+          ["{privacyPolicyUrl}"] = legalInfoUrl(legalByType.pp) 
         }
       ),
       {
