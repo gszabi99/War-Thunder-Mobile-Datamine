@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/math.nut" import fabs, sqrt
-from "%rGui/radar/radarState.nut" import forestall, IsForestallVisible, SelectedTargetBlinking, selectedTarget,
-  IsRadarHudVisible
+from "%rGui/radar/radarState.nut" import IsForestallVisible, SelectedTargetBlinking, IsRadarHudVisible,
+  ForestallX, ForestallY, SelectedTargetX, SelectedTargetY
 
 
 let dasRadarIndication = load_das("%rGui/radar/radarIndication.das")
@@ -12,16 +12,7 @@ const forestallRadius = hdpx(15)
 
 SelectedTargetBlinking.subscribe(@(v) v ? anim_start(frameTrigger) : anim_request_stop(frameTrigger))
 
-function getForestallTargetLineCoords() {
-  let p1 = {
-    x = forestall.x
-    y = forestall.y
-  }
-  let p2 = {
-    x = selectedTarget.x
-    y = selectedTarget.y
-  }
-
+function getForestallTargetLineCoords(forestallX, forestallY, targetX, targetY) {
   let resPoint1 = {
     x = 0
     y = 0
@@ -30,23 +21,22 @@ function getForestallTargetLineCoords() {
     x = 0
     y = 0
   }
-
-  let dx = p1.x - p2.x
-  let dy = p1.y - p2.y
+  let dx = forestallX - targetX
+  let dy = forestallY - targetY
   let absDx = fabs(dx)
   let absDy = fabs(dy)
 
   if (absDy >= absDx) {
-    resPoint2.x = p2.x
-    resPoint2.y = p2.y + (dy > 0 ? 0.5 : -0.5) * hdpx(50)
+    resPoint2.x = targetX
+    resPoint2.y = targetY + (dy > 0 ? 0.5 : -0.5) * hdpx(50)
   }
   else {
-    resPoint2.y = p2.y
-    resPoint2.x = p2.x + (dx > 0 ? 0.5 : -0.5) * hdpx(50)
+    resPoint2.y = targetY
+    resPoint2.x = targetX + (dx > 0 ? 0.5 : -0.5) * hdpx(50)
   }
 
-  let vecDx = p1.x - resPoint2.x
-  let vecDy = p1.y - resPoint2.y
+  let vecDx = forestallX - resPoint2.x
+  let vecDy = forestallY - resPoint2.y
   let vecLength = sqrt(vecDx * vecDx + vecDy * vecDy)
   let vecNorm = {
     x = vecLength > 0 ? vecDx / vecLength : 0
@@ -72,7 +62,7 @@ function forestallTgtLine(color) {
     behavior = Behaviors.RtPropUpdate
     animations = [{ prop = AnimProp.opacity, from = 0.2, to = 1, duration = 0.5, play = SelectedTargetBlinking.get(), loop = true, easing = InOutSine, trigger = frameTrigger }]
     update = function() {
-      let resLine = getForestallTargetLineCoords()
+      let resLine = getForestallTargetLineCoords(ForestallX.get(), ForestallY.get(), SelectedTargetX.get(), SelectedTargetY.get())
 
       return {
         commands = [
@@ -102,7 +92,7 @@ let forestallVisible = @(color) {
   behavior = Behaviors.RtPropUpdate
   update = @() {
     transform = {
-      translate = [forestall.x - forestallRadius, forestall.y - forestallRadius]
+      translate = [ForestallX.get() - forestallRadius, ForestallY.get() - forestallRadius]
     }
   }
 }

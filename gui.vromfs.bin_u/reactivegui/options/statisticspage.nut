@@ -11,8 +11,9 @@ from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
 from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
 from "%rGui/components/scrollbar.nut" import makeVertScroll
 from "%rGui/mpStatistics/medalsCtors.nut" import getMedalPresentationWithCtor
-from "%rGui/mpStatistics/playerInfo.nut" import levelMark, hlColor, iconSize, mkText, levelHolderSize
+from "%rGui/mpStatistics/playerInfo.nut" import hlColor, iconSize, mkText, levelHolderSize
 from "%rGui/mpStatistics/statRow.nut" import viewStats, mkStatRow, mkRow, mkMarqueeText
+from "%rGui/contacts/contactInfoPkg.nut" import levelMark
 from "%rGui/options/optionsStyle.nut" import contentWidthFull
 from "%rGui/unlocks/userstat.nut" import actualizeStats, userstatStats
 

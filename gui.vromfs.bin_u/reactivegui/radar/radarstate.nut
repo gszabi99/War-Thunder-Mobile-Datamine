@@ -13,33 +13,23 @@ let radarState = {
   SelectedTargetSpeedBlinking = Watched(false)
   IsBScopeVisible = Watched(false)
   showRadarOverMap = Watched(false)
-}
 
-let forestall = {
-  x = 0.0
-  y = 0.0
+  IsForestallVisible = Watched(false)
+  ForestallX = Watched(0.0)
+  ForestallY = Watched(0.0)
+  SelectedTargetX = Watched(0.0)
+  SelectedTargetY = Watched(0.0)
 }
-let selectedTarget = {
-  x = 0.0
-  y = 0.0
-}
-let IsForestallVisible = Watched(false)
 
 registerInteropFunc("updateForestall", function(x, y) {
-  forestall.x = x
-  forestall.y = y
+  radarState.ForestallX.set(x)
+  radarState.ForestallY.set(y)
 })
 
 registerInteropFunc("updateSelectedTarget", function(x, y) {
-  selectedTarget.x = x
-  selectedTarget.y = y
+  radarState.SelectedTargetX.set(x)
+  radarState.SelectedTargetY.set(y)
 })
-
-radarState.__update({
-  IsForestallVisible, forestall, selectedTarget
-})
-
-
 
 interopGen({
   stateTable = radarState

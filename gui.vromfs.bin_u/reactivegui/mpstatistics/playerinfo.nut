@@ -2,7 +2,6 @@ from "%rGui/style/gamercardStyle.nut" import *
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import deferOnce
 from "%sqstd/string.nut" import utf8ToUpper
-from "%sqstd/underscore.nut" import arrayByRows
 from "%appGlobals/config/campaignPresentation.nut" import campaignPresentations, getCampaignPresentation
 from "%appGlobals/pServer/campaign.nut" import campaignsList
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
@@ -11,16 +10,15 @@ from "%appGlobals/permissions.nut" import can_view_player_uids
 from "%appGlobals/timeToText.nut" import secondsToTimeAbbrString
 from "%rGui/components/buttonStyles.nut" import COMMON
 from "%rGui/components/clipboard.nut" import copyToClipboard
-from "%rGui/components/levelBlockPkg.nut" import mkLevelBg
 import "%rGui/components/mkIconBtn.nut" as mkIconBtn
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
 from "%rGui/components/modalWnd.nut" import modalWndBg
 from "%rGui/components/spinner.nut" import mkSpinner
-from "%rGui/components/starLevel.nut" import starLevelTiny
 from "%rGui/components/textButton.nut" import textButtonCommon, mkCustomButton, mergeStyles
+from "%rGui/components/scrollbar.nut" import makeHorizScroll
 from "%rGui/contacts/contact.nut" import validateNickNames, Contact
 from "%rGui/contacts/contactActions.nut" import INVITE_TO_FRIENDS, CANCEL_INVITE, REVOKE_INVITE, INVITE_TO_SQUAD, REPORT
-from "%rGui/contacts/contactInfoPkg.nut" import contactNameBlock, contactAvatar, contactLevelBlock
+from "%rGui/contacts/contactInfoPkg.nut" import contactNameBlock, contactAvatar, contactLevelBlock, levelMark
 from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicInfo, mkIsPublicInfoWait
 from "%rGui/contacts/contactsState.nut" import needFetchContactsInBattle
 from "%rGui/contacts/mkContactActionBtn.nut" import mkExtContactActionBtn
@@ -40,7 +38,6 @@ from "%rGui/tooltip.nut" import calcPosition
 
 let defSections = [SECTION_PROFILE_IDS.PROFILE]
 
-const maxMedalInRow = 7
 const defColor = 0xFFFFFFFF
 let hlColor = selectColor
 const grayColor = 0x80808080
@@ -48,6 +45,7 @@ const commonBgGradColor = 0x990C1113
 let secondaryGradColor = selectColor
 let iconSize = [hdpx(40), hdpx(20)]
 const rowMedalHeight = hdpx(70)
+const rowMedalGap = hdpx(15)
 const sectionBtnHeight = hdpx(80)
 const sectionBtnGap = hdpx(10)
 const lineWidth = hdpx(5)
@@ -69,28 +67,12 @@ let mkTitle = @(title, ovr = {}) {
     text = (title != null && title != "") ? loc($"title/{title}") : ""
   }.__update(ovr)
 
-let starLevelOvr = { hplace = ALIGN_CENTER vplace = ALIGN_CENTER pos = const [0, ph(30)] }
-let levelMark = @(level, starLevel) {
-  size = array(2, levelHolderSize)
-  children = [
-    mkLevelBg()
-    {
-      rendObj = ROBJ_TEXT
-      text = level
-      vplace = ALIGN_CENTER
-      hplace = ALIGN_CENTER
-    }.__update(fontSmall)
-    starLevelTiny(starLevel, starLevelOvr)
-  ]
-}
-
 let mkContactInfo = @(contact, info) @() {
   watch = [contact, info]
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(30)
-  minWidth = SIZE_TO_CONTENT
-  size = FLEX_H
+  size = FLEX
   children = [
     contactAvatar(info.get())
     contactNameBlock(contact.get(), info.get())
@@ -109,8 +91,7 @@ let mkBotNameContent = @(player, info) function() {
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = hdpx(30)
-    minWidth = SIZE_TO_CONTENT
-    size = FLEX_H
+    size = FLEX
     children = [
       contactAvatar(info.get())
       {
@@ -222,7 +203,6 @@ function mkReportButton(userId) {
 function mkButtons(userId, isInvitesAllowed) {
   let gap = { minWidth = hdpx(40) size = FLEX }
   return {
-    minWidth = SIZE_TO_CONTENT
     size = FLEX_H
     flow = FLOW_HORIZONTAL
     gap
@@ -274,27 +254,23 @@ let mkMedals = @(info, selCampaign) function() {
     if (campaign == campaignExt)
       children.append(ctor(medal))
   }
+  let scrollHandler = ScrollHandler()
   return {
     watch = info
+    size = FLEX_H
     valign = ALIGN_CENTER
     flow = FLOW_VERTICAL
-    gap = hdpx(30)
+    gap = hdpx(20)
     children = children.len() > 0
       ? [
           mkText(loc("mainmenu/btnMedal"), hlColor).__update(fontTinyAccented)
-          {
-            valign = ALIGN_CENTER
-            flow = FLOW_VERTICAL
-            gap = hdpx(5)
-            children = arrayByRows(children, maxMedalInRow)
-              .map(@(ch) {
-                size = const [SIZE_TO_CONTENT, rowMedalHeight]
-                valign = ALIGN_CENTER
-                flow = FLOW_HORIZONTAL
-                gap = hdpx(30)
-                children = ch
-              })
-          }
+          makeHorizScroll({
+            size = [SIZE_TO_CONTENT, rowMedalHeight]
+            padding = [0, hdpx(10), 0, 0]
+            flow = FLOW_HORIZONTAL
+            gap = rowMedalGap
+            children
+          }, { size = [FLEX, SIZE_TO_CONTENT], scrollHandler })
         ]
       : mkText(loc("mainmenu/noMedal"))
   }
@@ -365,10 +341,8 @@ function mkProfileSectionContent(player, info, globalStats, campaign, isInvitesA
 
   return [
     mkTabsCampaignName
-    mkMedals(info, campaign)
     {
       gap = { minWidth = hdpx(50) size = FLEX }
-      minWidth = SIZE_TO_CONTENT
       size = FLEX_H
       children = [
         function() {
@@ -478,9 +452,16 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed, sections 
         gap = hdpx(30)
         minWidth = hdpx(780)
         children = [
-          isBot
-            ? mkBotNameContent(player, info)
-            : mkContactInfo(contact, info)
+          {
+            size = FLEX_H
+            flow = FLOW_HORIZONTAL
+            gap = hdpx(30)
+            children = [
+              isBot ? mkBotNameContent(player, info)
+                : mkContactInfo(contact, info)
+              mkMedals(info, campaign)
+            ]
+          }
           mkPlayerUidInfo(player, contact)
           sectionBody
         ]
@@ -504,6 +485,7 @@ selectedPlayerForInfo.subscribe(function(v) {
   }
 
   let position = calcPosition(aabb, FLOW_HORIZONTAL, hdpx(20), ALIGN_CENTER, ALIGN_CENTER)
+  position.pos[1] = sh(47)
   let selCampaign = v.campaign
   let globalStats = Computed(function() {
     let { allUnits = {} } = serverConfigs.get()
@@ -550,7 +532,6 @@ selectedPlayerForInfo.subscribe(function(v) {
 return {
   mkPlayerInfo
   levelHolderSize
-  levelMark
 
   defColor
   hlColor

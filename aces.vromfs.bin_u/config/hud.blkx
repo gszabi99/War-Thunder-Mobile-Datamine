@@ -2087,6 +2087,7 @@
     }
   },
   "indicators": {
+    "shouldReportStuckIndicators": true,
     "hpProgressSize": [
       60.0,
       5.0

@@ -112734,7 +112734,7 @@
       "powerToWeightRatio": 20.8333,
       "weapons": {
         "30mm_2A42_BMPT_user_cannon": {
-          "wtype": "auxCannon",
+          "wtype": "mainCannon",
           "caliber": 30.0,
           "armorPower": 35.1221,
           "reloadTime": 0.10917,

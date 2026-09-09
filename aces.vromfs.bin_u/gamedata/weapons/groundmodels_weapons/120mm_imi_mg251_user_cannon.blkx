@@ -340,7 +340,7 @@
       "explosiveType": "clx_663",
       "explosiveMass": 2.3,
       "caliber": 0.12,
-      "Cx": 0.025,
+      "Cx": 0.431,
       "speed": 900.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
@@ -360,20 +360,20 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he_df.ivf",
+      "gbufferModelName": "tank_shell_he_fs",
+      "modelName": "tank_shell_he_fs",
       "bulletName": "120mm_m339",
-      "hitPowerMult": 300.0,
-      "timeFuseDistanceError": 1.0,
-      "explosionInAir": true,
       "selfDestructionFx": [
         "explosion_air_selfexplosion_big",
         "explosion_air_selfexplosion_big"
       ],
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
-      ],
+      "fuseOnWater": true,
+      "fuseOnWaterProbability": 1.0,
+      "ricochetTimeToLive": 0.085,
       "fuseDelayDist": 1.5,
       "explodeTreshold": 3.0,
+      "timeFuseDistanceError": 1.0,
+      "explosionInAir": true,
       "explosionEffect": "hit_106_132mm_metal_he",
       "groundCollisionEffect": "hit_106_132mm_dirt_he",
       "ricochetEffect": "hit_106_132mm_metal_ap",
@@ -399,46 +399,89 @@
       "hitpower": {
         "HitPower0m": [
           1.0,
-          1000.0
-        ],
-        "HitPower10000m": [
-          0.8,
-          10000.0
-        ]
-      },
-      "armorpower": {
-        "ArmorPower0m": [
-          65.0,
-          100.0
-        ],
-        "ArmorPower100m": [
-          63.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          60.0,
           500.0
         ],
-        "ArmorPower1000m": [
-          58.0,
-          1000.0
+        "HitPower5000m": [
+          0.5,
+          5000.0
         ],
-        "ArmorPower1500m": [
-          53.0,
-          1500.0
-        ],
-        "ArmorPower2000m": [
-          50.0,
-          2000.0
-        ],
-        "ArmorPower2500m": [
-          43.0,
-          2500.0
-        ],
-        "ArmorPower10000m": [
-          4.0,
-          10000.0
+        "HitPower7000m": [
+          0.1,
+          7000.0
         ]
+      },
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.15,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        },
+        "explosive": {
+          "radius": 0.3,
+          "offset": 0.2
+        },
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 3.25,
+          "realShattersSplicing": 0.5,
+          "segment": [
+            {
+              "radiusScale": 1.25,
+              "penetrationScale": 4.5,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                20.0
+              ],
+              "countPortion": 0.14
+            },
+            {
+              "radiusScale": 0.3,
+              "penetrationScale": 3.25,
+              "damageScale": 1.0,
+              "angles": [
+                30.0,
+                55.0
+              ],
+              "countPortion": 0.05
+            },
+            {
+              "radiusScale": 0.7,
+              "penetrationScale": 3.0,
+              "damageScale": 1.0,
+              "angles": [
+                55.0,
+                110.0
+              ],
+              "countPortion": 0.61
+            },
+            {
+              "radiusScale": 0.3,
+              "penetrationScale": 2.5,
+              "damageScale": 1.0,
+              "angles": [
+                110.0,
+                165.0
+              ],
+              "countPortion": 0.15
+            },
+            {
+              "radiusScale": 0.3,
+              "penetrationScale": 2.0,
+              "damageScale": 1.0,
+              "angles": [
+                165.0,
+                180.0
+              ],
+              "countPortion": 0.05
+            }
+          ]
+        }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [

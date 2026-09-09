@@ -1,13 +1,13 @@
 ﻿from "%globalsDarg/darg_library.nut" import *
-from "android.billing.googleplay" import getCountryCode
 from "android.platform" import isDownloadedFromGooglePlay
 from "app" import get_base_game_version_str
 from "console" import register_command
 from "eventbus" import eventbus_send
 from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/platform.nut" import is_android
 from "%sqstd/string.nut" import utf8ToUpper
 from "%sqstd/version_compare.nut" import check_version
-from "%appGlobals/clientState/clientState.nut" import isInMenu, isOutOfBattleAndResults
+from "%appGlobals/clientState/clientState.nut" import isDownloadedFromSite, isInMenu, isOutOfBattleAndResults
 from "%appGlobals/curCircuitOverride.nut" import isExternalOperator
 from "%appGlobals/loginState.nut" import authTags, isLoggedIn
 from "%appGlobals/pServer/pServerApi.nut" import registerHandler, get_migrate_acc_info, migAccInfoInProgress
@@ -23,7 +23,7 @@ from "%rGui/navState.nut" import registerScene
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import locColorTable
-
+let { getCountryCode } = require(isDownloadedFromGooglePlay() ? "android.billing.googleplay" : "auth_wt")
 
 const INCOMPATIBLE_FROM_VERSION = "1.27.0.0"
 const GUEST_MSG_UID = "migrateGuestUpgrade"
@@ -43,20 +43,30 @@ const urlColor = 0xFF17C0FC
 const urlHoverColor = 0xFF84E0FA
 const urlLineWidth = hdpxi(1)
 
+let debugForceGPTexts = mkWatched(persist, "debugForceGPTexts", false)
+let useGpTexts = Computed(@() isDownloadedFromGooglePlay() || debugForceGPTexts.get())
 let isSuggested = hardPersistWatched("suggestMigrateAcc.isSuggested", false)
 let debugForceSuggest = mkWatched(persist, "debugForceSuggest", false)
-let shouldSuggestMigrateAcc = keepref(Computed(@() (external_gp_build_released.get() && !isExternalOperator()
-    && isDownloadedFromGooglePlay() && ["RU","BY"].contains(getCountryCode()))
+let shouldSuggestMigrateAcc = keepref(Computed(@()
+  (is_android
+    && external_gp_build_released.get()
+    && !isExternalOperator()
+    && (isDownloadedFromGooglePlay() || isDownloadedFromSite)
+    && ["RU","BY"].contains(getCountryCode()))
   || debugForceSuggest.get()))
 let debugForceCompleted = mkWatched(persist, "debugForceCompleted", false)
-let shouldSuggestSwitchClient = keepref(Computed(@() (!isExternalOperator()
-    && isDownloadedFromGooglePlay() && authTags.get().contains("extop_wtm"))
+let shouldSuggestSwitchClient = keepref(Computed(@() (!isExternalOperator() && authTags.get().contains("extop_wtm"))
   || debugForceCompleted.get()))
 let needShowMigrationWnd = keepref(Computed(@()
   ((shouldSuggestMigrateAcc.get() && !isSuggested.get()) || shouldSuggestSwitchClient.get())
   && isInMenu.get() && isOutOfBattleAndResults.get()))
 
-isSuggested.subscribe(@(v) v ? debugForceSuggest.set(false) : null)
+isSuggested.subscribe(function(v) {
+  if (!v)
+    return
+  debugForceGPTexts.set(false)
+  debugForceSuggest.set(false)
+})
 
 let ver = get_base_game_version_str()
 let canCloseByVersion = ver == "" || check_version($"<{INCOMPATIBLE_FROM_VERSION}", ver)
@@ -126,8 +136,10 @@ let mkIcon = @(imgPath, size) {
 
 let mkBlockSize = @(cols, totalW, horGap) [(totalW - (horGap * (cols - 1))) / cols, SIZE_TO_CONTENT]
 
-function mkParComps() {
-  let parTexts = [ info?.par1 ?? "", info?.par2 ?? "", info?.par3 ?? "" ]
+function mkParComps(isGP) {
+  let parTexts = isGP
+    ? [ info?.par1 ?? "", info?.par2 ?? "", info?.par3must ?? "" ]
+    : [ info?.par1 ?? "", info?.par3should ?? "" ]
   let size = mkBlockSize(parTexts.len(), contentW, parGap)
   return parTexts.map(@(txt) mkTextarea(txt, { size, colorTable = locColorTable }))
 }
@@ -200,11 +212,11 @@ let mkSuggestMigrationContentWnd = @() modalWndBg.__merge({
   flow = FLOW_VERTICAL
   children = [
     @() {
-      watch = canClose
+      watch = [canClose, useGpTexts]
       size = [flex(), wndHeaderHeight]
       valign = ALIGN_CENTER
       children = [
-        modalWndHeader(utf8ToUpper(info?.title ?? ""))
+        modalWndHeader(utf8ToUpper((useGpTexts.get() ? info?.titleGP : info?.title) ?? ""))
         !canClose.get() ? null : closeWndBtn(close, { hotkeys = [btnBEscUp] })
       ]
     }
@@ -222,10 +234,16 @@ let mkSuggestMigrationContentWnd = @() modalWndBg.__merge({
               { size = const [flex(), SIZE_TO_CONTENT], halign = ALIGN_CENTER }.__update(fontBoldSmall))
             {
               size = [flex(), SIZE_TO_CONTENT]
+              minHeight = hdpx(200)
               margin = [0, 0, hdpx(30), 0]
-              flow = FLOW_HORIZONTAL
-              gap = parGap
-              children = mkParComps()
+              valign = ALIGN_CENTER
+              children = @() {
+                watch = useGpTexts
+                size = [flex(), SIZE_TO_CONTENT]
+                flow = FLOW_HORIZONTAL
+                gap = parGap
+                children = mkParComps(useGpTexts.get())
+              }
             }
             {
               size = const [flex(), SIZE_TO_CONTENT]
@@ -277,11 +295,14 @@ let mkSwitchClientContentWnd = @() modalWndBg.__merge({
           children = mkTextarea("\n".concat(info?.complPar1 ?? "", info?.complPar2 ?? ""),
               { size = const [flex(), SIZE_TO_CONTENT] })
         }
-        {
+        @() {
+          watch = useGpTexts
           size = const [flex(), SIZE_TO_CONTENT]
           vplace = ALIGN_BOTTOM
           halign = ALIGN_CENTER
-          children = textButtonBattle(utf8ToUpper(info?.btnComplApp ?? ""), openRegionalAppPageInGooglePlay)
+          children = useGpTexts.get()
+            ? textButtonBattle(utf8ToUpper(info?.btnComplAppGP ?? ""), openRegionalAppPageInGooglePlay)
+            : textButtonBattle(utf8ToUpper(info?.btnComplAppApk ?? ""), openRegionalAppApkPageOnSite)
         }
       ]
     }
@@ -309,15 +330,22 @@ let mkScene = @() bgShaded.__merge({
   children = wndComp
 })
 
-register_command(function() {
+function debugShowSuggestWnd(isGP) {
   let isShow = !debugForceSuggest.get()
   debugForceSuggest.set(isShow)
-  if (isShow)
-    isSuggested.set(false)
-}, "ui.debug.migrate_account_wnd.suggest_gp")
+  debugForceGPTexts.set(isShow && isGP)
+  isSuggested.set(!isShow)
+}
+register_command(@() debugShowSuggestWnd(true),  "ui.debug.migrate_account_wnd.suggest_gp")
+register_command(@() debugShowSuggestWnd(false), "ui.debug.migrate_account_wnd.suggest_apk")
 
-register_command(@() debugForceCompleted.set(!debugForceCompleted.get()),
-  "ui.debug.migrate_account_wnd.completed_gp")
+function debugShowCompletedWnd(isGP) {
+  let isShow = !debugForceCompleted.get()
+  debugForceCompleted.set(isShow)
+  debugForceGPTexts.set(isShow && isGP)
+}
+register_command(@() debugShowCompletedWnd(true),  "ui.debug.migrate_account_wnd.completed_gp")
+register_command(@() debugShowCompletedWnd(false), "ui.debug.migrate_account_wnd.completed_apk")
 
 const alwaysOnTop = true
 let canClear = @() canClose.get()

@@ -89,7 +89,7 @@ let levelMark = @(level, starLevel) {
     levelBg
     {
       rendObj = ROBJ_TEXT
-      text = level - starLevel
+      text = level
     }.__update(fontVeryTinyAccented)
     starLevelSmall(starLevel, starLevelOvr)
   ]
@@ -102,7 +102,7 @@ function contactLevelBlock(info, ovr = {}) {
     size = [contactLevelSize, FLEX]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    children = playerLevel == null ? null : levelMark(playerLevel + starAdd, playerStarLevel + starAdd)
+    children = playerLevel == null ? null : levelMark(playerLevel - playerStarLevel, playerStarLevel + starAdd)
   }.__update(ovr)
 }
 
@@ -146,6 +146,7 @@ return {
   contactLevelBlock
   contactOnlineStatusBlock
   contactSquadStatusBlock
+  levelMark
 
   contactLevelSize
   darkenBgColor

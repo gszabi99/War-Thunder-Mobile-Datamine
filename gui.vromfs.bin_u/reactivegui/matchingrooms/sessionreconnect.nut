@@ -138,7 +138,11 @@ let checkReconnect = @(onFail = null)
   matchingRpcCall("match.check_reconnect", null, { id = "onCheckReconnect", onFail })
 
 isMatchingOnline.subscribe(function(v) {
-  if (!v && isLoggedIn.get())
+  if (!isLoggedIn.get())
+    return
+  if (v)
+    checkReconnect()
+  else
     needCheckReconnectOnGoToBattle.set(true)
 })
 

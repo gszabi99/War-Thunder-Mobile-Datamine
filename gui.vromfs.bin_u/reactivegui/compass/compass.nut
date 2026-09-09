@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "math" import fabs
-from "%rGui/compass/compassState.nut" import CompassValue, azimuthMarkersTrigger, azimuthMarkers
+from "%rGui/compass/compassState.nut" import CompassValue, azimuthMarkers
 from "%rGui/hud/hudTouchButtonStyle.nut" import borderColor, borderWidth
 
 
@@ -159,9 +159,9 @@ function mkAircraftMark(markData, size, color) {
   }
 }
 
-function mkAircraftMarks(size, color) {
+function mkAircraftMarks(size, color, azimuth_markers) {
   let markers = []
-  foreach (_id, azimuthMarker in azimuthMarkers) {
+  foreach (_id, azimuthMarker in azimuth_markers) {
     if (!azimuthMarker)
       continue
     else if (azimuthMarker.ageRel > 1.0)
@@ -172,10 +172,10 @@ function mkAircraftMarks(size, color) {
 }
 
 let mkAircraftComponent = @(size, pos, color) @() {
-  watch = azimuthMarkersTrigger
+  watch = azimuthMarkers
   size
   pos = [0, pos]
-  children = mkAircraftMarks(size, color)
+  children = mkAircraftMarks(size, color, azimuthMarkers.get())
 }
 
 function mkCompass(scale) {
