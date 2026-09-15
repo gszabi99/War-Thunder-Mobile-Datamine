@@ -146,7 +146,6 @@ return {
   contactLevelBlock
   contactOnlineStatusBlock
   contactSquadStatusBlock
-  levelMark
 
   contactLevelSize
   darkenBgColor

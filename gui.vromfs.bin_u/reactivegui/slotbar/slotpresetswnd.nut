@@ -230,7 +230,7 @@ function mkPresetButtons(presets, presetIdx) {
           utf8ToUpper(loc("mainmenu/btnApply")),
           @() onApply(presets.get(), presetIdx.get(), curCampaign.get(), isCurrentPreset.get()),
           {
-            ovr = {size = const [FLEX, btnIconSize], minWidth = btnMinWidth},
+            ovr = {size = const [FLEX, btnIconSize], padding = 0, minWidth = btnMinWidth},
             childOvr = fontTinyAccentedShaded,
             hotkeyBlockOvr = {padding = 0}
             hotkeys = ["^J:X"]

@@ -3,7 +3,7 @@ from "dagor.fs" import file_exists
 from "eventbus" import eventbus_send
 from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/consent.nut" import isTcfConsentEnabled
-from "%rGui/legal.nut" import PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL
+from "%rGui/legal.nut" import legalByType
 from "%rGui/components/buttonStyles.nut" import PRIMARY
 from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon, buttonsVGap, mkCustomButton,
@@ -43,12 +43,12 @@ return @() {
   halign = ALIGN_CENTER
   children = [
     mkCustomButton(
-      mkButtonTextMultiline(utf8ToUpper(loc("privacyPolicy")), multilineButtonOvrStyle),
-      @() eventbus_send("openUrl", { baseUrl = PRIVACY_POLICY_URL }),
+      mkButtonTextMultiline(utf8ToUpper(loc(legalByType.pp.locId)), multilineButtonOvrStyle),
+      @() eventbus_send("openUrl", { baseUrl = legalByType.pp.url }),
       mergeStyles(PRIMARY, buttonsWidthStyle))
     mkCustomButton(
-      mkButtonTextMultiline(utf8ToUpper(loc("mainmenu/termsOfService")), multilineButtonOvrStyle),
-      @() eventbus_send("openUrl", { baseUrl = TERMS_OF_SERVICE_URL }),
+      mkButtonTextMultiline(utf8ToUpper(loc(legalByType.tos.locId)), multilineButtonOvrStyle),
+      @() eventbus_send("openUrl", { baseUrl = legalByType.tos.url }),
       mergeStyles(PRIMARY, buttonsWidthStyle))
     isTcfConsentEnabled.get() && isTcfConsentRequiredForCountry.get()
       ? textButtonPrimary(utf8ToUpper(loc("mainmenu/consentPrivacy")), openTcfConsentWnd, buttonsWidthStyle)

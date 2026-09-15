@@ -201,7 +201,7 @@ let goodsBlock = {
           children = mkTextRow(
             loc("reward/skin_for"),
             @(text) { rendObj = ROBJ_TEXT, text }.__update(fontSmallAccentedShaded),
-            { ["{unitName}"] = unitHeaderBlock } 
+            { unitName = unitHeaderBlock }
           )
         }
         unitInfoButton

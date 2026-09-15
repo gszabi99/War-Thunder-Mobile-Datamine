@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/string.nut" import utf8ToUpper
-import "%darg/helpers/mkTextRow.nut" as mkTextRow
+import "%darg/helpers/mkTextareaBlock.nut" as mkTextareaBlock
 from "%rGui/legal.nut" import legalByType
 from "%appGlobals/loginState.nut" import isOpenedLegalWnd
 from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
@@ -19,51 +19,29 @@ const WND_UID = "legalAcceptWnd"
 const urlColor = 0xFF17C0FC
 const wndWidthDefault = hdpx(1300)
 const wndHeight = hdpx(650)
+const wndPadding = buttonsHGap
+const wndContentW = wndWidthDefault - (2 * wndPadding)
 
 let urlStyle = { ovr = { color = urlColor }, childOvr = { color = urlColor } }
 function legalInfoUrl(legalCfg) {
-  let { url, locId } = legalCfg
-  return urlText(loc($"{locId}"), url, urlStyle)
+  let { url, acceptWndLocId } = legalCfg
+  return urlText(loc(acceptWndLocId), url, urlStyle)
 }
 
-function replaceExtremeSpacesToNbsp(text) {
-  local result = text
-  if (result.startswith(" "))
-    result = "".concat(nbsp, result.slice(1))
-  if (result.endswith(" "))
-    result = "".concat(result.slice(0, -1), nbsp)
-  return result
-}
-
-let mkTextarea = @(text) {
+let textareaProps = {
+  size = const [wndContentW, SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
-  preformatted = FMT_KEEP_SPACES
-  text = replaceExtremeSpacesToNbsp(text) 
-  maxWidth = wndWidthDefault - buttonsHGap
+  lineSpacing = hdpx(16)
 }.__update(fontSmall)
 
-let legalList = {
-  size = FLEX_H
-  children = [
-    wrap(
-      mkTextRow(
-        loc("legals/byClickingBtnYouAcceptAllLegals")
-        mkTextarea
-        {
-          ["{btnText}"] = mkTextarea(utf8ToUpper(loc("terms_wnd/accept/noNewLine"))), 
-          ["{termsOfServiceUrl}"] = legalInfoUrl(legalByType.tos), 
-          ["{privacyPolicyUrl}"] = legalInfoUrl(legalByType.pp) 
-        }
-      ),
-      {
-        width = wndWidthDefault - buttonsHGap
-        flow = FLOW_HORIZONTAL
-        vGap = hdpx(16)
-      }
-    )
-  ]
-}
+let mkLegalList = @() mkTextareaBlock(loc("legals/byClickingBtnYouAcceptAllLegals"),
+  textareaProps,
+  {
+    btnText = utf8ToUpper(loc("terms_wnd/accept/noNewLine"))
+    termsOfServiceUrl = legalInfoUrl(legalByType.tos)
+    privacyPolicyUrl = legalInfoUrl(legalByType.pp)
+  })
 
 let acceptText = {
   behavior = Behaviors.TextArea
@@ -82,14 +60,14 @@ let acceptButton = mkCustomButton(
   },
   buttonStyles.PRIMARY.__merge({ hotkeys = ["^J:X"] }))
 
-let wndContent = {
+let wndContent = @() {
   size = FLEX
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap =  { size = FLEX }
-  padding = buttonsHGap
+  padding = wndPadding
   children = [
-    legalList
+    mkLegalList()
     acceptButton
   ]
 }
@@ -103,7 +81,7 @@ let legalWnd = bgShaded.__merge({
     flow = FLOW_VERTICAL
     size = const [ wndWidthDefault, wndHeight ]
     children = [
-      modalWndHeader(loc("terms_wnd/header"), { minWidth = SIZE_TO_CONTENT, padding = [ 0, buttonsHGap ] })
+      modalWndHeader(loc("terms_wnd/header"), { minWidth = SIZE_TO_CONTENT, padding = [ 0, wndPadding ] })
       wndContent
     ]
   })

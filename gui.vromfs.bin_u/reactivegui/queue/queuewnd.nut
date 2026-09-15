@@ -255,10 +255,11 @@ let aimingHint = {
   hplace = ALIGN_CENTER
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
-  children = [{
+  children = [
+    {
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
-      children = mkTextRow(loc("hints/wtm_ship_mission_aiming"), mkText, { ["{button}"] = hintIcon }) 
+      children = mkTextRow(loc("hints/wtm_ship_mission_aiming"), mkText, { button = hintIcon })
     }
     @() textParams.__merge({
       watch = missionCampaign

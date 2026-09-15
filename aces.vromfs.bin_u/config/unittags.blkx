@@ -47931,6 +47931,79 @@
       }
     }
   },
+  "venom_fb4": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "de-haviland",
+        "model": "ghost_103",
+        "mass": 1000.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_britain": true,
+      "type_fighter": true,
+      "type_jet_fighter": true,
+      "britain": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 12192.0,
+      "maxSpeed": 285.28,
+      "turnTime": 22.0,
+      "airfieldLen": 850.0,
+      "climbTime": 240.0,
+      "maxSpeedAlt": 0.0,
+      "climbAlt": 6096.0,
+      "climbSpeed": 34.2,
+      "wingLoading": 230.0,
+      "thrustToWeightRatio": 0.36,
+      "rollRate": 125.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 4,
+      "massPerSec": 6.4625,
+      "weapons": {
+        "cannonHispanoMkV": {
+          "type": "cannon",
+          "gunsCount": 4,
+          "ammoCount": 600,
+          "shotFreq": 12.5
+        },
+        "uk_500lbs": {},
+        "uk_500lb_mc": {},
+        "uk_1000lb": {},
+        "uk_rp3": {}
+      }
+    },
+    "bullets": {
+      "cannonHispanoMkV": {
+        "default": {
+          "icon": "he_frag_i/he_frag_i/ball_shell/t_shell/"
+        },
+        "hispano_universal": {
+          "icon": "he_frag_i/sapi/ap/t_shell/"
+        },
+        "hispano_air_targets": {
+          "icon": "t_shell/he_frag_i/sapi/he_frag_i/sapi/"
+        },
+        "hispano_tracers": {
+          "icon": "ap/t_shell/he_frag_i/"
+        },
+        "hispano_ground_targets": {
+          "icon": "ap/ap/ap/he_frag_i/t_shell/"
+        },
+        "hispano_stealth": {
+          "icon": "he_frag_i/he_frag_i/sapi/ap/"
+        }
+      }
+    }
+  },
   "germ_cruiser_admiral_hipper": {
     "type": "ship",
     "hangar_place": "ship",
@@ -62685,6 +62758,82 @@
           "caliber": 130.0,
           "ammoCount": 600,
           "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
+  "fr_battleship_richelieu_class_clemenceau": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 60,
+    "tierGroup": 8,
+    "tags": {
+      "country_france": true,
+      "type_battleship": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 1550,
+      "shipCrewMin": 260,
+      "shipCrewRating": 3.78667,
+      "maxSpeed": 16.46,
+      "turningTime": 36,
+      "mainWeaponCaliber": 380.0,
+      "ciwsCaliber": 37.0,
+      "ciwsDuration": 10.0,
+      "ciwsCooldown": 50.0,
+      "weapons": {
+        "380mm_45_mle_1935_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 2775.0,
+          "shotFreq": 0.063,
+          "gunsCount": 8,
+          "caliber": 380.0,
+          "ammoCount": 832,
+          "isBeltAmmo": false
+        },
+        "152mm_55_model_1930_naval_user_cannon": {
+          "wtype": "auxCannon",
+          "damage": 750.0,
+          "shotFreq": 0.25,
+          "gunsCount": 12,
+          "caliber": 152.0,
+          "ammoCount": 1740,
+          "isBeltAmmo": false
+        },
+        "100mm_45_mle_1933_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 300.0,
+          "shotFreq": 0.385,
+          "aimMaxDist": 10000,
+          "gunsCount": 12,
+          "caliber": 100.0,
+          "ammoCount": 7200,
+          "isBeltAmmo": false
+        },
+        "37mm_50_model1925_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 30.0,
+          "shotFreq": 0.5,
+          "aimMaxDist": 3000.0,
+          "gunsCount": 6,
+          "caliber": 37.0,
+          "ammoCount": 6000,
+          "isBeltAmmo": false,
+          "isCiws": true
+        },
+        "13_2mm_hotchkiss_naval_user_machinegun_aaa": {
+          "wtype": "aaa",
+          "damage": 15.0,
+          "shotFreq": 7.93,
+          "aimMaxDist": 2000.0,
+          "gunsCount": 9,
+          "caliber": 13.2,
+          "ammoCount": 16200,
+          "isBeltAmmo": true,
+          "isCiws": true
         }
       }
     },
@@ -116409,6 +116558,74 @@
         "120mm_NATO_HE_FS": {
           "isHE": true,
           "icon": "hud_ammo_he"
+        }
+      }
+    }
+  },
+  "il_merkava_mk_3_raam_segol": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_israel": true,
+      "tank": true,
+      "type_medium_tank": true,
+      "has_aps": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 120.0,
+      "armorThicknessFront": [
+        0.3,
+        0.05,
+        0.65
+      ],
+      "armorThicknessSide": [
+        0.15,
+        0.05,
+        0.8
+      ],
+      "crew": 4,
+      "mass": 65000.0,
+      "maxSpeedForward": 16.6736,
+      "maxSpeedBackward": 7.19998,
+      "powerToWeightRatio": 18.4615,
+      "weapons": {
+        "120mm_IMI_MG251_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 120.0,
+          "armorPower": 480.0,
+          "reloadTime": 5.9988,
+          "gunnerTurretRotationSpeed": 34.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_FN_MAG60_40_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        },
+        "12_7mm_M2_HB_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 23.3753,
+          "reloadTime": 0.104167,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "120mm_IMI_MG251_user_cannon": {
+        "120mm_NATO_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "120mm_NATO_HE_FS": {
+          "icon": "hud_ammo_he3_tf"
         }
       }
     }

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/legal.nut" import PRIVACY_POLICY_URL
+from "%rGui/legal.nut" import legalByType
 from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkStatusContent, mkManageButtons,
   mkTextarea, mkTextareaWithLinks, mkLink, openUrl, separatorLine, gapAbove, gapBelow, fadedAndMinor, fontMinor
 from "%rGui/notifications/consentTcf/consentTcfState.nut" import showPurposeInfo, isOpenedManage, isOpenedPartnersExt,
@@ -97,8 +97,8 @@ let mkManageDesc = @() function() {
     mkTextarea(loc("consent_tcf/manage/desc/p2"), fadedAndMinor.__merge(gapBelow))
     mkTextarea(loc("consent_tcf/manage/desc/p3v2"), fadedAndMinor.__merge(gapBelow))
     mkTextareaWithLinks(loc("consent_tcf/manage/desc/p4", { monthsCount = PRIVACY_CHOICES_SAVED_MONTHS }), {
-      ["{privacyPolicyLink}"] = mkLink(loc("consent_tcf/manage/desc/p4/privacyPolicyLink"), 
-        @() openUrl(PRIVACY_POLICY_URL), fontMinor)
+      privacyPolicyLink = mkLink(loc(legalByType.pp.consentTcfManageLocId),
+        @() openUrl(legalByType.pp.url), fontMinor)
     }, fadedAndMinor)
     mkTextarea(nbsp)
     mkSwitch(loc("consent_tcf/manage/consentToAll"), null, isPurAllEnabled, onManualPurAllSwitchHead)

@@ -2616,6 +2616,7 @@
         "driverProps": {
           "signalWaitStage": {
             "entry": {
+              "driverMinVer0": 29,
               "data": {
                 "value": 33562240
               }

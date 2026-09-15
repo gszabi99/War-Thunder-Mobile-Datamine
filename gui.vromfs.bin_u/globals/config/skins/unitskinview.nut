@@ -1092,6 +1092,9 @@ return {
     "fr_battleship_dunkerque": {
       "": "camo_multicolor_waves"
     },
+    "fr_battleship_richelieu_class_clemenceau": {
+      "": "camo_ceremonial_clemenceau"
+    },
     "fr_cckw_353_bofors": {
       "": "fr_camo_green_brown",
       "forest": "fr_camo_vert_olive_arme"
@@ -2285,6 +2288,10 @@ return {
     },
     "il_merkava_mk_2d_event": {
       "": "il_merkava_mk_2d_event"
+    },
+    "il_merkava_mk_3_raam_segol": {
+      "": "isr_camo_sandgreen",
+      "desert": "isr_camo_sandgray"
     },
     "il_merkava_mk_3b": {
       "": "isr_camo_sandgray",
@@ -5936,6 +5943,10 @@ return {
     },
     "vampire_fb5_prem": {
       "": "uk_vampire_fb5_raf"
+    },
+    "venom_fb4": {
+      "": "ussr_il_10_winter44",
+      "camo": "uk_spitfire_mk1a_summer"
     },
     "washington_b1": {
       "": "usa_p_40c_metal"

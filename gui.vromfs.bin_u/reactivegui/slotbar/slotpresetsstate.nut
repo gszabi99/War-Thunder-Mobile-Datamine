@@ -86,7 +86,7 @@ function saveSlotPresets(presetList, campaign) {
   loadedSlotPresets.mutate(@(v) v.$rawset(campaign, presetList))
   if (isOnlineSettingsAvailable.get()) {
     let blk = get_local_custom_settings_blk()
-    blk[SAVE_ID] = presetList.len() == 0 ? "" : object_to_json_string(loadedSlotPresets.get())
+    blk[SAVE_ID] = loadedSlotPresets.get().len() == 0 ? "" : object_to_json_string(loadedSlotPresets.get())
     eventbus_send("saveProfile", {})
   }
   clearActivePresetData()

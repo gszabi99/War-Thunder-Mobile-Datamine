@@ -2734,5 +2734,29 @@
     "lod0": "gc32jt43yxsra3zxgcsrgkraadifnjpm-fcli",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "bdetkfbyd3gqelib2peud5bvf43qxeoh-bn3a"
+  },
+  "ussr_number_332": {
+    "category": "ussr",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "vemvayntwirinwcvk5oftnozk2facumq-cqya",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "mnbb62pzyuyo4xj6stovrpv6grninn4u-3wi"
+  },
+  "ussr_text_smely_2": {
+    "category": "ussr",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "jsy7ximou7tnl5qfusdmdg65klsznedu-7ri",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "ke2xjzms3wuofjrowohl7dm4kfts5z5v-lgy"
+  },
+  "launch_protocol_decal": {
+    "category": "common",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "l4ghza2rj7bqdzngrooh6vstt2eelhi4-dhba",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "hfma3wb7zphpn3sclhx4o2heefogctz3-7vi"
   }
 }

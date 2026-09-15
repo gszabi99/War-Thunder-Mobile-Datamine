@@ -6,6 +6,7 @@ from "auth_wt" import getCountryCode
 from "language" import getLocalLanguage
 from "sysinfo" import get_user_system_info, get_battery, is_charging, get_thermal_state
 from "%sqstd/platform.nut" import is_android, is_ios
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "%appGlobals/profileStates.nut" import myUserName
 from "authState.nut" import authState
 from "types" import Table, String
@@ -35,6 +36,7 @@ function getSysInfo() {
     : is_android && isDownloadedFromGooglePlay() ? "google"
     : is_ios ? "iOS"
     : "other"
+  tbl.publisher <- getCurCircuitOverride("publisher", "")
 
   if ("cpuFeatures" in tbl)
     if (tbl.cpuFeatures instanceof Table) {

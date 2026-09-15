@@ -32,7 +32,7 @@ let hintForSkip = function() {
       pos = const [0, -sh(10)]
       hintIcon
       flow = FLOW_HORIZONTAL
-      children =  mkTextRow(hintText, mkText, { ["{shortcut}"] = hintIcon }) 
+      children = mkTextRow(hintText, mkText, { shortcut = hintIcon })
     }
   }
 }

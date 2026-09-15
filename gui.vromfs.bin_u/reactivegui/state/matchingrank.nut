@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/math.nut" import getRomanNumeral
-import "%darg/helpers/mkTextRow.nut" as mkTextRow
 from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%appGlobals/pServer/profile.nut" import battleUnitsMaxMRank
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
@@ -21,25 +20,22 @@ let curUnitMRankRange = Computed(function() {
   return { minMRank, maxMRank }
 })
 
-function rankRangeFill() {
-  if (curUnitMRankRange.get() == null)
+function mkRankRangeText(range) {
+  if (range == null)
     return null
-  let minRank = curUnitMRankRange.get().minMRank
-  let maxRank = curUnitMRankRange.get().maxMRank
-  let mkText = @(text) { rendObj = ROBJ_TEXT, text}.__update(fontVeryTinyAccentedShaded)
-  local replaceTable = {
-    ["{range1}"] = [mkText(getRomanNumeral(minRank)), mkText("-"), mkText(getRomanNumeral(minRank + 1))],
-    ["{range2}"] = [mkText(getRomanNumeral(maxRank - 1)), mkText("-"), mkText(getRomanNumeral(maxRank))] 
-  }
-  return mkTextRow( maxRank - minRank > 1 ? loc("mainmenu/battleRanks") : loc("mainmenu/battleRank"), mkText, replaceTable)
+  let { minMRank, maxMRank } = range
+  return {
+    rendObj = ROBJ_TEXT
+    text = loc(maxMRank - minMRank > 1 ? "mainmenu/battleRanks" : "mainmenu/battleRank").subst({
+        range1 = $"{getRomanNumeral(minMRank)} - {getRomanNumeral(minMRank + 1)}"
+        range2 = $"{getRomanNumeral(maxMRank - 1)} - {getRomanNumeral(maxMRank)}"
+      })
+  }.__update(fontVeryTinyAccentedShaded)
 }
 
 let mkMRankRange = @() {
   watch = curUnitMRankRange
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = hdpx(12)
-  children = rankRangeFill()
+  children = mkRankRangeText(curUnitMRankRange.get())
 }
 
 return {

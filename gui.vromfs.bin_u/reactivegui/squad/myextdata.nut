@@ -7,7 +7,6 @@ from "%appGlobals/pServer/battleMods.nut" import activeBattleMods
 from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
-from "%appGlobals/pServer/slots.nut" import curSlots
 from "%appGlobals/queueState.nut" import myQueueToken, jwtUserstat
 from "%appGlobals/squadState.nut" import myClustersRTT, queueDataCheckTime, isInSquad
 from "%appGlobals/updater/addonsState.nut" import hasAddons, unitSizes
@@ -23,7 +22,7 @@ from "%rGui/squad/squadManager.nut" import bindSquadROVar
 
 let curUnitInfos = keepref(Computed(function(prev) {
   let { allUnits = null, campaignCfg = {} } = serverConfigs.get()
-  let { units = null } = servProfile.get()
+  let { units = null, campaignSlots = {} } = servProfile.get()
   if (units == null || allUnits == null)
     return null
 
@@ -39,8 +38,9 @@ let curUnitInfos = keepref(Computed(function(prev) {
   }
   foreach (campaign, cfg in campaignCfg)
     if (cfg.totalSlots > 0)
-      res[campaign] <- curSlots.get()
-        .filter(@(s) s.name != "")
+      res[campaign] <- campaignSlots?[campaign].slots
+        .slice(0, cfg.totalSlots)
+        .filter(@(s) s.name in units)
         .map(@(s) mkInfo(s.name))
         ?? []
   return prevIfEqual(prev, res)

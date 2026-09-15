@@ -10,15 +10,18 @@ from "%appGlobals/permissions.nut" import can_view_player_uids
 from "%appGlobals/timeToText.nut" import secondsToTimeAbbrString
 from "%rGui/components/buttonStyles.nut" import COMMON
 from "%rGui/components/clipboard.nut" import copyToClipboard
+from "%rGui/components/levelBlockPkg.nut" import mkLevelBg
 import "%rGui/components/mkIconBtn.nut" as mkIconBtn
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
 from "%rGui/components/modalWnd.nut" import modalWndBg
 from "%rGui/components/spinner.nut" import mkSpinner
+from "%rGui/components/starLevel.nut" import starLevelTiny
 from "%rGui/components/textButton.nut" import textButtonCommon, mkCustomButton, mergeStyles
 from "%rGui/components/scrollbar.nut" import makeHorizScroll
+from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageVerySmall
 from "%rGui/contacts/contact.nut" import validateNickNames, Contact
 from "%rGui/contacts/contactActions.nut" import INVITE_TO_FRIENDS, CANCEL_INVITE, REVOKE_INVITE, INVITE_TO_SQUAD, REPORT
-from "%rGui/contacts/contactInfoPkg.nut" import contactNameBlock, contactAvatar, contactLevelBlock, levelMark
+from "%rGui/contacts/contactInfoPkg.nut" import contactNameBlock, contactAvatar, contactLevelBlock
 from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicInfo, mkIsPublicInfoWait
 from "%rGui/contacts/contactsState.nut" import needFetchContactsInBattle
 from "%rGui/contacts/mkContactActionBtn.nut" import mkExtContactActionBtn
@@ -43,9 +46,12 @@ let hlColor = selectColor
 const grayColor = 0x80808080
 const commonBgGradColor = 0x990C1113
 let secondaryGradColor = selectColor
+const wndWidth = hdpx(1100)
+const mainBlockGap = hdpx(30)
 let iconSize = [hdpx(40), hdpx(20)]
-const rowMedalHeight = hdpx(70)
-const rowMedalGap = hdpx(15)
+const contactInfoHeight = hdpx(130)
+const profileMedalSize = hdpx(65)
+const medalOffset = hdpx(10)
 const sectionBtnHeight = hdpx(80)
 const sectionBtnGap = hdpx(10)
 const lineWidth = hdpx(5)
@@ -67,47 +73,59 @@ let mkTitle = @(title, ovr = {}) {
     text = (title != null && title != "") ? loc($"title/{title}") : ""
   }.__update(ovr)
 
-let mkContactInfo = @(contact, info) @() {
-  watch = [contact, info]
-  valign = ALIGN_CENTER
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(30)
-  size = FLEX
+let starLevelOvr = { hplace = ALIGN_CENTER vplace = ALIGN_CENTER pos = const [0, ph(30)] }
+let lvlBg = freeze(mkLevelBg())
+let levelMark = @(level, starLevel) {
+  size = levelHolderSize
   children = [
-    contactAvatar(info.get())
-    contactNameBlock(contact.get(), info.get())
-    contactLevelBlock(info.get())
+    lvlBg
+    {
+      rendObj = ROBJ_TEXT
+      text = level
+      vplace = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+    }.__update(fontSmall)
+    starLevelTiny(starLevel, starLevelOvr)
   ]
 }
 
-let mkBotNameContent = @(player, info) function() {
-  let {
-    playerLevel = player?.level ?? 1,
-    playerStarLevel = (player?.starLevel ?? 0),
-    playerStarHistoryLevel = 0
-  } = info.get()
-  return {
-    watch = info
-    valign = ALIGN_CENTER
-    flow = FLOW_HORIZONTAL
-    gap = hdpx(30)
-    size = FLEX
-    children = [
-      contactAvatar(info.get())
-      {
-        valign = ALIGN_CENTER
-        gap = hdpx(10)
-        flow = FLOW_VERTICAL
-        children = [
-          textProps.__merge({
-            text = player.name
-          })
-          mkTitle(info.get()?.decorators.title, fontTinyAccented)
-        ]
-      }
-      levelMark(playerLevel - playerStarLevel, max(playerStarLevel, playerStarHistoryLevel))
-    ]
-  }
+let mkContactInfo = @(contact, info) @() {
+  watch = [contact, info]
+  size = const [SIZE_TO_CONTENT, contactInfoHeight]
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(15)
+  children = [
+    contactAvatar(info.get(), contactInfoHeight)
+    {
+      size = FLEX_V
+      flow = FLOW_VERTICAL
+      children = [
+        contactNameBlock(contact.get(), info.get())
+        contactLevelBlock(info.get())
+      ]
+    }
+  ]
+}
+
+let mkBotNameContent = @(player, info) @() {
+  watch = info
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(15)
+  size = const [SIZE_TO_CONTENT, contactInfoHeight]
+  children = [
+    contactAvatar(info.get(), contactInfoHeight)
+    {
+      size = FLEX_V
+      flow = FLOW_VERTICAL
+      children = [
+        textProps.__merge({
+          text = player.name
+        })
+        mkTitle(info.get()?.decorators.title, fontTinyAccented)
+        contactLevelBlock(info.get())
+      ]
+    }
+  ]
 }
 
 function mkPlayerUidInfo(player, contact) {
@@ -252,27 +270,36 @@ let mkMedals = @(info, selCampaign) function() {
   foreach(medal in info.get()?.medals ?? {}) {
     let { campaign = campaignExt, ctor } = getMedalPresentationWithCtor(medal.name)
     if (campaign == campaignExt)
-      children.append(ctor(medal))
+      children.append(ctor(medal, profileMedalSize))
   }
   let scrollHandler = ScrollHandler()
   return {
     watch = info
-    size = FLEX_H
-    valign = ALIGN_CENTER
+    size = FLEX
+    halign = ALIGN_RIGHT
     flow = FLOW_VERTICAL
-    gap = hdpx(20)
-    children = children.len() > 0
-      ? [
-          mkText(loc("mainmenu/btnMedal"), hlColor).__update(fontTinyAccented)
-          makeHorizScroll({
-            size = [SIZE_TO_CONTENT, rowMedalHeight]
-            padding = [0, hdpx(10), 0, 0]
-            flow = FLOW_HORIZONTAL
-            gap = rowMedalGap
-            children
-          }, { size = [FLEX, SIZE_TO_CONTENT], scrollHandler })
-        ]
-      : mkText(loc("mainmenu/noMedal"))
+    gap = hdpx(10)
+    children = [
+      mkText(loc("mainmenu/btnMedal"), hlColor).__update(fontTinyAccented)
+      children.len() == 0 ? mkText(loc("mainmenu/noMedal"))
+        : {
+          size = FLEX
+          pos = const [medalOffset, 0]
+          children = [
+            makeHorizScroll({
+              size = FLEX_V
+              minWidth = pw(100)
+              valign = ALIGN_CENTER
+              halign = ALIGN_RIGHT
+              padding = const [0, medalOffset]
+              flow = FLOW_HORIZONTAL
+              gap = mainBlockGap
+              children = children
+            }, { size = FLEX, scrollHandler, scrollbarWidth = 0 })
+            mkScrollArrow(scrollHandler, MR_R, scrollArrowImageVerySmall, {pos = const [mainBlockGap, 0]})
+          ]
+        }
+    ]
   }
 }
 
@@ -444,18 +471,17 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed, sections 
     children = [
       sections.len() > 1 ? mkSectionTabs(sections, curSectionId, @(id) curSectionId.set(id)) : null
       {
-        size = const [sw(45), SIZE_TO_CONTENT]
+        size = FLEX_H
         hplace = ALIGN_CENTER
         flow = FLOW_VERTICAL
         valign = ALIGN_TOP
-        padding = const [hdpx(40), 0]
-        gap = hdpx(30)
-        minWidth = hdpx(780)
+        padding = mainBlockGap
+        gap = mainBlockGap
         children = [
           {
             size = FLEX_H
             flow = FLOW_HORIZONTAL
-            gap = hdpx(30)
+            gap = mainBlockGap
             children = [
               isBot ? mkBotNameContent(player, info)
                 : mkContactInfo(contact, info)
@@ -519,7 +545,7 @@ selectedPlayerForInfo.subscribe(function(v) {
     children = position.__merge({
       size = 0
       children = {
-        size = const [sw(50), SIZE_TO_CONTENT]
+        size = const [wndWidth, SIZE_TO_CONTENT]
         transform = {}
         safeAreaMargin = saBordersRv
         behavior = Behaviors.BoundToArea
@@ -532,6 +558,7 @@ selectedPlayerForInfo.subscribe(function(v) {
 return {
   mkPlayerInfo
   levelHolderSize
+  levelMark
 
   defColor
   hlColor

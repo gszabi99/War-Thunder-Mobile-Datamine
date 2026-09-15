@@ -54,4 +54,3 @@ eventbus_subscribe("consent.googleump.onConsentShow",    @(msg) onConsentRespons
 
 eventbus_subscribe(is_ios ?  "ios.ads.onConsentRequest" : "android.ads.onConsentRequest", @(msg) onConsentResponse("request_result", msg))
 eventbus_subscribe(is_ios ? "ios.ads.onConsentShow" : "android.ads.onConsentShow",    @(msg) onConsentResponse("show_result", msg))
-

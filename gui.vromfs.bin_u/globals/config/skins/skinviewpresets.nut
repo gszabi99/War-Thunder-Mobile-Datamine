@@ -367,6 +367,7 @@ let skinsByTag = {
     "camo_blackyellow_geometry"
     "camo_blackblue_brokenglass"
     "camo_bicolor_geometry"
+    "camo_ceremonial_clemenceau"
 
     "camo_lightblue_splotch"
     "camo_dark_spots"

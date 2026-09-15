@@ -41,11 +41,11 @@ function showNoBalanceMsg(price, currencyId, bqInfo, onGoToShop, onCancel = null
   let notEnough = Computed(@() price - (balance.get()?[balanceId.get()] ?? 0))
   notEnough.subscribe(@(v) v <= 0 ? closeMsgBox(NO_BALANCE_UID) : null)
   let replaceTable = {
-    ["{price}"] = mkCurrencyComp(price, currencyId), 
-    ["{priceDiff}"] = @() { 
+    price = mkCurrencyComp(price, currencyId)
+    priceDiff = @() {
       watch = notEnough
       children = mkCurrencyComp(notEnough.get(), currencyId, CS_NO_BALANCE)
-    },
+    }
   }
   let cId = getBaseCurrency(currencyId)
   let hasCurrencyInShop = shopGoods.get().filter(@(g) g.rewards.len() == 1

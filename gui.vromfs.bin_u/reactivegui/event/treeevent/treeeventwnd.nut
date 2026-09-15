@@ -353,21 +353,15 @@ let mkTabsVerticalPannableArea = verticalPannableAreaCtor(
   sh(100) - topAreaSize + pageBlocksGap,
   [pageBlocksGap, gradientHeightBottom])
 
-function mkTabIndexBridge(pages, pageId, resolvedPageId) {
-  let toIdx = @(page) max(0, pages.get().findindex(@(p) p == page) ?? 0)
-  let tabIdx = Watched(toIdx(resolvedPageId.get()))
-  tabIdx.subscribe(function(i) {
-    let page = pages.get()?[i]
-    if (page != null)
-      pageId.set(page)
-  })
-  resolvedPageId.subscribe(@(page) tabIdx.set(toIdx(page)))
-  return tabIdx
+let curTabIdx = Computed(@() pagesList.get().findindex(@(p) p == curPageResolved.get()))
+function setCurPageByIdx(idx) {
+  let page = pagesList.get()?[idx]
+  if (page != null)
+    curPage.set(page)
 }
-let curTabIdx = mkTabIndexBridge(pagesList, curPage, curPageResolved)
 
 let tabsList = @(tabs) mkTabsVerticalPannableArea(
-    mkOptionsTabs(tabs, curTabIdx),
+    mkOptionsTabs(tabs, curTabIdx, setCurPageByIdx),
     { size = [tabsAreaWidth, sh(100) - topAreaSize] },
     { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler = tabsScrollHandler }
   )

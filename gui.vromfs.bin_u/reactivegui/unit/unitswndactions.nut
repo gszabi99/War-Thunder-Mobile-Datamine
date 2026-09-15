@@ -148,8 +148,8 @@ let mkUnitChangeInfo = @(prevUnit, newUnit) {
     loc("changeResearchInfo"),
     @(text) msgBoxText(text, { size = SIZE_TO_CONTENT }),
     {
-      ["{prevUnit}"] = mkTreeNodesUnitPlate(prevUnit, {}), 
-      ["{newUnit}"] = mkTreeNodesUnitPlate(newUnit, {}), 
+      prevUnit = mkTreeNodesUnitPlate(prevUnit, {})
+      newUnit = mkTreeNodesUnitPlate(newUnit, {})
     })
 }
 

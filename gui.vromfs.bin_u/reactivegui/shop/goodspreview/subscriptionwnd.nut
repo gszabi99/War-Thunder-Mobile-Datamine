@@ -5,7 +5,7 @@ from "%sqstd/string.nut" import utf8ToUpper
 from "%sqstd/time.nut" import TIME_DAY_IN_SECONDS_F
 import "%darg/helpers/mkTextRow.nut" as mkTextRow
 from "%appGlobals/config/subsPresentation.nut" import getSubsPresentation, getSubsName
-from "%rGui/legal.nut" import PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL
+from "%rGui/legal.nut" import legalByType
 from "%appGlobals/pServer/campaign.nut" import subscriptions
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/permissions.nut" import can_upgrade_subscription
@@ -220,7 +220,7 @@ function mkPurchButton(subs, subsList, totalConvertAmount, currencyId, leftTimeL
                   color = textColor
                   text = v
                 }.__update(fontSmall),
-                { ["{amount}"] = mkCurrencyComp(totalConvertAmount.get(), currencyId.get()) } 
+                { amount = mkCurrencyComp(totalConvertAmount.get(), currencyId.get()) }
               )
             }
           ]
@@ -289,8 +289,8 @@ let urls = {
   flow = FLOW_VERTICAL
   gap = urlsGap
   children = [
-    urlText(loc("subscription/renewalAgreement"), TERMS_OF_SERVICE_URL, urlOvr)
-    urlText(loc("subscription/EULA"), PRIVACY_POLICY_URL, urlOvr)
+    urlText(loc(legalByType.tos.subscriptionLocId), legalByType.tos.url, urlOvr)
+    urlText(loc(legalByType.pp.subscriptionLocId), legalByType.pp.url, urlOvr)
   ]
 }
 

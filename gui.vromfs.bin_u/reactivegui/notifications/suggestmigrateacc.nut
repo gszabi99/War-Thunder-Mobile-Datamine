@@ -17,7 +17,7 @@ from "%rGui/account/linkEmailForGaijinLogin.nut" import canLinkEmailForGaijinLog
 from "%rGui/components/closeWndBtn.nut" import closeWndBtn
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader, wndHeaderHeight
 from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
-from "%rGui/components/textButton.nut" import textButtonBattle
+from "%rGui/components/textButton.nut" import textButtonCommon, textButtonBattle
 from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 from "%rGui/navState.nut" import registerScene
 from "%rGui/style/backgrounds.nut" import bgShaded
@@ -97,6 +97,8 @@ function openRegionalAppApkPageOnSite() {
   if (info?.REGIONAL_APP_APK_URL != null)
     eventbus_send("openUrl", { baseUrl = info.REGIONAL_APP_APK_URL })
 }
+
+let doLogout = @() eventbus_send("logOutManually", {})
 
 function upgradeGuestAccount() {
   if (canLinkEmailForGaijinLogin.get())
@@ -299,10 +301,14 @@ let mkSwitchClientContentWnd = @() modalWndBg.__merge({
           watch = useGpTexts
           size = const [flex(), SIZE_TO_CONTENT]
           vplace = ALIGN_BOTTOM
-          halign = ALIGN_CENTER
-          children = useGpTexts.get()
-            ? textButtonBattle(utf8ToUpper(info?.btnComplAppGP ?? ""), openRegionalAppPageInGooglePlay)
-            : textButtonBattle(utf8ToUpper(info?.btnComplAppApk ?? ""), openRegionalAppApkPageOnSite)
+          flow = FLOW_HORIZONTAL
+          gap = { size = FLEX }
+          children = [
+            textButtonCommon(utf8ToUpper(loc("msgbox/btn_logout")), doLogout)
+            useGpTexts.get()
+              ? textButtonBattle(utf8ToUpper(info?.btnComplAppGP ?? ""), openRegionalAppPageInGooglePlay)
+              : textButtonBattle(utf8ToUpper(info?.btnComplAppApk ?? ""), openRegionalAppApkPageOnSite)
+          ]
         }
       ]
     }

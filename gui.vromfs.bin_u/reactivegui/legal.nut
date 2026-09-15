@@ -14,6 +14,8 @@ let FORGOT_PASSWORD_URL = getCurCircuitOverride("recoveryPasswordURL", "https://
 let REGISTER_URL = getCurCircuitOverride("signUpURL", "https://login.gaijin.net/{lang}/profile/register") 
   .subst({ lang = gjNetLngId })
 
+let TOS_LOC_ID = getCurCircuitOverride("termsOfServiceLocId", "termsOfService")
+
 let reDocId = regexp2(@"^[a-zA-Z0-9\-_]+$")
 function extractDocIdFromUrl(url, defaultId) {
   let res = url.slice(lastIndexOf(url, "/") + 1)
@@ -25,16 +27,22 @@ function extractDocIdFromUrl(url, defaultId) {
 
 let legalSorted = [
   {
-    id = extractDocIdFromUrl(TERMS_OF_SERVICE_URL, "termsofservice")
     type = "tos"
+    id = extractDocIdFromUrl(TERMS_OF_SERVICE_URL, "termsofservice")
     url = TERMS_OF_SERVICE_URL
-    locId = "termsOfService"
+    locId = TOS_LOC_ID
+    acceptWndLocId = TOS_LOC_ID
+    subscriptionLocId = "subscription/renewalAgreement"
   }
   {
-    id = extractDocIdFromUrl(PRIVACY_POLICY_URL, "privacypolicy")
     type = "pp"
+    id = extractDocIdFromUrl(PRIVACY_POLICY_URL, "privacypolicy")
     url = PRIVACY_POLICY_URL
-    locId = "instrumentalCase/privacyPolicy"
+    locId = "privacyPolicy"
+    acceptWndLocId = "instrumentalCase/privacyPolicy"
+    subscriptionLocId = "subscription/EULA"
+    consentTcfIntroLocId = "consent_tcf/intro/desc/p4/privacyPolicyLink"
+    consentTcfManageLocId = "consent_tcf/manage/desc/p4/privacyPolicyLink"
   }
 ]
 
@@ -49,8 +57,6 @@ return {
   legalSorted
   legalToApprove
   legalByType
-  TERMS_OF_SERVICE_URL
-  PRIVACY_POLICY_URL
   FORGOT_PASSWORD_URL
   REGISTER_URL
 }

@@ -14,11 +14,13 @@ let mkText = @(text, color = defColor) {
   color
 }.__update(fontTiny)
 
-let mkLbMedalTop10Ctor = @(presentation) function(medal) {
+let mkLbMedalTop10Ctor = @(presentation) function(medal, mSize = medalSize) {
   let { descLocId, image } = presentation
   let stateFlags = Watched(0)
+  let size = [mSize, mSize]
+  let txtPos = [mSize * 0.8, mSize * 0.8]
   return @() {
-    size = const [medalSize, medalSize]
+    size
     watch = stateFlags
     key = medal
     behavior = Behaviors.Button
@@ -44,33 +46,34 @@ let mkLbMedalTop10Ctor = @(presentation) function(medal) {
     })
     children = [
       {
-        size = const [medalSize, medalSize]
+        size
         rendObj = ROBJ_IMAGE
         keepAspect = KEEP_ASPECT_FIT
-        image = Picture($"ui/gameuiskin#{image}:{medalSize}:{medalSize}:P")
+        image = Picture($"ui/gameuiskin#{image}:{mSize}:{mSize}:P")
       }
       medal.list.len() <= 1 ? null
         : {
             rendObj = ROBJ_TEXT
             text = medal.list.len()
             halign = ALIGN_CENTER
-            pos = const [medalSize * 0.8, medalSize * 0.8]
+            pos = txtPos
           }.__update(fontVeryTinyAccented)
     ]
   }
 }
 
-let mkSimpleMedalCtor = @(presentation) function(medal) {
+let mkSimpleMedalCtor = @(presentation) function(medal, mSize = medalSize) {
   let { descLocId, image } = presentation
   let stateFlags = Watched(0)
+  let size = [mSize, mSize]
   return @() {
     watch = stateFlags
     key = medal
-    size = const [medalSize, medalSize]
+    size
     rendObj = ROBJ_IMAGE
     keepAspect = KEEP_ASPECT_FIT
     image = image == null ? Picture("ui/unitskin#image_in_progress")
-      : Picture($"ui/gameuiskin#{image}:{medalSize}:{medalSize}:P")
+      : Picture($"ui/gameuiskin#{image}:{mSize}:{mSize}:P")
     behavior = Behaviors.Button
     transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     onDetach = tooltipDetach(stateFlags)

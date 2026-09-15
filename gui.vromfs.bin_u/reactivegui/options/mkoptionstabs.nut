@@ -90,5 +90,5 @@ function tabData(tab, idx, curTabIdx) {
   }
 }
 
-return @(tabs, curTabIdx)
-  mkTabs(tabs.map(@(t, i) tabData(t, i, curTabIdx)), curTabIdx, { size = [ tabW, SIZE_TO_CONTENT ] })
+return @(tabs, curTabIdx, onClick = null)
+  mkTabs(tabs.map(@(t, i) tabData(t, i, curTabIdx)), curTabIdx, { size = [ tabW, SIZE_TO_CONTENT ] }, onClick)
