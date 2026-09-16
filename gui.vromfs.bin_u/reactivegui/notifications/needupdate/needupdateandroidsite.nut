@@ -10,6 +10,7 @@ from "%sqstd/globalState.nut" import hardPersistWatched
 from "%sqstd/version_compare.nut" import check_version
 from "%appGlobals/clientState/clientState.nut" import isInBattle, isInLoadingScreen
 from "%appGlobals/timeoutExt.nut" import resetExtTimeout
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 
 
 let logUpdate = log_with_prefix("[UPDATE]: ")
@@ -17,11 +18,12 @@ let logUpdate = log_with_prefix("[UPDATE]: ")
 
 const REQUEST_PERIOD_MSEC = 1800000
 const ACTUAL_VERSION_ID = "actualVersion.response"
-let proj = {
+let defProjByCircuit = {
   ["wtm-production"] = "wtm_production",
   ["wtm-staging"] = "wtm_staging",
   ["wtm-stable"] = "wtm_stable",
-}?[get_cur_circuit_name()]
+}
+let proj = getCurCircuitOverride("apkUpdateProj") ?? defProjByCircuit?[get_cur_circuit_name()]
 let apkTag = {
   ["wtm-production"] = "production",
   ["wtm-staging"] = "staging",
