@@ -10,6 +10,9 @@ let customGoodsLocId = {
   senrai_maidens_offer_ling = "shop/senrai_maidens_offer_ling"
   senrai_maidens_offer_kate = "shop/senrai_maidens_offer_kate"
   senrai_maidens_bundle = "shop/senrai_maidens_bundle"
+  bmpt_2026_offer_72 = "shop/bmpt_2026_offer_72"
+  bmpt_2026_offer_prem = "shop/bmpt_2026_offer_prem"
+  bmpt_2026_bundle = "shop/bmpt_2026_bundle"
 }
 
 let goodsLocIdByNamePart = {
@@ -26,6 +29,7 @@ let icons = {
   ships_top_blueprints_slots = "ui/gameuiskin/shop_blueprints_folder_ships.avif"
   tanks_blueprints_slots = "ui/gameuiskin/shop_blueprints_folder_tanks.avif"
   senrai_maidens_bundle = "ui/gameuiskin#senrai_maidens_bundle_2026.avif"
+  bmpt_2026_bundle = "ui/images/bmpt_bundle_2026.avif"
 }
 
 let iconGoodsAsOffer = {

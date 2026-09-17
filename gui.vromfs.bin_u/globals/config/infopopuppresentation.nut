@@ -68,26 +68,12 @@ let presentations = {
     image = "ui/images/air_beta_access_bg.avif"
     innerImage = "ui/gameuiskin/past_events_box_seasons_1_to_33.avif"
   }
-  collectors_pass_tanks_s37 = {
-    locId = "infoPopup/collectors_pass_tanks/title"
-    descLocId = "infoPopup/collectors_pass_tanks/desc"
-    image = "ui/images/blueprint_folder_bg_tanks.avif"
-    innerImage = "ui/gameuiskin/past_events_box_seasons_1_to_34.avif"
-  }
-  collectors_pass_ships_s37 = {
-    locId = "infoPopup/collectors_pass_ships/title"
-    descLocId = "infoPopup/collectors_pass_ships/desc"
-    image = "ui/images/ship_blueprint_bg.avif"
-    innerImage = "ui/gameuiskin/past_events_box_seasons_1_to_34.avif"
-  }
-  collectors_pass_air_s37 = {
-    locId = "infoPopup/collectors_pass_air/title"
-    descLocId = "infoPopup/collectors_pass_air/desc"
-    image = "ui/images/air_beta_access_bg.avif"
-    innerImage = "ui/gameuiskin/past_events_box_seasons_1_to_34.avif"
-  }
   senrai_maidens = {
     image = "ui/images/WTM_anime_2700x1080.avif"
+    imageSize = [1200, 480]
+  }
+  bmpt_2026 = {
+    image = "ui/images/WTM_bmpt_2700x1080.avif"
     imageSize = [1200, 480]
   }
 }
