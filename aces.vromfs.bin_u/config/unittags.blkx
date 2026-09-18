@@ -36711,7 +36711,7 @@
   "a_10a_late": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "operatorCountry": "country_usa_modern",
+    "operatorCountry": "country_usa",
     "releaseDate": "2022-03-22 00:00:00",
     "info": {
       "engine1_dm": {
@@ -36819,7 +36819,7 @@
   "a_10a_late_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "operatorCountry": "country_usa_modern",
+    "operatorCountry": "country_usa",
     "releaseDate": "2022-03-22 00:00:00",
     "info": {
       "engine1_dm": {
@@ -46690,7 +46690,7 @@
   "f-5c_killstreak": {
     "type": "aircraft",
     "hangar_place": "aircraft",
-    "operatorCountry": "country_usa_modern",
+    "operatorCountry": "country_usa",
     "releaseDate": "2021-06-02 00:00:00",
     "info": {
       "engine1_dm": {
@@ -65892,12 +65892,10 @@
           "icon": "hud_ammo_bullet_ap"
         },
         "37mm_ussr_61K_HE": {
-          "icon": "hud_ammo_bullet_he",
-          "reqLevel": 4
+          "icon": "hud_ammo_bullet_he"
         },
         "37mm_ussr_61K_APCR": {
-          "icon": "hud_ammo_bullet_ap",
-          "reqLevel": 8
+          "icon": "hud_ammo_bullet_ap"
         }
       }
     },
