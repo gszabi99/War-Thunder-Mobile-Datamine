@@ -18,6 +18,6 @@ return {
   myUserRealName = Computed(@() myInfo.get().realName)
   myUserId = Computed(@() myInfo.get().userId)
   myUserIdStr = Computed(@() myInfo.get().userId.tostring())
-  myOperatorUserId = Computed(@() myInfo.get().operatorUserId)
-  myOperatorUserIdStr = Computed(@() myInfo.get().operatorUserId.tostring())
+  myOperatorUserId = Computed(@() myInfo.get()?.operatorUserId ?? myInfo.get().userId)
+  myOperatorUserIdStr = Computed(@() (myInfo.get()?.operatorUserId ?? myInfo.get().userId).tostring())
 }
