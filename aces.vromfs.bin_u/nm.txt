@@ -65387,3 +65387,32 @@ venom_fb4_raf_gold_c*
 venom_fb4_raf_gold_n*
 battleship_richelieu_class_clemenceau_skin_c*
 turret_380mm_mod1935_quadruple_skin_c*
+ussr_t_34_1941_prem
+ussr_t_34_1941_prem_default
+gameData/units/tankModels/weaponPresets/ussr_t_34_1941_prem_default.blk
+specific_adreno650_wakefx_workaround
+shipWakeFxWake
+firewall_armor_
+Xiaomi 23043RP34G
+OPPO OPD2101
+Xiaomi 22081281AC
+vivo V2203A
+Xiaomi 22021211RC
+Xiaomi 23043RP34C
+vivo V2244A
+Xiaomi 23043RP34I
+Xiaomi M2012K11AC
+HUAWEI DBY-W09
+Xiaomi M2105K81AC
+OPPO PENM00
+vivo PA2170
+vivo PA2353
+vivo V2118A
+OPPO PDEM30
+OPPO PDRM00
+OnePlus KB2000
+realme RMX3366
+realme RMX3370
+vivo V1955A
+vivo V2055A
+HUAWEI DBR-W00

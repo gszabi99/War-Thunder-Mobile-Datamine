@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "auth_wt" import getNickOrig
+from "auth_wt" import getNickOrig, get_user_info
 from "dagor.system" import get_arg_value_by_name
 from "matching.errors" import INVALID_USER_ID
 from "%appGlobals/clientState/initialState.nut" import shouldDisableMenu
@@ -11,6 +11,7 @@ from "guiScriptUtils" import get_cur_rank_info, get_player_user_id
 
 isAuthorized.subscribe(@(v) myInfo.mutate(@(p) p.__update({
   userId = v ? get_player_user_id() : INVALID_USER_ID
+  operatorUserId = v ? (get_user_info()?.userId ?? INVALID_USER_ID) : INVALID_USER_ID
 })))
 
 isAuthAndUpdated.subscribe(function(v) {
@@ -30,6 +31,7 @@ if (shouldDisableMenu) {
     let realName = get_arg_value_by_name("userName") ?? userId
     myInfo.mutate(@(p) p.__update({
       userId = userId.tointeger()
+      operatorUserId = userId.tointeger()
       name = realName
       realName
     }))

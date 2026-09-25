@@ -26,7 +26,7 @@ from "%rGui/style/stdColors.nut" import locColorTable
 let { getCountryCode } = require(isDownloadedFromGooglePlay() ? "android.billing.googleplay" : "auth_wt")
 
 const INCOMPATIBLE_FROM_VERSION = "1.27.0.0"
-const GUEST_MSG_UID = "migrateGuestUpgrade"
+const GAIJIN_ID_MSG_UID = "gaijinIdToMigrate"
 
 local info = null
 
@@ -100,7 +100,7 @@ function openRegionalAppApkPageOnSite() {
 
 let doLogout = @() eventbus_send("logOutManually", {})
 
-function upgradeGuestAccount() {
+function upgradeToGaijinId() {
   if (canLinkEmailForGaijinLogin.get())
     openLinkEmailForGaijinLogin()
   else if (canUpgradeGuestAccountToGaijinID.get())
@@ -111,15 +111,13 @@ function onMigrateClick() {
   if (!canLinkEmailForGaijinLogin.get() && !canUpgradeGuestAccountToGaijinID.get())
     return openMigrationWebpageAndMaybeClose()
 
+  let isGuestTexts = canUpgradeGuestAccountToGaijinID.get()
   openMsgBox({
-    uid = GUEST_MSG_UID
-    title = utf8ToUpper(info?.guestAccTitle ?? "")
-    text = info?.guestAccDesc ?? ""
-    function onBgClick() {
-      closeMsgBox(GUEST_MSG_UID)
-      close()
-    }
-    buttons = [{ text = info?.btnGaijinId, styleId = "PRIMARY", isDefault = true, cb = upgradeGuestAccount }]
+    uid = GAIJIN_ID_MSG_UID
+    title = utf8ToUpper((isGuestTexts ? info?.guestAccTitle : info?.linkEmailTitle) ?? "")
+    text = " ".concat((isGuestTexts ? info?.guestAccDesc : info?.linkEmailDesc) ?? "", info?.needGaijinId ?? "")
+    onBgClick = @() closeMsgBox(GAIJIN_ID_MSG_UID)
+    buttons = [{ text = info?.btnGaijinId ?? "", styleId = "PRIMARY", isDefault = true, cb = upgradeToGaijinId }]
   })
 }
 

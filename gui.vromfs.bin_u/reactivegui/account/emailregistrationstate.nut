@@ -80,7 +80,10 @@ function openGuestEmailRegistration() {
 function reloginToLinkedEmail(needShowMsg = true) {
   isLoginByGajin.set(true)
   if (needShowMsg)
-    openFMsgBox({ text = loc("msg/needReloginToLinkedEmail"), isPersist = true })
+    openFMsgBox({
+      text = loc("msg/needReloginToLinkedEmail", { operatorName = getCurCircuitOverride("operatorName", loc("operator_name")) })
+      isPersist = true
+    })
   defer(@() eventbus_send("logOutManually", {})) 
 }
 
@@ -126,7 +129,7 @@ needShowModalToRelogin.subscribe(function(v) {
     isDelayedUpdateTagsActive.set(false)
     canShowModalToRelogin.set(false)
     openFMsgBox({
-      text = loc("msg/needReloginToLinkedEmail")
+      text = loc("msg/needReloginToLinkedEmail", { operatorName = getCurCircuitOverride("operatorName", loc("operator_name")) })
       isPersist = true
       buttons = [
         { id = "ok", eventId = "reloginToLinkedEmail", isDefault = true, styleId = "PRIMARY" }

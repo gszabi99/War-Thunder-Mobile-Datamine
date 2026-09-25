@@ -7,12 +7,12 @@ from "%appGlobals/clientState/clientState.nut" import isInMenu
 from "%appGlobals/commonUrl.nut" import ACTIVATE_PROMO_CODE_URL, LINK_TO_GAIJIN_ACCOUNT_URL
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
 from "%appGlobals/config/subsPresentation.nut" import getSubsPresentation, getPremIcon
-from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%appGlobals/curCircuitOverride.nut" import isExternalOperator, getCurCircuitOverride
 from "%appGlobals/loginState.nut" import curLoginType, LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FACEBOOK, LT_HUAWEI
 from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%appGlobals/pServer/profile.nut" import playerLevelInfo
 from "%appGlobals/permissions.nut" import can_link_to_gaijin_account, allow_subscriptions
-from "%appGlobals/profileStates.nut" import myUserId, myUserIdStr, myUserName
+from "%appGlobals/profileStates.nut" import myUserName, myUserId, myUserIdStr, myOperatorUserId, myOperatorUserIdStr
 from "%appGlobals/timeToText.nut" import secondsToHoursLoc
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%rGui/account/emailRegistrationState.nut" import canUpgradeGuestAccountToGaijinID, openGuestEmailRegistration
@@ -158,18 +158,24 @@ function mkUserName() {
 function mkUserId() {
   const idBtnSize = hdpxi(30)
   let iconStateFlags = Watched(0)
+  let onClick = @(evt) copyToClipboard(evt, isExternalOperator()
+    ? $"{myOperatorUserIdStr.get()} ({myUserIdStr.get()})"
+    : myUserIdStr.get())
   return {
     behavior = Behaviors.Button
-    onClick = @(evt) copyToClipboard(evt, myUserIdStr.get())
+    onClick
     onElemState = @(s) iconStateFlags.set(s)
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     gap
     children = [
       @() {
-        watch = myUserId
+        watch = [myUserId, myOperatorUserId]
         rendObj = ROBJ_TEXT
-        text = "".concat(loc("options/userId"), colon, myUserId.get())
+        text = isExternalOperator()
+          ? "".concat(getCurCircuitOverride("operatorUserIdLocName", "ID"), colon, myOperatorUserId.get(),
+              comma, "GameID", colon, myUserId.get())
+          : "".concat(loc("options/userId"), colon, myUserId.get())
       }.__update(fontTiny)
       mkIconBtn("ui/gameuiskin#icon_copy.svg", idBtnSize, iconStateFlags)
     ]

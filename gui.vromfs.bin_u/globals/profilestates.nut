@@ -8,6 +8,7 @@ let myInfo = hardPersistWatched("myInfo", {
   name = isOfflineMenu ? "Offline mode" : ""
   realName = isOfflineMenu ? "Offline mode" : ""
   userId = INVALID_USER_ID
+  operatorUserId = INVALID_USER_ID
 })
 
 return {
@@ -17,4 +18,6 @@ return {
   myUserRealName = Computed(@() myInfo.get().realName)
   myUserId = Computed(@() myInfo.get().userId)
   myUserIdStr = Computed(@() myInfo.get().userId.tostring())
+  myOperatorUserId = Computed(@() myInfo.get().operatorUserId)
+  myOperatorUserIdStr = Computed(@() myInfo.get().operatorUserId.tostring())
 }

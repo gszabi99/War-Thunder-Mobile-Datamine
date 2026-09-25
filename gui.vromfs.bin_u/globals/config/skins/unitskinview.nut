@@ -5628,6 +5628,10 @@ return {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_winter_net"
     },
+    "ussr_t_34_1941_prem": {
+      "": "ussr_camo_forest_black",
+      "forest": "ussr_camo_green"
+    },
     "ussr_t_34_1942": {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_green_ltbrown_lines"

@@ -116628,6 +116628,73 @@
       }
     }
   },
+  "ussr_t_34_1941_prem": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "tags": {
+      "country_ussr": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "bullets": {
+      "76mm_F34_user_cannon": {
+        "76mm_ussr_AP_1941": {
+          "icon": "hud_ammo_ap2_he1"
+        },
+        "76mm_ussr_HE": {
+          "icon": "hud_ammo_he",
+          "isHE": true
+        },
+        "76mm_ussr_AP_1942": {
+          "icon": "hud_ammo_ap3_he0"
+        },
+        "default": {
+          "icon": "hud_ammo_ap1_he2"
+        },
+        "76mm_ussr_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 76.2,
+      "armorThicknessFront": [
+        0.85,
+        0.1,
+        0.05
+      ],
+      "armorThicknessSide": [
+        0.15,
+        0.4,
+        0.45
+      ],
+      "crew": 4,
+      "mass": 28270.0,
+      "maxSpeedForward": 13.5945,
+      "maxSpeedBackward": 1.92102,
+      "powerToWeightRatio": 17.6866,
+      "weapons": {
+        "76mm_F34_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 76.2,
+          "armorPower": 86.7449,
+          "reloadTime": 6.89655,
+          "gunnerTurretRotationSpeed": 25.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_DT_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 8.5,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 15.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
   "us_bulldog": {
     "type": "walker",
     "hangar_place": "walker",

@@ -106,6 +106,9 @@ function proceedAuthorizationResult(result, loginType) {
   if (loginType == LT_VKID && result != YU2_OK)
     vkid.logoutVKID()
 
+  if (loginType == LT_FACEBOOK && result != YU2_OK && result != YU2_2STEP_AUTH)
+    fbAccount.logoutFB()
+
   let action = proceedAuthByResult?[result]
   if (action != null) {
     action(loginType)
@@ -185,6 +188,7 @@ function onFacebookSignIn(msg) {
     send_counter("auth.fb_signin_errors", 1, { error = status })
     interruptStage({ error = $"Facebook sign in failed: {status}" })
     if (status != fbAccount.FB_RESULT_CANCEL) {
+      fbAccount.logoutFB()
       errorMsgBox(YU2_UNKNOWN,
         [
           { id = "exit", eventId = "loginExitGame", hotkeys = ["^J:X"] }

@@ -13634,6 +13634,7 @@
         "armor_cit",
         "aps_sensor_",
         "aps_launcher_",
+        "firewall_armor_",
         "ex_era_hull_",
         "ex_aps_launcher_",
         "ex_era_turret_",
@@ -13749,6 +13750,7 @@
         "torpedo_2",
         "torpedo_3",
         "mg_",
+        "firewall_armor_",
         "composite_armor_hull_",
         "composite_armor_turret_",
         "ex_era_hull_",
@@ -16701,6 +16703,10 @@
         {
           "name": "coal_bunker",
           "unit": "ship"
+        },
+        {
+          "name": "firewall_armor_",
+          "hideIfDead": true
         },
         {
           "name": "ex_era_hull_",
