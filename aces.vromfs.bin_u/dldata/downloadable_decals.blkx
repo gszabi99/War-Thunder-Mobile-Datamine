@@ -2758,5 +2758,21 @@
     "lod0": "l4ghza2rj7bqdzngrooh6vstt2eelhi4-dhba",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "hfma3wb7zphpn3sclhx4o2heefogctz3-7vi"
+  },
+  "s38_spacehelmet_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "3s5mkwafq42rctz4u3bccpa62bqfwwky-e7hi",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "gowtjlsux4myrfo4qdbbwoqetxk3jwe2-bqzi"
+  },
+  "s38_sputnik_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "e2fnpr7ymj2ha5bug4iwjgwskxwkcjyk-g7jy",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "7frg4atadyssri3dnf5ggxrinsq353ei-b5ei"
   }
 }

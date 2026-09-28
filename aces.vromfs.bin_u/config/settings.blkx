@@ -2731,12 +2731,21 @@
             ]
           },
           "ignoreDeviceLost": {
-            "entry": {
-              "gpu": "G51",
-              "data": {
-                "affected": true
+            "entry": [
+              {
+                "gpu": "G51",
+                "data": {
+                  "affected": true
+                }
+              },
+              {
+                "gpu": "G57",
+                "driverMaxVer0": 28,
+                "data": {
+                  "affected": true
+                }
               }
-            }
+            ]
           },
           "pollFences": {
             "entry": {
