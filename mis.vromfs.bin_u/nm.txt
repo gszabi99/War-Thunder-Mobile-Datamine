@@ -8859,3 +8859,8 @@ battlearea_exclude_14
 battlearea_exclude_15
 battlearea_exclude_16
 battlearea_exclude_17
+locMode
+missions/_Conq1
+abandoned_factory/name
+missions/_Conq2
+missions/_Conq3
