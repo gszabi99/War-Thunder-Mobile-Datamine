@@ -7,6 +7,7 @@ from "%rGui/shop/eventShopState.nut" import getShopEventName
 from "%rGui/shop/shopState.nut" import hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop,
   personalGoodsByShop
 from "%rGui/components/timerBlock.nut" import mkTimer
+from "%rGui/event/eventState.nut" import MAIN_EVENT_ID
 
 
 const eventShopBtnIconSize = hdpx(150)
@@ -23,10 +24,9 @@ function bestKey(tbl) {
   return res
 }
 
-function mkBtn(sId) {
+function mkBtn(sId, eventName) {
   let eventButtonSF = Watched(0)
   let isEventShopHasUnseen = Computed(@() hasUnseenGoodsByShop.get()?[sId].findvalue(@(c) c) ?? false)
-  let eventName = Computed(@() getShopEventName(sId, goodsByShop.get(), soonGoodsByShop.get(), soonPersonalGoodsByShop.get(), personalGoodsByShop.get()))
   let eventCfg = Computed(function() {
     let time = getServerTime() 
     local eventIdCounts = {}
@@ -104,19 +104,27 @@ function mkBtn(sId) {
   }
 }
 function mkEventShopBtn () {
-  let isEventShopBtnVisible = Computed(@() goodsByShop.get().events.len()
-    + soonGoodsByShop.get().events.len()
-    + soonPersonalGoodsByShop.get().events.len() > 0)
-  let isEventShop2BtnVisible = Computed(@() goodsByShop.get().events2.len()
-    + soonGoodsByShop.get().events2.len()
-    + soonPersonalGoodsByShop.get().events2.len() > 0)
+  let eventName = Computed(@() getShopEventName("events",
+      goodsByShop.get(),
+      soonGoodsByShop.get(),
+      soonPersonalGoodsByShop.get(),
+      personalGoodsByShop.get()))
+
+  let eventName2 = Computed(@() getShopEventName("events2",
+      goodsByShop.get(),
+      soonGoodsByShop.get(),
+      soonPersonalGoodsByShop.get(),
+      personalGoodsByShop.get()))
+
   return @() {
-    watch = [isEventShopBtnVisible, isEventShop2BtnVisible]
+    watch = [eventName, eventName2]
     flow = FLOW_HORIZONTAL
     gap = hdpx(20)
     children = [
-      !isEventShopBtnVisible.get() ? null : mkBtn("events")
-      !isEventShop2BtnVisible.get() ? null : mkBtn("events2")
+      eventName.get() == MAIN_EVENT_ID || eventName.get() == "" ? null
+        : mkBtn("events", eventName)
+      eventName2.get() == MAIN_EVENT_ID || eventName2.get() == "" ? null
+        : mkBtn("events2", eventName2)
     ]
   }
 }

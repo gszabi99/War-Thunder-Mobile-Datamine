@@ -79,9 +79,7 @@ return @(isPassActive, isEventActive) function () {
               @() {
                 watch = eventSeasonIdx
                 size = const [SIZE_TO_CONTENT, textRowHeight]
-                flow = FLOW_HORIZONTAL
                 valign = ALIGN_CENTER
-                gap = hdpx(10)
                 children = eventSeasonIdx.get() < 0 ? null
                   : [
                       {
@@ -89,7 +87,13 @@ return @(isPassActive, isEventActive) function () {
                         color = 0xFFFFFFFF
                         text = utf8ToUpper(loc("events/seasonNumber", { number = eventSeasonIdx.get() }))
                       }.__update(fontBoldTinyShaded)
-                      unseenMark
+                      {
+                        pos = [hdpx(10), 0]
+                        size = 0
+                        hplace = ALIGN_RIGHT
+                        valign = ALIGN_CENTER
+                        children = unseenMark
+                      }
                     ]
               }
             ]

@@ -5,7 +5,6 @@ from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%rGui/battlePass/passPkg.nut" import contentH
 from "%rGui/components/gradientDefComps.nut" import headerHeightInSafeArea, headerMargin
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
-from "%rGui/components/tabs.nut" import tabExtraWidth
 from "%rGui/event/eventState.nut" import curEvent, specialEvents
 from "%rGui/navState.nut" import registerScene
 from "%rGui/shop/eventShopState.nut" import getShopIdForEventId
@@ -20,6 +19,7 @@ from "%rGui/shop/shopWndTabs.nut" import mkShopTabs
 from "%rGui/shop/unseenPurchasesState.nut" import addCustomUnseenPurchHandler, removeCustomUnseenPurchHandler,
   markPurchasesSeen
 from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/listConst.nut" import tabExtraWidth
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/unit/unitPurchaseEffectScene.nut" import isPurchEffectVisible
 

@@ -3,15 +3,17 @@ from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%rGui/components/modalWindows.nut" import removeModalWindow, addModalWindowWithHeader
 from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/debugTools/debugMapPoints/bgCollectionChoice.nut" import mkBgCollectionChoice
 from "%rGui/debugTools/debugMapPoints/mapEditorComps.nut" import mkOptionBtn, mkTextOptionBtn, mkTextInputField,
   mkText, mkTextArea, modalBg
 from "%rGui/debugTools/debugMapPoints/mapEditorConsts.nut" import optionsBtnGap, btnBgColorDefault, optionBtnSize,
   btnBgColorNegative, btnBgColorPositive
-from "%rGui/debugTools/debugMapPoints/mapEditorState.nut" import isSidebarOptionsOpen, loadPage, createPageByTree,
+from "%rGui/debugTools/debugMapPoints/mapEditorState.nut" import isSidebarOptionsOpen, loadPage, generateEventPages,
   curEventId, availableEvents, curEventPages, selectEvent, pageMapSize, currentPageId, savedPages, addOrEditPage,
   deletePage, pageBackground, isCurPageChanged, saveCurrentPage, selectedPointId
 from "%rGui/event/treeEvent/treeEventState.nut" import getEventNodeType
 from "%rGui/event/treeEvent/treeEventUtils.nut" import getEventMapNodes
+from "%rGui/style/stdColors.nut" import markTextColor
 
 
 const ADD_PAGE_WND = "addPageWnd"
@@ -86,7 +88,7 @@ let mkEventPickContent = @(wndId, onPick) modalBg.__merge({
 })
 
 let selectEventContent = mkEventPickContent(SELECT_EVENT_WND, selectEvent)
-let generateEventContent = mkEventPickContent(GENERATE_EVENT_WND, createPageByTree)
+let generateEventContent = mkEventPickContent(GENERATE_EVENT_WND, generateEventPages)
 
 let selectPageContent = modalBg.__merge({
   size = const [hdpx(700), hdpx(900)]
@@ -127,6 +129,17 @@ let addPageContent = modalBg.__merge({
   ]
 })
 
+function onChooseMapImage(elem, imgSize) {
+  let { img } = elem
+  local size = elem?.size ?? imgSize
+  if (size[0] > 0 || size[1] > 0) {
+    mapSizeXField.set(size[0].tostring())
+    mapSizeYField.set(size[1].tostring())
+  }
+  pageBackgroundField.set(img)
+  removeModalWindow("choose_map_image")
+}
+
 let editPageContent = modalBg.__merge({
   size = const [hdpx(600), SIZE_TO_CONTENT]
   function onAttach() {
@@ -142,9 +155,18 @@ let editPageContent = modalBg.__merge({
     mkTextInputField(mapSizeXField, "Set size in pixels on the X axis", { inputType = "num" })
     mkText("Set size in pixels on the Y axis:")
     mkTextInputField(mapSizeYField, "Set size in pixels on the Y axis", { inputType = "num" })
-    mkTextOptionBtn("SAVE",
-      @() onEditPage(pageIdField.get(), pageBackgroundField.get(),
-        [mapSizeXField.get().tointeger(), mapSizeYField.get().tointeger()]))
+    {
+      size = FLEX_H
+      children = [
+        mkTextOptionBtn("SAVE",
+          @() onEditPage(pageIdField.get(), pageBackgroundField.get(),
+            [mapSizeXField.get().tointeger(), mapSizeYField.get().tointeger()]))
+        mkTextOptionBtn("CHOOSE IMAGE",
+          @() addModalWindowWithHeader("choose_map_image", "Choose image for map background",
+            mkBgCollectionChoice(onChooseMapImage, modalBg))
+          { hplace = ALIGN_RIGHT })
+      ]
+    }
   ]
 })
 
@@ -181,13 +203,15 @@ let generatePagesBtn = mkTextOptionBtn("Generate pages",
     addModalWindowWithHeader(GENERATE_EVENT_WND, "Select event to generate pages", generateEventContent)),
   { size = [FLEX, optionBtnSize], color = btnBgColorPositive })
 
+let mark = @(text) colorize(markTextColor, text)
+
 let mkNodeInfoRows = @(nodeId, node) mkTextArea("\n".join([
-  $"CURRENT ID: {nodeId}"
-  $"TYPE: {getEventNodeType(node)}"
-  $"PAGE: {node?.page ?? ""}"
-  $"CURRENCY: {node?.currencyId ?? ""}"
-  $"PRICE: {node?.price ?? 0}"
-  $"QUESTS: {node?.meta.quests ?? ""}"
+  $"Current Id: {mark(nodeId)}"
+  $"Type: {mark(getEventNodeType(node))}"
+  $"Page: {mark(node?.page ?? "")}"
+  $"Currency: {mark(node?.currencyId ?? "")}"
+  $"Price: {mark(node?.price ?? 0)}"
+  $"Quests: {mark(node?.meta.quests ?? "")}"
 ]))
 
 function content() {

@@ -25,6 +25,12 @@ let shopCategoriesCfg = [
     getImage =  @(campaign) featuredIcon?[campaign] ?? defaultFeaturedIcon
   },
   {
+    id = SC_COLLECTION
+    title = loc("shop/category/collection")
+    image = "ui/gameuiskin#collection.svg"
+    imageSizeMul = 0.8
+  },
+  {
     id = SC_SPECIAL
     title = loc("shop/category/special")
     image = "ui/gameuiskin#shop_event.svg"
@@ -77,6 +83,7 @@ let gtypeToShopCategory = {
   [SGT_BOOSTERS] = SC_CONSUMABLES,
   [SGT_DECORATOR] = SC_DECORATOR,
   [SGT_SKIN] = SC_FEATURED,
+  [SGT_PUZZLE_PIECE] = SC_COLLECTION,
 }
 
 let getShopCategory = @(gtype) gtypeToShopCategory?[gtype] ?? SC_OTHER
@@ -113,6 +120,8 @@ function getGoodsTypeImpl(goods) {
     return SGT_SLOTS
   if ((goods?.meta.previewUnit ?? "") != "")
     return SGT_UNIT
+  if ((goods?.meta.customView ?? "") == "puzzle_pieces")
+    return SGT_PUZZLE_PIECE
 
   let { gType = null } = goods.rewards?[0]
   return rTypeToGTypeComplex?[gType](goods.rewards) ?? rTypeToGTypeCommon?[gType] ?? SGT_UNKNOWN

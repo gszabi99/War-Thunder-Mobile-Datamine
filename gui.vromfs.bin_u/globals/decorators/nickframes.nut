@@ -203,8 +203,13 @@ let nickFrames = {
   binocular_s37 = @(n) $"⌛{n}⌛"
   propeller_s37 = @(n) $"⌜{n}⌜"
   black_hole_s37 = @(n) $"⌝{n}⌞"
+  alien_s38 = @(n) $"◯{n}◯"
+  moon_sun_s38 = @(n) $"◰{n}◱"
+  puzzle_s38 = @(n) $"◲{n}◳"
   snail_cake_bday_26 = @(n) $"⊣{n}⊤"
   medal_three_bday_26 = @(n) $"⊥{n}⊥"
+  tiger_dragon_china_2026 = @(n) $"⋿{n}⌁"
+  five_stars_china_2026 = @(n) $"⋾{n}⋾"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

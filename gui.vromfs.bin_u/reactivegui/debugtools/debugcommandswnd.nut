@@ -13,7 +13,7 @@ from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%appGlobals/pServer/pServerApi.nut" import reset_profile, reset_profile_with_stats, unlock_all_units,
   add_currency_no_popup, add_premium, reset_scheduled_reward_timers, upgrade_unit, downgrade_unit, registerHandler,
   royal_beta_units_unlock, add_all_skins_for_unit, shift_all_personal_goods_time, check_purchases_debug,
-  add_subscription_time, unlock_all_unreleased_units, debug_skip_event_delay
+  add_subscription_time, unlock_all_unreleased_units, debug_skip_event_delay, reset_collection_progress
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/debugWnd.nut" import closeButton
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
@@ -93,6 +93,7 @@ let commandsList = [].extend(
     { label = "meta.reset_profile_with_stats", func = withClose(resetProfileWithStats) }
     { label = "meta.reset_profile_only", func = withClose(reset_profile) }
     { label = "reset_scheduled_reward_timers", func = withClose(reset_scheduled_reward_timers) }
+    { label = "reset_collection_progress", func = withClose(reset_collection_progress) }
     { label = "shift_personal_goods_1_day", func = withClose(@() shift_all_personal_goods_time(24 * 3600)) }
     { label = "shift_personal_goods_7_days", func = withClose(@() shift_all_personal_goods_time(7 * 24 * 3600)) }
     { label = "meta.unlock_all_units", func = withClose(unlock_all_units) }

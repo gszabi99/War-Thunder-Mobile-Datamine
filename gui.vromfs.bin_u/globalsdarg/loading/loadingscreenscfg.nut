@@ -340,11 +340,20 @@ let screensList = {
   }
   major_s37_final_frontier = {
     camp = [ "air" ]
-    weight = 2.0
+    weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_a_10_s37.avif")
     timeRange = {
       season = "season"
       seasonIdx = 37
+    }
+  }
+  major_s38_launch_protocol = {
+    camp = [ "tanks" ]
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_40_s38.avif")
+    timeRange = {
+      season = "season"
+      seasonIdx = 38
     }
   }
 }.map(@(v) "timeRange" not in v ? v :

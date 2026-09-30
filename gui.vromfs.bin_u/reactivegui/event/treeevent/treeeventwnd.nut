@@ -14,8 +14,8 @@ from "%rGui/event/treeEvent/treeEventState.nut" import openedTreeEventId, curEve
   nodeStatusKind, pagesList, curPage, curPageResolved, NODE_QUESTS, NODE_RECEIVED, getEventNodeType,
   curEventUnlocks, lockedPages, startNodeIds, mkNodeAllQuestsDone, pagesWithUnseenReward, mkPageCompleted
 from "%rGui/unseenPriority.nut" import SEEN, UNSEEN_HIGH
+from "%rGui/style/listConst.nut" import tabExtraWidth
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
-from "%rGui/components/tabs.nut" import tabExtraWidth
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
 from "%rGui/components/animGrowLines.nut" import mkAnimGrowLines, mkAGLinesCfgOrdered
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
@@ -299,7 +299,7 @@ function mapContainer(viewportSize) {
           children = [
             mapBackground
             bgElements
-            mapNet(curPageMapSize, curPageGridSize, curPageBgElems)
+            mapNet(curPageMapSize, curPageGridSize)
             bgElementsOnTop
             mapLines
             mapLineLocks

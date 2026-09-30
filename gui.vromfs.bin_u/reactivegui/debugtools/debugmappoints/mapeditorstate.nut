@@ -7,27 +7,36 @@ from "dagor.workcycle" import setInterval, clearTimer
 from "eventbus" import eventbus_send
 from "io" import file
 from "json" import object_to_json_string, parse_json
+from "types" import Table, String, Array, Integer, Float
 from "%sqstd/underscore.nut" import isEqual, deep_clone
 from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/config/mapPointsPresentation.nut" import getDefaultPointSize, defaultPointView
+from "%rGui/collections/rewardProgressConsts.nut" import defRewardProgress
+from "%rGui/debugTools/debugMapPoints/mapEditorConsts.nut" import SNAP_NONE
+from "%rGui/event/treeEvent/segmentMath.nut" import getLineEndPoints
+from "%rGui/event/treeEvent/eventMapLoader.nut" import mkEmptyPreset, defaultMapSize, defaultGridSize, defaultMapBg
 from "%rGui/event/treeEvent/treeEventUtils.nut" import updatePresetByTree, findLineIdx, mkDefaultLine,
   getEventMapNodes, getTreeNodeViews, lineSectionLen, LINE_DASHED
-from "%rGui/event/treeEvent/segmentMath.nut" import getLineEndPoints
-from "types" import Table, String, Array, Integer, Float
 
 
-const SAVE_PATH = "../../skyquake/prog/scripts/wtm/globals/config/eventMapPages"
+const SAVE_PATH_MAP = "../../skyquake/prog/scripts/wtm/globals/config/eventMapPages"
+const SAVE_PATH_COLLECTION = "../../skyquake/prog/scripts/wtm/globals/config/collections"
 const SAVE_EXT = ".json"
-const BG_ELEMS_COLLECTION = "../../skyquake/prog/scripts/wtm/globals/config/eventMapPages/_bg_elems_collection.json"
+const BG_ELEMS_MAP_PATH = "../../skyquake/prog/scripts/wtm/globals/config/eventMapPages/_bg_elems_collection.json"
+const COLLECTION_IMAGES_PARTS = "ui/images/collections"
 const MAX_HISTORY_LEN = 50
 const AUTO_SAVE_INTERVAL = 5
 
 const ELEM_POINT = "Point"
+const ELEM_REWARD = "Reward"
 const ELEM_BG = "Bg Elem"
 const ELEM_LINE = "Line"
 const ELEM_MIDPOINT = "Midpoint"
 const ELEM_LINE_END = "Line End"
+
+const EMODE_MAP = "map"
+const EMODE_COLLECTION = "collection"
 
 const LINE_END_FROM = "from"
 const LINE_END_TO = "to"
@@ -35,16 +44,20 @@ let lineEndPosField = { [LINE_END_FROM] = "fromPos", [LINE_END_TO] = "toPos" }
 
 let scalableETypes = [ELEM_BG].reduce(@(res, v) res.$rawset(v, true), {})
 
-let defaultMapSize = [2000, 1000]
-const defaultGridSize = 200
 const defaultLineWidth = 9
-const defaultMapBg = ""
+const defaultObjDist = 20
 
-let isEventMapEditorOpened = mkWatched(persist, "isEventMapEditorOpened", false)
+let editorMode = mkWatched(persist, "editorMode")
 let isHeaderOptionsOpen = mkWatched(persist, "isHeaderOptionsOpen", true)
 let isSidebarOptionsOpen = mkWatched(persist, "isSidebarOptionsOpen", true)
+let isEventMapEditorOpened = Computed(@() editorMode.get() != null)
+let isCollectionMode = Computed(@() editorMode.get() == EMODE_COLLECTION)
+let savePath = Computed(@(prev) editorMode.get() == null && prev instanceof String ? prev
+  : editorMode.get() == EMODE_COLLECTION ? SAVE_PATH_COLLECTION
+  : SAVE_PATH_MAP)
 
 let needUseAutoSave = mkWatched(persist, "needUseAutoSave", false)
+let snapType = mkWatched(persist, "snapType", SNAP_NONE)
 
 let loadedPageWithLastChange = mkWatched(persist, "loadedPageWithLastChange", null)
 let savedPages = mkWatched(persist, "savedPages", {})
@@ -54,16 +67,20 @@ let historyMapElements = mkWatched(persist, "historyMapElements", [])
 let selectedElem = mkWatched(persist, "selectedElem", null)
 let currentPageId = mkWatched(persist, "currentPageId", null)
 let curEventId = mkWatched(persist, "curEventId", null)
-let availableEvents = Computed(@() (serverConfigs.get()?.eventMapTree ?? {}).keys().sort())
+let availableEvents = Computed(@() isCollectionMode.get()
+  ? (serverConfigs.get()?.allCollections ?? {}).keys().sort()
+  : (serverConfigs.get()?.eventMapTree ?? {}).keys().sort())
 let curEventPages = Computed(@() savedPages.get().filter(@(p) p?.event == curEventId.get()))
 let curEventNodeViews = Computed(@() getTreeNodeViews(getEventMapNodes(serverConfigs.get(), curEventId.get()), curEventId.get()))
 
 let hasViewChanges = Watched(false) 
 let transformInProgress = Watched(null)
 let isShiftPressed = Watched(false)
+let snapLines = Watched(null)
 
 let loadedPage = Computed(@() loadedPageWithLastChange.get()?.mes)
 let tuningPoints = Computed(@() loadedPage.get()?.points ?? {})
+let tuningRewards = Computed(@() loadedPage.get()?.rewards ?? {})
 let tuningBgElems = Computed(@() loadedPage.get()?.bgElements ?? [])
 let pageLines = Computed(@() loadedPage.get()?.lines ?? [])
 let pageBackground = Computed(@() loadedPage.get()?.bg ?? defaultMapBg)
@@ -73,11 +90,15 @@ let pageLineSectionLen = Computed(@() loadedPage.get()?.lineSectionLen ?? lineSe
 let pageRoundedDashes = Computed(@() loadedPage.get()?.roundedDashes ?? true)
 let pageLineType = Computed(@() loadedPage.get()?.lineType ?? LINE_DASHED)
 let pageLineWidth = Computed(@() loadedPage.get()?.lineWidth ?? defaultLineWidth)
+let pageObjDist = Computed(@() loadedPage.get()?.objDist ?? defaultObjDist)
 let pagePointSizes = Computed(@() loadedPage.get()?.pointSizes ?? {})
 let curHistoryIdx = Computed(@() historyMapElements.get().findindex(@(h) h.mes == loadedPage.get()))
 
 let selectedPointId = Computed(@()
   selectedElem.get()?.id not in tuningPoints.get() || selectedElem.get()?.eType != ELEM_POINT ? null
+    : selectedElem.get().id)
+let selectedRewardId = Computed(@()
+  selectedElem.get()?.id not in tuningRewards.get() || selectedElem.get()?.eType != ELEM_REWARD ? null
     : selectedElem.get().id)
 let selectedBgElemIdx = Computed(@()
   selectedElem.get()?.eType != ELEM_BG || selectedElem.get()?.id not in tuningBgElems.get() ? null
@@ -161,6 +182,7 @@ let mkEmptyPage = @() {
   lineWidth = defaultLineWidth
   pointSizes = {}
   points = {}
+  rewards = {}
   bgElements = []
   lines = []
 }
@@ -191,14 +213,15 @@ function selectEvent(eventId) {
 }
 
 function writePageToFile(id, page) {
-  let pagefile = file($"{SAVE_PATH}/{id}{SAVE_EXT}", "wt+")
+  let fullPath = $"{savePath.get()}/{id}{SAVE_EXT}"
+  let pagefile = file(fullPath, "wt+")
   pagefile.writestring(object_to_json_string(page, true))
   pagefile.close()
-  dlog($"Saved to: wtm/globals/config/eventMapPages/{id}") 
+  dlog($"Saved to: {fullPath}") 
 }
 
 function deleteFileByPageId(id) {
-  let path = $"{SAVE_PATH}/{id}{SAVE_EXT}"
+  let path = $"{savePath.get()}/{id}{SAVE_EXT}"
   let status = remove_file(path)
   if (status)
     dlog($"The file {id} has been deleted") 
@@ -243,15 +266,29 @@ function selectAndLoadFirstPage() {
 
 let bgFieldErrors = {
   img = @(v) !(v instanceof String) ? "should be a string" : null
-  size = @(v) !(v instanceof Array) || v.len() != 2 || null != v.findindex(@(c) !(c instanceof Integer))
-    ? "should be an array of 2 integers"
+  size = @(v) v == null ? null
+    : !(v instanceof Array) || v.len() != 2 || null != v.findindex(@(c) !(c instanceof Integer))
+      ? "should be an array of 2 integers"
     : null
   rotate = @(v) v != null && !(v instanceof Integer) && !(v instanceof Float) ? "should be numeric" : null
 }
 
+let getImageIdFromPath = memoize(@(path)
+  path.split("/").top()
+    .split(".")?[0]
+  ?? "")
+
 function reloadBgElemsCollection() {
+  if (isCollectionMode.get()) {
+    let files = scan_folder({ root = COLLECTION_IMAGES_PARTS, files_suffix = ".avif", vromfs = true, realfs = true,
+      recursive = true
+    })
+    bgCollection.set(files.reduce(@(res, path) res.$rawset(getImageIdFromPath(path), { img = path }), {}))
+    return
+  }
+
   try {
-    let fileContent = read_text_from_file(BG_ELEMS_COLLECTION)
+    let fileContent = read_text_from_file(BG_ELEMS_MAP_PATH)
     let collection = parse_json(fileContent)
     if (collection instanceof Table)
       bgCollection.set(collection.filter(function(e, id) {
@@ -269,25 +306,28 @@ function reloadBgElemsCollection() {
       }))
   }
   catch(e)
-    logerr($"Failed to parse collection {BG_ELEMS_COLLECTION} from file: {e}")
+    logerr($"Failed to parse collection {BG_ELEMS_MAP_PATH} from file: {e}")
 }
 
-isEventMapEditorOpened.subscribe(function(v) {
-  if (v) {
-    let pageFiles = scan_folder({ root = SAVE_PATH, vromfs = true, realfs = true, recursive = false })
+editorMode.subscribe(function(v) {
+  if (v == null) {
+    if (hasViewChanges.get())
+      eventbus_send("reloadDargVM", { msg = "debug event map points apply" })
+    return
+  }
 
-    savedPages.set(getPagesDataFromFiles(pageFiles))
+  let pageFiles = scan_folder({ root = savePath.get(), vromfs = true, realfs = true, recursive = false })
 
-    let events = availableEvents.get()
-    let ev = (curEventId.get() != null && events.contains(curEventId.get())) ? curEventId.get() : events?[0]
-    if (ev != null)
-      selectEvent(ev)
-    else
-      selectAndLoadFirstPage()
+  savedPages.set(getPagesDataFromFiles(pageFiles))
 
-    reloadBgElemsCollection()
-  } else if (hasViewChanges.get())
-    eventbus_send("reloadDargVM", { msg = "debug event map points apply" })
+  let events = availableEvents.get()
+  let ev = (curEventId.get() != null && events.contains(curEventId.get())) ? curEventId.get() : events?[0]
+  if (ev != null)
+    selectEvent(ev)
+  else
+    selectAndLoadFirstPage()
+
+  reloadBgElemsCollection()
 })
 
 function addOrEditPage(id, bg, mapSize) {
@@ -368,6 +408,21 @@ function addOrEditPoint(id, view) {
   setMapElementsState(mes.__merge({ points = updatedPoints }), id)
 }
 
+function addOrEditReward(id, view) {
+  if (loadedPage.get() == null)
+    clearPointsState()
+
+  let mes = loadedPage.get()
+  let updatedRewards = clone mes.rewards
+
+  if (id in updatedRewards)
+    updatedRewards[id] = updatedRewards[id].__merge({ view })
+  else
+    updatedRewards[id] <- { pos = getMiddleScreenMapPos([0, 0]), view }
+
+  setMapElementsState(mes.__merge({ rewards = updatedRewards }), id)
+}
+
 function deleteElement(id, eType, subId) {
   deselectElem()
 
@@ -386,6 +441,15 @@ function deleteElement(id, eType, subId) {
     let points = clone loadedPage.get().points
     points.$rawdelete(id)
     changeCurPageField("points", points)
+    return
+  }
+
+  if (eType == ELEM_REWARD) {
+    if (id not in tuningRewards.get())
+      return
+    let rewards = clone loadedPage.get().rewards
+    rewards.$rawdelete(id)
+    changeCurPageField("rewards", rewards)
     return
   }
 
@@ -461,6 +525,9 @@ function saveCurrentPage() {
 let delayedAutoSave = @() isCurPageChanged.get() ? saveCurrentPage() : null
 needUseAutoSave.subscribe(@(v) v ? setInterval(AUTO_SAVE_INTERVAL, delayedAutoSave) : clearTimer(delayedAutoSave))
 
+transformInProgress.subscribe(@(v) v == null ? snapLines.set(null) : null)
+snapType.subscribe(@(_) snapLines.set(null))
+
 function applyTransformProgress() {
   if (loadedPage.get() == null || transformInProgress.get() == null)
     return
@@ -517,6 +584,15 @@ function applyTransformProgress() {
     return
   }
 
+  if (eType == ELEM_REWARD) {
+    let rewards = clone loadedPage.get().rewards
+    if (id not in rewards)
+      return
+    rewards[id] = rewards[id].__merge({ pos = posExt })
+    setMapElementsState(loadedPage.get().__merge({ rewards }))
+    return
+  }
+
   if (eType == ELEM_MIDPOINT) {
     if (id not in pageLines.get()?[subId].midpoints)
       return
@@ -540,7 +616,7 @@ function applyTransformProgress() {
 
 function makePageFiles(pages) {
   foreach (id, page in pages) {
-    let pagefile = file($"{SAVE_PATH}/{id}{SAVE_EXT}", "wt+")
+    let pagefile = file($"{savePath.get()}/{id}{SAVE_EXT}", "wt+")
     pagefile.writestring(object_to_json_string(page, true))
     pagefile.close()
   }
@@ -602,7 +678,56 @@ function createPageByTree(eventId) {
   selectEvent(eventId)
 }
 
-register_command(@() isEventMapEditorOpened.set(true), "ui.debug.event_map_editor")
+function updateCollectionPage(puzzlesCount, savedPreset) {
+  let preset = (clone savedPreset) ?? mkEmptyPreset()
+  let bgElements = clone preset?.bgElements ?? []
+  preset.bgElements <- bgElements
+  let rewards = clone preset?.rewards ?? {}
+  preset.rewards <- rewards
+
+  let posStep = 70
+  let columns = max(2, preset.mapSize[0] / posStep)
+
+  for (local i = 0; i < puzzlesCount; i++) {
+    let id = i.tostring()
+    if (!bgElements.findvalue(@(bg) bg.id == id))
+      bgElements.append({
+        id,
+        pos = [posStep / 2 + posStep * (i % columns), posStep / 2 + posStep * (i / columns)]
+        img = "ui/gameuiskin#icon_primary_attention.svg",
+        size = [60, 60],
+        rotate = 0
+      })
+
+    let rId = $"reward_{i}"
+    if (rId not in rewards)
+      rewards[rId] <- {
+        view = defRewardProgress
+        pos = [posStep / 2 + posStep * (i % columns), posStep / 2 + posStep * (i / columns)]
+      }
+  }
+
+  return preset
+}
+
+function generateCollectionMainPage(eventId) {
+  let collection = serverConfigs.get()?.allCollections[eventId]
+  if (collection == null)
+    return
+  let pages = {}
+  let pageId = $"collection_{eventId}"
+  pages[pageId] <- updateCollectionPage(collection.puzzles.len(), savedPages.get()?[pageId])
+    .__merge({ event = eventId })
+  savedPages.set(savedPages.get().__merge(pages))
+  makePageFiles(pages)
+  selectEvent(eventId)
+}
+
+let generateEventPages = @(eventId) isCollectionMode.get() ? generateCollectionMainPage(eventId)
+  : createPageByTree(eventId)
+
+register_command(@() editorMode.set(editorMode.get() == null ? EMODE_MAP : null), "ui.debug.event_map_editor")
+register_command(@() editorMode.set(editorMode.get() == null ? EMODE_COLLECTION : null), "ui.debug.collection_editor")
 
 return {
   isEventMapEditorOpened
@@ -610,6 +735,7 @@ return {
   isSidebarOptionsOpen
   isCurPageChanged
   isEditAllowed
+  isCollectionMode
 
   currentPageId
   curEventId
@@ -624,6 +750,7 @@ return {
 
   transformInProgress
   isShiftPressed
+  snapLines
   applyTransformProgress
   saveCurrentPage
 
@@ -633,6 +760,9 @@ return {
   selectedPointId
   addOrEditPoint
   tuningPoints
+  selectedRewardId
+  addOrEditReward
+  tuningRewards
   pageLines
   addLine
   changeLine
@@ -647,6 +777,7 @@ return {
   pageRoundedDashes
   pageLineType
   pageLineWidth
+  pageObjDist
   pageBackground
   pagePointSizes
   pointViewSize
@@ -670,14 +801,16 @@ return {
   bgCollection
 
   needUseAutoSave
-  createPageByTree
-  closeEventMapEditor = @() isEventMapEditorOpened.set(false)
+  generateEventPages
+  closeEventMapEditor = @() editorMode.set(null)
 
   ELEM_POINT
+  ELEM_REWARD
   ELEM_BG
   ELEM_LINE
   ELEM_MIDPOINT
   ELEM_LINE_END
   scalableETypes
   getElemKey
+  snapType
 }

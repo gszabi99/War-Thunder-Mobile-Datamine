@@ -1,12 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/components/selectedLine.nut" import selectedLineVertSolid, opacityTransition, selLineSize
 from "%rGui/style/gradients.nut" import simpleHorGradInv
+from "%rGui/style/listConst.nut" import tabsGap
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import selectColor, tabBgColor
 
-
-const tabsGap = hdpx(10)
-let tabExtraWidth = selLineSize
 
 let bgColor = tabBgColor
 
@@ -94,9 +92,7 @@ function mkTabs(tabsData, curTabId, ovr = {}, onClick = null) {
 }
 
 return {
-  tabExtraWidth
   mkTabs
-  tabsGap
   bgColor
   selLineSize
 }

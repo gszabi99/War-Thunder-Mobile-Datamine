@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-let { register_command } = require("console")
-let { serverConfigs } = require("%appGlobals/pServer/servConfigs.nut")
-let { update_calendars_activity, shift_all_calendars_time } = require("%appGlobals/pServer/pServerApi.nut")
-let { getServerTime, isServerTimeValid } = require("%appGlobals/userstats/serverTime.nut")
-let { resetExtTimeout, clearExtTimer } = require("%appGlobals/timeoutExt.nut")
-let servProfile = require("%appGlobals/pServer/servProfile.nut")
-let { hasPremiumSubs } = require("%rGui/state/profilePremium.nut")
+from "%appGlobals/pServer/pServerApi.nut" import update_calendars_activity
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/userstats/serverTime.nut" import getServerTime, isServerTimeValid
+from "%rGui/state/profilePremium.nut" import hasPremiumSubs
+
 
 let subCalendarCfg = Computed(@() serverConfigs.get()?.calendarCfg ?? {})
 let subCalendarId = Computed(@() subCalendarCfg.get().findindex(@(v) v.activeBy == "subscription"))
@@ -76,8 +76,6 @@ foreach (w in [isServerTimeValid, serverConfigs, calendars])
 let canReceiveSubCalendarReward = Computed(@() calendarsAvailability.get()?[subCalendarId.get()] ?? false)
 
 hasPremiumSubs.subscribe(@(_) update_calendars_activity())
-
-register_command(shift_all_calendars_time, "debug.shift_all_calendars_time")
 
 return {
   isActiveSubCalendar

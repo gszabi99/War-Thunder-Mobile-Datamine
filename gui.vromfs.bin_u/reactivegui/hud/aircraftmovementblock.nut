@@ -40,7 +40,7 @@ from "%rGui/style/hudColors.nut" import hudWhiteColor, hudCoralRedColor, hudRedC
   hudTransparentColor
 
 
-let { ailerons, mouse_aim_x, mouse_aim_y, throttle_axis, rudder, elevator, turret_x, turret_y} = shortcutsMap.gamepadAxes
+let { ailerons, mouse_aim_x, mouse_aim_y, throttle_axis, turret_x, turret_y} = shortcutsMap.gamepadAxes
 
 let { ON } = MechState
 
@@ -393,13 +393,6 @@ let gamepadMouseAimAxisListener = axisListener({
   [mouse_aim_y] = @(v) setVirtualAxisValue("mouse_aim_y", v)
 })
 
-let gamepadAxisListener = axisListener({
- [ailerons] = @(v) setVirtualAxisValue("ailerons", v),
- [elevator] = @(v) setVirtualAxisValue("elevator", v),
- [rudder] = @(v) setVirtualAxisValue("rudder", v),
- [throttle_axis] = @(v) setThrottleAxisVal(v),
-})
-
 let gamepadGunnerAxisListener = axisListener({
   [ailerons] = @(v) setVirtualAxisValue("ailerons", v),
   [throttle_axis] = @(v) setThrottleAxisVal(v),
@@ -607,11 +600,7 @@ let aircraftMoveStickView = {
 }
 
 function mkGamepadAxisListener() {
-  if (isActiveTurretCamera.get())
-    return gamepadGunnerAxisListener
-  if (currentAircraftCtrlType.get() == "mouse_aim")
-    return gamepadMouseAimAxisListener
-  return gamepadAxisListener
+  return isActiveTurretCamera.get() ? gamepadGunnerAxisListener : gamepadMouseAimAxisListener
 }
 
 function getImuAxesListener(controlType, gyroAimMode, directControlMode) {
@@ -627,7 +616,8 @@ let aircraftMovement = @(scale) {
     throttleSlider(getSizes(scale))
     @() {
       watch = [ currentAircraftCtrlType, currentControlByGyroAimMode, currentControlByGyroDirectControl, isPlayingReplay,
-        currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity, isGamepad, isPieMenuActive]
+        currentControlByGyroModeAileronsDeadZone, currentControlByGyroModeAileronsSensitivity, isGamepad, isPieMenuActive,
+        isActiveTurretCamera]
       children = isPlayingReplay.get() ? null
         : [
             getImuAxesListener(currentAircraftCtrlType.get(), currentControlByGyroAimMode.get(), currentControlByGyroDirectControl.get()),
@@ -876,7 +866,7 @@ function aircraftMoveArrows(scale) {
   let buttons = { topArrow, bottomArrow, leftArrow, rightArrow }
 
   let scaledFullSize = scaleArr(fullSizeAirBase, scale)
-  return mkAltMoveBg(buttons, scaledFullSize, gamepadMouseAimAxisListener)
+  return mkAltMoveBg(buttons, scaledFullSize)
 }
 
 return {

@@ -13,7 +13,7 @@ const textColor = 0xFFFFFFFF
 let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(selectColor, 0, 35, 15, 30, -35))
 
-let mkTabContent = @(content, isActive, isHover) {
+let mkTabContent = @(content, isActive, isHover, ovr = {}) {
   size = FLEX_H
   children = [
     {
@@ -33,7 +33,7 @@ let mkTabContent = @(content, isActive, isHover) {
       transitions = opacityTransition
     }
   ].append(content)
-}
+}.__update(ovr)
 
 function mkTabImage(image, imageSizeMul) {
   let size = (iconSizeDef * imageSizeMul + 0.5).tointeger()
@@ -53,35 +53,64 @@ function mkTabImage(image, imageSizeMul) {
   }
 }
 
-function tabData(tab, idx) {
-  let { locId  = "", image = null, isVisible = null } = tab
+function mkTabImageChild(image) {
+  return image == null ? null
+    : image instanceof Watched ? @() mkTabImage(image.get(), 1.0).__update({ watch = image })
+    : mkTabImage(image, 1.0)
+}
+
+function mkTabTextChild(locId) {
   return {
-    id = idx
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    vplace = ALIGN_CENTER
+    color = textColor
+    text = loc(locId)
+  }.__update(fontTinyAccented)
+}
+
+function tabData(tab, idx) {
+  let { id = idx, locId  = "", image = null, isVisible = null } = tab
+  return {
+    id
     isVisible
+    isAutoWidth = false
     content = {
-      size = const [FLEX, tabHeight]
+      size = [FLEX, tabHeight]
       padding = const [hdpx(10), hdpx(20)]
-      children = [
-        {
-          size = FLEX
-          flow = FLOW_HORIZONTAL
-          halign = ALIGN_CENTER
-          gap = hdpx(20)
-          children = [
-            image == null ? null
-              : image instanceof Watched ? @() mkTabImage(image.get(), 1.0).__update({ watch = image })
-              : mkTabImage(image, 1.0)
-            {
-              rendObj = ROBJ_TEXTAREA
-              behavior = Behaviors.TextArea
-              vplace = ALIGN_CENTER
-              color = textColor
-              text = loc(locId)
-            }.__update(fontTinyAccented)
-          ]
-        }
-      ]
+      children = {
+        size = FLEX
+        flow = FLOW_HORIZONTAL
+        halign = ALIGN_CENTER
+        gap = hdpx(20)
+        children = [mkTabImageChild(image), mkTabTextChild(locId)]
+      }
     }
+  }
+}
+
+
+function tabDataSelectedText(tab, idx, curTabIdx, ovr = {}) {
+  let { id = idx, locId  = "", image = null, isVisible = null } = tab
+  let { height = tabHeight } = ovr
+  let imageChild = mkTabImageChild(image)
+  let textChild = mkTabTextChild(locId)
+  return {
+    id
+    isVisible
+    isAutoWidth = true
+    content = {
+      size = [SIZE_TO_CONTENT, height]
+      padding = const [hdpx(10), hdpx(20)]
+      children = @() {
+        watch = curTabIdx
+        size = SIZE_TO_CONTENT
+        flow = FLOW_HORIZONTAL
+        halign = ALIGN_CENTER
+        gap = hdpx(20)
+        children = [imageChild, curTabIdx.get() == id ? textChild : null]
+      }
+    }.__update(ovr)
   }
 }
 
@@ -91,13 +120,13 @@ function mkTab(data, curTabIdx) {
   let isHover = Computed(@() stateFlags.get() & S_HOVER)
 
   return {
-    size = FLEX_H
+    size = data.isAutoWidth ? SIZE_TO_CONTENT : FLEX_H
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
     clickableInfo = loc("mainmenu/btnSelect")
     onClick = @() curTabIdx.set(data.id)
     sound = { click = "choose" }
-    children = mkTabContent(data.content, isActive, isHover)
+    children = mkTabContent(data.content, isActive, isHover, data.isAutoWidth ? { size = SIZE_TO_CONTENT } : {})
   }
 }
 
@@ -108,11 +137,11 @@ let tabsRoot = {
   gap = hdpx(8)
 }
 
-function mkHorizontalTabs(tabs, curTabIdx) {
-  let tabsData = tabs.map(@(tab, idx) tabData(tab, idx))
+function mkTabsRoot(tabsData, curTabIdx, ovr = {}) {
   let watch = tabsData.map(@(t) t?.isVisible).filter(@(v) v != null)
-  return watch.len() == 0 ? tabsRoot.__merge({ children = tabsData.map(@(tab) mkTab(tab, curTabIdx)) })
-    : @() tabsRoot.__merge({
+  let root = tabsRoot.__merge(ovr)
+  return watch.len() == 0 ? root.__merge({ children = tabsData.map(@(tab) mkTab(tab, curTabIdx)) })
+    : @() root.__merge({
         watch
         children = tabsData
           .filter(@(tab) tab?.isVisible.get() ?? true)
@@ -120,4 +149,15 @@ function mkHorizontalTabs(tabs, curTabIdx) {
       })
 }
 
-return { mkHorizontalTabs }
+function mkHorizontalTabs(tabs, curTabIdx) {
+  return mkTabsRoot(tabs.map(@(tab, idx) tabData(tab, idx)), curTabIdx)
+}
+
+function mkHorizontalTabsSelectedText(tabs, curTabIdx, halign = null, height = tabHeight) {
+  return mkTabsRoot(
+    tabs.map(@(tab, idx) tabDataSelectedText(tab, idx, curTabIdx, { height })),
+    curTabIdx,
+    halign == null ? {} : { halign })
+}
+
+return { mkHorizontalTabs, mkHorizontalTabsSelectedText }

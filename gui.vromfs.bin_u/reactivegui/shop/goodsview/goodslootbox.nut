@@ -7,11 +7,9 @@ from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
 from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, borderBg, mkSlotBgImg, goodsSmallSize,
   mkSquareIconBtn, mkGoodsTimeLeftText, mkBgImg, mkPricePlate, mkGoodsCommonParts, goodsBgH, mkBgParticles,
   underConstructionBg, mkOfferCommonParts, mkGoodsLimitText, mkBorderByCurrency, mkCurrencyAmountTitle, mkOfferWrap,
-  mkOfferTexts, offerW, offerH
-from "%rGui/style/gradients.nut" import mkFontGradient
+  mkOfferTexts, offerW, offerH, titleFontGradCommon
 
 
-let titleFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFE0E0E0, 11, 6, 2)
 let lootboxIconSize = (goodsSmallSize[0] * 0.65).tointeger()
 let offerLootboxIconSize = offerW
 const fonticonPreview = "⌡"
@@ -36,12 +34,12 @@ let mkLootboxTitle = @(goods) {
   clipChildren = true
   flow = FLOW_VERTICAL
   children = [
-    mkGradGlowText(getLocNameLootbox(goods), fontSmall, titleFontGrad, {
+    mkGradGlowText(getLocNameLootbox(goods), fontSmall, titleFontGradCommon, {
       behavior = Behaviors.Marquee
       maxWidth = goodsSmallSize[0] - contentMargin * 2
     })
     { size = FLEX }
-    mkGoodsLimitText(goods, titleFontGrad)
+    mkGoodsLimitText(goods, titleFontGradCommon)
   ]
 }
 
@@ -71,7 +69,7 @@ function mkGoodsLootbox(goods, _, state, animParams, addChildren) {
             .__update({ hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, lootboxIconSize * 0.1] })
       lootboxAmount <= 1
         ? null
-        : mkCurrencyAmountTitle(lootboxAmount, 0, titleFontGrad).__update({ margin = const [hdpx(32), 0] })
+        : mkCurrencyAmountTitle(lootboxAmount, 0, titleFontGradCommon).__update({ margin = const [hdpx(32), 0] })
       mkLootboxTitle(goods)
       !canPurchase ? null : mkSquareIconBtn(fonticonPreview, onClick, { vplace = ALIGN_BOTTOM, margin = contentMargin })
       mkGoodsTimeLeftText(goods, { vplace = ALIGN_BOTTOM, margin = textMargin })

@@ -65390,35 +65390,66 @@ turret_380mm_mod1935_quadruple_skin_c*
 ussr_t_34_1941_prem
 ussr_t_34_1941_prem_default
 gameData/units/tankModels/weaponPresets/ussr_t_34_1941_prem_default.blk
-specific_adreno650_wakefx_workaround
-shipWakeFxWake
+ammoDpGenRange
+ammo_body_%02d_dm
+it_frigate_rckt_maestrale
+400mm_teseo_otomat_mk2_alike_rocket_naval_bullet
+203mm_albatros_aspide_alike_rocket_naval_bullet
+40mm_dardo_twin_naval_user_cannon_aaa
+jp_destroyer_rckt_atago
+bluelight_geometry_bp
+il_28sh_default
+gameData/FlightModels/weaponPresets/il_28sh_ub57_16.blk
+il_28sh_s_24
+gameData/FlightModels/weaponPresets/il_28sh_s_24.blk
+il_28sh_8xfab250
+gameData/FlightModels/weaponPresets/il_28sh_8xfab250.blk
+il_28sh_fab250
+gameData/FlightModels/weaponPresets/il_28sh_fab250.blk
+il_28sh_4xfab500
+gameData/FlightModels/weaponPresets/il_28sh_4xfab500.blk
+il_28sh_2xfab1500
+gameData/FlightModels/weaponPresets/il_28sh_2xfab1500.blk
+il_28sh_1xfab3000
+gameData/FlightModels/weaponPresets/il_28sh_1xfab3000.blk
+il_28sh_zb_500
+gameData/FlightModels/weaponPresets/il_28sh_zb_500.blk
+il_28sh_upk_23_250
+gameData/FlightModels/weaponPresets/il_28sh_upk_23_250.blk
+il_28_egypt_c*
+il_28sh_prem_default
+il_28_sputnik_c*
+il_28_sputnik_n*
+il_28_camo_c*
+frigate_rckt_maestrale
+gameData/weapons/rocketGuns/400mm_teseo_otomat_mk2_alike_rocket_naval_bullet.blk
+gameData/weapons/rocketGuns/203mm_albatros_aspide_alike_rocket_naval_bullet.blk
+gameData/Weapons/navalModels_weapons/40mm_dardo_twin_naval_user_cannon.blk
+it_frigate_rckt_maestrale_default
+gameData/units/ships/weaponPresets/it_frigate_rckt_maestrale_default.blk
+frigate_rckt_maestrale_c*
+frigate_rckt_maestrale_first_signal_skin_c*
+camo_bluelight_geometry*
+destroyer_rckt_atago
+jp_destroyer_rckt_atago_default
+gameData/units/ships/weaponPresets/jp_destroyer_rckt_atago_default.blk
+albatros
+teseo_otomat
+rocket_otomat_mk1_char
+il_28sh_prem
 firewall_armor_
-Xiaomi 23043RP34G
-OPPO OPD2101
-Xiaomi 22081281AC
-vivo V2203A
-Xiaomi 22021211RC
-Xiaomi 23043RP34C
-vivo V2244A
-Xiaomi 23043RP34I
-Xiaomi M2012K11AC
-HUAWEI DBY-W09
-Xiaomi M2105K81AC
-OPPO PENM00
-vivo PA2170
-vivo PA2353
-vivo V2118A
-OPPO PDEM30
-OPPO PDRM00
-OnePlus KB2000
-realme RMX3366
-realme RMX3370
-vivo V1955A
-vivo V2055A
-HUAWEI DBR-W00
 s38_spacehelmet_decal
 s38_sputnik_decal
 3s5mkwafq42rctz4u3bccpa62bqfwwky-e7hi
 gowtjlsux4myrfo4qdbbwoqetxk3jwe2-bqzi
 e2fnpr7ymj2ha5bug4iwjgwskxwkcjyk-g7jy
 7frg4atadyssri3dnf5ggxrinsq353ei-b5ei
+leopard_2a5_space_skin_body_c*
+leopard_2a5_space_skin_gun_c*
+strv_122b_body_c*
+strv_122b_space_skin_body_c*
+strv_122b_turret_c*
+strv_122b_space_skin_turret_c*
+ub_16_57
+gameData/Weapons/rocketGuns/su_s_5kp_rocket.blk
+su_s_5kp_rocket

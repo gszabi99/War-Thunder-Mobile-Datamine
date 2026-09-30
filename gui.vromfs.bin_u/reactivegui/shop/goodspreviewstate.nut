@@ -27,6 +27,7 @@ const GPT_LOOTBOX = "lootbox"
 const GPT_SLOTS = "slots"
 const GPT_BLUEPRINT = "blueprint"
 const GPT_SKIN = "skin"
+const GPT_PUZZLE_PIECE = "puzzle_piece"
 
 const HIDE_PREVIEW_MODALS_ID = "goodsPreviewAnim"
 
@@ -110,6 +111,7 @@ let previewTypeByGType = {
 }
 
 let getPreviewType = @(goods) (goods?.slotsPreset ?? "") != "" ? GPT_SLOTS
+  : (goods?.meta.customView ?? "") == "puzzle_pieces" ? GPT_PUZZLE_PIECE
   : previewTypeByGType?[goods?.rewards[0].gType]
 let previewType = Computed(@() getPreviewType(previewGoods.get()))
 
@@ -176,6 +178,7 @@ return {
   GPT_SLOTS
   GPT_BLUEPRINT
   GPT_SKIN
+  GPT_PUZZLE_PIECE
 
   HIDE_PREVIEW_MODALS_ID
 

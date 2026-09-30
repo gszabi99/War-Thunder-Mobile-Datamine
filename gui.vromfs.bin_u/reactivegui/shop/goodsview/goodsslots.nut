@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%appGlobals/config/goodsPresentation.nut" import getGoodsIcon
 from "%appGlobals/pServer/campaign.nut" import todayPurchasesCount
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
@@ -9,13 +8,12 @@ from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
 from "%rGui/shop/goodsView/goodsDefault.nut" import getLocNameDefault
 from "%rGui/shop/goodsView/sharedParts.nut" import txt, mkPricePlate, mkGoodsCommonParts, underConstructionBg,
   mkGoodsLimitAndEndTime, goodsH, goodsSmallSize, goodsBgH, mkBgImg, mkBgParticles, borderBg, mkSquareIconBtn,
-  skipPurchasedPlate, purchasedPlate, mkCanPurchase, goodsW, mkCanShowTimeProgress
+  skipPurchasedPlate, purchasedPlate, mkCanPurchase, goodsW, mkCanShowTimeProgress, mkCommonGoodsIcon
 from "%rGui/style/backgrounds.nut" import bgShaded
 
 
 const fontIconPreview = "⌡"
 let bgSize = [goodsSmallSize[0], goodsBgH]
-let iconSize = [goodsSmallSize[0] - hdpxi(40), (goodsBgH * 0.9 + 0.5).tointeger()]
 
 function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, childOvr = {}) {
   let { limit = 0, dailyLimit = 0, id = null, limitResetPrice = {} } = goods
@@ -75,6 +73,7 @@ function mkGoodsSlots(goods, _, state, animParams, addChildren) {
   let bg = mkBgImg("ui/gameuiskin/shop_bg_blue.avif")
   let bgParticles = mkBgParticles(bgSize)
   let onClick = @() openGoodsPreview(goods.id)
+  let icon = mkCommonGoodsIcon(goods.id)
   return mkGoodsWrap(
     goods,
     onClick,
@@ -83,14 +82,7 @@ function mkGoodsSlots(goods, _, state, animParams, addChildren) {
       goods?.isShowDebugOnly ? underConstructionBg : null
       bgParticles
       borderBg
-      {
-        size = iconSize
-        vplace = ALIGN_CENTER
-        hplace = ALIGN_CENTER
-        rendObj = ROBJ_IMAGE
-        image = Picture($"{getGoodsIcon(goods.id)}:{iconSize[0]}:{iconSize[1]}:P")
-        keepAspect = true
-      }
+      icon
       txt({
         margin = const [hdpx(10), hdpx(20)]
         hplace = ALIGN_RIGHT

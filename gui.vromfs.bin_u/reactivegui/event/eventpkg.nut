@@ -12,7 +12,6 @@ from "%rGui/components/currencyComp.nut" import CS_INCREASED_ICON, CS_INACTIVE_I
 from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/textButton.nut" import mkCustomButton, textButtonPricePurchase
 from "%rGui/event/eventState.nut" import bestCampLevel, eventSeason, curEvent
-from "%rGui/leaderboard/lbState.nut" import openLbWnd
 from "%rGui/rewards/components/lootboxView.nut" import mkLootboxImageWithSlotScale
 from "%rGui/rewards/rewardPlateComp.nut" import REWARD_STYLE_TINY, mkRewardPlate, mkRewardFixedIcon
 from "%rGui/rewards/rewardViewInfo.nut" import getLootboxRewardsViewInfo, canReceiveFixedReward, isRewardEmpty,
@@ -189,11 +188,6 @@ function mkAdsBtn(reqPlayerLevel, adReward) {
   }
 }
 
-let leaderbordBtn = mkCustomButton(
-  mkBtnContent("ui/gameuiskin#prizes_icon.svg", loc("mainmenu/titleLeaderboards")),
-  openLbWnd,
-  buttonStyles.COMMON.__merge({ hotkeys = ["^J:X"] }))
-
 let questsBtn = mkCustomButton(
   mkBtnContent("ui/gameuiskin#quests.svg", loc("mainmenu/btnQuests")),
   @() openQuestsWndOnTab(curEvent.get()),
@@ -252,6 +246,5 @@ return {
   lootboxHeight
   mkPurchaseBtns
 
-  leaderbordBtn
   questsBtn
 }

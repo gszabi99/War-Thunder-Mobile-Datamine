@@ -5,12 +5,10 @@ from "%rGui/components/discountTag.nut" import discountTagBig
 from "%rGui/shop/discounts.nut" import discountsToApply, applyDiscount
 from "%rGui/shop/goodsView/sharedParts.nut" import mkGoodsWrap, mkOfferWrap, borderBgGold, mkBgImg, mkSlotBgImg,
   goodsSmallSize, mkGoodsImg, mkCurrencyAmountTitle, mkOfferTexts, mkFitCenterImg, mkPricePlate, mkGoodsCommonParts,
-  mkOfferCommonParts, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTime, mkBorderByCurrency
-from "%rGui/style/gradients.nut" import mkFontGradient
+  mkOfferCommonParts, goodsBgH, mkBgParticles, underConstructionBg, mkGoodsLimitAndEndTime, mkBorderByCurrency,
+  titleFontGradGold
 from "%rGui/textFormatByLang.nut" import decimalFormat
 
-
-let titleFontGrad = mkFontGradient(0xFFFBF1B9, 0xFFCE733B, 11, 6, 2)
 
 let bgHiglight = {
   size = FLEX
@@ -42,7 +40,7 @@ function mkGoodsGold(goods, onClick, state, animParams, addChildren) {
       sf & S_HOVER ? bgHiglight : null
       getImgByAmount(gold)
       border
-      mkCurrencyAmountTitle(gold, viewBaseValue, titleFontGrad)
+      mkCurrencyAmountTitle(gold, viewBaseValue, titleFontGradGold)
       mkGoodsLimitAndEndTime(goods)
     ].extend(mkGoodsCommonParts(goods, state), addChildren),
     mkPricePlate(goods, state, animParams),
@@ -68,5 +66,4 @@ return {
   getLocNameGold
   mkGoodsGold
   mkOfferGold
-  titleFontGradGold = titleFontGrad
 }

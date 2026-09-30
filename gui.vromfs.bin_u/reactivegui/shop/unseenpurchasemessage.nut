@@ -4,11 +4,12 @@ from "dagor.random" import frnd
 from "json" import parse_json
 from "math" import round
 from "%sqstd/frp.nut" import ComputedImmediate
-from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/string.nut" import utf8ToUpper, toIntegerSafe
 from "%sqstd/underscore.nut" import arrayByRows, isEqual
 from "%appGlobals/clientState/clientState.nut" import isInMenu
 from "%appGlobals/config/battleModPresentation.nut" import getBattleModPresentation
 from "%appGlobals/config/boostersPresentation.nut" import getBoosterIcon
+from "%appGlobals/config/collectionPresentation.nut" import getCollectionPresentation, getPuzzleImage
 import "%appGlobals/config/currencyGoodsPresentation.nut" as getCurrencyGoodsPresentation
 from "%appGlobals/config/currencyPresentation.nut" import getCurrencyBigIcon
 from "%appGlobals/config/lootboxPresentation.nut" import getLootboxName
@@ -31,6 +32,7 @@ from "%appGlobals/rewardType.nut" import rewardTypeByValue, G_UNIT, G_UNIT_UPGRA
 from "%appGlobals/timeToText.nut" import secondsToHoursLoc
 from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitName
 from "%appGlobals/unitsState.nut" import setCurrentUnit
+from "%rGui/collections/collectionComps.nut" import mkPuzzlePiece, mkPuzzleImagePiece, getPuzzleGrid, pieceBorder
 from "%rGui/components/gradTexts.nut" import mkGradRankSmall
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
@@ -113,6 +115,8 @@ const aTitleScaleUpTime = 0.15
 const aTitleScaleDownTime = aTitleScaleUpTime
 const aTitleScaleMin = 0.75
 const aTitleScaleMax = 1.1
+const aPieceAppearDelay = 0.5
+const aPieceAppearTime = 0.5
 
 const telemetrySaveId = "DefaultSkinWasReplaced"
 
@@ -217,8 +221,11 @@ let stackData = Computed(function() {
     lootbox = []
     discount = []
     decal = []
+    piece = []
+    piece_dbl = []
   } = stacksSorted
-  let rewardIcons = [].extend(lootbox, currency, premium, item, decorator, booster, skin, blueprint, prizeTicket, decal)
+  let rewardIcons = [].extend(lootbox, currency, premium, item, decorator, booster, skin, blueprint, prizeTicket,
+    decal, piece, piece_dbl)
   let unitPlates = [].extend(unitUpgrade, unit)
 
   local lastIdx = -1
@@ -682,6 +689,60 @@ let mkDecalIconWithAnim = @(startDelay, id) {
   ]
 }
 
+let mkPuzzlePieceBlock = @(size, rarity, startDelay, children, ovr = {})
+  mkPuzzlePiece(size, rarity,
+    {
+      padding = pieceBorder,
+      children
+    }.__update(
+      mkRewardAnimProps(startDelay, aRewardIconSelfScale),
+      ovr))
+
+let mkPieceImage = @(cId, rarity, puzzleIdx, pieceIdx, startDelay) function() {
+  let { puzzleScreenSize, puzzleTexSize } = getCollectionPresentation(cId)
+  let { pieces = [] } = serverConfigs.get()?.allCollections[cId].puzzles[puzzleIdx]
+  if (pieces.len() == 0)
+    return mkPuzzlePieceBlock(rewIconSize, rarity, startDelay, null, { watch = serverConfigs })
+
+  let grid = getPuzzleGrid(pieces.len())
+  let partSizeBase = puzzleScreenSize.map(@(v, a) v.tofloat() / grid[a])
+  let imgHeight = rewIconSize - 2 * pieceBorder
+  let imgWidth = (partSizeBase[0] / partSizeBase[1] * imgHeight + 0.5).tointeger() 
+  let image = getPuzzleImage(cId, puzzleIdx)
+
+  let imageDelay = startDelay + aPieceAppearDelay
+  let imageElem = mkPuzzleImagePiece(image, pieceIdx, grid, puzzleTexSize,
+    {
+      size = [imgWidth, imgHeight]
+      vplace = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+      animations = [
+        { prop = AnimProp.opacity, from = 0.0, to = 0.0, easing = OutQuad, play = true,
+          duration = imageDelay, trigger = ANIM_SKIP }
+        { prop = AnimProp.opacity, from = 0.0, to = 1.0, easing = OutQuad, play = true,
+          duration = aPieceAppearTime, delay = imageDelay, trigger = ANIM_SKIP }
+      ]
+    })
+
+  return mkPuzzlePieceBlock([imgWidth + 2 * pieceBorder, imgHeight + 2 * pieceBorder], rarity, startDelay,
+    imageElem,
+    { watch = serverConfigs })
+}
+
+function mkPuzzlePieceIcon(rInfo) {
+  let { startDelay, id, subId } = rInfo
+  let [ rarity, puzzleIdxStr = "0", pieceIdxStr = "0" ] = subId.split(":")
+  return {
+    size = rewIconSize
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = [
+      mkHighlight(startDelay, aRewardIconFlareScale)
+      mkPieceImage(id, rarity, toIntegerSafe(puzzleIdxStr), toIntegerSafe(pieceIdxStr), startDelay)
+    ]
+  }
+}
+
 let rewardCtors = {
   currency = {
     mkIcon = @(rewardInfo) mkCurrencyIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.count)
@@ -769,7 +830,11 @@ let rewardCtors = {
   }
   lootbox = {
     mkIcon = @(rewardInfo) mkLootboxIcon(rewardInfo.startDelay, rewardInfo.id)
-    mkText = @(rewardInfo) mkRewardLabelMultiline(rewardInfo.startDelay, loc(getLootboxName(rewardInfo.id)))
+    function mkText(rewardInfo) {
+      let { startDelay, id, count = 1 } = rewardInfo
+      let name = loc(getLootboxName(id))
+      return mkRewardLabelMultiline(startDelay, count <= 1 ? name : " ".concat(name, loc("ui/count", { count })))
+    }
   }
   discount = {
     mkIcon = @(rewardInfo) mkDiscountIcon(rewardInfo, REWARD_STYLE_MEDIUM)
@@ -778,6 +843,15 @@ let rewardCtors = {
   decal = {
     mkIcon = @(rewardInfo) mkDecalIconWithAnim(rewardInfo.startDelay, rewardInfo.id)
     mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, loc("reward/decal"))
+  }
+  piece = {
+    mkIcon = mkPuzzlePieceIcon
+    mkText = @(rInfo) mkRewardLabelMultiline(rInfo.startDelay + aPieceAppearTime, loc("collection/pieceDrop/new"))
+  }
+  piece_dbl = {
+    mkIcon = mkPuzzlePieceIcon
+    mkText = @(rInfo) mkRewardLabelMultiline(rInfo.startDelay + aPieceAppearTime,
+      rInfo.count == 1 ? loc("collection/pieceDrop/duplicate") : loc("collection/pieceDrop/duplicateProgressAdd", { count = rInfo.count }))
   }
 }
 

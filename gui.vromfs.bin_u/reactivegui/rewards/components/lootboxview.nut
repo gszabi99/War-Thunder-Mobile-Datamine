@@ -17,7 +17,7 @@ function mkLootboxLayers(id, size) {
       size = lSize
       pos = l.pos.map(@(v) round(v * size).tointeger())
       rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin/{l.image}:{lSize[0]}:{lSize[1]}:P")
+      image = Picture($"{l.image}:{lSize[0]}:{lSize[1]}:P")
       keepAspect = true
     }
   })
@@ -25,7 +25,7 @@ function mkLootboxLayers(id, size) {
 
 function getLootboxPicture(id, season = null, size = null) {
   let img = getLootboxImage(id, season)
-  return !size ? Picture($"ui/gameuiskin/{img}:0:P") : Picture($"ui/gameuiskin/{img}:{size}:{size}:P")
+  return !size ? Picture($"{img}:0:P") : Picture($"{img}:{size}:{size}:P")
 }
 
 function mkLootboxImage(id, size, scale = 1, ovr = {}) {

@@ -277,7 +277,8 @@ register_command(@() validate_active_offer(curCampaign.get()),
 
 foreach (cmd in ["get_all_configs", "reset_profile", "reset_free_gold_use", "unlock_all_unreleased_units",
   "unlock_all_common_units", "unlock_all_premium_units", "unlock_all_units", "unlock_all_units_and_upgrade",
-  "check_purchases", "reset_mutations_timestamp", "reset_scheduled_reward_timers", "debug_reset_unit_rent"
+  "check_purchases", "reset_mutations_timestamp", "reset_scheduled_reward_timers", "debug_reset_unit_rent",
+  "shift_all_calendars_time", "reset_collection_progress"
 ]) {
   let action = pServerApi[cmd]
   register_command(@() action("consolePrintResult"), $"meta.{cmd}")
@@ -350,7 +351,7 @@ register_command(
 register_command(@() debug_apply_unit_rent(1, curCampaign.get(), serverTime.get()),
   "meta.debug_apply_unit_rent")
 register_command(@() debug_reset_deserters(), "meta.debug_reset_deserters")
-register_command(@() debug_skip_event_delay(curCampaign.get(), "consolePrintResult"), "meta.debug_skip_event_delay")
+register_command(@() debug_skip_event_delay(curCampaign.get(), "consolePrintResult"), "meta.skip_events_newbie_delay")
 
 register_command(
   function() {

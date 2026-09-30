@@ -44,19 +44,21 @@ const minGapHeight = hdpx(8)
 const maxGapHeight = gap
 let skinsListHeight = skinTextHeight + topSkinPadding + skinPadding + skinSize
 
+let baseBulletsContentHeight = sh(100) - saBorders[1] - contentOffset - scoreBoardHeight - headerHeight - gap
+let bulletsBottomFade = saBorders[1] * 2
 let mkBulletHeightInfo = @(primaryBulletSlots, secondaryBulletSlots, specialBulletSlots) Computed(function() {
   let slots = primaryBulletSlots.get() + secondaryBulletSlots.get() + specialBulletSlots.get()
   if (slots == 0)
     return { slotSliderHeight = 0, gapHeight = 0 }
+  let contentHeight = hasSkins.get()
+    ? baseBulletsContentHeight - skinsListHeight - skinGap
+    : baseBulletsContentHeight
   let gaps = max(1, slots - 1)
-  let baseBContentHeight = sh(100) - saBordersRv[0] * 2 - contentOffset - scoreBoardHeight - headerHeight - gap
-  let currentBContentHeight = hasSkins.get()
-    ? baseBContentHeight - skinsListHeight - skinGap
-    : baseBContentHeight
-  let slotBHeight = clamp(((currentBContentHeight - minGapHeight * gaps) / slots).tointeger(), minBSlotHeight, maxBSlotHeight)
+  let slotBHeight = clamp(((contentHeight - minGapHeight * gaps) / slots).tointeger(),
+    minBSlotHeight, maxBSlotHeight)
   return {
     slotSliderHeight = slotBHeight - headerSlotHeight
-    gapHeight = clamp(((currentBContentHeight - slotBHeight * slots) / gaps).tointeger(), minGapHeight, maxGapHeight)
+    gapHeight = clamp(((contentHeight - slotBHeight * slots) / gaps).tointeger(), minGapHeight, maxGapHeight)
   }
 })
 
@@ -232,6 +234,8 @@ return {
   headerSlotHeight
 
   mkBulletHeightInfo
+  baseBulletsContentHeight
+  bulletsBottomFade
 
   mkBeltImage
 }

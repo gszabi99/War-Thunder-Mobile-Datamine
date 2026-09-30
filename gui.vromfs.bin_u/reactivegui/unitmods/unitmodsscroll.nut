@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "dagor.time" import get_time_msec
 from "dagor.workcycle" import clearTimer, setInterval
 from "math" import fabs
-from "%rGui/components/tabs.nut" import tabsGap
+from "%rGui/style/listConst.nut" import tabsGap
 from "%rGui/unitMods/unitBulletsState.nut" import choiceCount, bulletTotalSteps, choiceSecCount, bulletSecTotalSteps,
   choiceSpecCount, bulletSpecTotalSteps
 from "%rGui/unitMods/unitModsConst.nut" import tabH, modW, modsWidth, modsGap, knobSize, knobGap, catsBlockHeight

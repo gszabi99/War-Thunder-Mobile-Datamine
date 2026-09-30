@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%rGui/style/listConst.nut" import selLineSize
 from "%rGui/style/stdColors.nut" import selectColor
 
 
-const selLineSize = hdpx(8)
 let opacityTransition = [{ prop = AnimProp.opacity, duration = 0.3, easing = InOutQuad }]
 
 let selectedLineSolid = @(isActive, size) @() {

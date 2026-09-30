@@ -3,6 +3,8 @@ from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentatio
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%rGui/battlePass/battlePassState.nut" import hasBpRewardsToReceive, battlePassGoods, bpFreeRewardsUnlock,
   bpPaidRewardsUnlock, bpProgressUnlock
+import "%rGui/collections/collectionScene.nut" as collectionScene
+from "%rGui/collections/collectionsState.nut" import mkCollectionHasUnseen
 from "%rGui/battlePass/eventPassState.nut" import hasEpRewardsToReceive, hasEpRewardsToReceiveByTableId,
   eventsPassList, allEventPassGoods, eventFreeRewardsUnlock, eventPaidRewardsUnlock, eventProgressUnlock
 from "%rGui/battlePass/operationPassState.nut" import hasOPRewardsToReceive, operationPassGoods, OP_EVENT_ID,
@@ -17,11 +19,12 @@ from "%rGui/event/treeEvent/treeEventWnd.nut" import treeEventMapWnd, contentOve
 from "%rGui/event/treeEvent/treeEventState.nut" import curEventMapCurrencies, mkEventMapHasUnseen
 from "%rGui/event/gmEventState.nut" import openedGmEventId
 import "%rGui/event/gmEventWnd.nut" as gmEventWnd
+from "%rGui/leaderboard/lbWnd.nut" import lbScene
 from "%rGui/quests/questsState.nut" import questsCfg, curTabParams, progressUnlockByTab, hasUnseenQuestsBySection,
   hasRewardQuestsBySection, progressUnlockBySection
 import "%rGui/quests/questsWnd.nut" as questsWndCtor
 from "%rGui/seasonScene/seasonSceneState.nut" import PASS_SCENE, QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB, BATTLE_TAB,
-  MAP_TAB, questTabsByEventId, isSeasonTabVisible, seasonShopId
+  MAP_TAB, LEADERBOARD_TAB, questTabsByEventId, isSeasonTabVisible, seasonShopId, COLLECTION_TAB
 from "%rGui/shop/eventShopState.nut" import getShopIdForEventId
 from "%rGui/shop/lootboxPreviewState.nut" import isEventWndLootboxOpen, closeEventWndLootbox
 from "%rGui/shop/shopState.nut" import hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop,
@@ -156,7 +159,18 @@ let sceneContentCfg = {
     content = @() treeEventMapWnd
     sceneShadeColor = contentOverlayShadeColor
     mkHasUnseen = mkEventMapHasUnseen
-  }
+  },
+  [LEADERBOARD_TAB] = {
+    icon = "ui/gameuiskin#prizes_icon.svg"
+    label = "mainmenu/titleLeaderboards"
+    content = @() lbScene
+  },
+  [COLLECTION_TAB] = {
+    icon = "ui/gameuiskin#collection.svg"
+    label = "collection"
+    content = @() collectionScene
+    mkHasUnseen = mkCollectionHasUnseen
+  },
 }
   .map(@(c, id) contentCfgDefaults.__merge(c, { isVisible = isSeasonTabVisible[id].watched }))
 

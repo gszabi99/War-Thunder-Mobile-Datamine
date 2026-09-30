@@ -2694,45 +2694,7 @@
     "tank_tool_kit_expendable": {},
     "art_support_smoke": {},
     "art_support_mortars": {},
-    "art_support_highcaliber": {},
-    "ostketten_tank_tracks": {
-      "invertEnableLogic": false,
-      "turn_it_off": false,
-      "effects": {
-        "mulFrontalStaticFriction": 1.02,
-        "mulFrontalSlidingFriction": 1.05,
-        "mulSideRotMinSpd": 1.05,
-        "mulSideRotMaxSpd": 1.05,
-        "mulSideRotMinFric": 0.95,
-        "mulSideRotMaxFric": 0.95,
-        "hideNodes": {
-          "node": [
-            "track_l",
-            "track_r"
-          ]
-        },
-        "tracks": {
-          "width": 0.56,
-          "trackMesh": "ger_ostketten_phys_track_line",
-          "nonSymmetricMesh": true
-        },
-        "damagePartsOverride": {
-          "tracks": {
-            "hpMult": 1.2,
-            "track_l_01_dm": {},
-            "track_r_01_dm": {}
-          }
-        }
-      },
-      "disableModEffects": {
-        "hideNodes": {
-          "node": [
-            "track_l_01",
-            "track_r_01"
-          ]
-        }
-      }
-    }
+    "art_support_highcaliber": {}
   },
   "defaultDecals": {
     "default": {

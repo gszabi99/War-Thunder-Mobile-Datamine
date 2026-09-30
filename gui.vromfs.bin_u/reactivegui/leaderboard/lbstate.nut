@@ -3,6 +3,7 @@ from "app" import APP_ID
 from "console" import register_command
 from "dagor.workcycle" import setInterval, clearTimer, deferOnce
 from "%appGlobals/loginState.nut" import isLoggedIn
+from "%rGui/event/eventState.nut" import isEventActive
 from "%rGui/leaderboard/lbConfig.nut" import lbCfgById
 from "%rGui/leaderboard/lbStateBase.nut" import curLbData, curLbSelfRow, setLbRequestData, curLbErrName,
   refreshLbData, requestSelfRow, isLbRequestInProgress
@@ -15,7 +16,6 @@ const MAX_PAGE_PLACE = 1000
 
 let curLbId = mkWatched(persist, "curLbId", null)
 let lbPage = mkWatched(persist, "lbPage", 0)
-let isLbWndOpened = mkWatched(persist, "isLbWndOpened", false)
 let isLbBestBattlesOpened = mkWatched(persist, "isLbBestBattlesOpened", false)
 let isRefreshLbEnabled = mkWatched(persist, "isRefreshLbEnabled", false)
 
@@ -27,9 +27,9 @@ let lbTotalPlaces = Computed(function() {
     return -1
   return curLbData.get().findvalue(@(val) "$" in val)?["$"].total ?? 0
 })
-let lbLastPage = Computed(function() {
+let lbLastPage = Computed(function(prev) {
   if (curLbData.get() == null)
-    return -1
+    return prev == FRP_INITIAL ? -1 : prev
   let total = lbTotalPlaces.get()
   let lastPage = total > 0 ? (min(total, MAX_PAGE_PLACE) - 1) / lbPageRows : lbPage.get()
   return lastPage
@@ -93,12 +93,12 @@ let bestBattles = Computed(@()
 let bestBattlesCount = Computed(@() bestBattles.get()?.len() ?? 0)
 let hasBestBattles = Computed(@() ratingBattlesCount.get() > 0 && bestBattlesCount.get() > 0)
 
+isEventActive.subscribe(@(isActive) isActive ? null : isLbBestBattlesOpened.set(false))
+
 register_command(@() lbPage.set(lbPage.get() + 1), "lb.page_next")
 register_command(@() lbPage.get() > 0 && lbPage.set(lbPage.get() - 1), "lb.page_prev")
-register_command(@() isLbWndOpened.set(true), "lb.open")
 
 return {
-  isLbWndOpened
   isLbBestBattlesOpened
   isLbRequestInProgress
   curLbId
@@ -119,5 +119,4 @@ return {
   hasBestBattles
 
   isRefreshLbEnabled
-  openLbWnd = @() isLbWndOpened.set(true)
 }

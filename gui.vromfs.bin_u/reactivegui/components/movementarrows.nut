@@ -256,11 +256,11 @@ function mkAltMoveVertBtn(onTouchBegin, onTouchEnd, shortcutId, ovr = {}) {
   }, ovr)
 }
 
-function mkAltMoveBg(btns, size, gamepadMouseAimAxisListener) {
+function mkAltMoveBg(btns, size) {
   let { topArrow = null, bottomArrow = null, leftArrow = null, rightArrow = null } = btns
 
   return @() {
-    watch = [isUnitDelayed, isGamepad]
+    watch = isUnitDelayed
     size
     vplace = ALIGN_BOTTOM
     hplace = ALIGN_RIGHT
@@ -271,7 +271,6 @@ function mkAltMoveBg(btns, size, gamepadMouseAimAxisListener) {
       leftArrow
       rightArrow
       bottomArrow
-      isGamepad.get() ? gamepadMouseAimAxisListener : null
     ]
     animations = dfAnimBottomLeft
   }

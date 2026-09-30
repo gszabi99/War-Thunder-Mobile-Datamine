@@ -4,7 +4,7 @@ from "%appGlobals/config/passPresentation.nut" import getOPPresentation
 from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%rGui/battlePass/operationPassState.nut" import OP_EVENT_ID, isOpAvailable
 from "%rGui/components/translucentButton.nut" import translucentButton, translucentButtonsVGap
-from "%rGui/event/eventState.nut" import specialEventsLootboxesState, specialEventsOrdered, subEventsList
+from "%rGui/event/eventState.nut" import specialEventsLootboxesState, specialEventsOrdered, subEventsList, MAIN_EVENT_ID
 from "%rGui/event/gmEventState.nut" import gmEventsList
 import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
 from "%rGui/quests/questsState.nut" import tabIdToOpen
@@ -72,7 +72,7 @@ function btnsOpenSpecialEvents() {
     let personalGoodsByShopV = personalGoodsByShop.get()
     foreach (shopId in ["events", "events2"]) {
       let eventName = getShopEventName(shopId, goodsByShopV, soonGoodsByShopV, soonPersonalGoodsByShopV, personalGoodsByShopV)
-      if (eventName != "" && eventName not in usedEvents) {
+      if (eventName != "" && eventName != MAIN_EVENT_ID && eventName not in usedEvents) {
         usedEvents[eventName] <- true
         children.append(translucentButton(getEventPresentation(eventName).icon,
           @() openEventShopWnd(eventName),

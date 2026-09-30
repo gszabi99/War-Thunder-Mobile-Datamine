@@ -1996,7 +1996,11 @@
           2
         ],
         "emitterGenFmt": "bone_rocket_%02d",
-        "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "ammoDpGenFmt": "ammo_body_%02d_dm",
+        "ammoDpGenRange": [
+          28,
+          29
+        ],
         "recoilMultiplier": 0.1,
         "stopForFire": true,
         "readyToFireVar": "strf_9056_action",
@@ -3291,7 +3295,11 @@
                 2
               ],
               "emitterGenFmt": "bone_rocket_%02d",
-              "ammoDpGenFmt": "ammo_turret_%02d_dm",
+              "ammoDpGenFmt": "ammo_body_%02d_dm",
+              "ammoDpGenRange": [
+                28,
+                29
+              ],
               "recoilMultiplier": 0.1,
               "stopForFire": true,
               "readyToFireVar": "strf_9056_action",

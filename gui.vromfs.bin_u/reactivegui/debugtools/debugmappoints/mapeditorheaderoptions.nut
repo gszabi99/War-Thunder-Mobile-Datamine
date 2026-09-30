@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/string.nut" import toIntegerSafe
 from "%appGlobals/config/mapPointsPresentation.nut" import mapPointsPresentations, getDefaultPointSize, defaultPointView
+from "%rGui/collections/rewardProgressConsts.nut" import defRewardProgress, rewardSizes
 from "%rGui/components/modalWindows.nut" import removeModalWindow, addModalWindowWithHeader
 from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/scrollbar.nut" import makeVertScroll
@@ -9,12 +10,13 @@ from "%rGui/debugTools/debugMapPoints/mapEditorComps.nut" import mkOptionBtnImg,
   btnWithActivity, mkTextInputField, mkText, mkFramedText, modalBg, mkTextOptionBtnNoUpper
 from "%rGui/debugTools/debugMapPoints/mapEditorConsts.nut" import optionsBtnGap, btnBgColorDefault,
   btnBgColorPositive, btnBgColorNegative, btnBgColorDisabled, btnImgColor, btnImgColorDisabled, defaultBgElemSize,
-  optionBtnSize
+  optionBtnSize, SNAP_NONE, SNAP_GRID, SNAP_ELEMS
 from "%rGui/debugTools/debugMapPoints/mapEditorState.nut" import isCurPageChanged, closeEventMapEditor,
   saveCurrentPage, addOrEditPoint, selectedBgElemIdx, isHeaderOptionsOpen, selectedPointId, setByHistory, curHistoryIdx,
-  deleteElement, isEditAllowed, needUseAutoSave, tuningPoints, tuningBgElems, historyMapElements,
-  selectElem, changeCurPageField, pageGridSize, pageLineSectionLen, pageRoundedDashes, pageLineType, pageLineWidth, ELEM_POINT, ELEM_BG, addBgElement, editBgElement,
-  selectedElem, copyElement, curEventNodeViews, pagePointSizes
+  deleteElement, isEditAllowed, needUseAutoSave, tuningPoints, tuningBgElems, historyMapElements, snapType,
+  selectElem, changeCurPageField, pageGridSize, pageLineSectionLen, pageRoundedDashes, pageLineType, pageLineWidth,
+  ELEM_POINT, ELEM_BG, addBgElement, editBgElement, selectedElem, copyElement, curEventNodeViews, pagePointSizes,
+  pageObjDist, isCollectionMode, tuningRewards, selectedRewardId, addOrEditReward, ELEM_REWARD
 from "%rGui/event/treeEvent/treeEventUtils.nut" import lineTypes, LINE_SOLID
 
 
@@ -205,8 +207,11 @@ let pointEditContent = @() modalBg.__merge({
   ]
 })
 
-function onAddBgElem(elem) {
-  let { img, size, rotate = 0 } = elem
+function onAddBgElem(elem, imgSize) {
+  let { img, rotate = 0 } = elem
+  local size = elem?.size ?? imgSize
+  if (size[0] <= 0 || size[1] <= 0)
+    size = [100, 100]
   let idx = addBgElement("", img, size, rotate)
   selectElem(idx, ELEM_BG)
   removeModalWindow(ADD_BG_ELEMENT_WND)
@@ -232,6 +237,8 @@ function onEditBgElem() {
     return openMsgBox({ text = "Element ID must be unique" })
   if (id in tuningPoints.get())
     return openMsgBox({ text = $"Already used id '{id}' for point" })
+  if (id in tuningRewards.get())
+    return openMsgBox({ text = $"Already used id '{id}' for reward" })
 
   let elemSize = [
     sizeX <= 0 ? defaultBgElemSize : sizeX,
@@ -240,6 +247,19 @@ function onEditBgElem() {
   editBgElement(idx, id, img, elemSize, rotate)
   selectElem(idx, ELEM_BG)
   removeModalWindow(EDIT_BG_ELEMENT_WND)
+}
+
+function onChooseBgImageForEdit(elem, imgSize) {
+  let { img, rotate = null } = elem
+  bgElemImgField.set(img)
+  if (rotate != null)
+    bgRotateElemField.set(rotate.tostring())
+  local size = elem?.size ?? imgSize
+  if (size[0] > 0 && size[1] > 0) {
+    bgElemSizeXField.set(size[0].tostring())
+    bgElemSizeYField.set(size[1].tostring())
+  }
+  removeModalWindow("choose_bg_image")
 }
 
 let editBgElemContent = modalBg.__merge({
@@ -262,8 +282,17 @@ let editBgElemContent = modalBg.__merge({
     mkText("Set size in pixels on the Y axis:")
     mkTextInputField(bgElemSizeYField, "Set size in pixels on the Y axis", { inputType = "num" })
     mkText("Set rotate bg element:")
-    mkTextInputField(bgRotateElemField, "Set rotate", { inputType = "num" })
-    mkTextOptionBtn("EDIT", onEditBgElem)
+    mkTextInputField(bgRotateElemField, "Set rotate", { charMask = "-0123456789" })
+    {
+      size = FLEX_H
+      children = [
+        mkTextOptionBtn("APPLY", onEditBgElem)
+        mkTextOptionBtn("CHOOSE IMAGE",
+          @() addModalWindowWithHeader("choose_bg_image", "Choose image",
+            mkBgCollectionChoice(onChooseBgImageForEdit, modalBg))
+          { hplace = ALIGN_RIGHT })
+      ]
+    }
   ]
 })
 
@@ -309,18 +338,6 @@ let deleteElemBtn = @() {
         { color = btnBgColorNegative })
 }
 
-let editElemBtn = @() {
-  watch = [selectedPointId, selectedBgElemIdx]
-  children = !selectedPointId.get() && selectedBgElemIdx.get() == null ? null
-    : mkOptionBtn("ui/gameuiskin#menu_edit.svg",
-        @() selectedPointId.get() != null
-            ? addModalWindowWithHeader(POINT_EDIT_WND, $"Edit point {selectedPointId.get()}", pointEditContent)
-          : selectedBgElemIdx.get() != null
-            ? addModalWindowWithHeader(EDIT_BG_ELEMENT_WND, "Edit background element", editBgElemContent)
-          : null,
-        $"Edit {selectedPointId.get() == null ? "bg elem" : "point"}")
-}
-
 let autoSaveBtn = @() {
   watch = needUseAutoSave
   children = mkTextOptionBtn($"Auto save: {needUseAutoSave.get()}",
@@ -328,9 +345,111 @@ let autoSaveBtn = @() {
     { color = needUseAutoSave.get() ? btnBgColorPositive : btnBgColorNegative })
 }
 
+let snapBtn = @() {
+  watch = snapType
+  children = mkTextOptionBtn($"Snap: {snapType.get() ?? "none"}",
+    @() snapType.set(snapType.get() == SNAP_NONE ? SNAP_GRID
+      : snapType.get() == SNAP_GRID ? SNAP_ELEMS
+      : SNAP_NONE),
+    { color = snapType.get() != SNAP_NONE ? btnBgColorPositive : btnBgColorNegative })
+}
+
 let addPointBtn = mkOptionBtn("ui/gameuiskin#icon_hud_flag.svg",
   @() addModalWindowWithHeader(ADD_POINT_WND, "Create point", addPointContent),
   "Add point")
+
+let openRewardViewChoice = @(apply)
+  addModalWindowWithHeader("reward_view_choice", "Select reward view",
+    modalBg.__merge({ 
+      size = const [hdpx(600), hdpx(900)]
+      children = makeVertScroll({
+        size = FLEX_H
+        valign = ALIGN_CENTER
+        flow = FLOW_VERTICAL
+        gap = hdpx(20)
+        children = rewardSizes.keys().sort()
+          .map(@(v) mkTextOptionBtnNoUpper(v,
+            function() {
+              apply(v)
+              removeModalWindow("reward_view_choice")
+            }
+            { size = [FLEX, optionBtnSize] }))
+      })
+    }))
+
+function onAddReward(id, view) {
+  if (id == "")
+    return openMsgBox({ text = "Reward ID is required!" })
+  if (id in tuningRewards.get())
+    return openMsgBox({ text = "Reward ID must be unique" })
+  if (null != tuningBgElems.get().findvalue(@(elem) elem.id == id))
+    return openMsgBox({ text = $"Already used id '{id}' for bg elem" })
+
+  addOrEditReward(id, view)
+  selectElem(id, ELEM_REWARD)
+  removeModalWindow("add_reward")
+}
+
+function openAddRewardWnd() {
+  let id = Watched("")
+  let view = Watched(defRewardProgress)
+
+  addModalWindowWithHeader("add_reward", "Create reward",
+    @() modalBg.__merge({
+      watch = view
+      size = const [hdpx(600), SIZE_TO_CONTENT]
+      onAttach = @() set_kb_focus(id)
+      children = [
+        mkText("Reward ID:")
+        mkTextInputField(id, "Set reward ID",
+          { onReturn = @() onAddReward(id.get(), view.get()) })
+        mkText("Reward View:")
+        mkTextOptionBtnNoUpper(view.get(), @() openRewardViewChoice(@(v) view.set(v)),
+          { size = [FLEX, optionBtnSize] })
+        mkTextOptionBtn("ADD",
+          @() onAddReward(id.get(), view.get()))
+      ]
+    }))
+}
+
+let addRewardBtn = mkOptionBtn("ui/gameuiskin#quest_events_icon.svg", openAddRewardWnd, "Add reward")
+
+function onEditReward(id, view) {
+  if (view != (tuningRewards.get()?[id].view ?? defRewardProgress))
+    addOrEditReward(id, view)
+  removeModalWindow("edit_reward")
+}
+
+function openEditRewardWnd() {
+  let id = selectedRewardId.get()
+  let view = Watched(tuningRewards.get()?[id].view ?? defRewardProgress)
+  addModalWindowWithHeader("edit_reward", $"Edit reward {id}",
+    @() modalBg.__merge({
+      watch = view
+      size = const [hdpx(600), SIZE_TO_CONTENT]
+      children = [
+        mkText("Reward View:")
+        mkTextOptionBtnNoUpper(view.get(), @() openRewardViewChoice(@(v) view.set(v)),
+          { size = [FLEX, optionBtnSize] })
+        mkTextOptionBtn("APPLY", @() onEditReward(id, view.get()))
+      ]
+    }))
+}
+
+let editElemBtn = @() {
+  watch = [selectedPointId, selectedBgElemIdx, selectedRewardId]
+  children = !selectedPointId.get() && selectedBgElemIdx.get() == null && !selectedRewardId.get() ? null
+    : mkOptionBtn("ui/gameuiskin#menu_edit.svg",
+        @() selectedPointId.get() != null
+            ? addModalWindowWithHeader(POINT_EDIT_WND, $"Edit point {selectedPointId.get()}", pointEditContent)
+          : selectedBgElemIdx.get() != null
+            ? addModalWindowWithHeader(EDIT_BG_ELEMENT_WND, "Edit background element", editBgElemContent)
+          : selectedRewardId.get() != null ? openEditRewardWnd()
+          : null,
+        selectedRewardId.get() ? "Edit reward"
+          : selectedPointId.get() ? "Edit point"
+          : "Edit bg elem")
+}
 
 let gridSizeSettingContent = @() modalBg.__merge({
   onAttach = @() gridSizeField.set(pageGridSize.get().tostring())
@@ -409,6 +528,23 @@ let lineSettingContent = @() modalBg.__merge({
   ]
 })
 
+function openObjectDistanceWnd() {
+  let valueStr = Watched(pageObjDist.get().tostring())
+  addModalWindowWithHeader("obj_dist", "Change snap object distance",
+    modalBg.__merge({
+      children = [
+        mkText("Object snap distance:")
+        mkTextInputField(valueStr, "Set snap distance", { inputType = "num" })
+        mkTextOptionBtn("SAVE",
+          function() {
+            if (valueStr.get() != "")
+              changeCurPageField("objDist", valueStr.get().tointeger())
+            removeModalWindow("obj_dist")
+          })
+      ]
+    }))
+}
+
 let settingContent = @() modalBg.__merge({
   size = const [hdpx(500), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
@@ -420,6 +556,7 @@ let settingContent = @() modalBg.__merge({
     mkTextOptionBtn("grid size",
       @() addModalWindowWithHeader(GRID_SIZE_SETTING_WND, "Change grid size", gridSizeSettingContent),
       { size = [FLEX, optionBtnSize] })
+    mkTextOptionBtn("object distance", openObjectDistanceWnd, { size = [FLEX, optionBtnSize] })
     mkTextOptionBtn("line settings",
       @() addModalWindowWithHeader(LINE_SETTING_WND, "Line settings", lineSettingContent),
       { size = [FLEX, optionBtnSize] })
@@ -451,7 +588,8 @@ function historyFwdBtn() {
   }
 }
 
-let content = {
+let content = @() {
+  watch = isCollectionMode
   size = FLEX_H
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
@@ -462,11 +600,12 @@ let content = {
     historyBackBtn
     historyFwdBtn
     autoSaveBtn
+    snapBtn
     { size = FLEX }
     deleteElemBtn
     copyElemBtn
     editElemBtn
-    addPointBtn
+    isCollectionMode.get() ? addRewardBtn : addPointBtn
     addBgElemBtn
     settingsBtn
   ]

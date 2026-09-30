@@ -2170,6 +2170,10 @@
         ],
         "emitterGenFmt": "bone_rocket_%02d",
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "ammoDpGenRange": [
+          1,
+          2
+        ],
         "skipAxisEmitterCheck": true,
         "recoilMultiplier": 0.1,
         "changeBulletTypeForSet": true,
@@ -3585,6 +3589,10 @@
               ],
               "emitterGenFmt": "bone_rocket_%02d",
               "ammoDpGenFmt": "ammo_turret_%02d_dm",
+              "ammoDpGenRange": [
+                1,
+                2
+              ],
               "skipAxisEmitterCheck": true,
               "recoilMultiplier": 0.1,
               "changeBulletTypeForSet": true,

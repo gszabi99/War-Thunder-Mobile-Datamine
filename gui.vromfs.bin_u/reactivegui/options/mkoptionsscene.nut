@@ -4,13 +4,13 @@ from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/gradientDefComps.nut" import headerGradientBg
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
 from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
-from "%rGui/components/tabs.nut" import tabExtraWidth
 from "%rGui/navState.nut" import registerScene
 import "%rGui/options/mkChildrenOptions.nut" as mkChildrenOptions
 import "%rGui/options/mkOption.nut" as mkOption
 import "%rGui/options/mkOptionsTabs.nut" as mkOptionsTabs
 from "%rGui/options/optionsStyle.nut" import contentOffset, minContentOffset, contentWidth, tabW
 from "%rGui/style/backgrounds.nut" import bgShadedDark
+from "%rGui/style/listConst.nut" import tabExtraWidth
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
 
@@ -80,16 +80,12 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, headerC
     return (tab?.content ?? tab?.contentCtor)
       ? {
           watch = curTabIdx
+          key = tab
           size = [isFullWidth ? FLEX : contentWidth, FLEX]
-          children = {
-            pos = [isFullWidth ? 0 : contentOffset, 0]
-            padding = [0, 0, 0, isFullWidth ? minContentOffset : 0]
-            key = tab
-            size = FLEX
-            flow = FLOW_VERTICAL
-            children = tab?.content ?? tab?.contentCtor()
-            animations = wndSwitchAnim
-          }
+          margin = [0, 0, 0, isFullWidth ? minContentOffset : contentOffset]
+          flow = FLOW_VERTICAL
+          children = tab?.content ?? tab?.contentCtor()
+          animations = wndSwitchAnim
         }
       : {
           watch = curTabIdx
@@ -116,7 +112,7 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, headerC
 
   let tabsList = mkTabsVerticalPannableArea(
     mkOptionsTabs(tabs, curTabIdx),
-    { size = [tabW + hdpx(25), sh(100) - topAreaSize] }.__merge(tabsPannableOvr),
+    { size = [tabW, sh(100) - topAreaSize] }.__merge(tabsPannableOvr),
     { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler }
   )
 

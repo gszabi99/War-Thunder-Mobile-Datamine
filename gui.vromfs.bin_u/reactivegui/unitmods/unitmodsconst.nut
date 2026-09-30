@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/components/tabs.nut" import tabExtraWidth
+from "%rGui/style/listConst.nut" import tabExtraWidth
 from "%rGui/style/gamercardStyle.nut" import gamercardHeight
 from "%rGui/style/stdColors.nut" import selectColor
 

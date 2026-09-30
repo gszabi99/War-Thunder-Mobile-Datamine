@@ -9,33 +9,54 @@ from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
 let imgSize = evenPx(180)
 const gap = hdpxi(10)
 const borderWidth = hdpxi(2)
-let cardSize = imgSize + 2 * borderWidth
-let maxColumns = (sw(100).tointeger() - gap) / (cardSize + gap)
+let footerHeight = hdpx(30)
+let cardWidth = imgSize + 2 * borderWidth
+let cardHeight = cardWidth + footerHeight
+let maxColumns = (sw(100).tointeger() - gap) / (cardWidth + gap)
 const minWndWidth = hdpx(500)
+
+let ip2ToArr = @(p) [p.x.tointeger(), p.y.tointeger()]
 
 function mkCard(id, elem, onSelect) {
   let stateFlags = Watched(0)
+  let image = Picture($"{elem.img}:0:P")
   return @() {
     watch = stateFlags
     key = id
-    size = [cardSize, cardSize]
-    padding = borderWidth
-    rendObj = ROBJ_BOX
-    fillColor = stateFlags.get() & S_HOVER ? 0xFF000010 : 0xFF8080A0
-    borderColor = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
-    borderWidth
+    size = [cardWidth, cardHeight]
 
     behavior = Behaviors.Button
     onElemState = withTooltip(stateFlags, id, @() id)
     onDetach = tooltipDetach(stateFlags)
-    onClick = @() onSelect(elem)
+    onClick = @() onSelect(elem, ip2ToArr(image.getLoadedPicSize()))
 
-    children = {
-      size = [imgSize, imgSize]
-      rendObj = ROBJ_IMAGE
-      image = Picture($"{elem.img}:0:P")
-      keepAspect = true
-    }
+    flow = FLOW_VERTICAL
+    children = [
+      {
+        size = cardWidth
+        padding = borderWidth
+        rendObj = ROBJ_BOX
+        fillColor = stateFlags.get() & S_HOVER ? 0xFF000010 : 0xFF8080A0
+        borderColor = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
+        borderWidth
+        children = {
+          size = imgSize
+          rendObj = ROBJ_IMAGE
+          image
+          keepAspect = true
+        }
+      }
+      {
+        size = FLEX
+        rendObj = ROBJ_TEXT
+        text = id
+        valign = ALIGN_CENTER
+        halign = ALIGN_CENTER
+        behavior = Behaviors.Marquee
+        delay = defMarqueeDelay
+        speed = hdpx(30)
+      }.__update(fontVeryVeryTiny)
+    ]
   }
 }
 
@@ -50,7 +71,7 @@ let mkBgCollectionChoice = @(onSelect, bg) function() {
   let order = collection.keys().sort()
   return bg.__merge({
     watch = bgCollection
-    size = [max(minWndWidth, columns * cardSize + (columns + 1) * gap), SIZE_TO_CONTENT]
+    size = [max(minWndWidth, columns * cardWidth + (columns + 1) * gap), SIZE_TO_CONTENT]
     halign = ALIGN_CENTER
     flow = FLOW_VERTICAL
     gap

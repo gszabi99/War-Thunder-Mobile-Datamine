@@ -5,136 +5,143 @@ from "%sqstd/math.nut" import getRomanNumeral
 
 
 let customLootboxImages = {
-  every_day_award_first = "every_day_award_medium_pack.avif"
+  every_day_award_first = "ui/gameuiskin/every_day_award_medium_pack.avif"
 
-  event_small_season_1                 = "event_small.avif"
+  event_small_season_1                 = "ui/gameuiskin/event_small.avif"
 
-  event_special_tanks_christmas_2023   = "event_special_ships_christmas_2023.avif"
-  event_special_tanks_april_2024       = "event_special_ships_april_2024.avif"
-  event_special_tanks_anniversary_2024       = "event_special_anniversary_2024.avif"
-  event_special_ships_anniversary_2024       = "event_special_anniversary_2024.avif"
+  event_special_tanks_christmas_2023   = "ui/gameuiskin/event_special_ships_christmas_2023.avif"
+  event_special_tanks_april_2024       = "ui/gameuiskin/event_special_ships_april_2024.avif"
+  event_special_tanks_anniversary_2024       = "ui/gameuiskin/event_special_anniversary_2024.avif"
+  event_special_ships_anniversary_2024       = "ui/gameuiskin/event_special_anniversary_2024.avif"
 
-  event_special_tanks_halloween_2024         = "event_special_halloween_2024.avif"
-  event_special_ships_halloween_2024         = "event_special_halloween_2024.avif"
-  event_special_air_halloween_2024           = "event_special_halloween_2024.avif"
+  event_special_tanks_halloween_2024         = "ui/gameuiskin/event_special_halloween_2024.avif"
+  event_special_ships_halloween_2024         = "ui/gameuiskin/event_special_halloween_2024.avif"
+  event_special_air_halloween_2024           = "ui/gameuiskin/event_special_halloween_2024.avif"
 
-  event_special_tanks_new_year_2025         = "event_special_ships_christmas_2024.avif"
-  event_special_ships_new_year_2025         = "event_special_ships_christmas_2024.avif"
-  event_special_air_new_year_2025           = "event_special_ships_christmas_2024.avif"
+  event_special_tanks_new_year_2025         = "ui/gameuiskin/event_special_ships_christmas_2024.avif"
+  event_special_ships_new_year_2025         = "ui/gameuiskin/event_special_ships_christmas_2024.avif"
+  event_special_air_new_year_2025           = "ui/gameuiskin/event_special_ships_christmas_2024.avif"
 
-  event_special_gift_tanks_new_year_2025         = "event_christmas_gift_box.avif"
-  event_special_gift_ships_new_year_2025         = "event_christmas_gift_box.avif"
-  event_special_gift_air_new_year_2025           = "event_christmas_gift_box.avif"
+  event_special_gift_tanks_new_year_2025         = "ui/gameuiskin/event_christmas_gift_box.avif"
+  event_special_gift_ships_new_year_2025         = "ui/gameuiskin/event_christmas_gift_box.avif"
+  event_special_gift_air_new_year_2025           = "ui/gameuiskin/event_christmas_gift_box.avif"
 
-  event_special_tanks_lunar_ny_2025         = "event_special_lunar_ny.avif"
-  event_special_ships_lunar_ny_2025         = "event_special_lunar_ny.avif"
-  event_special_air_lunar_ny_2025           = "event_special_lunar_ny.avif"
+  event_special_tanks_lunar_ny_2025         = "ui/gameuiskin/event_special_lunar_ny.avif"
+  event_special_ships_lunar_ny_2025         = "ui/gameuiskin/event_special_lunar_ny.avif"
+  event_special_air_lunar_ny_2025           = "ui/gameuiskin/event_special_lunar_ny.avif"
 
-  event_special_tanks_independence_2025      = "event_special_independence_2025.avif"
-  event_special_ships_independence_2025      = "event_special_independence_2025.avif"
-  event_special_air_independence_2025        = "event_special_independence_2025.avif"
+  event_special_tanks_china_national_day_2026 = "ui/gameuiskin/event_special_china_national_day_2026_box.avif"
+  event_special_tanks_independence_2025       = "ui/gameuiskin/event_special_independence_2025.avif"
+  event_special_ships_independence_2025       = "ui/gameuiskin/event_special_independence_2025.avif"
+  event_special_air_independence_2025         = "ui/gameuiskin/event_special_independence_2025.avif"
 
-  event_special_gift_tanks_anniversary_2025      = "event_anniversary_gift_box.avif"
-  event_special_gift_ships_anniversary_2025      = "event_anniversary_gift_box.avif"
-  event_special_gift_air_anniversary_2025        = "event_anniversary_gift_box.avif"
+  event_special_gift_tanks_anniversary_2025      = "ui/gameuiskin/event_anniversary_gift_box.avif"
+  event_special_gift_ships_anniversary_2025      = "ui/gameuiskin/event_anniversary_gift_box.avif"
+  event_special_gift_air_anniversary_2025        = "ui/gameuiskin/event_anniversary_gift_box.avif"
 
-  april_event_2026_tanks      = "event_special_april_event_2026.avif"
-  april_event_2026_ships      = "event_special_april_event_2026.avif"
-  april_event_2026_air        = "event_special_april_event_2026.avif"
+  april_event_2026_tanks      = "ui/gameuiskin/event_special_april_event_2026.avif"
+  april_event_2026_ships      = "ui/gameuiskin/event_special_april_event_2026.avif"
+  april_event_2026_air        = "ui/gameuiskin/event_special_april_event_2026.avif"
 
-  anniversary_event_2026_tanks      = "anniversary_2026_lootbox.avif"
-  anniversary_event_2026_ships      = "anniversary_2026_lootbox.avif"
-  anniversary_event_2026_air        = "anniversary_2026_lootbox.avif"
+  anniversary_event_2026_tanks      = "ui/gameuiskin/anniversary_2026_lootbox.avif"
+  anniversary_event_2026_ships      = "ui/gameuiskin/anniversary_2026_lootbox.avif"
+  anniversary_event_2026_air        = "ui/gameuiskin/anniversary_2026_lootbox.avif"
 
-  operation_pass_infinite_lootbox_tanks           = "battle_pass_infinite_lootbox.avif"
-  operation_pass_infinite_lootbox_ships           = "battle_pass_infinite_lootbox.avif"
-  operation_pass_infinite_lootbox_air             = "battle_pass_infinite_lootbox.avif"
+  operation_pass_infinite_lootbox_tanks           = "ui/gameuiskin/battle_pass_infinite_lootbox.avif"
+  operation_pass_infinite_lootbox_ships           = "ui/gameuiskin/battle_pass_infinite_lootbox.avif"
+  operation_pass_infinite_lootbox_air             = "ui/gameuiskin/battle_pass_infinite_lootbox.avif"
 
-  event_special_china_tanks_spending_event        = "event_special_lunar_ny.avif"
-  valentine_day_candy_lootbox                     = "valentine_day_candy_lootbox.avif"
-  valentine_day_extra_reward_lootbox              = "valentine_day_candy_lootbox.avif"
+  event_special_china_tanks_spending_event        = "ui/gameuiskin/event_special_lunar_ny.avif"
+  valentine_day_candy_lootbox                     = "ui/gameuiskin/valentine_day_candy_lootbox.avif"
+  valentine_day_extra_reward_lootbox              = "ui/gameuiskin/valentine_day_candy_lootbox.avif"
 
-  past_events_box_tanks_seasons_1_to_3 = "past_events_box_ships_seasons_1_to_3.avif"
-  past_events_box_ships_seasons_1_to_4 = "past_events_box_ships_seasons_1_to_3.avif"
-  past_events_box_tanks_seasons_1_to_4 = "past_events_box_ships_seasons_1_to_3.avif"
-  past_events_box_tanks_seasons_1_to_5 = "past_events_box_ships_seasons_1_to_5.avif"
-  past_events_box_ships_seasons_1_to_6 = "past_events_box.avif"
-  past_events_box_tanks_seasons_1_to_6 = "past_events_box.avif"
-  past_events_box_ships_seasons_1_to_7 = "past_events_box.avif"
-  past_events_box_tanks_seasons_1_to_7 = "past_events_box.avif"
-  past_events_box_ships_seasons_1_to_8 = "past_events_box_seasons_1_to_8.avif"
-  past_events_box_tanks_seasons_1_to_8 = "past_events_box_seasons_1_to_8.avif"
-  past_events_box_ships_seasons_1_to_9 = "past_events_box_seasons_1_to_9.avif"
-  past_events_box_tanks_seasons_1_to_9 = "past_events_box_seasons_1_to_9.avif"
-  past_events_box_ships_seasons_1_to_10 = "past_events_box_seasons_1_to_10.avif"
-  past_events_box_tanks_seasons_1_to_10 = "past_events_box_seasons_1_to_10.avif"
-  past_events_box_ships_seasons_1_to_11 = "past_events_box_seasons_1_to_11.avif"
-  past_events_box_tanks_seasons_1_to_11 = "past_events_box_seasons_1_to_11.avif"
-  past_events_box_ships_seasons_1_to_12 = "past_events_box_seasons_1_to_12.avif"
-  past_events_box_tanks_seasons_1_to_12 = "past_events_box_seasons_1_to_12.avif"
-  past_events_box_ships_seasons_1_to_13 = "past_events_box_seasons_1_to_13.avif"
-  past_events_box_tanks_seasons_1_to_13 = "past_events_box_seasons_1_to_13.avif"
-  past_events_box_ships_seasons_1_to_14 = "past_events_box_seasons_1_to_14.avif"
-  past_events_box_tanks_seasons_1_to_14 = "past_events_box_seasons_1_to_14.avif"
-  past_events_box_ships_seasons_1_to_15 = "past_events_box_seasons_1_to_15.avif"
-  past_events_box_tanks_seasons_1_to_15 = "past_events_box_seasons_1_to_15.avif"
-  past_events_box_tanks_seasons_1_to_16 = "past_events_box_seasons_1_to_16.avif"
-  past_events_box_ships_seasons_1_to_16 = "past_events_box_seasons_1_to_16.avif"
-  past_events_box_air_seasons_1_to_16 = "past_events_box_seasons_1_to_16.avif"
-  past_events_box_tanks_seasons_1_to_17 = "past_events_box_seasons_1_to_17.avif"
-  past_events_box_ships_seasons_1_to_17 = "past_events_box_seasons_1_to_17.avif"
-  past_events_box_air_seasons_1_to_17 = "past_events_box_seasons_1_to_17.avif"
-  past_events_box_tanks_seasons_1_to_18 = "past_events_box_seasons_1_to_18.avif"
-  past_events_box_ships_seasons_1_to_18 = "past_events_box_seasons_1_to_18.avif"
-  past_events_box_air_seasons_1_to_18 = "past_events_box_seasons_1_to_18.avif"
-  past_events_box_tanks_seasons_1_to_19 = "past_events_box_seasons_1_to_19.avif"
-  past_events_box_ships_seasons_1_to_19 = "past_events_box_seasons_1_to_19.avif"
-  past_events_box_air_seasons_1_to_19 = "past_events_box_seasons_1_to_19.avif"
-  past_events_box_tanks_seasons_1_to_20 = "past_events_box_seasons_1_to_20.avif"
-  past_events_box_ships_seasons_1_to_20 = "past_events_box_seasons_1_to_20.avif"
-  past_events_box_air_seasons_1_to_20 = "past_events_box_seasons_1_to_20.avif"
-  past_events_box_tanks_seasons_1_to_21 = "past_events_box_seasons_1_to_21.avif"
-  past_events_box_ships_seasons_1_to_21 = "past_events_box_seasons_1_to_21.avif"
-  past_events_box_air_seasons_1_to_21 = "past_events_box_seasons_1_to_21.avif"
-  past_events_box_tanks_seasons_1_to_22 = "past_events_box_seasons_1_to_22.avif"
-  past_events_box_ships_seasons_1_to_22 = "past_events_box_seasons_1_to_22.avif"
-  past_events_box_air_seasons_1_to_22 = "past_events_box_seasons_1_to_22.avif"
-  past_events_box_tanks_seasons_1_to_23 = "past_events_box_seasons_1_to_23.avif"
-  past_events_box_ships_seasons_1_to_23 = "past_events_box_seasons_1_to_23.avif"
-  past_events_box_air_seasons_1_to_23 = "past_events_box_seasons_1_to_23.avif"
-  past_events_box_tanks_seasons_1_to_24 = "past_events_box_seasons_1_to_24.avif"
-  past_events_box_ships_seasons_1_to_24 = "past_events_box_seasons_1_to_24.avif"
-  past_events_box_air_seasons_1_to_24 = "past_events_box_seasons_1_to_24.avif"
-  past_events_box_tanks_seasons_1_to_25 = "past_events_box_seasons_1_to_25.avif"
-  past_events_box_ships_seasons_1_to_25 = "past_events_box_seasons_1_to_25.avif"
-  past_events_box_air_seasons_1_to_25 = "past_events_box_seasons_1_to_25.avif"
-  past_events_box_tanks_seasons_1_to_26 = "past_events_box_seasons_1_to_26.avif"
-  past_events_box_ships_seasons_1_to_26 = "past_events_box_seasons_1_to_26.avif"
-  past_events_box_air_seasons_1_to_26 = "past_events_box_seasons_1_to_26.avif"
-  past_events_box_tanks_seasons_1_to_27 = "past_events_box_seasons_1_to_27.avif"
-  past_events_box_ships_seasons_1_to_27 = "past_events_box_seasons_1_to_27.avif"
-  past_events_box_air_seasons_1_to_27 = "past_events_box_seasons_1_to_27.avif"
-  past_events_box_tanks_seasons_1_to_28 = "past_events_box_seasons_1_to_28.avif"
-  past_events_box_ships_seasons_1_to_28 = "past_events_box_seasons_1_to_28.avif"
-  past_events_box_air_seasons_1_to_28 = "past_events_box_seasons_1_to_28.avif"
-  past_events_box_tanks_seasons_1_to_29 = "past_events_box_seasons_1_to_29.avif"
-  past_events_box_ships_seasons_1_to_29 = "past_events_box_seasons_1_to_29.avif"
-  past_events_box_air_seasons_1_to_29 = "past_events_box_seasons_1_to_29.avif"
-  past_events_box_tanks_seasons_1_to_30 = "past_events_box_seasons_1_to_30.avif"
-  past_events_box_ships_seasons_1_to_30 = "past_events_box_seasons_1_to_30.avif"
-  past_events_box_air_seasons_1_to_30 = "past_events_box_seasons_1_to_30.avif"
-  past_events_box_tanks_seasons_1_to_31 = "past_events_box_seasons_1_to_31.avif"
-  past_events_box_ships_seasons_1_to_31 = "past_events_box_seasons_1_to_31.avif"
-  past_events_box_air_seasons_1_to_31 = "past_events_box_seasons_1_to_31.avif"
-  past_events_box_tanks_seasons_1_to_32 = "past_events_box_seasons_1_to_32.avif"
-  past_events_box_ships_seasons_1_to_32 = "past_events_box_seasons_1_to_32.avif"
-  past_events_box_air_seasons_1_to_32 = "past_events_box_seasons_1_to_32.avif"
-  past_events_box_tanks_seasons_1_to_33 = "past_events_box_seasons_1_to_33.avif"
-  past_events_box_ships_seasons_1_to_33 = "past_events_box_seasons_1_to_33.avif"
-  past_events_box_air_seasons_1_to_33 = "past_events_box_seasons_1_to_33.avif"
-  past_events_box_tanks_seasons_1_to_34 = "past_events_box_seasons_1_to_34.avif"
-  past_events_box_ships_seasons_1_to_34 = "past_events_box_seasons_1_to_34.avif"
-  past_events_box_air_seasons_1_to_34 = "past_events_box_seasons_1_to_34.avif"
+  past_events_box_tanks_seasons_1_to_3 = "ui/gameuiskin/past_events_box_ships_seasons_1_to_3.avif"
+  past_events_box_ships_seasons_1_to_4 = "ui/gameuiskin/past_events_box_ships_seasons_1_to_3.avif"
+  past_events_box_tanks_seasons_1_to_4 = "ui/gameuiskin/past_events_box_ships_seasons_1_to_3.avif"
+  past_events_box_tanks_seasons_1_to_5 = "ui/gameuiskin/past_events_box_ships_seasons_1_to_5.avif"
+  past_events_box_ships_seasons_1_to_6 = "ui/gameuiskin/past_events_box.avif"
+  past_events_box_tanks_seasons_1_to_6 = "ui/gameuiskin/past_events_box.avif"
+  past_events_box_ships_seasons_1_to_7 = "ui/gameuiskin/past_events_box.avif"
+  past_events_box_tanks_seasons_1_to_7 = "ui/gameuiskin/past_events_box.avif"
+  past_events_box_ships_seasons_1_to_8 = "ui/gameuiskin/past_events_box_seasons_1_to_8.avif"
+  past_events_box_tanks_seasons_1_to_8 = "ui/gameuiskin/past_events_box_seasons_1_to_8.avif"
+  past_events_box_ships_seasons_1_to_9 = "ui/gameuiskin/past_events_box_seasons_1_to_9.avif"
+  past_events_box_tanks_seasons_1_to_9 = "ui/gameuiskin/past_events_box_seasons_1_to_9.avif"
+  past_events_box_ships_seasons_1_to_10 = "ui/gameuiskin/past_events_box_seasons_1_to_10.avif"
+  past_events_box_tanks_seasons_1_to_10 = "ui/gameuiskin/past_events_box_seasons_1_to_10.avif"
+  past_events_box_ships_seasons_1_to_11 = "ui/gameuiskin/past_events_box_seasons_1_to_11.avif"
+  past_events_box_tanks_seasons_1_to_11 = "ui/gameuiskin/past_events_box_seasons_1_to_11.avif"
+  past_events_box_ships_seasons_1_to_12 = "ui/gameuiskin/past_events_box_seasons_1_to_12.avif"
+  past_events_box_tanks_seasons_1_to_12 = "ui/gameuiskin/past_events_box_seasons_1_to_12.avif"
+  past_events_box_ships_seasons_1_to_13 = "ui/gameuiskin/past_events_box_seasons_1_to_13.avif"
+  past_events_box_tanks_seasons_1_to_13 = "ui/gameuiskin/past_events_box_seasons_1_to_13.avif"
+  past_events_box_ships_seasons_1_to_14 = "ui/gameuiskin/past_events_box_seasons_1_to_14.avif"
+  past_events_box_tanks_seasons_1_to_14 = "ui/gameuiskin/past_events_box_seasons_1_to_14.avif"
+  past_events_box_ships_seasons_1_to_15 = "ui/gameuiskin/past_events_box_seasons_1_to_15.avif"
+  past_events_box_tanks_seasons_1_to_15 = "ui/gameuiskin/past_events_box_seasons_1_to_15.avif"
+  past_events_box_tanks_seasons_1_to_16 = "ui/gameuiskin/past_events_box_seasons_1_to_16.avif"
+  past_events_box_ships_seasons_1_to_16 = "ui/gameuiskin/past_events_box_seasons_1_to_16.avif"
+  past_events_box_air_seasons_1_to_16 = "ui/gameuiskin/past_events_box_seasons_1_to_16.avif"
+  past_events_box_tanks_seasons_1_to_17 = "ui/gameuiskin/past_events_box_seasons_1_to_17.avif"
+  past_events_box_ships_seasons_1_to_17 = "ui/gameuiskin/past_events_box_seasons_1_to_17.avif"
+  past_events_box_air_seasons_1_to_17 = "ui/gameuiskin/past_events_box_seasons_1_to_17.avif"
+  past_events_box_tanks_seasons_1_to_18 = "ui/gameuiskin/past_events_box_seasons_1_to_18.avif"
+  past_events_box_ships_seasons_1_to_18 = "ui/gameuiskin/past_events_box_seasons_1_to_18.avif"
+  past_events_box_air_seasons_1_to_18 = "ui/gameuiskin/past_events_box_seasons_1_to_18.avif"
+  past_events_box_tanks_seasons_1_to_19 = "ui/gameuiskin/past_events_box_seasons_1_to_19.avif"
+  past_events_box_ships_seasons_1_to_19 = "ui/gameuiskin/past_events_box_seasons_1_to_19.avif"
+  past_events_box_air_seasons_1_to_19 = "ui/gameuiskin/past_events_box_seasons_1_to_19.avif"
+  past_events_box_tanks_seasons_1_to_20 = "ui/gameuiskin/past_events_box_seasons_1_to_20.avif"
+  past_events_box_ships_seasons_1_to_20 = "ui/gameuiskin/past_events_box_seasons_1_to_20.avif"
+  past_events_box_air_seasons_1_to_20 = "ui/gameuiskin/past_events_box_seasons_1_to_20.avif"
+  past_events_box_tanks_seasons_1_to_21 = "ui/gameuiskin/past_events_box_seasons_1_to_21.avif"
+  past_events_box_ships_seasons_1_to_21 = "ui/gameuiskin/past_events_box_seasons_1_to_21.avif"
+  past_events_box_air_seasons_1_to_21 = "ui/gameuiskin/past_events_box_seasons_1_to_21.avif"
+  past_events_box_tanks_seasons_1_to_22 = "ui/gameuiskin/past_events_box_seasons_1_to_22.avif"
+  past_events_box_ships_seasons_1_to_22 = "ui/gameuiskin/past_events_box_seasons_1_to_22.avif"
+  past_events_box_air_seasons_1_to_22 = "ui/gameuiskin/past_events_box_seasons_1_to_22.avif"
+  past_events_box_tanks_seasons_1_to_23 = "ui/gameuiskin/past_events_box_seasons_1_to_23.avif"
+  past_events_box_ships_seasons_1_to_23 = "ui/gameuiskin/past_events_box_seasons_1_to_23.avif"
+  past_events_box_air_seasons_1_to_23 = "ui/gameuiskin/past_events_box_seasons_1_to_23.avif"
+  past_events_box_tanks_seasons_1_to_24 = "ui/gameuiskin/past_events_box_seasons_1_to_24.avif"
+  past_events_box_ships_seasons_1_to_24 = "ui/gameuiskin/past_events_box_seasons_1_to_24.avif"
+  past_events_box_air_seasons_1_to_24 = "ui/gameuiskin/past_events_box_seasons_1_to_24.avif"
+  past_events_box_tanks_seasons_1_to_25 = "ui/gameuiskin/past_events_box_seasons_1_to_25.avif"
+  past_events_box_ships_seasons_1_to_25 = "ui/gameuiskin/past_events_box_seasons_1_to_25.avif"
+  past_events_box_air_seasons_1_to_25 = "ui/gameuiskin/past_events_box_seasons_1_to_25.avif"
+  past_events_box_tanks_seasons_1_to_26 = "ui/gameuiskin/past_events_box_seasons_1_to_26.avif"
+  past_events_box_ships_seasons_1_to_26 = "ui/gameuiskin/past_events_box_seasons_1_to_26.avif"
+  past_events_box_air_seasons_1_to_26 = "ui/gameuiskin/past_events_box_seasons_1_to_26.avif"
+  past_events_box_tanks_seasons_1_to_27 = "ui/gameuiskin/past_events_box_seasons_1_to_27.avif"
+  past_events_box_ships_seasons_1_to_27 = "ui/gameuiskin/past_events_box_seasons_1_to_27.avif"
+  past_events_box_air_seasons_1_to_27 = "ui/gameuiskin/past_events_box_seasons_1_to_27.avif"
+  past_events_box_tanks_seasons_1_to_28 = "ui/gameuiskin/past_events_box_seasons_1_to_28.avif"
+  past_events_box_ships_seasons_1_to_28 = "ui/gameuiskin/past_events_box_seasons_1_to_28.avif"
+  past_events_box_air_seasons_1_to_28 = "ui/gameuiskin/past_events_box_seasons_1_to_28.avif"
+  past_events_box_tanks_seasons_1_to_29 = "ui/gameuiskin/past_events_box_seasons_1_to_29.avif"
+  past_events_box_ships_seasons_1_to_29 = "ui/gameuiskin/past_events_box_seasons_1_to_29.avif"
+  past_events_box_air_seasons_1_to_29 = "ui/gameuiskin/past_events_box_seasons_1_to_29.avif"
+  past_events_box_tanks_seasons_1_to_30 = "ui/gameuiskin/past_events_box_seasons_1_to_30.avif"
+  past_events_box_ships_seasons_1_to_30 = "ui/gameuiskin/past_events_box_seasons_1_to_30.avif"
+  past_events_box_air_seasons_1_to_30 = "ui/gameuiskin/past_events_box_seasons_1_to_30.avif"
+  past_events_box_tanks_seasons_1_to_31 = "ui/gameuiskin/past_events_box_seasons_1_to_31.avif"
+  past_events_box_ships_seasons_1_to_31 = "ui/gameuiskin/past_events_box_seasons_1_to_31.avif"
+  past_events_box_air_seasons_1_to_31 = "ui/gameuiskin/past_events_box_seasons_1_to_31.avif"
+  past_events_box_tanks_seasons_1_to_32 = "ui/gameuiskin/past_events_box_seasons_1_to_32.avif"
+  past_events_box_ships_seasons_1_to_32 = "ui/gameuiskin/past_events_box_seasons_1_to_32.avif"
+  past_events_box_air_seasons_1_to_32 = "ui/gameuiskin/past_events_box_seasons_1_to_32.avif"
+  past_events_box_tanks_seasons_1_to_33 = "ui/gameuiskin/past_events_box_seasons_1_to_33.avif"
+  past_events_box_ships_seasons_1_to_33 = "ui/gameuiskin/past_events_box_seasons_1_to_33.avif"
+  past_events_box_air_seasons_1_to_33 = "ui/gameuiskin/past_events_box_seasons_1_to_33.avif"
+  past_events_box_tanks_seasons_1_to_34 = "ui/gameuiskin/past_events_box_seasons_1_to_34.avif"
+  past_events_box_ships_seasons_1_to_34 = "ui/gameuiskin/past_events_box_seasons_1_to_34.avif"
+  past_events_box_air_seasons_1_to_34 = "ui/gameuiskin/past_events_box_seasons_1_to_34.avif"
+  past_events_box_tanks_seasons_1_to_35 = "ui/gameuiskin/past_events_box_seasons_1_to_35.avif"
+  past_events_box_ships_seasons_1_to_35 = "ui/gameuiskin/past_events_box_seasons_1_to_35.avif"
+  past_events_box_air_seasons_1_to_35 = "ui/gameuiskin/past_events_box_seasons_1_to_35.avif"
+
+  main_s38_piece                             = "ui/images/collections/main_s38_piece.avif"
+  main_s38_piece_uniq                        = "ui/images/collections/main_s38_piece_uniq.avif"
 }
 
 let customRouletteImages = {
@@ -182,8 +189,8 @@ let imgIdBySeason = {
 }
 
 let defaultSeasonImages = [
-  { re = regexp2(@"^event_tanks_(medium|big)_season_\d+$"), mkImg = @(id) $"{id.replace("tanks", "ships")}.avif" },
-  { re = regexp2(@"^event_air_(medium|big)_season_\d+$"),   mkImg = @(id) $"{id.replace("air", "ships")}.avif" },
+  { re = regexp2(@"^event_tanks_(medium|big)_season_\d+$"), mkImg = @(id) $"ui/gameuiskin/{id.replace("tanks", "ships")}.avif" },
+  { re = regexp2(@"^event_air_(medium|big)_season_\d+$"),   mkImg = @(id) $"ui/gameuiskin/{id.replace("air", "ships")}.avif" },
 ]
 
 const defaultBgImage = "ui/images/bp_bg_01.avif"
@@ -193,6 +200,7 @@ let lootboxPreviewBg = {
   event_special_gift_ships_new_year_2025         = { bg = "ui/images/event_bg_christmas_2024.avif" }
   event_special_gift_air_new_year_2025           = { bg = "ui/images/event_bg_christmas_2024.avif" }
 
+  event_special_tanks_china_national_day_2026 = { bg = "ui/images/event_bg_event_china_national_day.avif" }
   event_special_tanks_independence_2025          = { bg = "ui/images/event_bg_event_independence_day.avif" }
   event_special_ships_independence_2025          = { bg = "ui/images/event_bg_event_independence_day.avif" }
   event_special_air_independence_2025            = { bg = "ui/images/event_bg_event_independence_day.avif" }
@@ -210,6 +218,9 @@ let lootboxPreviewBg = {
   past_events_box_tanks_seasons_1_to_34             = { bg = "ui/images/event_bg_season_37.avif" }
   past_events_box_ships_seasons_1_to_34             = { bg = "ui/images/event_bg_season_37.avif" }
   past_events_box_air_seasons_1_to_34               = { bg = "ui/images/event_bg_season_37.avif" }
+  past_events_box_tanks_seasons_1_to_35             = { bg = "ui/images/event_bg_season_38.avif" }
+  past_events_box_ships_seasons_1_to_35             = { bg = "ui/images/event_bg_season_38.avif" }
+  past_events_box_air_seasons_1_to_35               = { bg = "ui/images/event_bg_season_38.avif" }
 
   event_special_china_tanks_spending_event         = { bg = "ui/images/event_bg_lunar.avif" }
   japan_tanks_spending_event_box                   = { bg = "ui/images/event_bg_japan_tanks_early_access.avif", bgColor = 0xFF999999 }
@@ -234,27 +245,29 @@ let defEventLootboxScaleBySlot = {
 }
 
 let eventLootboxScale = {
-  ["battle_pass_infinite_lootbox.avif"] = 0.8,
-  ["lucky_box.avif"] = 0.8,
-  ["guaranteed_box.avif"] = 0.8,
-  ["every_day_award_medium_pack.avif"] = 0.5,
-  ["every_day_award_big_pack_1.avif"] = 0.8,
-  ["every_day_award_big_pack_2.avif"] = 0.9,
+  ["ui/gameuiskin/battle_pass_infinite_lootbox.avif"] = 0.8,
+  ["ui/gameuiskin/lucky_box.avif"] = 0.8,
+  ["ui/gameuiskin/guaranteed_box.avif"] = 0.8,
+  ["ui/gameuiskin/every_day_award_medium_pack.avif"] = 0.5,
+  ["ui/gameuiskin/every_day_award_big_pack_1.avif"] = 0.8,
+  ["ui/gameuiskin/every_day_award_big_pack_2.avif"] = 0.9,
   event_special_tanks_anniversary_2024 = 1.2,
   event_special_ships_anniversary_2024 = 1.2,
-  ["event_ships_big_season_25.avif"] = 1.2,
-  ["event_ships_big_season_31.avif"] = 1.25,
-  ["event_ships_big_season_35.avif"] = 1.6,
-  ["event_ships_big_season_36.avif"] = 1.7,
-  ["event_special_april_event_2026.avif"] = 1.5,
-  ["anniversary_2026_lootbox.avif"] = 1.5,
-  ["event_ships_big_season_37.avif"] = 1.2,
+  ["ui/gameuiskin/event_ships_big_season_25.avif"] = 1.2,
+  ["ui/gameuiskin/event_ships_big_season_31.avif"] = 1.25,
+  ["ui/gameuiskin/event_ships_big_season_35.avif"] = 1.6,
+  ["ui/gameuiskin/event_ships_big_season_36.avif"] = 1.7,
+  ["ui/gameuiskin/event_special_april_event_2026.avif"] = 1.5,
+  ["ui/gameuiskin/anniversary_2026_lootbox.avif"] = 1.5,
+  ["ui/gameuiskin/event_ships_big_season_37.avif"] = 1.2,
+  ["ui/gameuiskin/event_ships_big_season_38.avif"] = 1.5,
 }
 
 let eventLootboxShiftPos = {
-  ["event_ships_big_season_25.avif"] = [0, -0.15],
-  ["event_ships_big_season_35.avif"] = [0, -0.1],
-  ["event_ships_big_season_36.avif"] = [0, -0.1],
+  ["ui/gameuiskin/event_ships_big_season_25.avif"] = [0, -0.15],
+  ["ui/gameuiskin/event_ships_big_season_35.avif"] = [0, -0.1],
+  ["ui/gameuiskin/event_ships_big_season_36.avif"] = [0, -0.1],
+  ["ui/gameuiskin/event_ships_big_season_38.avif"] = [-0.03, -0.15],
 }
 
 let customGoodsLootboxScale = {
@@ -275,8 +288,8 @@ let lootboxLocIdByNamePart = {
 }
 
 let lootboxImageByNamePart = {
-  ["_subbox_"] = "lucky_box.avif",
-  ["_fixed_"] = "guaranteed_box.avif"
+  ["_subbox_"] = "ui/gameuiskin/lucky_box.avif",
+  ["_fixed_"] = "ui/gameuiskin/guaranteed_box.avif"
 }
 
 function getLootboxPreviewBg(name) {
@@ -304,7 +317,7 @@ function getDefaultImgFilename(id) {
         if (id.indexof(part) != null)
           fn = imgName
 
-    defaultImgFilenameCache[id] <- fn ?? $"{id}.avif"
+    defaultImgFilenameCache[id] <- fn ?? $"ui/gameuiskin/{id}.avif"
   }
   return defaultImgFilenameCache[id]
 }
@@ -323,13 +336,13 @@ let mkTagLayers = @(image) [{
 }]
 
 let lootboxLayers = {
-  event_special_gift_tanks_new_year_2025 = mkTagLayers("event_christmas_gift_tag_tanks.avif")
-  event_special_gift_ships_new_year_2025 = mkTagLayers("event_christmas_gift_tag_ships.avif")
-  event_special_gift_air_new_year_2025   = mkTagLayers("event_christmas_gift_tag_planes.avif")
+  event_special_gift_tanks_new_year_2025 = mkTagLayers("ui/gameuiskin/event_christmas_gift_tag_tanks.avif")
+  event_special_gift_ships_new_year_2025 = mkTagLayers("ui/gameuiskin/event_christmas_gift_tag_ships.avif")
+  event_special_gift_air_new_year_2025   = mkTagLayers("ui/gameuiskin/event_christmas_gift_tag_planes.avif")
 
-  event_special_gift_tanks_anniversary_2025 = mkTagLayers("event_christmas_gift_tag_tanks.avif")
-  event_special_gift_ships_anniversary_2025 = mkTagLayers("event_christmas_gift_tag_ships.avif")
-  event_special_gift_air_anniversary_2025   = mkTagLayers("event_christmas_gift_tag_planes.avif")
+  event_special_gift_tanks_anniversary_2025 = mkTagLayers("ui/gameuiskin/event_christmas_gift_tag_tanks.avif")
+  event_special_gift_ships_anniversary_2025 = mkTagLayers("ui/gameuiskin/event_christmas_gift_tag_ships.avif")
+  event_special_gift_air_anniversary_2025   = mkTagLayers("ui/gameuiskin/event_christmas_gift_tag_planes.avif")
 }
 
 let isNum = regexp2(@"^\d+$")

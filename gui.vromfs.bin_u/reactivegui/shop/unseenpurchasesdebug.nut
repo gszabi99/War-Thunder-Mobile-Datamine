@@ -15,6 +15,7 @@ let fakeUnseenPurchases = {
     ]
     goods = [
       { id = "wp", gType = "currency", count = 2000 },
+      { id = "main_s38", gType = "piece", subId = "common:1:7", count = 1 },
       { id = "gold", gType = "currency", count = 1000 },
       { id = "warbond", gType = "currency", count = 100 },
       { id = "eventKey", gType = "currency", count = 50 },

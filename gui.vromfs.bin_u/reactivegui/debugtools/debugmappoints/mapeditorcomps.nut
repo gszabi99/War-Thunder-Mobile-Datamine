@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
+from "types" import String
 from "%sqstd/string.nut" import utf8ToUpper
 from "%rGui/components/textInput.nut" import textInput
 from "%rGui/debugTools/debugMapPoints/mapEditorConsts.nut" import optionBtnSize, imgSize, btnBgColorDefault,
   btnBgColorDisabled, btnImgColor, btnImgColorDisabled
+from "%rGui/style/stdColors.nut" import commonTextColor, markTextColor
 from "%rGui/tooltip.nut" import mkButtonHoldTooltip
-from "types" import String
 
 
 let mkOptionBtnImg = @(image, ovr = {}) {
@@ -93,14 +94,22 @@ let mkTextInputField = @(textWatch, nameText, options = {}) textInput(textWatch,
 let mkText = @(text, ovr = {}) {
   rendObj = ROBJ_TEXT
   text
-}.__update(fontTinyAccented, ovr)
+  color = commonTextColor
+}.__update(fontTiny, ovr)
+
+let mkMarkedText = @(text, ovr = {}) {
+  rendObj = ROBJ_TEXT
+  text
+  color = markTextColor
+}.__update(fontTiny, ovr)
 
 let mkTextArea = @(text, ovr = {}) {
   size = FLEX_H
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   text
-}.__update(fontTinyAccented, ovr)
+  color = commonTextColor
+}.__update(fontTiny, ovr)
 
 let mkFramedText = @(text) {
   padding = const [hdpx(10), hdpx(20)]
@@ -111,7 +120,7 @@ let mkFramedText = @(text) {
     behavior = Behaviors.TextArea
     maxWidth = hdpx(800)
     text
-    color = 0xFFC0C0C0
+    color = commonTextColor
   }.__update(fontSmall)
 }
 
@@ -133,5 +142,6 @@ return {
   mkFramedText
   mkTextArea
   mkText
+  mkMarkedText
   modalBg
 }

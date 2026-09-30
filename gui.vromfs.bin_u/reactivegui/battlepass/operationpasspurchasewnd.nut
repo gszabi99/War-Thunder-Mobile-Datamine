@@ -11,8 +11,8 @@ import "%rGui/battlePass/battlePassSeason.nut" as battlePassSeason
 from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle
 from "%rGui/battlePass/operationPassState.nut" import isOPPurchaseWndOpened, closeOPPurchaseWnd, isOPSeasonActive,
   curStage, sendOPBqEvent, purchasedOP, OPPurchasedUnlock, OPPaidRewardsUnlock, OPFreeRewardsUnlock, operationPassGoods,
-  getOPIcon, OP_NONE, OP_COMMON, OP_VIP, getOPName, opSeasonEndTime, opSeasonName, OP_MAX_LEVELS_TO_ADD,
-  opSeasonUnitName, OPCampaign
+  getOPIcon, OP_NONE, OP_COMMON, OP_VIP, getOPName, opSeasonEndTime, opSeasonName, opVipLevels, opSeasonUnitName,
+  OPCampaign
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
@@ -151,7 +151,8 @@ function rewardsToViewInfo(rewards, servConfigs) {
 let rewardsList = @(selBpInfo) function() {
   let res = {
     watch = [OPPurchasedUnlock, OPPaidRewardsUnlock, OPFreeRewardsUnlock, curStage, serverConfigs,
-      selBpInfo, purchasedOP, servProfile]
+      selBpInfo, purchasedOP, servProfile, opVipLevels
+    ]
     size = FLEX_H
   }
   if (OPPaidRewardsUnlock.get() == null)
@@ -165,7 +166,7 @@ let rewardsList = @(selBpInfo) function() {
     (OPFreeRewardsUnlock.get()?.stages.top().progress ?? tgtStage))
   let isVipBp = selBpInfo.get()?.bpType == OP_VIP
   let levelsToEnd = maxProgress - tgtStage
-  let levelsToAdd = isVipBp ? min(OP_MAX_LEVELS_TO_ADD, levelsToEnd) : 0
+  let levelsToAdd = isVipBp ? min(opVipLevels.get(), levelsToEnd) : 0
   let tgtStageAdd = tgtStage + levelsToAdd
 
   let rewardsOnPurchase = purchasedOP.get() != OP_NONE ? {}
@@ -181,11 +182,12 @@ let rewardsList = @(selBpInfo) function() {
     foreach (idx, s in stages) {
       let isLoop = periodic && idx >= startStageLoop - 1
       if (isLoop && isVipBp) {
-        let loopMultiply = OP_MAX_LEVELS_TO_ADD - (tgtStageAdd - startProgress) + (levelsToEnd > 10 || levelsToEnd == 0 ? 0 : 1)
+        let loopMultiply = opVipLevels.get() - (tgtStageAdd - startProgress)
+          + (levelsToEnd > opVipLevels.get() || levelsToEnd == 0 ? 0 : 1)
         if (loopMultiply > 0) {
           foreach(key, _ in s.rewards)
             rewardsAddLevels[key] <- {
-              count = min(loopMultiply, OP_MAX_LEVELS_TO_ADD)
+              count = min(loopMultiply, opVipLevels.get())
               sRange = [s.progress, s.progress]
             }
           continue
@@ -247,7 +249,7 @@ let rewardsList = @(selBpInfo) function() {
           viewInfoExclusive.len() == 0 ? loc("battlePass/receiveOnPurchase")
             : loc("battlePass/receiveOnPurchase/exclusive", { count = viewInfoExclusive.len() }),
           viewInfoOnPurchase.extend(viewInfoExclusive), mkRewardInstant)
-        rewardsBlock(loc("operationPass/levelsBonus", { num = isVipBp ? OP_MAX_LEVELS_TO_ADD : levelsToAdd }),
+        rewardsBlock(loc("operationPass/levelsBonus", { num = isVipBp ? opVipLevels.get() : levelsToAdd }),
           viewInfoAddLevels, mkRewardInstant)
         rewardsBlock(loc("operationPass/receiveOnProgress"), viewInfoOnProgress, mkRewardWithProgress)
       ]

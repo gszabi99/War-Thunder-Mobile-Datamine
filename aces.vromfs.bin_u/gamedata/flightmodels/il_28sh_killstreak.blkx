@@ -1994,7 +1994,7 @@
     }
   },
   "WeaponSlots": {
-    "maxloadMass": 3010.0,
+    "maxloadMass": 3120.0,
     "maxloadMassLeftConsoles": 1520.0,
     "maxloadMassRightConsoles": 1520.0,
     "maxDisbalance": 1250.0,
@@ -2359,22 +2359,6 @@
               "external": true,
               "separate": true
             }
-          },
-          {
-            "iconType": "napalm_large",
-            "name": "zb500",
-            "reqModification": "zb_500",
-            "ShowNodes": {
-              "node": "il_28_pylon_011"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/bombGuns/su_zb_500.blk",
-              "emitter": "su_fab250_017",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
           }
         ]
       },
@@ -2437,22 +2421,6 @@
             }
           },
           {
-            "iconType": "napalm_large",
-            "name": "zb500",
-            "reqModification": "zb_500",
-            "ShowNodes": {
-              "node": "il_28_pylon_001"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/bombGuns/su_zb_500.blk",
-              "emitter": "su_fab250_009",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
             "iconType": "gun_12mm",
             "name": "upk",
             "reqModification": "il_28sh_upk23_gunpod",
@@ -2493,6 +2461,7 @@
           {
             "iconType": "bomb_100kg_group",
             "name": "fab100_x12",
+            "isDefault": true,
             "Weapon": [
               {
                 "trigger": "bombs",
@@ -2762,22 +2731,6 @@
             }
           },
           {
-            "iconType": "napalm_large",
-            "name": "zb500",
-            "reqModification": "zb_500",
-            "ShowNodes": {
-              "node": "il_28_pylon_002"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/bombGuns/su_zb_500.blk",
-              "emitter": "su_fab250_010",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
             "iconType": "gun_12mm",
             "name": "upk",
             "reqModification": "il_28sh_upk23_gunpod",
@@ -2861,22 +2814,6 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/bombGuns/su_fab_250m_46.blk",
-              "emitter": "su_fab250_018",
-              "bullets": 1,
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "napalm_large",
-            "name": "zb500",
-            "reqModification": "zb_500",
-            "ShowNodes": {
-              "node": "il_28_pylon_012"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "blk": "gameData/Weapons/bombGuns/su_zb_500.blk",
               "emitter": "su_fab250_018",
               "bullets": 1,
               "external": true,

@@ -8,7 +8,6 @@ from "%rGui/battlePass/battlePassState.nut" import isBpSeasonActive
 from "%rGui/battlePass/eventPassState.nut" import eventsPassList, getEventPassName, mkHasEpRewardsToReceive
 from "%rGui/battlePass/operationPassState.nut" import hasOPRewardsToReceive, OP_EVENT_ID
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
-from "%rGui/components/selectedLine.nut" import selLineSize
 from "%rGui/event/eventLocName.nut" import getSpecialEventLocName, getSpecialEventRewardUnitName
 from "%rGui/event/eventState.nut" import eventSeason, eventEndsAt, isEventActive, specialEventsOrdered,
   getSpecialEventName, MAIN_EVENT_ID, curEvent, subEventsList
@@ -21,6 +20,7 @@ from "%rGui/quests/questsState.nut" import hasUnseenQuestsBySection, questsCfg, 
   progressUnlockBySection, tabIdToOpen
 from "%rGui/quests/questsWndPage.nut" import questsWndPage, mkQuest, mkAchievement
 from "%rGui/shop/shopState.nut" import allShopGoods
+from "%rGui/style/listConst.nut" import tabExtraWidth
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/unseenPriority.nut" import SEEN, UNSEEN_HIGH
 from "%rGui/components/timerBlock.nut" import mkTimer
@@ -30,7 +30,7 @@ const iconSize = hdpxi(100)
 const iconColor = 0xFFFFFFFF
 const tabGap = hdpx(10)
 
-let maxTabTextWidth = tabW - iconSize - tabGap - selLineSize - tabPadding[1] * 2
+let maxTabTextWidth = tabW - iconSize - tabGap - tabExtraWidth - tabPadding[1] * 2
 let mkTabsVerticalPannableArea = verticalPannableAreaCtor(sh(100) - hdpx(180), [hdpx(30), saBorders[1]])
 
 let personalTabImageByCamp = {
@@ -324,8 +324,9 @@ function questsWndCtor() {
   }
 
   return {
-    pos = [-selLineSize, 0]
     key = setTabById
+    size = FLEX
+    padding = [0, saBorders[0], 0, saBorders[0] - tabExtraWidth]
     function onAttach() {
       tabIdToOpen.subscribe(setTabById)
       foreach (w in tabsVisibleWatches)
@@ -339,7 +340,6 @@ function questsWndCtor() {
         w.unsubscribe(onTabVisibleChange)
       isQuestsAttached.set(false)
     }
-    size = const [FLEX, flex()]
     flow = FLOW_HORIZONTAL
     halign = ALIGN_CENTER
     children = [

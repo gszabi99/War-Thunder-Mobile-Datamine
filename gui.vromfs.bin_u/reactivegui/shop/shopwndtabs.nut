@@ -6,8 +6,9 @@ from "%rGui/shop/shopWndConst.nut" import iconSize, iconMarginW, tabW, tabH
 
 
 function tabData(tab, campaign, hasUnseenGoodsByCategory, curTabId) {
-  let { id = "", image = null, getImage = null } = tab
+  let { id = "", image = null, getImage = null, imageSizeMul = 1 } = tab
   let icon = getImage?(campaign) ?? image
+  let iSize = (iconSize * imageSizeMul).tointeger()
   return {
     id
     size = FLEX_H
@@ -18,9 +19,11 @@ function tabData(tab, campaign, hasUnseenGoodsByCategory, curTabId) {
         icon == null ? null
           : @() {
               watch = icon instanceof Watched ? icon : null
-              size = [iconSize, iconSize]
+              size = iSize
+              hplace = ALIGN_CENTER
+              vplace = ALIGN_CENTER
               rendObj = ROBJ_IMAGE
-              image = Picture($"{icon instanceof Watched ? icon.get() : icon}:{iconSize}:{iconSize}:P")
+              image = Picture($"{icon instanceof Watched ? icon.get() : icon}:{iSize}:P")
               keepAspect = KEEP_ASPECT_FIT
               imageHalign = ALIGN_CENTER
               imageValign = ALIGN_CENTER

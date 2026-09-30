@@ -2,8 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 import "%appGlobals/config/modsPresentation.nut" as getCatIcon
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp
 from "%rGui/components/currencyStyles.nut" import CS_SMALL
-from "%rGui/components/tabs.nut" import mkTabs, tabExtraWidth
+from "%rGui/components/tabs.nut" import mkTabs
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/style/listConst.nut" import tabExtraWidth
 from "%rGui/unitMods/modsComps.nut" import mkLevelLock, bgShade
 from "%rGui/unitMods/unitModsConst.nut" import tabW, tabH, tabContentMargin, tabsOvr
 from "%rGui/unitMods/unitModsState.nut" import mods, unitMods, modsByCategory, unit, curModCategoryId,

@@ -5,36 +5,30 @@ from "%appGlobals/profileStates.nut" import myUserName, myUserRealName
 from "%appGlobals/timeToText.nut" import secondsToHoursLoc, parseUnixTimeCached
 from "%appGlobals/user/nickTools.nut" import getPlayerName
 from "%appGlobals/userstats/serverTime.nut" import serverTime
-from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderBg
 from "%rGui/components/paginator.nut" import mkPaginator
 from "%rGui/components/playerPlaceIcon.nut" import mkPlaceIconSmall
 from "%rGui/components/spinner.nut" import spinner, spinnerOpacityAnim
-from "%rGui/components/textButton.nut" import mkCustomButton, buttonStyles, mergeStyles
+from "%rGui/components/textButton.nut" import mkCustomButton, mergeStyles
+from "%rGui/components/buttonStyles.nut" import COMMON
 from "%rGui/contacts/contactInfoPkg.nut" import contactNameBlock, contactAvatar
 from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicInfo
-from "%rGui/controls/tabs.nut" import mkTab
-from "%rGui/event/eventState.nut" import isEventActive
 from "%rGui/leaderboard/lbCategory.nut" import RANK, NAME, PRIZE
 from "%rGui/leaderboard/lbConfig.nut" import lbCfgOrdered
 import "%rGui/leaderboard/lbRewardsBlock.nut" as lbRewardsBlock
 from "%rGui/leaderboard/lbRewardsState.nut" import hasCurLbRewards, curLbRewards, curLbTimeRange
-from "%rGui/leaderboard/lbState.nut" import curLbId, curLbData, curLbSelfRow, curLbErrName, curLbCfg, isLbWndOpened,
+from "%rGui/leaderboard/lbState.nut" import curLbId, curLbData, curLbSelfRow, curLbErrName, curLbCfg,
   isRefreshLbEnabled, lbPage, lbMyPage, lbLastPage, lbTotalPlaces, isLbRequestInProgress, minRatingBattles,
   bestBattlesCount, hasBestBattles, isLbBestBattlesOpened
-from "%rGui/leaderboard/lbStyle.nut" import lbHeaderHeight, lbTableHeight, lbVGap, lbHeaderRowHeight, lbRowHeight,
-  lbDotsRowHeight, lbTableBorderWidth, lbPageRows, rowBgOddColor, rowBgEvenColor, prizeIcons, lbRewardsBlockWidth,
-  lbTabIconSize
+from "%rGui/leaderboard/lbStyle.nut" import lbTableHeight, lbVGap, lbHeaderRowHeight, lbRowHeight,
+  lbDotsRowHeight, lbTableBorderWidth, lbPageRows, rowBgOddColor, rowBgEvenColor, prizeIcons, lbRewardsBlockWidth
 from "%rGui/leaderboard/mkLbHeaderRow.nut" import mkLbHeaderRow, headerIconHeight
 from "%rGui/mpStatistics/viewProfile.nut" import viewProfile
-from "%rGui/navState.nut" import registerScene
-from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import localPlayerColor, selectColor
+from "%rGui/style/listConst.nut" import selLineSize
 from "%rGui/unlocks/userstat.nut" import actualizeStats
-
-
-let { COMMON, defButtonHeight } = buttonStyles
+from "%rGui/components/horizontalTabs.nut" import mkHorizontalTabsSelectedText
 
 let rankCellWidth = lbHeaderRowHeight * (isWidescreen ? 2.5 : 2.0)
 let nameWidth = calc_str_box("WWWWWWWWWWWWWWWWWW", isWidescreen ? fontTinyShaded : fontVeryTinyShaded)[0]
@@ -42,82 +36,71 @@ const nameGap = hdpx(10)
 const premIconSize = hdpx(50)
 let nameCellWidth = lbRowHeight + nameGap + nameWidth + premIconSize
 const defTxtColor = 0xFFD8D8D8
+const bgColor = 0x60000000
+let iconTimerSize = hdpxi(50)
+let tabH = hdpx(80)
+let statImageSize = hdpxi(60)
 
-let close = @() isLbWndOpened.set(false)
-
-isEventActive.subscribe(function(isActive) {
-  if (isActive)
-    return
-  isLbBestBattlesOpened.set(false)
-  close()
-})
-
-let lbTabs = @() {
-  watch = curLbId
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(40)
-  children = lbCfgOrdered.map(@(cfg) mkTab(cfg, curLbId.get() == cfg.id, @() curLbId.set(cfg.id)))
+function timeToEnd() {
+  let { start = null, end = null } = curLbTimeRange.get()
+  local timeLeft = 0
+  local isPending = false
+  local isFinished = false
+  if (start != null) {
+    let startTime = parseUnixTimeCached(start)
+    if (startTime > serverTime.get()) {
+      isPending = true
+      timeLeft = startTime - serverTime.get()
+    }
+  }
+  if (end != null && !isPending) {
+    let endTime = parseUnixTimeCached(end)
+    if (endTime > serverTime.get())
+      timeLeft = endTime - serverTime.get()
+    else
+      isFinished = true
+  }
+  return {
+    watch = [curLbTimeRange, serverTime]
+    rendObj = ROBJ_TEXT
+    color = defTxtColor
+    text = isFinished ? loc("lb/seasonFinished") : secondsToHoursLoc(timeLeft)
+  }.__update(fontSmall)
 }
+
 
 function rewardsTimer() {
   let { start = null, end = null } = curLbTimeRange.get()
   if (start == null && end == null)
     return { watch = curLbTimeRange }
 
-  local locId = null
-  local timeLeft = 0
-  if (start != null) {
-    let startTime = parseUnixTimeCached(start)
-    if (startTime > serverTime.get()) {
-      locId = "lb/seasonStartTime"
-      timeLeft = startTime - serverTime.get()
-    }
-  }
-  if (end != null && locId == null) {
-    let endTime = parseUnixTimeCached(end)
-    if (endTime > serverTime.get()) {
-      locId = "lb/seasonEndTime"
-      timeLeft = endTime - serverTime.get()
-    }
-    else
-      locId = "lb/seasonFinished"
-  }
-
   return {
-    watch = [curLbTimeRange, serverTime]
-    rendObj = ROBJ_TEXT
-    color = defTxtColor
-    text = locId == null ? null : loc(locId, { time = secondsToHoursLoc(timeLeft) })
-  }.__update(fontTiny)
+    watch = curLbTimeRange
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(20)
+    valign = ALIGN_CENTER
+    children = [
+      {
+        rendObj = ROBJ_IMAGE
+        size = iconTimerSize
+        image = Picture($"ui/gameuiskin#timer_icon.svg:{iconTimerSize}:P")
+        keepAspect = true
+      }
+      timeToEnd
+    ]
+
+  }
 }
 
-let header = @() {
-  watch = hasBestBattles
-  size = [FLEX, lbHeaderHeight]
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = hdpx(40)
-  children = [
-    backButton(close)
-    lbTabs
-    { size = FLEX }
-    rewardsTimer
-    !hasBestBattles.get() ? null
-      : mkCustomButton(
-          {
-            size = [lbTabIconSize, lbTabIconSize]
-            rendObj = ROBJ_IMAGE
-            image = Picture($"ui/gameuiskin#menu_stats.svg:{lbTabIconSize}:{lbTabIconSize}:P")
-            keepAspect = true
-          },
-          @() isLbBestBattlesOpened.set(true),
-          mergeStyles(COMMON,
-          {
-            ovr = { minWidth = defButtonHeight }
-            hotkeys = ["^J:X | Enter"]
-          }))
-  ]
+let lbTabs = {
+  size = [FLEX, SIZE_TO_CONTENT]
+  children = mkHorizontalTabsSelectedText(
+    lbCfgOrdered.map(@(cfg) { id = cfg.id, locId = cfg.locId, image = cfg.icon }),
+    curLbId,
+    ALIGN_RIGHT,
+    tabH)
 }
+
 
 let styleByCategory = {
   [RANK] = { size = [rankCellWidth, SIZE_TO_CONTENT] },
@@ -335,6 +318,9 @@ function lbTableFull(categories, lbData, selfRow, hasRewards) {
 
 let waitLeaderBoard = {
   key = {}
+  size = FLEX
+  rendObj = ROBJ_SOLID
+  color = bgColor
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   halign = ALIGN_CENTER
@@ -355,17 +341,22 @@ let waitLeaderBoard = {
 }
 
 let lbErrorMsg = @(text) {
-  key = text
-  size = const [hdpx(1100), SIZE_TO_CONTENT]
-  rendObj = ROBJ_TEXTAREA
-  behavior = Behaviors.TextArea
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  text
-  color = defTxtColor
-  animations = [spinnerOpacityAnim]
-}.__update(fontSmall)
+  size = FLEX
+  rendObj = ROBJ_SOLID
+  color = bgColor
+  children = {
+    key = text
+    size = const [hdpx(1100), SIZE_TO_CONTENT]
+    rendObj = ROBJ_TEXTAREA
+    behavior = Behaviors.TextArea
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    text
+    color = defTxtColor
+    animations = [spinnerOpacityAnim]
+  }.__update(fontSmall)
+}
 
 let lbRewardsWarning = {
   size = [lbRewardsBlockWidth, SIZE_TO_CONTENT]
@@ -389,25 +380,66 @@ function lbNoDataMsg() {
 let content = @(hasRewards) @() {
   watch = [curLbCfg, curLbData, curLbSelfRow, isLbRequestInProgress, curLbErrName]
   size = FLEX
-  children = curLbCfg.get() != null && (curLbData.get()?.len() ?? 0) > 0
-      ? lbTableFull(curLbCfg.get().categories, curLbData.get(), curLbSelfRow.get(), hasRewards)
-    : isLbRequestInProgress.get() ? waitLeaderBoard
-    : curLbErrName.get() == null ? lbNoDataMsg
-    : lbErrorMsg(loc($"error/{curLbErrName.get()}"))
+  flow = FLOW_VERTICAL
+  children = [
+    {
+      size = [FLEX, SIZE_TO_CONTENT]
+      children = [
+        {
+          flow = FLOW_HORIZONTAL
+          valign = ALIGN_CENTER
+          gap = hdpx(10)
+          children = [
+            rewardsTimer
+            @() {
+              watch = hasBestBattles
+              children = !hasBestBattles.get() ? null
+                : mkCustomButton(
+                    {
+                      size = statImageSize
+                      rendObj = ROBJ_IMAGE
+                      image = Picture($"ui/gameuiskin#menu_stats.svg:{statImageSize}:P")
+                      keepAspect = true
+                    },
+                    @() isLbBestBattlesOpened.set(true),
+                    mergeStyles(COMMON,
+                    {
+                      ovr = { minWidth = hdpx(80), size = [hdpx(95), hdpx(72)] }
+                      hotkeys = ["^J:X | Enter"]
+                    }))
+            }
+          ]
+        }
+        lbTabs
+      ]
+    }
+    {
+      rendObj = ROBJ_SOLID
+      color = selectColor
+      size = [FLEX, selLineSize]
+    }
+    curLbCfg.get() != null && (curLbData.get()?.len() ?? 0) > 0
+        ? lbTableFull(curLbCfg.get().categories, curLbData.get(), curLbSelfRow.get(), hasRewards)
+      : isLbRequestInProgress.get() ? waitLeaderBoard
+      : curLbErrName.get() == null ? lbNoDataMsg
+      : lbErrorMsg(loc($"error/{curLbErrName.get()}"))
+  ]
 }
 
-let needPaginator = Computed(@() (curLbData.get()?.len() ?? 0) != 0)
+let needPaginator = Computed(@(prev) curLbData.get() == null
+  ? (prev == FRP_INITIAL ? false : prev)
+  : curLbData.get().len() != 0)
 let paginator = @() {
   watch = needPaginator
-  size = FLEX_H
+  hplace = ALIGN_RIGHT
   children = !needPaginator.get() ? null
     : mkPaginator(lbPage, lbLastPage, lbMyPage, { key = needPaginator, animations = wndSwitchAnim })
 }
 
-let scene = bgShaded.__merge({
+let lbScene = {
   key = {}
   size = FLEX
-  padding = saBordersRv
+  padding = [0, saBordersRv[1]]
 
   function onAttach() {
     lbPage.set(0)
@@ -419,23 +451,30 @@ let scene = bgShaded.__merge({
   }
   onDetach = @() isRefreshLbEnabled.set(false)
 
-  flow = FLOW_VERTICAL
-  gap = lbVGap
-  children = [
-    header
-    @() {
-      watch = hasCurLbRewards
-      size = FLEX
-      flow = FLOW_HORIZONTAL
-      gap = lbVGap
-      children = [
-        content(hasCurLbRewards.get())
-        hasCurLbRewards.get() ? lbRewardsBlock : lbRewardsWarning
-      ]
-    }
-    paginator
-  ]
-  animations = wndSwitchAnim
-})
+  children = @() {
+    watch = hasCurLbRewards
+    size = FLEX
+    flow = FLOW_HORIZONTAL
+    gap = lbVGap
+    children = [
+      content(hasCurLbRewards.get())
+      {
+        pos = [0, selLineSize]
+        flow = FLOW_VERTICAL
+        children = [
+          {
+            size = [FLEX, tabH]
+            children = paginator
+          }
+          hasCurLbRewards.get() ? lbRewardsBlock : lbRewardsWarning
+        ]
+      }
+    ]
+  }
 
-registerScene("lbWnd", scene, close, isLbWndOpened)
+  animations = wndSwitchAnim
+}
+
+return {
+  lbScene
+}

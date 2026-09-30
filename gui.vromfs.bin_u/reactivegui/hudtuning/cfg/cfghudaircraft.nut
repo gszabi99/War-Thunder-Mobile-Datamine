@@ -46,6 +46,7 @@ let returnToShipShortcutIds = {
 }
 
 let hasMyScores = Computed(@() scoreBoardCfgByType?[scoreBoardType.get()].addMyScores)
+let isMoveStickVisible = Computed(@() !isGamepad.get())
 
 return cfgHudCommon.__merge(initHudTuningCfg({
 
@@ -327,6 +328,7 @@ return cfgHudCommon.__merge(initHudTuningCfg({
     defTransform = mkRBPos([hdpx(-20), hdpx(-320)])
     editView = aircraftMoveStickView
     priority = Z_ORDER.STICK
+    isVisibleInBattle = isMoveStickVisible
   }
 
   moveSecondaryStick = {
@@ -335,6 +337,7 @@ return cfgHudCommon.__merge(initHudTuningCfg({
     defTransform = mkLBPos([hdpx(200), hdpx(-320)])
     editView = aircraftMoveStickView
     priority = Z_ORDER.STICK
+    isVisibleInBattle = isMoveStickVisible
   }
 
   moveArrows = {

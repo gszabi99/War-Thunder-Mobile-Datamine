@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/event/eventState.nut" import MAIN_EVENT_ID
 
 
 
@@ -8,7 +7,7 @@ from "%rGui/event/eventState.nut" import MAIN_EVENT_ID
 function getShopIdForEventId(eventId, specialEventsV, goodsByShopV, soonGoodsByShopV, soonPersonalGoodsByShopV,
   personalGoodsByShopV
 ) {
-  if (eventId == null || eventId == "" || eventId == MAIN_EVENT_ID)
+  if (eventId == null || eventId == "")
     return null
   let eventName = specialEventsV?[eventId].eventName ?? eventId
   foreach (shopGoods in [goodsByShopV, soonGoodsByShopV, soonPersonalGoodsByShopV, personalGoodsByShopV])

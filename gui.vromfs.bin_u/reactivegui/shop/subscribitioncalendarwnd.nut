@@ -1,18 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
-let { registerScene, setSceneBg } = require("%rGui/navState.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { increase_calendar_value, isCalendarRewardInProgress } = require("%appGlobals/pServer/pServerApi.nut")
-let { mkSpinnerHideBlock } = require("%rGui/components/spinner.nut")
-let { wndSwitchAnim }= require("%rGui/style/stdAnimations.nut")
-let { REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardReceivedMark } = require("%rGui/rewards/rewardPlateComp.nut")
-let { subCalendar, subCalendarProfile, canReceiveSubCalendarReward, subCalendarValue } = require("calendarState.nut")
-let { serverTime } = require("%appGlobals/userstats/serverTime.nut")
-let { getRewardsViewInfo } = require("%rGui/rewards/rewardViewInfo.nut")
-let { backButton } = require("%rGui/components/backButton.nut")
-let { simpleHorGrad } = require("%rGui/style/gradients.nut")
-let { textButtonSecondary, textButtonInactive } = require("%rGui/components/textButton.nut")
-let { secondsToTimeAbbrString } = require("%appGlobals/timeToText.nut")
-let { openMsgBox } = require("%rGui/components/msgBox.nut")
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/pServer/pServerApi.nut" import increase_calendar_value, isCalendarRewardInProgress
+from "%appGlobals/timeToText.nut" import secondsToTimeAbbrString
+from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%rGui/components/backButton.nut" import backButton
+from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/textButton.nut" import textButtonSecondary, textButtonInactive
+from "%rGui/navState.nut" import registerScene, setSceneBg
+from "%rGui/rewards/rewardPlateComp.nut" import REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardReceivedMark
+from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo
+from "%rGui/style/gradients.nut" import simpleHorGrad
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "calendarState.nut" import subCalendar, subCalendarProfile, canReceiveSubCalendarReward, subCalendarValue
+
 
 const WND_UID = "subCalendarWnd"
 const wndGap = hdpx(40)

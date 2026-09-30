@@ -19,6 +19,7 @@ const APRILMAPPIECE = "aprilMapPiece"
 const APRILDOUBLON = "aprilDoublon"
 const HOTMAYBOND = "hotmaybond"
 const INDEPENDENCEBOND = "independencebond"
+const CHINABOND = "chinabond"
 const ANNIVERSARYBOND = "anniversarybond"
 const ANNIVERSARYTOKEN = "anniversarytoken"
 const HALLOWEENBOND = "halloweenbond"
@@ -61,6 +62,7 @@ let currenciesRes = {
   BLACKFRIDAYBOND
   HOTMAYBOND
   INDEPENDENCEBOND
+  CHINABOND
   ANNIVERSARYBOND
   ANNIVERSARYTOKEN
   HALLOWEENBOND

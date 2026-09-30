@@ -6,7 +6,7 @@ from "%appGlobals/profileStates.nut" import myUserId
 from "%appGlobals/squadState.nut" import squadMembers, isInvitedToSquad, squadId, squadLeaderCampaign, isSquadLeader,
   squadLeaderReadyCheckTime
 from "%appGlobals/unitPresentation.nut" import getUnitPresentation
-from "%rGui/components/animGrowLines.nut" import mkAnimGrowLines, mkAGLinesCfgOrdered
+from "%rGui/components/animGrowLines.nut" import mkAnimGrowLinesFromRectToWnd
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
 from "%rGui/components/spinner.nut" import mkSpinner
@@ -18,7 +18,6 @@ from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicIn
 from "%rGui/contacts/mkContactActionBtn.nut" import mkContactActionBtn
 from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideX, gradTexSize
 from "%rGui/style/stdColors.nut" import offlineColor, leaderColor, memberNotReadyColor, memberReadyColor
-from "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" import mkCutBg
 from "%rGui/unit/components/unitPlateComp.nut" import unitPlateSmall, mkUnitBg, mkUnitImage, mkUnitTexts, mkUnitInfo
 from "types" import String
 
@@ -216,53 +215,6 @@ let mkWindow = @(uid) {
   ]
 }
 
-let animLines = @(rect) function() {
-  let res = { watch = wndAABB }
-  if (wndAABB.get() == null)
-    return res
-
-  let { t, b, r, l } = rect
-  let w = wndAABB.get()
-  let midX = (r + l) / 2
-  let wMidX = (w.r + w.l) / 2
-
-  let lines = [
-    
-    [
-      [midX, b, l, b],
-      [midX, b, r, b],
-    ],
-    [
-      [l, b, l, t],
-      [r, b, r, t],
-    ],
-    [
-      [l, t, midX, t],
-      [r, t, midX, t],
-    ],
-    
-    [[midX, t, midX, w.b]],
-    
-    [
-      [midX, w.b, w.l, w.b],
-      [midX, w.b, w.r, w.b],
-    ],
-    [
-      [w.l, w.b, w.l, w.t],
-      [w.r, w.b, w.r, w.t],
-    ],
-    [
-      [w.l, w.t, wMidX, w.t],
-      [w.r, w.t, wMidX, w.t],
-    ]
-  ]
-
-  return res.__update({
-    size = FLEX
-    children = mkAnimGrowLines(mkAGLinesCfgOrdered(lines, hdpx(3000)))
-  })
-}
-
 function content() {
   if (openParams.get() == null)
     return { watch = openParams }
@@ -272,24 +224,16 @@ function content() {
 
   let buttonCenter = (l + r) / 2
   let isButtonInCenter = buttonCenter <  0.75 * saSize[0]
-
-  let posX = isButtonInCenter ? buttonCenter - headerWidth / 2
-    : (saSize[0] + saBordersRv[0]) - headerWidth
-  let posY = t - ((b - t) + wndHSize)
+  let wndPos = [
+    isButtonInCenter ? buttonCenter - headerWidth / 2
+      : (saSize[0] + saBordersRv[0]) - headerWidth,
+    t - ((b - t) + wndHSize)
+  ]
 
   return {
     watch = openParams
     size = FLEX
-    children = [
-      mkCutBg([rect])
-      {
-        pos = [posX, posY]
-        safeAreaMargin = saBordersRv
-        behavior = Behaviors.BoundToArea
-        children = mkWindow(uid)
-      }
-      animLines(rect)
-    ]
+    children = mkAnimGrowLinesFromRectToWnd(rect, wndAABB, wndPos, mkWindow(uid))
   }
 }
 

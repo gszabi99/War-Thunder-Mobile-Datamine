@@ -4,9 +4,10 @@ import "%rGui/bullets/mkBulletSlot.nut" as mkBulletSlot
 from "%rGui/components/slider.nut" import slider, sliderValueSound, sliderBtn, mkSliderKnob
 from "%rGui/components/textButton.nut" import mkCustomButton, mergeStyles, buttonStyles
 from "%rGui/components/unseenMark.nut" import mkPriorityUnseenMarkWatch
-from "%rGui/respawn/respawnAnimState.nut" import bulletsAABB
+from "%rGui/respawn/respawnAnimState.nut" import bulletsAABB, bulletsScrollOffset, bulletsViewportAABB, bulletsScrollHandler,
+  moveAabbY
 from "%rGui/respawn/respawnChooseBulletWnd.nut" import showRespChooseWnd
-from "%rGui/respawn/respawnComps.nut" import bg, bulletsBlockWidth, headerSlotHeight
+from "%rGui/respawn/respawnComps.nut" import bg, bulletsBlockWidth, headerSlotHeight, bulletsBottomFade
 from "%rGui/style/stdColors.nut" import hoverColor
 
 
@@ -26,8 +27,25 @@ let arrowBtnImage = @(isOpened) {
 }
 
 function onHeaderClick(key, slotIdx) {
-  if (slotIdx != null)
-    showRespChooseWnd(slotIdx, gui_scene.getCompAABBbyKey(key), gui_scene.getCompAABBbyKey("respawnWndContent"))
+  if (slotIdx == null)
+    return
+  local bulletBox = gui_scene.getCompAABBbyKey(key)
+  let bulletBase = bulletsAABB.get()?[slotIdx]
+  let vp = bulletsViewportAABB.get()
+  if (bulletBase != null && vp != null) {
+    let offset = bulletsScrollOffset.get()
+    let usableB = vp.b - bulletsBottomFade 
+    let screen = moveAabbY(bulletBase, -offset)
+    local newOffset = offset
+    if (screen.b > usableB)
+      newOffset = offset + screen.b - usableB
+    else if (screen.t < vp.t)
+      newOffset = offset + screen.t - vp.t
+    bulletsScrollHandler.scrollToY(newOffset)
+    let appliedOffset = bulletsScrollHandler.elem?.getScrollOffsY() ?? offset
+    bulletBox = moveAabbY(bulletBase, -appliedOffset)
+  }
+  showRespChooseWnd(slotIdx, bulletBox, gui_scene.getCompAABBbyKey("respawnWndContent"))
 }
 
 function bulletHeader(selSlot, bSlot, bSet, bInfo, chosenBullets, hasUnseenShells, openedSlot, lockedSide = null) {
@@ -40,11 +58,14 @@ function bulletHeader(selSlot, bSlot, bSet, bInfo, chosenBullets, hasUnseenShell
     && hasUnseenShells.get()?[selSlot.get()?.id ?? 0].findvalue(@(v) v) != null)
   return @() {
     watch = [bSet, fromUnitTags]
-    onAttach = isLocked ? null : @() deferOnce(function() {
-      let aabb = gui_scene.getCompAABBbyKey(key)
-      if (aabb != null)
-        bulletsAABB.mutate(@(v) v.__update({ [idx] = aabb }))
-    })
+    onAttach = isLocked ? null
+      : @() deferOnce(function() {
+          let aabb = gui_scene.getCompAABBbyKey(key)
+          if (aabb == null)
+            return
+          let offs = bulletsScrollOffset.get()
+          bulletsAABB.mutate(@(v) v.__update({ [idx] = moveAabbY(aabb, offs) }))
+        })
     size = [bulletsBlockWidth, headerSlotHeight]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER

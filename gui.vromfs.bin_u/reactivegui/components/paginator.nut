@@ -1,10 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/style/stdColors.nut" import localPlayerColor, hoverColor
+from "%rGui/components/circleBtn.nut" import mkCircleBtn, circleBtnStyles
+from "%rGui/style/stdColors.nut" import localPlayerColor, hoverColor, textColor
 
 
 const defPageColor = 0xFFC0C0C0
-let pageHeight = evenPx(60)
+const circleBtnImgSize = evenPx(30)
+const pageHeight = evenPx(60)
 const pageGap = hdpx(20)
+const arrowImage = "ui/gameuiskin#spinnerListBox_arrow_up.svg"
 
 let transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
 
@@ -41,8 +44,8 @@ let dots = pageContainer([
 
 let mkCurPage = @(page) pageContainer(
   [
-    pageText(page, 0xFFFFFFFF)
-    underline(0xFFFFFFFF)
+    pageText(page, textColor)
+    underline(textColor)
   ],
   { key = page })
 
@@ -65,46 +68,41 @@ function mkPage(page, onClick, color) {
     })
 }
 
-let emptyBtnPlace = { size = [pageHeight, pageHeight] }
+function mkArrowBtn(imgRotate) {
+  let sizeOvr = { size = pageHeight, imgSize = circleBtnImgSize, imgRotate }
+  let style = freeze(circleBtnStyles.COMMON.__merge(sizeOvr))
+  let inactiveStyle = freeze(circleBtnStyles.INACTIVE.__merge(sizeOvr))
 
-function arrowBtn(onClick, rotate) {
-  let stateFlags = Watched(0)
-  return @() {
-    watch = stateFlags
-    size = [pageHeight, pageHeight]
-    rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin#spinnerListBox_arrow_up.svg:{pageHeight}:{pageHeight}:P")
-    color = stateFlags.get() & S_HOVER ? hoverColor : defPageColor
-
-    behavior = Behaviors.Button
-    sound = { click  = "click" }
-    onElemState = @(sf) stateFlags.set(sf)
-    onClick
-
-    transform = {
-      scale = stateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1]
-      rotate
-    }
-    transitions
-  }
+  return @(onClick, isEnabled) isEnabled
+    ? mkCircleBtn(arrowImage, onClick, style)
+    : mkCircleBtn(arrowImage, @() null, inactiveStyle)
 }
 
-let prevBtn = @(onClick) arrowBtn(onClick, -90)
-let nextBtn = @(onClick) arrowBtn(onClick, 90)
+let prevBtn = mkArrowBtn(-90)
+let nextBtn = mkArrowBtn(90)
 
+let mkPaginatorRow = @(watch, children, ovr) {
+  watch
+  size = [SIZE_TO_CONTENT, pageHeight]
+  valign = ALIGN_CENTER
+  hplace = ALIGN_CENTER
+  gap = pageGap
+  flow = FLOW_HORIZONTAL
+  children
+}.__update(ovr)
 
 
 let mkPaginator = @(curPage, lastPage, myPage = Watched(-1), ovr = {}) function() {
-  let res = { watch = [curPage, lastPage, myPage] }.__update(ovr)
+  let watch = [curPage, lastPage, myPage]
   if (lastPage.get() >= 0 && lastPage.get() < 1)
-    return res
+    return { watch }.__update(ovr)
 
   let cur = curPage.get()
   let my = myPage.get()
   let last = lastPage.get() >= 0 ? lastPage.get() : max(cur, 1) + 1
   let isMyPageListed = my <= last
 
-  let children = [cur > 0 ? prevBtn(@() curPage.set(cur - 1)) : emptyBtnPlace]
+  let children = [prevBtn(@() curPage.set(cur - 1), cur > 0)]
   for (local i = 0; i <= last; i++) {
     let page = i
     let onClick = @() curPage.set(page)
@@ -126,18 +124,33 @@ let mkPaginator = @(curPage, lastPage, myPage = Watched(-1), ovr = {}) function(
     }
   }
 
-  children.append(cur < last ? nextBtn(@() curPage.set(cur + 1)) : emptyBtnPlace)
+  children.append(nextBtn(@() curPage.set(cur + 1), cur < last))
 
-  return res.__update({
-    size = [SIZE_TO_CONTENT, pageHeight]
-    valign = ALIGN_CENTER
-    hplace = ALIGN_CENTER
-    gap = pageGap
-    flow = FLOW_HORIZONTAL
-    children
-  })
+  return mkPaginatorRow(watch, children, ovr)
+}
+
+let mkPaginatorCurPage = @(curPage, lastPage, ovr = {}) function() {
+  let watch = [curPage, lastPage]
+  if (lastPage.get() >= 0 && lastPage.get() < 1)
+    return { watch }.__update(ovr)
+
+  let cur = curPage.get()
+  let last = lastPage.get() >= 0 ? lastPage.get() : max(cur, 1) + 1
+
+  return mkPaginatorRow(watch,
+    [
+      prevBtn(@() curPage.set(cur - 1), cur > 0)
+      {
+        minWidth = pageHeight
+        halign = ALIGN_CENTER
+        children = pageText(cur + 1, textColor)
+      }
+      nextBtn(@() curPage.set(cur + 1), cur < last)
+    ],
+    ovr)
 }
 
 return {
   mkPaginator
+  mkPaginatorCurPage
 }

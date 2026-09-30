@@ -1,7 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/leaderboard/lbCategory.nut" import RANK, NAME, SHIP_RATING, TANKS_RATING, WP_RATING, AIR_RATING, KILL,
   KILL_SHIPS, KILL_TANKS, KILL_AIR, WIN, BATTLES, PRIZE, INDEX, LOG_TIME, WIN_SINGLE
-from "%rGui/leaderboard/lbStyle.nut" import lbTabIconSize
 
 
 let { ships, tanks, air } = require("%appGlobals/config/campaignPresentation.nut").campaignPresentations
@@ -16,7 +15,6 @@ let lbCfgOrdered = [
     battleCategories = [ INDEX, SHIP_RATING, KILL_SHIPS, WIN_SINGLE, LOG_TIME ]
     sortBy = SHIP_RATING
     icon = ships.icon
-    iconSize = lbTabIconSize
     locId = ships.unitsLocId
   }
   {
@@ -28,7 +26,6 @@ let lbCfgOrdered = [
     battleCategories = [ INDEX, TANKS_RATING, KILL_TANKS, WIN_SINGLE, LOG_TIME ]
     sortBy = TANKS_RATING
     icon = tanks.icon
-    iconSize = lbTabIconSize
     locId = tanks.unitsLocId
   }
   {
@@ -40,7 +37,6 @@ let lbCfgOrdered = [
     battleCategories = [ INDEX, AIR_RATING, KILL_AIR, WIN_SINGLE, LOG_TIME ]
     sortBy = AIR_RATING
     icon = air.icon
-    iconSize = lbTabIconSize
     locId = air.unitsLocId
   }
   {
@@ -51,7 +47,6 @@ let lbCfgOrdered = [
     battleCategories = [ INDEX, WP_RATING, KILL, WIN_SINGLE, LOG_TIME ]
     sortBy = WP_RATING
     icon = "ui/gameuiskin#score_icon.svg"
-    iconSize = lbTabIconSize
     locId = "lb/overall_rating"
   }
 ]

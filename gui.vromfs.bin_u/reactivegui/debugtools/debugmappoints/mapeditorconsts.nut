@@ -31,4 +31,8 @@ return {
   btnImgColor
   btnImgColorDisabled
   defaultBgElemSize
+
+  SNAP_NONE = null
+  SNAP_GRID = "grid"
+  SNAP_ELEMS = "elems"
 }

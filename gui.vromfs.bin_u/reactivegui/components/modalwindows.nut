@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "console" import register_command
-from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose, modalWndHeader
 from "%rGui/controlsMenu/gpActBtn.nut" import EMPTY_ACTION, btnBEscUp
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
@@ -84,20 +84,20 @@ function addModalWindow(wnd = {}) {
   modalWindowsGeneration.set(modalWindowsGeneration.get() + 1)
 }
 
-let addModalWindowWithHeader = @(key, title, content) addModalWindow(bgShaded.__merge({
+let headerOvr = { minWidth = SIZE_TO_CONTENT, padding = const [0, hdpx(20)] }
+let headerOvrWithClose = { minWidth = SIZE_TO_CONTENT, padding = const [0, hdpx(10)] }
+
+let addModalWindowWithHeader = @(key, title, content, close = null) addModalWindow(bgShaded.__merge({
   key = key
   size = FLEX
+  onClick = close ?? @() removeModalWindow(key)
   children = modalWndBg.__merge({
     flow = FLOW_VERTICAL
     halign = ALIGN_CENTER
     children = [
-      modalWndHeaderWithClose(
-        title,
-        @() removeModalWindow(key),
-        {
-          minWidth = SIZE_TO_CONTENT,
-          padding = const [0, hdpx(10)]
-        })
+      close == EMPTY_ACTION
+        ? modalWndHeader(title, headerOvr)
+        : modalWndHeaderWithClose(title, close ?? @() removeModalWindow(key), headerOvrWithClose)
       content
     ]
   })

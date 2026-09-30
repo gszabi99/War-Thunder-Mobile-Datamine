@@ -15,7 +15,7 @@ from "%rGui/navState.nut" import registerScene, setSceneBg
 from "%rGui/news/newsState.nut" import openNewsWndTagged
 import "%rGui/seasonScene/seasonSceneContentCfg.nut" as sceneContentCfg
 from "%rGui/seasonScene/seasonSceneState.nut" import seasonSceneOpenCounter, seasonTabs, seasonTabIdx, seasonPageId,
-  newsTag, PASS_SCENE, openSeasonTab, closeSeasonScene, bgScene, bgUnits, registerSeasonTabClose, isBattleTab
+  newsTag, PASS_SCENE, openSeasonTab, closeSeasonScene, bgScene, bgUnits, registerSeasonTabClose
 from "%rGui/style/gradients.nut" import mkGradientCtorRadial, gradTexSize
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import selectColor
@@ -210,7 +210,6 @@ function seasonScene() {
 const sceneId = "seasonScene"
 
 registerScene(sceneId, seasonScene, closeSeasonScene, seasonSceneOpenCounter)
-setSceneBg(sceneId, bgSceneExt.get()?.bg, isBattleTab.get() ? null : bgSceneExt.get()?.bgColor)
-bgSceneExt.subscribe(@(v) setSceneBg(sceneId, v?.bg, isBattleTab.get() ? null : v?.bgColor))
-isBattleTab.subscribe(@(v) setSceneBg(sceneId, bgSceneExt.get()?.bg, v ? null : bgSceneExt.get()?.bgColor))
+setSceneBg(sceneId, bgSceneExt.get()?.bg, bgSceneExt.get()?.bgColor, bgSceneExt.get()?.dimColor)
+bgSceneExt.subscribe(@(v) setSceneBg(sceneId, v?.bg, v?.bgColor, v?.dimColor))
 registerUnlocksSceneToUpdate(sceneId)

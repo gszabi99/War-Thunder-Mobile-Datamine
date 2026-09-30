@@ -699,8 +699,9 @@ function mkRewardPlatePrizeTicketImage(r, rStyle, rewardCtors) {
     rewards.append({ slots = rewardTicketDefaultSlots, rType = reward.gType }.__merge(reward))
   }
 
-  return mkRewardSlider(rewards, rewardCtors, @() !needShowPreview ? null
-    : openRewardPrizeView(rewards, rewardCtors), rStyle)
+  return mkRewardSlider(rewards, rewardCtors, @() openRewardPrizeView(rewards, rewardCtors), rStyle).__update({
+    behavior = !needShowPreview ? null : Behaviors.Button
+  })
 }
 
 

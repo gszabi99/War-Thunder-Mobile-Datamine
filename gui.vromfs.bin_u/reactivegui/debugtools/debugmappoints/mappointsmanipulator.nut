@@ -1,21 +1,24 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.time" import get_time_msec
-from "math" import abs
+from "math" import abs, floor, fabs
 from "%rGui/debugTools/debugMapPoints/comboActions.nut" import shiftActions
-from "%rGui/debugTools/debugMapPoints/mapEditorConsts.nut" import INC_AREA, START_MOVE_TIME_MSEC, MOVE_MIN_THRESHOLD
+from "%rGui/debugTools/debugMapPoints/mapEditorConsts.nut" import INC_AREA, START_MOVE_TIME_MSEC, MOVE_MIN_THRESHOLD,
+  SNAP_GRID, SNAP_ELEMS
 from "%rGui/debugTools/debugMapPoints/mapEditorState.nut" import transformInProgress, applyTransformProgress,
   tuningPoints, tuningBgElems, selectedElem, ELEM_POINT, ELEM_BG, ELEM_LINE, ELEM_MIDPOINT, ELEM_LINE_END, selectElem,
   getElemKey, pageLines, pageMapSize, isShiftPressed, selectedLineIdx, selectedLineMidpoints, selectedLineEnds,
-  scalableETypes
+  scalableETypes, pageGridSize, snapType, pageObjDist, snapLines, tuningRewards, ELEM_REWARD
 from "%rGui/event/treeEvent/segmentMath.nut" import getClosestSegment, mkLineSplinePoints
 
 
 const M_DEFAULT = ""
 const M_SCALE = "scale"
+const STOP_SNAP_ELEM_DIST = 10
 
 let pointer = Watched(null)
 let emptyAABB = { l = 0, t = 0, r = 0, b = 0 }
-let isMovable = [ELEM_POINT, ELEM_BG, ELEM_MIDPOINT, ELEM_LINE_END].reduce(@(res, v) res.$rawset(v, true), {})
+let isMovable = [ELEM_POINT, ELEM_REWARD, ELEM_BG, ELEM_MIDPOINT, ELEM_LINE_END]
+  .reduce(@(res, v) res.$rawset(v, true), {})
 
 let isHit = @(aabb, x, y) aabb.l <= x && aabb.r >= x && aabb.t <= y && aabb.b >= y
 let isHitInc = @(aabb, x, y) aabb.l - INC_AREA <= x && aabb.r + INC_AREA >= x
@@ -53,9 +56,10 @@ function findElemInScene(x, y, isNext, isFit = @(_) true) {
     return null
 
   let list = [].extend(
-    selectedLineEnds.get().map(@(e) { id = e.id, eType = ELEM_LINE_END, subId = selectedLineIdx.get() })
-    selectedLineMidpoints.get().map(@(_, i) { id = i, eType = ELEM_MIDPOINT, subId = selectedLineIdx.get() })
+    selectedLineEnds.get().map(@(e) { id = e.id, eType = ELEM_LINE_END, subId = selectedLineIdx.get() }),
+    selectedLineMidpoints.get().map(@(_, i) { id = i, eType = ELEM_MIDPOINT, subId = selectedLineIdx.get() }),
     tuningPoints.get().reduce(@(acc, _, id) acc.append({ id, eType = ELEM_POINT }), []),
+    tuningRewards.get().reduce(@(acc, _, id) acc.append({ id, eType = ELEM_REWARD }), []),
     tuningBgElems.get().map(@(_, i) { id = i, eType = ELEM_BG }),
     pageLines.get().map(@(_, i) { id = i, eType = ELEM_LINE }))
 
@@ -126,23 +130,95 @@ function getCurMapRelCoords(x, y) {
   return getMapRelCoords(mapAabb, pageMapSize.get(), x, y)
 }
 
+function snapBoxCenterToGrid(pos, objSize, mapPx) {
+  let cell = pageGridSize.get()
+  foreach (a, size in pageMapSize.get()) {
+    let cellCount = cell > 0 ? size / cell : 0
+    if (mapPx[a] <= 0 || cellCount <= 0)
+      continue
+    let centerLog = (pos[a] + objSize[a] / 2.0) * size / mapPx[a]
+    let cellIdx = clamp(floor(centerLog / cell + 0.5), 0, cellCount)
+    pos[a] = cellIdx * cell * mapPx[a] / size.tofloat() - objSize[a] / 2.0
+  }
+}
+
+function snapBoxToElems(elem, objPos, objSize, mapPx) {
+  let sizeFinal = array(2).map(@(_, a) objSize[a].tofloat() * pageMapSize.get()[a] / mapPx[a])
+  let posFinal = array(2).map(@(_, a) objPos[a] * pageMapSize.get()[a] / mapPx[a])
+
+  let closestDist = [STOP_SNAP_ELEM_DIST, STOP_SNAP_ELEM_DIST]
+  let closestPos = [null, null]
+  let closestLines = [null, null]
+
+  let { id, eType } = elem
+  let objDist = pageObjDist.get()
+  foreach (i, e in tuningBgElems.get()) {
+    if (i == id && eType == ELEM_BG)
+      continue
+
+    let { pos, size } = e
+    for (local a = 0; a < 2; a++) {
+      let b0 = posFinal[a]
+      let b1 = posFinal[a] + sizeFinal[a]
+      let r0 = pos[a]
+      let r1 = pos[a] + size[a]
+
+      local d = fabs(r0 - b0)
+      if (d < closestDist[a]) {
+        closestDist[a] = d
+        closestPos[a] = r0
+        closestLines[a] = [r0]
+      }
+
+      d = fabs(r0 - b1 - objDist)
+      if (d < closestDist[a]) {
+        closestDist[a] = d
+        closestPos[a] = r0 - objDist - sizeFinal[a]
+        closestLines[a] = [r0, r0 - objDist]
+      }
+
+      d = fabs(r1 - b1)
+      if (d < closestDist[a]) {
+        closestDist[a] = d
+        closestPos[a] = r1 - sizeFinal[a]
+        closestLines[a] = [r1]
+      }
+
+      d = fabs(b0 - r1 - objDist)
+      if (d < closestDist[a]) {
+        closestDist[a] = d
+        closestPos[a] = r1 + objDist
+        closestLines[a] = [r1, r1 + objDist]
+      }
+    }
+  }
+
+  snapLines.set(closestLines)
+
+  foreach (a, val in closestPos)
+    if (val != null)
+      objPos[a] = val.tofloat() * mapPx[a] / pageMapSize.get()[a]
+}
+
 let updateTransform = {
   [M_DEFAULT] = function(p) {
     if (!isMovable?[selectedElem.get()?.eType])
       return
 
     let { aabb, mapAabb, offset } = p
-    let mapW = mapAabb.r - mapAabb.l
-    let mapH = mapAabb.b - mapAabb.t
-    let objW = aabb.r - aabb.l
-    let objH = aabb.b - aabb.t
+    let mapPx = [mapAabb.r - mapAabb.l, mapAabb.b - mapAabb.t]
+    let objSize = [aabb.r - aabb.l, aabb.b - aabb.t]
+    let pos = [aabb.l + offset[0], aabb.t + offset[1]]
 
-    local newLeft = aabb.l + offset[0]
-    local newTop  = aabb.t + offset[1]
-    newLeft = clamp(newLeft, -objW * 3 / 4, mapW - objW / 4)
-    newTop  = clamp(newTop, -objH * 3 / 4, mapH - objH / 4)
+    if (snapType.get() == SNAP_GRID)
+      snapBoxCenterToGrid(pos, objSize, mapPx)
+    else if (snapType.get() == SNAP_ELEMS)
+      snapBoxToElems(selectedElem.get(), pos, objSize, mapPx)
 
-    transformInProgress.set({ pos = [newLeft, newTop], mapSizePx = [mapW, mapH] })
+    pos[0] = clamp(pos[0], -objSize[0] * 3 / 4, mapPx[0] - objSize[0] / 4)
+    pos[1] = clamp(pos[1], -objSize[1] * 3 / 4, mapPx[1] - objSize[1] / 4)
+
+    transformInProgress.set({ pos, mapSizePx = mapPx })
   },
 
   [M_SCALE] = function(p) {

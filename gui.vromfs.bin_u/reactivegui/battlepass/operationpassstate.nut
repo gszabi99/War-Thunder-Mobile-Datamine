@@ -21,7 +21,6 @@ const OP_NONE = "none"
 const OP_COMMON = "common"
 const OP_VIP = "vip"
 
-const OP_MAX_LEVELS_TO_ADD = 10
 const OP_EVENT_ID = "operation_pass"
 
 let isOPPurchaseWndOpened = mkWatched(persist, "isOPPurchaseWndOpened", false)
@@ -78,6 +77,8 @@ let operationPassGoods = Computed(function() {
       && s?.meta.campaign == campaign),
   }
 })
+
+let opVipLevels = Computed(@() (operationPassGoods.get()[OP_VIP]?.meta.pass_levels ?? 10).tointeger())
 
 let isOPPurchasedByType = Computed(function() {
   let { purchasesCount = null } = servProfile.get()
@@ -282,6 +283,7 @@ return {
   isOPRewardsInProgress
   isOPSeasonActive
   lastStageOpProgress
+  opVipLevels
 
   mkOPStagesList
   curStage
@@ -296,7 +298,6 @@ return {
   OPLevelPrice
   isOPLevelPurchaseInProgress = Computed(@() unlockInProgress.get().len() > 0)
   progressUnlockId
-  OP_MAX_LEVELS_TO_ADD
 
   opSeasonUnitName
   opSeasonNumber

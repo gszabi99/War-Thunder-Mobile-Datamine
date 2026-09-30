@@ -1,7 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/components/buttonStyles.nut" import defBorderGradient
 from "%rGui/components/textButton.nut" import mkGradient
+from "%rGui/style/gradients.nut" import btnBorderGradient, btnCommonBgGradient
 from "%rGui/style/stdColors.nut" import hoverColor
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
 
 
@@ -14,8 +16,9 @@ let iText = {
 
 let defSize = [evenPx(70), evenPx(70)]
 let defSizeSmall = [evenPx(50), evenPx(50)]
-let defSizeMedium = [evenPx(60), evenPx(60)]
+let defSizeMedium = evenPx(60)
 const defTooltipSize = hdpx(40)
+const borderWidth = hdpxi(2)
 
 let mkInfoButtonCtor = @(btnStyle) function(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize
@@ -54,38 +57,50 @@ let mkInfoButtonCtor = @(btnStyle) function(onClick, ovr = {}, textOvr = fontSma
   }.__update(ovr)
 }
 
-let mkInfoEllipseButtonCtor = @(btnStyle) function(onClick, ovr = {}, textOvr = fontSmallAccented) {
+let mkInfoEllipseButtonCtor = @(borderImage, bgImage) function(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSizeMedium
+  let ht = size?[1] ?? size
   let stateFlags = Watched(0)
-  let { fillColor = null, borderColor = null } = btnStyle
   return @() {
     watch = stateFlags
     size
-    rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth = hdpxi(2)
-    fillColor
-    color = borderColor
-    commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
+
+    rendObj = ROBJ_BOX
+    borderColor = 0
+    fillColor = 0xFFFFFFFF
+    borderWidth = 0
+    borderRadius = ht / 2
+    image = stateFlags.get() & S_HOVER ? null : borderImage
+
     behavior = Behaviors.Button
-    onElemState = @(v) stateFlags.set(v)
-    xmbNode = {}
-    sound = { click  = "click" }
+    onElemState = @(sf) stateFlags.set(sf)
     onClick
-    brightness = stateFlags.get() & S_HOVER ? 1.5 : 1
-    children = iText.__merge(textOvr)
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
-  }.__update(ovr)
+    sound = { click  = "click" }
+
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    children = [
+      {
+        size = ht - 2 * borderWidth
+        rendObj = ROBJ_BOX
+        borderColor = 0
+        fillColor = 0xFFFFFFFF
+        borderWidth = 0
+        borderRadius = ht / 2 - borderWidth
+        image = bgImage
+      }
+      iText.__merge(textOvr)
+    ]
+  }.__update(
+    mkPressTransitionScale(stateFlags.get())
+    ovr)
 }
 
 let infoCommonButton = mkInfoButtonCtor({
   fillColor = 0xFF191616
   color = 0xFF57595B
 })
-let infoEllipseButton = mkInfoEllipseButtonCtor({
-  fillColor = 0xFF070707
-  borderColor = 0x80777777
-})
+let infoEllipseButton = mkInfoEllipseButtonCtor(btnBorderGradient, btnCommonBgGradient)
 
 function infoGreyButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize

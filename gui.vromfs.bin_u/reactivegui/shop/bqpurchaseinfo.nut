@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
 from "%rGui/shop/shopConst.nut" import SGT_UNKNOWN, SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_EVT_CURRENCY,
   SGT_DECORATOR, SGT_DECALS, SGT_LOOTBOX, SGT_GOLD, SGT_PLATINUM, SGT_BOOSTERS, SGT_SLOTS, SGT_BLUEPRINTS,
-  SGT_UNIT_BUNDLE, SGT_SKIN
+  SGT_UNIT_BUNDLE, SGT_SKIN, SGT_PUZZLE_PIECE
 from "types" import String
 
 
@@ -63,6 +63,7 @@ const PURCH_TYPE_QUEUE_PENALTY = "queue_penalty"
 const PURCH_TYPE_DECAL = "decal"
 const PURCH_TYPE_QUEST_REROLL = "quest_reroll"
 const PURCH_TYPE_RESET_SLOT_LEVEL = "reset_slot_lvl"
+const PURCH_TYPE_PUZZLE_PIECE = "puzzle_piece"
 
 let goodsTypeToPurchTypeMap = {
   [SGT_UNKNOWN] = "unknown",
@@ -80,7 +81,8 @@ let goodsTypeToPurchTypeMap = {
   [SGT_SLOTS] = PURCH_TYPE_GOODS_SLOT,
   [SGT_BLUEPRINTS] = PURCH_TYPE_BLUEPRINTS,
   [SGT_DECORATOR] = PURCH_TYPE_DECORATOR,
-  [SGT_UNIT_BUNDLE] = PURCH_TYPE_UNIT_BUNDLE
+  [SGT_UNIT_BUNDLE] = PURCH_TYPE_UNIT_BUNDLE,
+  [SGT_PUZZLE_PIECE] = PURCH_TYPE_PUZZLE_PIECE,
 }
 
 function getPurchaseTypeByGoodsType(gtype) {

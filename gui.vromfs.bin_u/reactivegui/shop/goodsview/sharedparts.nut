@@ -3,6 +3,7 @@ from "%rGui/shop/shopCommon.nut" import *
 from "math" import round
 from "%sqstd/string.nut" import utf8ToUpper
 from "%sqstd/time.nut" import TIME_DAY_IN_SECONDS_F
+from "%appGlobals/config/goodsPresentation.nut" import getGoodsPresentation
 from "%appGlobals/currenciesState.nut" import GOLD
 from "%appGlobals/pServer/campaign.nut" import purchasesCount, todayPurchasesCount, goodsLimitReset
 from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
@@ -40,6 +41,7 @@ const timerSize = hdpxi(80)
 const advertSize = hdpxi(60)
 let vipIconW = CS_INCREASED_ICON.iconSize
 let vipIconH = (CS_INCREASED_ICON.iconSize / 1.3).tointeger()
+let defIconSize = [goodsSmallSize[0] - hdpxi(40), (goodsBgH * 0.9 + 0.5).tointeger()]
 
 const glareWidth = sh(8)
 const goodsGlareAnimDuration = 0.2
@@ -58,8 +60,10 @@ const tagRedColor = 0xC8C80000
 let freeBgGrad = mkColoredGradientY(0xFF57B624, 0xFF548115, 12)
 let priceBgGradDefault = mkColoredGradientY(0xFF74A1D2, 0xFF567F8E, 12)
 let priceBgGradPremium = mkColoredGradientY(0xFFD2A51E, 0xFF91620F, 12)
+let titleFontGradCommon = mkFontGradient(0xFFFFFFFF, 0xFFE0E0E0, 11, 6, 2)
 let titleFontGradConsumables = mkFontGradient(0xFFffFFFF, 0xFF8bdeea, 11, 6, 2)
-let limitFontGrad = mkFontGradient(0xFFFFFFFF, 0xFFE0E0E0, 11, 6, 2)
+let titleFontGradGold = mkFontGradient(0xFFFBF1B9, 0xFFCE733B, 11, 6, 2)
+let limitFontGrad = titleFontGradCommon
 
 let txtBase = {
   rendObj = ROBJ_TEXT
@@ -824,7 +828,7 @@ let mkLimitText = @(cur, total, locId = "shop/limit", fontGradient = limitFontGr
   fontTiny,
   fontGradient)
 
-function mkGoodsLimitText(goods, fontGrad) {
+function mkGoodsLimitText(goods, fontGrad, ovr = {}) {
   let { limit = 0, dailyLimit = 0, id = null } = goods
   if (limit <= 0 && dailyLimit <= 0)
     return null
@@ -841,7 +845,7 @@ function mkGoodsLimitText(goods, fontGrad) {
     watch = limitExt
     children = limit <= 0 && limitExt.get() <= 0 ? null
       : mkLimitText(limitExt.get(), max(limit, dailyLimit), dailyLimit > 0 ? "shop/dailyLimit" : "shop/limit", fontGrad)
-  }
+  }.__update(ovr)
 }
 
 function mkEndTimeImpl(goods, ovr = {}) {
@@ -885,6 +889,20 @@ let mkGoodsLimitAndEndTimeExt = @(goods, state) @() (state.get() & LIMIT_REACHED
       ]
     }
 
+function mkCommonGoodsIcon(id) {
+  let { icon, iconSizeMul, iconOffset } = getGoodsPresentation(id)
+  let iconSize = iconSizeMul == 1 ? defIconSize : defIconSize.map(@(v) (v * iconSizeMul + 0.5).tointeger())
+  return {
+    size = iconSize
+    pos = iconOffset?.map(@(v, a) v * defIconSize[a])
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    rendObj = ROBJ_IMAGE
+    image = Picture($"{icon}:{iconSize[0]}:{iconSize[1]}:P")
+    keepAspect = true
+  }
+}
+
 return {
   goodsW
   goodsSmallSize
@@ -900,7 +918,9 @@ return {
 
   priceBgGradDefault
   priceBgGradPremium
+  titleFontGradCommon
   titleFontGradConsumables
+  titleFontGradGold
   limitFontGrad
 
   mkGoodsWrap
@@ -942,6 +962,7 @@ return {
   skipPurchasedPlate
   mkCanShowTimeProgress
   mkDiscountCorner
+  mkCommonGoodsIcon
 
   goodsGlareAnimDuration
   mkBgParticles

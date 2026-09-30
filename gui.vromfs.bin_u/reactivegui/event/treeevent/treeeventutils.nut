@@ -1,16 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
-from "dagor.fs" import file_exists, read_text_from_file
-from "json" import parse_json
 from "%appGlobals/config/mapPointsPresentation.nut" import getTreeNodeView
+from "%rGui/event/treeEvent/eventMapLoader.nut" import mkLoadPreset, mkEmptyPreset
 
 
 const SAVED_PRESETS_PATH = "%appGlobals/config/eventMapPages"
-const FILE_EXT = ".json"
-
-let defaultMapSize = [600, 500]
-const defaultGridSize = 100
-const defaultPointSize = 50
-const defaultMapBg = ""
 
 const lineSectionLen = 6
 const lineOutlineWidth = hdpxi(1)
@@ -26,37 +19,7 @@ const VIEW_QUESTS = "quests"
 const VIEW_NEXT_PAGE = "nextPage"
 const VIEW_DEFAULT = "default"
 
-function getPresetDataFromFile(path) {
-  if (!path)
-    return null
-  local res = null
-  try {
-    let fileContent = read_text_from_file(path)
-    res = parse_json(fileContent)
-  }
-  catch(e)
-    logerr($"Failed to parse preset from file: {e}")
-
-  return res
-}
-
-let loadPresetOnce = memoize(function(presetId) {
-  let path = $"{SAVED_PRESETS_PATH}/{presetId}{FILE_EXT}"
-  if (file_exists(path))
-    return getPresetDataFromFile(path)
-  logerr($"No file found for preset {presetId}!")
-  return null
-})
-
-let mkEmptyPreset = @() {
-  bg = defaultMapBg
-  mapSize = defaultMapSize
-  gridSize = defaultGridSize
-  pointSize = defaultPointSize
-  points = {}
-  bgElements = []
-  lines = []
-}
+let loadPresetOnce = mkLoadPreset(SAVED_PRESETS_PATH)
 
 let mkDefaultPoint = @(pos) { pos }
 let mkDefaultLine = @(from, to) { from, to }

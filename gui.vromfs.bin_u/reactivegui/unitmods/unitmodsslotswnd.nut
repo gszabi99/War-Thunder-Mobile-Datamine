@@ -12,13 +12,14 @@ from "%rGui/components/buttonStyles.nut" import defButtonMinWidth, defButtonHeig
 from "%rGui/components/msgBox.nut" import openMsgBox
 import "%rGui/components/panelBg.nut" as panelBg
 from "%rGui/components/spinner.nut" import mkSpinner
-from "%rGui/components/tabs.nut" import tabsGap, bgColor, tabExtraWidth, mkTabs
+from "%rGui/components/tabs.nut" import bgColor, mkTabs
 from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon, textButtonPurchase, iconButtonCommon
 from "%rGui/mainMenu/gamercard.nut" import mkGamercardUnitCampaign
 from "%rGui/navState.nut" import registerScene
 from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT_MOD, mkBqPurchaseInfo
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
 from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideX, mkGradientCtorDoubleSideY
+from "%rGui/style/listConst.nut" import tabExtraWidth, tabsGap
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import userlogTextColor, badTextColor2, commonTextColor
 from "%rGui/unit/components/textButtonWithLevel.nut" import textButtonVehicleLevelUp

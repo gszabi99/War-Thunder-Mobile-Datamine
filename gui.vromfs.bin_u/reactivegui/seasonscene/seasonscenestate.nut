@@ -1,12 +1,15 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/clientState/initialState.nut" import isOfflineMenu
+from "%appGlobals/config/collectionPresentation.nut" import getCollectionPresentation
 from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
 from "%appGlobals/config/passPresentation.nut" import getOPPresentation
 from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%appGlobals/permissions.nut" import has_leaderboard
 from "%rGui/battlePass/battlePassState.nut" import bpProgressUnlock
 from "%rGui/battlePass/eventPassState.nut" import eventsPassList
 from "%rGui/battlePass/operationPassState.nut" import isOPSeasonActive, OP_EVENT_ID, OPCampaign
 from "%rGui/battlePass/passState.nut" import playerSelectedScene, getVisibleTabs
+from "%rGui/collections/collectionsState.nut" import curCollectionId, activeCollectionsCfg
 from "%rGui/event/eventLootboxes.nut" import eventLootboxesRaw
 from "%rGui/event/eventState.nut" import openEventInfo, specialEvents, MAIN_EVENT_ID, curEvent, eventWndOpenCounter,
   subEventsList, specialEventsOrdered, isEventActive, getIsEventActive, getEventLootboxes, closeEventShellCleanup,
@@ -27,11 +30,15 @@ const EVENT_SHOP_TAB = "event_shop_tab"
 const LOOTBOX_TAB = "lootbox_tab"
 const MAP_TAB = "map_tab"
 const BATTLE_TAB = "battle"
+const LEADERBOARD_TAB = "leaderboard_tab"
+const COLLECTION_TAB = "collection"
 
 let playerSelectedSeasonTab = mkWatched(persist, "playerSelectedSeasonTab", PASS_SCENE)
 let seasonSceneOpenCounter = mkWatched(persist, "seasonSceneOpenCounter", 0)
 
-let seasonTabs = [ BATTLE_TAB, MAP_TAB, PASS_SCENE, QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB ]
+let seasonTabs = [ BATTLE_TAB, MAP_TAB, COLLECTION_TAB, PASS_SCENE, QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB,
+  LEADERBOARD_TAB
+]
 
 let questTabsByEventId = {
   [""] = [ ACHIEVEMENTS_TAB, PROMO_TAB ],
@@ -41,7 +48,6 @@ let questTabsByEventId = {
 
 let seasonTabIdx = Computed(@() seasonTabs.indexof(playerSelectedSeasonTab.get()) ?? 0)
 let seasonPageId = Computed(@() seasonTabs?[seasonTabIdx.get()])
-let isBattleTab = Computed(@() seasonPageId.get() == BATTLE_TAB)
 
 let seasonShopId = Computed(@() getShopIdForEventId(curEvent.get(), specialEvents.get(),
   goodsByShop.get(), soonGoodsByShop.get(), soonPersonalGoodsByShop.get(), personalGoodsByShop.get()))
@@ -66,6 +72,9 @@ let isLootboxTabVisible = @(eventId, isEActive, isOActive, specEvents, lootboxes
 let isBattleVisible = @(eventId, separateEventModesV, specialEventsV)
   eventId in separateEventModesV || specialEventsV?[eventId].eventName in separateEventModesV
 
+let isLeaderboardTabVisible = @(eventId, isEActive, isOActive, specEvents)
+  eventId == MAIN_EVENT_ID && getIsEventActive(eventId, isEActive, isOActive, specEvents)
+
 let isSeasonTabVisible = {
   [MAP_TAB] = {
     calcByEventId = @(id) shouldShowEventMechanics.get() && hasTreeMap(id)
@@ -80,6 +89,11 @@ let isSeasonTabVisible = {
   [QUESTS_TAB] = {
     calcByEventId = @(id) isQuestsTabVisible(id, questsCfg.get(), questsBySection.get()),
     watched = Computed(@() isQuestsTabVisible(curEvent.get(), questsCfg.get(), questsBySection.get()))
+  },
+  [COLLECTION_TAB] = {
+    calcByEventId = @(id) shouldShowEventMechanics.get()
+      && null != activeCollectionsCfg.get().findvalue(@(c) c.meta?.event_id == id)
+    watched = Computed(@() shouldShowEventMechanics.get() && curCollectionId.get() != null)
   },
   [EVENT_SHOP_TAB] = {
     calcByEventId = @(id) shouldShowEventMechanics.get()
@@ -105,7 +119,13 @@ let isSeasonTabVisible = {
       && isBattleVisible(id, separateEventModes.get(), specialEvents.get())
     watched = Computed(@() shouldShowEventMechanics.get()
       && isBattleVisible(curEvent.get(), separateEventModes.get(), specialEvents.get()))
-  }
+  },
+  [LEADERBOARD_TAB] = {
+    calcByEventId = @(id) shouldShowEventMechanics.get() && has_leaderboard.get()
+      && isLeaderboardTabVisible(id, isEventActive.get(), isOPSeasonActive.get(), specialEvents.get())
+    watched = Computed(@() shouldShowEventMechanics.get() && has_leaderboard.get()
+      && isLeaderboardTabVisible(curEvent.get(), isEventActive.get(), isOPSeasonActive.get(), specialEvents.get()))
+  },
 }
 
 let bgUnits = Computed(@() seasonPageId.get() != BATTLE_TAB ? null
@@ -114,15 +134,29 @@ let bgUnits = Computed(@() seasonPageId.get() != BATTLE_TAB ? null
 let bgScene = Computed(function() {
   let eventId = curEvent.get()
   let isMapTab = seasonPageId.get() == MAP_TAB
+  let isBattleTab = seasonPageId.get() == BATTLE_TAB
   let mapTabPresentation = getEventPresentation(openedTreeEventId.get())
 
   if (isMapTab && mapTabPresentation?.mapSceneBg != null)
     return mapTabPresentation.__merge({ bg = mapTabPresentation.mapSceneBg })
+  if (seasonPageId.get() == COLLECTION_TAB
+      || (seasonPageId.get() == EVENT_SHOP_TAB
+        && shouldShowEventMechanics.get()
+        && isSeasonTabVisible[COLLECTION_TAB].calcByEventId(eventId)))
+    return getCollectionPresentation(curCollectionId.get())
   if (eventId == OP_EVENT_ID)
     return getOPPresentation(OPCampaign.get())
   if (eventId == "")
     return getEventPresentation(getEventPresentationId(MAIN_EVENT_ID, eventSeason.get(), allSpecialEvents.get()))
-  return getEventPresentation(getEventPresentationId(eventId, eventSeason.get(), allSpecialEvents.get()))
+
+  let eventPresentation = getEventPresentation(getEventPresentationId(eventId, eventSeason.get(), allSpecialEvents.get()))
+
+  if (isBattleTab && eventPresentation != null)
+    return eventPresentation.__merge({ bgColor = null })
+  if (seasonPageId.get() == LOOTBOX_TAB && eventPresentation != null)
+    return eventPresentation.__merge({ dimColor = null })
+
+  return eventPresentation
 })
 
 let hasBattleTab = isSeasonTabVisible[BATTLE_TAB].watched
@@ -212,7 +246,8 @@ return {
   EVENT_SHOP_TAB
   LOOTBOX_TAB
   MAP_TAB
-  isBattleTab
+  LEADERBOARD_TAB
+  COLLECTION_TAB
   questTabsByEventId
   isSeasonTabVisible
   playerSelectedSeasonTab

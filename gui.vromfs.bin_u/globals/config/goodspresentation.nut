@@ -1,4 +1,6 @@
 from "dagor.localize" import loc
+from "types" import String
+from "%sqstd/functools.nut" import memoize
 
 
 let customGoodsLocId = {
@@ -21,8 +23,12 @@ let goodsLocIdByNamePart = {
   ["event_pass_collectors_"] = "collectorsPass",
 }
 
-const defaultIcon = "ui/gameuiskin/icon_primary_attention.svg"
-let icons = {
+const defaultPresentation = {
+  icon = "ui/gameuiskin/icon_primary_attention.svg"
+  iconSizeMul = 1
+  iconOffset = null 
+}
+let presentationsCfg = {
   air_blueprints_slots = "ui/gameuiskin/shop_blueprints_folder.avif"
   air_top_blueprints_slots = "ui/gameuiskin/shop_blueprints_folder.avif"
   ships_blueprints_slots = "ui/gameuiskin/shop_blueprints_folder_ships.avif"
@@ -30,6 +36,28 @@ let icons = {
   tanks_blueprints_slots = "ui/gameuiskin/shop_blueprints_folder_tanks.avif"
   senrai_maidens_bundle = "ui/gameuiskin#senrai_maidens_bundle_2026.avif"
   bmpt_2026_bundle = "ui/images/bmpt_bundle_2026.avif"
+  unique_collection_piece_small = {
+    icon = "ui/images/collections/main_s38_piece_uniq.avif"
+    iconSizeMul = 0.9
+  }
+  unique_collection_piece_medium = {
+    icon = "ui/images/collections/piece_uniq_s38_02.avif"
+    iconSizeMul = 0.9
+  }
+  unique_collection_piece_big = {
+    icon = "ui/images/collections/piece_uniq_s38_03.avif"
+    iconSizeMul = 0.9
+  }
+  unique_collection_piece_limited_1 = {
+    icon = "ui/images/collections/piece_uniq_s38_04.avif"
+    iconSizeMul = 0.9
+    iconOffset = [0, 0.05]
+  }
+  unique_collection_piece_limited_2 = {
+    icon = "ui/images/collections/piece_uniq_s38_05.avif"
+    iconSizeMul = 0.9
+    iconOffset = [0, 0.08]
+  }
 }
 
 let iconGoodsAsOffer = {
@@ -97,9 +125,19 @@ function getCustomGoodsNameById(id) {
   return customGoodsLoc[id]
 }
 
+let getGoodsPresentation = memoize(function getGoodsPresentationImpl(id) {
+  let cfg = presentationsCfg?[id]
+  if (cfg == null)
+    return defaultPresentation
+  if (cfg instanceof String)
+    return defaultPresentation.__merge({ icon = cfg })
+  return defaultPresentation.__merge(cfg)
+})
+
 return {
   getCustomGoodsNameById
-  getGoodsIcon = @(id) icons?[id] ?? defaultIcon
+  getGoodsPresentation
+  getGoodsIcon = @(id) getGoodsPresentation(id).icon
   getSlotsPreviewBg = @(id) slotsPreviewBg?[id] ?? defaultSlotsPreviewBg
   getSlotsTexts = @(id) slotTexts?[id] ?? defaultSlotsTexts
   getGoodsAsOfferIcon = @(id) iconGoodsAsOffer?[id]

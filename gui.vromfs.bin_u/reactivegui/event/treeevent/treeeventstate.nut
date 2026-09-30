@@ -5,14 +5,12 @@ from "%appGlobals/pServer/pServerApi.nut" import eventMapNodeInProgress
 from "%appGlobals/userstats/serverTime.nut" import serverTime, isServerTimeValid
 from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
 from "%rGui/event/eventState.nut" import curEvent, MAIN_EVENT_ID
+from "%rGui/event/treeEvent/eventMapLoader.nut" import defaultMapSize, defaultGridSize
 from "%rGui/event/treeEvent/treeEventUtils.nut" import loadPresetOnce, updatePresetByTree, getEventMapNodes,
   resolveTreeEventId, nextTreeBoundary, getTreeNodeViewTypes, getNodePageStarts, composeNodeViews, lineSectionLen,
   mapLineWidth, LINE_DASHED, VIEW_NEXT_PAGE
 from "%rGui/unlocks/unlocks.nut" import activeUnlocks
 
-
-let defaultMapSize = [2000, 1000]
-const defaultGridSize = 200
 
 
 const NS_UNLOCKED = 0x1 

@@ -283,6 +283,11 @@ return {
   simpleVerGradInv
   simpleHorGradInv
 
+  btnBorderGradient     = mkColoredGradientY(0xFFD0D0D0, 0xFFA0A0A0)
+  btnPrimaryBgGradient  = mkColoredGradientY(0xFF7092CC, 0xFF3C5F92)
+  btnCommonBgGradient   = mkColoredGradientY(0xFF545658, 0xFF1D1A1A)
+  btnInactiveBgGradient = mkColoredGradientY(0xC0808080, 0x80000000)
+
   
   mkGradientCtorTripleSideX
   mkGradientCtorDoubleSideX

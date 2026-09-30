@@ -36,6 +36,7 @@ const PROGRESS_SKIP_OFFER = "SkipOfferInProgress"
 const PROGRESS_CLIENT_MISSION_REWARD = "ClientMissionRewardInProgress"
 const PROGRESS_UNIT_MASTERY_TIER = "UnitMasteryTierInProgress"
 const PROGRESS_MIG_ACC_INFO = "MigAccInfoInProgress"
+const PROGRESS_COLLECTION = "CollectionInProgress"
 
 const PROGRESS_CALENDAR_REWARD = "CalendarRewardInProgress"
 const PROGRESS_EVENT_MAP_NODE = "EventMapNodeInProgress"
@@ -276,6 +277,7 @@ return {
   migAccInfoInProgress = mkProgress(PROGRESS_MIG_ACC_INFO)
   isCalendarRewardInProgress = mkProgress(PROGRESS_CALENDAR_REWARD, false)
   eventMapNodeInProgress = mkProgress(PROGRESS_EVENT_MAP_NODE)
+  collectionInProgress = mkProgress(PROGRESS_COLLECTION)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -304,6 +306,7 @@ return {
   reset_ab_tests = @(cb = null) request({ method = "reset_ab_tests" }, cb)
   pp_get_config = @(cb = null) request({ method = "pp_get_config_client" }, cb)
   reset_free_gold_use = @(cb = null) request({ method = "reset_free_gold_use" }, cb)
+  reset_collection_progress = @(cb = null) request({ method = "reset_collection_progress" }, cb)
 
   reset_campaigns = @(campaigns, cb = null) request({
     method = "reset_campaigns"
@@ -1092,5 +1095,31 @@ return {
   debug_skip_event_delay = @(campaign, cb = null) request({
     method = "debug_skip_event_delay"
     params = { campaign }
+  }, cb)
+
+  convert_collection_doubles = @(collectionId, cb = null) request({
+    method = "convert_collection_doubles"
+    params = { collectionId }
+    progressId = PROGRESS_COLLECTION
+    progressValue = collectionId
+  }, cb)
+
+  receive_puzzle_reward = @(collectionId, puzzleId, cb = null) request({
+    method = "receive_puzzle_reward"
+    params = { collectionId , puzzleId }
+    progressId = PROGRESS_COLLECTION
+    progressValue = collectionId
+  }, cb)
+
+  mark_puzzle_pieces_seen = @(collectionId, puzzleId, seenMask, cb = null) request({
+    method = "mark_puzzle_pieces_seen"
+    params = { collectionId, puzzleId, seenMask }
+  }, cb)
+
+  receive_collection_reward = @(collectionId, cb = null) request({
+    method = "receive_collection_reward"
+    params = { collectionId }
+    progressId = PROGRESS_COLLECTION
+    progressValue = collectionId
   }, cb)
 }

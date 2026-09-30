@@ -8,7 +8,6 @@ from "%appGlobals/pServer/campaign.nut" import curCampaign, setCampaign
 from "%appGlobals/pServer/pServerApi.nut" import buy_lootbox, lootboxInProgress
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
-from "%appGlobals/permissions.nut" import has_leaderboard
 from "%appGlobals/timeToText.nut" import secondsToHoursLoc
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%rGui/battlePass/passPkg.nut" import contentH, bottomPanelH
@@ -17,11 +16,10 @@ from "%rGui/components/currencyStyles.nut" import gamercardGap, CS_GAMERCARD
 from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
 from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
-from "%rGui/components/textButton.nut" import buttonsHGap
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
-from "%rGui/event/eventPkg.nut" import lootboxInfo, mkLootboxImageWithTimer, mkPurchaseBtns, leaderbordBtn
+from "%rGui/event/eventPkg.nut" import lootboxInfo, mkLootboxImageWithTimer, mkPurchaseBtns
 from "%rGui/event/eventState.nut" import unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen, bestCampLevel,
-  curEventLootboxes, curEvent, MAIN_EVENT_ID, isCurEventActive, isEventSceneAttached, specialEventGamercardItems,
+  curEventLootboxes, curEvent, isCurEventActive, isEventSceneAttached, specialEventGamercardItems,
   campToBack, closeEventShellCleanup, curEventEndsAt
 from "%rGui/mainMenu/balanceComps.nut" import mkItemsBalance
 from "%rGui/mainMenu/chooseCampaignWnd.nut" import onCampaignChange
@@ -326,19 +324,6 @@ function eventWndContent() {
                 size = FLEX_H
                 vplace = ALIGN_BOTTOM
                 children = [
-                  
-                  @() {
-                    vplace = ALIGN_BOTTOM
-                    flow = FLOW_HORIZONTAL
-                    gap = buttonsHGap
-                    children = [
-                      @() {
-                        watch = [has_leaderboard, curEvent]
-                        size = [SIZE_TO_CONTENT, defButtonHeight]
-                        children = !has_leaderboard.get() || curEvent.get() != MAIN_EVENT_ID ? null : leaderbordBtn
-                      }
-                    ]
-                  }
                   
                   !battleInfo.get() ? null : {
                     hplace = ALIGN_CENTER

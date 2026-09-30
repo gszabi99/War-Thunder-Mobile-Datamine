@@ -1,19 +1,18 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%rGui/battlePass/passPkg.nut" import bottomPanelH
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_TINY
 from "%rGui/style/gamercardStyle.nut" import gamercardHeight
 
 
 let lbHeaderHeight = gamercardHeight
-const lbFooterHeight = hdpx(60)
 const lbVGap = hdpx(10)
 const lbTableBorderWidth = hdpxi(4)
 let lbHeaderRowHeight = evenPx(60)
 let lbRowHeight = evenPx(60)
 let lbDotsRowHeight = lbRowHeight / 2
-let lbTableHeightBase = saSize[1] - lbHeaderHeight - lbFooterHeight - 2 * lbVGap
+let lbTableHeightBase = saSize[1] - lbHeaderHeight - 2 * lbVGap - bottomPanelH
 let lbPageRows = (lbTableHeightBase - lbHeaderRowHeight - lbTableBorderWidth - lbDotsRowHeight).tointeger() / lbRowHeight -1
 let lbTableHeight = lbHeaderRowHeight + lbTableBorderWidth + lbDotsRowHeight + (lbPageRows + 1) * lbRowHeight
-const lbTabIconSize = hdpxi(60)
 
 let rewardStyle = clone REWARD_STYLE_TINY
 let lbRewardsPerRow = isWidescreen ? 6 : 5
@@ -56,7 +55,6 @@ return {
   lbDotsRowHeight
   lbTableBorderWidth
   lbPageRows
-  lbTabIconSize
 
   rewardStyle
   lbRewardsBlockWidth

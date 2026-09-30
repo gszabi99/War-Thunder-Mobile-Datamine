@@ -10,7 +10,7 @@ from "%appGlobals/clientState/respawnStateBase.nut" import isRespawnInProgress, 
 from "%appGlobals/itemsState.nut" import SPARE
 from "%appGlobals/unitConst.nut" import AIR
 from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitName
-from "%rGui/components/animGrowLines.nut" import mkAnimGrowLines, mkAGLinesCfgOrdered
+from "%rGui/components/animGrowLines.nut" import mkAnimGrowLines, mkAGLinesCfgOrdered, mkStaticLines
 from "%rGui/components/buttonStyles.nut" import defButtonHeight, BATTLE, INACTIVE
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkCurrencyImage
 from "%rGui/components/currencyStyles.nut" import CS_RESPAWN, CS_GAMERCARD
@@ -31,7 +31,7 @@ from "%rGui/respawn/bulletsChoiceState.nut" import bulletsToSpawn, hasLowBullets
   hasChangedCurSlotBullets, hasZeroMainBullets
 from "%rGui/respawn/playerActivity.nut" import sendPlayerActivityToServer
 import "%rGui/respawn/respawnAirWeaponry.nut" as respawnAirWeaponry
-from "%rGui/respawn/respawnAnimState.nut" import slotAABB, selSlotLinesSteps, lineSpeed
+from "%rGui/respawn/respawnAnimState.nut" import slotAABB, selSlotLinesSteps, lineSpeed, bulletsScrolled
 import "%rGui/respawn/respawnBullets.nut" as respawnBullets
 from "%rGui/respawn/respawnComps.nut" import bg, headerText, headerHeight, header, gap, contentOffset, unitListHeight,
   skinPadding
@@ -635,9 +635,10 @@ let content = @() {
 }
 
 let animLines = @() {
-  watch = selSlotLinesSteps
+  watch = [selSlotLinesSteps, bulletsScrolled]
   size = FLEX
   children = selSlotLinesSteps.get() == null ? null
+    : bulletsScrolled.get() ? mkStaticLines(selSlotLinesSteps.get())
     : mkAnimGrowLines(mkAGLinesCfgOrdered(selSlotLinesSteps.get(), lineSpeed))
 }
 

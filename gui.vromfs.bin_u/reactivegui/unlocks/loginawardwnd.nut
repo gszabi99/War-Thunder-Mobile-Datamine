@@ -240,7 +240,7 @@ function previewBtnBlock() {
       infoEllipseButton(
         null,
         {
-          size = [smallBtnHeight, smallBtnHeight]
+          size = smallBtnHeight
           eventPassThrough = true
         },
         fontSmallAccented

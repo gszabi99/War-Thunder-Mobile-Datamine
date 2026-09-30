@@ -2,9 +2,9 @@ from "%globalsDarg/darg_library.nut" import *
 from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp
 from "%rGui/components/currencyStyles.nut" import CS_SMALL
-from "%rGui/components/tabs.nut" import tabsGap
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
 from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideY, gradTexSize, mkColoredGradientY
+from "%rGui/style/listConst.nut" import tabsGap
 from "%rGui/unitMods/unitModsConst.nut" import modContentMargin, modH, modW, equippedFrameWidth, activeColor,
   equippedColor, blocksLineSize, blocksGap, slotsBlockMargin, contentGamercardGap
 from "%rGui/unitMods/unitModsScroll.nut" import catsScrollHandler, carouselScrollHandler

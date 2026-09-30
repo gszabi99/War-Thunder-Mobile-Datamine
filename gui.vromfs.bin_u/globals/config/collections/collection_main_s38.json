@@ -1,0 +1,136 @@
+{
+  "bg": "ui/images/collections/collection_s38_bg_board.avif",
+  "bgElements": [
+    {
+      "id": "0",
+      "img": "ui/images/collections/collection_s38_01.avif",
+      "pos": [70, 36],
+      "rotate": 0,
+      "size": [408, 172],
+      "needShadow": true,
+      "shadowPos": [8, 8]
+    },
+    {
+      "id": "1",
+      "img": "ui/images/collections/collection_s38_02.avif",
+      "pos": [431, 36],
+      "rotate": 0,
+      "size": [428, 172],
+      "needShadow": true,
+      "shadowPos": [8, 8]
+    },
+    {
+      "id": "2",
+      "img": "ui/images/collections/collection_s38_03.avif",
+      "pos": [810, 36],
+      "rotate": 0,
+      "size": [408, 172],
+      "needShadow": true,
+      "shadowPos": [8, 8]
+    },
+    {
+      "id": "3",
+      "img": "ui/images/collections/collection_s38_04.avif",
+      "pos": [68, 223],
+      "rotate": 0,
+      "size": [570, 172],
+      "needShadow": true,
+      "shadowPos": [8, 8]
+    },
+    {
+      "id": "4",
+      "img": "ui/images/collections/collection_s38_05.avif",
+      "pos": [648, 223],
+      "rotate": 0,
+      "size": [570, 172],
+      "needShadow": true,
+      "shadowPos": [8, 8]
+    },
+    {
+      "id": "5",
+      "img": "ui/images/collections/collection_s38_06.avif",
+      "pos": [68, 410],
+      "rotate": 0,
+      "size": [408, 172],
+      "needShadow": true,
+      "shadowPos": [8, 8]
+    },
+    {
+      "id": "6",
+      "img": "ui/images/collections/collection_s38_07.avif",
+      "pos": [431, 410],
+      "rotate": 0,
+      "size": [428, 172],
+      "needShadow": true,
+      "shadowPos": [8, 8]
+    },
+    {
+      "id": "7",
+      "img": "ui/images/collections/collection_s38_08.avif",
+      "pos": [810, 410],
+      "rotate": 0,
+      "size": [408, 172],
+      "needShadow": true,
+      "shadowPos": [8, 8]
+    },
+    {
+      "id": "8",
+      "img": "ui/images/collections/collection_s38_09.avif",
+      "pos": [68, 597],
+      "rotate": 0,
+      "size": [1150, 171],
+      "needShadow": true,
+      "shadowPos": [8, 8]
+    }
+  ],
+  "event": "main_s38",
+  "gridSize": 0,
+  "lineSectionLen": 6,
+  "lineType": "dashed",
+  "lineWidth": 9,
+  "lines": [],
+  "mapSize": [1288, 953],
+  "objDist": 15,
+  "pointSize": 50,
+  "pointSizes": {},
+  "points": {},
+  "rewards": {
+    "reward_0": {
+      "pos": [178, 112],
+      "view": "tinyRight"
+    },
+    "reward_1": {
+      "pos": [558, 112],
+      "view": "tinyRight"
+    },
+    "reward_2": {
+      "pos": [975, 112],
+      "view": "tinyRight"
+    },
+    "reward_3": {
+      "pos": [396, 300],
+      "view": "tinyRight"
+    },
+    "reward_4": {
+      "pos": [975, 300],
+      "view": "tinyRight"
+    },
+    "reward_5": {
+      "pos": [178, 486],
+      "view": "tinyRight"
+    },
+    "reward_6": {
+      "pos": [558, 486],
+      "view": "tinyRight"
+    },
+    "reward_7": {
+      "pos": [975, 486],
+      "view": "tinyRight"
+    },
+    "reward_8": {
+      "pos": [975, 672],
+      "view": "tinyRight"
+    }
+  },
+  "roundedDashes": true
+}

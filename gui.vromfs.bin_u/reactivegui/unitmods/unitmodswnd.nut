@@ -16,7 +16,6 @@ import "%rGui/components/panelBg.nut" as panelBg
 from "%rGui/components/scrollbar.nut" import makeVertScroll
 from "%rGui/components/selectedLine.nut" import selLineSize
 from "%rGui/components/spinner.nut" import mkSpinner
-from "%rGui/components/tabs.nut" import tabsGap, tabExtraWidth
 from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonPricePurchase
 from "%rGui/mainMenu/gamercard.nut" import mkGamercardUnitCampaign
 from "%rGui/navState.nut" import registerScene
@@ -24,6 +23,7 @@ from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_UNIT_MODS, PURCH_TYPE_UNIT
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
 from "%rGui/style/gamercardStyle.nut" import gamercardHeight
 from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideX, mkGradientCtorDoubleSideY
+from "%rGui/style/listConst.nut" import tabExtraWidth, tabsGap
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import userlogTextColor
 from "%rGui/unit/components/textButtonWithLevel.nut" import textButtonVehicleLevelUp

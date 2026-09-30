@@ -4,8 +4,9 @@ from "%rGui/bullets/bulletsConst.nut" import BULLETS_PRIM_SLOTS
 from "%rGui/bullets/bulletsSlotComps.nut" import mkBulletSlider
 from "%rGui/components/selectedLine.nut" import opacityTransition
 from "%rGui/components/slider.nut" import sliderValueSound
-from "%rGui/components/tabs.nut" import mkTabs, tabExtraWidth
+from "%rGui/components/tabs.nut" import mkTabs
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/style/listConst.nut" import tabExtraWidth
 from "%rGui/style/stdColors.nut" import tabBgColor
 from "%rGui/unitMods/modsComps.nut" import mkBulletTypeIcon
 from "%rGui/unitMods/unitBulletsState.nut" import onBulletTabChange, setCurUnitBullets

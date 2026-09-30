@@ -20,8 +20,6 @@ const BP_NONE = "none"
 const BP_COMMON = "common"
 const BP_VIP = "vip"
 
-const BP_MAX_LEVELS_TO_ADD = 10
-
 let bpPresentation = {
   [BP_NONE] = {
     name = @() ""
@@ -72,6 +70,8 @@ let battlePassGoods = Computed(@() {
   [BP_COMMON] = shopGoods.get()?[BP_GOODS_ID],
   [BP_VIP] = shopGoods.get().findvalue(@(s) "battle_pass_vip" in s?.meta)
 })
+
+let bpVipLevels = Computed(@() (battlePassGoods.get()[BP_VIP]?.meta.pass_levels ?? 10).tointeger())
 
 let isBpPurchasedByType = Computed(function() {
   let { purchasesCount = null } = servProfile.get()
@@ -263,6 +263,7 @@ return {
   isBpRewardsInProgress
   isBpSeasonActive = Computed(@() bpFreeRewardsUnlock.get() != null)
   lastStageBpProgress
+  bpVipLevels
 
   mkBpStagesList
   curStage
@@ -278,7 +279,6 @@ return {
   bpLevelPrice
   isBPLevelPurchaseInProgress = Computed(@() unlockInProgress.get().len() > 0)
   BP_PROGRESS_UNLOCK_ID
-  BP_MAX_LEVELS_TO_ADD
 
   bpSeasonNumber
   bpSeasonName

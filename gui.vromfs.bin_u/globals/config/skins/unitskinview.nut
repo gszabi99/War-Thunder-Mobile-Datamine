@@ -2204,6 +2204,14 @@ return {
       "": "ussr_la_11_standard",
       "upgraded": "ussr_il_10"
     },
+    "il_28sh": {
+      "": "ussr_la_11_standard",
+      "camo": "jap_a6m2"
+    },
+    "il_28sh_prem": {
+      "": "usa_sb2u_2",
+      "camo": "ussr_pe_8_m82"
+    },
     "il_2_1941": {
       "": "ussr_yak_1_early_green",
       "upgraded": "ussr_pe_8_m82"
@@ -2451,6 +2459,10 @@ return {
       "": "it_camo_threecolor_modern",
       "forest": "it_camo_olive_green"
     },
+    "it_frigate_rckt_maestrale": {
+      "bluelight_geometry_bp": "camo_bluelight_geometry",
+      "upgraded": "camo_first_signal_maestrale"
+    },
     "it_leopard_1a5": {
       "": "it_camo_olive_green",
       "upgraded": "it_camo_modern_three_color"
@@ -2675,6 +2687,9 @@ return {
     },
     "jp_destroyer_rckt_asagiri": {
       "upgraded": "camo_blue_waves"
+    },
+    "jp_destroyer_rckt_atago": {
+      "upgraded": "camo_darkgrey_big_spots"
     },
     "jp_destroyer_rckt_chokai": {
       "upgraded": "camo_darkbrown_spots"
@@ -3649,6 +3664,14 @@ return {
     "sw_strv_121": {
       "": "se_camo_green",
       "upgraded": "se_camo_modern_m90"
+    },
+    "sw_strv_122": {
+      "": "se_camo_green",
+      "forest": "se_camo_modern_deform"
+    },
+    "sw_strv_122_prem": {
+      "": "sw_camo_space_strv_122",
+      "forest": "se_camo_green"
     },
     "sw_strv_81_rb52": {
       "": "se_camo_green",

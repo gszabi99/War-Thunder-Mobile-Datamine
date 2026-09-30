@@ -255,6 +255,7 @@ let skinsByTag = {
     "cn_camo_winter_lines"
     "uk_camo_winter_modern_bicolor"
     "us_camo_ags_teledyne"
+    "sw_camo_space_strv_122"
   ],
 
   [NAVAL] = [
@@ -301,6 +302,7 @@ let skinsByTag = {
     "camo_greenedges"
     "camo_deepblue_antpath"
     "camo_bluelight_geometry"
+    "camo_first_signal_maestrale"
 
     "camo_asiatic_forest"
     "camo_blue_waves"

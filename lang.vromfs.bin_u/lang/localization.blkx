@@ -38,7 +38,8 @@
       "%lang/_keyboard.csv",
       "%lang/_online.csv",
       "%lang/wtm_common.csv",
-      "%lang/help.csv"
+      "%lang/help.csv",
+      "%lang/events.csv"
     ]
   },
   "locTableFull": {
