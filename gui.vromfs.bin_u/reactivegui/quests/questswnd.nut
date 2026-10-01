@@ -308,7 +308,7 @@ function questsWndCtor() {
       : {
           watch
           size = FLEX
-          children = tab?.children ? mkChildrenOptions(tab?.children) : { size = FLEX }
+          children = tab?.childrenTabs ? mkChildrenOptions(tab?.childrenTabs) : const { size = FLEX }
         }
   }
 

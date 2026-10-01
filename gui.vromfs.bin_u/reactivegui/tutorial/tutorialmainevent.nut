@@ -6,16 +6,18 @@ from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/squadState.nut" import isInSquad
 from "%rGui/components/modalWindows.nut" import hasModalWindows
 from "%rGui/components/msgBox.nut" import openMsgBox
-from "%rGui/event/eventState.nut" import curEventLootboxes, isFitSeasonRewardsRequirements, isEventSceneAttached
+from "%rGui/event/eventState.nut" import curEventLootboxes, isFitSeasonRewardsRequirements, MAIN_EVENT_ID
 import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
 from "%rGui/gameModes/newbieOfflineMissions.nut" import hasFirstBattleRewards
 from "%rGui/mainMenu/mainMenuState.nut" import isMainMenuTopScene
+from "%rGui/navState.nut" import scenesOrder
 from "%rGui/quests/bqQuests.nut" import sendBqQuestsTask
-from "%rGui/quests/questsState.nut" import COMMON_TAB, isQuestsAttached, tabIdToOpen, EVENT_TAB, questsBySection,
+from "%rGui/quests/questsState.nut" import COMMON_TAB, tabIdToOpen, EVENT_TAB, questsBySection,
   getStarsTotalNonUpdatable, tutorialSectionId, tutorialSectionIdWithReward, isSameTutorialSectionId,
   tutorialQuestBtnKey
 from "%rGui/quests/rewardsComps.nut" import getRewardsPreviewInfo, getEventCurrencyReward
-from "%rGui/seasonScene/seasonSceneState.nut" import openMainSeasonScene, LOOTBOX_TAB, openQuestsWndOnTab
+from "%rGui/seasonScene/seasonSceneState.nut" import openMainSeasonScene, LOOTBOX_TAB, COLLECTION_TAB,
+  openQuestsWndOnTab, isSeasonTabVisible, SEASON_SCENE_ID
 from "%rGui/shop/lootboxPreviewState.nut" import openEventWndLootbox
 from "%rGui/tutorial/completedTutorials.nut" import markTutorialCompleted, mkIsTutorialCompleted,
   isFinishedBattlePass, isFinishedSlotAttributes, isFinishedArsenal
@@ -50,10 +52,11 @@ let canStartTutorial = Computed(@() !hasModalWindows.get()
 let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
 
+let isSeasonSceneTop = Computed(@() scenesOrder.get()?[scenesOrder.get().len() - 1] == SEASON_SCENE_ID)
+
 let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.get() == TUTORIAL_ID
   && !isMainMenuTopScene.get()
-  && !isQuestsAttached.get()
-  && !isEventSceneAttached.get()))
+  && !isSeasonSceneTop.get()))
 
 let finishEarly = @() shouldEarlyCloseTutorial.get() ? finishTutorial() : null
 shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
@@ -63,8 +66,96 @@ function receiveReward(item, currencyReward) {
   sendBqQuestsTask(item, getStarsTotalNonUpdatable(item), currencyReward?.count ?? 0, currencyReward?.id)
 }
 
+
+let mkRewardSteps = @(wndShowEnough) [
+  {
+    id = "s4_open_section_with_reward"
+    text = isSameTutorialSectionId.get() ? loc("tutorial/mainEvent/sectionInfo")
+      : "\n".concat(loc("tutorial/mainEvent/sectionInfo"), loc("tutorial/mainEvent/openSectionWithReward"))
+    hasNextKey = isSameTutorialSectionId.get()
+    objects = [{
+      keys = Computed(@() $"sectionId_{tutorialSectionIdWithReward.get()}")
+      onClick = isSameTutorialSectionId.get() ? null
+        : @() tutorialSectionId.set(tutorialSectionIdWithReward.get())
+      needArrow = true
+    }]
+    charId = "mary_points"
+  }
+  {
+    id = "s5_receive_reward"
+    beforeStart = @() wndShowEnough.set(false)
+    text = loc("tutorial/mainEvent/receiveReward")
+    objects = (questsBySection.get()?[tutorialSectionIdWithReward.get()] ?? {})
+      .reduce(function(res, q) {
+        if (!q.hasReward)
+          return res
+        let item = q.__merge({ tabId, sectionId = tutorialSectionIdWithReward.get() })
+        res.append({
+          keys = $"quest_reward_receive_btn_{item.name}"
+          onClick = @() receiveReward(item, getEventCurrencyReward(getRewardsPreviewInfo(item, serverConfigs.get())))
+          needArrow = true
+        })
+        return res
+      }, [])
+    charId = "mary_points"
+  }
+  {
+    id = "s6_show_reward_animation"
+    beforeStart = @() resetTimeout(0.5, @() wndShowEnough.set(true))
+    nextStepAfter = Computed(@() wndShowEnough.get() && unlockInProgress.get().len() == 0)
+    objects = [{ keys = "sceneRoot" }]
+  }
+  {
+    id = "s7_press_lootboxes_wnd_btn"
+    beforeStart = @() wndShowEnough.set(false)
+    text = loc("tutorial/mainEvent/openLootboxesWnd")
+    objects = [{
+      keys = "quest_header_btn"
+      onClick = @() openMainSeasonScene(LOOTBOX_TAB)
+      needArrow = true
+    }]
+    charId = "mary_like"
+  }
+  {
+    id = "s8_open_lootboxes_wnd"
+    beforeStart = @() resetTimeout(0.5, @() wndShowEnough.set(true))
+    nextStepAfter = wndShowEnough
+    objects = [{ keys = "sceneRoot" }]
+  }
+  {
+    id = "s9_open_middle_lootbox"
+    text = loc("tutorial/mainEvent/openMiddleLootbox")
+    objects = [{
+      keys = Computed(@() $"lootbox_{curEventLootboxes.get()?[1].name}")
+      onClick = @() openEventWndLootbox(curEventLootboxes.get()?[1].name)
+      needArrow = true
+    }]
+    charId = "mary_points"
+  }
+  {
+    id = "s10_show_jackpot_progress"
+    text = loc("tutorial/mainEvent/fixedProgressInfo")
+    hasNextKey = true
+    objects = [{
+      keys = "jackpot_progress"
+      needArrow = true
+    }]
+  }
+  {
+    id = "s11_show_end_time"
+    text = loc("tutorial/mainEvent/timeInfo")
+    hasNextKey = true
+    objects = [{
+      keys = "event_time"
+      needArrow = true
+    }]
+    charId = "mary_like"
+  }
+]
+
 function startTutorial() {
   let wndShowEnough = Watched(false)
+  let hasCollection = isSeasonTabVisible[COLLECTION_TAB].calcByEventId(MAIN_EVENT_ID)
   setTutorialConfig({
     id = TUTORIAL_ID
     function onStepStatus(stepId, status) {
@@ -98,90 +189,7 @@ function startTutorial() {
           needArrow = true
         }]
       }
-      {
-        id = "s4_open_section_with_reward"
-        text = isSameTutorialSectionId.get() ? loc("tutorial/mainEvent/sectionInfo")
-          : "\n".concat(loc("tutorial/mainEvent/sectionInfo"), loc("tutorial/mainEvent/openSectionWithReward"))
-        hasNextKey = isSameTutorialSectionId.get()
-        objects = [{
-          keys = Computed(@() $"sectionId_{tutorialSectionIdWithReward.get()}")
-          onClick = isSameTutorialSectionId.get() ? null
-            : @() tutorialSectionId.set(tutorialSectionIdWithReward.get())
-          needArrow = true
-        }]
-        charId = "mary_points"
-      }
-      {
-        id = "s5_receive_reward"
-        beforeStart = @() wndShowEnough.set(false)
-        text = loc("tutorial/mainEvent/receiveReward")
-        objects = (questsBySection.get()?[tutorialSectionIdWithReward.get()] ?? {})
-          .reduce(function(res, q) {
-            if (!q.hasReward)
-              return res
-            let item = q.__merge({ tabId, sectionId = tutorialSectionIdWithReward.get() })
-            res.append({
-              keys = $"quest_reward_receive_btn_{item.name}"
-              onClick = @() receiveReward(item, getEventCurrencyReward(getRewardsPreviewInfo(item, serverConfigs.get())))
-              needArrow = true
-            })
-            return res
-          }, [])
-        charId = "mary_points"
-      }
-      {
-        id = "s6_show_reward_animation"
-        beforeStart = @() resetTimeout(0.5, @() wndShowEnough.set(true))
-        nextStepAfter = Computed(@() wndShowEnough.get() && unlockInProgress.get().len() == 0)
-        objects = [{ keys = "sceneRoot" }]
-      }
-      {
-        id = "s7_press_lootboxes_wnd_btn"
-        beforeStart = @() wndShowEnough.set(false)
-        text = loc("tutorial/mainEvent/openLootboxesWnd")
-        objects = [{
-          keys = "quest_header_btn"
-          onClick = @() openMainSeasonScene(LOOTBOX_TAB)
-          needArrow = true
-        }]
-        charId = "mary_like"
-      }
-      {
-        id = "s8_open_lootboxes_wnd"
-        beforeStart = @() resetTimeout(0.5, @() wndShowEnough.set(true))
-        nextStepAfter = wndShowEnough
-        objects = [{ keys = "sceneRoot" }]
-      }
-      {
-        id = "s9_open_middle_lootbox"
-        text = loc("tutorial/mainEvent/openMiddleLootbox")
-        objects = [{
-          keys = Computed(@() $"lootbox_{curEventLootboxes.get()?[1].name}")
-          onClick = @() openEventWndLootbox(curEventLootboxes.get()?[1].name)
-          needArrow = true
-        }]
-        charId = "mary_points"
-      }
-      {
-        id = "s10_show_jackpot_progress"
-        text = loc("tutorial/mainEvent/fixedProgressInfo")
-        hasNextKey = true
-        objects = [{
-          keys = "jackpot_progress"
-          needArrow = true
-        }]
-      }
-      {
-        id = "s11_show_end_time"
-        text = loc("tutorial/mainEvent/timeInfo")
-        hasNextKey = true
-        objects = [{
-          keys = "event_time"
-          needArrow = true
-        }]
-        charId = "mary_like"
-      }
-    ]
+    ].extend(hasCollection ? [] : mkRewardSteps(wndShowEnough))
   })
 }
 

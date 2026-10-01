@@ -41,23 +41,24 @@ let requiredVersionsByLangOnline = hardPersistWatched("requiredVersionsByLangOnl
 let requiredVersions = Computed(@() requiredVersionsByLangOnline.get()?[legalApiLngId] != null
   ? legalToApprove.map(@(_, id) requiredVersionsByLangOnline.get()?[legalApiLngId][id] ?? UNKNOWN_REQ_VER)
   : null)
+let isDocsCollectionReady = @(mapTbl) legalToApprove.findvalue(@(_, id) id not in mapTbl) == null
 let acceptedVersionListsOnline = hardPersistWatched("acceptedVersionListsOnline", {})
 let acceptedVersionListsTemporary = hardPersistWatched("acceptedVersionListsTemporary", {})
 let acceptedVersionListsBackup = Watched(null)
 let acceptedVersionLists = Computed(@()
-  acceptedVersionListsOnline.get().len() != legalToApprove.len() || acceptedVersionListsBackup.get() == null
+  !isDocsCollectionReady(acceptedVersionListsOnline.get()) || acceptedVersionListsBackup.get() == null
     ? null
     : acceptedVersionListsOnline.get().map(function(v, id) {
         let res = clone (!v.contains(FAILED_ACC_VER) ? v : (acceptedVersionListsBackup.get()?[id] ?? []))
         return res.extend(acceptedVersionListsTemporary.get()?[id] ?? [])
       }))
-let needApprove = Computed(@() requiredVersions.get() == null || acceptedVersionLists.get() == null 
+let needApprove = Computed(@() acceptedVersionLists.get() == null || requiredVersions.get() == null 
   ? {}
   : legalToApprove.map(@(_, id) !isAcceptedVerActual(acceptedVersionLists.get()[id], requiredVersions.get()[id])))
 let isAcceptLegalsInProgress = Watched(false)
 let needSyncBackup = Computed(@() isOnlineSettingsAvailable.get()
   && acceptedVersionListsBackup.get() != null
-  && acceptedVersionListsOnline.get().len() == legalToApprove.len()
+  && isDocsCollectionReady(acceptedVersionListsOnline.get())
   && acceptedVersionListsOnline.get().findvalue(@(vers) vers.contains(FAILED_ACC_VER)) == null
   && !isEqual(acceptedVersionListsBackup.get(), acceptedVersionListsOnline.get()))
 let isLoginAllowed = Computed(@() legalToApprove.findvalue(@(_, id) (acceptedVersionLists.get()?[id].len() ?? 0) == 0) == null)

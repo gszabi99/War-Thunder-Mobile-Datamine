@@ -175,7 +175,16 @@ function mkBgElementImg(img, size, ovr = {}) {
   }.__update(ovr)
 }
 
-function mkBgElement(bgElem) { 
+let scaleTransitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
+
+
+function getPuzzleStateFlags(stateFlagsByIdx, idx) {
+  if (idx not in stateFlagsByIdx)
+    stateFlagsByIdx[idx] <- Watched(0)
+  return stateFlagsByIdx[idx]
+}
+
+function mkBgElement(bgElem, stateFlagsByIdx) { 
   let { id = "", img, size, pos, rotate, flipX = false, flipY = false, needShadow = false, shadowPos = [0, 0] } = bgElem
   let sizePx = size.map(hdpx)
   let idx = isStringInteger(id) ? id.tointeger() : null
@@ -196,8 +205,7 @@ function mkBgElement(bgElem) {
   })
   let hasUnseen = Computed(@() idx in curUnseenPiecesMasks.get() || idx in (curRewardsToReceive.get()?.puzzles ?? {}))
   let unseenMark = mkPriorityUnseenMarkWatch(hasUnseen, { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP })
-  let stateFlags = Watched(0)
-  let scaleTransitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
+  let stateFlags = getPuzzleStateFlags(stateFlagsByIdx, idx)
   return @() root.__merge({
     watch = [isCompleted, stateFlags]
     behavior = Behaviors.Button
@@ -226,40 +234,47 @@ function mkBgElement(bgElem) {
   })
 }
 
-let mkBgElements = @(bgElements) {
+let mkBgElements = @(bgElements, stateFlagsByIdx) {
   size = FLEX
-  children = bgElements.map(mkBgElement)
+  children = bgElements.map(@(b) mkBgElement(b, stateFlagsByIdx))
 }
 
-function mkReward(rCfg, id) {
+function mkReward(rCfg, id, stateFlagsByIdx) {
   let { pos, view = "" } = rCfg
   let idx = id.startswith("reward_") ? id.slice(7).tointeger() : null
   let puzzleCfg = Computed(@() curCollectionCfg.get()?.puzzles[idx])
   let ctor = getRewardCtor(view)
+  let posPx = pos.map(hdpx)
+  let stateFlags = idx == null ? Watched(0) : getPuzzleStateFlags(stateFlagsByIdx, idx)
   return @() {
-    watch = [puzzleCfg, curCollection]
-    pos = pos.map(hdpx)
+    watch = [puzzleCfg, curCollection, stateFlags]
+    pos = posPx
     children = ctor(
       puzzleCfg.get()?.rewards ?? [],
       number_of_set_bits((puzzleCfg.get()?.piecesMask ?? 0) & (curCollection.get()?.puzzlePiecesMasks[idx] ?? 0)),
       puzzleCfg.get()?.pieces.len() ?? 0,
       idx != null && ((curCollection.get()?.puzzleRewardsMask ?? 0) & (1 << idx)) != 0)
+    transform = stateFlags.get() & S_ACTIVE ? const { scale = [0.98, 0.98] }
+      : stateFlags.get() & S_HOVER ? const { scale = [1.02, 1.02] }
+      : const { scale = [1, 1] }
+    transitions = scaleTransitions
   }
 }
 
-let mapRewards = @(rewards) {
+let mapRewards = @(rewards, stateFlagsByIdx) {
   size = FLEX
-  children = rewards.map(mkReward).values()
+  children = rewards.map(@(r, id) mkReward(r, id, stateFlagsByIdx)).values()
 }
 
 function mapContainer(mapPreset) {
   let { bgElements, rewards } = mapPreset
+  let stateFlagsByIdx = {}
   return {
     size = FLEX
     children = [
-      mkBgElements(bgElements.filter(@(v) !v?.isOnTop))
-      mkBgElements(bgElements.filter(@(v) v?.isOnTop))
-      mapRewards(rewards)
+      mkBgElements(bgElements.filter(@(v) !v?.isOnTop), stateFlagsByIdx)
+      mkBgElements(bgElements.filter(@(v) v?.isOnTop), stateFlagsByIdx)
+      mapRewards(rewards, stateFlagsByIdx)
     ]
   }
 }

@@ -193,7 +193,7 @@ function startTutorial() {
         id = "s9_press_battle_pass_wnd_btn"
         text = loc("tutorial/battlePass/openBattlePassWnd")
         objects = [{
-          keys = "quest_header_btn"
+          keys = "pass_tab_btn"
           onClick = @() openMainSeasonScene(PASS_SCENE, BATTLE_PASS)
           needArrow = true
         }]

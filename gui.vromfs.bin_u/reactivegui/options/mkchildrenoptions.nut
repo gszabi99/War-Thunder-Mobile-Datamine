@@ -38,16 +38,24 @@ let scrollArrowsBlock = {
 
 function mkChildrenOptions(tabs) {
   let curTabIdx = mkWatched(persist, $"childrenOptions_curTabIdx", 0)
-  let resetCurTabIdx = @() curTabIdx.set(tabs.findindex(@(t) t?.isVisible.get() ?? true))
+  function updateCurTabIdx() {
+    let defaultIdx = tabs.findindex(@(t) (t?.isDefault.get() ?? false) && (t?.isVisible.get() ?? true))
+    if (defaultIdx != null) {
+      curTabIdx.set(defaultIdx)
+      return
+    }
+    let curIdx = curTabIdx.get()
+    if (curIdx not in tabs || !(tabs[curIdx]?.isVisible.get() ?? true))
+      curTabIdx.set(tabs.findindex(@(t) t?.isVisible.get() ?? true))
+  }
+  updateCurTabIdx()
 
   foreach(idx, tab in tabs) {
     let { isVisible = null } = tab
     if (isVisible == null)
       continue
     let tabIdx = idx
-    isVisible.subscribe(@(v) v || tabIdx != curTabIdx.get() ? null : resetCurTabIdx())
-    if (tabIdx == curTabIdx.get() && !isVisible.get())
-      resetCurTabIdx()
+    isVisible.subscribe(@(v) v || tabIdx != curTabIdx.get() ? null : updateCurTabIdx())
   }
 
   curTabIdx.subscribe(@(_) scrollHandler.scrollToY(0))
@@ -79,10 +87,7 @@ function mkChildrenOptions(tabs) {
 
   return {
     size = FLEX
-    function onAttach() {
-      if (curTabIdx.get() not in tabs || !(tabs[curTabIdx.get()]?.isVisible.get() ?? true))
-        resetCurTabIdx()
-    }
+    onAttach = @() updateCurTabIdx()
     children = {
       size = [FLEX, contentH]
       flow = FLOW_VERTICAL

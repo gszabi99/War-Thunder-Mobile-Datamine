@@ -10,13 +10,10 @@ from "%sqstd/datablock.nut" import eachParam, isDataBlock
 from "%sqstd/underscore.nut" import isEqual
 from "%appGlobals/clientState/clientState.nut" import isInBattle
 from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
-from "%appGlobals/unitTags.nut" import getUnitType
-from "%rGui/hudStateExt.nut" import hudUnitType
 from "%rGui/missionState.nut" import isGtRace
+from "%rGui/options/optionsUnitType.nut" import optionsUnitType
 from "%rGui/options/chooseMovementControls/groundMoveControlType.nut" import currentTankMoveCtrlType,
   currentWalkerMoveCtrlType
-from "%rGui/unit/hangarUnit.nut" import hangarUnitName
-
 
 require("%rGui/onlyAfterLogin.nut")
 
@@ -189,9 +186,7 @@ function closeTuning() {
 }
 
 function openTuningRecommended() {
-  let uType = isInBattle.get() ? hudUnitType.get()
-    : hangarUnitName.get() != "" ? getUnitType(hangarUnitName.get())
-    : null
+  let uType = optionsUnitType.get()
   openTuning(uType in allTuningUnitTypes ? uType : allTuningUnitTypes.findindex(@(_) true))
 }
 

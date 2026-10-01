@@ -1,9 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
 from "app" import get_game_version_str, get_base_game_version_str
-from "%appGlobals/unitConst.nut" import WALKER
+from "%appGlobals/unitConst.nut" import AIR, HELICOPTER, TANK, SHIP, BOAT, SUBMARINE, SAILBOAT, WALKER
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
 from "%rGui/event/eventState.nut" import unitTypesByEvent
+from "%rGui/options/optionsUnitType.nut" import mkIsCurOptionsUnitType
 from "%rGui/options/mkOptionsScene.nut" import mkOptionsScene
 from "%rGui/options/options/airControlsOptions.nut" import airControlsOptions
 from "%rGui/options/options/controlsOptions.nut" import controlsOptions
@@ -36,7 +37,7 @@ let tabs = [
   {
     locId = "options/controls"
     image = "ui/gameuiskin#menu_controls.svg"
-    children = [
+    childrenTabs = [
       {
         locId = "options/commonControls"
         image = "ui/gameuiskin#menu_controls.svg"
@@ -46,22 +47,30 @@ let tabs = [
         locId = "options/tankControls"
         image = "ui/gameuiskin#unit_tank.svg"
         options = tankControlsOptions
+        isDefault = mkIsCurOptionsUnitType([TANK])
       }
       {
         locId = "options/shipControls"
         image = "ui/gameuiskin#unit_ship.svg"
         options = shipControlsOptions
+        isDefault = mkIsCurOptionsUnitType([SHIP, BOAT, SUBMARINE, SAILBOAT])
       }
       {
         locId = "options/airControls"
         image = "ui/gameuiskin#unit_air.svg"
         options = airControlsOptions
+        isDefault = mkIsCurOptionsUnitType([AIR,
+
+
+
+          ])
       }
       {
         locId = "options/walkerControls"
         image = "ui/gameuiskin#unit_walker.svg"
         options = walkerControlsOptions
         isVisible = Computed(@() unitTypesByEvent.get()?[WALKER] ?? false)
+        isDefault = mkIsCurOptionsUnitType([WALKER])
       }
     ]
   }

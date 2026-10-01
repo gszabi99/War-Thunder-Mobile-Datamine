@@ -59,6 +59,7 @@ let hasQuestsUnseen = @(tabsList, questsCfgV, prUnlockByTab, hasUnseenBySection,
 
 let sceneContentCfg = {
   [PASS_SCENE] = {
+    key = "pass_tab_btn" 
     icon = "ui/gameuiskin#icon_bp.svg"
     label = "pass"
     defaultSubId = Computed(@() visibleTabs.get().len() > 0 ? visibleTabs.get()?[0] : BATTLE_PASS)

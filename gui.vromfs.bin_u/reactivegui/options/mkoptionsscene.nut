@@ -90,8 +90,8 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, headerC
       : {
           watch = curTabIdx
           size = FLEX
-          children = tab?.children
-            ? mkChildrenOptions(tab?.children)
+          children = tab?.childrenTabs
+            ? mkChildrenOptions(tab?.childrenTabs)
             : [
                 mkVerticalPannableArea(
                   {

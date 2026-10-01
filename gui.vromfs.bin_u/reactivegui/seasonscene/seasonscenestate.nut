@@ -33,6 +33,8 @@ const BATTLE_TAB = "battle"
 const LEADERBOARD_TAB = "leaderboard_tab"
 const COLLECTION_TAB = "collection"
 
+const SEASON_SCENE_ID = "seasonScene"
+
 let playerSelectedSeasonTab = mkWatched(persist, "playerSelectedSeasonTab", PASS_SCENE)
 let seasonSceneOpenCounter = mkWatched(persist, "seasonSceneOpenCounter", 0)
 
@@ -248,6 +250,7 @@ return {
   MAP_TAB
   LEADERBOARD_TAB
   COLLECTION_TAB
+  SEASON_SCENE_ID
   questTabsByEventId
   isSeasonTabVisible
   playerSelectedSeasonTab

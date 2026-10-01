@@ -4232,6 +4232,9 @@
         },
         "pc500kg_slot2": {
           "reqModification": "aircraft_mod_13"
+        },
+        "de_sc1800": {
+          "reqModification": "aircraft_mod_14"
         }
       }
     },
@@ -16492,7 +16495,8 @@
         },
         "pc1000kg": {
           "reqModification": "aircraft_mod_10"
-        }
+        },
+        "1800kg": {}
       }
     },
     "bullets": {
