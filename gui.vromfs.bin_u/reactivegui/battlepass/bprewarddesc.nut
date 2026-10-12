@@ -5,6 +5,7 @@ from "%appGlobals/config/decalsPresentation.nut" import getDecalDescPresentation
 from "%appGlobals/config/lootboxPresentation.nut" import getEventLootboxSizeMul
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_BP
 from "%rGui/components/gradientDefComps.nut" import doubleSideGradient, doubleSideGradientPaddingX
 from "%rGui/components/infoButton.nut" import infoCommonButton
 from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
@@ -30,6 +31,10 @@ const unitInfoBtnSize = evenPx(50)
 let mkUnitPlate = @(unitId, isUpgraded = false) function() {
   let res = { watch = serverConfigs }
   let unit = serverConfigs.get()?.allUnits[unitId].__merge({ isUpgraded })
+  function onClick() {
+    sendUnitBqEventOnce(BQ_DETAILS_BP, unitId)
+    openUnitDetailsWnd({ name = unitId, isUpgraded })
+  }
   if (unit == null)
     return res
   return res.__update({
@@ -47,7 +52,7 @@ let mkUnitPlate = @(unitId, isUpgraded = false) function() {
           vplace = ALIGN_BOTTOM
           padding = hdpx(10)
           children = infoCommonButton(
-            @() openUnitDetailsWnd({ name = unitId, isUpgraded }),
+            onClick,
             { size = unitInfoBtnSize, hotkeys = [["^J:Y", loc("msgbox/btn_more")]] }
           )
         }

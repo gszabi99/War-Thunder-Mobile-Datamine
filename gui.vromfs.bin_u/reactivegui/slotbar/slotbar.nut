@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import resetTimeout, clearTimer, deferOnce
 from "sound_wt" import playSound
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_SLOTBAR
 from "%appGlobals/currenciesState.nut" import balance, GOLD
 from "%appGlobals/pServer/campaign.nut" import campConfigs
 from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg
@@ -357,6 +358,12 @@ function mkHasUnseenUnitDetails(unit, hasUnseenArsenal) {
   })
 }
 
+function onOpenUnitDetailsWnd (unit) {
+  let unitName = unit.get()?.name ?? hangarUnitName.get()
+  sendUnitBqEventOnce(BQ_DETAILS_SLOTBAR, unitName)
+  openUnitDetailsWnd({ name = unitName })
+}
+
 function actionBtns(unit, hasUnseenArsenal, hasUnseenAttributes, hasUnitWeaponSlots, idx) {
   let showBtns = Computed(@() selectedSlotIdx.get() == idx)
   let hasUnseenInfo = mkHasUnseenUnitDetails(unit, hasUnseenArsenal)
@@ -377,7 +384,7 @@ function actionBtns(unit, hasUnseenArsenal, hasUnseenAttributes, hasUnitWeaponSl
               animations = changeBtnAnimation
               opacity = 0.5
             })
-        : translucentTextSlotButton("i", @() openUnitDetailsWnd({ name = unit.get()?.name ?? hangarUnitName.get() }),
+        : translucentTextSlotButton("i", @() onOpenUnitDetailsWnd(unit),
             statusUnseenMark(hasUnseenInfo),
             {
               bitMask = COMMADN_STATE.LEFT,
@@ -518,7 +525,7 @@ function fakeSlotMainMenu() {
         gap = lineWidth
         children = [
           translucentTextSlotButton("i",
-            @() openUnitDetailsWnd({ name = unit.get().name }),
+            @() onOpenUnitDetailsWnd(unit),
             statusUnseenMark(hasUnseenInfo),
             { bitMask = COMMADN_STATE.LEFT, animations = changeBtnAnimation })
           translucentImgSlotButton("ui/gameuiskin#arsenal.svg",

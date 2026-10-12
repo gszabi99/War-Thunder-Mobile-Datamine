@@ -1,11 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 from "hangar" import DM_VIEWER_NONE, DM_VIEWER_ARMOR, DM_VIEWER_XRAY
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_ARMOR_VIEW, BQ_X_RAY_VIEW
 from "%appGlobals/permissions.nut" import allow_dm_viewer, allow_dm_viewer_ships_armor
 from "%appGlobals/unitConst.nut" import SHIP, BOAT, SUBMARINE
 from "%rGui/dmViewer/dmViewerState.nut" import dmViewerMode
 from "%rGui/style/gradients.nut" import mkColoredGradientY
 from "%rGui/unit/hangarUnit.nut" import hasHangarUnitResources
-
 
 let forAnyUnit = @(_unitW) Watched(true)
 let noArmorForShips = @(unitW) Computed(
@@ -13,8 +13,8 @@ let noArmorForShips = @(unitW) Computed(
 
 let btnsCfg = [
   { mode = DM_VIEWER_NONE,  text = loc("dm_viewer/mode/none"),  mkIsVisible = forAnyUnit }
-  { mode = DM_VIEWER_ARMOR, text = loc("dm_viewer/mode/armor"), mkIsVisible = noArmorForShips }
-  { mode = DM_VIEWER_XRAY,  text = loc("dm_viewer/mode/xray"),  mkIsVisible = forAnyUnit }
+  { mode = DM_VIEWER_ARMOR, text = loc("dm_viewer/mode/armor"), mkIsVisible = noArmorForShips, bqEvent = BQ_ARMOR_VIEW }
+  { mode = DM_VIEWER_XRAY,  text = loc("dm_viewer/mode/xray"),  mkIsVisible = forAnyUnit, bqEvent = BQ_X_RAY_VIEW }
 ]
 
 const plateH = hdpx(70)
@@ -37,17 +37,23 @@ let btnBgHovered = {
 }
 
 function mkModeBtn(btnCfg, unitW) {
-  let { mode, text, mkIsVisible } = btnCfg
+  let { mode, text, mkIsVisible, bqEvent = null } = btnCfg
   let stateFlags = Watched(0)
   let isSelected = Computed(@() dmViewerMode.get() == mode)
   let isVisible = mkIsVisible(unitW)
+  function onClick() {
+    if (bqEvent)
+      sendUnitBqEventOnce(bqEvent, unitW.get()?.name)
+
+    dmViewerMode.set(mode)
+  }
   return @() !isVisible.get() ? { watch = isVisible } : {
     watch = [stateFlags, isSelected, isVisible]
     size = const [FLEX, btnH]
 
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
-    onClick = @() dmViewerMode.set(mode)
+    onClick
     sound = { click  = "click" }
     transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
     transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]

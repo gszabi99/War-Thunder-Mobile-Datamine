@@ -65,20 +65,7 @@
             "loc_name": "",
             "spawnEffect": false,
             "isGroundZone": false,
-            "isUnit": false,
             "radius": -1.0,
-            "isStrictSpawn": false,
-            "isAirfield": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "replaceAreas": false,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
             "target": [
               "artillery_spawn01",
               "artillery_spawn02",
@@ -86,6 +73,19 @@
               "artillery_spawn04"
             ],
             "team": "A",
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
             "tags": {
               "artillery": true
             }
@@ -93,6 +93,9 @@
           {
             "loc_name": "",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@PLAYER_SPAWN",
+            "team": "A",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
@@ -106,9 +109,6 @@
             "replaceAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": false,
-            "radius": -1.0,
-            "target": "@PLAYER_SPAWN",
-            "team": "A",
             "tags": {
               "tank": true
             }
@@ -292,8 +292,7 @@
             "set_tanks_mrank_09",
             "set_tanks_mrank_10",
             "set_tanks_mrank_11",
-            "set_tanks_mrank_12",
-            "set_tanks_mrank_13"
+            "set_tanks_mrank_12"
           ]
         }
       },
@@ -2880,11 +2879,11 @@
               }
             ],
             "unitSetProperties": {
+              "object": "@target_tanks_squad",
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object_var_value": 0,
-              "object": "@target_tanks_squad",
               "forceVisibleOnMap": true,
               "attack_type": "dont_aim",
               "speed": 25.0,
@@ -3281,6 +3280,7 @@
               "target_var_name": "",
               "target_var_comp_op": "equal",
               "target_var_value": 0,
+              "shouldKeepAirFormation": true,
               "object": "@target_plane"
             },
             "varModify": {
@@ -3289,11 +3289,11 @@
               "var": "plane_num"
             },
             "unitSetProperties": {
+              "object": "target_planes_squad",
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object_var_value": 0,
-              "object": "target_planes_squad",
               "speedVar": "plane_speed",
               "throttle": 1.0,
               "lockSpeed": true,
@@ -3307,11 +3307,11 @@
           },
           "else_actions": {
             "unitSetProperties": {
+              "object": "@target_planes_squad",
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object_var_value": 0,
-              "object": "@target_planes_squad",
               "forceVisibleOnMap": true,
               "attack_type": "dont_aim"
             },
@@ -4958,7 +4958,71 @@
           "clean_zone03"
         ]
       }
-    }
+    },
+    "objectGroups": [
+      {
+        "name": "objectGroups_01",
+        "tm": [
+          [
+            0.921231,
+            0.0,
+            -0.389017
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.389017,
+            0.0,
+            0.921231
+          ],
+          [
+            846.95,
+            114.7,
+            3146.75
+          ]
+        ],
+        "unit_class": "det_factory_small_building_a",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_02",
+        "tm": [
+          [
+            0.921231,
+            0.0,
+            -0.389017
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.389017,
+            0.0,
+            0.921231
+          ],
+          [
+            687.75,
+            114.7,
+            3131.6
+          ]
+        ],
+        "unit_class": "det_factory_small_building_b",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    ]
   },
   "areas": {
     "artillery_spawn01": {

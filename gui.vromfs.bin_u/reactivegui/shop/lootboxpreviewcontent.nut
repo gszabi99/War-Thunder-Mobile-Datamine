@@ -13,6 +13,7 @@ import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/timeToText.nut" import secondsToHoursLoc
 from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_LOOTBOX_PREVIEW
 from "%rGui/components/buttonStyles.nut" import PRIMARY
 from "%rGui/components/currencyComp.nut" import mkCurrencyImage
 import "%rGui/components/currencyStyles.nut" as currencyStyles
@@ -65,7 +66,11 @@ let roundChance = @(chance) chance > 1 ? round_by_value(chance, 0.1) : roundToDi
 
 let getSlotsInRow = @(width, style) 2 * max(1, (width + style.boxGap).tointeger() / (style.boxSize + style.boxGap) / 2)
 
-let mkUnitPlateClick = @(r) @() openUnitDetailsWnd({ name = r.id, isUpgraded = r.rType == G_UNIT_UPGRADE })
+let mkUnitPlateClick = @(r) function() {
+  sendUnitBqEventOnce(BQ_DETAILS_LOOTBOX_PREVIEW, r.id)
+  openUnitDetailsWnd({ name = r.id, isUpgraded = r.rType == G_UNIT_UPGRADE })
+}
+
 let mkPlateClickByType = {
   [G_BLUEPRINT] = mkUnitPlateClick,
   [G_UNIT] = mkUnitPlateClick,

@@ -4,6 +4,7 @@ from "wt.behaviors" import HangarCameraControl
 from "%sqstd/string.nut" import utf8ToUpper, utf8ToLower
 from "%sqstd/underscore.nut" import arrayByRows
 from "%darg/helpers/bitmap.nut" import mkBitmapPicture
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_PROTECTION_MAP, BQ_SIMULATION
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
 from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
 from "%appGlobals/unitPresentation.nut" import getUnitName
@@ -188,7 +189,12 @@ let fireDistanceSlider = sliderWithButtons(
   }
 )
 
-let protMapBtn = textButtonCommon(utf8ToUpper(loc("mainmenu/protectionMap")), @() protectionMapUpdate(),
+function protectionMapOnClick() {
+  sendUnitBqEventOnce(BQ_PROTECTION_MAP, inspectedBaseUnit.get()?.name)
+  protectionMapUpdate()
+}
+
+let protMapBtn = textButtonCommon(utf8ToUpper(loc("mainmenu/protectionMap")), protectionMapOnClick,
   { useFlexText = true })
 let protMapWaiting = {
   size = calc_comp_size(protMapBtn)
@@ -257,6 +263,7 @@ let paramsRight = {
 
 function openSimulation() {
   let unitName = threatUnit.get().name
+  sendUnitBqEventOnce(BQ_SIMULATION, inspectedBaseUnit.get()?.name)
   if ((unitSizes.get()?[unitName] ?? 0) == 0) {
     isSimulationMode.set(true)
     return

@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.random" import rnd_float
 from "dagor.time" import get_time_msec
-from "dagor.udp" import send, last_error
+from "dagor.udp" import send, close_socket, last_error
 from "dagor.workcycle" import resetTimeout, clearTimer
 from "eventbus" import eventbus_send, eventbus_subscribe, eventbus_unsubscribe
 from "iostream" import blob
@@ -15,6 +15,7 @@ from "%appGlobals/clustersState.nut" import OPTIMAL_RTT_LIMIT_MS, OPTIMAL_RTT_LI
   REACHABILITY_CHECK_TIMEOUT_SEC, clusterStats, optimalClusters, selClusters, unreachableHosts,
   lastReachabilityUpdateTimeMs, isWaitingManualRefresh
 from "%appGlobals/loginState.nut" import isMatchingOnline
+from "%appGlobals/windowState.nut" import windowActive
 from "%appGlobals/permissions.nut" import can_send_hosts_reachability_to_matching
 from "%appGlobals/profileStates.nut" import myUserId
 from "%appGlobals/queueState.nut" import isInQueue
@@ -37,6 +38,7 @@ const NEW_HOST_PROBE_MAX_DELAY_SEC = 600
 const SAMPLES_COUNT_MAX = 5 
 const RETRY_PROBE_DELAY_SEC = 30 
 const MAX_ERRORS = 3 
+const MIN_DELAY_TO_REOPEN_SOCKET_MS = 300 
 const INSIGNIFICANT_RTT_DIFF_MS = 25 
 const MINOR_MS = 1000 
 const REACHABILITY_EXPIRE_SEC = 300 
@@ -47,7 +49,8 @@ let requestsCounter = hardPersistWatched("requestsCounter", 0)
 
 
 let hostsCfg = hardPersistWatched("hostsCfg", {})
-let isProbingActive = Computed(@() isInMenu.get() && isMatchingOnline.get())
+let isProbingActive = Computed(@() isInMenu.get() && isMatchingOnline.get() && windowActive.get())
+let lastCloseSocketTimeMs = hardPersistWatched("lastCloseSocketTimeMs", 0)
 let needResetRttOnRefresh = hardPersistWatched("needResetRttOnRefresh", false)
 
 
@@ -150,13 +153,14 @@ function scheduleNextProbeTime(func) {
       earliestTimeMs = min(earliestTimeMs, normalizedAnswerTimeMs + probingIntervalMs)
     }
   }
-  let timeLeftSec = hasNewHosts
+  local timeLeftSec = hasNewHosts
     
     
     ? (NEW_HOST_PROBE_MAX_DELAY_SEC * rnd_float(0.0, 1.0))
     
     
     : max(0.1, (earliestTimeMs - nowMs) / 1000.0)
+  timeLeftSec = max(timeLeftSec, (lastCloseSocketTimeMs.get() + MIN_DELAY_TO_REOPEN_SOCKET_MS - nowMs) / 1000.0)
   if (hasNewHosts)
     logOC($"New hosts detected, probe scheduled in {timeLeftSec} sec")
   resetTimeout(timeLeftSec, func)
@@ -534,6 +538,8 @@ function startProbe() {
 }
 
 function stopProbe() {
+  lastCloseSocketTimeMs.set(get_time_msec())
+  close_socket(CLIENT_SOCKET_ID)
   eventbus_unsubscribe("udp.on_packet", onUdpPacket)
   eventbus_unsubscribe("clusters_refresh_now", onRefreshNowEvent)
   clearTimer(tryProbeHosts)

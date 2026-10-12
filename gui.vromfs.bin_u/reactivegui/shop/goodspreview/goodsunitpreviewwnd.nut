@@ -16,6 +16,7 @@ from "%appGlobals/pServer/slots.nut" import isCampaignWithSlots
 from "%appGlobals/rentalState.nut" import battleRentInfo, rentalCd
 from "%appGlobals/rewardType.nut" import unitRewardTypes, G_UNIT_UPGRADE, G_UNIT, G_BLUEPRINT, G_BATTLE_MOD, G_SKIN
 from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitName
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_UNIT_PREVIEW
 from "%rGui/components/backButton.nut" import backButtonHeight
 from "%rGui/components/gradTexts.nut" import mkGradRank
 from "%rGui/components/infoButton.nut" import infoEllipseButton
@@ -166,6 +167,7 @@ function openDetailsWnd() {
   let { skin = null } = unitForShow.get()
   if (skin != null)
     cfg.skin <- skin
+  sendUnitBqEventOnce(BQ_DETAILS_UNIT_PREVIEW, name)
   openUnitDetailsWnd(cfg)
 }
 

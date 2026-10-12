@@ -15,9 +15,10 @@ function applyRights(result) {
     return
   }
 
-  logR("Apply permissions")
+  let permissions = readPermissions(clientPermJwt, myUserId.get())
+  logR($"Apply permissions ({permissions?.value.len()})")
   rights.set({
-    permissions = readPermissions(clientPermJwt, myUserId.get())
+    permissions
     penalties = readPenalties(penaltiesJwt, myUserId.get())
     penaltiesJwt
     dedicatedPermJwt

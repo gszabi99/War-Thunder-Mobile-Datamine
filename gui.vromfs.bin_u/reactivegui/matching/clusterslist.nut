@@ -4,7 +4,7 @@ from "dagor.workcycle" import deferOnce
 from "eventbus" import eventbus_send
 from "%appGlobals/clustersState.nut" import clustersRaw, selClusters
 from "%appGlobals/defaultClusters.nut" import getForbiddenClustersByCountry
-from "%appGlobals/loginState.nut" import isMatchingConnected, isLoggedIn
+from "%appGlobals/loginState.nut" import isMatchingOnline, isMatchingConnected, isLoggedIn
 from "%rGui/matching/matchingApi.nut" import matching_subscribe, matchingRpcRegisterHandler
 import "%rGui/matching/matchingRequestWithRetries.nut" as matchingRequestWithRetries
 import "showMatchingError.nut" as showMatchingError
@@ -12,6 +12,7 @@ from "types" import Array
 
 
 let logC = log_with_prefix("[CLUSTERS] ")
+let canFetchClusters = keepref(Computed(@() isMatchingOnline.get() && isMatchingConnected.get()))
 let requestLogout = @() eventbus_send("logOut", {})
 
 function getValidClusters(clustersList) {
@@ -19,12 +20,16 @@ function getValidClusters(clustersList) {
   return clustersList.filter(@(cluster) !forbiddenClusters.contains(cluster))
 }
 
-let restartFetchClusters = @() matchingRequestWithRetries({
-  cmd = "wtmm_static.fetch_clusters_list"
-  params = null
-  isForced = true
-  onFinish = "onClustersListFetched"
-})
+function restartFetchClusters() {
+  if (!canFetchClusters.get())
+    return
+  matchingRequestWithRetries({
+    cmd = "wtmm_static.fetch_clusters_list"
+    params = null
+    isForced = true
+    onFinish = "onClustersListFetched"
+  })
+}
 
 matchingRpcRegisterHandler("onClustersListFetched", function(result) {
   if ("error" in result) {
@@ -63,10 +68,9 @@ function onClustersChanged(params) {
 
 matching_subscribe("match.notify_clusters_changed", onClustersChanged)
 
-if (isMatchingConnected.get() && clustersRaw.get().len() == 0)
-  restartFetchClusters()
-
-isMatchingConnected.subscribe(@(v) !v ? null : restartFetchClusters())
 isLoggedIn.subscribe(@(v) v ? null : clustersRaw.set([]))
+canFetchClusters.subscribe(@(v) !v ? null : restartFetchClusters())
+if (clustersRaw.get().len() == 0)
+  restartFetchClusters()
 
 selClusters.subscribe(@(v) logC($"Country \"{getCountryCode()}\", selected clusters:", v))

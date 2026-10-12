@@ -6,6 +6,7 @@ from "hangarEventCommand" import set_protection_checker_params, protection_exami
   set_dm_viewer_pointer_screenpos
 from "math" import round
 from "%sqstd/underscore.nut" import isEqual
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_PROTECTION_ANALYSIS
 from "%appGlobals/config/countryPresentation.nut" import sortCountries
 from "%appGlobals/permissions.nut" import allow_protection_analysis
 from "%rGui/dmViewer/dmViewerPkg.nut" import hitProbMinorColor
@@ -68,6 +69,7 @@ inspectedUnit.subscribe(function(v) {
 })
 
 function openProtectionAnalysis(unit, baseUnit) {
+  sendUnitBqEventOnce(BQ_PROTECTION_ANALYSIS, baseUnit?.name)
   inspectedUnit.set(unit)
   inspectedBaseUnit.set(baseUnit)
 }

@@ -9,6 +9,7 @@ from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/rewardType.nut" import G_CURRENCY, G_ITEM, G_BATTLE_MOD, unitRewardTypes
 from "%appGlobals/unitConst.nut" import AIR, TANK
 from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitClassFontIcon, getUnitName
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_GOODS_UNIT_PURCHASED
 from "%rGui/components/currencyComp.nut" import mkCurrencyImage
 from "%rGui/components/discountTag.nut" import discountTagBig, discountTag
 from "%rGui/components/gradTexts.nut" import mkGradRank
@@ -182,9 +183,10 @@ function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
   let border = mkBorderByCurrency(borderBg, isFreeReward, price?.currencyId)
 
   function onUnitClick() {
-    if (isPurchased)
+    if (isPurchased) {
+      sendUnitBqEventOnce(BQ_DETAILS_GOODS_UNIT_PURCHASED, unit?.name)
       openUnitDetailsWnd(unit)
-    else
+    } else
       onClick()
     saveSeenGoods([goods.id])
   }
@@ -208,7 +210,13 @@ function mkGoodsUnit(goods, onClick, state, animParams, addChildren) {
       sf & S_HOVER ? bgHiglight : null
       mkUnitImg(unitImg, [(goodsSmallSize[0] * unitImgScale).tointeger(), (goodsBgH * unitImgScale).tointeger()])
       mkUnitTexts(goods, unit)
-      mkSquareIconBtn(fonticonPreview, @() isPurchased ? openUnitDetailsWnd(unit) : openGoodsPreview(goods.id),
+      mkSquareIconBtn(fonticonPreview, function() {
+        if (isPurchased) {
+          sendUnitBqEventOnce(BQ_DETAILS_GOODS_UNIT_PURCHASED, unit?.name)
+          openUnitDetailsWnd(unit)
+        } else
+          openGoodsPreview(goods.id)
+      },
         { vplace = ALIGN_BOTTOM, margin = hdpx(20) })
       mkConsumableIcons(consumableItems)
       mkMRank(unit?.mRank)

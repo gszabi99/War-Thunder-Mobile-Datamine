@@ -18,6 +18,7 @@ import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
 from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, getDay, dayOffset, dayEndsAt
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_SLOTS_PREVIEW
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp
 from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
@@ -259,6 +260,11 @@ let mkHightlightPlate = @(isSelected, rStyle) {
   ]
 }
 
+function openUnit(name) {
+  sendUnitBqEventOnce(BQ_DETAILS_SLOTS_PREVIEW, name)
+  openUnitDetailsWnd({ name })
+}
+
 function mkSlot(reward, rStyle) {
   let size = getRewardPlateSize(reward.slots, rStyle)
   let stateFlags = Watched(0)
@@ -274,7 +280,7 @@ function mkSlot(reward, rStyle) {
     onClick = @() rewardSlots.get()?.isPurchased
         ? null
       : isSelected.get()
-        ? openUnitDetailsWnd({ name = reward.id })
+        ? openUnit(reward.id)
       : selIndex.set(reward.slotIdx)
     sound = rewardSlots.get()?.isPurchased ? {} : { click  = "click" }
     onAttach = @() openedUnitFromTree.get() == unit.get()?.name ? selIndex.set(reward.slotIdx) : null

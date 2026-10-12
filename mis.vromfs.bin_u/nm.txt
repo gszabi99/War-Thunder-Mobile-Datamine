@@ -8864,3 +8864,6 @@ missions/_Conq1
 abandoned_factory/name
 missions/_Conq2
 missions/_Conq3
+shouldKeepAirFormation
+det_factory_small_building_a
+det_factory_small_building_b

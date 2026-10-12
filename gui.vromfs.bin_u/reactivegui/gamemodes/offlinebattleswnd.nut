@@ -9,6 +9,7 @@ from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%appGlobals/pServer/profile.nut" import campUnitsCfg, curUnit
 from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/unitTags.nut" import getUnitTagsCfg
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_OFFLINE_BATTLES
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/buttonStyles.nut" import defButtonMinWidth
 from "%rGui/components/closeWndBtn.nut" import closeWndBtn
@@ -206,6 +207,7 @@ let mkUnitHeadItem = @(v) {
       behavior = Behaviors.Button
       function onClick() {
         savedUnitForReturn.set(selectedUnit.get()?.name ?? "")
+        sendUnitBqEventOnce(BQ_DETAILS_OFFLINE_BATTLES, selectedUnit.get()?.name)
         openUnitDetailsWnd({ name = selectedUnit.get().name })
       }
       rendObj = ROBJ_BOX

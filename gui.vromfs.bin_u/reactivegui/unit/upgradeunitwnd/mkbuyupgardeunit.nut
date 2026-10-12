@@ -3,6 +3,7 @@ from "%appGlobals/currenciesState.nut" import GOLD
 from "%appGlobals/pServer/pServerApi.nut" import buy_upgrade_unit, registerHandler
 from "%appGlobals/pServer/profile.nut" import campUnitsCfg
 from "%appGlobals/unitPresentation.nut" import getUnitPresentation
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_UNIT_UPGRADE_WND
 import "%rGui/components/buttonStyles.nut" as buttonStyles
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp
 from "%rGui/components/infoButton.nut" import infoCommonButton
@@ -36,6 +37,10 @@ let openConfirmationWnd = @(unit, price) openMsgBoxPurchase({
   spendingCountry = campUnitsCfg.get()?[unit.name].country ?? ""
 })
 
+function onInfoBtnClick(unit) {
+  sendUnitBqEventOnce(BQ_DETAILS_UNIT_UPGRADE_WND, unit?.name)
+  openUnitDetailsWnd(unit)
+}
 
 let mkBuyUpgardeUnit = @(unit) {
   size = [ offerCardWidth, SIZE_TO_CONTENT ]
@@ -45,7 +50,7 @@ let mkBuyUpgardeUnit = @(unit) {
   halign = ALIGN_LEFT
   children = [
     infoCommonButton(
-      @() openUnitDetailsWnd(unit),
+      @() onInfoBtnClick(unit),
       {
         size = [buttonStyles.defButtonHeight, buttonStyles.defButtonHeight]
         hotkeys = [["^J:Y", loc("msgbox/btn_more")]]

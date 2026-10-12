@@ -6,6 +6,7 @@ from "wt.behaviors" import HangarCameraControl
 import "%darg/helpers/mkTextRow.nut" as mkTextRow
 from "%appGlobals/pServer/profile.nut" import campUnitsCfg
 from "%appGlobals/rewardType.nut" import G_SKIN, unitRewardTypes
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_SKIN_PREVIEW
 from "%rGui/components/infoButton.nut" import infoEllipseButton
 from "%rGui/components/modalWindows.nut" import hideModals, unhideModals
 from "%rGui/mainMenu/balanceComps.nut" import mkCurrencyBalance
@@ -122,6 +123,7 @@ function openDetailsWnd() {
     ?? unitForShow.get()?.currentSkins[unitForShow.get()?.name] 
   if (skin != null)
     cfg.skin <- skin
+  sendUnitBqEventOnce(BQ_DETAILS_SKIN_PREVIEW, name)
   openUnitDetailsWnd(cfg)
 }
 

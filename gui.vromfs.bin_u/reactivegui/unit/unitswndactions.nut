@@ -4,6 +4,7 @@ from "%sqstd/math.nut" import abs
 from "%sqstd/string.nut" import utf8ToUpper
 from "%sqstd/time.nut" import secondsToTimeSimpleString, TIME_DAY_IN_SECONDS
 import "%darg/helpers/mkTextRow.nut" as mkTextRow
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_UNITTREE
 from "%appGlobals/currenciesState.nut" import GOLD
 from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%appGlobals/pServer/pServerApi.nut" import unitInProgress, curUnitInProgress, firstRewardInProgress,
@@ -103,8 +104,13 @@ function findGoodsPrem(shopGoodsList) {
   return res
 }
 
+function onOpenUnitDetailsWnd() {
+  let unitName = hangarUnitName.get()
+  sendUnitBqEventOnce(BQ_DETAILS_UNITTREE, unitName)
+  openUnitDetailsWnd({ name = unitName })
+}
 let infoBtn = infoCommonButton(
-  @() openUnitDetailsWnd({ name = hangarUnitName.get() })
+  onOpenUnitDetailsWnd
   {
     size = [defButtonHeight, defButtonHeight]
     hotkeys = [["^J:Y", loc("msgbox/btn_more")]]

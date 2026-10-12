@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/currenciesState.nut" import WARBOND, NYBOND, APRILBOND
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/rewardType.nut" import G_UNIT, G_STAT_ADD
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_QUEST_REWARD
 from "%rGui/components/buttonStyles.nut" import COMMON
 from "%rGui/components/glare.nut" import mkGlare
 from "%rGui/components/spinner.nut" import spinner
@@ -108,9 +109,14 @@ let rewardProgressBarCtor = @(r, isUnlocked, onClick, canReceiveReward, isReward
   ]
 }
 
+function onUnitRewardClick(name) {
+  sendUnitBqEventOnce(BQ_DETAILS_QUEST_REWARD, name)
+  openUnitDetailsWnd({name})
+}
+
 let mkQuestRewardPlate = @(r, startIdx, rewards, isQuestFinished = false, rStyle = rStyleDefault) {
   behavior = Behaviors.Button
-  onClick = @() r.rType == G_UNIT ? openUnitDetailsWnd({ name = r.id }) : openRewardsList(rewards, isQuestFinished)
+  onClick = @() r.rType == G_UNIT ? onUnitRewardClick(r.id) : openRewardsList(rewards, isQuestFinished)
   children = [
     mkRewardPlate(r, rStyle, {
       key = {}
@@ -133,7 +139,7 @@ let mkRewardPlateWithAnim = @(r, appearTime, isQuestFinished = Watched(false), h
     if (handleClick?())
       return
     if (r.rType == G_UNIT)
-      openUnitDetailsWnd({ name = r.id })
+      onUnitRewardClick(r.id)
   }
   children = [
     mkRewardPlate(r, rStyle, {

@@ -16496,7 +16496,9 @@
         "pc1000kg": {
           "reqModification": "aircraft_mod_10"
         },
-        "1800kg": {}
+        "1800kg": {
+          "reqModification": "aircraft_mod_11"
+        }
       }
     },
     "bullets": {
@@ -64635,7 +64637,7 @@
     "hangar_place": "tank",
     "testFlight": "testFlight_ussr_tft",
     "tags": {
-      "country_france": true,
+      "country_usa": true,
       "tank": true,
       "type_medium_tank": true
     },
@@ -87806,7 +87808,7 @@
     "testFlight": "testFlight_ERA_tft",
     "operatorCountry": "country_israel",
     "tags": {
-      "country_usa": true,
+      "country_israel": true,
       "tank": true,
       "type_medium_tank": true
     },

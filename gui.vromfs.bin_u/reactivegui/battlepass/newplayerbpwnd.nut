@@ -6,6 +6,7 @@ from "%appGlobals/pServer/pServerApi.nut" import shopPurchaseInProgress
 from "%appGlobals/timeToText.nut" import secondsToHoursLoc
 from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_NB_BP
 from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle, bpCardPadding, bpCardHeight, bpCardMargin
 import "%rGui/battlePass/bpProgressBarSimple.nut" as bpProgressBarSimple
 from "%rGui/battlePass/newPlayerBpState.nut" import mkNPPaidStageList, mkNPFreeStageList, winsCount, closeNPWnd,
@@ -141,6 +142,7 @@ let previewComp = @(viewInfo) viewInfo?.rType != "unit" ? null : {
   behavior = Behaviors.Button
   function onClick() {
     closeMsgBox("npRewardInfo")
+    sendUnitBqEventOnce(BQ_DETAILS_NB_BP, viewInfo?.id)
     openUnitDetailsWnd({ name = viewInfo.id })
   }
   color = 0x80000000

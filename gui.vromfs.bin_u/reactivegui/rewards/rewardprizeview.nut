@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/rewardType.nut" import *
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_RECEIVED_REWARD
 from "%rGui/components/modalWindows.nut" import removeModalWindow
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM, getRewardPlateSize
 from "%rGui/rewards/rewardsPreviewModal.nut" import openRewardsPreviewModal
@@ -11,11 +12,15 @@ from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
 const WND_UID = "rewardPrizeView"
 
 
-let mkUnitPlateClick = @(r) openUnitDetailsWnd({ name = r.id, isUpgraded = r.rType == G_UNIT_UPGRADE })
+function unitPlateClick(r) {
+  sendUnitBqEventOnce(BQ_DETAILS_RECEIVED_REWARD, r.id)
+  openUnitDetailsWnd({ name = r.id, isUpgraded = r.rType == G_UNIT_UPGRADE })
+}
+
 let mkPlateClickByType = {
-  [G_BLUEPRINT] = mkUnitPlateClick,
-  [G_UNIT] = mkUnitPlateClick,
-  [G_UNIT_UPGRADE] = mkUnitPlateClick,
+  [G_BLUEPRINT] = unitPlateClick,
+  [G_UNIT] = unitPlateClick,
+  [G_UNIT_UPGRADE] = unitPlateClick,
 }
 
 function mkRewardPlateBg(r, rStyle) {
