@@ -69,8 +69,8 @@ isSuggested.subscribe(function(v) {
 })
 
 let ver = get_base_game_version_str()
-let canCloseByVersion = ver == "" || check_version($"<{INCOMPATIBLE_FROM_VERSION}", ver)
-let canClose = keepref(Computed(@() canCloseByVersion && !shouldSuggestSwitchClient.get()))
+let canCloseBySourceOrVersion = isDownloadedFromSite || check_version($"<{INCOMPATIBLE_FROM_VERSION}", ver)
+let canClose = keepref(Computed(@() canCloseBySourceOrVersion && !shouldSuggestSwitchClient.get()))
 
 registerHandler("onMigAccInfoReceived", function(res) { info = res })
 let requestInfo = @() get_migrate_acc_info("onMigAccInfoReceived")

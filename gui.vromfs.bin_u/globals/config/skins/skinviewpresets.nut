@@ -330,6 +330,7 @@ let skinsByTag = {
     "camo_blackbrown_spots"
     "camo_bluewhite_waves"
     "camo_desert_geometry"
+    "camo_twocolors_lines"
 
     "camo_blackgray_spots"
     "camo_blue_spots"

@@ -3763,6 +3763,10 @@ return {
       "": "ussr_tandem_mai",
       "gray": "ussr_la_7"
     },
+    "tu_14t": {
+      "": "usa_sb2u_2",
+      "camo": "ussr_pe_8_m82"
+    },
     "tu-2_postwar_late_prem": {
       "": "ussr_il_2m"
     },
@@ -3863,6 +3867,9 @@ return {
     },
     "uk_battlecruiser_renown_nc": {
       "upgraded": "camo_nord_bluegreen"
+    },
+    "uk_battlecruiser_repulse": {
+      "": "camo_twocolors_lines"
     },
     "uk_battlecruiser_tiger": {
       "": "camo_nord_bluegreen"

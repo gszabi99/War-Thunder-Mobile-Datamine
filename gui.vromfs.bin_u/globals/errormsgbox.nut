@@ -1,4 +1,5 @@
 from "%globalScripts/yuplay2Consts.nut" import *
+import "regexp2" as regexp2
 from "dagor.localize" import loc, doesLocTextExist
 from "matching.errors" import SERVER_ERROR_MAINTENANCE, matching_error_string, is_matching_error
 from "string" import format
@@ -20,6 +21,8 @@ let customUrls = {
   [YU2_WRONG_2STEP_CODE] = getCurCircuitOverride("securitySettingsURL", loc($"url/profile/security")),
   [YU2_PROFILE_DELETED] = getCurCircuitOverride("feedbackSupportURL", loc($"url/feedback/support"))
 }
+
+let reHexNum = regexp2("^[0-9A-Fa-f]+$")
 
 function matchingErrData(error_text) {
   let bqLocId = $"matching/{error_text}"
@@ -44,7 +47,7 @@ function defErrData(res) {
     bqLocId
     text = loc("yn1/error/fmt", {
       text = loc("yn1/connect_error", "")
-      err_msg = $"0x{errCode}"
+      err_msg = reHexNum.match(errCode) ? $"0x{errCode}" : errCode
       err_code = ""
     })
   }

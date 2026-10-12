@@ -258,6 +258,7 @@ function mkAltMoveVertBtn(onTouchBegin, onTouchEnd, shortcutId, ovr = {}) {
 
 function mkAltMoveBg(btns, size) {
   let { topArrow = null, bottomArrow = null, leftArrow = null, rightArrow = null } = btns
+  let bgImage = Picture($"ui/gameuiskin/hud_control_air_bg.svg:{size[0]}:{size[1]}:P") 
 
   return @() {
     watch = isUnitDelayed
@@ -265,7 +266,7 @@ function mkAltMoveBg(btns, size) {
     vplace = ALIGN_BOTTOM
     hplace = ALIGN_RIGHT
     rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin#hud_control_air_bg.svg:{size[0]}:{size[1]}:K")
+    image = bgImage
     children = [
       topArrow
       leftArrow
