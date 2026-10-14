@@ -43,7 +43,7 @@ let selClusters = Computed(function() {
     foreach (id, v in userPreferredClusters.get())
       if (v == false && userClusters.contains(id)
           && (CAN_USER_DISABLE_FASTEST_CLUSTER || id != fastestClusterId.get())) 
-        res.remove(res.indexof(id))
+        userClusters.remove(userClusters.indexof(id))
     if (userClusters.len())
       res = userClusters
   }

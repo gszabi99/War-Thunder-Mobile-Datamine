@@ -256,6 +256,7 @@ let skinsByTag = {
     "uk_camo_winter_modern_bicolor"
     "us_camo_ags_teledyne"
     "sw_camo_space_strv_122"
+    "cn_camo_space_ztz_96a_prot"
   ],
 
   [NAVAL] = [

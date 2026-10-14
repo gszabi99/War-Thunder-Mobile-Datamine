@@ -117303,73 +117303,6 @@
       }
     }
   },
-  "ussr_t_34_1941_prem": {
-    "type": "tank",
-    "hangar_place": "tank",
-    "testFlight": "testFlight_ussr_tft",
-    "tags": {
-      "country_ussr": true,
-      "tank": true,
-      "type_medium_tank": true
-    },
-    "bullets": {
-      "76mm_F34_user_cannon": {
-        "76mm_ussr_AP_1941": {
-          "icon": "hud_ammo_ap2_he1"
-        },
-        "76mm_ussr_HE": {
-          "icon": "hud_ammo_he",
-          "isHE": true
-        },
-        "76mm_ussr_AP_1942": {
-          "icon": "hud_ammo_ap3_he0"
-        },
-        "default": {
-          "icon": "hud_ammo_ap1_he2"
-        },
-        "76mm_ussr_Smoke": {
-          "reqModification": "tank_smoke_screen_smoke_shell",
-          "maxCount": 2
-        }
-      }
-    },
-    "Shop": {
-      "mainWeaponCaliber": 76.2,
-      "armorThicknessFront": [
-        0.85,
-        0.1,
-        0.05
-      ],
-      "armorThicknessSide": [
-        0.15,
-        0.4,
-        0.45
-      ],
-      "crew": 4,
-      "mass": 28270.0,
-      "maxSpeedForward": 13.5945,
-      "maxSpeedBackward": 1.92102,
-      "powerToWeightRatio": 17.6866,
-      "weapons": {
-        "76mm_F34_user_cannon": {
-          "wtype": "mainCannon",
-          "caliber": 76.2,
-          "armorPower": 86.7449,
-          "reloadTime": 6.89655,
-          "gunnerTurretRotationSpeed": 25.0,
-          "isBeltAmmo": false
-        },
-        "7_62mm_DT_user_machinegun": {
-          "wtype": "machinegun",
-          "caliber": 7.62,
-          "armorPower": 8.5,
-          "reloadTime": 0.1,
-          "gunnerTurretRotationSpeed": 15.0,
-          "isBeltAmmo": true
-        }
-      }
-    }
-  },
   "sw_strv_122": {
     "type": "tank",
     "hangar_place": "tank",
@@ -117485,6 +117418,77 @@
         },
         "default": {
           "icon": "hud_ammo_apfsds"
+        }
+      }
+    }
+  },
+  "cn_ztz_96a_prot": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_china_tft",
+    "tags": {
+      "country_china": true,
+      "tank": true,
+      "type_medium_tank": true,
+      "has_aps": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 125.0,
+      "armorThicknessFront": [
+        0.5,
+        0.1,
+        0.4
+      ],
+      "armorThicknessSide": [
+        0.15,
+        0.0,
+        0.85
+      ],
+      "crew": 3,
+      "mass": 43000.0,
+      "maxSpeedForward": 16.4095,
+      "maxSpeedBackward": 1.63278,
+      "powerToWeightRatio": 18.6047,
+      "weapons": {
+        "125mm_Type_88C_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 125.0,
+          "armorPower": 480.0,
+          "reloadTime": 7.00001,
+          "autoLoader": true,
+          "gunnerTurretRotationSpeed": 30.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_Type86_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 4.825,
+          "reloadTime": 0.0857633,
+          "gunnerTurretRotationSpeed": 7.0,
+          "isBeltAmmo": true
+        },
+        "12_7mm_QJC_88A_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 17.75,
+          "reloadTime": 0.0857192,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "125mm_Type_88C_user_cannon": {
+        "125mm_china_APDS_FS": {
+          "reqModification": "shell_1",
+          "icon": "hud_ammo_apfsds"
+        },
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "125mm_china_HE": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
         }
       }
     }

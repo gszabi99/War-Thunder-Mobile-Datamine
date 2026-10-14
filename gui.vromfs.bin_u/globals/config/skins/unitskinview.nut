@@ -641,6 +641,11 @@ return {
       "": "ussr_camo_green",
       "upgraded": "cn_camo_sand_ltgreen_dkgreen_deform"
     },
+    "cn_ztz_96a_prot": {
+      "": "cn_camo_space_ztz_96a_prot",
+      "forest": "cn_camo_sand_ltgreen_dkgreen",
+      "forest2": "ussr_camo_green"
+    },
     "cn_ztz_99": {
       "": "ussr_camo_green",
       "upgraded": "cn_camo_desert_green"
@@ -5657,10 +5662,6 @@ return {
     "ussr_t_34_1941_l_11": {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_winter_net"
-    },
-    "ussr_t_34_1941_prem": {
-      "": "ussr_camo_forest_black",
-      "forest": "ussr_camo_green"
     },
     "ussr_t_34_1942": {
       "": "ussr_camo_green",
