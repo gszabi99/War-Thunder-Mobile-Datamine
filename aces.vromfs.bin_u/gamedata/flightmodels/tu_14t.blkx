@@ -3264,6 +3264,16 @@
               "emitter": "torp",
               "bullets": 1
             }
+          },
+          {
+            "iconType": "torppedo",
+            "name": "su_45_54vt_1954_torpedo",
+            "Weapon": {
+              "trigger": "torpedoes",
+              "blk": "gamedata/weapons/torpedoes/su_45_54vt_1954_torpedo.blk",
+              "emitter": "torp",
+              "bullets": 1
+            }
           }
         ]
       }

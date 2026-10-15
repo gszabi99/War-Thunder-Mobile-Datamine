@@ -65627,3 +65627,9 @@ ztz_96a_prot_gun_c*
 ztz_96a_prot_space_skin_gun_c*
 ztz_96a_turret_c*
 ztz_96a_space_skin_turret_c*
+su_45_54vt_1954_torpedo
+brakeAltitude
+gamedata/weapons/torpedoes/su_45_54vt_1954_torpedo.blk
+su_45_54_torpedo_na
+su_45_54_torpedo
+su_45_54_2_torpedo_char

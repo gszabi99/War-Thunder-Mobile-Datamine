@@ -47937,6 +47937,142 @@
       }
     }
   },
+  "tu_14t": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "klimov",
+        "model": "vk-1",
+        "mass": 892.0
+      },
+      "engine2_dm": {
+        "alias": "engine1_dm"
+      },
+      "tanks_params": {
+        "tank1_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank2_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank3_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank4_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank5_dm": {
+          "protected": false
+        },
+        "tank6_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank7_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank8_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank9_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank10_dm": {
+          "protected": true,
+          "protected_boost": true
+        },
+        "tank11_dm": {
+          "protected": true,
+          "protected_boost": true
+        }
+      }
+    },
+    "tags": {
+      "ally": true,
+      "country_ussr": true,
+      "type_bomber": true,
+      "type_jet_bomber": true,
+      "type_torpedo": true,
+      "bomberview": true,
+      "eastern_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 10500.0,
+      "maxSpeed": 237.8,
+      "turnTime": 51.0,
+      "airfieldLen": 1500.0,
+      "climbTime": 426.0,
+      "maxSpeedAlt": 5500.0,
+      "climbAlt": 5000.0,
+      "climbSpeed": 15.0,
+      "wingLoading": 340.0,
+      "thrustToWeightRatio": 0.21,
+      "rollRate": 45.0,
+      "pilotsCount": 1,
+      "gunnersCount": 2,
+      "pylonCount": 1,
+      "massPerSec": 11.85,
+      "weapons": {
+        "cannonNR23": {
+          "type": "cannon",
+          "gunsCount": 2,
+          "ammoCount": 170,
+          "shotFreq": 15.0
+        },
+        "cannonNR23_turret": {
+          "type": "gunner0",
+          "gunsCount": 2,
+          "ammoCount": 700,
+          "shotFreq": 15.0
+        },
+        "su_fab50": {},
+        "su_fab_100m_43": {},
+        "su_fab_250m_46": {},
+        "su_fab_500m_46": {},
+        "su_fab1000": {},
+        "su_fab_1500m_46": {},
+        "su_fab_3000m_46": {},
+        "su_45_36man_1952_torpedo": {},
+        "su_45_54vt_1954_torpedo": {}
+      }
+    },
+    "bullets": {
+      "cannonNR23": {
+        "default": {
+          "icon": "ap_i/frag_i_t/"
+        },
+        "ns23_armor_targets": {
+          "icon": "frag_i_t/ap_i/ap_i/ap_i/"
+        },
+        "ns23_air_targets": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/ap_i/"
+        },
+        "ns23_stealth": {
+          "icon": "ap_i/"
+        }
+      },
+      "cannonNR23_turret": {
+        "default": {
+          "icon": "ap_i/frag_i_t/"
+        },
+        "nr23_turret_apit": {
+          "icon": "ap_i/ap_i/ap_i/frag_i_t/"
+        },
+        "nr23_turret_heit": {
+          "icon": "frag_i_t/frag_i_t/frag_i_t/"
+        }
+      }
+    }
+  },
   "venom_fb4": {
     "type": "aircraft",
     "hangar_place": "aircraft",
@@ -48264,141 +48400,6 @@
         },
         "ns23_stealth": {
           "icon": "ap_i/he_frag_i/he_frag_i/"
-        }
-      }
-    }
-  },
-  "tu_14t": {
-    "type": "aircraft",
-    "hangar_place": "aircraft",
-    "info": {
-      "engine1_dm": {
-        "manufacturer": "klimov",
-        "model": "vk-1",
-        "mass": 892.0
-      },
-      "engine2_dm": {
-        "alias": "engine1_dm"
-      },
-      "tanks_params": {
-        "tank1_dm": {
-          "protected": true,
-          "protected_boost": true
-        },
-        "tank2_dm": {
-          "protected": true,
-          "protected_boost": true
-        },
-        "tank3_dm": {
-          "protected": true,
-          "protected_boost": true
-        },
-        "tank4_dm": {
-          "protected": true,
-          "protected_boost": true
-        },
-        "tank5_dm": {
-          "protected": false
-        },
-        "tank6_dm": {
-          "protected": true,
-          "protected_boost": true
-        },
-        "tank7_dm": {
-          "protected": true,
-          "protected_boost": true
-        },
-        "tank8_dm": {
-          "protected": true,
-          "protected_boost": true
-        },
-        "tank9_dm": {
-          "protected": true,
-          "protected_boost": true
-        },
-        "tank10_dm": {
-          "protected": true,
-          "protected_boost": true
-        },
-        "tank11_dm": {
-          "protected": true,
-          "protected_boost": true
-        }
-      }
-    },
-    "tags": {
-      "ally": true,
-      "country_ussr": true,
-      "type_bomber": true,
-      "type_jet_bomber": true,
-      "type_torpedo": true,
-      "bomberview": true,
-      "eastern_front": true,
-      "air": true
-    },
-    "Shop": {
-      "maxAltitude": 10500.0,
-      "maxSpeed": 237.8,
-      "turnTime": 51.0,
-      "airfieldLen": 1500.0,
-      "climbTime": 426.0,
-      "maxSpeedAlt": 5500.0,
-      "climbAlt": 5000.0,
-      "climbSpeed": 15.0,
-      "wingLoading": 340.0,
-      "thrustToWeightRatio": 0.21,
-      "rollRate": 45.0,
-      "pilotsCount": 1,
-      "gunnersCount": 2,
-      "pylonCount": 1,
-      "massPerSec": 11.85,
-      "weapons": {
-        "cannonNR23": {
-          "type": "cannon",
-          "gunsCount": 2,
-          "ammoCount": 170,
-          "shotFreq": 15.0
-        },
-        "cannonNR23_turret": {
-          "type": "gunner0",
-          "gunsCount": 2,
-          "ammoCount": 700,
-          "shotFreq": 15.0
-        },
-        "su_fab50": {},
-        "su_fab_100m_43": {},
-        "su_fab_250m_46": {},
-        "su_fab_500m_46": {},
-        "su_fab1000": {},
-        "su_fab_1500m_46": {},
-        "su_fab_3000m_46": {},
-        "su_45_36man_1952_torpedo": {}
-      }
-    },
-    "bullets": {
-      "cannonNR23": {
-        "default": {
-          "icon": "ap_i/frag_i_t/"
-        },
-        "ns23_armor_targets": {
-          "icon": "frag_i_t/ap_i/ap_i/ap_i/"
-        },
-        "ns23_air_targets": {
-          "icon": "frag_i_t/frag_i_t/frag_i_t/ap_i/"
-        },
-        "ns23_stealth": {
-          "icon": "ap_i/"
-        }
-      },
-      "cannonNR23_turret": {
-        "default": {
-          "icon": "ap_i/frag_i_t/"
-        },
-        "nr23_turret_apit": {
-          "icon": "ap_i/ap_i/ap_i/frag_i_t/"
-        },
-        "nr23_turret_heit": {
-          "icon": "frag_i_t/frag_i_t/frag_i_t/"
         }
       }
     }
@@ -63455,9 +63456,9 @@
     "Shop": {
       "shipCrewMax": 970,
       "shipCrewMin": 110,
-      "shipCrewRating": 3.52333,
+      "shipCrewRating": 3.68788,
       "maxSpeed": 16.0,
-      "turningTime": 32,
+      "turningTime": 27,
       "supportPlane": "osprey_mk4",
       "supportPlaneCount": 4,
       "addTorpedoesCountPack": 4,
@@ -63466,7 +63467,7 @@
         "381mm_42_bl_mk1_naval_user_cannon": {
           "wtype": "mainCannon",
           "damage": 2750.0,
-          "shotFreq": 0.083,
+          "shotFreq": 0.087,
           "gunsCount": 6,
           "caliber": 381.0,
           "ammoCount": 1020,
