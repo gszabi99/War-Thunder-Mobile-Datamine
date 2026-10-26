@@ -33,25 +33,18 @@ let mkImg = @(sizeX, sizeY, icon, color, ovr) {
 }.__update(ovr)
 
 const icoSize = hdpx(60)
-let icoShadeSize = (icoSize * 1.6).tointeger()
-let icoPosX = (icoSize * -1.4).tointeger()
-let icoPosY = (icoSize * -0.2).tointeger()
-
+const icoShadeSize = (icoSize * 1.6).tointeger()
+const icoPos = [(icoSize * -1.4).tointeger(), (icoSize * -0.2).tointeger()]
 let iconShade = mkImg(icoShadeSize, icoShadeSize, "", hintBgColor, { image = gradRadial })
 
-let mkTextareaWithIcon = @(text, icon, maxWidth)
-  mkTextarea(text, maxWidth, {
-    children = {
-      size = const [icoSize, icoSize]
-      hplace = ALIGN_LEFT
-      vplace = ALIGN_TOP
-      pos = [icoPosX, icoPosY]
-      children = [
-        iconShade
-        mkImg(icoSize, icoSize, icon, whiteColor, {})
-      ]
-    }
-  })
+let mkIconForHint = @(icon) {
+  size = icoSize
+  pos = icoPos
+  children = [
+    iconShade
+    mkImg(icoSize, icoSize, icon, whiteColor, {})
+  ]
+}
 
 const fireCircleSz = hdpx(90)
 let ammoArcH = round(fireCircleSz * 1.86).tointeger()
@@ -173,31 +166,39 @@ const hintAimPosX = 920
 
 let hints = [
   {
-    content = mkTextarea(loc("help/event/pirates/lead"), hintW)
-    pos = mkSizeByParent([hintAimPosX, 300])
+    content = mkTextarea(loc("help/event/pirates/pitch"), hintW)
+    pos = mkSizeByParent([hintAimPosX, 40])
     bgColor = hintBgColor
     blockOvr = { hplace = ALIGN_RIGHT }
-    lines = mkLines([pointAimX, pointAimY, hintAimPosX, pointAimY])
   }
   {
     content = mkTextarea(loc("help/event/pirates/aim"), hintW)
-    pos = mkSizeByParent([hintAimPosX, 665])
+    pos = mkSizeByParent([hintAimPosX, 335])
     bgColor = hintBgColor
     blockOvr = { hplace = ALIGN_RIGHT }
     lines = mkLines([pointAimX, pointAimY, hintAimPosX, 790])
   }
   {
-    content = mkTextareaWithIcon(loc("help/event/pirates/chainShot", { percent = 60 }),
-      "ui/gameuiskin#hud_ammo_pirate_knipel.svg",
-      hintAmmoW)
+    content = mkTextarea(loc("help/event/pirates/lead"), hintW)
+    pos = mkSizeByParent([hintAimPosX, 690])
+    bgColor = hintBgColor
+    blockOvr = { hplace = ALIGN_RIGHT }
+    lines = mkLines([pointAimX, pointAimY, hintAimPosX, pointAimY])
+  }
+  {
+    content = [
+      mkTextarea(loc("help/event/pirates/chainShot", { percent = 60 }), hintAmmoW)
+      mkIconForHint("ui/gameuiskin#hud_ammo_pirate_knipel.svg")
+    ]
     pos = mkSizeByParent([hintAmmoX, hintAmmo1Y])
     bgColor = hintBgColor
     blockOvr = { vplace = ALIGN_BOTTOM }
   }
   {
-    content = mkTextareaWithIcon(loc("help/event/pirates/explosiveCore"),
-      "ui/gameuiskin#hud_ammo_pirate_fire.svg",
-      hintAmmoW)
+    content = [
+      mkTextarea(loc("help/event/pirates/explosiveCore"), hintAmmoW)
+      mkIconForHint("ui/gameuiskin#hud_ammo_pirate_fire.svg")
+    ]
     pos = mkSizeByParent([hintAmmoX, hintAmmo2Y])
     bgColor = hintBgColor
   }

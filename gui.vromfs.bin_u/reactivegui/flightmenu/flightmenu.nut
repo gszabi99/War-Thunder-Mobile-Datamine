@@ -218,7 +218,7 @@ function flightMenuContent() {
       })
       @() {
         watch = [isUnitAlive, isUnitDelayed, respawnSlots, canBailoutFromFlightMenu, canUseSpare, needShowDevMenu,
-          isPlayingReplay]
+          isPlayingReplay, hudCustomRules]
         flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
         hplace = ALIGN_CENTER
@@ -228,7 +228,7 @@ function flightMenuContent() {
           : [
               isUnitAlive.get() && !isUnitDelayed.get()
                   && canBailoutFromFlightMenu.get()
-                  && (respawnSlots.get().len() > 1 || canUseSpare.get())
+                  && (respawnSlots.get().len() > 1 || canUseSpare.get() || !!hudCustomRules.get()?.isUnlimRespawn)
                   && !isSingleMissionOverrided.get()
                 ? leaveVehicleButton
                 : null

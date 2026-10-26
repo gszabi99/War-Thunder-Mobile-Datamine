@@ -66355,3 +66355,8 @@ rocket_fire_gold
 shipWeaponsDieUnderWater
 canRepairWhileMoving
 clearDebuffsOnRepair
+splatterLevelSpeed
+splatterOpacitySpeed
+splatterDistance
+splatterConeHalfAngleDeg
+gamedata/weapons/rocketGuns/halloween_aam.blk

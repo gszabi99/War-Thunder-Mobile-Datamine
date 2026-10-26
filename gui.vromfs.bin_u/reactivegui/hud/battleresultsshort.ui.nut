@@ -12,7 +12,7 @@ from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
 from "%rGui/hud/myScores.nut" import mkImageWithCount, myPlace, isPlaceVisible, icons
 from "%rGui/hudHints/hintBlocks.nut" import resultsHintsBlock
 import "%rGui/hudHints/resultsHintLogState.nut" as resultsHintLogState
-from "%rGui/missionState.nut" import isGtFFA
+from "%rGui/missionState.nut" import isGtFFA, isGtRace
 from "%rGui/mpStatistics/playersDamageStats.nut" import localPlayerDamageStats
 from "%rGui/mpStatistics/playersSortFunc.nut" import getScoreFull
 from "%rGui/shop/goodsPreview/goodsPreviewPkg.nut" import opacityAnims
@@ -55,13 +55,15 @@ isInBattle.subscribe(@(v) v ? missionResult.set(null) : null)
 isInDebriefing.subscribe(@(v) v ? missionResult.set(null) : null)
 needShowResultScreen.subscribe(@(v) !v ? resultsHintLogState.clearEvents() : null)
 
+let scoreTotal = {
+  getFromStats = getScoreFull
+  locId = "debriefing/totalscore"
+  iconId = "score"
+}
+
 let scoresByCampaign = {
   ships = [
-    {
-      getFromStats = getScoreFull
-      locId = "debriefing/totalscore"
-      iconId = "score"
-    }
+    scoreTotal
     {
       getFromStats = @(p) p?.damage ?? 0
       locId = "debriefing/damageDealt"
@@ -69,11 +71,7 @@ let scoresByCampaign = {
     }
   ]
   tanks = [
-    {
-      getFromStats = getScoreFull
-      locId = "debriefing/totalscore"
-      iconId = "score"
-    }
+    scoreTotal
     {
       getFromPlayer = @(p) p?.groundKills ?? 0
       locId = "debriefing/GroundKills"
@@ -81,11 +79,7 @@ let scoresByCampaign = {
     }
   ]
   air = [
-    {
-      getFromStats = getScoreFull
-      locId = "debriefing/totalscore"
-      iconId = "score"
-    }
+    scoreTotal
     {
       getFromPlayer = @(p) p?.kills ?? 0
       locId = "debriefing/AirKills"
@@ -230,6 +224,7 @@ function battleResultsShort() {
     watch = [
       needShowResultScreen,
       battleCampaign,
+      isGtRace,
       isPlaceVisible,
       localPlayerDamageStats,
       myPlace
@@ -240,7 +235,8 @@ function battleResultsShort() {
 
   let children = !isPlaceVisible.get() ? []
     : [mkUserScores(mkPlaceIcon(myPlace.get()), "debriefing/placeInMyTeam")]
-        .extend((scoresByCampaign?[getCampaignPresentation(battleCampaign.get()).campaign] ?? [])
+        .extend((isGtRace.get() ? [ scoreTotal ]
+            : scoresByCampaign?[getCampaignPresentation(battleCampaign.get()).campaign] ?? [])
           .map(function(v) {
             let score = v?.getFromStats(localPlayerDamageStats.get())
                 ?? v?.getFromPlayer(get_local_mplayer())

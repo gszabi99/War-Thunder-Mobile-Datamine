@@ -9009,3 +9009,10 @@ is_wp_boosters_delayed
 gamedata/scenes/air_race_phi_phi_lights_short.blk
 119 and 87
 booster_wp_squad
+phiphi_race_two_circles/name;missions/_v1_race_inverted
+phiphi_race_two_circles/desc;missions/_v1_race_inverted/desc
+115 and 82
+phiphi_race_two_circles/name;missions/_v2_race_inverted
+phiphi_race_two_circles/desc;missions/_v2_race_inverted/desc
+phiphi_race_two_circles/name;missions/_v2_race_straight
+phiphi_race_two_circles/desc;missions/_v2_race_straight/desc

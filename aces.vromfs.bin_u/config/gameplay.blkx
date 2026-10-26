@@ -4532,8 +4532,13 @@
             "repair_percent": 100,
             "ammo_percent": 100,
             "oil_spill": {
-              "duration": 15,
-              "strength": 1.0
+              "duration": 10,
+              "strength": 1.0,
+              "fx": "trail_oil",
+              "splatterLevelSpeed": 0.3,
+              "splatterOpacitySpeed": 0.5,
+              "splatterDistance": 300.0,
+              "splatterConeHalfAngleDeg": 15.0
             }
           },
           "drop02": {

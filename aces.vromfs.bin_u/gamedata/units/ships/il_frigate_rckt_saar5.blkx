@@ -2927,14 +2927,14 @@
   },
   "hangarHideNodes": {
     "n": [
-      "portholes",
-      "details",
       "gun_mask_02",
       "gun_mask_04"
     ]
   },
   "battleHideNodes": {
     "n": [
+      "portholes",
+      "details",
       "gun_mask_01",
       "gun_mask_03"
     ]

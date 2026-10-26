@@ -11,7 +11,7 @@ from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardReceivedM
   mkRewardBorder
 from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo
 from "%rGui/battlePass/battlePassState.nut" import curBpPages, curBpGrade, curBpGoods, curBpCurPoints,
-  curBpId, curBpTotalPoints, curBpEndTime, isPurchaseWndOpened
+  curBpId, curBpTotalPoints, curBpEndTime, curBpReceived, isPurchaseWndOpened
 from "%rGui/battlePass/bpRewardDesc.nut" import bpRewardDesc, getLocByRType
 from "%rGui/battlePass/passPkg.nut" import mkPassIcon, contentH, defPassIconSize
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
@@ -33,6 +33,7 @@ let boardHeight = contentH.tointeger()
 let boardWidth = (contentH / boardRatio).tointeger()
 let iconSize = hdpxi(40)
 let pagePadding = [boardHeight * 0.065, boardWidth * 0.15]
+const claimBtnSize = [SIZE_TO_CONTENT, hdpxi(90)]
 
 let selectedPage = Watched(0)
 let selectedSlotIdx = Watched(0)
@@ -245,7 +246,7 @@ let mkLockLayer = @() {
   rendObj = ROBJ_SOLID
   color = 0x80000000
   valign = ALIGN_CENTER
-  padding = hdpx(12)
+  padding = hdpx(20)
   children = {
     size = iconSize
     rendObj = ROBJ_IMAGE
@@ -254,18 +255,29 @@ let mkLockLayer = @() {
   }
 }
 
-function findRewardToOpen(pages, totalPoints, curPoints, grade) {
-  for (local pageIdx = pages.len() - 1; pageIdx >= 0; pageIdx--) {
-    let page = pages[pageIdx]
+function findReward(pages, totalPoints, curPoints, grade, received, pIdx = null) {
+  for (local pageIdx = pIdx ?? (pages.len() - 1); pageIdx >= (pIdx ?? 0); pageIdx--) {
+    let page = pages?[pageIdx]
+    if (page == null)
+      return { pageIdx = 0, slotIdx = 0 }
+
     if (page.reqPoints > totalPoints)
       continue
+
     for (local slotIdx = page.slots.len() - 1; slotIdx >= 0; slotIdx--) {
-      let slot = page.slots[slotIdx]
-      if (curPoints >= slot.cost && grade >= slot.reqPassGrade)
-        return { slotIdx, pageIdx }
+      let { limit, cost, reqPassGrade } = page.slots[slotIdx]
+      if ((limit == 0 || (received?[pageIdx][slotIdx] ?? 0) < limit) && curPoints >= cost && grade >= reqPassGrade)
+        return { pageIdx, slotIdx }
     }
   }
-  return { slotIdx = 0, pageIdx = 0 }
+
+  return { pageIdx = pIdx ?? 0, slotIdx = 0 }
+}
+
+function openReward(pages, totalPoints, curPoints, grade, received, pIdx = null) {
+  let { pageIdx, slotIdx } = findReward(pages, totalPoints, curPoints, grade, received, pIdx)
+  selectedPage.set(pageIdx)
+  selectedSlotIdx.set(slotIdx)
 }
 
 let battlePassContent = @() {
@@ -273,11 +285,8 @@ let battlePassContent = @() {
   key = wndKey
   size = FLEX
   halign = ALIGN_CENTER
-  function onAttach() {
-    let { slotIdx, pageIdx } = findRewardToOpen(curBpPages.get(), curBpTotalPoints.get(), curBpCurPoints.get(), curBpGrade.get())
-    selectedPage.set(pageIdx)
-    selectedSlotIdx.set(slotIdx)
-  }
+  onAttach = @()
+    openReward(curBpPages.get(), curBpTotalPoints.get(), curBpCurPoints.get(), curBpGrade.get(), curBpReceived.get())
   children = curBpId.get() == null ? null
     : {
         size = FLEX
@@ -291,7 +300,7 @@ let battlePassContent = @() {
             rendObj = ROBJ_IMAGE
             image = Picture($"ui/images/event_s39_board.avif:{boardWidth}:{boardHeight}:P")
             padding = pagePadding
-            children = pageContent(REWARD_STYLE_BP_PAGE)
+            children = pageContent({ ...REWARD_STYLE_BP_PAGE, needShowPreview = false })
           }
           @() {
             watch = [selectedReward, curBpId]
@@ -303,45 +312,46 @@ let battlePassContent = @() {
             children = selectedReward.get() == null ? null
               : [
                   bpRewardDesc(selectedReward.get(), curBpId.get())
-                  mkSpinnerHideBlock(battlePassInProgress,
-                    {
-                      size = const [SIZE_TO_CONTENT, hdpxi(90)]
-                      minWidth = hdpxi(320)
-                      children = [
-                        textButtonPricePurchaseLow(utf8ToUpper(loc("mainmenu/btnClaim")),
-                          mkCurrencyComp(selectedReward.get().cost, curBpId.get()).__update({ margin = [0, 0, 0, hdpx(32)] })
-                          @() selectedReward.get().isReceived ? null
-                                : selectedReward.get().canReceive && selectedReward.get().cost == 0
-                                  ? receive_bp_reward(curBpId.get(), selectedReward.get().pageIdx,
-                                      selectedReward.get().slotIdx, selectedReward.get().cost)
-                                : curBpGrade.get() < selectedReward.get().reqPassGrade
-                                  ? isPurchaseWndOpened.set(true)
-                                : curBpPages.get()[selectedReward.get().pageIdx].reqPoints - curBpTotalPoints.get() > 0
-                                  ? showNoBalanceMsgAdd(selectedReward.get().cost,
-                                      curBpPages.get()[selectedReward.get().pageIdx].reqPoints
-                                        - curBpTotalPoints.get(), curBpId.get(), null)
-                                : openMsgBoxPurchase({
-                                    text = loc("shop/needMoneyQuestion",
-                                      { item = colorize(userlogTextColor,
-                                          getLocByRType(selectedReward.get().viewInfo[0].rType,
-                                            selectedReward.get().viewInfo[0].id))}),
-                                    price = {
-                                      price = selectedReward.get().cost
-                                      currencyId = curBpId.get()
-                                    },
-                                    purchase = @() receive_bp_reward(curBpId.get(), selectedReward.get().pageIdx,
-                                      selectedReward.get().slotIdx, selectedReward.get().cost)
-                                    bqInfo = null
-                                  })
-                          {
-                            ovr = {
-                              size = FLEX,
-                              minWidth = hdpxi(320)
-                            }.__update(!selectedReward.get().canReceive ? { transform = null } : {})
-                          })
-                        selectedReward.get().canReceive ? null : mkLockLayer()
-                      ]
-                    })
+                  selectedReward.get().isReceived ? { size = claimBtnSize }
+                    : mkSpinnerHideBlock(battlePassInProgress, {
+                        size = claimBtnSize
+                        minWidth = hdpxi(320)
+                        children = [
+                          textButtonPricePurchaseLow(
+                            selectedReward.get().canReceive ? utf8ToUpper(loc("mainmenu/btnClaim")) : null
+                            mkCurrencyComp(selectedReward.get().cost, curBpId.get())
+                              .__update({ margin = [0, 0, 0, hdpx(32)] })
+                            @() selectedReward.get().canReceive && selectedReward.get().cost == 0
+                                    ? receive_bp_reward(curBpId.get(), selectedReward.get().pageIdx,
+                                        selectedReward.get().slotIdx, selectedReward.get().cost)
+                                  : curBpGrade.get() < selectedReward.get().reqPassGrade
+                                    ? isPurchaseWndOpened.set(true)
+                                  : curBpPages.get()[selectedReward.get().pageIdx].reqPoints - curBpTotalPoints.get() > 0
+                                    ? showNoBalanceMsgAdd(selectedReward.get().cost,
+                                        curBpPages.get()[selectedReward.get().pageIdx].reqPoints
+                                          - curBpTotalPoints.get(), curBpId.get(), null)
+                                  : openMsgBoxPurchase({
+                                      text = loc("shop/needMoneyQuestion",
+                                        { item = colorize(userlogTextColor,
+                                            getLocByRType(selectedReward.get().viewInfo[0].rType,
+                                              selectedReward.get().viewInfo[0].id))}),
+                                      price = {
+                                        price = selectedReward.get().cost
+                                        currencyId = curBpId.get()
+                                      },
+                                      purchase = @() receive_bp_reward(curBpId.get(), selectedReward.get().pageIdx,
+                                        selectedReward.get().slotIdx, selectedReward.get().cost)
+                                      bqInfo = null
+                                    })
+                            {
+                              ovr = {
+                                size = FLEX,
+                                minWidth = hdpxi(320)
+                              }.__update(!selectedReward.get().canReceive ? { transform = null } : {})
+                            })
+                          selectedReward.get().canReceive ? null : mkLockLayer()
+                        ]
+                      })
                 ]
           }
           function() {
@@ -363,13 +373,13 @@ let battlePassContent = @() {
             }
             return {
               watch = [curBpGoods, curBpId, curBpGrade]
-              size = FLEX_V
               rendObj = ROBJ_IMAGE
               image = simpleHorGrad
               color = 0x80000000
-              padding = [contentH * 0.05, saBordersRv[1], 0, 0]
+              padding = [contentH * 0.05, saBordersRv[1]]
               flow = FLOW_VERTICAL
               halign = ALIGN_CENTER
+              vplace = ALIGN_TOP
               valign = ALIGN_TOP
               gap = hdpx(20)
               children = [
@@ -384,9 +394,9 @@ let battlePassContent = @() {
                     ? openPurchBpButton(loc("battlePass/btn_buy/short"))
                   : hasBoughtAny
                     ? {
-                        size = [FLEX, defButtonHeight]
-                        halign = ALIGN_CENTER
-                        valign = ALIGN_BOTTOM
+                        size = FLEX_H
+                        valign = ALIGN_TOP
+                        halign = ALIGN_RIGHT
                         rendObj = ROBJ_TEXTAREA
                         behavior = Behaviors.TextArea
                         text = utf8ToUpper(loc("battlepass/active"))
@@ -400,12 +410,10 @@ let battlePassContent = @() {
   animations = wndSwitchAnim
 }
 
-curBpId.subscribe(function(_) {
-  let { slotIdx, pageIdx } = findRewardToOpen(curBpPages.get(), curBpTotalPoints.get(), curBpCurPoints.get(), curBpGrade.get())
-  selectedPage.set(pageIdx)
-  selectedSlotIdx.set(slotIdx)
-})
-selectedPage.subscribe(@(_) selectedSlotIdx.set(0))
+curBpId.subscribe(@(_)
+  openReward(curBpPages.get(), curBpTotalPoints.get(), curBpCurPoints.get(), curBpGrade.get(), curBpReceived.get()))
+selectedPage.subscribe(@(pIdx) openReward(curBpPages.get(), curBpTotalPoints.get(), curBpCurPoints.get(),
+  curBpGrade.get(), curBpReceived.get(), pIdx))
 
 return {
   battlePassContent

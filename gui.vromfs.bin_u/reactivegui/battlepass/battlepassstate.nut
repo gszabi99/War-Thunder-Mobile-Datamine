@@ -28,6 +28,7 @@ let battlePasses = Computed(@() servProfile.get()?.battlePasses ?? {})
 let curBpGrade = Computed(@() battlePasses.get()?[curBpId.get()].grade ?? 0)
 let curBpTotalPoints = Computed(@() battlePasses.get()?[curBpId.get()].totalPoints ?? 0)
 let curBpCurPoints = Computed(@() battlePasses.get()?[curBpId.get()].curPoints ?? 0)
+let curBpReceived = Computed(@() battlePasses.get()?[curBpId.get()].received ?? {})
 
 function getGradeToClaimByGoods(g, bpId) {
   let { valueInt = null } = g.requirements.findvalue(@(r) r.id == bpId && r.reqType == SREQ_BP_GRADE_EQUAL)
@@ -103,6 +104,7 @@ return {
   curBpTotalPoints
   curBpCurPoints
   curBpEndTime
+  curBpReceived
 
   isMainBpActive = Computed(@() null != activeBattlePassesCfg.get().findvalue(@(v) v.meta?.event_id == MAIN_EVENT_ID))
 

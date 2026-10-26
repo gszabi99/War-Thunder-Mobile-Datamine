@@ -117,7 +117,7 @@ let rewardsList = @(selBpInfo) function() {
   let { points = 0, grade = 0, goods = null } = selBpInfo.get()
 
   let rewardsOnPurchase = []
-  let rewardsAddPoints = []
+  let rewardsOnGrade = []
   let { received = {} } = servProfile.get()?.battlePasses?[curBpId.get()]
   local potentialSpent = 0
 
@@ -126,17 +126,15 @@ let rewardsList = @(selBpInfo) function() {
     for (local sIdx = p.slots.len() - 1; sIdx >= 0; sIdx--) {
       let s = p.slots[sIdx]
       let isReceived = s.limit != 0 && (received?[pIdx][sIdx] ?? 0) >= s.limit
-      if (s.reqPassGrade > (grade ?? 0) || isReceived)
+      if (isReceived || s.reqPassGrade > grade)
         continue
+      else if (s.reqPassGrade == grade)
+        rewardsOnGrade.append(s)
 
-      let potentialLeft = curBpCurPoints.get() - potentialSpent
-      if (p.reqPoints <= curBpTotalPoints.get() && s.cost <= potentialLeft) {
+      let potentialLeft = curBpCurPoints.get() - potentialSpent + points
+      if (p.reqPoints <= points + curBpTotalPoints.get() && s.cost <= potentialLeft) {
         potentialSpent += s.cost
         rewardsOnPurchase.append(s)
-      }
-      else if (p.reqPoints <= points + curBpTotalPoints.get() && s.cost <= potentialLeft + points && points > 0) {
-        potentialSpent += s.cost
-        rewardsAddPoints.append(s)
       }
     }
   }
@@ -145,7 +143,7 @@ let rewardsList = @(selBpInfo) function() {
   let viewInfoOnPurchase = rewardsToViewInfo(rewardsOnPurchase)
     .filter(@(v) !isSingleViewInfoRewardEmpty(v, profile))
     .sort(sortRewardsViewInfo)
-  let viewInfoAddPoints = rewardsToViewInfo(rewardsAddPoints)
+  let viewInfoOnGrade = rewardsToViewInfo(rewardsOnGrade)
     .filter(@(v) !isSingleViewInfoRewardEmpty(v, profile))
     .sort(sortRewardsViewInfo)
 
@@ -169,8 +167,11 @@ let rewardsList = @(selBpInfo) function() {
       gap = rewardsListGap
       children = [
         rewardsBlock(loc("battlePass/receiveOnPurchase/exclusive", { count = viewInfoExclusive.len() }), viewInfoExclusive)
-        rewardsBlock(loc("battlePass/claimOnPurchase"), viewInfoOnPurchase)
-        rewardsBlock(loc("battlepass/pointsBonus", { num = points }), viewInfoAddPoints)
+        rewardsBlock(loc("battlePass/claimOnProgress"), viewInfoOnGrade)
+        rewardsBlock(
+          points == 0 ? loc("battlePass/claimOnPurchase")
+            : " ".join([loc("battlePass/claimOnPurchase"), loc("battlepass/pointsBonus", { num = points })]),
+          viewInfoOnPurchase)
       ].filter(@(v) v != null)
       animations = wndSwitchAnim
     }

@@ -1765,18 +1765,33 @@
           "name": "halloween_aam",
           "isDefault": true,
           "ShowNodes": {
-            "node": "pylon_bomb6"
+            "node": [
+              "pylon_bomb1",
+              "pylon_bomb6"
+            ]
           },
-          "Weapon": {
-            "trigger": "rockets",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/halloween_aam.blk",
-            "emitter": "bomb2",
-            "bullets": 1,
-            "zeroAmmoStart": true,
-            "needPickupAmmo": true
-          }
+          "Weapon": [
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/halloween_aam.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "zeroAmmoStart": true,
+              "needPickupAmmo": true
+            },
+            {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gamedata/weapons/rocketGuns/halloween_aam.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "zeroAmmoStart": true,
+              "needPickupAmmo": true
+            }
+          ]
         }
       }
     ]
@@ -1812,27 +1827,19 @@
         ]
       },
       {
-        "dm": "wing_l_dm",
+        "dm": "spar1_l_dm",
         "dp": "pumkins_l"
       },
       {
-        "dm": "wing_r_dm",
+        "dm": "spar1_r_dm",
         "dp": "pumkins_r"
       },
       {
-        "dm": "wing1_l_dm",
+        "dm": "spar2_l_dm",
         "dp": "pumkins_l"
       },
       {
-        "dm": "wing1_r_dm",
-        "dp": "pumkins_r"
-      },
-      {
-        "dm": "wing2_l_dm",
-        "dp": "pumkins_l"
-      },
-      {
-        "dm": "wing2_r_dm",
+        "dm": "spar2_r_dm",
         "dp": "pumkins_r"
       }
     ]

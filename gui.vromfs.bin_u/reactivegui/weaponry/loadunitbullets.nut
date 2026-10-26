@@ -237,23 +237,32 @@ function loadBullets(bulletsBlk, id, weaponBlkName, isBulletBelt) {
 
 function loadAllBullets(weaponBlkName) {
   let weaponBlk = blkOptFromPath(weaponBlkName)
-  let { bullets = 0, bulletsCartridge = 1, useSingleIconForBullet = false, mass = 0.0,
-    container = false, blk = "", shotFreq = 0
-  } = weaponBlk
+  let { bullets = 0, bulletsCartridge = 1, useSingleIconForBullet = false, mass = 0.0, shotFreq = 0 } = weaponBlk
   let isBulletBelt = !useSingleIconForBullet
     && ((weaponBlk?.isBulletBelt ?? true) || bulletsCartridge > 1)
 
+  local bulletBlkName = weaponBlkName
+  local bulletBlk = weaponBlk
+  local total = bullets
+  local gunMass = mass
+  while (bulletBlk?.container == true) {
+    bulletBlkName = bulletBlk?.blk ?? ""
+    bulletBlk = blkOptFromPath(bulletBlkName)
+    if (bulletBlk?.container == true) {
+      total = bullets * (bulletBlk?.bullets ?? 1)
+      gunMass = max(mass, bullets * (bulletBlk?.mass ?? 0.0))
+    }
+  }
+
   let res = {
     catridge = bulletsCartridge
-    total = bullets
-    gunMass = mass
+    total
+    gunMass
     bulletSets = {}
-    blk = container ? blk : weaponBlkName
+    blk = bulletBlkName
     shotFreq
   }
-  let defBullets = container
-    ? loadBullets(blkOptFromPath(blk), "", blk, isBulletBelt)
-    : loadBullets(weaponBlk, "", weaponBlkName, isBulletBelt)
+  let defBullets = loadBullets(bulletBlk, "", bulletBlkName, isBulletBelt)
   if (defBullets != null)
     res.bulletSets[""] <- defBullets
   eachBlock(weaponBlk, function(b) {

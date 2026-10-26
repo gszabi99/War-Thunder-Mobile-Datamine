@@ -141,7 +141,7 @@ let mkPaginator = @(curPage, lastPage, myPage = Watched(-1), ovr = {}) function(
   return mkPaginatorRow(watch, children, ovr)
 }
 
-let mkDefaultIndicator = @(pageIdx) {
+let mkDefaultIndicator = @(pageIdx, _) {
   minWidth = pageHeight
   halign = ALIGN_CENTER
   children = pageText(pageIdx + 1, textColor)

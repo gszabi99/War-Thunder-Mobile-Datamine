@@ -73,6 +73,7 @@ let damageZoneTons = @(v) roundToDigits(v * KG_TO_TONS, 3)
 let getValIfPositive = @(val, convertFunc = @(v) v) (val ?? 0) > 0 ? convertFunc(val) : null
 let isFFA = @(debrData) !!((debrData?.gameType ?? 0) & (GT_FFA_DEATHMATCH | GT_FFA))
 let isBattleRoyale = @(debrData) !!((debrData?.gameType ?? 0) & GT_FFA)
+let isRace = @(debrData) !!((debrData?.gameType ?? 0) & GT_RACE)
 let getPlayerPlaceLabel = @(debrData) loc(isFFA(debrData) ? "multiplayer/place" : "debriefing/PlayerPlace")
 let hasUserstatMode = @(debrData, mode) debrData?.userstatModes.contains(mode) ?? false
 
@@ -236,7 +237,12 @@ function getPlayerPlace(debrData, userId) {
 
 function mkDebriefingStats(debrData, startAnimTime) {
   let { isSingleMission = false, players = {}, userId = -1, campaign = "", itemsUsed = {} } = debrData
+  let statsRace = [
+    rowTotalScore
+    rowPlace
+  ]
   let stats = campaign.len() == 0 ? []
+    : (!isSingleMission && isRace(debrData)) ? statsRace
     : (isSingleMission ? statsByCampSingle : statsByCamp)?[getCampaignPresentation(campaign).campaign] ?? []
   local player = players?[userId.tostring()]
 

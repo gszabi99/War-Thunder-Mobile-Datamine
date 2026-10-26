@@ -89,13 +89,13 @@
       "lapTimeFastest": 255.0,
       "panoramaForced": true,
       "missileWarning": true,
-      "locName": "phiphi_race_two_circles/name;missions/_v1_race_straight",
-      "locDesc": "phiphi_race_two_circles/desc;missions/_v1_race_straight/desc",
+      "locName": "phiphi_race_two_circles/name;missions/_v2_race_inverted",
+      "locDesc": "phiphi_race_two_circles/desc;missions/_v2_race_inverted/desc",
       "gt_ffa": true,
       "gt_race": true,
       "openDiffLevels": true,
       "timeLimit": 10,
-      "postfix": "_v1_race_straight",
+      "postfix": "_v2_race_inverted",
       "country_axis": "germany",
       "country_allies": "ussr",
       "raceLaps": 1,
@@ -168,7 +168,9 @@
             "boosters_09_init",
             "boosters_10_init",
             "boosters_11_init",
-            "boosters_12_init"
+            "boosters_12_init",
+            "boosters_13_init",
+            "boosters_14_init"
           ]
         }
       },
@@ -771,19 +773,19 @@
         "conditions": {},
         "actions": {
           "comment": {
-            "value": "119 and 87"
+            "value": "115 and 82"
           },
           "missionCreatePickUps": [
             {
               "preset": "airRaceRandom",
-              "count": 119,
+              "count": 115,
               "minDistanceFromBattleAreaEdge": 1.0,
               "target": "booster_all_squad",
               "ignoreBattleArea": true
             },
             {
               "preset": "airRaceRandom",
-              "count": 87,
+              "count": 82,
               "minDistanceFromBattleAreaEdge": 1.0,
               "target": "booster_wp_squad",
               "ignoreBattleArea": true
@@ -1000,11 +1002,6 @@
             "speed_boost_14_03",
             "speed_boost_14_01",
             "speed_boost_14_04",
-            "speed_boost_15_02",
-            "speed_boost_15_03",
-            "speed_boost_15_01",
-            "speed_boost_15_04",
-            "speed_boost_all_110",
             "speed_boost_03_01",
             "speed_boost_03_04",
             "speed_boost_03_02",
@@ -1712,114 +1709,6 @@
           -2241.73,
           108.1,
           1707.25
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "speed_boost_15_02": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -1.34857,
-          0.0,
-          -1.47694
-        ],
-        [
-          0.0,
-          2.0,
-          0.0
-        ],
-        [
-          1.47694,
-          0.0,
-          -1.34857
-        ],
-        [
-          -309.0,
-          69.4,
-          1639.85
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "speed_boost_15_03": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -1.30654,
-          0.0,
-          -1.51424
-        ],
-        [
-          0.0,
-          2.0,
-          0.0
-        ],
-        [
-          1.51424,
-          0.0,
-          -1.30654
-        ],
-        [
-          -270.3,
-          94.05,
-          1630.85
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "speed_boost_15_01": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -1.30467,
-          0.0,
-          -1.51586
-        ],
-        [
-          0.0,
-          2.0,
-          0.0
-        ],
-        [
-          1.51586,
-          0.0,
-          -1.30467
-        ],
-        [
-          -342.15,
-          69.45,
-          1657.2
-        ]
-      ],
-      "objLayer": 0,
-      "props": {}
-    },
-    "speed_boost_15_04": {
-      "type": "Sphere",
-      "tm": [
-        [
-          -1.68692,
-          0.0,
-          -1.07438
-        ],
-        [
-          0.0,
-          2.0,
-          0.0
-        ],
-        [
-          1.07438,
-          0.0,
-          -1.68692
-        ],
-        [
-          -260.6,
-          73.85,
-          1580.95
         ]
       ],
       "objLayer": 0,

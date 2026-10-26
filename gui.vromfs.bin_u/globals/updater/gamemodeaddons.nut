@@ -60,10 +60,11 @@ let unreleasedUnitTags = Computed(@()
 let missingUnitResourcesByRank = Computed(function(prev) {
   let sizes = unitSizes.get()
   let unreleased = unreleasedUnitTags.get()
+  let { ovrOnlyUnits = {} } = serverConfigs.get()
   let res = {}
   foreach (camp, list in allUnitsRanks.get())
     foreach (name, rank in list) {
-      if ((sizes?[name] ?? -1) == 0 || name in unreleased)
+      if ((sizes?[name] ?? -1) == 0 || name in unreleased || name in ovrOnlyUnits)
         continue
       if (camp not in res)
         res[camp] <- {}
