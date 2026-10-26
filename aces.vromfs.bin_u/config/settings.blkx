@@ -2699,6 +2699,7 @@
         "brokenSubpasses": {
           "entry": [
             {
+              "priority": 0,
               "gpu": "G610",
               "data": {
                 "affected": true
@@ -2710,6 +2711,14 @@
               "driverMinVer1": 1,
               "driverMaxVer0": 38,
               "driverMaxVer1": 1,
+              "data": {
+                "affected": true
+              }
+            },
+            {
+              "priority": 1,
+              "driverMinVer0": 18,
+              "driverMaxVer0": 18,
               "data": {
                 "affected": true
               }
@@ -2742,6 +2751,14 @@
               }
             },
             {
+              "driverMinVer0": 18,
+              "driverMaxVer0": 18,
+              "priority": 0,
+              "data": {
+                "VK_EXT_extended_dynamic_state": false
+              }
+            },
+            {
               "priority": 2,
               "gpu": [
                 "G57",
@@ -2749,6 +2766,19 @@
               ],
               "driverMinVer0": 38,
               "driverMaxVer0": 49,
+              "data": {
+                "VK_KHR_buffer_device_address": false,
+                "VK_EXT_extended_dynamic_state": false
+              }
+            },
+            {
+              "priority": 2,
+              "gpu": [
+                "G57",
+                "G52"
+              ],
+              "driverMinVer0": 18,
+              "driverMaxVer0": 18,
               "data": {
                 "VK_KHR_buffer_device_address": false,
                 "VK_EXT_extended_dynamic_state": false
@@ -2867,6 +2897,9 @@
         }
       },
       "default": {
+        "resourceHeaps": {
+          "allowed": false
+        },
         "android": {
           "disallowedFormats": {
             "list": "RGBUN_BC1, RGBs_BC1, RGBAUN_BC1, RGBAs_BC1, UN_BC2, s_BC2, UN_BC3, s_BC3, UN_BC4, SN_BC4, UN_BC5, SN_BC5, UF_BC6H, SF_BC6H, UN_BC7, s_BC7"
@@ -3010,7 +3043,10 @@
       "minMemQuotaKB": 1000000
     },
     "video": {
-      "dynamic_hdr": false
+      "dynamic_hdr": false,
+      "hdrSupport": {
+        "Vulkan": false
+      }
     }
   },
   "iOS": {

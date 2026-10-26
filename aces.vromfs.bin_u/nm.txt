@@ -66360,3 +66360,4 @@ splatterOpacitySpeed
 splatterDistance
 splatterConeHalfAngleDeg
 gamedata/weapons/rocketGuns/halloween_aam.blk
+hdrSupport
