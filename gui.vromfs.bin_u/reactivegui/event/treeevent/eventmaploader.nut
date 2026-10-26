@@ -30,7 +30,7 @@ let mkLoadPreset = @(presetsPath) memoize(function(presetId) {
   return null
 })
 
-let mkEmptyPreset = @() {
+let mkEmptyPreset = @[nodiscard]() {
   bg = defaultMapBg
   mapSize = defaultMapSize
   gridSize = defaultGridSize

@@ -24,7 +24,7 @@
   "useSimpleDeathConditionsAndEffects": false,
   "hitCamOnSimpleUnitSubsystems": true,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 84940.0,
+  "multHpFromMetaparts": 87980.0,
   "type": "typeDestroyer",
   "expClass": "exp_destroyer",
   "timeToFire": 40.0,
@@ -272,7 +272,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 84940.0,
+      "hp": 87980.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "compartment_01_dm": {
@@ -298,7 +298,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 84940.0,
+      "hp": 87980.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "fireParamsPreset": "common_ship_fire",
@@ -308,7 +308,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 84940.0,
+      "hp": 87980.0,
       "fireParamsPreset": "ship_turrets",
       "genericDamageMult": 1.0,
       "main_caliber_turret_01_dm": {}
@@ -317,7 +317,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 84940.0,
+      "hp": 87980.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "auxiliary_caliber_turret_01_dm": {},
@@ -363,7 +363,7 @@
     "torpedo_tubes": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 84940.0,
+      "hp": 87980.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "tt_01_dm": {},
@@ -388,18 +388,16 @@
       "role": "sailor",
       "crew": 34
     },
-    "sailor4": [
-      {
-        "dmPart": "compartment_04_dm",
-        "role": "sailor",
-        "crew": 34
-      },
-      {
-        "dmPart": "compartment_05_dm",
-        "role": "sailor",
-        "crew": 34
-      }
-    ],
+    "sailor4": {
+      "dmPart": "compartment_04_dm",
+      "role": "sailor",
+      "crew": 34
+    },
+    "sailor5": {
+      "dmPart": "compartment_05_dm",
+      "role": "sailor",
+      "crew": 34
+    },
     "sailor6": {
       "dmPart": "compartment_06_dm",
       "role": "sailor",
@@ -585,7 +583,7 @@
   },
   "MetaParts": {
     "hull": {
-      "hp": 84940.0,
+      "hp": 87980.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",
@@ -797,7 +795,6 @@
           3
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -841,7 +838,6 @@
           6
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -934,7 +930,6 @@
         "weaponType": "rockets",
         "emitter": "rckt_head_09",
         "flash": "rckt_head_09",
-        "ammoDpGenFmt": "rckt_head_%02d_dm",
         "emitterGenRange": [
           9,
           16
@@ -992,7 +987,6 @@
         "weaponType": "rockets",
         "emitter": "rckt_head_18",
         "flash": "rckt_head_18",
-        "ammoDpGenFmt": "rckt_head_%02d_dm",
         "emitterGenRange": [
           18,
           21
@@ -1462,7 +1456,6 @@
                 3
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -1506,7 +1499,6 @@
                 6
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -1599,7 +1591,6 @@
               "weaponType": "rockets",
               "emitter": "rckt_head_09",
               "flash": "rckt_head_09",
-              "ammoDpGenFmt": "rckt_head_%02d_dm",
               "emitterGenRange": [
                 9,
                 16
@@ -1657,7 +1648,6 @@
               "weaponType": "rockets",
               "emitter": "rckt_head_18",
               "flash": "rckt_head_18",
-              "ammoDpGenFmt": "rckt_head_%02d_dm",
               "emitterGenRange": [
                 18,
                 21
@@ -2103,7 +2093,6 @@
                 3
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -2147,7 +2136,6 @@
                 6
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -2240,7 +2228,6 @@
               "weaponType": "rockets",
               "emitter": "rckt_head_09",
               "flash": "rckt_head_09",
-              "ammoDpGenFmt": "rckt_head_%02d_dm",
               "emitterGenRange": [
                 9,
                 16
@@ -2298,7 +2285,6 @@
               "weaponType": "rockets",
               "emitter": "rckt_head_18",
               "flash": "rckt_head_18",
-              "ammoDpGenFmt": "rckt_head_%02d_dm",
               "emitterGenRange": [
                 18,
                 21

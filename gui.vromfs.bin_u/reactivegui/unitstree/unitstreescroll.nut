@@ -62,38 +62,42 @@ function scrollForward() {
     resetTimeout(SCROLL_DELAY, @() defer(@() gui_scene.setXmbFocus(nodeToScroll.get())))
 }
 
-let unseenArrowsBlockCtor = @(needShowL, needShowR, ovr = {}) {
-  size = FLEX_H
-  pos = const [0, hdpx(17)]
-  children = [
-    @() {
-      watch = needShowL
-      size = FLEX_H
-      pos = [-flagTreeOffset, 0]
-      children = !needShowL.get() ? null : [
-        {
-          hplace = ALIGN_LEFT
-          pos = const [0, -hdpx(20)]
-          children = priorityUnseenMark
-        }
-        mkScrollArrow(scrollHandler, MR_L, scrollArrowImageVerySmall)
-      ]
+function unseenArrowsBlockCtor(needShowL, needShowR, ovr = {}) {
+  let leftArrowRow = [
+    {
+      hplace = ALIGN_LEFT
+      pos = const [0, -hdpx(20)]
+      children = priorityUnseenMark
     }
-    @() {
-      watch = needShowR
-      size = FLEX_H
-      pos = [saBorders[0] * 0.5, 0]
-      children = !needShowR.get() ? null : [
-        {
-          hplace = ALIGN_RIGHT
-          pos = const [0, -hdpx(20)]
-          children = priorityUnseenMark
-        }
-        mkScrollArrow(scrollHandler, MR_R, scrollArrowImageVerySmall)
-      ]
-    }
+    mkScrollArrow(scrollHandler, MR_L, scrollArrowImageVerySmall)
   ]
-}.__update(ovr)
+  let rightArrowRow = [
+    {
+      hplace = ALIGN_RIGHT
+      pos = const [0, -hdpx(20)]
+      children = priorityUnseenMark
+    }
+    mkScrollArrow(scrollHandler, MR_R, scrollArrowImageVerySmall)
+  ]
+  return {
+    size = FLEX_H
+    pos = const [0, hdpx(17)]
+    children = [
+      @() {
+        watch = needShowL
+        size = FLEX_H
+        pos = [-flagTreeOffset, 0]
+        children = !needShowL.get() ? null : leftArrowRow
+      }
+      @() {
+        watch = needShowR
+        size = FLEX_H
+        pos = [saBorders[0] * 0.5, 0]
+        children = !needShowR.get() ? null : rightArrowRow
+      }
+    ]
+  }.__update(ovr)
+}
 
 return {
   scrollHandler

@@ -29,7 +29,7 @@ let mkHudReloadStyleDescItem = @(img, title, isPrimaryStyle) {
         {
           valign = ALIGN_CENTER
           halign = ALIGN_CENTER
-          size = [touchButtonSize, touchButtonSize]
+          size = touchButtonSize
           children = [
             {
               size = FLEX
@@ -47,7 +47,7 @@ let mkHudReloadStyleDescItem = @(img, title, isPrimaryStyle) {
             }
             {
               rendObj = ROBJ_IMAGE
-              size = [touchButtonSize, touchButtonSize]
+              size = touchButtonSize
               image = Picture($"{img}:{touchButtonSize}:{touchButtonSize}:P")
               keepAspect = KEEP_ASPECT_FIT
               color = 0xFFFFFFFF

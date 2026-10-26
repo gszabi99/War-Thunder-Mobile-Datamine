@@ -79,6 +79,7 @@ require("%globalScripts/windowStateEs.nut")
 require("%appGlobals/windowState.nut").allowDebug(true)
 require("%rGui/contacts/contactsState.nut") 
 require("%rGui/squad/squadManager.nut") 
+require("%rGui/squad/squadChatState.nut")
 require("%rGui/initHangar.nut")
 require("%rGui/updater/connectionStatus/initConnectionStatus.nut")
 require("%rGui/updater/initAddonsState.nut")
@@ -86,6 +87,7 @@ require("%rGui/activeControls.nut")
 require("%rGui/login/consentGoogleState.nut")
 require("%rGui/login/previewIDFAWnd.nut")
 require("%rGui/login/reloginAuto.nut")
+require("%rGui/clans/filterClanWnd.nut")
 
 
 

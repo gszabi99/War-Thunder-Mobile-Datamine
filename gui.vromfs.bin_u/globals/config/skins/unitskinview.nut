@@ -84,6 +84,9 @@ return {
     "au_battleship_franz_ferdinand": {
       "": "camo_blackwhite_geometry"
     },
+    "au_battleship_viribus_unitis": {
+      "": "camo_hw_26"
+    },
     "b-17e": {
       "": "usa_p43a_1_usaaf",
       "upgraded": "ussr_p_47d_ussr"
@@ -892,6 +895,14 @@ return {
     "f9f-2_prem": {
       "": "usa_p_40c_metal"
     },
+    "f9f-5": {
+      "": "usa_f8f1b_bearcat",
+      "camo": "usa_p_40c_metal"
+    },
+    "f9f-5_prem": {
+      "": "ussr_i_301",
+      "camo": "usa_sb2u_2"
+    },
     "firebrand_tf4": {
       "": "uk_spitfire_mk1a_summer",
       "upgraded": "usa_pby_5a_early_a"
@@ -904,6 +915,10 @@ return {
     },
     "fr_1_fireball": {
       "": "usa_f8f1b_bearcat"
+    },
+    "fr_amx_10m_acra": {
+      "": "fr_camo_amx_10m_acra_halloween",
+      "forest": "fr_camo_vert_olive_arme"
     },
     "fr_amx_10p": {
       "": "fr_camo_vert_olive_arme",
@@ -1343,7 +1358,8 @@ return {
       "upgraded": "camo_greyblackblue_geometry"
     },
     "germ_battleship_gneisenau_380mm": {
-      "": "camo_threegray_spots"
+      "": "camo_threegray_spots",
+      "hw_26": "camo_hw_26"
     },
     "germ_battleship_helgoland": {
       "upgraded": "camo_blackgray_net"
@@ -1615,6 +1631,14 @@ return {
     "germ_leopard_2a5": {
       "": "ger_camo_bronzegruen",
       "upgraded": "ger_camo_modern_threecolor"
+    },
+    "germ_leopard_2a5_pso": {
+      "": "ger_camo_bronzegruen",
+      "forest": "ger_camo_carc"
+    },
+    "germ_leopard_2a5_pso_prem": {
+      "": "germ_camo_leopard_2a5_pso",
+      "forest": "ger_camo_bronzegruen"
     },
     "germ_leopard_2av": {
       "": "ger_camo_bronzegruen",
@@ -2184,6 +2208,10 @@ return {
     "i_29": {
       "": "ussr_i_180s_red"
     },
+    "ia_58a_pucara": {
+      "": "ar_ia_58a_pucara_zombie",
+      "standart": "ar_ia_58a_pucara"
+    },
     "iar_81c": {
       "": "germ_fw_190c"
     },
@@ -2247,6 +2275,11 @@ return {
     "il_centurion_shot_kal_gimel": {
       "": "us_camo_olive",
       "upgraded": "isr_camo_sandgray"
+    },
+    "il_frigate_rckt_saar5": {
+      "": "camo_navygrey_5",
+      "desert_threecolors_bp": "camo_desert_threecolors",
+      "upgraded": "camo_battle_allies_saar5"
     },
     "il_m113a1_tow": {
       "": "isr_camo_sandgray",
@@ -3176,6 +3209,10 @@ return {
       "": "cz_l_39za_winter",
       "standart": "cz_l_39za"
     },
+    "l_39za_art_thailand": {
+      "": "ussr_la_7",
+      "standart": "ussr_la_7"
+    },
     "la-11": {
       "": "ussr_la_11_standard"
     },
@@ -3256,6 +3293,7 @@ return {
     },
     "me-262a-1a_u4": {
       "": "ger_me262a_1_u4_halloween",
+      "mummy": "ger_me262a_1_u4_mummy",
       "standart": "germ_bf_109k_4_a"
     },
     "me-262a-2a": {
@@ -3768,12 +3806,11 @@ return {
       "": "ussr_tandem_mai",
       "gray": "ussr_la_7"
     },
-    "tu_14t": {
-      "": "usa_sb2u_2",
-      "camo": "ussr_pe_8_m82"
-    },
     "tu-2_postwar_late_prem": {
       "": "ussr_il_2m"
+    },
+    "tu_14t": {
+      "": "usa_sb2u_2"
     },
     "tu_4": {
       "": "ussr_la_11_standard",
@@ -4253,6 +4290,9 @@ return {
     "uk_sub_swiftsure": {
       "upgraded": "camo_mtb_spots",
       "yellow": "camo_yellow"
+    },
+    "uk_sub_trafalgar": {
+      "upgraded": "camo_desert_geometry"
     },
     "uk_sub_type_v": {
       "upgraded": "camo_polish_bluegeometry"
@@ -4998,6 +5038,7 @@ return {
     },
     "us_t58": {
       "": "us_camo_desert_pink_lines",
+      "fiction": "us_camo_t58_halloween",
       "forest": "us_camo_olive"
     },
     "us_t92": {
@@ -5253,6 +5294,10 @@ return {
     },
     "ussr_cruiser_rckt_pr1144": {
       "upgraded": "camo_arcticfleet"
+    },
+    "ussr_cruiser_rckt_pr1164": {
+      "": "camo_hellgrau_50",
+      "upgraded": "camo_northern_fleet"
     },
     "ussr_cruiser_rckt_pr58": {
       "upgraded": "camo_northern_fleet_contrast"
@@ -5826,6 +5871,10 @@ return {
     },
     "ussr_t_90a_event": {
       "": "ussr_t_90a_event"
+    },
+    "ussr_t_90m_arena_m": {
+      "": "ussr_camo_deform",
+      "forest": "ussr_modern_green"
     },
     "ussr_type_65_aa": {
       "": "ussr_camo_forest_01",

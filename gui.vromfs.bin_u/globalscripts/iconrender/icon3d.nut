@@ -1,6 +1,7 @@
+from "%globalScripts/iconRender/itemTexReplace.nut" import getTexReplaceString, getTexSetString
+from "dagor.math" import Color4
 from "types" import Table, Array
-let {getTexReplaceString, getTexSetString} = require("%globalScripts/iconRender/itemTexReplace.nut")
-let { Color4 } = require("dagor.math")
+
 
 
 

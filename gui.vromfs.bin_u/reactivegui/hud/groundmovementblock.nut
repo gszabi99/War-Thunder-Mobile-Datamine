@@ -31,6 +31,13 @@ let imgArrowSmallW = (0.08 * imgBgSize).tointeger()
 let imgArrowSmallH = (23.0 / 35 * imgArrowW).tointeger()
 const diagArrowOffsetPw = 40
 let stickSize = shHud(11)
+const steeringTable = [
+  [12, 0],
+  [13, 0.2],
+  [60, 0.5],
+  [74, 0.9],
+  [75, 1.0]
+]
 
 let isTankMoveEnabled = Computed(@()
   isControlEnabled("gm_throttle", enabledControls.get(), isAllControlsEnabled.get())
@@ -41,7 +48,7 @@ let isWalkerMoveEnabled = Computed(@()
   || isControlEnabled("walker_steering", enabledControls.get(), isAllControlsEnabled.get()))
 
 let mkImgRotaion = @(size) {
-  size = [size, size]
+  size = size
   pos = [-0.5 * size, 0]
   vplace = ALIGN_CENTER
   image = Picture($"ui/gameuiskin#hud_tank_stick_rotation.svg:{size}:{size}:P")
@@ -58,7 +65,7 @@ let mkImgArrow = @(w, h) {
 function imgBg(scale) {
   let size = scaleEven(imgBgSize, scale)
   return {
-    size = [size, size]
+    size = size
     image = Picture($"ui/gameuiskin#hud_tank_stick_bg.svg:{size}:{size}:P")
     rendObj = ROBJ_IMAGE
     vplace = ALIGN_CENTER
@@ -111,18 +118,22 @@ function fullImgBg(scale) {
 }
 
 
-let imgBgComp = @(scale) @() {
-  watch = isStickActiveByStick
-  size = FLEX
-  opacity = isStickActiveByStick.get() ? 0.5 : 1.0
-  children = isStickActiveByStick.get() ? imgBg(scale) : fullImgBg(scale)
-  transform = {}
+function imgBgComp(scale) {
+  let bgImg = imgBg(scale)
+  let fullBgImg = fullImgBg(scale)
+  return @() {
+    watch = isStickActiveByStick
+    size = FLEX
+    opacity = isStickActiveByStick.get() ? 0.5 : 1.0
+    children = isStickActiveByStick.get() ? bgImg : fullBgImg
+    transform = {}
+  }
 }
 
 function imgStick(scale) {
   let size = scaleEven(stickSize, scale)
   return {
-    size = [size, size]
+    size = size
     image = Picture($"ui/gameuiskin#joy_head.svg:{size}:{size}:P")
     rendObj = ROBJ_IMAGE
     vplace = ALIGN_CENTER
@@ -131,67 +142,64 @@ function imgStick(scale) {
   }
 }
 
-let moveStickBase = @(zoneSize, scale, touchStickAction, moveCtrlType) @() {
-  watch = [IsTracked, moveCtrlType]
-  key = moveCtrlType
-  size = [zoneSize, zoneSize]
-
-  behavior = TouchScreenSteeringStick
-  touchStickAction
-  deadZoneForTurnAround = 75
-  deadZoneForStraightMove = 20
-  valueAfterDeadZone = 0.34
-  steeringTable = [
-    [12, 0],
-    [13, 0.2],
-    [60, 0.5],
-    [74, 0.9],
-    [75, 1.0]
-  ]
-  steeringTableAlternative = [
-    [-20, 0],
-    [-21, 0.1],
-    [-27, 0.15],
-    [-55, 0.6],
-    [-60, 0.99],
-    [-74, 0.99],
-    [12, 0],
-    [13, 0.1],
-    [20, 0.15],
-    [55, 0.6],
-    [60, 0.7],
-    [74, 0.8],
-    [75, 1.0]
-  ]
-  maxValueRadius = zoneSize * zoneToBgRadius
-  useCenteringOnTouchBegin = moveCtrlType.get() == "stick"
-
-  onChange = @(v) stickDelta.set(Point2(v.x, v.y))
-
-  function onTouchBegin() {
-    setVirtualAxisValue("gm_brake_left", 0)
-    setVirtualAxisValue("gm_brake_right", 0)
-    isStickActiveByStick.set(true)
-    setMoveControlByArrows(false)
-  }
-  function onTouchEnd() {
-    setVirtualAxisValue("gm_brake_left", 1)
-    setVirtualAxisValue("gm_brake_right", 1)
-    isStickActiveByStick.set(false)
-    setMoveControlByArrows(true)
-  }
-  function onDetach() {
-    setVirtualAxisValue("gm_brake_left", 0)
-    setVirtualAxisValue("gm_brake_right", 0)
-    setVirtualAxisValue("gm_steering", 0)
-    setVirtualAxisValue("walker_steering", 0)
-    isStickActiveByStick.set(false)
-    setMoveControlByArrows(true)
-  }
-  children = [
+function moveStickBase(zoneSize, scale, touchStickAction, moveCtrlType) {
+  let stickChildren = [
     imgBgComp(scale)
     imgStick(scale)
   ]
+  return @() {
+    watch = [IsTracked, moveCtrlType]
+    key = moveCtrlType
+    size = zoneSize
+
+    behavior = TouchScreenSteeringStick
+    touchStickAction
+    deadZoneForTurnAround = 75
+    deadZoneForStraightMove = 20
+    valueAfterDeadZone = 0.34
+    steeringTable
+    steeringTableAlternative = const [
+      [-20, 0],
+      [-21, 0.1],
+      [-27, 0.15],
+      [-55, 0.6],
+      [-60, 0.99],
+      [-74, 0.99],
+      [12, 0],
+      [13, 0.1],
+      [20, 0.15],
+      [55, 0.6],
+      [60, 0.7],
+      [74, 0.8],
+      [75, 1.0]
+    ]
+    maxValueRadius = zoneSize * zoneToBgRadius
+    useCenteringOnTouchBegin = moveCtrlType.get() == "stick"
+
+    onChange = @(v) stickDelta.set(Point2(v.x, v.y))
+
+    function onTouchBegin() {
+      setVirtualAxisValue("gm_brake_left", 0)
+      setVirtualAxisValue("gm_brake_right", 0)
+      isStickActiveByStick.set(true)
+      setMoveControlByArrows(false)
+    }
+    function onTouchEnd() {
+      setVirtualAxisValue("gm_brake_left", 1)
+      setVirtualAxisValue("gm_brake_right", 1)
+      isStickActiveByStick.set(false)
+      setMoveControlByArrows(true)
+    }
+    function onDetach() {
+      setVirtualAxisValue("gm_brake_left", 0)
+      setVirtualAxisValue("gm_brake_right", 0)
+      setVirtualAxisValue("gm_steering", 0)
+      setVirtualAxisValue("walker_steering", 0)
+      isStickActiveByStick.set(false)
+      setMoveControlByArrows(true)
+    }
+    children = stickChildren
+  }
 }
 
 function tankMoveStick(scale) {
@@ -202,7 +210,7 @@ function tankMoveStick(scale) {
   }
   return @() {
     watch = isTankMoveEnabled
-    size = [zoneSize, zoneSize]
+    size = zoneSize
     vplace = ALIGN_BOTTOM
     hplace = ALIGN_LEFT
     children = isTankMoveEnabled.get()
@@ -219,7 +227,7 @@ function walkerMoveStick(scale) {
   }
   return @() {
     watch = isWalkerMoveEnabled
-    size = [zoneSize, zoneSize]
+    size = zoneSize
     vplace = ALIGN_BOTTOM
     hplace = ALIGN_LEFT
     children = isWalkerMoveEnabled.get()
@@ -263,74 +271,82 @@ let gamepadAxisListenerWalker = axisListener({
 
 let updateStickActive = @(delta) isStickActiveByStick.set(delta.lengthSq() > 0.04)
 
-let unitGamepadStick = @(scale, isTank) @(){
-  key = {}
-  watch = [isGamepad, isPieMenuActive, isPlayingReplay]
-  size = array(2, scaleEven(imgBgSize, scale))
-
-  behavior = TouchScreenGamepadStick
-  touchStickAction = isTank
-    ? {
-        horizontal = "gm_steering"
-        vertical = "gm_throttle"
-      }
-    : {
-        horizontal = "walker_steering"
-        vertical = "walker_throttle"
-      }
-  deadZoneForTurnAround = 75
-  deadZoneForStraightMove = 20
-  valueAfterDeadZone = 0.34
-  steeringTable = [
-    [12, 0],
-    [13, 0.2],
-    [60, 0.5],
-    [74, 0.9],
-    [75, 1.0]
-  ]
-  maxValueRadius = scaleEven(stickZoneSize, scale) * zoneToBgRadius
-
-  function onAttach() {
-    stickDelta.subscribe(updateStickActive)
-    updateStickActive(stickDelta.get())
+function unitGamepadStick(scale, isTank) {
+  let stickAreaSize = array(2, scaleEven(imgBgSize, scale))
+  let maxRadius = scaleEven(stickZoneSize, scale) * zoneToBgRadius
+  let bgChild = {
+    size = FLEX
+    opacity = 0.75
+    children = fullImgBg(scale)
   }
-  function onDetach() {
-    stickDelta.unsubscribe(updateStickActive)
-    updateStickActive(Point2(0, 0))
-  }
-  children = [
-    {
-      size = FLEX
-      opacity = 0.75
-      children = fullImgBg(scale)
+  let stick = gamepadStick(scale)
+  return @(){
+    key = {}
+    watch = [isGamepad, isPieMenuActive, isPlayingReplay]
+    size = stickAreaSize
+
+    behavior = TouchScreenGamepadStick
+    touchStickAction = isTank
+      ? const {
+          horizontal = "gm_steering"
+          vertical = "gm_throttle"
+        }
+      : const {
+          horizontal = "walker_steering"
+          vertical = "walker_throttle"
+        }
+    deadZoneForTurnAround = 75
+    deadZoneForStraightMove = 20
+    valueAfterDeadZone = 0.34
+    steeringTable
+    maxValueRadius = maxRadius
+
+    function onAttach() {
+      stickDelta.subscribe(updateStickActive)
+      updateStickActive(stickDelta.get())
     }
-    gamepadStick(scale)
-    isGamepad.get() && !isPieMenuActive.get() && !isPlayingReplay.get()
-     ? isTank
-       ? gamepadAxisListenerTank
-       : gamepadAxisListenerWalker
-     : null
-  ]
+    function onDetach() {
+      stickDelta.unsubscribe(updateStickActive)
+      updateStickActive(Point2(0, 0))
+    }
+    children = [
+      bgChild
+      stick
+      isGamepad.get() && !isPieMenuActive.get() && !isPlayingReplay.get()
+       ? isTank
+         ? gamepadAxisListenerTank
+         : gamepadAxisListenerWalker
+       : null
+    ]
+  }
 }
 
-let tankGamepadMoveBlock = @(scale) @() {
-  watch = isTankMoveEnabled
-  size = array(2, scaleEven(stickZoneSize, scale))
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  children = isTankMoveEnabled.get() ? unitGamepadStick(scale, true) : null
+function tankGamepadMoveBlock(scale) {
+  let zoneSize = array(2, scaleEven(stickZoneSize, scale))
+  let gamepadStickComp = unitGamepadStick(scale, true)
+  return @() {
+    watch = isTankMoveEnabled
+    size = zoneSize
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    children = isTankMoveEnabled.get() ? gamepadStickComp : null
+  }
 }
 
-let walkerGamepadMoveBlock = @(scale) @() {
-  watch = isWalkerMoveEnabled
-  size = array(2, scaleEven(stickZoneSize, scale))
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  children = isWalkerMoveEnabled.get() ? unitGamepadStick(scale, false) : null
+function walkerGamepadMoveBlock(scale) {
+  let zoneSize = array(2, scaleEven(stickZoneSize, scale))
+  let gamepadStickComp = unitGamepadStick(scale, false)
+  return @() {
+    watch = isWalkerMoveEnabled
+    size = zoneSize
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    children = isWalkerMoveEnabled.get() ? gamepadStickComp : null
+  }
 }
 
 let moveStickView = {
-  size = [stickZoneSize, stickZoneSize]
+  size = stickZoneSize
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = [

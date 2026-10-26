@@ -96,7 +96,7 @@
     },
     "damage": {
       "explosive": {
-        "radius": 0.5,
+        "radius": 0.4,
         "offset": 0.2
       },
       "shatter": {

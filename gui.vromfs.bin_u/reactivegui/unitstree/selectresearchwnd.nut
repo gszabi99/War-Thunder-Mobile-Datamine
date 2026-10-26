@@ -63,23 +63,26 @@ let mkSmallText = @(text, ovr = {}) {
 function mkUnitPlate(unit) {
   let stateFlags = Watched(0)
   let key = {}
+  let onElemStateHandler = withTooltip(stateFlags, key, @() {
+    content = unitInfoPanel({}, mkUnitTitle, Watched(unit)),
+    flow = FLOW_HORIZONTAL
+  })
+  let onDetachHandler = tooltipDetach(stateFlags)
+  let plateChildren = [
+    mkUnitBg(unit)
+    mkUnitImage(unit)
+    mkUnitTexts(unit, getUnitName(unit.name))
+    mkUnitInfo(unit)
+  ]
 
   return @() {
     key
     watch = stateFlags
     size = unitPlateTiny
     behavior = Behaviors.Button
-    onElemState = withTooltip(stateFlags, key, @() {
-      content = unitInfoPanel({}, mkUnitTitle, Watched(unit)),
-      flow = FLOW_HORIZONTAL
-    })
-    onDetach = tooltipDetach(stateFlags)
-    children = [
-      mkUnitBg(unit)
-      mkUnitImage(unit)
-      mkUnitTexts(unit, getUnitName(unit.name))
-      mkUnitInfo(unit)
-    ]
+    onElemState = onElemStateHandler
+    onDetach = onDetachHandler
+    children = plateChildren
   }
 }
 
@@ -136,6 +139,10 @@ function unitsBlock(startUnit) {
       .slice(0, maxAmountOfUnitsOnScreen)
       .sort(@(a, b) visibleNodes.get()[a].y <=> visibleNodes.get()[b].y)
   })
+  let vertLineGap = mkFlowLine(verticalLine, [SIZE_TO_CONTENT, smallVertLineHeight])
+  let dotFlow = mkFlowLine(dot)
+  let horizLineFlow = mkFlowLine(horizontalLine, [unitPlateTiny[0] + buttonsHGap, SIZE_TO_CONTENT])
+  let vertLineBig = mkFlowLine(verticalLine, [SIZE_TO_CONTENT, bigVertLineHeight])
   return @() {
     watch = [serverConfigs, childUnits, startUnit]
     margin = defaultMargin
@@ -143,22 +150,22 @@ function unitsBlock(startUnit) {
     halign = ALIGN_CENTER
     children = [
       startUnit.get() ? mkUnitPlate(startUnit.get()) : null
-      mkFlowLine(verticalLine, [SIZE_TO_CONTENT, smallVertLineHeight])
+      vertLineGap
       {
         margin = defaultMargin
         halign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
         gap = hdpx(15)
-        children = childUnits.get().map(@(_) mkFlowLine(dot))
+        children = childUnits.get().map(@(_) dotFlow)
       }
-      mkFlowLine(verticalLine, [SIZE_TO_CONTENT, smallVertLineHeight])
+      vertLineGap
       {
         size = [(unitPlateTiny[0] + buttonsHGap) * childUnits.get().len() - 1, SIZE_TO_CONTENT]
         flow = FLOW_HORIZONTAL
         halign = ALIGN_CENTER
         children = childUnits.get()
           .slice(0, childUnits.get().len() - 1)
-          .map(@(_) mkFlowLine(horizontalLine, [unitPlateTiny[0] + buttonsHGap, SIZE_TO_CONTENT]))
+          .map(@(_) horizLineFlow)
       }
       {
         flow = FLOW_HORIZONTAL
@@ -169,7 +176,7 @@ function unitsBlock(startUnit) {
             flow = FLOW_VERTICAL
             halign = ALIGN_CENTER
             children = [
-              mkFlowLine(verticalLine, [SIZE_TO_CONTENT, bigVertLineHeight])
+              vertLineBig
               mkUnitPlate(serverConfigs.get()?.allUnits[u])
             ]
           })
@@ -178,21 +185,24 @@ function unitsBlock(startUnit) {
   }
 }
 
-let flagBg = @(isSelected) @() {
-  watch = isSelected
-  key = {}
-  size = FLEX
-  rendObj = ROBJ_IMAGE
-  image = gradient()
-  color = isSelected.get() ? flagBgColorSelected : flagBgColor
-  transform = {}
-  transitions = [{ prop = AnimProp.color, duration = 0.3, easing = InOutQuad }]
+function flagBg(isSelected) {
+  let bgImage = gradient()
+  return @() {
+    watch = isSelected
+    key = {}
+    size = FLEX
+    rendObj = ROBJ_IMAGE
+    image = bgImage
+    color = isSelected.get() ? flagBgColorSelected : flagBgColor
+    transform = {}
+    transitions = const [{ prop = AnimProp.color, duration = 0.3, easing = InOutQuad }]
+  }
 }
 
 function mkFlag(country, curCountry) {
   let isSelected = Computed(@() curCountry.get() == country)
   return {
-    size = [flagBtnWidth, flagBtnWidth]
+    size = flagBtnWidth
     behavior = Behaviors.Button
     onClick = @() selectedCountry.set(country)
     sound = { click = "choose" }

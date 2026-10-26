@@ -26,7 +26,7 @@ function mkWeaponIcon(weapon) {
     margin = borderWidth
     children = iconType == "" ? null
       : {
-          size = [imgSize, imgSize]
+          size = imgSize
           rendObj = ROBJ_IMAGE
           image = Picture($"ui/gameuiskin#{iconType}.avif:{imgSize}:{imgSize}:P")
           keepAspect = true
@@ -47,6 +47,12 @@ function mkWeaponCard(headerText, weapon, borderColor, txtColor) {
   let wCount = isCaliberTitle && guns > 1 ? format(loc("weapons/counter/right/short"), guns)
     : !isCaliberTitle && totalBullets > 1 ? format(loc("weapons/counter/right/short"), totalBullets)
     : null
+  let onWeaponHover = withTooltip(stateFlags, key, @() {
+    content = mkSlotWeaponDesc(weapon, tooltipWidth),
+    flow = FLOW_HORIZONTAL
+  })
+  let onWeaponDetach = tooltipDetach(stateFlags)
+  let weaponIcon = mkWeaponIcon(weapon)
 
   return {
     size = SIZE_TO_CONTENT
@@ -58,19 +64,16 @@ function mkWeaponCard(headerText, weapon, borderColor, txtColor) {
       @(){
         key
         watch = stateFlags
-        size = [weaponSize, weaponSize]
+        size = weaponSize
         rendObj = ROBJ_BOX
         fillColor = 0xFF45545D
         borderColor
         borderWidth
         behavior = Behaviors.Button
-        onElemState = withTooltip(stateFlags, key, @() {
-          content = mkSlotWeaponDesc(weapon, tooltipWidth),
-          flow = FLOW_HORIZONTAL
-        })
-        onDetach = tooltipDetach(stateFlags)
+        onElemState = onWeaponHover
+        onDetach = onWeaponDetach
         children = [
-          mkWeaponIcon(weapon)
+          weaponIcon
           msgBoxText(colorize(txtColor ?? borderColor, wText),
               { size = FLEX_H,
                 halign = ALIGN_LEFT,

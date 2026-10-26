@@ -18,13 +18,15 @@ let hasFallbackByImage = Watched({})
 
 function mkBgImageWithFallback(image) {
   let hasFallbackImg = Computed(@() hasFallbackByImage.get()?[image])
+  let fallbackPic = Picture(fallbackLoadingImage)
+  let imagePic = Picture(image)
   return @() {
     watch = hasFallbackImg
     key = image
     size = FLEX
     rendObj = ROBJ_IMAGE
-    fallbackImage = hasFallbackImg.get() ? Picture(fallbackLoadingImage) : null
-    image = Picture(image)
+    fallbackImage = hasFallbackImg.get() ? fallbackPic : null
+    image = imagePic
     color = 0xFFFFFFFF
     keepAspect = KEEP_ASPECT_FILL
     onAttach = @() resetTimeout(1.0, @() hasFallbackByImage.mutate(@(v) v[image] <- true))
@@ -40,7 +42,7 @@ let mkBgImageByPx = @(image, sizePx = FLEX, posPx = null, ovr = {}) {
   color = 0xFFFFFFFF
 }.__update(ovr)
 
-function mkAnimBgLayer(layerCfg, animTime = defAnimTime) {
+function [pure, nodiscard] mkAnimBgLayer(layerCfg, animTime = defAnimTime) {
   let { moveX = 0, children = null } = layerCfg
   if (moveX == 0 || children == null || animTime <= 0)
     return children

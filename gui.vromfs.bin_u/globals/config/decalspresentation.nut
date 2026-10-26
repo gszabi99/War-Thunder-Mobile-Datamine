@@ -80,7 +80,7 @@ let descPresentation = {
 
 let getDecalCategoryLocName = @(cat) loc(categoryDecalsLoc?[cat] ?? $"decals/category/{cat}")
 let getDecalPresentation = @(id) presentations?[id] ?? defPresentation
-let getDecalDescPresentation = @(id) descPresentation?[id] ?? defDescPresentation
+let getDecalDescPresentation = @[pure, nodiscard](id) descPresentation?[id] ?? defDescPresentation
 
 return {
   getDecalDescPresentation

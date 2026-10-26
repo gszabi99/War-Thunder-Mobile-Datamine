@@ -213,7 +213,6 @@ eventbus_subscribe("on_online_available", function on_online_available(...) {
   logMC("on_online_available")
   isMatchingOnline.set(true)
   destroyConnectProgressMessages()
-  eventbus_send("onMatchingOnlineAvailable", null)
 })
 
 eventbus_subscribe("logout_with_msgbox", @(params)

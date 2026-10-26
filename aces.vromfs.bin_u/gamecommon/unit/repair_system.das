@@ -99,10 +99,10 @@ def load_toolkit_mod_blk(blk : DataBlock&;
     repair_system_toolkit_count = 0
 
   if gm != null
-    gm.haveRepair = repair_system_toolkit_count_max < 0 && (
+    gm.haveRepair = (repair_system_toolkit_count_max < 0 && (
       get_flag(repair_system_state, RepairState.REPAIR_AVAILABLE_WITHOUT_TOOLKIT) ||
       get_flag(repair_system_state, RepairState.REPAIR_PENALTY_WITHOUT_TOOLKIT)
-    )
+    )) || get_flag(repair_system_state, RepairState.HAS_FREE_TOOLKIT)
 
   let has_toolkit = ((repair_system_toolkit_count_max < 0 && available_without_toolkit) ||
                      (repair_system_toolkit_count_max >= 0 && gm != null && gm.toolkit.isAvailable))
@@ -139,6 +139,8 @@ def repair_system_init_handle_es(evt : CmdInitComponent;
   set_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS, false)
   set_flag(repair_system_state, RepairState.REPAIR_DELAY_FOR_START, true)
   set_flag(repair_system_state, RepairState.REPAIR_AVAILABLE_WITHOUT_TOOLKIT, false)
+  set_flag(repair_system_state, RepairState.HAS_FREE_TOOLKIT, false)
+  set_flag(repair_system_state, RepairState.REPAIR_USING_FREE_TOOLKIT, false)
   repair_system_toolkit_count_max = -1
   repair_system_speed_multiplier_base = 1.0f
   repair_system_repair_hp_multiplier = 1.0f
@@ -155,6 +157,8 @@ def repair_system_init_handle_es(evt : CmdInitComponent;
     repair_system_parts_speed_mult
   )
 
+  set_flag(repair_system_state, RepairState.CAN_REPAIR_WHILE_MOVING, false)
+  set_flag(repair_system_state, RepairState.CLEAR_DEBUFFS_ON_REPAIR, false)
   *evt.modelBlk |> datablock_get_block("repairParts") <| $(repar_parts_blk)
     load_repair_parts(
       unit,
@@ -164,12 +168,14 @@ def repair_system_init_handle_es(evt : CmdInitComponent;
       repair_system_parts_hp,
       repair_system_parts_speed_mult
     )
+    set_flag(repair_system_state, RepairState.CAN_REPAIR_WHILE_MOVING,
+      repar_parts_blk |> datablock_getBool("canRepairWhileMoving", false))
+    set_flag(repair_system_state, RepairState.CLEAR_DEBUFFS_ON_REPAIR,
+      repar_parts_blk |> datablock_getBool("clearDebuffsOnRepair", false))
 
   
-  static_if typeinfo safe_has_property < isTransport > (*unit)
-    set_flag(repair_system_state, RepairState.CAN_AUTO_REPAIR, !unit.isTransport)
-  else
-    set_flag(repair_system_state, RepairState.CAN_AUTO_REPAIR, true)
+  
+  set_flag(repair_system_state, RepairState.CAN_AUTO_REPAIR, !unit.isTransport && unit.isTankFieldRepairAllowed)
   set_flag(repair_system_state, RepairState.REPAIR_PENALTY_WITHOUT_TOOLKIT, false)
 
   if unit.isShip
@@ -190,6 +196,9 @@ def repair_system_init_handle_es(evt : CmdInitComponent;
           repair_system_speed_multiplier_base,
           repair_system_repair_hp_multiplier,
           true)
+
+  set_flag(repair_system_state, RepairState.HAS_FREE_TOOLKIT,
+    unit.isTank && datablock_getBool(get_wt_dm_params().tankRepairParts, "tankFreeToolkitFallback", false))
 
 
 [es]
@@ -238,13 +247,17 @@ def repair_system_update_es(act : UpdateStageInfoAct;
   var unit = unit__ref.unit
   let gm = unit |> as_gm()
 
+  let consumable_active = ((repair_system_toolkit_count_max >= 0 && gm != null && gm.toolkit.isAvailable) ||
+    get_flag(repair_system_state, RepairState.TOOLKIT_SPENT_FOR_ACTIVATION))
+  let free_active = !consumable_active && get_flag(repair_system_state, RepairState.HAS_FREE_TOOLKIT)
+  set_flag(repair_system_state, RepairState.FREE_TOOLKIT_ACTIVE, free_active)
+
   
   set_flag(repair_system_state, RepairState.HAS_REPAIR_TOOLKIT,
     (repair_system_toolkit_count_max < 0 && get_flag(repair_system_state, RepairState.REPAIR_AVAILABLE_WITHOUT_TOOLKIT)) ||
-    (repair_system_toolkit_count_max >= 0 && (
-      (repair_system_toolkit_count > 0 && gm != null && gm.toolkit.isAvailable) ||
-      get_flag(repair_system_state, RepairState.IS_BOT)
-    ))
+    consumable_active ||
+    (repair_system_toolkit_count_max >= 0 && get_flag(repair_system_state, RepairState.IS_BOT)) ||
+    free_active
   )
   set_flag(repair_system_state, RepairState.REPAIR_AVAILABLE,
     get_flag(repair_system_state, RepairState.HAS_REPAIR_TOOLKIT) ||
@@ -263,11 +276,17 @@ def repair_system_update_es(act : UpdateStageInfoAct;
     return
 
   
-  repair_system_speed_multiplier = repair_system_speed_multiplier_base * get_difficulty_config().tankRepairSpeedK
+  var toolkit_speed_factor = 1.0f
+  if get_flag(repair_system_state, RepairState.HAS_FREE_TOOLKIT) && !get_flag(repair_system_state, RepairState.IS_BOT) && !get_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS)
+    if consumable_active
+      toolkit_speed_factor = get_wt_dm_params().consumableToolkitSpeedMul
+    elif free_active
+      toolkit_speed_factor = get_wt_dm_params().freeToolkitSpeedMul
+  repair_system_speed_multiplier = repair_system_speed_multiplier_base * toolkit_speed_factor * get_difficulty_config().tankRepairSpeedK
   if gm != null
     repair_system_speed_multiplier *= gm.crewRepairSpeedMultiplier
   if get_flag(repair_system_state, RepairState.REPAIR_ON_BASE)
-    repair_system_speed_multiplier *= get_wt_dm_params().repairOnBaseMul
+    repair_system_speed_multiplier *= unit.isTank ? get_wt_dm_params().tankRepairOnBaseMul : get_wt_dm_params().repairOnBaseMul
   if !get_flag(repair_system_state, RepairState.HAS_REPAIR_TOOLKIT) && get_flag(repair_system_state, RepairState.REPAIR_PENALTY_WITHOUT_TOOLKIT)
     repair_system_speed_multiplier *= repair_system_repair_hp_multiplier
 
@@ -278,28 +297,30 @@ def repair_system_update_es(act : UpdateStageInfoAct;
   var has_changed = false
 
   
-  if get_flag(repair_system_state, RepairState.IS_BOT) && unit.isGroundModel && unit.isAuthority
+  if get_flag(repair_system_state, RepairState.IS_BOT) && unit.isGroundModel && unit.isAuthority && get_flag(repair_system_state, RepairState.CAN_AUTO_REPAIR)
     if repair_system_scheduled_bot_repair_time >= 0.0f
       repair_system_scheduled_bot_repair_time += curFrameDt
       
       if repair_system_scheduled_bot_repair_time > get_game_params().timeAfterHitForRepairTankBots
         if is_repair_needed(unit, repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
             repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp,
-            false, true, false)
+            false, true, false, false)
           set_flag(repair_system_state, RepairState.REPAIR_WITHOUT_MODS_ONLY, true)
           set_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS, true)
+          set_flag(repair_system_state, RepairState.REPAIR_USING_FREE_TOOLKIT, false)
           repair_system_remaining_repair_time = calc_time_to_repair(unit,
             repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
             repair_system_parts_id, repair_system_parts_state,
             repair_system_parts_hp, repair_system_parts_speed_mult,
-            repair_with_mods_available)
+            repair_with_mods_available, false)
           has_changed = true
 
         
         repair_system_scheduled_bot_repair_time = -1.0f
 
   if unit.isAuthority
-    if get_flag(repair_system_state, RepairState.IS_MOVING) && !get_flag(repair_system_state, RepairState.IS_BOT)
+    if (get_flag(repair_system_state, RepairState.IS_MOVING) && !get_flag(repair_system_state, RepairState.IS_BOT) &&
+        !get_flag(repair_system_state, RepairState.CAN_REPAIR_WHILE_MOVING))
       
       if repair_system_remaining_repair_time > 0.0f && get_flag(repair_system_state, RepairState.REPAIR_WITHOUT_MODS_ONLY)
         for part_state in repair_system_parts_state
@@ -314,7 +335,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
       if repair_system_auto_check_delay < 0.0f
         if is_repair_needed(unit, repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
             repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp,
-            false, true, false)
+            false, true, false, false)
           set_flag(repair_system_state, RepairState.REPAIR_WITHOUT_MODS_ONLY, true)
           set_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS, true)
           repair_system_delay_time_to_repair = 0.001f
@@ -323,12 +344,15 @@ def repair_system_update_es(act : UpdateStageInfoAct;
 
     
     if repair_system_remaining_repair_time > 0.0f || repair_system_delay_time_to_repair > 0.0f
+      let full_repair = unit.isTank && !get_flag(repair_system_state, RepairState.REPAIR_WITHOUT_MODS_ONLY) && datablock_getBool(get_wt_dm_params().tankRepairParts, "tankFullRepairWithToolkit", false)
+
       
       if is_repair_needed(unit, repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
           repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp,
           !get_flag(repair_system_state, RepairState.REPAIR_WITHOUT_MODS_ONLY), 
           true, 
-          get_flag(repair_system_state, RepairState.NEED_REPAIR_HELP) && get_flag(repair_system_state, RepairState.HAS_REPAIR_ASSISTANT) )
+          get_flag(repair_system_state, RepairState.NEED_REPAIR_HELP) && get_flag(repair_system_state, RepairState.HAS_REPAIR_ASSISTANT), 
+          full_repair)
 
         
         if unit.isBurn && (unit.isTank || unit.isWalker)
@@ -349,15 +373,16 @@ def repair_system_update_es(act : UpdateStageInfoAct;
                 get_game_params().canAssistRepairWithoutRequest) &&
                 is_repair_needed(unit, repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
                   repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp,
-                  true, true, get_flag(repair_system_state, RepairState.NEED_REPAIR_HELP)))
+                  true, true, get_flag(repair_system_state, RepairState.NEED_REPAIR_HELP), false))
 
               
               repair_system_remaining_repair_time = calc_time_to_repair(unit,
                 repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
                 repair_system_parts_id, repair_system_parts_state,
                 repair_system_parts_hp, repair_system_parts_speed_mult,
-                repair_with_mods_available)
+                repair_with_mods_available, full_repair)
               set_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS, get_flag(repair_system_state, RepairState.REPAIR_WITHOUT_MODS_ONLY))
+              set_flag(repair_system_state, RepairState.REPAIR_USING_FREE_TOOLKIT, free_active)
 
             
             else
@@ -378,10 +403,9 @@ def repair_system_update_es(act : UpdateStageInfoAct;
 
           
           for part_state, part_id, part_hp, part_mult in repair_system_parts_state, repair_system_parts_id, repair_system_parts_hp, repair_system_parts_speed_mult
-            let part_hp_for_repair = part_hp.w
             
-            if (get_flag(part_state, DmPartRepairState.ALLOW_REPAIR) && (!get_flag(part_state, DmPartRepairState.MOD_REQUIRED) || repair_with_mods_available) &&
-               (part_id.valid && dmData |> get_part_hp_rel(part_id) <= part_hp_for_repair) && (!get_flag(part_state, DmPartRepairState.ONLY_SURFACE) || !unit.isFullyUnderWater))
+            if can_repair_part(dmData, part_id, part_state, part_hp, repair_system_repair_hp_multiplier,
+                               repair_with_mods_available, unit.isFullyUnderWater, full_repair)
               
               if get_flag(part_state, DmPartRepairState.SERIALLY_REPAIR)
                 if serially_repaired
@@ -410,14 +434,18 @@ def repair_system_update_es(act : UpdateStageInfoAct;
             repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
             repair_system_parts_id, repair_system_parts_state,
             repair_system_parts_hp, repair_system_parts_speed_mult,
-            repair_with_mods_available)
+            repair_with_mods_available, full_repair)
 
           
           if repair_system_remaining_repair_time <= 0.0
-            if !get_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS)
-              sendEvent(eid, EventRepairSystemSpendToolkit())
-              if unit.moduleEffectBuffer != null
-                *unit.moduleEffectBuffer |> onRepair()
+            let was_without_mods = get_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS)
+            if !was_without_mods
+              if !get_flag(repair_system_state, RepairState.TOOLKIT_SPENT_FOR_ACTIVATION)
+                sendEvent(eid, EventRepairSystemSpendToolkit())
+              set_flag(repair_system_state, RepairState.TOOLKIT_SPENT_FOR_ACTIVATION, false)
+            if ((!was_without_mods || get_flag(repair_system_state, RepairState.CLEAR_DEBUFFS_ON_REPAIR)) &&
+                unit.moduleEffectBuffer != null)
+              *unit.moduleEffectBuffer |> onRepair()
             has_changed = true
           
           elif floor(prev_remaining_repair_time * 2.0f) != floor(repair_system_remaining_repair_time * 2.0f)
@@ -426,7 +454,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
           
           if any_parts_repairing && !is_repair_needed(unit, repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
                   repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp,
-                  false, true, false)
+                  false, true, false, false)
             set_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS, false)
 
       
@@ -460,7 +488,7 @@ def repair_system_update_es(act : UpdateStageInfoAct;
 def repair_system_stop_repair_handle_es(evt : EventRepairSystemStopRepair;
                                         eid : EntityId;
                                         unit__ref : UnitRef;
-                                        repair_system_state : uint;
+                                        var repair_system_state : uint&;
                                         var repair_system_parts_state : UInt32List&;
                                         repair_system_parts_id : PartIdList&;
                                         var repair_system_parts_hp : Point4List&)
@@ -468,6 +496,8 @@ def repair_system_stop_repair_handle_es(evt : EventRepairSystemStopRepair;
   if unit.isDelayed
     return
   assume dmData = unit.dmData
+
+  set_flag(repair_system_state, RepairState.TOOLKIT_SPENT_FOR_ACTIVATION, false)
 
   for part_state, part_id, part_hp in repair_system_parts_state, repair_system_parts_id, repair_system_parts_hp
     set_flag(part_state, DmPartRepairState.IN_PROGRESS, false)
@@ -481,7 +511,11 @@ def repair_system_stop_repair_handle_es(evt : EventRepairSystemStopRepair;
 [es]
 def repair_system_spend_toolkit_handle_es(evt : EventRepairSystemSpendToolkit;
                                           unit__ref : UnitRef;
+                                          repair_system_state : uint;
                                           var repair_system_toolkit_count : int&)
+  if get_flag(repair_system_state, RepairState.REPAIR_USING_FREE_TOOLKIT)
+    return
+
   if repair_system_toolkit_count > 0
     repair_system_toolkit_count--
 
@@ -497,6 +531,7 @@ def repair_system_spend_toolkit_handle_es(evt : EventRepairSystemSpendToolkit;
 def repair_system_handle_restore_es(evt : Event;
                                     eid : EntityId;
                                     unit__ref : UnitRef;
+                                    var repair_system_state : uint&;
                                     var repair_system_remaining_repair_time : float&;
                                     var repair_system_delay_time_to_repair : float&;
                                     var repair_system_scheduled_bot_repair_time : float&;
@@ -511,6 +546,7 @@ def repair_system_handle_restore_es(evt : Event;
     gm.toolkit |> reinit_expendable_modification()
     toolkit_count = gm.toolkit.count
 
+  set_flag(repair_system_state, RepairState.REPAIR_USING_FREE_TOOLKIT, false)
   repair_system_remaining_repair_time = -1.0f
   for part_state in repair_system_parts_state
     set_flag(part_state, DmPartRepairState.IN_PROGRESS, false)
@@ -533,9 +569,11 @@ def repair_system_handle_restore_es(evt : Event;
 
 [es]
 def repair_system_repair_request_handle_es(evt : EventRepairSystemRequestRepair;
+                                           eid : EntityId;
                                            var repair_system_state : uint&;
                                            var repair_system_remaining_repair_time : float&;
-                                           var repair_system_delay_time_to_repair : float&)
+                                           var repair_system_delay_time_to_repair : float&;
+                                           repair_system_toolkit_count : int)
   if evt.repair
     if repair_system_remaining_repair_time <= 0.0f
       set_flag(repair_system_state, RepairState.REPAIR_DELAY_FOR_START, true)
@@ -545,6 +583,15 @@ def repair_system_repair_request_handle_es(evt : EventRepairSystemRequestRepair;
   else
     repair_system_remaining_repair_time = -1.0f
     repair_system_delay_time_to_repair = -1.0f
+    sendEvent(eid, EventRepairSystemStopRepair())
+    sendEvent(eid, EventRepairSystemOnStopRepair(notFinished = true))
+    if is_server()
+      sendEvent(eid, EventRepairSystemNetSync(
+                        toolkitCount = repair_system_toolkit_count,
+                        delayToRepair = repair_system_delay_time_to_repair,
+                        remainingRepiarTime = repair_system_remaining_repair_time,
+                        repairWithoutModsOnly = get_flag(repair_system_state, RepairState.REPAIR_WITHOUT_MODS_ONLY)
+                      ))
 
 
 [es]
@@ -566,6 +613,7 @@ def repair_system_repair_button_handle_es(evt : EventRepairSystemSendRequestingR
     return
   let fRepairAvailable = get_flag(repair_system_state, RepairState.REPAIR_AVAILABLE)
   let fNeedRepairHelp = get_flag(repair_system_state, RepairState.NEED_REPAIR_HELP)
+  let fFreeToolkitActive = get_flag(repair_system_state, RepairState.FREE_TOOLKIT_ACTIVE)
   print("[REPAIR] uid:{unit.id} button_handle_es: isBurn:{unit.isBurn} toolkit_count:{repair_system_toolkit_count} fRepairAvailable:{fRepairAvailable} fNeedRepairHelp:{fNeedRepairHelp} btnDown:{evt.isButtonDown}")
   if (!unit.isShip && unit.isBurn) || (repair_system_toolkit_count_max >= 0 && !fRepairAvailable && !fNeedRepairHelp)
     return
@@ -596,6 +644,9 @@ def repair_system_repair_button_handle_es(evt : EventRepairSystemSendRequestingR
       set_flag(repair_system_state, RepairState.REPAIR_WITHOUT_MODS_ONLY, false)
       repair_system_delay_time_to_repair = delay
       has_changed = true
+      if unit.isTank && evt.forceSpendToolkit && !fFreeToolkitActive && !get_flag(repair_system_state, RepairState.TOOLKIT_SPENT_FOR_ACTIVATION)
+        set_flag(repair_system_state, RepairState.TOOLKIT_SPENT_FOR_ACTIVATION, true)
+        sendEvent(eid, EventRepairSystemSpendToolkit())
   elif repair_system_delay_time_to_repair > 0.0f
     let delay_for_start = get_flag(repair_system_state, RepairState.REPAIR_DELAY_FOR_START)
     if delay_for_start && (repair_system_remaining_repair_time <= 0.0f || get_flag(repair_system_state, RepairState.WAS_REPAIRING_WITHOUT_MODS))
@@ -614,7 +665,7 @@ def repair_system_repair_button_handle_es(evt : EventRepairSystemSendRequestingR
                         remainingRepiarTime = repair_system_remaining_repair_time,
                         repairWithoutModsOnly = get_flag(repair_system_state, RepairState.REPAIR_WITHOUT_MODS_ONLY)
                       ))
-  elif evt.isButtonDown && evt.forceSpendToolkit
+  elif evt.isButtonDown && evt.forceSpendToolkit && !unit.isTank
     sendEvent(eid, EventRepairSystemSpendToolkit())
 
 

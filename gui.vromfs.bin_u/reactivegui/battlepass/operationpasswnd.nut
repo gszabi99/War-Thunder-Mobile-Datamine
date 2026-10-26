@@ -6,14 +6,14 @@ from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle, bpCardPadding, bpCardHeight
 import "%rGui/battlePass/bpProgressBar.nut" as bpProgressBar
-import "%rGui/battlePass/bpRewardDesc.nut" as bpRewardDesc
+from "%rGui/battlePass/bpRewardDesc.nut" import bpObsoleteRewardDesc
 import "%rGui/battlePass/buyOPLevelMsg.nut" as buyOPLevelMsg
 import "%rGui/battlePass/operationPassRewardsList.nut" as operationPassRewardsList
 from "%rGui/battlePass/operationPassState.nut" import isOPActive, openOPPurchaseWnd, selectedStage, curStage,
   getOPIcon, OP_VIP, OP_COMMON, OP_NONE, purchasedOP, operationPassGoods, pointsCurStage, pointsPerStage,
   receiveOPRewards, isOPRewardsInProgress, OPCampaign, opSeasonNumber, opSeasonEndTime, OPLevelPrice,
   isOPLevelPurchaseInProgress
-from "%rGui/battlePass/passPkg.nut" import bpCurProgressbar, bpProgressText, progressIconSize, contentH,
+from "%rGui/battlePass/passPkg.nut" import mkLevelProgressBlock, progressIconSize, contentH,
   mkRewardsPannable, mkPassIcon
 from "%rGui/battlePass/passRewardsListComp.nut" import bgCard
 from "%rGui/components/buttonStyles.nut" import PURCHASE, defButtonHeight, defButtonMinWidth
@@ -71,12 +71,48 @@ function operationPassLastRewardAd(stagesList, recommendInfo) {
 
   let canHideAd = Computed(@() needHideLastRewardAd.get() && (stateFlags.get() & (S_ACTIVE | S_HOVER)) == 0)
   let isEmptyReward = Computed(@() viewInfo != null && isSingleViewInfoRewardEmpty(viewInfo, servProfile.get()))
-  canHideAd.subscribe(@(v) v ? anim_start(HIDE_AD_TRIGGER) : null)
+  let startHideAnim = @(v) v ? anim_start(HIDE_AD_TRIGGER) : null
+
+  let adContent = doubleSideGradient.__merge({
+    halign = ALIGN_RIGHT
+    valign = ALIGN_BOTTOM
+    padding = const [hdpx(10), hdpx(30)]
+    screenOffs = const [0, hdpx(25)]
+    children = {
+      size = [cardWidth, bpCardHeight]
+      children = [
+        {
+          size = FLEX
+          rendObj = ROBJ_IMAGE
+          image = bgCard
+        }
+        {
+          padding = bpCardPadding
+          children = {
+            halign = ALIGN_CENTER
+            valign = ALIGN_CENTER
+            children = viewInfo == null ? { size = bpCardStyle.boxSize }
+              : isVip ? mkRewardPlateVip(viewInfo, bpCardStyle)
+              : mkRewardPlate(viewInfo, bpCardStyle)
+          }
+        }
+      ]
+    }
+  })
+  let adAnimations = [
+    { prop = AnimProp.translate, from = [startAdPointX, 0], to = const [0, 0], delay = 0, duration = moveAdDuration, easing = InQuad,
+      play = true, onFinish = @() resetTimeout(TIME_TO_HIDE_AD, @() needHideLastRewardAd.set(true)) }
+    { prop = AnimProp.translate, from = const [0, 0], to = [endAdPointX, 0], duration = moveAdDuration, easing = OutQuad,
+      onFinish = @() saveShowedAdCampaign(OPCampaign.get()), trigger = HIDE_AD_TRIGGER }
+    { prop = AnimProp.translate, from = [endAdPointX, 0], to = [endAdPointX, 0], delay = moveAdDuration,
+      duration = moveAdDuration, trigger = HIDE_AD_TRIGGER }
+  ]
 
   return @() {
     watch = [isShowedAdForOPCampaign, isEmptyReward]
-    keepRef = canHideAd
-    key = stageInfo
+    key = canHideAd
+    onAttach = @() canHideAd.subscribe(startHideAnim)
+    onDetach = @() canHideAd.unsubscribe(startHideAnim)
     vplace = ALIGN_BOTTOM
     hplace = ALIGN_RIGHT
     behavior = Behaviors.Button
@@ -86,55 +122,26 @@ function operationPassLastRewardAd(stagesList, recommendInfo) {
       scrollToCardOP(scrollLastRewardX, progress)
     }
     children = isShowedAdForOPCampaign.get() || isEmptyReward.get() ? null
-      : doubleSideGradient.__merge({
-          halign = ALIGN_RIGHT
-          valign = ALIGN_BOTTOM
-          padding = const [hdpx(10), hdpx(30)]
-          screenOffs = [0, hdpx(25)]
-          children = {
-            size = [cardWidth, bpCardHeight]
-            children = [
-              {
-                size = FLEX
-                rendObj = ROBJ_IMAGE
-                image = bgCard
-              }
-              {
-                padding = bpCardPadding
-                children = {
-                  halign = ALIGN_CENTER
-                  valign = ALIGN_CENTER
-                  children = viewInfo == null ? { size = bpCardStyle.boxSize }
-                    : isVip ? mkRewardPlateVip(viewInfo, bpCardStyle)
-                    : mkRewardPlate(viewInfo, bpCardStyle)
-                }
-              }
-            ]
-          }
-      })
+      : adContent
     transform = {}
-    animations = [
-      { prop = AnimProp.translate, from = [startAdPointX, 0], to = [0, 0], delay = 0, duration = moveAdDuration, easing = InQuad,
-        play = true, onFinish = @() resetTimeout(TIME_TO_HIDE_AD, @() needHideLastRewardAd.set(true)) }
-      { prop = AnimProp.translate, from = [0, 0], to = [endAdPointX, 0], duration = moveAdDuration, easing = OutQuad,
-        onFinish = @() saveShowedAdCampaign(OPCampaign.get()), trigger = HIDE_AD_TRIGGER }
-      { prop = AnimProp.translate, from = [endAdPointX, 0], to = [endAdPointX, 0], delay = moveAdDuration,
-        duration = moveAdDuration, trigger = HIDE_AD_TRIGGER }
-    ]
+    animations = adAnimations
   }
 }
 
-let rewardsList = @(stages, recommendInfo) @() {
-  key = "opRewardsList"
-  watch = serverConfigs
-  flow = FLOW_VERTICAL
-  gap = hdpx(20)
-  onAttach = @() scrollToCardOP(recommendInfo.get().scrollX, recommendInfo.get().selProgress)
-  children = [
+function rewardsList(stages, recommendInfo) {
+  let barAndCards = [
     bpProgressBar(stages, curStage, pointsCurStage, pointsPerStage,
       OPLevelPrice, isOPLevelPurchaseInProgress, buyOPLevelMsg)
     operationPassRewardsList(stages)
   ]
+  return @() {
+    key = "opRewardsList"
+    watch = serverConfigs
+    flow = FLOW_VERTICAL
+    gap = hdpx(20)
+    onAttach = @() scrollToCardOP(recommendInfo.get().scrollX, recommendInfo.get().selProgress)
+    children = barAndCards
+  }
 }
 
 let taskDesc = {
@@ -145,6 +152,8 @@ let taskDesc = {
 }.__update(fontTinyAccentedShaded)
 
 let opLevelLabel = @(text) { rendObj = ROBJ_TEXT, text }.__update(fontSmallShaded)
+
+let levelProgressBlock = mkLevelProgressBlock(pointsCurStage, pointsPerStage)
 
 let levelBlock = @() {
   watch = curStage
@@ -157,15 +166,7 @@ let levelBlock = @() {
   gap = hdpx(15)
   children = [
     opLevelLabel($"{loc("mainmenu/rank")} {curStage.get()}")
-    {
-      size = const [hdpx(300), SIZE_TO_CONTENT]
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      children = [
-        bpCurProgressbar(pointsCurStage, pointsPerStage)
-        bpProgressText(pointsCurStage, pointsPerStage)
-      ]
-    }
+    levelProgressBlock
     taskDesc
   ]
 }
@@ -182,6 +183,8 @@ let leftMiddle = {
 
 let openPurchOpButton = @(text) textButtonMultiline(utf8ToUpper(text), openOPPurchaseWnd,
   PURCHASE.__merge({ hotkeys = ["^J:Y"] }))
+
+let noOPButton = { size = [FLEX, defButtonHeight] }
 
 let rightMiddle = @() {
   watch = [purchasedOP, operationPassGoods]
@@ -209,7 +212,7 @@ let rightMiddle = @() {
             behavior = Behaviors.TextArea
             text = utf8ToUpper(loc("operationpass/active"))
           }.__update(fontTinyAccented)
-      : { size = [FLEX, defButtonHeight] }
+      : noOPButton
   ]
 }
 
@@ -223,8 +226,8 @@ let middlePart = @(stagesList) function() {
       {
         size = FLEX
         children = stageData == null ? null
-          : bpRewardDesc(stageData,
-              { lockText = "operationpass/lock", paidText = "operationpass/paid" },
+          : bpObsoleteRewardDesc(stageData,
+              const { lockText = "operationpass/lock", paidText = "operationpass/paid" },
               curStage,
               @() receiveOPRewards(stageData.progress),
               isOPRewardsInProgress)
@@ -234,12 +237,16 @@ let middlePart = @(stagesList) function() {
   }
 }
 
-let contentOP = @(stagesList, recommendInfo, isFullScreenWidth) @() {
-  watch = stagesList
-  size = FLEX
-  onDetach = @() saveShowedAdCampaign(OPCampaign.get())
-  children = [
-    {
+function contentOP(stagesList, recommendInfo, isFullScreenWidth) {
+  let progressIconSpacer = {
+    key = "battle_pass_progress_bar" 
+    size = [FLEX, progressIconSize[1]]
+  }
+  return @() {
+    watch = stagesList
+    size = FLEX
+    onDetach = @() saveShowedAdCampaign(OPCampaign.get())
+    children = {
       size = [FLEX, contentH]
       flow = FLOW_VERTICAL
       gap = hdpx(15)
@@ -247,12 +254,9 @@ let contentOP = @(stagesList, recommendInfo, isFullScreenWidth) @() {
         middlePart(stagesList.get())
         {
           size = FLEX_H
-          margin = [0, 0, hdpx(30), 0]
+          margin = const [0, 0, hdpx(30), 0]
           children = [
-            {
-              key = "battle_pass_progress_bar" 
-              size = [FLEX, progressIconSize[1]]
-            }
+            progressIconSpacer
             mkRewardsPannable(rewardsList(stagesList.get(), recommendInfo),
               scrollHandler, isFullScreenWidth)
             operationPassLastRewardAd(stagesList.get(), recommendInfo.get())
@@ -261,8 +265,8 @@ let contentOP = @(stagesList, recommendInfo, isFullScreenWidth) @() {
         }
       ]
     }
-  ]
-  animations = wndSwitchAnim
+    animations = wndSwitchAnim
+  }
 }
 
 register_command(@() showedAdForCampaigns.set({}), "ui.debug.operationPass.resetBestRewardAd")

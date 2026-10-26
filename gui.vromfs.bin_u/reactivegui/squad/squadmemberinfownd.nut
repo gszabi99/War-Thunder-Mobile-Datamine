@@ -1,15 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import defer
+from "%sqstd/string.nut" import utf8ToUpper
 from "%darg/helpers/bitmap.nut" import mkBitmapPicture
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/profileStates.nut" import myUserId
 from "%appGlobals/squadState.nut" import squadMembers, isInvitedToSquad, squadId, squadLeaderCampaign, isSquadLeader,
   squadLeaderReadyCheckTime
 from "%appGlobals/unitPresentation.nut" import getUnitPresentation
+import "%rGui/clans/clanSquadCreateWnd.nut" as clanSquadCreateWnd
+from "%rGui/clans/clanSquadsState.nut" import isClanSquadLeader
 from "%rGui/components/animGrowLines.nut" import mkAnimGrowLinesFromRectToWnd
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
 from "%rGui/components/spinner.nut" import mkSpinner
+from "%rGui/components/textButton.nut" import textButtonCommon
 from "%rGui/contacts/contact.nut" import Contact
 from "%rGui/contacts/contactActions.nut" import REVOKE_INVITE, REMOVE_FROM_SQUAD, PROMOTE_TO_LEADER, LEAVE_SQUAD
 from "%rGui/contacts/contactInfoPkg.nut" import gap, contactNameBlock, contactAvatar, contactLevelBlock
@@ -26,9 +30,12 @@ const WND_UID = "squad_member_info_wnd"
 
 const avatarSize = hdpxi(200)
 const wndGap = hdpx(24)
+const wndOffset = hdpx(40)
 const statusSize = hdpxi(25)
+const separatorWidth = hdpx(2)
 let headerWidth = unitPlateSmall[0] * 4 + wndGap * 3
-let wndHSize = unitPlateSmall[1] + wndGap * 2 + defButtonHeight * 2
+let maxTopBlockHeight = max(avatarSize, defButtonHeight *2 + wndGap)
+let maxWndSizeY = maxTopBlockHeight + separatorWidth + unitPlateSmall[1] + 4 * wndGap
 
 let lineGradientHor = mkBitmapPicture(4, gradTexSize, mkGradientCtorDoubleSideX(0, 0x80777777, 0.25))
 
@@ -110,8 +117,9 @@ function statusBlock(uid) {
 
 function inBattleBlock(uid) {
   let isInBattle = Computed(@() squadMembers.get()?[uid].inBattle ?? false)
+  let inBattleRow = mkStatusRow("in_battle.svg", 0xFFFFFFFF, loc("status/in_battle"), { watch = isInBattle })
   return @() !isInBattle.get() ? { watch = isInBattle }
-    : mkStatusRow("in_battle.svg", 0xFFFFFFFF, loc("status/in_battle"), { watch = isInBattle })
+    : inBattleRow
 }
 
 function unitsInfo(uid) {
@@ -152,23 +160,29 @@ function unitsInfo(uid) {
 function buttons(uid) {
   let userId = uid.tostring()
   let needButtonsPlace = Computed(@() isSquadLeader.get() || uid == myUserId.get())
+  let actionButtons = [
+    mkContactActionBtn(LEAVE_SQUAD, userId, { hotkeys = ["^J:LB"] })
+    mkContactActionBtn(REVOKE_INVITE, userId, { hotkeys = ["^J:LB"] })
+    mkContactActionBtn(REMOVE_FROM_SQUAD, userId, { hotkeys = ["^J:LB"] })
+    mkContactActionBtn(PROMOTE_TO_LEADER, userId, { hotkeys = ["^J:Y"] })
+    @() {
+      watch = [isClanSquadLeader, myUserId]
+      children = !isClanSquadLeader.get() || uid != myUserId.get() ? null
+        : textButtonCommon(utf8ToUpper(loc("clan/squad")), clanSquadCreateWnd)
+    }
+  ]
   return @() !needButtonsPlace.get() ? { watch = needButtonsPlace }
     : {
         watch = needButtonsPlace
         flow = FLOW_VERTICAL
         padding = [0, 0, 0, gap]
         gap
-        children = [
-          mkContactActionBtn(LEAVE_SQUAD, userId, { hotkeys = ["^J:LB"] })
-          mkContactActionBtn(REVOKE_INVITE, userId, { hotkeys = ["^J:LB"] })
-          mkContactActionBtn(REMOVE_FROM_SQUAD, userId, { hotkeys = ["^J:LB"] })
-          mkContactActionBtn(PROMOTE_TO_LEADER, userId, { hotkeys = ["^J:Y"] })
-        ]
+        children = actionButtons
       }
 }
 
 let separator = {
-  size = const [FLEX, hdpxi(2)]
+  size = const [FLEX, separatorWidth]
   rendObj = ROBJ_IMAGE
   image = lineGradientHor
 }
@@ -179,6 +193,7 @@ function memberInfo(uid) {
   let info = mkPublicInfo(userId)
   let status = statusBlock(uid)
   let battleStatus = inBattleBlock(uid)
+  let actionButtons = buttons(uid)
   return @() {
     watch = [contact, info]
     size = [headerWidth, SIZE_TO_CONTENT]
@@ -187,9 +202,9 @@ function memberInfo(uid) {
     gap
     children = [
       contactAvatar(info.get(), avatarSize)
-      contactNameBlock(contact.get(), info.get(), [status, battleStatus, contactLevelBlock(info.get(), { valign = ALIGN_BOTTOM })])
+      contactNameBlock(contact.get(), info.get(), [status, battleStatus, contactLevelBlock(info.get(), const { valign = ALIGN_BOTTOM })])
         .__update({ size = const [FLEX, avatarSize] })
-      buttons(uid)
+      actionButtons
     ]
   }
 }
@@ -223,11 +238,12 @@ function content() {
   let { r, l, t, b } = rect
 
   let buttonCenter = (l + r) / 2
-  let isButtonInCenter = buttonCenter <  0.75 * saSize[0]
+  let isButtonInCenter = buttonCenter <  sw(75)
+  let isButtonOnTop = (t + b) / 2 < sh(50)
   let wndPos = [
     isButtonInCenter ? buttonCenter - headerWidth / 2
       : (saSize[0] + saBordersRv[0]) - headerWidth,
-    t - ((b - t) + wndHSize)
+    isButtonOnTop ? b + wndOffset : t - maxWndSizeY - wndOffset
   ]
 
   return {

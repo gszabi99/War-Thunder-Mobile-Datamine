@@ -38,6 +38,9 @@
   "minSecondaryShatterAngleFromArmor": 15.0,
   "splashPenetrationPrecheck": true,
   "shattersMinSolidArmorThicknessMult": 0.5,
+  "usedArmorOverlap": 0.1,
+  "minArmorOverlap": 0.3,
+  "maxArmorOverlap": 0.8,
   "defaultCaliberToArmorForGuiPenetrationTable": 1.25,
   "massKineticRange": 7.0,
   "massKineticHitPowerK": 0.00001,
@@ -442,17 +445,6 @@
     }
   },
   "splash": {
-    "voxelBoxResolution": 80,
-    "minVoxelSize": 0.02,
-    "minObstacleSize": 0.02,
-    "thicknessMapEnabled": true,
-    "thicknessMapResolution": 32,
-    "thicknessMapMinVoxelSize": 0.1,
-    "thicknessMapRelLimits": [
-      0.35,
-      6.0
-    ],
-    "thicknessMapMinObstacleSize": 0.02,
     "pushOutCenter": true,
     "underwaterPenetrationScale": 1.0,
     "underwaterDamageScale": 1.0,
@@ -460,6 +452,22 @@
       1.0,
       1.0
     ],
+    "voxelMap": {
+      "voxelBoxResolution": 80,
+      "minVoxelSize": 0.02,
+      "minObstacleSize": 0.02
+    },
+    "thicknessMap": {
+      "enabled": true,
+      "resolution": 32,
+      "minVoxelSize": 0.1,
+      "relLimits": [
+        0.1,
+        6.0
+      ],
+      "minObstacleSize": 0.02,
+      "faceNormalMinCosine": 0.1
+    },
     "squashArmorAnglesScale": {
       "p0": [
         0.0,
@@ -3866,6 +3874,10 @@
     "drowning": {
       "disableEffects": true
     },
+    "harmless": {
+      "disableEffects": true,
+      "disableCut": true
+    },
     "fire": {
       "commonAirplaneFire": true,
       "commonGroundModelFire": true,
@@ -4108,100 +4120,126 @@
   "repairTanks": {
     "repairDelayTimer": 0.01,
     "partRepairHp": 0.7,
+    "tankRepairCancelAllowed": true,
+    "repairButtonLockTime": 1.8,
+    "tankFieldRepairAllowed": false,
+    "tankFullRepairWithToolkit": true,
+    "tankFreeToolkitFallback": true,
+    "consumableToolkitSpeedMul": 1.5,
+    "freeToolkitSpeedMul": 0.9,
+    "tankRepairOnBaseMul": 1.0,
     "engine_dm": {
       "speed": 0.8,
       "completely": true,
       "partRepairHp": 1.0,
-      "hpForRepair": 0.6
+      "hpForRepair": 0.7
     },
     "transmission_dm": {
       "speed": 0.8,
       "completely": true,
       "partRepairHp": 1.0,
-      "hpForRepair": 0.6
+      "hpForRepair": 0.7
     },
     "radiator_dm": {
-      "completely": true
+      "completely": true,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "track_l_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "track_r_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "track_l_01_dm": {
-      "speed": 1.5,
+      "speed": 3.375,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "track_r_01_dm": {
-      "speed": 1.5,
+      "speed": 3.375,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_l_back_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_l_front_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_l_drive_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_r_back_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_r_front_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_r_drive_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "suspension_l_01_dm": {
       "speed": 1.7,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "suspension_l_02_dm": {
       "speed": 1.7,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "suspension_l_03_dm": {
       "speed": 1.7,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "suspension_r_01_dm": {
       "speed": 1.7,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "suspension_r_02_dm": {
       "speed": 1.7,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "suspension_r_03_dm": {
       "speed": 1.7,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "gun_barrel_dm": {
       "speed": 1.5,
@@ -4351,8 +4389,7 @@
       "speed": 2.0,
       "completely": true,
       "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "modRequired": false
+      "hpForRepair": 0.7
     },
     "antenna_target_location_01_dm": {
       "speed": 2.0,
@@ -4364,8 +4401,7 @@
       "speed": 2.0,
       "completely": true,
       "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "modRequired": false
+      "hpForRepair": 0.7
     },
     "commander_panoramic_sight_dm": {
       "speed": 1.0,
@@ -4472,14 +4508,12 @@
     "autoloader_dm": {
       "speed": 1.2,
       "completely": true,
-      "modRequired": false,
       "partRepairHp": 1.0,
       "hpForRepair": 0.7
     },
     "autoloader_01_dm": {
       "speed": 1.2,
       "completely": true,
-      "modRequired": false,
       "partRepairHp": 1.0,
       "hpForRepair": 0.7
     }
@@ -4504,6 +4538,7 @@
   },
   "healingCrew": {
     "partRepairHp": 1.0,
+    "useCrewHealthInRepairSpeed": false,
     "gunner_dm": {
       "speed": 2.0,
       "completely": true
@@ -4533,6 +4568,10 @@
       "completely": true
     },
     "loader_02_dm": {
+      "speed": 2.0,
+      "completely": true
+    },
+    "loader_03_dm": {
       "speed": 2.0,
       "completely": true
     },
@@ -5759,6 +5798,14 @@
       "completely": true
     },
     "main_caliber_turret_10_dm": {
+      "speed": 15.0,
+      "completely": true
+    },
+    "main_caliber_turret_11_dm": {
+      "speed": 15.0,
+      "completely": true
+    },
+    "main_caliber_turret_12_dm": {
       "speed": 15.0,
       "completely": true
     },

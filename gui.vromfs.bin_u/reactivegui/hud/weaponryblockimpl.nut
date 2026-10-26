@@ -31,7 +31,7 @@ let mkWeaponNameText = @(text) {
     {
       rendObj = ROBJ_TEXTAREA
       margin = hdpx(5)
-      behavior = [Behaviors.TextArea]
+      behavior = Behaviors.TextArea
       text
     }.__update(fontTinyShaded)
   ]

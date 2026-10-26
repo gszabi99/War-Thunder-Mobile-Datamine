@@ -46,13 +46,14 @@ return function(unit, styleOvr) {
   })
   let unseenMargin = Computed(@() isHangarUnitHasWeaponSlots.get() ? textButtonUnseenMargin
     : [textButtonUnseenMargin, textButtonUnseenMargin + contentMargin])
+  let btnStyle = mergeStyles(buttonStyles.COMMON, styleOvr)
   return @() {
     watch = [hasButton, isHangarUnitHasWeaponSlots]
     children = !hasButton.get() ? null
       : [
           mkCustomButton(mkArsenalBtnContent,
             isHangarUnitHasWeaponSlots.get() ? openUnitModsSlotsWnd : openUnitModsWnd,
-            mergeStyles(buttonStyles.COMMON, styleOvr))
+            btnStyle)
           @() {
             watch = [hasUnseenMarker, unseenMargin]
             margin = unseenMargin.get()

@@ -2,44 +2,27 @@ import "daEditorEmbedded" as daEditor
 from "%darg/ui_imports.nut" import *
 
 let entity_editor = require_optional("entity_editor")
-let { showTemplateSelect, editorIsActive, showDebugButtons, selectedTemplatesGroup, addEntityCreatedCallback, allScenesWatcher, getAllScenes } = require("state.nut")
+let { editorIsActive, showDebugButtons, selectedTemplatesGroup, addEntityCreatedCallback } = require("state.nut")
+let { allModifiableScenes, sceneToComboboxEntry } = require("sceneModel.nut")
 let { colors } = require("components/style.nut")
 let txt = require("%daeditor/components/text.nut").dtext
 
 let textButton = require("components/textButton.nut")
 let closeButton = require("components/closeButton.nut")
-let nameFilter = require("components/nameFilter.nut")
 let combobox = require("%daeditor/components/combobox.nut")
-let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
+let { mkFilteredList, mkListFilter, rowText } = require("components/mkFilteredList.nut")
 let { mkTemplateTooltip } = require("components/templateHelp.nut")
 
-let { sceneToComboboxEntry, canSceneBeModified } = require("%daeditor/daeditor_es.nut")
-let { sortScenesByLoadType } = require("components/sceneSorting.nut")
 let {DE4_MODE_SELECT} = daEditor
 
 const noSceneSelected = "UNKNOWN:0"
-let allModifiableScenes = Watched([])
-let allSceneTexts = Watched([noSceneSelected])
+let allSceneTexts = Computed(@() allModifiableScenes.get().map(@(scene, _idx) sceneToComboboxEntry(scene)).append(noSceneSelected))
 let selectedScene = Watched(noSceneSelected)
 let selectedItem = Watched(null)
 let filterText = Watched("")
 let templatePostfixText = Watched("")
 
-let scrollHandler = ScrollHandler()
-
 addEntityCreatedCallback(@(_eid) set_kb_focus(null))
-
-function scrollByName(text) {
-  scrollHandler.scrollToChildren(function(desc) {
-    return ("tpl_name" in desc) && desc.tpl_name.contains(text)
-  }, 2, false, true)
-}
-
-function scrollBySelection() {
-  scrollHandler.scrollToChildren(function(desc) {
-    return ("tpl_name" in desc) && desc.tpl_name==selectedItem.get()
-  }, 2, false, true)
-}
 
 function doSelectTemplate(tpl_name) {
   selectedItem.set(tpl_name)
@@ -49,74 +32,10 @@ function doSelectTemplate(tpl_name) {
   }
 }
 
-let filter = nameFilter(filterText, {
-  placeholder = "Filter by name"
-  onChange = function(text) {
-    filterText.set(text)
-
-    if (selectedItem.get() && text.len()>0 && selectedItem.get().tolower().contains(text.tolower()))
-      scrollBySelection()
-    else if (text.len())
-      scrollByName(text)
-    else
-      scrollBySelection()
-  }
-  onEscape = @() set_kb_focus(null)
-  onReturn = @() set_kb_focus(null)
-  onAttach = @(elem) set_kb_focus(elem)
-  onClear = function() {
-    filterText.set("")
-    set_kb_focus(null)
-  }
-})
-
-let templPostfix = nameFilter(templatePostfixText, {
-  placeholder = "Template postfix"
-  onChange = @(text) templatePostfixText.set(text)
-  onEscape = @() set_kb_focus(null)
-  onReturn = @() set_kb_focus(null)
-  onClear = function() {
-    templatePostfixText.set("")
-    set_kb_focus(null)
-  }
-})
+let filter = mkListFilter(filterText, { onAttach = @(elem) set_kb_focus(elem) })
+let templPostfix = mkListFilter(templatePostfixText, { placeholder = "Template postfix" })
 
 let templateTooltip = Watched(null)
-
-function listRow(tpl_name, idx) {
-  let stateFlags = Watched(0)
-
-  return function() {
-    let isSelected = selectedItem.get() == tpl_name
-
-    local color
-    if (isSelected) {
-      color = colors.Active
-    } else {
-      color = (stateFlags.get() & S_TOP_HOVER) ? colors.GridRowHover : colors.GridBg[idx % colors.GridBg.len()]
-    }
-
-    return {
-      rendObj = ROBJ_SOLID
-      size = FLEX_H
-      color = color
-      behavior = Behaviors.Button
-      tpl_name = tpl_name
-
-      watch = stateFlags
-      onHover = @(on) templateTooltip.set(on ? mkTemplateTooltip(tpl_name) : null)
-      onClick = @() doSelectTemplate(tpl_name)
-      onElemState = @(sf) stateFlags.set(sf & S_TOP_HOVER)
-
-      children = {
-        rendObj = ROBJ_TEXT
-        text = tpl_name
-        color = colors.TextDefault
-        margin = fsh(0.5)
-      }
-    }
-  }
-}
 
 let selectedGroupTemplates = Computed(@() editorIsActive.get()
   ? entity_editor?.get_instance().getEcsTemplates(selectedTemplatesGroup.get()) ?? [] : [])
@@ -134,31 +53,13 @@ let filteredTemplates = Computed(function() {
 let filteredTemplatesCount = Computed(@() filteredTemplates.get().len())
 let selectedGroupTemplatesCount = Computed(@() selectedGroupTemplates.get().len())
 
-
-local showWholeList = false
-local showWholeListGroup = ""
-filterText.subscribe(@(_) showWholeList = false)
-
-function listMore() {
-  return {
-    rendObj = ROBJ_SOLID
-    size = FLEX_H
-    color = colors.GridBg[0]
-    behavior = Behaviors.Button
-
-    onClick = function() {
-      showWholeList = true
-      selectedTemplatesGroup.trigger()
-    }
-
-    children = {
-      rendObj = ROBJ_TEXT
-      text = "... (show all)"
-      color = colors.TextDarker
-      margin = fsh(0.5)
-    }
-  }
-}
+let templatesList = mkFilteredList({
+  items = filteredTemplates
+  selected = selectedItem
+  mkRow = @(tplName, _row) rowText(tplName)
+  onClick = @(tplName, _evt) doSelectTemplate(tplName)
+  onHover = @(tplName, on) templateTooltip.set(on ? mkTemplateTooltip(tplName) : null)
+})
 
 
 local doRepeatValidateTemplates = @(_idx) null
@@ -170,7 +71,6 @@ function doValidateTemplates(idx) {
     if (tplName > validateAfterName) {
       vlog($"Validating template {tplName}...")
       selectedItem.set(tplName)
-      scrollBySelection()
       gui_scene.resetTimeout(0.01, function() {
         doSelectTemplate(tplName)
         doRepeatValidateTemplates(idx+1)
@@ -180,7 +80,6 @@ function doValidateTemplates(idx) {
     vlog($"Skipping template {tplName}...")
     if (++skipped > 50) {
       selectedItem.set(tplName)
-      scrollBySelection()
       gui_scene.resetTimeout(0.01, @() doRepeatValidateTemplates(idx+1))
       return
     }
@@ -190,28 +89,19 @@ function doValidateTemplates(idx) {
 }
 doRepeatValidateTemplates = doValidateTemplates
 
-allModifiableScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
-  allSceneTexts.set(v.filter(@(scene) canSceneBeModified(scene)).map(@(scene, _idx) sceneToComboboxEntry(scene)))
-  allSceneTexts.get().append(noSceneSelected)
-  local scene = entity_editor?.get_instance().getTargetScene()
+function syncSelectedScene(_v) {
+  local scene = entity_editor?.get_instance()?.getTargetScene()
   let sceneText = (scene != null && ("loadType" in scene) && ("id" in scene)) ? sceneToComboboxEntry(scene) : null
   if (sceneText != null && allSceneTexts.get().contains(sceneText)) {
     selectedScene.set(sceneText)
   } else {
     selectedScene.set(noSceneSelected)
   }
-})
+}
 
 function dialogRoot() {
   let templatesGroups = entity_editor?.get_instance().getEcsTemplatesGroups()
-  const maxTemplatesInList = 1000
 
-  local scenes = getAllScenes().map(function (item, ind) {
-      item.index <- ind
-      return item
-      }) ?? [] 
-  scenes.sort(sortScenesByLoadType)
-  allModifiableScenes.set(scenes.filter(@(scene) canSceneBeModified(scene)))
   let selectedSceneIndex = selectedScene.get() != noSceneSelected ? allSceneTexts.get().indexof(selectedScene.get()) : null
   let sceneInfo = selectedSceneIndex != null ? allModifiableScenes.get()[selectedSceneIndex] : null
   let sceneTitleStyle = { fontSize = hdpx(17), color=Color(150,150,150,120) }
@@ -231,43 +121,7 @@ function dialogRoot() {
     ]
   }
 
-  function listContent() {
-    if (selectedTemplatesGroup.get() != showWholeListGroup) {
-      showWholeList = false
-      showWholeListGroup = selectedTemplatesGroup.get()
-    }
-
-    let rows = []
-    foreach (idx, tplName in filteredTemplates.get()) {
-      if (filterText.get().len()==0 || tplName.tolower().contains(filterText.get().tolower())) {
-        rows.append(listRow(tplName, idx))
-      }
-      if (!showWholeList && rows.len() >= maxTemplatesInList) {
-        rows.append(listMore())
-        break
-      }
-    }
-
-    return {
-      watch = [filteredTemplates, selectedItem, filterText]
-      size = FLEX_H
-      flow = FLOW_VERTICAL
-      children = rows
-      behavior = Behaviors.Button
-    }
-  }
-
-  let scrollList = makeVertScroll(listContent, {
-    scrollHandler
-    rootBase = {
-      size = flex()
-      onAttach = @() scrollBySelection()
-    }
-  })
-
-
   function doClose() {
-    showTemplateSelect.set(false)
     filterText.set("")
     daEditor.setEditMode(DE4_MODE_SELECT)
   }
@@ -285,7 +139,13 @@ function dialogRoot() {
     size = const [flex(), flex()]
     flow = FLOW_HORIZONTAL
 
-    watch = [filteredTemplatesCount, selectedGroupTemplatesCount, showDebugButtons, templateTooltip, selectedScene, allScenesWatcher]
+    watch = [filteredTemplatesCount, selectedGroupTemplatesCount, showDebugButtons, templateTooltip, selectedScene, allModifiableScenes]
+    
+    onAttach = function() {
+      syncSelectedScene(null)
+      allModifiableScenes.subscribe_with_nasty_disregard_of_frp_update(syncSelectedScene)
+    }
+    onDetach = @() allModifiableScenes.unsubscribe(syncSelectedScene)
 
     children = [
       {
@@ -319,6 +179,8 @@ function dialogRoot() {
             size = const [flex(),fontH(100)]
             children = combobox({
               value = selectedScene
+              
+              changeVarOnListUpdate = false
               update = function(v) {
                 local id = -1
                 if (v != noSceneSelected) {
@@ -339,10 +201,7 @@ function dialogRoot() {
             children = combobox(selectedTemplatesGroup, templatesGroups)
           }
           filter
-          {
-            size = flex()
-            children = scrollList
-          }
+          templatesList
           templPostfix
           {
             flow = FLOW_HORIZONTAL

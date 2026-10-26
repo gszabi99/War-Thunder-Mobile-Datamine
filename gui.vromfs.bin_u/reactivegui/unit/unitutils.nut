@@ -4,9 +4,9 @@ from "%rGui/textFormatByLang.nut" import decimalFormat, shortTextFromNum
 
 
 let hasPrice = @(unit) unit.costWp > 0 || unit.costGold > 0
-let applyDiscount = @(price, discount = 0.0) (price * (1.0 - discount) + 0.5).tointeger()
+let applyDiscount = @[pure, nodiscard](price, discount = 0.0) (price * (1.0 - discount) + 0.5).tointeger()
 
-function getUnitAnyPrice(unit, unitDiscounts) {
+function [pure, nodiscard] getUnitAnyPrice(unit, unitDiscounts) {
   if (!hasPrice(unit))
     return null
   let currencyId = unit.costWp > 0 ? WP : GOLD
@@ -24,7 +24,7 @@ function getShortPrice(price) {
 
 let isUnitGloballyUnavailable = @(u) u.costGold <= 0 && u.costWp <= 0 && !u.isHidden
 
-let sortUnits = @(a, b)
+let sortUnits = @[pure, nodiscard](a, b)
      a.rank <=> b.rank
   || a.mRank <=> b.mRank
   || isUnitGloballyUnavailable(a) <=> isUnitGloballyUnavailable(b)
@@ -33,7 +33,7 @@ let sortUnits = @(a, b)
   || a.isPremium <=> b.isPremium
   || a.name <=> b.name
 
-let sortUnitsByPrice = @(a, b)
+let sortUnitsByPrice = @[pure, nodiscard](a, b)
      a.costGold <=> b.costGold
   || a.costWp <=> b.costWp
   || sortUnits(a, b)

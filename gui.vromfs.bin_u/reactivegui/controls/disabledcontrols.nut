@@ -27,7 +27,7 @@ register_es("disabled_shortcuts_monitor_es", {
   },
 })
 
-let isControlEnabled = @(id, enabledControlsV, isAllControlsEnabledV)
+let isControlEnabled = @[pure, nodiscard](id, enabledControlsV, isAllControlsEnabledV)
   enabledControlsV?[id] ?? isAllControlsEnabledV
 
 let mkIsControlDisabled = @(id) id instanceof Watched

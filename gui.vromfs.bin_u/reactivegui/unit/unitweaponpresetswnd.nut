@@ -39,15 +39,21 @@ function mkCustomIconButton(iconPath, onClick, isDisabled, hotkeys = null) {
       iconPath,
       onClick
       {
-        iconOvr = { size = ICON_SIZE },
+        iconOvr = const { size = ICON_SIZE },
         ovr = {
-          size = isGamepad.get() ? [BTN_ICON_SIZE*2, BTN_ICON_SIZE] : [BTN_ICON_SIZE, BTN_ICON_SIZE],
+          size = isGamepad.get() ? const [BTN_ICON_SIZE*2, BTN_ICON_SIZE] : const [BTN_ICON_SIZE, BTN_ICON_SIZE],
           minWidth = BTN_ICON_SIZE
         }
         hotkeys
       }
     )
   }
+}
+
+let applyBtnStyle = {
+  ovr = {size = const [SIZE_TO_CONTENT, BTN_HEIGHT], minWidth = BTN_WIDTH},
+  childOvr = fontTinyAccentedShaded,
+  hotkeys = ["^J:X"]
 }
 
 let mkButtons = @() {
@@ -79,11 +85,7 @@ let mkButtons = @() {
     (isCurrentPreset.get() ? textButtonCommon : textButtonPrimary)(
       utf8ToUpper(loc("mainmenu/btnApply")),
       onApply,
-      {
-          ovr = {size = const [SIZE_TO_CONTENT, BTN_HEIGHT], minWidth = BTN_WIDTH},
-          childOvr = fontTinyAccentedShaded,
-          hotkeys = ["^J:X"]
-      },
+      applyBtnStyle,
     )
   ]
 }
@@ -118,6 +120,11 @@ let mainContent = bgShadedLight.__merge({
   }
 })
 
+let presetWndContent = [
+  mkCutBg([]),
+  mainContent
+]
+
 function unitWeaponPresetWnd(){
   let res = { watch = isOpenedPresetWnd }
   if (!isOpenedPresetWnd.get())
@@ -126,10 +133,7 @@ function unitWeaponPresetWnd(){
     key = {}
     size = FLEX
     onDetach = closeUnitWeaponPresetWnd
-    children = [
-      mkCutBg([]),
-      mainContent
-    ]
+    children = presetWndContent
   })
 }
 

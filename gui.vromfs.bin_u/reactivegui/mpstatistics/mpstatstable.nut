@@ -143,7 +143,7 @@ let mkUnitName = @(player, halign = null) {
   flow = FLOW_HORIZONTAL
   gap = hdpx(10)
   children = [
-    mkGradRankSmall(player.mRank)
+    (player.mRank ?? 0) > 0 ? mkGradRankSmall(player.mRank) : null
     player.rewardedMasteryTier > 0 ? mkMasteryTierColorIcon(singleMasteryTierSize, player.rewardedMasteryTier) : null
     cellTextProps.__merge({
       halign
@@ -336,6 +336,32 @@ function mkPlayerRow(columnCfg, player, teamColor, idx, isTeamBattle, bgColorOvr
 
   let playerColor = player?.isInHeroSquad ? mySquadLightColor : teamColor
   let isCurrent = Computed(@() player != null && selectedPlayerForInfo.get()?.player.userId == player?.userId)
+  let rowChildren = {
+    key = player?.userId
+    behavior = Behaviors.Button
+    onClick = player == null ? null
+      : function() {
+          if (isCurrent.get())
+            selectedPlayerForInfo.set(null)
+          else
+            selectedPlayerForInfo.set({ player, campaign = curCampaign.get() }.__merge(profileOvr))
+        }
+    sound = const { click = "click" }
+    size = const [ FLEX, rowHeight ]
+    maxWidth = isTeamBattle ? tableWidth : oneTeamBattleTableWidth
+    flow = FLOW_HORIZONTAL
+    children = player == null ? null : columns.map(function(c) {
+      let { width, halign, valign = null, contentCtor = null, getText = null } = c
+      return {
+        size = [width, rowHeight]
+        halign = halign
+        valign = valign ?? ALIGN_BOTTOM
+        padding = const [hdpx(5), 0]
+        children = contentCtor != null ? contentCtor(player, playerColor, halign)
+          : cellTextProps.__merge({ text = getText?(player) })
+      }
+    })
+  }
   return @() {
     watch = isCurrent
     size = const [ FLEX, rowHeight ]
@@ -346,32 +372,7 @@ function mkPlayerRow(columnCfg, player, teamColor, idx, isTeamBattle, bgColorOvr
       : (player?.isLocal ?? false) ? rowBgLocalPlayerColor
       : idx % 2 != 0 ? rowBgOddColor
       : rowBgEvenColor
-    children = {
-      key = player?.userId
-      behavior = Behaviors.Button
-      onClick = player == null ? null
-        : function() {
-            if (isCurrent.get())
-              selectedPlayerForInfo.set(null)
-            else
-              selectedPlayerForInfo.set({ player, campaign = curCampaign.get() }.__merge(profileOvr))
-          }
-      sound = { click = "click" }
-      size = const [ FLEX, rowHeight ]
-      maxWidth = isTeamBattle ? tableWidth : oneTeamBattleTableWidth
-      flow = FLOW_HORIZONTAL
-      children = player == null ? null : columns.map(function(c) {
-        let { width, halign, valign = null, contentCtor = null, getText = null } = c
-        return {
-          size = [width, rowHeight]
-          halign = halign
-          valign = valign ?? ALIGN_BOTTOM
-          padding = const [hdpx(5), 0]
-          children = contentCtor != null ? contentCtor(player, playerColor, halign)
-            : cellTextProps.__merge({ text = getText?(player) })
-        }
-      })
-    }
+    children = rowChildren
   }.__update(rowOvr, ovr)
 }
 

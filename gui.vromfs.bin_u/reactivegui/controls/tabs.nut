@@ -10,6 +10,7 @@ function mkTab(cfg, isSelected, onClick) {
     : stateFlags.get() & S_HOVER ? hoverColor
     : 0xFFC0C0C0)
   let isPushed = Computed(@() !isSelected && (stateFlags.get() & S_ACTIVE) != 0)
+  let iconPicture = Picture($"{icon}:{iconSize}:{iconSize}:P")
 
   let content = @() {
     watch = color
@@ -20,7 +21,7 @@ function mkTab(cfg, isSelected, onClick) {
       {
         size = const [iconSize, iconSize]
         rendObj = ROBJ_IMAGE
-        image = Picture($"{icon}:{iconSize}:{iconSize}:P")
+        image = iconPicture
         color = color.get()
         keepAspect = true
         imageValign = ALIGN_BOTTOM
@@ -32,6 +33,8 @@ function mkTab(cfg, isSelected, onClick) {
       }.__update(fontSmall)
     ]
   }
+
+  let scaleTransitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
 
   let underline = @() {
     watch = stateFlags
@@ -46,7 +49,7 @@ function mkTab(cfg, isSelected, onClick) {
     watch = isPushed
 
     behavior = Behaviors.Button
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     onElemState = @(sf) stateFlags.set(sf)
     onClick
 
@@ -56,8 +59,8 @@ function mkTab(cfg, isSelected, onClick) {
       content
       underline
     ]
-    transform = { scale = isPushed.get() ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+    transform = { scale = isPushed.get() ? const [0.95, 0.95] : const [1, 1] }
+    transitions = scaleTransitions
   }
 }
 

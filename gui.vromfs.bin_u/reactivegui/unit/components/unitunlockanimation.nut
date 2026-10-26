@@ -8,7 +8,7 @@ const FADE = 0.2
 const REVEAL = 0.3
 const ANIMATION_STEP = 0.5
 
-let shakeAnimation = @(delay) delay
+let shakeAnimation = @[nodiscard](delay) delay
   ? [
       {
         prop = AnimProp.scale, from = [1.0, 1.0], to = [1.3, 1.3],
@@ -21,7 +21,7 @@ let shakeAnimation = @(delay) delay
     ]
   : null
 
-let unlockAnimation = @(delay, size, onFinish = null) delay
+let unlockAnimation = @[pure, nodiscard](delay, size, onFinish = null) delay
   ? [
       {
         prop = AnimProp.translate, from = [0, 0], to = [0, - size * 0.08],
@@ -46,7 +46,7 @@ let unlockAnimation = @(delay, size, onFinish = null) delay
     ]
   : null
 
-let fadeAnimation = @(delay, duration = FADE) delay
+let fadeAnimation = @[pure, nodiscard](delay, duration = FADE) delay
   ? [
       {
         prop = AnimProp.opacity, from = 1.0, to = 1.0,
@@ -59,7 +59,7 @@ let fadeAnimation = @(delay, duration = FADE) delay
     ]
   : null
 
-let revealAnimation = @(delay = 0.5, duration = REVEAL) delay
+let revealAnimation = @[pure, nodiscard](delay = 0.5, duration = REVEAL) delay
   ? [
       {
         prop = AnimProp.opacity, from = 0.0, to = 0.0,

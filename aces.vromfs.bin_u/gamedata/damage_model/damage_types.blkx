@@ -23,5 +23,6 @@
   "fireExplosion": {
     "inherit": "explosion"
   },
-  "pressure": {}
+  "pressure": {},
+  "harmless": {}
 }

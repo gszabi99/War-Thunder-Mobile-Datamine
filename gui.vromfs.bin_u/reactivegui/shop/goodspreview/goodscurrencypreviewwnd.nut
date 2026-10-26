@@ -42,6 +42,9 @@ let currencyStyle = CS_BIG.__merge({
 })
 let currencyOldStyle = currencyStyle.__merge({ iconSize = hdpxi(60), fontStyle = fontBig })
 
+let goldAppearAnim = opacityAnims(0.5, aTimeGoldStart + aTimeGoldBack + aTimePriceStrike)
+let goldColorAnim = colorAnims(aTimeGoldBack, aTimeGoldStart)
+
 let rightBottomBlock = mkPriceWithTimeBlockNoOldPrice(aTimePriceStart, skipOfferBtn)
 
 function goldInfo() {
@@ -68,10 +71,10 @@ function goldInfo() {
         aTimeGoldStart + aTimeGoldBack)
       mkCurrencyComp(count, id, currencyStyle)
         .__update({
-          animations = opacityAnims(0.5, aTimeGoldStart + aTimeGoldBack + aTimePriceStrike)
+          animations = goldAppearAnim
         })
     ]
-    animations = colorAnims(aTimeGoldBack, aTimeGoldStart)
+    animations = goldColorAnim
   }
 }
 

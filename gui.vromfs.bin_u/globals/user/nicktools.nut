@@ -9,7 +9,7 @@ let namesCache = {}
 
 
 
-function removePlatformPostfix(nameReal) {
+function [pure, nodiscard] removePlatformPostfix(nameReal) {
   let idx = nameReal.indexof("@")
   return idx == null ? nameReal : nameReal.slice(0, idx)
 }

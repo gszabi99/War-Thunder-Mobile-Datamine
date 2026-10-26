@@ -7,6 +7,7 @@ from "%rGui/event/eventLocName.nut" import getSpecialEventLocName
 from "%rGui/textFormatByLang.nut" import decimalFormat
 from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
 from "%rGui/unlocks/unlocksConst.nut" import MAIN_EVENT_ID
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 const progressFillTime = 0.5
@@ -45,7 +46,7 @@ let mkTextArea = @(text, ovr) {
 
 function getQuestSectionLocName(quest) {
   let { event_id = "", daily_quest = false, weekly_quest = false, promo_quest = false, achievement = false,
-    personal = "", masteryUnitName = null } = quest?.meta
+    personal = "", masteryUnitName = null, weekly_clan_quest = false } = quest?.meta
   if (event_id != "") {
     if (event_id == MAIN_EVENT_ID)
       return loc(getEventPresentation($"season_{quest?.activity.start_index ?? 0}").locId)
@@ -54,6 +55,8 @@ function getQuestSectionLocName(quest) {
   }
   if (masteryUnitName != null)
     return loc("mainmenu/btnMastery")
+  if (weekly_clan_quest)
+    return loc("clan/clanQuests")
   if (daily_quest || weekly_quest)
     return loc("quests/common")
   if (promo_quest)
@@ -126,7 +129,7 @@ function mkQuestProgressBar(quest, delay) {
         size = [progressWidthNew, progressBarH]
         fillColor = progressBarFillNewColor
         key = $"progress_{name}"
-        transform = { pivot = [0, 0] }
+        transform = { pivot = 0 }
         animations = [
           { prop = AnimProp.scale, from = [initialScale, 1], to = [initialScale, 1],
             duration = delay, play = true }
@@ -175,6 +178,13 @@ function mkProgressTxt(quest, delay) {
 function mkQuestComp(quest, delay) {
   let stateFlags = Watched(0)
   let key = {}
+  let questTitle = mkQuestTitle(quest)
+  let questProgressBar = mkQuestProgressBar(quest, delay)
+  let detachTooltip = tooltipDetach(stateFlags)
+  let hoverTooltip = withTooltip(stateFlags, key, @() {
+    content = mkQuestTooltipContent(quest)
+    flow = FLOW_HORIZONTAL
+  })
   return @() {
     watch = stateFlags
     key
@@ -183,25 +193,21 @@ function mkQuestComp(quest, delay) {
     flow = FLOW_VERTICAL
     gap = hdpx(8)
     children = [
-      mkQuestTitle(quest)
+      questTitle
       {
         size = FLEX_H
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL
         gap = progressTextGap
         children = [
-          mkQuestProgressBar(quest, delay)
+          questProgressBar
           mkProgressTxt(quest, delay)
         ]
       }
     ]
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.97, 0.97] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
-    onDetach = tooltipDetach(stateFlags)
-    onElemState = withTooltip(stateFlags, key, @() {
-      content = mkQuestTooltipContent(quest)
-      flow = FLOW_HORIZONTAL
-    })
+    onDetach = detachTooltip
+    onElemState = hoverTooltip
+    ...mkPressTransitionScale(stateFlags.get(), 0.97)
   }
 }
 

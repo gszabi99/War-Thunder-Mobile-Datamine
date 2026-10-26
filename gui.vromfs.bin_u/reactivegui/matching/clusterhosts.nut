@@ -6,7 +6,7 @@ from "%sqstd/globalState.nut" import hardPersistWatched
 from "%appGlobals/clientState/clientState.nut" import isInBattle
 from "%appGlobals/defaultClusters.nut" import getForbiddenClustersByCountry
 from "%appGlobals/loginState.nut" import isMatchingOnline, isMatchingConnected
-from "%rGui/matching/matchingApi.nut" import matching_subscribe, matchingRpcRegisterHandler
+from "%rGui/matching/matchingApi.nut" import matching_subscribe, matchingRegisterHandler
 import "%rGui/matching/matchingRequestWithRetries.nut" as matchingRequestWithRetries
 
 
@@ -39,7 +39,7 @@ let tryFetchHosts = @() !canFetchHosts.get() || clusterHosts.get().len() != 0 ? 
       onFinish = "onClusterHostsFetched"
     })
 
-matchingRpcRegisterHandler("onClusterHostsFetched", function(result) {
+matchingRegisterHandler("onClusterHostsFetched", function(result) {
   if ("error" in result) {
     resetTimeout(OUT_OF_RETRIES_DELAY_SEC, tryFetchHosts)
     return

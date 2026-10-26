@@ -89,8 +89,8 @@ let chatLogAndKillLogPlace = @() function() {
     flow = FLOW_VERTICAL
     gap
     children = [
-      mkHintsBlock(killLogState.curEvents, { halign = ALIGN_LEFT }, {}, font, gap)
-      mkHintsBlock(logerrLogState.curEvents, { halign = ALIGN_LEFT }, {}, font, gap)
+      mkHintsBlock(killLogState.curEvents, const { halign = ALIGN_LEFT }, {}, font, gap)
+      mkHintsBlock(logerrLogState.curEvents, const { halign = ALIGN_LEFT }, {}, font, gap)
     ]
   }
 }
@@ -98,9 +98,10 @@ let chatLogAndKillLogPlace = @() function() {
 function chatLogAndKillLogEditView(options) {
   let font = getChatFont(options)
   let gap = chatGap(font)
+  let size = [getChatWidth(options), calcChatHeight(font, gap)]
   return @() {
     watch = myUserName
-    size = [getChatWidth(options), calcChatHeight(font, gap)]
+    size = size
     rendObj = ROBJ_BOX
     valign = ALIGN_TOP
     flow = FLOW_VERTICAL

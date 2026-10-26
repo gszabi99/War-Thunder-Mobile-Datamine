@@ -188,7 +188,6 @@ def load_cluster_params(blk : DataBlock&; var unit : Unit?;
   blk |> read_flag(ammo_clusters__state, AmmoClusterState.EXPLOSION_FATAL, "fatalExplosion")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState.DESTROYED_DM_BLOCKS_SHOOT, "dstrElevatorDisablesShooting")
   blk |> read_flag(ammo_clusters__state, AmmoClusterState.RESTORE_AFTER_DEAD, "restoreAfterDead", true)
-  blk |> read_flag(ammo_clusters__state, AmmoClusterState.DISABLE_BALANCING, "disableBalancing", false)
   ammo_clusters__reloadTimeMult = blk |> datablock_getReal("reloadTimeMult", ammo_clusters__reloadTimeMult)
   ammo_clusters__splashConstraints.x = blk |> datablock_getReal("splashRadiusConstraint", ammo_clusters__splashConstraints.x)
   ammo_clusters__splashConstraints.y = blk |> datablock_getReal("splashDamageConstraint", ammo_clusters__splashConstraints.y)
@@ -313,6 +312,12 @@ def load_cluster(blk : DataBlock&; var unit : Unit?;
   v.ammo_clusters__wreckageRange[cluster_id].y = length(v.ammo_stowage__wreckageIds)
   v.ammo_clusters__relatedPartsRange[cluster_id].y = length(v.ammo_stowage__relatedPartsIds)
 
+  let damage_effect_preset_id = v.ammo_clusters__damageEffectPresetId[cluster_id]
+  if damage_effect_preset_id >= 0 && damage_effect_preset_id < length(unit.visual.damageEffects.presets)
+    if get_ammo_cluster_stage(cluster_id, v) != int(AmmoClusterStage.LOADED_IN_GUN)
+      if damage_effect_preset_has_effect(unit.visual.damageEffects.presets[damage_effect_preset_id], int(DamageEffectType.DM_EFFECT_LAUNCH))
+        logerr("unit {unit.props.fileName} : launch damage effect on cluster {cluster_id}, which is not ammoLoadedInGun")
+
   var num_undistributed_slots = 0
 
   v.ammo_clusters__slotsRange[cluster_id].x = v.ammo_slots__state |> length()
@@ -367,10 +372,10 @@ def load_cluster(blk : DataBlock&; var unit : Unit?;
       if visual_node_name != ""
         *unit.visual |> dm_bind_visual_node(int(part_id.id), visual_node_name)
 
-      if unit.collNodeTree != null
+      if unit.visual.collNodeTree != null
         let cnode = *unit.visual |> dm_get_collision_node_by_part_id(int(part_id.globalId))
         let geom_node_id = *unit.visual |> dm_get_geom_node_id_by_part_id(int(part_id.id))
-        let node_wtm = *unit.collNodeTree |> get_node_wtm_rel_ptr(geom_node_id)
+        let node_wtm = *unit.visual.collNodeTree |> get_node_wtm_rel_ptr(geom_node_id)
         v.ammo_slots__node[slot_id] := AmmoStowageSlotCollAndGeomNodes(cnode = cnode, nodeWtm = node_wtm)
 
     num_ammo -= num_ammo_max
@@ -490,6 +495,47 @@ def fill_stowage_weapon_ammo_entries(weap : WeaponController const?; stowage_id 
     for weapon in weap.Weapons |> get_weapons_by_trigger(trigger_id)
       if weapon != null
         add_stowage_weapon_ammo(int(weapon.weaponIdx), trigger_id, stowage_id, v)
+
+
+[with_bundle(v)]
+def verify_loaded_in_gun_emitters(var unit : Unit?; weap : WeaponController const?; model_name : string;
+                                  stowage_id : int; cluster_id : int;
+                                  v : tuple<
+                                    ammo_stowages__weaponAmmoRange : IPoint2List;
+                                    ammo_stowage__weaponAmmoIds : IntList;
+                                    ammo_stowage__weaponAmmoTriggers : IntList;
+                                    ammo_stowages__weaponTriggersRange : IPoint2List;
+                                    ammo_stowage__weaponTriggers : IntList;
+                                    ammo_clusters__weaponTriggersRange : IPoint2List;
+                                    ammo_cluster__weaponTriggers : IntList;
+                                    ammo_clusters__slotsRange : IPoint2List;
+                                    ammo_slots__partId : PartIdList
+                                    >) : void
+  if weap == null || unit == null
+    return
+  let slots_range = v.ammo_clusters__slotsRange[cluster_id]
+  let weapon_range = v.ammo_stowages__weaponAmmoRange[stowage_id]
+  for weapon_i in weapon_range.x..weapon_range.y
+    let weapon = weap.Weapons |> get_weapon(v.ammo_stowage__weaponAmmoIds[weapon_i])
+    if weapon == null || weapon.ammoEmittersCount == 0
+      continue
+    let weapon_trigger = v.ammo_stowage__weaponAmmoTriggers[weapon_i]
+    if weapon_trigger >= 0 && !ammo_cluster_has_weapon_trigger(stowage_id, cluster_id, weapon_trigger, v)
+      continue
+    var num_unbound = 0
+    var first_unbound_slot = -1
+    for slot_id in slots_range.x..slots_range.y
+      let part_id = v.ammo_slots__partId[slot_id]
+      if !part_id.valid || *weapon |> getEmitterNoByDmPartId(part_id) >= 0
+        continue
+      if first_unbound_slot < 0
+        first_unbound_slot = slot_id
+      num_unbound += 1
+    if first_unbound_slot >= 0
+      logerr("unit {model_name}: ammoLoadedInGun cluster {cluster_id} has {num_unbound} slot(s) bound to no emitter " +
+        "of weapon {v.ammo_stowage__weaponAmmoIds[weapon_i]}, first is " +
+        "{get_part_name(unit.dmData, int(v.ammo_slots__partId[first_unbound_slot].id))}; " +
+        "the weapon needs ammoDpGenFmt with optional ammoDpGenRange naming the slot dm parts")
 
 
 def load_clusters_in_order(stowage_blk : DataBlock&; model_name : string; load_cluster : block<(cluster_blk : DataBlock; cluster_type : int; cluster_stage : int; idx : int) : void>)
@@ -811,6 +857,13 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
         
         load_cluster(cluster_blk, unit, stowage_id, cluster_id, num_ammo_for_cluster_type[cluster_type], false) <| v
         v.ammo_clusters__entityMunition[cluster_id] := stowage_blk |> datablock_getStr("entityMunition", stowage_munition)
+
+        if cluster_stage == int(AmmoClusterStage.LOADED_IN_GUN)
+          if !get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.REMOVE_LOADED_AMMO)
+            logerr("unit {model_name}: stowage {stowage_blk.blockName} has an ammoLoadedInGun cluster and " +
+                   "removeLoadedAmmo:b = false; removeLoadedAmmo should be true to make the loaded ammo usable")
+          if cluster_type == int(AmmoClusterType.SHELLS)
+            verify_loaded_in_gun_emitters(unit, weapon_controller, model_name, stowage_id, cluster_id) <| v
 
         if (get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState.AUTO_LOAD))
           set_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.HAS_AUTO_LOAD, true)

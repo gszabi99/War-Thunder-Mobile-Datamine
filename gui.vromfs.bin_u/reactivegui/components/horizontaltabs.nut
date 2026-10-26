@@ -39,10 +39,10 @@ function mkTabImage(image, imageSizeMul) {
   let size = (iconSizeDef * imageSizeMul + 0.5).tointeger()
   let blockSize = max(iconSizeDef, size)
   return {
-    size = [blockSize, blockSize]
+    size = blockSize
     vplace = ALIGN_CENTER
     children = {
-      size = [size, size]
+      size = size
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
       rendObj = ROBJ_IMAGE

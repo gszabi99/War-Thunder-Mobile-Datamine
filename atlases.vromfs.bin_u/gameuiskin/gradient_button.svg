@@ -1,13 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="108" height="108" viewBox="0 0 108 108">
-  <defs>
-    <style>
-      .cls-1 {
-        fill: url(#linear-gradient);
-      }
-    </style>
-    <linearGradient id="linear-gradient" x1="54" y1="108" x2="54" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
-      <stop offset="1" stop-color="#fff" stop-opacity="0.6"/>
+<svg width="108" height="108" viewBox="0 0 108 108" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<style>.cls-1 {
+        fill: url(#a);
+      }</style>
+<linearGradient id="a" x1="54" x2="54" y1="108" gradientUnits="userSpaceOnUse">
+<stop stop-color="#fff" stop-opacity="0" offset="0"/>
+<stop stop-color="#fff" stop-opacity=".6" offset="1"/>
+</linearGradient>
+</defs>
+<rect class="cls-1" width="108" height="108"/>
+</svg>
+" stop-opacity="0.6"/>
     </linearGradient>
   </defs>
   <rect class="cls-1" width="108" height="108"/>

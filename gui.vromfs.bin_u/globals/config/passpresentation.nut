@@ -68,6 +68,12 @@ let epPresentations = {
     shortDescLocId = "eventPass/desc"
     passWndCurrencies = [ ANNIVERSARYBOND, ANNIVERSARYTOKEN ]
   }
+  halloween_2026 = {
+    shortDescLocId = "eventPass/desc"
+    passWndCurrencies = [ HALLOWEENBOND, HALLOWEENTOKEN ]
+    icon = "ui/gameuiskin#event_pass_icon_halloween_2025.avif"
+    iconVip = "ui/gameuiskin#event_pass_icon_halloween_2025_vip.avif"
+  }
   uk_air_release = {
     descLocId = "events/desc/tasksAndBattlesScore"
     shortDescLocId = "events/desc/short/tasksAndBattlesScore"
@@ -101,8 +107,45 @@ let newbieBpPresentations = {
   }
 }.map(@(c) defNewbieBpPresentation.__merge(c))
 
+let defPointsPresentation = { img = "ui/gameuiskin#passpoints_s39_goods_01.avif", amountAtLeast = 0 }
+let pointsPresentations = [
+  defPointsPresentation
+  { img = "ui/gameuiskin#passpoints_s39_goods_02.avif", amountAtLeast = 10 }
+  { img = "ui/gameuiskin#passpoints_s39_goods_03.avif", amountAtLeast = 100 }
+]
+
+let defGradePresentation = {
+  locId = ""
+  icon = @(_) "ui/gameuiskin#bp_icon_not_active.avif"
+}
+let defBpPresenration = {
+  grades = [
+    defGradePresentation
+    {
+      locId = "battlePass"
+      icon = @(seasonIdx) seasonIdx != -1 ? $"ui/gameuiskin#bp_icon_active_season_{seasonIdx}.avif"
+        : "ui/gameuiskin#bp_icon_not_active.avif"
+    }
+    {
+      locId = "battlePassVIP"
+      icon = @(seasonIdx) seasonIdx != -1 ? $"ui/gameuiskin#bp_icon_active_season_{seasonIdx}_vip.avif"
+        : "ui/gameuiskin#bp_icon_not_active.avif"
+      isVip = true
+    }
+  ]
+}
+
+let bpPresentations = {
+  main_s39 = defBpPresenration
+}
+
 return {
   getOPPresentation = @(camp) opPresentations?[camp] ?? defOpPresentation
   getEpPresentation = @(eventId) epPresentations?[eventId] ?? defEpPresentation
   getNewbieBPPresentation = @(camp) newbieBpPresentations?[camp] ?? defNewbieBpPresentation
+  getPointsPresentation = @(amount) pointsPresentations.reduce(
+    @(res, v) v.amountAtLeast <= amount && v.amountAtLeast >= res.amountAtLeast ? v : res,
+    defPointsPresentation)
+  getGradePresentation = @(bpId, grade) bpPresentations?[bpId].grades[grade] ?? bpPresentations?[bpId].grades[0]
+    ?? defGradePresentation
 }

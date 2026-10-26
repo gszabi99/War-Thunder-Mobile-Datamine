@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
 from "%rGui/shop/shopConst.nut" import SGT_UNKNOWN, SGT_UNIT, SGT_CONSUMABLES, SGT_PREMIUM, SGT_WP, SGT_EVT_CURRENCY,
   SGT_DECORATOR, SGT_DECALS, SGT_LOOTBOX, SGT_GOLD, SGT_PLATINUM, SGT_BOOSTERS, SGT_SLOTS, SGT_BLUEPRINTS,
-  SGT_UNIT_BUNDLE, SGT_SKIN, SGT_PUZZLE_PIECE
+  SGT_UNIT_BUNDLE, SGT_SKIN, SGT_PUZZLE_PIECE, SGT_BP_POINTS
 from "types" import String
 
 
@@ -64,6 +64,7 @@ const PURCH_TYPE_DECAL = "decal"
 const PURCH_TYPE_QUEST_REROLL = "quest_reroll"
 const PURCH_TYPE_RESET_SLOT_LEVEL = "reset_slot_lvl"
 const PURCH_TYPE_PUZZLE_PIECE = "puzzle_piece"
+const PURCH_TYPE_BP_POINTS = "bp_points"
 
 let goodsTypeToPurchTypeMap = {
   [SGT_UNKNOWN] = "unknown",
@@ -83,6 +84,7 @@ let goodsTypeToPurchTypeMap = {
   [SGT_DECORATOR] = PURCH_TYPE_DECORATOR,
   [SGT_UNIT_BUNDLE] = PURCH_TYPE_UNIT_BUNDLE,
   [SGT_PUZZLE_PIECE] = PURCH_TYPE_PUZZLE_PIECE,
+  [SGT_BP_POINTS] = PURCH_TYPE_BP_POINTS,
 }
 
 function getPurchaseTypeByGoodsType(gtype) {
@@ -91,7 +93,7 @@ function getPurchaseTypeByGoodsType(gtype) {
   return goodsTypeToPurchTypeMap?[gtype] ?? ""
 }
 
-let mkBqPurchaseInfo = @(src, purchaseType, details) { from = src, status = purchaseType, params = details }
+let mkBqPurchaseInfo = @[pure, nodiscard](src, purchaseType, details) { from = src, status = purchaseType, params = details }
 
 function sendBqEventOnOpenCurrencyShop(bqPurchaseInfo) {
   if (bqPurchaseInfo == null)

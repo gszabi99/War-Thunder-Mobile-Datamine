@@ -3857,6 +3857,18 @@
           "to": "me262a_1_u4_n*"
         }
       ]
+    },
+    "mummy": {
+      "replace_tex": [
+        {
+          "from": "me262a_1_u4_halloween_c*",
+          "to": "me262a_1_u4_mummyc*"
+        },
+        {
+          "from": "me262a_1_u4_halloween_n*",
+          "to": "me262a_1_u4_mummy_n*"
+        }
+      ]
     }
   }
 }

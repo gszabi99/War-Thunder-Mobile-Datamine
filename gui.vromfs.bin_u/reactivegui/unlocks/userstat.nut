@@ -67,7 +67,7 @@ function makeUpdatable(persistName, refreshAction, getRefreshParams = null, cust
   let changeEventTime = hardPersistWatched($"userstats.{persistName}.changeEventTime", 0)
   let lastErrorTime = hardPersistWatched($"userstats.{persistName}.lastErrorTime", 0)
   let canRepeatAfterError = mkIsTimePassed(lastErrorTime, STATS_REPEAT_AFTER_ERROR_TIMEOUT)
-  lastErrorTime.setDeferred(false) 
+  lastErrorTime.setImmediate(true) 
   let isTimeoutAfterRequest = mkIsTimePassed(lastTime, STATS_REQUEST_TIMEOUT, @(v) v.request)
   let isRequestInProgress = Computed(@() lastTime.get().request > lastTime.get().update && !isTimeoutAfterRequest.get())
 

@@ -19,6 +19,7 @@ from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
 
 
 let rStyleDefault = REWARD_STYLE_SMALL
+let rStyleNoPreview = { ...rStyleDefault, needShowPreview = false }
 let questItemsGap = rStyleDefault.boxGap
 let rewardsBtnSize = rStyleDefault.boxSize
 let progressBarRewardSize = rewardsBtnSize
@@ -34,7 +35,7 @@ let statsAnimation = {
 }
 
 let rewardsListIcon = @(pointsSize) {
-  size = [pointsSize, pointsSize]
+  size = pointsSize
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#circle.svg:{pointsSize}:{pointsSize}:P")
 }
@@ -70,7 +71,7 @@ let lockedReward = {
 }
 
 let currencyProgressBarRewardCtor = @(r, isUnlocked = false, canClaimReward = false) [
-  mkRewardPlate(r, rStyleDefault)
+  mkRewardPlate(r, canClaimReward ? rStyleNoPreview : rStyleDefault)
   !isUnlocked ? lockedReward
     : !canClaimReward ? mkRewardReceivedMark(REWARD_STYLE_SMALL)
     : mkGlare(rewardsBtnSize, { repeatDelay = 2.5, duration = 0.6 })
@@ -78,6 +79,8 @@ let currencyProgressBarRewardCtor = @(r, isUnlocked = false, canClaimReward = fa
 
 function mkProgressBarReward(slots, children, onClick) {
   let stateFlags = Watched(0)
+  let picSaturateTransitions = [{ prop = AnimProp.picSaturate, duration = 0.07, easing = Linear }]
+  let clickSound = { click = onClick != null ? "click" : null }
   return @() {
     watch = stateFlags
     size = [progressBarRewardSize * slots + questItemsGap * (slots - 1), progressBarRewardSize]
@@ -87,8 +90,8 @@ function mkProgressBarReward(slots, children, onClick) {
     clickableInfo = loc("btn/receive")
     onElemState = @(sf) stateFlags.set(sf)
     picSaturate = onClick != null && (stateFlags.get() & S_ACTIVE) ? 2.0 : 1.0
-    transitions = [{ prop = AnimProp.picSaturate, duration = 0.07, easing = Linear }]
-    sound = { click = onClick != null ? "click" : null }
+    transitions = picSaturateTransitions
+    sound = clickSound
     children
   }
 }
@@ -114,51 +117,59 @@ function onUnitRewardClick(name) {
   openUnitDetailsWnd({name})
 }
 
-let mkQuestRewardPlate = @(r, startIdx, rewards, isQuestFinished = false, rStyle = rStyleDefault) {
-  behavior = Behaviors.Button
-  onClick = @() r.rType == G_UNIT ? onUnitRewardClick(r.id) : openRewardsList(rewards, isQuestFinished)
-  children = [
-    mkRewardPlate(r, rStyle, {
-      key = {}
-      animations = opacityAnims(aTimeInfoItem, REWARD_INTERVAL * (startIdx + 1))
-        .append(r.rType == G_STAT_ADD && !isQuestFinished ? statsAnimation : null)
-    })
-    @() {
-      watch = servProfile
-      size = getRewardPlateSize(r.slots, rStyle)
-      children = isQuestFinished || isSingleViewInfoRewardEmpty(r, servProfile.get())
-          ? mkRewardReceivedMark(rStyle)
-        : null
-    }
-  ]
+function mkQuestRewardPlate(r, startIdx, rewards, isQuestFinished = false, rStyle = rStyleDefault) {
+  let plateSize = getRewardPlateSize(r.slots, rStyle)
+  let receivedMark = mkRewardReceivedMark(rStyle)
+  return {
+    behavior = Behaviors.Button
+    onClick = @() r.rType == G_UNIT ? onUnitRewardClick(r.id) : openRewardsList(rewards, isQuestFinished)
+    children = [
+      mkRewardPlate(r, rStyle, {
+        key = {}
+        animations = opacityAnims(aTimeInfoItem, REWARD_INTERVAL * (startIdx + 1))
+          .append(r.rType == G_STAT_ADD && !isQuestFinished ? statsAnimation : null)
+      })
+      @() {
+        watch = servProfile
+        size = plateSize
+        children = isQuestFinished || isSingleViewInfoRewardEmpty(r, servProfile.get())
+            ? receivedMark
+          : null
+      }
+    ]
+  }
 }
 
-let mkRewardPlateWithAnim = @(r, appearTime, isQuestFinished = Watched(false), handleClick = null, rStyle = rStyleDefault) {
-  behavior = Behaviors.Button
-  function onClick() {
-    if (handleClick?())
-      return
-    if (r.rType == G_UNIT)
-      onUnitRewardClick(r.id)
-  }
-  children = [
-    mkRewardPlate(r, rStyle, {
-      key = {}
-      animations = opacityAnims(aTimeInfoItem, appearTime)
-    })
-    @() {
-      watch = [servProfile, isQuestFinished]
-      size = getRewardPlateSize(r.slots, rStyle)
-      children = isQuestFinished.get() || isSingleViewInfoRewardEmpty(r, servProfile.get())
-        ? mkRewardReceivedMark(rStyle)
-        : null
+function mkRewardPlateWithAnim(r, appearTime, isQuestFinished = Watched(false), handleClick = null, rStyle = rStyleDefault) {
+  let plateSize = getRewardPlateSize(r.slots, rStyle)
+  let receivedMark = mkRewardReceivedMark(rStyle)
+  return {
+    behavior = Behaviors.Button
+    function onClick() {
+      if (handleClick?())
+        return
+      if (r.rType == G_UNIT)
+        onUnitRewardClick(r.id)
     }
-  ]
+    children = [
+      mkRewardPlate(r, rStyle, {
+        key = {}
+        animations = opacityAnims(aTimeInfoItem, appearTime)
+      })
+      @() {
+        watch = [servProfile, isQuestFinished]
+        size = plateSize
+        children = isQuestFinished.get() || isSingleViewInfoRewardEmpty(r, servProfile.get())
+          ? receivedMark
+          : null
+      }
+    ]
+  }
 }
 
 let getRewardsPreviewInfo = @(item, sConfigs)
   getUnlockRewardsViewInfo(item?.stages[0], sConfigs).sort(sortRewardsViewInfo)
-let getEventCurrencyReward = @(rewardsPreviewInfo)
+let getEventCurrencyReward = @[pure, nodiscard](rewardsPreviewInfo)
   rewardsPreviewInfo.findvalue(@(r) r.id == WARBOND || r.id == NYBOND || r.id == APRILBOND)
 
 let mkRewardsPreviewFull = @(rewards, isQuestFinished, rStyle = rStyleDefault) rewards.map(@(r, idx) mkQuestRewardPlate(r, idx, rewards, isQuestFinished, rStyle))

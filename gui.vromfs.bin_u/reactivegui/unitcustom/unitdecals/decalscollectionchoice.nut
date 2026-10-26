@@ -18,12 +18,15 @@ function hasUnseen(decalsList, unseenListDecals) {
   return false
 }
 
-let mkDecalRow = @(row, availableDecals, selectedDecal, unseenDecals, onSelect) @() {
-  watch = decalsCfg
-  flow = FLOW_HORIZONTAL
-  gap = decalsGap
-  children = row.map(@(id)
+function mkDecalRow(row, availableDecals, selectedDecal, unseenDecals, onSelect) {
+  let children = row.map(@(id)
     mkDecalCard(Computed(@() decalsCfg.get()?[id]), availableDecals, selectedDecal, unseenDecals, onSelect))
+  return @() {
+    watch = decalsCfg
+    flow = FLOW_HORIZONTAL
+    gap = decalsGap
+    children
+  }
 }
 
 function mkFoldableHeader(unseenDecals, category) {

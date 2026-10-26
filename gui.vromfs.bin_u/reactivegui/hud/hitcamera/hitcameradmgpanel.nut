@@ -122,7 +122,7 @@ function getStateByBrokenDmMain(isUnitKilled, partsInfo, partsArray, mainDmArray
 
 let iconAnim = {
   key = {}
-  transform = { pivot = [0.5, 0.5] }
+  transform = { pivot = 0.5 }
   animations = [
     { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.2, 1.2], duration = 1.0, easing = CosineFull,
       play = true, loop = true }
@@ -142,7 +142,7 @@ function mkTextPart(icon, iconRepair, scale, textW, colorW, isRepairW) {
     children = [
       @() {
         watch = isRepairW
-        size = [bigIconSize, bigIconSize]
+        size = bigIconSize
         rendObj = ROBJ_IMAGE
         image = Picture($"{isRepairW.get() ? iconRepair : icon}:{bigIconSize}:{bigIconSize}:P")
         color = colorW.get()
@@ -159,6 +159,7 @@ function mkTextPart(icon, iconRepair, scale, textW, colorW, isRepairW) {
 
 function mkDmgPart(icon, iconSize, iconBgSize, status) {
   let picture = Picture($"{icon}:{iconSize}:{iconSize}")
+  let bgPicture = Picture($"ui/gameuiskin#dmg_ship_status_bg.svg:{iconBgSize}:{iconBgSize}:P")
   return function() {
     let res = { watch = status }
     return status.get() == HIDDEN ? res : res.__update({
@@ -167,15 +168,15 @@ function mkDmgPart(icon, iconSize, iconBgSize, status) {
         halign = ALIGN_CENTER
         children = [
           {
-            size = [iconBgSize, iconBgSize]
+            size = iconBgSize
             rendObj = ROBJ_IMAGE
-            image = Picture($"ui/gameuiskin#dmg_ship_status_bg.svg:{iconBgSize}:{iconBgSize}:P")
+            image = bgPicture
             color = status.get() == NONE ? 0x33000000
               : status.get() == KILLED ? 0XFF541613
               : 0xAA000000
           }
           {
-            size = [iconSize, iconSize]
+            size = iconSize
             rendObj = ROBJ_IMAGE
             image = picture
             color = colors?[status.get()] ?? hudWhiteColor
@@ -183,6 +184,39 @@ function mkDmgPart(icon, iconSize, iconBgSize, status) {
         ]
       },
       status.get() == KILLED ? iconAnim : {}
+    )
+  }
+}
+
+function mkDmgPartWithBroken(icon, brokenIcon, iconSize, iconBgSize, status) {
+  let picture = Picture($"{icon}:{iconSize}:{iconSize}")
+  let brokenPicture = Picture($"{brokenIcon}:{iconSize}:{iconSize}")
+  let bgPicture = Picture($"ui/gameuiskin#dmg_ship_status_bg.svg:{iconBgSize}:{iconBgSize}:P")
+  return function() {
+    let res = { watch = status }
+    let isBrokenOrKilled = status.get() == KILLED || status.get() == BROKEN
+    return status.get() == HIDDEN ? res : res.__update({
+        size = [FLEX, iconBgSize]
+        valign = ALIGN_CENTER
+        halign = ALIGN_CENTER
+        children = [
+          {
+            size = iconBgSize
+            rendObj = ROBJ_IMAGE
+            image = bgPicture
+            color = status.get() == NONE ? 0x33000000
+              : isBrokenOrKilled ? 0xFF000000
+              : 0xAA000000
+          }
+          {
+            size = iconSize
+            rendObj = ROBJ_IMAGE
+            image = isBrokenOrKilled ? brokenPicture : picture
+            color = isBrokenOrKilled ? null : (colors?[status.get()] ?? hudWhiteColor)
+          }
+        ]
+      },
+      isBrokenOrKilled ? iconAnim : {}
     )
   }
 }
@@ -237,32 +271,36 @@ function tankDmgPanelChildrenCtor(scale) {
   let iconSize = scaleEven(iconSizeBase, scale)
   let iconBgSize = scaleEven(iconBgSizeBase, scale)
   return [
-    mkDmgPart("ui/gameuiskin#engine_state_indicator.svg", iconSize, iconBgSize,
+    mkDmgPartWithBroken("ui/gameuiskin#engine_state_indicator.svg", "ui/gameuiskin#engine_state_indicator_broken.svg",
+      iconSize, iconBgSize,
       Computed(@() getStateByBrokenDmAny(isHcUnitKilled.get(), hcDmgPartsInfo.get(),
         ["tank_engine", "tank_transmission"])))
-    mkDmgPart("ui/gameuiskin#gun_state_indicator.svg", iconSize, iconBgSize,
+    mkDmgPartWithBroken("ui/gameuiskin#gun_state_indicator.svg", "ui/gameuiskin#gun_state_indicator_broken.svg",
+      iconSize, iconBgSize,
       Computed(@() getStateByBrokenDmMain(isHcUnitKilled.get(), hcDmgPartsInfo.get(),
         ["tank_gun_barrel", "tank_cannon_breech"],
         ["gun_barrel_dm", "gun_barrel_01_dm", "cannon_breech_dm", "cannon_breech_01_dm"])))
-    mkDmgPart("ui/gameuiskin#turret_gear_state_indicator.svg", iconSize, iconBgSize,
+    mkDmgPartWithBroken("ui/gameuiskin#turret_gear_state_indicator.svg",
+      "ui/gameuiskin#turret_gear_state_indicator_both.svg",
+      iconSize, iconBgSize,
       Computed(@() getStateByBrokenDmMain(isHcUnitKilled.get(), hcDmgPartsInfo.get(),
         ["tank_drive_turret_h", "tank_drive_turret_v"],
         ["drive_turret_h_dm", "drive_turret_h_01_dm", "drive_turret_v_dm", "drive_turret_v_01_dm"])))
-    mkDmgPart("ui/gameuiskin#track_state_indicator.svg", iconSize, iconBgSize,
+    mkDmgPartWithBroken("ui/gameuiskin#track_state_indicator.svg", "ui/gameuiskin#track_state_indicator_broken.svg",
+      iconSize, iconBgSize,
       Computed(@() getStateByBrokenDmAny(isHcUnitKilled.get(), hcDmgPartsInfo.get(), ["tank_track"])))
 
     { size = [iconSize, iconSize] }
 
-    mkDmgPart("ui/gameuiskin#crew_gunner_indicator.svg", iconSize, iconBgSize,
+    mkDmgPartWithBroken("ui/gameuiskin#crew_gunner_debuff.svg", "ui/gameuiskin#crew_gunner_indicator.svg",
+      iconSize, iconBgSize,
       Computed(@() getStateByBrokenDmAll(isHcUnitKilled.get(), hcDmgPartsInfo.get(), ["tank_gunner"])))
-    mkDmgPart("ui/gameuiskin#crew_driver_indicator.svg", iconSize, iconBgSize,
+    mkDmgPartWithBroken("ui/gameuiskin#crew_driver_debuff.svg", "ui/gameuiskin#crew_driver_indicator.svg",
+      iconSize, iconBgSize,
       Computed(@() getStateByBrokenDmAll(isHcUnitKilled.get(), hcDmgPartsInfo.get(), ["tank_driver"])))
-    mkDmgPart("ui/gameuiskin#crew_commander_indicator.svg", iconSize, iconBgSize,
-      Computed(@() getStateByBrokenDmAll(isHcUnitKilled.get(), hcDmgPartsInfo.get(), ["tank_commander"])))
-    mkDmgPart("ui/gameuiskin#crew_loader_indicator.svg", iconSize, iconBgSize,
+    mkDmgPartWithBroken("ui/gameuiskin#crew_loader_debuff.svg", "ui/gameuiskin#crew_loader_indicator.svg",
+      iconSize, iconBgSize,
       Computed(@() getStateByBrokenDmAll(isHcUnitKilled.get(), hcDmgPartsInfo.get(), ["tank_loader"])))
-    mkDmgPart("ui/gameuiskin#crew_machine_gunner_indicator.svg", iconSize, iconBgSize,
-      Computed(@() getStateByBrokenDmAll(isHcUnitKilled.get(), hcDmgPartsInfo.get(), ["tank_machine_gunner"])))
   ]
 }
 

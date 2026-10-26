@@ -17,6 +17,7 @@ from "%rGui/shop/goodsView/goodsUnit.nut" import getLocNameUnit, mkGoodsUnit, mk
   getLocBranchUnits
 from "%rGui/shop/goodsView/goodsWp.nut" import getLocNameWp, mkGoodsWp
 from "%rGui/shop/goodsView/goodsPuzzlePiece.nut" import mkGoodsPuzzlePiece, getLocNamePuzzlePiece
+from "%rGui/shop/goodsView/goodsBpPoints.nut" import mkGoodsBpPoints, getLocNameBpPoints
 
 
 let customLocId = {
@@ -44,6 +45,7 @@ let locNameGetters = {
   [SGT_BLUEPRINTS] = getLocBlueprintUnit,
   [SGT_DECORATOR] = getLocNameDecorator,
   [SGT_PUZZLE_PIECE] = getLocNamePuzzlePiece,
+  [SGT_BP_POINTS] = getLocNameBpPoints,
 }
 
 let constructors = {
@@ -63,6 +65,7 @@ let constructors = {
   [SGT_DECORATOR] = mkGoodsDecorator,
   [SGT_EVT_CURRENCY] = mkGoodsEventCurrency,
   [SGT_PUZZLE_PIECE] = mkGoodsPuzzlePiece,
+  [SGT_BP_POINTS] = mkGoodsBpPoints,
 }
 
 let getCustomName = @(goods) goods.meta.findindex(@(_, i) i in customLocId)

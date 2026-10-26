@@ -161,7 +161,8 @@ function offerCards() {
   if (unit == null)
     return { watch }
   let upgradedUnit = unit?.__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
-    { isUpgraded = true, skin = "upgraded" })
+    const { isUpgraded = true, skin = "upgraded" })
+  let unitNameLocArgs = { unit = colorize(userlogTextColor, $"{getUnitName(unit.name)}") }
   return modalWndBg.__merge({
     flow = FLOW_VERTICAL
     onClick = close
@@ -178,7 +179,7 @@ function offerCards() {
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
         text = loc(upgradeCommonUnitName.get() ? "shop/upgradeUnitBody" : $"shop/levelupUnit/{curCampaign.get()}",
-          { unit = colorize(userlogTextColor, $"{getUnitName(unit.name)}") })
+          unitNameLocArgs)
       }.__update(fontTinyAccented)
       @() {
         watch

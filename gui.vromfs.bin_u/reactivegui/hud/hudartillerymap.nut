@@ -207,7 +207,7 @@ let crosshair = @() {
 }
 
 let tacticalMap = {
-  size = [ mapSizePx, mapSizePx ]
+  size = mapSizePx
   vplace = ALIGN_CENTER
   rendObj = ROBJ_TACTICAL_MAP
   children = [

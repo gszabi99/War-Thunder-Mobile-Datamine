@@ -9,13 +9,13 @@ from "%appGlobals/rewardType.nut" import G_SKIN, unitRewardTypes
 from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_SKIN_PREVIEW
 from "%rGui/components/infoButton.nut" import infoEllipseButton
 from "%rGui/components/modalWindows.nut" import hideModals, unhideModals
-from "%rGui/mainMenu/balanceComps.nut" import mkCurrencyBalance
+from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
 from "%rGui/navState.nut" import registerScene
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_TINY
 from "%rGui/shop/goodsPreview/goodsPreviewHint.nut" import activeRewardHint
 from "%rGui/shop/goodsPreview/goodsPreviewPkg.nut" import opacityAnims, colorAnims, mkPreviewHeader,
   mkPriceWithTimeBlock, mkPreviewItems, doubleClickListener, ANIM_SKIP, ANIM_SKIP_DELAY, aTimePackNameFull,
-  aTimePackNameBack, aTimeBackBtn, aTimeInfoItem, aTimePriceFull, aTimeInfoItemOffset, aTimeInfoLight, horGap
+  aTimePackNameBack, aTimeBackBtn, aTimeInfoItem, aTimePriceFull, aTimeInfoItemOffset, aTimeInfoLight
 from "%rGui/shop/goodsPreview/unitCutscene.nut" import unitForCutscene
 from "%rGui/shop/goodsPreviewState.nut" import GPT_SKIN, previewType, previewGoods, previewGoodsUnit,
   closeGoodsPreview, openPreviewCount, HIDE_PREVIEW_MODALS_ID
@@ -127,6 +127,8 @@ function openDetailsWnd() {
   openUnitDetailsWnd(cfg)
 }
 
+let packInfoColorAnim = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
+
 let packInfo = {
   flow = FLOW_VERTICAL
   children = [
@@ -136,7 +138,7 @@ let packInfo = {
       children = mkPreviewItems(
         (previewGoods.get()?.rewards ?? []).filter(@(r) r.gType not in unitRewardTypes),
         aTimePackInfoStart + aTimeFirstItemOfset)
-      animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
+      animations = packInfoColorAnim
     }
     {
       padding = const [REWARD_STYLE_TINY.boxGap, 0]
@@ -149,25 +151,22 @@ let unitInfoButton = {
   size = [evenPx(70), evenPx(70)]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  children = [
-    infoEllipseButton(
-      openDetailsWnd,
-      { hotkeys = [["^J:Y", loc("msgbox/btn_more")]] }
-    )
-  ]
+  children = infoEllipseButton(
+    openDetailsWnd,
+    { hotkeys = [["^J:Y", loc("msgbox/btn_more")]] }
+  )
 }
+
+let balanceBlockAnim = opacityAnims(aTimeBackBtn, aTimePackNameBack)
 
 let balanceBlock = @() {
   watch = previewGoods
   hplace = ALIGN_RIGHT
-  flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
-  gap = horGap
-  children = [
-    (previewGoods.get()?.price.price ?? 0) <= 0 ? null
-      : mkCurrencyBalance(previewGoods.get().price.currencyId)
-  ]
-  animations = opacityAnims(aTimeBackBtn, aTimePackNameBack)
+  children = mkCurrenciesBtns(
+    (previewGoods.get()?.price.price ?? 0) <= 0 ? []
+      : [ previewGoods.get().price.currencyId ])
+  animations = balanceBlockAnim
 }
 
 let header = @() mkPreviewHeader(
@@ -179,10 +178,12 @@ let header = @() mkPreviewHeader(
   [],
   balanceBlock)
 
+let unitHeaderBlockAnim = opacityAnims(aTimePackInfoHeader, aTimePackInfoStart)
+
 let unitHeaderBlock = @() {
   watch = unitForShow
   children = mkUnitTitle(unitForShow.get())
-  animations = opacityAnims(aTimePackInfoHeader, aTimePackInfoStart)
+  animations = unitHeaderBlockAnim
 }
 
 let goodsBlock = {
@@ -228,6 +229,14 @@ let rightBlock = {
   ]
 }
 
+let previewWndRevealedChildren = [
+  header
+  {
+    size = FLEX
+    children = rightBlock
+  }
+]
+
 let previewWnd = @() {
   watch = needShowUi
   key = openCount
@@ -243,13 +252,7 @@ let previewWnd = @() {
   onDetach = @() isWindowAttached.set(false)
 
   children = !needShowUi.get() ? doubleClickListener(@() needShowUi.set(true))
-    : [
-        header
-        {
-          size = FLEX
-          children = rightBlock
-        }
-      ]
+    : previewWndRevealedChildren
 }
 
 registerScene("goodsSkinPreviewWnd", previewWnd, closeGoodsPreview, openCount)

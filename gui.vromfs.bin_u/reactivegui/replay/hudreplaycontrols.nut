@@ -14,6 +14,7 @@ from "replays" import get_time_speed, get_replay_info, is_replay_paused, get_rep
 from "string" import format
 from "wt.behaviors" import TouchScreenStick
 from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/underscore.nut" import isEqual
 from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
 from "%appGlobals/botUtils.nut" import genBotDecorators
 from "%appGlobals/clientState/clientState.nut" import isHudVisible
@@ -34,6 +35,7 @@ from "%rGui/hudTuning/hudTuningBattleState.nut" import curUnitHudTuning
 from "%rGui/mpStatistics/botsInfoState.nut" import mkBotInfo
 from "%rGui/style/gradients.nut" import simpleHorGradInv
 from "%rGui/style/hudColors.nut" import hudWhiteColor
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import textColor, selectColor, premiumTextColor, collectibleTextColor
 from "%rGui/style/teamColors.nut" import teamBlueLightColor, teamRedLightColor, mySquadLightColor
 from "%rGui/tooltip.nut" import mkButtonHoldTooltip
@@ -45,6 +47,7 @@ const optBtnSize = hdpx(80)
 const optBtnGap = hdpx(20)
 
 const TIME_TO_UPDATE_CONTROLLS = 0.5
+const TIME_TO_SHOW_CANNOT_SWITCH_HINT = 2.0
 const limitDistanceStick = hdpx(20)
 const stickRadius = sw(100)
 
@@ -77,6 +80,16 @@ const avatarHeight = rowHeight - hdpx(2)
 const squadLabelWidth = hdpx(34)
 const squadLabelHeight = hdpx(41)
 
+let mkCannotSwitchHintAnims = @(offset) [
+  { prop = AnimProp.translate, from = offset, to = [0, 0], duration = 0.35,
+    easing = OutBack, play = true }
+  { prop = AnimProp.translate, from = [0, 0], to = offset, duration = 0.15,
+    easing = InCubic, playFadeOut = true }
+]
+let cannotSwitchHintSlide = rowWidth + saBorders[0]
+let cannotSwitchHintAnimsRight = mkCannotSwitchHintAnims([cannotSwitchHintSlide, 0])
+let cannotSwitchHintAnimsLeft = mkCannotSwitchHintAnims([-cannotSwitchHintSlide, 0])
+
 let startedReplayPath = mkWatched(persist, "startedReplayPath", "")
 
 let stickDelta = Watched(Point2(0, 0))
@@ -93,6 +106,7 @@ let replayTimeTotal = Watched(0)
 let missionCurrentTime = Watched(0)
 
 let selectedPlayerIdx = Watched(-1)
+let cannotSwitchHintPlayerId = Watched(-1)
 let replayMplayersList = Watched([])
 let replayAnchors = Watched([])
 let missionRealTimeDifMs = Watched(0)
@@ -131,6 +145,7 @@ let curAnchorIdx = Computed(function() {
   return (replayAnchors.get().findindex(@(v) v > (replayCurrentTimeRounded.get() * 1000)) ?? replayAnchorsCount.get()) - 1
 })
 
+let hideCannotSwitchHint = @() cannotSwitchHintPlayerId.set(-1)
 let moveToAnchor = @(idx) is_anchor_loading() ? null : move_to_anchor(idx)
 
 function moveToNextAnchor(directionIdx) {
@@ -238,12 +253,32 @@ let replayHudControlsList = [
 ]
 
 let getMplayersList = @() get_mplayers_list(GET_MPLAYERS_LIST, true)
+  .map(@(p) {
+    id = p.id
+    team = p.team
+    name = p.name
+    userId = p.userId
+    isBot = p.isBot
+    isLocal = p.isLocal
+    isInHeroSquad = p.isInHeroSquad
+    aircraftName = p.aircraftName
+    isDead = p.isDead
+    isTemporary = p.isTemporary
+    canBeSwitchedTo = p.canBeSwitchedTo
+  })
+
+function updateMplayersList() {
+  let list = getMplayersList()
+  if (!isEqual(list, replayMplayersList.get()))
+    replayMplayersList.set(list)
+}
 
 function updateControls() {
   if (get_time_speed() != replayTimeSpeed.get())
     replayTimeSpeed.set(get_time_speed())
 
-  replayMplayersList.set(getMplayersList())
+  if (isPlayersListOptActive.get())
+    updateMplayersList()
   missionCurrentTime.set(get_mission_time())
   let paused = is_replay_paused()
   if (paused != isPauseOptActive.get())
@@ -269,7 +304,6 @@ function initReplay() {
   missionRealTimeDifMs.set(timeDifMs)
   replayAnchors.set(anchors.map(@(a) a - timeDifMs))
   replayTimeSpeed.set(get_time_speed())
-  replayMplayersList.set(getMplayersList())
   selectedPlayerIdx.set(getSpectatorTargetId())
   isHudVisibilityOptActive.set(isHudVisible.get())
   isPlayersListOptActive.set(false)
@@ -366,10 +400,11 @@ function mkOptBtn(opt, onClick, ovr = {}) {
             color = textColor
           }.__update(iconOvr)
           onElemState = @(sf) stateFlags.set(sf)
-          sound = { click = "click" }
-          transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.98, 0.98] : [1, 1] }
-          transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
-        }.__update(mkButtonHoldTooltip(isLocked.get() ? @() null : onClick, stateFlags, key, @() { content = loc(locId) }), ovr)
+          sound = const { click = "click" }
+          ...mkPressTransitionScale(stateFlags.get(), 0.98)
+          ...mkButtonHoldTooltip(isLocked.get() ? @() null : onClick, stateFlags, key, @() { content = loc(locId) })
+          ...ovr
+        }
   }
 }
 
@@ -513,6 +548,13 @@ function mkCamSlider(cfg, ovr = {}) {
     return isVertical ? [0, frac * (length - camSliderThumbH)] : [frac * (length - camSliderThumbH), 0]
   }
 
+  let trackBg = {
+    size = FLEX
+    rendObj = ROBJ_SOLID
+    color = bgColor
+    opacity = 0.4
+  }
+
   return @() {
     watch = watched
     key
@@ -530,12 +572,7 @@ function mkCamSlider(cfg, ovr = {}) {
       setter(val)
     }
     children = [
-      {
-        size = FLEX
-        rendObj = ROBJ_SOLID
-        color = bgColor
-        opacity = 0.4
-      }
+      trackBg
       knob.__merge(isVertical
         ? { vplace = ALIGN_TOP, pos = calcKnobPos(watched.get()) }
         : { hplace = ALIGN_LEFT, pos = calcKnobPos(watched.get()) })
@@ -572,25 +609,29 @@ let inertiaSlider = mkCamSlider({
   knobSize = [camSliderThumbH, saBorders[0]]
 })
 
-let replayProgressBar = @() {
-  watch = [replayTimeProgress, replayAnchors, replayTimeTotal]
+let replayProgressFill = @() {
+  watch = replayTimeProgress
+  size = [pw(replayTimeProgress.get()), FLEX]
+  rendObj = ROBJ_SOLID
+  color = selectColor
+}
+
+let replayAnchorMarkers = @() {
+  watch = [replayAnchors, replayTimeTotal]
+  size = FLEX
+  flow = FLOW_HORIZONTAL
+  children = replayAnchors.get()
+    .map(mkReplayAnchorMarker)
+    .filter(@(v) v != null)
+}
+
+let replayProgressBar = {
   size = const [FLEX, hdpx(10)]
   rendObj = ROBJ_BOX
   fillColor = textColor
   children = [
-    {
-      size = [pw(replayTimeProgress.get()), FLEX]
-      rendObj = ROBJ_SOLID
-      color = selectColor
-    }
-    replayAnchors.get().len() == 0 ? null
-      : {
-          size = FLEX
-          flow = FLOW_HORIZONTAL
-          children = replayAnchors.get()
-            .map(mkReplayAnchorMarker)
-            .filter(@(v) v != null)
-        }
+    replayProgressFill
+    replayAnchorMarkers
   ]
 }
 
@@ -678,8 +719,33 @@ function mkAvatar(player) {
   }
 }
 
+let mkCannotSwitchHint = @(playerId, isOnTheRigthSide) @() {
+  watch = cannotSwitchHintPlayerId
+  size = FLEX
+  children = cannotSwitchHintPlayerId.get() != playerId ? null
+    : {
+        key = playerId
+        size = FLEX
+        rendObj = ROBJ_SOLID
+        color = bgColor
+        padding = const [0, hdpx(10)]
+        valign = ALIGN_CENTER
+        children = {
+          ...cellTextProps
+          size = FLEX_H
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          halign = ALIGN_CENTER
+          text = loc("mainmenu/replay/player/cannotSwitch")
+        }
+        transform = {}
+        animations = isOnTheRigthSide ? cannotSwitchHintAnimsRight : cannotSwitchHintAnimsLeft
+      }
+}
+
 function mkPlayer(player, teamColor, halign) {
   let isSelected = Computed(@() selectedPlayerIdx.get() == player.id)
+  let { canBeSwitchedTo = false } = player
   let isOnTheRigthSide = halign == ALIGN_RIGHT
   let nameColor = player?.isInHeroSquad
       ? mySquadLightColor
@@ -702,6 +768,7 @@ function mkPlayer(player, teamColor, halign) {
   ]
 
   return {
+    key = player.id
     size = const [FLEX, rowHeight]
     children = [
       @() {
@@ -711,7 +778,7 @@ function mkPlayer(player, teamColor, halign) {
         image = simpleHorGradInv
         color = selectColor
         opacity = isSelected.get() ? 0.9 : 0
-        transform = isOnTheRigthSide ? { rotate = 180 } : null
+        transform = isOnTheRigthSide ? const { rotate = 180 } : null
         transitions = opacityTransition
       }
       {
@@ -720,16 +787,24 @@ function mkPlayer(player, teamColor, halign) {
         flow = FLOW_HORIZONTAL
         behavior = Behaviors.Button
         sound = { click = "click" }
+        opacity = canBeSwitchedTo ? 1.0 : 0.5
         padding = halign == ALIGN_RIGHT ? [hdpx(2), 0, hdpx(2), hdpx(4)] : [hdpx(2), hdpx(4), hdpx(2), 0]
         function onClick() {
+          if (!canBeSwitchedTo) {
+            cannotSwitchHintPlayerId.set(player.id)
+            resetTimeout(TIME_TO_SHOW_CANNOT_SWITCH_HINT, hideCannotSwitchHint)
+            return
+          }
           if (isFreeCameraOptActive.get())
             resetFreeCamera()
           switchSpectatorTargetById(player.id)
+          selectedPlayerIdx.set(getSpectatorTargetId())
         }
         gap = hdpx(4)
         halign
         children = isOnTheRigthSide ? children.reverse() : children
       }
+      canBeSwitchedTo ? null : mkCannotSwitchHint(player.id, isOnTheRigthSide)
     ]
   }
 }
@@ -743,19 +818,20 @@ let mkTeamColumn = @(team, teamColor, align) {
 }
 
 let centerPanel = @() {
-  watch = [isPlayersListOptActive, replayMplayersListSorted, serverConfigs]
+  watch = [isPlayersListOptActive, replayMplayersListSorted]
   size = FLEX_H
   flow = FLOW_HORIZONTAL
   padding = [0, saBorders[0]]
   children = !isPlayersListOptActive.get() ? null
     : [
         mkTeamColumn(replayMplayersListSorted.get().alliesTeam, teamBlueLightColor, ALIGN_LEFT)
-        { size = FLEX }
+        const { size = FLEX }
         mkTeamColumn(replayMplayersListSorted.get().enemiesTeam, teamRedLightColor, ALIGN_RIGHT)
       ]
 }
 
 let keyBP ={}
+let bottomPanelTransitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
 let bottomPanel = @() {
   watch = isPlayerOptionsOpen
   key = keyBP
@@ -801,7 +877,7 @@ let bottomPanel = @() {
     ]
   }
   transform = { translate = [0, isPlayerOptionsOpen.get() ? 0 : hdpx(800)] }
-  transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+  transitions = bottomPanelTransitions
 }
 
 function onHudTouchRelease(act) {
@@ -810,17 +886,18 @@ function onHudTouchRelease(act) {
     act()
 }
 
+let moveStickBlock = {
+  hplace = ALIGN_LEFT
+  vplace = ALIGN_BOTTOM
+  children = replayMoveStick
+}
 let cameraSticks = @() {
   watch = [isFreeCameraOptActive, isPlayerOptionsOpen, can_use_freecam_in_replay]
   opacity = isPlayerOptionsOpen.get() ? 1 : 0
   size = FLEX
   children = !can_use_freecam_in_replay.get() || !isFreeCameraOptActive.get() ? null
     : [
-        {
-          hplace = ALIGN_LEFT
-          vplace = ALIGN_BOTTOM
-          children = replayMoveStick
-        }
+        moveStickBlock
         {
           size = FLEX_V
           hplace = ALIGN_RIGHT
@@ -877,9 +954,80 @@ function mkReplayHudElem(id, cfg) {
   }.__update(alignToDargPlace(curUnitHudTuning.get()?.transforms[id].align ?? cfg.defTransform.align))
 }
 
+let cameraSpeedIconPos = [shHud(6), 0]
+let hudElemsRow = [
+  {
+    size = saSize
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    children = cfgHudReplay.keys().map(@(id) mkReplayHudElem(id, cfgHudReplay[id]))
+  }
+  {
+    size = saSize
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    children = @() {
+      watch = [isFreeCameraOptActive, isPlayerOptionsOpen, can_use_freecam_in_replay]
+      size = 0
+      pos = cameraSpeedIconPos
+      hplace = ALIGN_LEFT
+      vplace = ALIGN_TOP
+      flow = FLOW_HORIZONTAL
+      gap = vertCamBtnGap
+      children = !can_use_freecam_in_replay.get() || !isFreeCameraOptActive.get() || !isPlayerOptionsOpen.get() ? null
+        : [
+            inertiaSlider
+            {
+              flow = FLOW_VERTICAL
+              children = [
+                {
+                  rendObj = ROBJ_TEXT
+                  color = cellTextColor
+                  text = loc("options/free_camera_inertia")
+                }.__update(fontSmallAccented)
+                @() {
+                  watch = camInertia
+                  children = {
+                    rendObj = ROBJ_TEXT
+                    color = cellTextColor
+                    text = $"{(camInertia.get() / camInertiaMax * 100).tointeger()} %"
+                  }.__update(fontSmallAccented)
+                }
+              ]
+            }
+          ]
+    }
+  }
+]
+
+let hudReplayControlsContent = [
+  {
+    size = 0
+    children = replayCamKeyListeners
+  }
+  cameraSticks
+  @() {
+    watch = [isPlayerOptionsOpen, isHudVisibilityOptActive]
+    size = FLEX
+    children = !isPlayerOptionsOpen.get() && !isHudVisibilityOptActive.get()
+      ? null
+      : hudElemsRow
+  }
+  {
+    size = FLEX
+    flow = FLOW_VERTICAL
+    valign = ALIGN_BOTTOM
+    gap = rowHeight
+    children = [
+      centerPanel
+      bottomPanel
+    ]
+  }
+]
+
 let hudReplayControls = @() {
   key = "replay-controls"
-  watch = [isReplaysManageButtonOn, curUnitHudTuning]
+  watch = isReplaysManageButtonOn
   stopMouse = true
   behavior = TouchScreenStick
   cameraControl = true
@@ -890,73 +1038,7 @@ let hudReplayControls = @() {
   onChange = @(v) stickDelta.set(Point2(v.x, v.y))
   onTouchEnd = @() onHudTouchRelease(@() isPlayerOptionsOpen.set(true))
   children = isReplaysManageButtonOn.get()
-    ? [
-        {
-          size = 0
-          children = replayCamKeyListeners
-        }
-        cameraSticks
-        @() {
-          watch = [isPlayerOptionsOpen, isHudVisibilityOptActive]
-          size = FLEX
-          children = !isPlayerOptionsOpen.get() && !isHudVisibilityOptActive.get()
-            ? null
-            : [
-                {
-                  size = saSize
-                  hplace = ALIGN_CENTER
-                  vplace = ALIGN_CENTER
-                  children = cfgHudReplay.keys().map(@(id) mkReplayHudElem(id, cfgHudReplay[id]))
-                }
-                {
-                  size = saSize
-                  hplace = ALIGN_CENTER
-                  vplace = ALIGN_CENTER
-                  children = @() {
-                    watch = [isFreeCameraOptActive, isPlayerOptionsOpen, can_use_freecam_in_replay]
-                    size = 0
-                    pos = [shHud(6), 0]
-                    hplace = ALIGN_LEFT
-                    vplace = ALIGN_TOP
-                    flow = FLOW_HORIZONTAL
-                    gap = vertCamBtnGap
-                    children = !can_use_freecam_in_replay.get() || !isFreeCameraOptActive.get() || !isPlayerOptionsOpen.get() ? null
-                      : [
-                          inertiaSlider
-                          {
-                            flow = FLOW_VERTICAL
-                            children = [
-                              {
-                                rendObj = ROBJ_TEXT
-                                color = cellTextColor
-                                text = loc("options/free_camera_inertia")
-                              }.__update(fontSmallAccented)
-                              @() {
-                                watch = camInertia
-                                children = {
-                                  rendObj = ROBJ_TEXT
-                                  color = cellTextColor
-                                  text = $"{(camInertia.get() / camInertiaMax * 100).tointeger()} %"
-                                }.__update(fontSmallAccented)
-                              }
-                            ]
-                          }
-                        ]
-                  }
-                }
-              ]
-        }
-        {
-          size = FLEX
-          flow = FLOW_VERTICAL
-          valign = ALIGN_BOTTOM
-          gap = rowHeight
-          children = [
-            centerPanel
-            bottomPanel
-          ]
-        }
-      ]
+    ? hudReplayControlsContent
     : null
 }
 
@@ -975,6 +1057,8 @@ isPlayingReplay.subscribe(function(v) {
 })
 if (isPlayingReplay.get())
   initReplay()
+
+isPlayersListOptActive.subscribe(@(v) v ? updateMplayersList() : hideCannotSwitchHint())
 subscribeHudEvent("WatchedHeroChanged", @(_) selectedPlayerIdx.set(getSpectatorTargetId()))
 
 register_command(@() isReplaysManageButtonOn.set(!isReplaysManageButtonOn.get()), "ui.hideReplaysManageButtons")

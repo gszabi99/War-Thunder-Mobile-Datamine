@@ -27,7 +27,7 @@ const unseenPieceOpenTime = 0.7
 
 let cardsStyle = REWARD_STYLE_SMALL
 let { boxSize, boxGap } = cardsStyle
-let leftBlockWidth = hdpx(500)
+const leftBlockWidth = hdpx(500)
 let progressWidth = 2 * boxSize + boxGap
 
 
@@ -38,9 +38,10 @@ let mkPuzzleLock = @(size, styleId, ovr) {
   size
   padding = pieceHalfGap
   children = mkPuzzlePiece(size.map(@(v) v - 2 * pieceHalfGap), styleId)
-}.__update(ovr)
+  ...ovr
+}
 
-let mkPuzzlePaginator = @() mkPaginatorCurPage(openedPuzzleId,
+let puzzlePaginator = mkPaginatorCurPage(openedPuzzleId,
   Computed(@() (curCollectionCfg.get()?.puzzles.len() ?? 0) - 1), { gap = hdpx(60) })
 
 let mkUnseenPieceAnim = @(onFinish) [
@@ -108,7 +109,7 @@ function puzzleMap() {
         children = puzzleImage
       }
       { size = hdpx(paginatorOffsetY) }
-      mkPuzzlePaginator()
+      puzzlePaginator
     ]
   }
 }
@@ -142,9 +143,10 @@ let wndHeader = headerGradientBg([
   @() {
     watch = [curCollectionId, openedPuzzleId]
     rendObj = ROBJ_TEXT
-    text = curCollectionId.get() == null ? ""
+    text = curCollectionId.get() == null || openedPuzzleId.get() == null ? ""
       : getCollectionPresentation(curCollectionId.get()).getPuzzleName(openedPuzzleId.get())
-  }.__update(fontBigShaded)
+    ...fontBigShaded
+  }
 ])
 
 function rewardBlock() {
@@ -164,7 +166,8 @@ function rewardBlock() {
       {
         rendObj = ROBJ_TEXT
         text = loc("collection/puzzlePrize")
-      }.__update(fontSmallShaded)
+        ...fontSmallShaded
+      }
       {
         flow = FLOW_HORIZONTAL
         gap = boxGap
@@ -186,7 +189,7 @@ function rewardBlock() {
 }
 
 let descriptionBlock = {
-  size = [leftBlockWidth, FLEX]
+  size = const [leftBlockWidth, FLEX]
   children = {
     pos = [-saBordersRv[1], 0]
     rendObj = ROBJ_IMAGE
@@ -196,12 +199,13 @@ let descriptionBlock = {
     padding = [headerGradientPaddingY, hdpx(200), headerGradientPaddingY, saBordersRv[1]]
     children = @() {
       watch = [curCollectionId, openedPuzzleId]
-      size = [leftBlockWidth, SIZE_TO_CONTENT]
+      size = const [leftBlockWidth, SIZE_TO_CONTENT]
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       text = curCollectionId.get() == null ? ""
         : getCollectionPresentation(curCollectionId.get()).getPuzzleDesc(openedPuzzleId.get())
-    }.__update(fontTinyShaded)
+      ...fontTinyShaded
+    }
   }
 }
 
@@ -215,7 +219,7 @@ function leftBlock() {
   let isPuzzleCompleted = piecesMask != 0 && (piecesMask & (puzzlePiecesMasks?[pId] ?? 0)) == piecesMask
   return {
     watch = [curCollectionId, openedPuzzleId, curCollectionCfg, curCollection]
-    size = [leftBlockWidth, FLEX]
+    size = const [leftBlockWidth, FLEX]
     flow = FLOW_VERTICAL
     gap = headerMargin
     children = [

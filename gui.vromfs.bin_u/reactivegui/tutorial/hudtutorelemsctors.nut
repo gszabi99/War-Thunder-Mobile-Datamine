@@ -182,7 +182,7 @@ let air_tutorial_forestall_crosshair_gif = @(_) {
 }
 
 let fakeCrosshairElem = @(penetration) {
-  size = [crosshairSimpleSize, crosshairSimpleSize]
+  size = crosshairSimpleSize
   children = [
     {
       rendObj = ROBJ_SOLID

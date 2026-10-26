@@ -128,6 +128,12 @@ function mkTargetSelectionData(endTime, cooldown, textSize) {
   }
 }
 
+let nameOpacityAnimations = [
+  {
+    prop = AnimProp.opacity, from = 0.0, to = 1.0, play = true,
+    duration = 0.6, trigger = nameTrigger
+  }
+]
 let targetName = @() {
   watch = targetUnitName
   pos = targetOffset
@@ -135,12 +141,7 @@ let targetName = @() {
   color
   opacity = 1.0
   text = targetUnitName.get()
-  animations = [
-    {
-      prop = AnimProp.opacity, from = 0.0, to = 1.0, play = true,
-      duration = 0.6, trigger = nameTrigger
-    }
-  ]
+  animations = nameOpacityAnimations
 }.__update(fontTiny)
 
 let targetSelectionProgress = @() {
@@ -189,7 +190,7 @@ function mkAsmCaptureData(endTime, cooldown) {
   let cdLeft = (endTime - get_mission_time())
   return {
     size = [cornerSize[0] * 2, cornerSize[1] * 2]
-    transform = { pivot = [0.5, 0.5] }
+    transform = { pivot = 0.5 }
     children = [
       mkItem("rightTop", ALIGN_RIGHT, ALIGN_TOP, [travel, -travel], cdLeft,
         [ [VECTOR_LINE, 0, 50, 50, 50], [VECTOR_LINE, 50, 50, 50, 100] ])
@@ -221,9 +222,7 @@ let asmCaptureProgress = @() {
   offsetY = 10
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  children = [
-    mkAsmCaptureData(asmCaptureEndTime.get(), asmCaptureTime.get())
-  ]
+  children = mkAsmCaptureData(asmCaptureEndTime.get(), asmCaptureTime.get())
 }
 
 return {

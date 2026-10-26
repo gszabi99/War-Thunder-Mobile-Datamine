@@ -1,5 +1,4 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%sqstd/platform.nut" import is_ios
 from "app" import exitGame
 from "auth_wt" import resetLoginPass, signOut
 from "eventbus" import eventbus_subscribe, eventbus_send
@@ -20,9 +19,7 @@ from "autoLogin.nut" import isAutologinUsed, setAutologinEnabled, isAutologinEna
 
 let openUrl = @(baseUrl) eventbus_send("openUrl", { baseUrl })
 
-
-let { logoutFB } = require_optional("mobile.facebook")
-  ?? (is_ios ? require("ios.account.facebook") : require("android.account.fb"))
+let { logoutFB } = require("mobile.facebook")
 
 
 const DELETE_ACCOUNT_URL = "auto_local auto_login https://store.gaijin.net/login.php?return_enc=L3Byb2ZpbGUucGhwP3Byb2ZpbGVTZXR0aW5ncz1wcm9maWxlLXNldHRpbmdzX2RlbGV0ZSZ2aWV3PXNldHRpbmdz"

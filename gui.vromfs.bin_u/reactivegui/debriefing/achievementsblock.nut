@@ -3,6 +3,7 @@ from "%appGlobals/currenciesState.nut" import WP
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp
 from "%rGui/components/currencyStyles.nut" import CS_SMALL
 from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
 from "%rGui/unlocks/streakPkg.nut" import mkStreakIcon, mkStreakWithMultiplier, prepareStreaksArray, getUnlockLocText,
   getUnlockDescLocText
@@ -58,40 +59,42 @@ function mkInfoButton(val) {
   let { id, wp = 0, completed = 1 } = val
   let stateFlags = Watched(0)
   let key = {}
+  let streakChildren = mkStreakWithMultiplier(id, completed, itemSize, val?.stage)
+  let detachTooltip = tooltipDetach(stateFlags)
+  let hoverTooltip = withTooltip(stateFlags, key, @() {
+    content = {
+      flow = FLOW_VERTICAL
+      sound = { attach = "click" }
+      gap
+      halign = ALIGN_CENTER
+      valign =  ALIGN_CENTER
+      children = [
+        {
+          flow = FLOW_HORIZONTAL
+          valign = ALIGN_CENTER
+          halign = ALIGN_CENTER
+          gap
+          children = [
+            mkStreakIcon(id, itemSize, val?.stage)
+            mkText(getUnlockLocText(id, val?.stage ?? completed))
+          ]
+        }
+        mkTextArea(getUnlockDescLocText(id, val?.stage ?? completed))
+        mkCurrencyComp(wp, WP, CS_SMALL).__update({hplace = ALIGN_CENTER})
+      ]
+    }
+    flow = FLOW_HORIZONTAL
+  })
 
   return @() {
     watch = stateFlags
     key
     behavior = Behaviors.Button
     size = const [itemSize, itemSize]
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
-    children = mkStreakWithMultiplier(id, completed, itemSize, val?.stage)
-    onDetach = tooltipDetach(stateFlags)
-    onElemState = withTooltip(stateFlags, key, @() {
-      content = {
-        flow = FLOW_VERTICAL
-        sound = { attach = "click" }
-        gap
-        halign = ALIGN_CENTER
-        valign =  ALIGN_CENTER
-        children = [
-          {
-            flow = FLOW_HORIZONTAL
-            valign = ALIGN_CENTER
-            halign = ALIGN_CENTER
-            gap
-            children = [
-              mkStreakIcon(id, itemSize, val?.stage)
-              mkText(getUnlockLocText(id, val?.stage ?? completed))
-            ]
-          }
-          mkTextArea(getUnlockDescLocText(id, val?.stage ?? completed))
-          mkCurrencyComp(wp, WP, CS_SMALL).__update({hplace = ALIGN_CENTER})
-        ]
-      }
-      flow = FLOW_HORIZONTAL
-    })
+    children = streakChildren
+    onDetach = detachTooltip
+    onElemState = hoverTooltip
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
   }
 }
 

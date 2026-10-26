@@ -108,6 +108,7 @@ function textInput(text_state, options = {}) {
 
   let stateFlags = Watched(0)
   let errorCount = Watched(0)
+  let failAnimations = [failAnim(text_state)]
 
   function onBlurExt() {
     if (!isValidResult(text_state.get()))
@@ -159,7 +160,7 @@ function textInput(text_state, options = {}) {
     group
     valign = ALIGN_CENTER
 
-    animations = [failAnim(text_state)]
+    animations = failAnimations
 
     text = text_state.get()
     title
@@ -199,7 +200,7 @@ function textInput(text_state, options = {}) {
     borderRadius = hdpx(3)
     clipChildren = true
     group
-    animations = [failAnim(text_state)]
+    animations = failAnimations
     valign = ALIGN_CENTER
 
     children = mkEditContent?(stateFlags.get(), inputObj) ?? inputObj

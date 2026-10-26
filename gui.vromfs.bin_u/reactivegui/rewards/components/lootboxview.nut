@@ -31,7 +31,7 @@ function getLootboxPicture(id, season = null, size = null) {
 function mkLootboxImage(id, size, scale = 1, ovr = {}) {
   let scaledSize = (size * scale).tointeger()
   return {
-    size = [scaledSize, scaledSize]
+    size = scaledSize
     rendObj = ROBJ_IMAGE
     image = getLootboxPicture(id, null, scaledSize)
     fallbackImage = lootboxFallbackPicture

@@ -10,7 +10,7 @@ from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/unitTags.nut" import getUnitTagsCfg
 from "%rGui/unit/hangarUnit.nut" import hangarUnitName, hangarUnit
 from "%rGui/unit/unitSettings.nut" import mkWeaponPreset, getWeaponPreset, mkChosenBelts, getChosenBelts, mkSeenMods
-from "%rGui/unitDetails/unitDetailsState.nut" import baseUnit
+from "%rGui/unitDetails/unitDetailsState.nut" import baseUnit, isUnitModSlotsAttached
 from "%rGui/unitMods/equippedSecondaryWeapons.nut" import getEquippedWeapon, getEqippedWithoutOverload,
   hasConflictWeapons
 from "%rGui/unitMods/unitModsState.nut" import mkUnitModCostCfg, hasEnoughCurrencies
@@ -26,14 +26,13 @@ let seenIndexedSlotMods = mkWatched(persist, "seenIndexedSlotMods", {})
 let openedUnitId = mkWatched(persist, "openedUnitId", null)
 let needSetSlotOnOpen = mkWatched(persist, "needSetSlotOnOpen", true)
 let unitModSlotsOpenCount = Watched(openedUnitId.get() == null ? 0 : 1)
-let isUnitModSlotsAttached = mkWatched(persist, "isUnitModSlotsAttached", false)
 let curSlotIdx = mkWatched(persist, "curSlotIdx", DEFAULT_SLOT_IDX)
 let curBeltsWeaponIdx = mkWatched(persist, "curBeltsWeaponIdx", -1)
 let curWeaponIdx = mkWatched(persist, "curWeaponIdx", 0)
 let curBeltIdx = mkWatched(persist, "curBeltIdx", 0)
 
-let slotBeltKey = @(idx) $"unit_mods_slot_belt_{idx}"
-let slotWeaponKey = @(idx) $"unit_mods_slot_weapon_{idx}"
+let slotBeltKey = @[pure, nodiscard](idx) $"unit_mods_slot_belt_{idx}"
+let slotWeaponKey = @[pure, nodiscard](idx) $"unit_mods_slot_weapon_{idx}"
 
 let curUnit = Computed(@() baseUnit.get() && baseUnit.get().name == openedUnitId.get() ? baseUnit.get()
   : campMyUnits.get()?[openedUnitId.get()]
@@ -66,7 +65,7 @@ function openUnitModsSlotsWnd() {
   openUnitId(baseUnit.get()?.name ?? hangarUnitName.get())
 }
 
-function isBeltWeapon(weapon) {
+function [pure, nodiscard] isBeltWeapon(weapon) {
   let { trigger, turrets } = weapon
   return turrets > 0 || trigger == "machine gun" || trigger == "cannon" || trigger == "additional gun"
 }
@@ -269,7 +268,7 @@ function setDefaultSecondaryWeapon() {
 
 let { chosenBelts, setChosenBelts } = mkChosenBelts(openedUnitId)
 
-function getEquippedBelt(chosenBeltsV, weaponId, beltsList, unitMods = null) {
+function [pure, nodiscard] getEquippedBelt(chosenBeltsV, weaponId, beltsList, unitMods = null) {
   let id = chosenBeltsV?[weaponId] ?? ""
   local res = beltsList?[id]
   let { reqModification = "" } = res

@@ -86,39 +86,42 @@ function calcSlotsCount(r, prevValue) {
   return groupSize > 1 ? 2 : 1
 }
 
-let reward = @(r, prevValue) function() {
+function reward(r, prevValue) {
   let slotsCount = calcSlotsCount(r, prevValue)
+  let receivedMark = mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
 
-  let viewInfo = getRewardsViewInfo(r.rewards)?[0].__update({slots = slotsCount})
-  if (viewInfo == null)
-    return null
-  return {
-    watch = subCalendarValue
-    flow = FLOW_VERTICAL
-    children = [
-      {
-        size = const [flex(), SIZE_TO_CONTENT]
-        rendObj = ROBJ_SOLID
-        color = 0x80000000
-        halign = ALIGN_CENTER
-        children = {
+  return function() {
+    let viewInfo = getRewardsViewInfo(r.rewards)?[0].__update({slots = slotsCount})
+    if (viewInfo == null)
+      return null
+    return {
+      watch = subCalendarValue
+      flow = FLOW_VERTICAL
+      children = [
+        {
           size = const [flex(), SIZE_TO_CONTENT]
-          rendObj = ROBJ_TEXT
+          rendObj = ROBJ_SOLID
+          color = 0x80000000
           halign = ALIGN_CENTER
-          text = loc("enumerated_day", { number = r.value })
-        }.__update(fontTinyAccented)
-      }
-      progressBar(r, prevValue)
-      {
-        children = [
-          mkRewardPlate(viewInfo, REWARD_STYLE_MEDIUM)
-          
-          r.value <= subCalendarValue.get()
-            ? mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
-            : null
-        ]
-      }
-    ]
+          children = {
+            size = const [flex(), SIZE_TO_CONTENT]
+            rendObj = ROBJ_TEXT
+            halign = ALIGN_CENTER
+            text = loc("enumerated_day", { number = r.value })
+          }.__update(fontTinyAccented)
+        }
+        progressBar(r, prevValue)
+        {
+          children = [
+            mkRewardPlate(viewInfo, REWARD_STYLE_MEDIUM)
+            
+            r.value <= subCalendarValue.get()
+              ? receivedMark
+              : null
+          ]
+        }
+      ]
+    }
   }
 }
 

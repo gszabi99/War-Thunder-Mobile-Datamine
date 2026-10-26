@@ -7,6 +7,7 @@ from "%rGui/components/spinner.nut" import spinner
 from "%rGui/components/textButton.nut" import textButtonPurchase
 from "%rGui/shop/goodsView/sharedParts.nut" import mkDiscountCorner, pricePlateH, mkBgParticles, mkSlotBgImg
 from "%rGui/style/gradients.nut" import mkFontGradient
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import selectColor, textColor
 
 
@@ -101,30 +102,34 @@ function generateDataDiscount(discountConfig, levelsToMax, isForSlot = false) {
   return res
 }
 
-let mkLevelPrice = @(fullCostGold, costGold, costMul, isInProgress, hasFreeLevelToBuy) @() {
-  watch = [isInProgress, balanceGold, hasFreeLevelToBuy]
-  size = const [FLEX, pricePlateH]
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  children = isInProgress.get() != null ? spinner
-    : hasFreeLevelToBuy.get()
-      ? [
-          textButtonPurchase(null, @() null, { ovr = { size = FLEX, minWidth = 0, behavior = null } })
-          {
-            rendObj = ROBJ_TEXT
-            color = 0xFFFFFFFF
-            text = utf8ToUpper(loc("shop/free"))
-          }.__update(fontSmall)
+function mkLevelPrice(fullCostGold, costGold, costMul, isInProgress, hasFreeLevelToBuy) {
+  let buyBtn = textButtonPurchase(null, @() null, const { ovr = { size = FLEX, minWidth = 0, behavior = null } })
+  let discountCorner = mkDiscountCorner(((1.0 - costMul) * 100 + 0.5).tointeger())
+  return @() {
+    watch = [isInProgress, balanceGold, hasFreeLevelToBuy]
+    size = const [FLEX, pricePlateH]
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    children = isInProgress.get() != null ? spinner
+      : hasFreeLevelToBuy.get()
+        ? [
+            buyBtn
+            {
+              rendObj = ROBJ_TEXT
+              color = 0xFFFFFFFF
+              text = utf8ToUpper(loc("shop/free"))
+            }.__update(fontSmall)
+          ]
+      : [
+          buyBtn
+          mkDiscountPriceComp(fullCostGold, costGold, "gold",
+            balanceGold.get() >= costGold ? CS_COMMON : CS_NO_BALANCE)
+          discountCorner
         ]
-    : [
-        textButtonPurchase(null, @() null, { ovr = { size = FLEX, minWidth = 0, behavior = null } })
-        mkDiscountPriceComp(fullCostGold, costGold, "gold",
-          balanceGold.get() >= costGold ? CS_COMMON : CS_NO_BALANCE)
-        mkDiscountCorner(((1.0 - costMul) * 100 + 0.5).tointeger())
-      ]
+  }
 }
 
-function countLevelBlock(levelsCfg, level, levels, exp) {
+function [pure, nodiscard] countLevelBlock(levelsCfg, level, levels, exp) {
   local fullCostGold = 0
   local nextLevelExp = 0
   if ("upToLevel" not in levelsCfg?[0]) { 
@@ -166,7 +171,9 @@ function countLevelBlock(levelsCfg, level, levels, exp) {
   }
 }
 
-function mkLevelBlock(value, costMul, levelParams, isInProgress, handleClick, gradColor = selectColor, hasFreeLevelToBuy = Watched(false), ovr = {}) {
+let noFreeLevelToBuy = Watched(false)
+
+function mkLevelBlock(value, costMul, levelParams, isInProgress, handleClick, gradColor = selectColor, hasFreeLevelToBuy = noFreeLevelToBuy, ovr = {}) {
   if (!value)
     return null
   let { levels, levelsSp, levelsCfg } = levelParams
@@ -181,30 +188,32 @@ function mkLevelBlock(value, costMul, levelParams, isInProgress, handleClick, gr
   let stateFlags = Watched(0)
   let onClick = @() handleClick(level, level + levels, nextLevelExp, costGold, sp)
   let bgParticles = mkBgParticles(blockSize)
+  let children = [
+    {
+      size = FLEX
+      children = bgParticles
+    }
+    mkLevelInfo(levels, sp, gradColor)
+    mkLevelPrice(fullCostGold, costGold, costMul, isInProgress, hasFreeLevelToBuy)
+  ]
   return @() {
     watch = stateFlags
     size = [blockSize[0], SIZE_TO_CONTENT]
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
     onClick
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     flow = FLOW_VERTICAL
     gap = -hdpx(2)
-    children = [
-      {
-        size = FLEX
-        children = bgParticles
-      }
-      mkLevelInfo(levels, sp, gradColor)
-      mkLevelPrice(fullCostGold, costGold, costMul, isInProgress, hasFreeLevelToBuy)
-    ]
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.98, 0.98] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
-  }.__update(ovr)
+    children,
+    ...mkPressTransitionScale(stateFlags.get(), 0.98)
+    ...ovr
+  }
 }
 
 return {
   countLevelBlock
   generateDataDiscount
   mkLevelBlock
+  noFreeLevelToBuy
 }

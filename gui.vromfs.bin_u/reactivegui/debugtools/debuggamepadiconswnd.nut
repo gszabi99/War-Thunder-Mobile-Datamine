@@ -36,11 +36,11 @@ function mkRow(size, presetId, preset) {
   let icons = viewOrder.map(function(id) {
     let imgSize = ((heightMuls?[id] ?? defHeightMul) * size + 0.5).tointeger()
     return {
-      size = [size, size]
+      size = size
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = {
-        size = [imgSize, imgSize]
+        size = imgSize
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#{preset?[id] ?? ""}.svg:{imgSize}:{imgSize}:P")
         keepAspect = true

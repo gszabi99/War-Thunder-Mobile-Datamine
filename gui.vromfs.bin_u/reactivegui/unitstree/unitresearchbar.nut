@@ -2,6 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/pServer/profile.nut" import campMyUnits
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%rGui/rewards/rewardViewInfo.nut" import getBlueprintBarColor
+from "%rGui/style/stdColors.nut" import blueprintBarColor
 from "%rGui/unit/components/unitPlateComp.nut" import unitPlateTiny
 from "%rGui/unitsTree/components/unitPlateAnimations.nut" import progressbarAnimDuration, progressbarAnimDurationShort
 
@@ -9,9 +11,8 @@ from "%rGui/unitsTree/components/unitPlateAnimations.nut" import progressbarAnim
 const plateBarHeight = hdpx(10)
 const bgColor = 0x80000000
 const expColor = 0xFFE86C00
-const blueprintBarColor = 0xFF3384C4
 
-let mkAnimatedBar = @(completion, color, isShaded = false, duration = 0.5, durationShort = 0.2) [
+let mkAnimatedBar = @[pure, nodiscard](completion, color, isShaded = false, duration = 0.5, durationShort = 0.2) [
   {
     rendObj = ROBJ_SOLID
     size = FLEX
@@ -19,7 +20,7 @@ let mkAnimatedBar = @(completion, color, isShaded = false, duration = 0.5, durat
     brightness = isShaded ? 0.4 : 2.0
     transform = {
       scale = [completion, 1.0]
-      pivot = [0, 0]
+      pivot = 0
     }
     transitions = [{ prop = AnimProp.scale, duration = durationShort , easing = InOutQuad }]
   }
@@ -30,7 +31,7 @@ let mkAnimatedBar = @(completion, color, isShaded = false, duration = 0.5, durat
     brightness = isShaded ? 0.4 : 1.0
     transform = {
       scale = [completion, 1.0]
-      pivot = [0, 0]
+      pivot = 0
     }
     transitions = [{ prop = AnimProp.scale, duration, easing = InOutQuad }]
   }
@@ -61,17 +62,18 @@ function mkPlateBlueprintBar(unit, ovr = {}) {
       vplace = ALIGN_BOTTOM
       pos = const [0, plateBarHeight]
       color = bgColor
-      children = mkAnimatedBar(max(0.01, curBluebrintsCount.get().tofloat() / reqBluebrintsCount.get()), blueprintBarColor, false)
+      children = mkAnimatedBar(max(0.01, curBluebrintsCount.get().tofloat() / reqBluebrintsCount.get()),
+        getBlueprintBarColor(unit.name, serverConfigs.get()), false)
     }.__update(ovr)
 }
 
-function mkPlateExpBarAnimSlot(animExpPart, isBlueprintUnit, ovr = {}) {
+function mkPlateExpBarAnimSlot(animExpPart, isBlueprintUnit, blueprintColor = blueprintBarColor, ovr = {}) {
   return {
     rendObj = ROBJ_SOLID
     size = [unitPlateTiny[0], plateBarHeight]
     valign = ALIGN_BOTTOM
     color = bgColor
-    children = mkAnimatedBar(max(0.01, animExpPart), isBlueprintUnit ? blueprintBarColor : expColor,
+    children = mkAnimatedBar(max(0.01, animExpPart), isBlueprintUnit ? blueprintColor : expColor,
       false, progressbarAnimDuration, progressbarAnimDurationShort)
   }.__update(ovr)
 }
@@ -82,5 +84,4 @@ return {
   mkPlateExpBar
   mkPlateBlueprintBar
   mkPlateExpBarAnimSlot
-  plateBarHeight
 }

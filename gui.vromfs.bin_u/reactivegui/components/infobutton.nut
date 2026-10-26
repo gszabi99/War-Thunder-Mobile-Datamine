@@ -32,7 +32,7 @@ let mkInfoButtonCtor = @(btnStyle) function(onClick, ovr = {}, textOvr = fontSma
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
     xmbNode = {}
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     onClick
     brightness = stateFlags.get() & S_HOVER ? 0.5 : 1
     children = {
@@ -51,16 +51,29 @@ let mkInfoButtonCtor = @(btnStyle) function(onClick, ovr = {}, textOvr = fontSma
           iText.__merge(textOvr)
         ]
       }
-    }.__update(defBorderGradient)
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
-  }.__update(ovr)
+      ...defBorderGradient
+    }
+    ...mkPressTransitionScale(stateFlags.get())
+    ...ovr
+  }
 }
 
 let mkInfoEllipseButtonCtor = @(borderImage, bgImage) function(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSizeMedium
   let ht = size?[1] ?? size
   let stateFlags = Watched(0)
+  let children = [
+    {
+      size = ht - 2 * borderWidth
+      rendObj = ROBJ_BOX
+      borderColor = 0
+      fillColor = 0xFFFFFFFF
+      borderWidth = 0
+      borderRadius = ht / 2 - borderWidth
+      image = bgImage
+    }
+    iText.__merge(textOvr)
+  ]
   return @() {
     watch = stateFlags
     size
@@ -75,25 +88,14 @@ let mkInfoEllipseButtonCtor = @(borderImage, bgImage) function(onClick, ovr = {}
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
     onClick
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
 
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    children = [
-      {
-        size = ht - 2 * borderWidth
-        rendObj = ROBJ_BOX
-        borderColor = 0
-        fillColor = 0xFFFFFFFF
-        borderWidth = 0
-        borderRadius = ht / 2 - borderWidth
-        image = bgImage
-      }
-      iText.__merge(textOvr)
-    ]
-  }.__update(
-    mkPressTransitionScale(stateFlags.get())
-    ovr)
+    children,
+    ...mkPressTransitionScale(stateFlags.get())
+    ...ovr
+  }
 }
 
 let infoCommonButton = mkInfoButtonCtor({
@@ -105,6 +107,7 @@ let infoEllipseButton = mkInfoEllipseButtonCtor(btnBorderGradient, btnCommonBgGr
 function infoGreyButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let size = ovr?.size ?? defSize
   let stateFlags = Watched(0)
+  let children = iText.__merge(textOvr)
   return @() {
     watch = stateFlags
     size
@@ -113,25 +116,24 @@ function infoGreyButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
     onElemState = @(sf) stateFlags.set(sf)
     onClick
     color = 0x28262626
-    children = iText.__merge(textOvr)
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.3, easing = Linear }]
-  }.__update(ovr)
+    children,
+    ...mkPressTransitionScale(stateFlags.get(), 0.8)
+    ...ovr
+  }
 }
 
 function infoRhombButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
   let stateFlags = Watched(0)
   let size = ovr?.size ?? defSizeSmall
+  let infoText = iText.__merge(textOvr)
 
   return @() {
     watch = stateFlags
     size
     behavior = Behaviors.Button
     onClick
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     onElemState = @(sf) stateFlags.set(sf)
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     children = [
       {
         size = FLEX
@@ -139,44 +141,47 @@ function infoRhombButton(onClick, ovr = {}, textOvr = fontSmallAccented) {
         fillColor = 0x70000000
         borderWidth = hdpx(1)
         borderColor = stateFlags.get() & S_ACTIVE ? hoverColor : 0xFFFFFFFF
-        transform = { rotate = 45 }
+        transform = const { rotate = 45 }
       }
-      iText.__merge(textOvr)
+      infoText
     ]
-  }.__update(ovr)
+    ...mkPressTransitionScale(stateFlags.get())
+    ...ovr
+  }
 }
 
 function infoTooltipButton(contentCtor, tooltipOvr = {}, ovr = {}) {
   let stateFlags = Watched(0)
   let key = {}
+  let onElemState = withTooltip(stateFlags, key, @() {
+    content = contentCtor(),
+    flow = FLOW_HORIZONTAL
+  }.__update(tooltipOvr))
+  let onDetach = tooltipDetach(stateFlags)
   return @() {
     key
     watch = stateFlags
     behavior = Behaviors.Button
     xmbNode = {}
-    onElemState = withTooltip(stateFlags, key, @() {
-        content = contentCtor(),
-        flow = FLOW_HORIZONTAL
-      }.__update(tooltipOvr))
-    onDetach = tooltipDetach(stateFlags)
+    onElemState
+    onDetach
     fillColor = 0
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     rendObj = ROBJ_VECTOR_CANVAS
     size = defTooltipSize
     lineWidth = hdpx(2)
-    commands = [
+    commands = const [
       [VECTOR_ELLIPSE, 50, 50, 50, 50],
     ]
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    children = [
-      {
-        rendObj = ROBJ_TEXT
-        text = "?"
-        halign = ALIGN_CENTER
-      }.__update(fontTinyAccented)
-    ]
-  }.__update(ovr)
+    children = {
+      rendObj = ROBJ_TEXT
+      text = "?"
+      halign = ALIGN_CENTER
+    }.__update(fontTinyAccented)
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
+    ...ovr
+  }
 }
 
 return {

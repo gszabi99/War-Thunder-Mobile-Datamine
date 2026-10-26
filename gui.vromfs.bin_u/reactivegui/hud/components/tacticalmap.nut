@@ -37,19 +37,20 @@ function mkTacticalMapForHud(scale) {
   let stateFlags = Watched(0)
   let size = scaleArr(tacticalMapSize, scale)
   const shortcutId = "ID_TACTICAL_MAP"
+  let hotkeys = mkGamepadHotkey(shortcutId)
   let openMapBtn = @() {
     watch = stateFlags
     size = FLEX
     behavior = Behaviors.Button
     cameraControl = true
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     onElemState = @(sf) stateFlags.set(sf)
     onClick = @() isInMpSession.get() && isVoiceMsgEnabled.get()
       ? isVoiceMsgMapSceneOpened.set(true)
       : isTacticalMapSceneOpened.set(true)
     rendObj = ROBJ_SOLID
     color = stateFlags.get() & S_ACTIVE ? 0x28000000 : 0
-    hotkeys = mkGamepadHotkey(shortcutId)
+    hotkeys
   }
   return mkTacticalMap(size, [ openMapBtn, mkGamepadShortcutImage(shortcutId,
     { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(-52)] },

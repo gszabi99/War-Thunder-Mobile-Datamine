@@ -53,7 +53,8 @@
       "missionProgressType": "CTF",
       "overrideUnit": "germ_leopard_2a4_event;uk_challenger_1_mk_3_gulf_event;us_m1_abrams_event;il_merkava_mk_2d_event;ussr_t_90a_event;jp_type_90_event;cn_ztz_99_w_event",
       "ovrUnitUpgradesPreset": "max",
-      "locName": "missions/_CTC;poland/name;missions/winter",
+      "locName": "poland/name;missions/winter",
+      "locMode": "missions/_CTC",
       "locDesc": "missions/_CTC/desc",
       "scoreLimit": 10000,
       "timeLimit": 10,
@@ -1459,8 +1460,7 @@
             "object_type": "any",
             "target_type": "isMarked",
             "move_type": "teleport",
-            "randomTeleportInRad": 3.5,
-            "MustBeInArea": "battlearea"
+            "randomTeleportInRad": 3.5
           },
           "addTextToUnit": {
             "highlightFromGui": true,
@@ -2556,8 +2556,7 @@
             "object_type": "any",
             "target_type": "isMarked",
             "move_type": "teleport",
-            "randomTeleportInRad": 3.5,
-            "MustBeInArea": "battlearea"
+            "randomTeleportInRad": 3.5
           },
           "addTextToUnit": {
             "highlightFromGui": true,

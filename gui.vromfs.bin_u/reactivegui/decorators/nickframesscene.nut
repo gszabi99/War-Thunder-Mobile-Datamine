@@ -20,7 +20,7 @@ from "%rGui/decorators/mkDecoratorUnlockProgress.nut" import mkDecoratorUnlockPr
 import "%rGui/decorators/purchaseDecorator.nut" as purchaseDecorator
 from "%rGui/options/optionsStyle.nut" import contentWidthFull
 from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import hoverColor
 
 
@@ -79,13 +79,25 @@ function tagBtn(item) {
   let isSelected = Computed(@() selectedFrameName.get() == name)
   let isAvailable = Computed(@() name in availNickFrames.get() || name == "")
   let isUnseen = Computed(@() name in unseenDecorators.get())
+  let onHover = hoverHoldAction("markDecoratorsSeen", name, markDecoratorSeen)
+  let lockIconImage = Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(25)}:{hdpxi(32)}:P")
+  let unseenMarkBlock = {
+    margin = const [hdpx(15), hdpx(20)]
+    children = priorityUnseenMark
+  }
+  let priceBlock = {
+    margin = hdpx(5)
+    hplace = ALIGN_LEFT
+    vplace = ALIGN_BOTTOM
+    children = mkCurrencyComp(price.price, price.currencyId, CS_DECORATORS)
+  }
   return @() {
     watch = stateFlags
     rendObj = ROBJ_SOLID
     color = 0xAA000000
     xmbNode = {}
     behavior = Behaviors.Button
-    sound = { click  = "meta_profile_elements" }
+    sound = const { click  = "meta_profile_elements" }
     onElemState = @(sf) stateFlags.set(sf)
     size = squareSize
     function onClick() {
@@ -96,10 +108,7 @@ function tagBtn(item) {
           && decoratorInProgress.get() != (name != "" ? name : "nickFrame"))
         applySelectedDecorator()
     }
-    onHover = hoverHoldAction("markDecoratorsSeen", name, markDecoratorSeen)
-    transform = {
-      scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
-    }
+    onHover
     children = [
       @() {
         watch = isAvailable
@@ -126,26 +135,19 @@ function tagBtn(item) {
               margin = const [hdpx(10),hdpx(15)]
               rendObj = ROBJ_IMAGE
               color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFAA1111
-              image =  Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(25)}:{hdpxi(32)}:P")
+              image = lockIconImage
             }
           : isChoosen.get() || isSelected.get()
             ? mkSpinnerHideBlock(isDecoratorInProgress,
               isChoosen.get() ? choosenMark : null)
           : isUnseen.get()
-            ? {
-                margin = const [hdpx(15), hdpx(20)]
-                children = priorityUnseenMark
-              }
+            ? unseenMarkBlock
           : null
       }
       price.price <= 0 || isAvailable.get() ? null
-        : {
-            margin = hdpx(5)
-            hplace = ALIGN_LEFT
-            vplace = ALIGN_BOTTOM
-            children = mkCurrencyComp(price.price, price.currencyId, CS_DECORATORS)
-          }
+        : priceBlock
     ]
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 

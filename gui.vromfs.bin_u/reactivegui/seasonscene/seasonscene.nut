@@ -3,6 +3,7 @@ from "wt.behaviors" import HangarCameraControl
 from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
 from "%rGui/battlePass/passPkg.nut" import bottomPanelH, bottomPanelIconSize
 from "%rGui/battlePass/passState.nut" import playerSelectedScene
+from "%rGui/collections/collectionsState.nut" import openCollectionsHelpWnd, curCollectionId
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
 from "%rGui/components/infoButton.nut" import infoEllipseButton
@@ -15,7 +16,9 @@ from "%rGui/navState.nut" import registerScene, setSceneBg
 from "%rGui/news/newsState.nut" import openNewsWndTagged
 import "%rGui/seasonScene/seasonSceneContentCfg.nut" as sceneContentCfg
 from "%rGui/seasonScene/seasonSceneState.nut" import seasonSceneOpenCounter, seasonTabs, seasonTabIdx, seasonPageId,
-  newsTag, PASS_SCENE, openSeasonTab, closeSeasonScene, bgScene, bgUnits, registerSeasonTabClose, SEASON_SCENE_ID
+  newsTag, PASS_OBSOLETE_SCENE, openSeasonTab, closeSeasonScene, bgScene, bgUnits, registerSeasonTabClose,
+  SEASON_SCENE_ID, COLLECTION_TAB
+from "%rGui/squad/squadChatBtn.nut" import squadChatBtn
 from "%rGui/style/gradients.nut" import mkGradientCtorRadial, gradTexSize
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import selectColor
@@ -44,17 +47,16 @@ foreach (tabName, cfg in sceneContentCfg)
     registerSeasonTabClose(tabName, cfg.onTabClose)
 
 seasonSceneOpenCounter.subscribe(function(v) {
-  if (v > 0 && seasonPageId.get() == PASS_SCENE) {
-    let def = sceneContentCfg?[PASS_SCENE].defaultSubId
+  if (v > 0 && seasonPageId.get() == PASS_OBSOLETE_SCENE) {
+    let def = sceneContentCfg?[PASS_OBSOLETE_SCENE].defaultSubId
     if (def != null)
       playerSelectedScene.set(def.get ? def.get() : def)
   }
 })
 
 function mkSeasonTab(tabName, tabConfig, isActive) {
-  let iconRaw = tabConfig?.icon ?? $"season_tab_{tabName}"
-  let icon = iconRaw instanceof Watched ? iconRaw : Watched(iconRaw)
   let isUnseen = tabConfig?.mkHasUnseen(curEvent)
+  let tabHighlightImage = tabHighlight()
   return {
     key = tabConfig?.key
     size = FLEX_V
@@ -70,7 +72,7 @@ function mkSeasonTab(tabName, tabConfig, isActive) {
           watch = isActive
           size = const [hdpx(370), hdpx(120)]
           rendObj = ROBJ_IMAGE
-          image = tabHighlight()
+          image = tabHighlightImage
           color = isActive.get() ? selectColor : 0
         }
       }
@@ -80,15 +82,16 @@ function mkSeasonTab(tabName, tabConfig, isActive) {
         gap = hdpx(10)
         children = [
           @() {
-            watch = icon
+            watch = tabConfig.icon
             size = bottomPanelIconSize
             rendObj = ROBJ_IMAGE
-            image = Picture($"{icon.get()}:{bottomPanelIconSize}:P")
+            image = Picture($"{tabConfig.icon.get()}:{bottomPanelIconSize}:P")
             keepAspect = true
           }
-          {
+          @() {
+            watch = tabConfig.label
             rendObj = ROBJ_TEXT
-            text = loc(tabConfig?.label ?? tabName)
+            text = loc(tabConfig.label.get())
             children = isUnseen == null ? null
               : @() {
                   watch = [isUnseen, isActive]
@@ -122,18 +125,20 @@ let seasonTabsBlock = @() {
   children = addTabGaps(seasonTabs
     .map(@(t, idx) !sceneContentCfg?[t].isVisible.get() ? null
       : mkSeasonTab(t, sceneContentCfg[t], Computed(@() seasonTabIdx.get() == idx)))
-    .filter(@(c) c != null))
+    .filter(@(tab) tab != null))
 }
 
 function headerRightBlock() {
-  let { currencies = null, headerRightCtor = null } = sceneContentCfg?[seasonPageId.get()]
+  let { currencies = null, headerRightCtor = null, hasSquadPanel = null } = sceneContentCfg?[seasonPageId.get()]
+  let needChat = !(hasSquadPanel?.get() ?? false)
   return {
-    watch = [ seasonPageId, currencies ].filter(@(v) v != null)
+    watch = [ seasonPageId, currencies, hasSquadPanel ].filter(@(v) v != null)
     size = FLEX
     halign = ALIGN_RIGHT
     valign = ALIGN_CENTER
     children = headerRightCtor != null ? headerRightCtor()
-      : currencies != null ? mkCurrenciesBtns(currencies.get())
+      : currencies != null ? mkCurrenciesBtns(currencies.get(), const {}, const {}, needChat)
+      : needChat ? squadChatBtn
       : null
   }
 }
@@ -145,7 +150,7 @@ let seasonHeader = headerGradientWithRightBlock(
         closeSeasonScene()
     })
     @() {
-      watch = newsTag
+      watch = [newsTag, seasonPageId, curCollectionId]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       gap = hdpx(40)
@@ -155,12 +160,20 @@ let seasonHeader = headerGradientWithRightBlock(
           rendObj = ROBJ_TEXT
           text = curEventLoc.get()
         }.__update(fontBig)
-        newsTag.get() == null ? null
+        seasonPageId.get() == COLLECTION_TAB
+            && curCollectionId.get() != null ? infoEllipseButton(openCollectionsHelpWnd)
+          : newsTag.get() == null ? null
           : infoEllipseButton(@() openNewsWndTagged(newsTag.get()))
       ]
     }
   ],
   headerRightBlock)
+
+let selectColorBar = {
+  rendObj = ROBJ_SOLID
+  color = selectColor
+  size = const [FLEX, hdpx(8)]
+}
 
 function seasonScene() {
   let tabConfig = sceneContentCfg?[seasonPageId.get()]
@@ -196,11 +209,7 @@ function seasonScene() {
         size = FLEX
         children = content()
       }
-      {
-        rendObj = ROBJ_SOLID
-        color = selectColor
-        size = const [FLEX, hdpx(8)]
-      }
+      selectColorBar
       seasonTabsBlock
     ]
     animations = wndSwitchAnim

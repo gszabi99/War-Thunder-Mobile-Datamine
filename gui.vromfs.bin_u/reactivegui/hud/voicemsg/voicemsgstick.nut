@@ -17,7 +17,7 @@ function stickHeadIcon(scale, isEnabled) {
     : "voice_messages.svg")
   return @() {
     watch = icon
-    size = [size, size]
+    size = size
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
@@ -28,7 +28,7 @@ function stickHeadIcon(scale, isEnabled) {
   }
 }
 
-let { stickControl, stickView } = mkMiniStick({
+let { stickControl, stickView, mkStickView } = mkMiniStick({
   isStickActive = isVoiceMsgStickActive
   stickDelta = voiceMsgStickDelta
   stickHeadChild = stickHeadIcon
@@ -41,5 +41,6 @@ let { stickControl, stickView } = mkMiniStick({
 return {
   voiceMsgStickBlock = stickControl
   voiceMsgStickView = stickView
+  mkVoiceMsgStickView = mkStickView
   isVoiceMsgStickVisibleInBattle = isVoiceMsgAllowedInMission
 }

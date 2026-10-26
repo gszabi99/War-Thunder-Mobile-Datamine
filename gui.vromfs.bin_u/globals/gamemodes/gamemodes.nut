@@ -54,7 +54,7 @@ let gameModeQueueGroups = Computed(function() {
   return res.filter(@(v) v.len() > 1)
 })
 
-let getGameModeQueueGroup = @(mode, gameModeQueueGroupsV)
+let getGameModeQueueGroup = @[pure, nodiscard](mode, gameModeQueueGroupsV)
   gameModeQueueGroupsV?[mode?.economicName] ?? [mode]
 
 return {

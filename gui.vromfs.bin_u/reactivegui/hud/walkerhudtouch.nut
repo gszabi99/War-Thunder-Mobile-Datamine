@@ -98,13 +98,13 @@ let arcadeCrosshairSight = @() tankZoomAutoAimMode.get()
       behavior = Behaviors.RtPropUpdate
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      size = [crosshairSimpleSize, crosshairSimpleSize]
+      size = crosshairSimpleSize
       pos = [-saBorders[0] - crosshairHalfSize, -saBorders[1] - crosshairHalfSize]
       children = [
-        mkCrosshairLine([0, -halfCrosshairLineHeight], [0, hdpx(-30)], { size = sizeAim, hplace = ALIGN_CENTER, vplace = ALIGN_LEFT })
-        mkCrosshairLine([-halfCrosshairLineHeight, 0], [hdpx(-30), 0], {size = sizeAimRv, hplace = ALIGN_LEFT, vplace = ALIGN_CENTER })
-        mkCrosshairLine([0, halfCrosshairLineHeight], [0, hdpx(30)], {size = sizeAim, hplace = ALIGN_CENTER, vplace = ALIGN_BOTTOM })
-        mkCrosshairLine([halfCrosshairLineHeight, 0], [hdpx(30), 0], {size = sizeAimRv, hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER })
+        mkCrosshairLine([0, -halfCrosshairLineHeight], const [0, hdpx(-30)], { size = sizeAim, hplace = ALIGN_CENTER, vplace = ALIGN_LEFT })
+        mkCrosshairLine([-halfCrosshairLineHeight, 0], const [hdpx(-30), 0], {size = sizeAimRv, hplace = ALIGN_LEFT, vplace = ALIGN_CENTER })
+        mkCrosshairLine([0, halfCrosshairLineHeight], const [0, hdpx(30)], {size = sizeAim, hplace = ALIGN_CENTER, vplace = ALIGN_BOTTOM })
+        mkCrosshairLine([halfCrosshairLineHeight, 0], const [hdpx(30), 0], {size = sizeAimRv, hplace = ALIGN_RIGHT, vplace = ALIGN_CENTER })
       ]
       update = currentArmorPiercingFixed.get() ? sightDestinationUpdate : screenPositionUpdate()
     }
@@ -115,12 +115,12 @@ let arcadeCrosshairAim = @() tankZoomAutoAimMode.get()
       watch = [tankCrosshairColor, tankZoomAutoAimMode, currentArmorPiercingFixed]
       behavior = Behaviors.RtPropUpdate
       color = crosshairColor
-      size = [crosshairSimpleSize, crosshairSimpleSize]
+      size = crosshairSimpleSize
       lineWidth = crosshairLineWidth
       rendObj = ROBJ_VECTOR_CANVAS
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
-      commands = [
+      commands = const [
           [VECTOR_FILL_COLOR, 0],
           [VECTOR_ELLIPSE, 50, 50, 40, 40],
         ]
@@ -142,15 +142,17 @@ function mkCircleGunPosition(index) {
   let isVisible = Computed(@() index < crosshairScreenPosition.get().len()
     && crosshairScreenPosition.get()[index][0] > 0
     && crosshairScreenPosition.get()[index][1] > 0)
+  let gunCircle = circle(color, crosshairLineWidth)
+  let posUpdate = screenPositionUpdate(index)
   return @() !isVisible.get()
     ? { watch = isVisible }
     : {
         watch = isVisible
         behavior = Behaviors.RtPropUpdate
         pos = [-saBorders[0] - crosshairHalfSize, -saBorders[1] - crosshairHalfSize]
-        size = [crosshairSimpleSize, crosshairSimpleSize]
-        children = [circle(color, crosshairLineWidth)]
-        update = screenPositionUpdate(index)
+        size = crosshairSimpleSize
+        children = gunCircle
+        update = posUpdate
       }
 }
 
@@ -194,7 +196,7 @@ let mkReadyPart = @(progress) {
 
 let gunReadyIndicator = @() {
   watch = shootReadyness
-  size = [crosshairReadySize, crosshairReadySize]
+  size = crosshairReadySize
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   children = mkReadyPart(shootReadyness.get())

@@ -248,6 +248,8 @@ let forwardArrow = @(verSize) mkEngineBtn(false, "ID_TRANS_GEAR_UP", verSize,
 
 return function(scale) {
   let verSize = scaleArr(arrowsVerSize, scale)
+  let stopBtn = mkStopBtn(mkStopParams(verSize))
+  let backwardBtn = backwardArrow(verSize)
   return {
     vplace = ALIGN_BOTTOM
     hplace = ALIGN_LEFT
@@ -263,7 +265,7 @@ return function(scale) {
           forwardArrow(verSize)
           @() {
             watch = isStopButtonVisible
-            children = isStopButtonVisible.get() ? mkStopBtn(mkStopParams(verSize)) : backwardArrow(verSize)
+            children = isStopButtonVisible.get() ? stopBtn : backwardBtn
           }
         ]
       }

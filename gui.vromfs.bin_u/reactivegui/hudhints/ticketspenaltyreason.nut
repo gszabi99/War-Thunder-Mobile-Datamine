@@ -166,7 +166,7 @@ let mkTransition = @(uid, children, offset, zOrder, isLeft) {
   children = {
     size = const [penaltyReasonW, penaltyReasonH]
     children
-    transform = { translate = [0, 0] }
+    transform = { translate = 0 }
     animations = [
       { prop = AnimProp.opacity, duration = animDuration, easing = OutQuad, from = 0, to = 1, play = true }
       { prop = AnimProp.translate, duration = animDuration, easing = InQuad, from = [isLeft ? -penaltyReasonW : penaltyReasonW, 0], play = true }

@@ -50,7 +50,12 @@ function initHudOptionsOnce() {
   isInited = true
 }
 
-isInBattle.subscribe(@(_) isInited = false)
+isInBattle.subscribe(function(v) {
+  if (!v)
+    isInited = false
+})
+if (isInBattle.get())
+  initHudOptionsOnce()
 
 function startHud(...) {
   updateClientStates()
@@ -60,7 +65,6 @@ function startHud(...) {
 }
 
 eventbus_subscribe("gui_start_hud", startHud)
-eventbus_subscribe("gui_start_hud_no_chat", startHud) 
 eventbus_subscribe("preload_ingame_scenes", startHud)
 
 eventbus_subscribe("on_show_hud", function on_show_hud(payload) {

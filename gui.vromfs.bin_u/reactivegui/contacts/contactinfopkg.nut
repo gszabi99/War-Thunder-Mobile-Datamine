@@ -7,17 +7,17 @@ from "%appGlobals/squadState.nut" import isInSquad, squadId, isInvitedToSquad, s
 from "%appGlobals/user/nickTools.nut" import getPlayerName
 from "%rGui/components/levelBlockPkg.nut" import mkLevelBg
 from "%rGui/components/starLevel.nut" import starLevelSmall
-from "%rGui/style/stdColors.nut" import leaderColor, memberNotReadyColor, memberReadyColor, selectColor
+from "%rGui/style/stdColors.nut" import leaderColor, memberNotReadyColor, memberReadyColor, onlineColor, offlineColor,
+  nameColor
 
 
-let nameColor = selectColor
 const titleColor = 0xFFFFFFFF
 const darkenBgColor = 0x80000000
 
 let onlineStatusColorsList = {
   in_battle = 0xFFDDA339
-  offline = 0xFFFF4020
-  online = 0xFF20E040
+  offline = offlineColor
+  online = onlineColor
 }
 
 const borderWidth = hdpx(3)
@@ -69,13 +69,38 @@ function contactNameBlock(contact, info, addChildren = [], styles = {}) {
   }
 }
 
-function contactAvatar(info, size = avatarSize) {
+function contactNameBlockNoTitle(contact, info, nameOvr, ovr = {}) {
+  let { realnick } = contact
+  let { decorators = {}, hasPremium = false, hasPrem = false, hasVip = false } = info
+  let { nickFrame = null } = decorators
+  return {
+    valign = ALIGN_BOTTOM
+    flow = FLOW_HORIZONTAL
+    gap
+    children = [
+      @() {
+        watch = [myUserRealName, myUserName]
+        rendObj = ROBJ_TEXT
+        behavior = Behaviors.Marquee
+        color = nameColor
+        text = frameNick(getPlayerName(realnick, myUserRealName.get(), myUserName.get()), nickFrame)
+      }.__update(nameOvr)
+      !hasPremium ? null
+        : mkSubsIcon(hasVip ? "vip"
+            : hasPrem ? "prem"
+            : "prem_deprecated",
+          premIconSize)
+    ]
+  }.__update(ovr)
+}
+
+function contactAvatar(info, size = avatarSize, ovr = {}) {
   let { avatar = null } = info?.decorators
   return {
-    size = [size, size]
+    size = size
     rendObj = ROBJ_IMAGE
     image = Picture($"{getAvatarImage(avatar)}:{size}:{size}:P")
-  }
+  }.__update(ovr)
 }
 
 let levelBg = freeze(mkLevelBg())
@@ -142,6 +167,7 @@ function contactSquadStatusBlock(uid, ovr = {}) {
 
 return {
   contactNameBlock
+  contactNameBlockNoTitle
   contactAvatar
   contactLevelBlock
   contactOnlineStatusBlock

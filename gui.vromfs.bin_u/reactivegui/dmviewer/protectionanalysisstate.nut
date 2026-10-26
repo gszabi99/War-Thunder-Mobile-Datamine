@@ -10,7 +10,7 @@ from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_PROTECTIO
 from "%appGlobals/config/countryPresentation.nut" import sortCountries
 from "%appGlobals/permissions.nut" import allow_protection_analysis
 from "%rGui/dmViewer/dmViewerPkg.nut" import hitProbMinorColor
-from "%rGui/dmViewer/dmViewerState.nut" import dmViewerMode
+from "%rGui/dmViewer/dmViewerState.nut" import dmViewerMode, setDmViewerMode
 from "%rGui/unit/unitNameSearch.nut" import isUnitNameMatchSearchStr
 from "%rGui/unit/unitUtils.nut" import sortUnits
 from "%rGui/unit/unitsWndState.nut" import visibleUnitsList
@@ -21,7 +21,6 @@ from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitBulletsChoice
 const FIRE_DISTANCE_DEFAULT = 500
 const FIRE_DISTANCE_MAX = 2000
 const PROTECTION_MAP_PROGRESS_UPDATE_INTERVAL = 0.3
-const DM_MODE_SWITCHING_DELAY = 0.1
 
 let inspectedUnit = mkWatched(persist, "inspectedUnit", null)
 let inspectedBaseUnit = mkWatched(persist, "inspectedBaseUnit", null)
@@ -58,11 +57,11 @@ targetScreenY.subscribe(onPointerScreenCoordsChange)
 
 inspectedUnit.subscribe(function(v) {
   if (v != null)
-    resetTimeout(DM_MODE_SWITCHING_DELAY, @() dmViewerMode.set(DM_VIEWER_PROTECTION))
+    setDmViewerMode(DM_VIEWER_PROTECTION, "protectionAnalisis")
   else {
-    dmViewerMode.set(DM_VIEWER_NONE)
+    setDmViewerMode(DM_VIEWER_NONE, "protectionAnalisis")
     dm_viewer_reset()
-    set_protection_checker_params("", "", "", 0, 0, 0)
+    set_protection_checker_params("", "", "", 0, 0, 0, "")
     inspectedBaseUnit.set(null)
     threatUnitSearchString.set("")
   }
@@ -76,10 +75,10 @@ function openProtectionAnalysis(unit, baseUnit) {
 
 function applyProtAnalysisOptions() {
   let unitName = threatUnit.get()?.name ?? ""
-  let { weaponBlkName = "", bulletNames = [] } = threatBulletData.get()?.bSet
+  let { weaponBlkName = "", bulletNames = [], id = "" } = threatBulletData.get()?.bSet
   let bulletName = bulletNames?[0] ?? ""
   if (unitName != "" && weaponBlkName != "" && bulletName != "")
-    set_protection_checker_params(weaponBlkName, bulletName, unitName, fireDistance.get(), 0, 0)
+    set_protection_checker_params(weaponBlkName, bulletName, unitName, fireDistance.get(), 0, 0, id)
 }
 
 isSimulationMode.subscribe(function(v) {

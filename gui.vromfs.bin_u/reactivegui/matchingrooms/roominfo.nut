@@ -21,12 +21,12 @@ roomInfo.subscribe(function(rInfo) {
     let squadId = player.squad
     if (squadId == INVALID_SQUAD_ID)
         continue
-    if (squadId in listSquads) {
+    if (squadId not in listSquads)
+      listSquads[squadId] <- -1
+    else if (listSquads[squadId] == -1) {
       listSquads[squadId] = nextLabel[player.team]
       nextLabel[player.team]++
     }
-    else
-      listSquads[squadId] <- -1
   }
 
   foreach (playerId, squadId in listPlayers){

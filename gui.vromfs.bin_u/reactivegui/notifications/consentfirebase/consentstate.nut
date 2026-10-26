@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "adjust" import setOnlineAdjust, setAdjustThirdPartySharing, getAdjustAdId
 from "appsFlyer" import setAppsFlyerConsent, startAppsFlyer, enableTCFCollection, startAppsFlyerConnector
+from "tikTok" import startTikTok
 from "auth_wt" import getCountryCode
 from "blkGetters" import get_settings_blk, get_local_custom_settings_blk
 from "console" import register_command
@@ -58,7 +59,8 @@ function setupAnalytics() {
   if (!isEnabled.get())
     return
   let v = savedPoints.get()
-  adsConsent.set((v?.ad_storage ?? false) && (v?.ad_user_data ?? false) && (v?.ad_personalization ?? false))
+  let hasAdsConsent = (v?.ad_storage ?? false) && (v?.ad_user_data ?? false) && (v?.ad_personalization ?? false)
+  adsConsent.set(hasAdsConsent)
   enableTCFCollection(false)
   logC("Firebase consent, analytics starting:", v)
   setFirebaseConsent(object_to_json_string(v))
@@ -66,7 +68,9 @@ function setupAnalytics() {
   setAppsFlyerConsent(v?.ad_user_data ?? false, v?.ad_personalization ?? false, true)
   startAppsFlyer()
   startAppsFlyerConnector()
-  setAdjustThirdPartySharing((v?.analytics_storage ?? false) && (v?.ad_storage ?? false) && (v?.ad_user_data ?? false) && (v?.ad_personalization ?? false))
+  if (hasAdsConsent)
+    startTikTok()
+  setAdjustThirdPartySharing((v?.analytics_storage ?? false) && hasAdsConsent)
   setOnlineAdjust(true)
   getAdjustAdId()
 }

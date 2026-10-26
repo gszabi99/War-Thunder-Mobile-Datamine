@@ -19,6 +19,10 @@ let presentations = {
     image = "ui/images/event_bg_anniversary_2025.avif"
     imageSize = [1200, 554]
   }
+  halloween_2026 = {
+    image = "ui/bkg/login_bkg_halloween_2026.avif"
+    imageSize = [1200, 480]
+  }
   halloween_2025 = {
     image = "ui/images/event_bg_halloween_2025.avif"
     imageSize = [1200, 554]

@@ -103,7 +103,7 @@ function closeWithChecking() {
 
 let mkCardBase = {
   behavior = Behaviors.Button
-  size = [weaponSize, weaponSize]
+  size = weaponSize
   rendObj = ROBJ_BOX
   fillColor = cardBgColor
   borderWidth = hdpx(3)
@@ -494,6 +494,10 @@ function mkSecondaryButtons() {
 
 function mkBeltButtons() {
   let { isLocked, isPurchased, mod, reqLevel } = selectedBeltCardStates
+  let inactiveChooseBtn = textButtonInactive(utf8ToUpper(loc("msgbox/btn_choose")),
+    @() openMsgBox({ text = getRequirementsText(isLocked.get(), isPurchased.get(), reqLevel.get(), mod.get()) }))
+  let chooseBtn = textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")),
+    @() applyBelt(selectedBeltSlot.get().weaponId, selectedBeltCard.get().id))
   return @(){
     watch = [selectedBeltCard , selectedBeltSlot, isLocked, isPurchased]
     size = FLEX_H
@@ -501,10 +505,8 @@ function mkBeltButtons() {
     halign = ALIGN_CENTER
     children = selectedBeltCard.get() == null || selectedBeltSlot.get()?.equipped.id == selectedBeltCard.get().id ? null
       : isLocked.get() || !isPurchased.get()
-    ? textButtonInactive(utf8ToUpper(loc("msgbox/btn_choose")),
-        @() openMsgBox({ text = getRequirementsText(isLocked.get(), isPurchased.get(), reqLevel.get(), mod.get()) }))
-      : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")),
-          @() applyBelt(selectedBeltSlot.get().weaponId, selectedBeltCard.get().id))
+        ? inactiveChooseBtn
+        : chooseBtn
 
   }
 }
@@ -541,6 +543,7 @@ let linesBase = {
 }
 
 let lineWidthByXPos = @(x) wndSize(x) + paddingWnd - weaponSize / 2
+let fixedHalfLineWidth = lineWidthByXPos((SLOTS_IN_ROW + 1) / 2)
 let mkWeaponLines = @() function() {
   let idx = selectedWSlotIdx.get()
   if (idx == null)
@@ -573,7 +576,7 @@ let mkBeltLines = @() function() {
   return linesBase.__merge({
     watch = [selectedBeltWeaponId, courseBeltSlots, turretBeltSlots]
     pos = [leftBlockWidth / 2 + xShift, yBlockShift + yShift]
-    size = [lineWidthByXPos((SLOTS_IN_ROW + 1) / 2) + contentGap - xShift, cellGap]
+    size = [fixedHalfLineWidth + contentGap - xShift, cellGap]
   })
 }
 
@@ -604,6 +607,11 @@ let mainContent = modalWndBg.__merge({
   ]
 })
 
+let contentChildren = [
+  mkCutBg([])
+  mainContent
+]
+
 function content() {
   let res = { watch = canShowChooseBulletWnd }
   if (!canShowChooseBulletWnd.get())
@@ -612,10 +620,7 @@ function content() {
   return res.__update({
     key = wndKey
     size = FLEX
-    children = [
-      mkCutBg([])
-      mainContent
-    ]
+    children = contentChildren
     onDetach = closeWnd
   })
 }

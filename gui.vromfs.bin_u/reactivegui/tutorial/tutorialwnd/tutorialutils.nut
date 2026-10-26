@@ -2,12 +2,12 @@ from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/math_ex.nut" import fabs, radToDeg, atan2
 
 
-let isIntersect = @(b1, b2) !(b1.l >= b2.r || b2.l >= b1.r || b1.t >= b2.b || b2.t >= b1.b)
+let isIntersect = @[pure, nodiscard](b1, b2) !(b1.l >= b2.r || b2.l >= b1.r || b1.t >= b2.b || b2.t >= b1.b)
 let isInScreen = @(pos, size) pos[0] >= 0 && pos[1] >= 0 && pos[0] + size[0] <= sw(100) && pos[1] + size[1] <= sh(100)
 let isIntersectAny = @(b1, list) list.findvalue(@(b2) isIntersect(b1, b2)) != null
 
 
-let incBoxSize = @(box, inc) inc == 0 ? box
+let incBoxSize = @[nodiscard](box, inc) inc == 0 ? box
   : {
       l = max(0, box.l - inc)
       t = max(0, box.t - inc)
@@ -15,7 +15,7 @@ let incBoxSize = @(box, inc) inc == 0 ? box
       b = min(sh(100), box.b + inc)
     }
 
-let incBoxSizeUnlimited = @(box, inc) inc == 0 ? box
+let incBoxSizeUnlimited = @[pure, nodiscard](box, inc) inc == 0 ? box
   : {
       l = box.l - inc
       t = box.t - inc
@@ -144,10 +144,10 @@ function getBestPos(diapason, range) {
 let getBestPosByY = @(diapasonY, box) getBestPos(diapasonY, [box.t, box.b])
 let getBestPosByX = @(diapasonX, box) getBestPos(diapasonX, [box.l, box.r])
 
-let sizePosToBox = @(size, pos) { l = pos[0], r = pos[0] + size[0], t = pos[1], b = pos[1] + size[1] }
-let hasInteractions = @(box, boxes) null != boxes.findvalue(@(b) isIntersect(b, box))
+let sizePosToBox = @[pure, nodiscard](size, pos) { l = pos[0], r = pos[0] + size[0], t = pos[1], b = pos[1] + size[1] }
+let hasInteractions = @[pure, nodiscard](box, boxes) null != boxes.findvalue(@(b) isIntersect(b, box))
 
-function findGoodPos(size, pos, boxes) { 
+function [pure, nodiscard] findGoodPos(size, pos, boxes) { 
   let box = sizePosToBox(size, pos)
   if (!hasInteractions(box, boxes))
     return pos
@@ -180,7 +180,7 @@ function getBorderBestPosX(size, allowedBox, boxes) {
   return weights[0] > weights[1] ? ranges[1][0] : ranges[0][0]
 }
 
-function findGoodPosX(size, pos, boxes) {
+function [pure, nodiscard] findGoodPosX(size, pos, boxes) {
   let box = sizePosToBox(size, pos)
   if (!hasInteractions(box, boxes))
     return pos
@@ -191,7 +191,7 @@ function findGoodPosX(size, pos, boxes) {
   return [posX, box.t]
 }
 
-function getNotInterractPos(size, posList, boxes) {
+function [pure, nodiscard] getNotInterractPos(size, posList, boxes) {
   foreach(pos in posList) {
     let box = sizePosToBox(size, pos)
     if (!hasInteractions(box, boxes))
@@ -200,10 +200,10 @@ function getNotInterractPos(size, posList, boxes) {
   return null
 }
 
-let bottomArrowPos = @(box, size) { pos = [(box.r + box.l - size[0]) / 2, box.b], rotate = 180 }
-let topArrowPos = @(box, size) { pos = [(box.r + box.l - size[0]) / 2, box.t - size[1]], rotate = 0 }
-let leftArrowPos = @(box, size) { pos = [box.l - size[0], (box.t + box.b - size[1]) / 2], rotate = -90 }
-let rightArrowPos = @(box, size) { pos = [box.r, (box.t + box.b - size[1]) / 2], rotate = 90 }
+let bottomArrowPos = @[nodiscard](box, size) { pos = [(box.r + box.l - size[0]) / 2, box.b], rotate = 180 }
+let topArrowPos = @[nodiscard](box, size) { pos = [(box.r + box.l - size[0]) / 2, box.t - size[1]], rotate = 0 }
+let leftArrowPos = @[nodiscard](box, size) { pos = [box.l - size[0], (box.t + box.b - size[1]) / 2], rotate = -90 }
+let rightArrowPos = @[nodiscard](box, size) { pos = [box.r, (box.t + box.b - size[1]) / 2], rotate = 90 }
 
 function isInScreenAndNotIntersect(pos, size, obstacles) {
   if (!isInScreen(pos, size))
@@ -254,7 +254,7 @@ function findGoodArrowPos(box, size, obstacles) {
 }
 
 let getBoxCenter = @(box) [0.5 * (box.l + box.r), 0.5 * (box.t + box.b)]
-function getLinkArrowMiddleCfg(boxFrom, boxTo) {
+function [pure, nodiscard] getLinkArrowMiddleCfg(boxFrom, boxTo) {
   let boxFromC = getBoxCenter(boxFrom)
   let boxToC = getBoxCenter(boxTo)
   return {

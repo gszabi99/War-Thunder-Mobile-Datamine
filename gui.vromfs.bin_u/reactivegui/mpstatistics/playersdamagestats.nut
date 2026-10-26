@@ -1,12 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%globalScripts/ecs.nut" import *
+from "ecs.computed" import mkEcsComputedEidMap
 from "dagor.workcycle" import resetTimeout
 from "mission" import get_mplayer_by_id
 from "%appGlobals/clientState/clientState.nut" import isInBattle, isInLoadingScreen
 
 
 let playersDamageStats = Watched({})
-let statsRaw = Watched({})
 let localPlayerId = Watched(-1)
 let playerTeams = Watched({})
 let playerTeamDamageStats = Computed(function() {
@@ -15,6 +15,28 @@ let playerTeamDamageStats = Computed(function() {
     return {}
   return playersDamageStats.get().filter(@(_, id) playerTeams.get()?[id] == team)
 })
+
+let statsByEid = mkEcsComputedEidMap({
+  comps = [
+    ["player_id", TYPE_INT],
+    ["stats__damage", TYPE_FLOAT],
+    ["stats__score", TYPE_FLOAT],
+    ["stats__flagsDelivered", TYPE_INT],
+    ["stats__bomberKills", TYPE_INT],
+  ]
+})
+
+let statsRaw = keepref(Computed(function() {
+  let res = {}
+  foreach (row in statsByEid.get())
+    res[row.player_id] <- {
+      damage = row.stats__damage
+      score = row.stats__score
+      flagsDelivered = row.stats__flagsDelivered
+      bomberKills = row.stats__bomberKills
+    }
+  return res
+}))
 
 let syncStats = @() playersDamageStats.set(clone statsRaw.get())
 statsRaw.subscribe(@(_)
@@ -46,36 +68,8 @@ isInLoadingScreen.subscribe(function(v) {
     localPlayerId.set(-1)
     playerTeams.set({})
     playersDamageStats.set({})
-    statsRaw.set({})
   }
 })
-
-register_es("players_damage_stats_es",
-  {
-    [["onInit", "onChange"]] = function trackDamageStats(_, comp) {
-      let { stats__damage, stats__score, stats__flagsDelivered, player_id, stats__bomberKills } = comp
-      statsRaw.mutate(@(v) v[player_id] <- {
-        damage = stats__damage
-        score = stats__score
-        flagsDelivered = stats__flagsDelivered
-        bomberKills = stats__bomberKills
-      })
-    },
-    [["onDestroy"]] = function trackDamageStats(_, comp) {
-      let { player_id } = comp
-      if (player_id in statsRaw.get())
-        statsRaw.mutate(@(v) v.$rawdelete(player_id))
-    },
-  },
-  {
-    comps_track = [
-      ["stats__damage", TYPE_FLOAT],
-      ["stats__score", TYPE_FLOAT],
-      ["stats__flagsDelivered", TYPE_INT],
-      ["stats__bomberKills", TYPE_INT],
-    ]
-    comps_ro = [["player_id", TYPE_INT]]
-  })
 
 return {
   playersDamageStats

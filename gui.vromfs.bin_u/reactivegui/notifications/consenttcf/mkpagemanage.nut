@@ -45,88 +45,102 @@ function updatePurposesList(list, v) {
     p.isEnabled.set(v)
 }
 
-let mkManageDesc = @() function() {
+let mkManageDesc = function() {
   let purposesAll = getPurposesList()
-  if (purposesAll.len() == 0)
-    return mkStatusContent(loc("ui/empty"))
+  let emptyPurposesContent = mkStatusContent(loc("ui/empty"))
+  let specialPurposesList = getSpecialPurposesList()
+  let featuresList = getFeaturesList()
+  let descP1 = mkTextarea(loc("consent_tcf/manage/desc/p1"), fadedAndMinor.__merge(gapBelow))
+  let descP2 = mkTextarea(loc("consent_tcf/manage/desc/p2"), fadedAndMinor.__merge(gapBelow))
+  let descP3 = mkTextarea(loc("consent_tcf/manage/desc/p3v2"), fadedAndMinor.__merge(gapBelow))
+  let nbspGap = mkTextarea(nbsp)
+  let purposesLabel = mkTextarea("".concat(loc("consent_tcf/manage/purposes"), colon), gapAbove)
+  let specialPurposesLabel = mkTextarea("".concat(loc("consent_tcf/manage/specialPurposes"), colon), gapAbove)
+  let featuresLabel = mkTextarea("".concat(loc("consent_tcf/manage/features"), colon), gapAbove)
+  let partnersLabel = mkTextarea("".concat(loc("consent_tcf/partners"), colon), gapAbove)
 
-  let purposeFirst = purposesAll[0]
-  let purposesOther = purposesAll.slice(1)
+  return function() {
+    if (purposesAll.len() == 0)
+      return emptyPurposesContent
 
-  local purOtherTitle = loc("consent_tcf/manage/purposes/other")
-  if (debugShowIds.get()) {
-    let idsTxt = ",".join(purposesOther.map(@(v) v.info.id))
-    purOtherTitle = $"[{idsTxt}] {purOtherTitle}"
-  }
+    let purposeFirst = purposesAll[0]
+    let purposesOther = purposesAll.slice(1)
 
-  let getPurAllVal = @() isAllListedPurposesEnabled(purposesAll)
-  let isPurAllEnabled = Watched(getPurAllVal())
-  let getPurOtherVal = @() isAllListedPurposesEnabled(purposesOther)
-  let isPurOtherEnabled = Watched(getPurOtherVal())
+    local purOtherTitle = loc("consent_tcf/manage/purposes/other")
+    if (debugShowIds.get()) {
+      let idsTxt = ",".join(purposesOther.map(@(v) v.info.id))
+      purOtherTitle = $"[{idsTxt}] {purOtherTitle}"
+    }
 
-  let updateHeadPurAll = @() isPurAllEnabled.set(getPurAllVal())
-  let updateHeadPurOther = @() isPurOtherEnabled.set(getPurOtherVal())
+    let getPurAllVal = @() isAllListedPurposesEnabled(purposesAll)
+    let isPurAllEnabled = Watched(getPurAllVal())
+    let getPurOtherVal = @() isAllListedPurposesEnabled(purposesOther)
+    let isPurOtherEnabled = Watched(getPurOtherVal())
 
-  function onManualPurOtherSwitchHead(v) {
-    updatePurposesList(purposesOther, v)
-    updateHeadPurAll()
-  }
+    let updateHeadPurAll = @() isPurAllEnabled.set(getPurAllVal())
+    let updateHeadPurOther = @() isPurOtherEnabled.set(getPurOtherVal())
 
-  function onManualPurAllSwitchHead(v) {
-    updatePurposesList(purposesAll, v)
-    updateHeadPurOther()
-  }
+    function onManualPurOtherSwitchHead(v) {
+      updatePurposesList(purposesOther, v)
+      updateHeadPurAll()
+    }
 
-  function onManualPurposeSwitch(_) {
-    updateHeadPurAll()
-    updateHeadPurOther()
-  }
+    function onManualPurAllSwitchHead(v) {
+      updatePurposesList(purposesAll, v)
+      updateHeadPurOther()
+    }
 
-  let specPurposes = []
-  foreach (v in getSpecialPurposesList())
-    specPurposes.append(separatorLine, mkFeatureComp(v, debugShowIds.get()))
-  specPurposes.append(separatorLine)
+    function onManualPurposeSwitch(_) {
+      updateHeadPurAll()
+      updateHeadPurOther()
+    }
 
-  let features = []
-  foreach (v in getFeaturesList())
-    features.append(separatorLine, mkFeatureComp(v, debugShowIds.get()))
-  features.append(separatorLine)
+    let specPurposes = []
+    foreach (v in specialPurposesList)
+      specPurposes.append(separatorLine, mkFeatureComp(v, debugShowIds.get()))
+    specPurposes.append(separatorLine)
 
-  let children = [
-    mkTextarea(loc("consent_tcf/manage/desc/p1"), fadedAndMinor.__merge(gapBelow))
-    mkTextarea(loc("consent_tcf/manage/desc/p2"), fadedAndMinor.__merge(gapBelow))
-    mkTextarea(loc("consent_tcf/manage/desc/p3v2"), fadedAndMinor.__merge(gapBelow))
-    mkTextareaWithLinks(loc("consent_tcf/manage/desc/p4", { monthsCount = PRIVACY_CHOICES_SAVED_MONTHS }), {
-      privacyPolicyLink = mkLink(loc(legalByType.pp.consentTcfManageLocId),
-        @() openUrl(legalByType.pp.url), fontMinor)
-    }, fadedAndMinor)
-    mkTextarea(nbsp)
-    mkSwitch(loc("consent_tcf/manage/consentToAll"), null, isPurAllEnabled, onManualPurAllSwitchHead)
-    mkTextarea("".concat(loc("consent_tcf/manage/purposes"), colon), gapAbove)
-    separatorLine
-    mkPurposeSwitchComp(purposeFirst, onManualPurposeSwitch, debugShowIds.get())
-    separatorLine
-    mkExpandableSwitch(purOtherTitle, null, isPurOtherEnabled, onManualPurOtherSwitchHead,
-        isPurposesOtherExpanded, function() {
-      let subList = []
-      foreach (v in purposesOther)
-        subList.append(separatorLine, mkPurposeSwitchComp(v, onManualPurposeSwitch, debugShowIds.get()))
-      return subList
-    })
-    separatorLine
-    mkTextarea("".concat(loc("consent_tcf/manage/specialPurposes"), colon), gapAbove)
-  ]
-    .extend(specPurposes)
-    .append(mkTextarea("".concat(loc("consent_tcf/manage/features"), colon), gapAbove))
-    .extend(features)
-    .append(mkTextarea("".concat(loc("consent_tcf/partners"), colon), gapAbove),
-      mkLink(loc("consent_tcf/partners/manage"), @() isOpenedPartnersExt.set(true)))
+    let features = []
+    foreach (v in featuresList)
+      features.append(separatorLine, mkFeatureComp(v, debugShowIds.get()))
+    features.append(separatorLine)
 
-  return {
-    watch = debugShowIds
-    size = FLEX_H
-    flow = FLOW_VERTICAL
-    children
+    let children = [
+      descP1
+      descP2
+      descP3
+      mkTextareaWithLinks(loc("consent_tcf/manage/desc/p4", const { monthsCount = PRIVACY_CHOICES_SAVED_MONTHS }), {
+        privacyPolicyLink = mkLink(loc(legalByType.pp.consentTcfManageLocId),
+          @() openUrl(legalByType.pp.url), fontMinor)
+      }, fadedAndMinor)
+      nbspGap
+      mkSwitch(loc("consent_tcf/manage/consentToAll"), null, isPurAllEnabled, onManualPurAllSwitchHead)
+      purposesLabel
+      separatorLine
+      mkPurposeSwitchComp(purposeFirst, onManualPurposeSwitch, debugShowIds.get())
+      separatorLine
+      mkExpandableSwitch(purOtherTitle, null, isPurOtherEnabled, onManualPurOtherSwitchHead,
+          isPurposesOtherExpanded, function() {
+        let subList = []
+        foreach (v in purposesOther)
+          subList.append(separatorLine, mkPurposeSwitchComp(v, onManualPurposeSwitch, debugShowIds.get()))
+        return subList
+      })
+      separatorLine
+      specialPurposesLabel
+    ]
+      .extend(specPurposes)
+      .append(featuresLabel)
+      .extend(features)
+      .append(partnersLabel,
+        mkLink(loc("consent_tcf/partners/manage"), @() isOpenedPartnersExt.set(true)))
+
+    return {
+      watch = debugShowIds
+      size = FLEX_H
+      flow = FLOW_VERTICAL
+      children
+    }
   }
 }
 

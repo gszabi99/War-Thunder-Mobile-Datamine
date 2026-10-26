@@ -29,7 +29,7 @@ from "%rGui/mainMenu/gamercard.nut" import mkLeftBlockUnitCampaign
 from "%rGui/navState.nut" import registerScene
 from "%rGui/style/gamercardStyle.nut" import gamercardHeight
 from "%rGui/style/gradients.nut" import mkGradientCtorTripleSideX, gradTexSize
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd
 
 
@@ -71,7 +71,6 @@ function mkParamLine(label, val, maxLenVal, valToString) {
   let valW = calc_comp_size(mkValText(valToString(maxLenVal)))[0]
   return {
     size = FLEX_H
-    valing = ALIGN_BOTTOM
     flow = FLOW_HORIZONTAL
     children = [
       {
@@ -143,10 +142,9 @@ function mkSearchResultUnit(unit) {
     behavior = Behaviors.Button
     onClick = @() selectSearchResultUnit(unit)
     onElemState = @(v) stateFlags.set(v)
-    sound = { click  = "click" }
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
+    sound = const { click  = "click" }
     children = plate
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
   }
 }
 

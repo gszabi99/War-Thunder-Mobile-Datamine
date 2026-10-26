@@ -47,7 +47,7 @@ function mnGenericSubscribe(from, handler) {
   subscriptions[from].append(handler)
 }
 
-function matchingRpcRegisterHandler(id, handler) {
+function matchingRegisterHandler(id, handler) {
   if (id in handlers) {
     logerr($"MatchingApi handler {id} is already registered")
     return
@@ -136,7 +136,7 @@ function callAllDefferd(cb, result) {
 eventbus_subscribe("onMatchingCb",
   @(msg) popCallback(msg.reqId.tostring(), msg.error == OK ? msg.result : (msg.result ?? {}).__merge({ ["error"] = msg.error })))
 
-function matchingRpcCall(cmd, params = null, cb = null) {
+function matchingRequest(cmd, params = null, cb = null) {
   let res = matching_call_fixed_event(cmd, "onMatchingCb", params)
   let { reqId = null } = res
   if (cb != null) {
@@ -150,10 +150,10 @@ function matchingRpcCall(cmd, params = null, cb = null) {
 }
 
 return {
-  matchingRpcCall
-  matchingRpcRegisterHandler
-  matchingCallRpcHandler = callAll
-  matchingCallRpcHandlerDeffered = @(cb, result) cb == null ? null : callAllDefferd(cb, result)
+  matchingRequest
+  matchingRegisterHandler
+  matchingCallHandler = callAll
+  matchingCallHandlerDeffered = @(cb, result) cb == null ? null : callAllDefferd(cb, result)
   matching_subscribe
   mnGenericSubscribe
 }

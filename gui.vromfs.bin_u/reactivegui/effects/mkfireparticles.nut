@@ -44,7 +44,7 @@ let length = @(arr) sqrt(arr[0] * arr[0] + arr[1] * arr[1])
 let mkGlow = @(size, color, opacity) {
   hplace = ALIGN_LEFT
   vplace = ALIGN_TOP
-  size = [size, size]
+  size = size
   rendObj = ROBJ_IMAGE
   image = gradRadial
   opacity = opacity * 0.7
@@ -99,7 +99,7 @@ function mkSparks(state, halfSize) {
   let color = sparkColor
 
   return {
-    size = [particleSize, particleSize]
+    size = particleSize
     rendObj = ROBJ_IMAGE
     image = gradRadial
     opacity = 0.0
@@ -121,7 +121,7 @@ function mkAshes(state, halfSize) {
   let color = sparkColor
 
   return {
-    size = [particleSize, particleSize]
+    size = particleSize
     rendObj = ROBJ_IMAGE
     image = gradRadial
     opacity = 0.0

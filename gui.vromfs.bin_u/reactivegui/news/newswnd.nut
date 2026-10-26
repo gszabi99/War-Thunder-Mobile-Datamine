@@ -15,7 +15,7 @@ from "%rGui/news/newsState.nut" import isNewsWndOpened, curArticleId, curArticle
   markCurArticleSeen, closeNewsWnd, curNewsStyle, fontsCfg
 from "%rGui/news/textFormatters.nut" import formatText, selectorBtnW, formatters, filterFormat
 from "%rGui/style/backgrounds.nut" import bgShaded
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import tabBgColor
 
 
@@ -49,13 +49,12 @@ function mkPage(startArticleIdx, isSelected) {
     color = (isSelected.get() || (stateFlags.get() & S_HOVER)) ? 0xFFFFFFFF : 0xFFBEBEBE
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.8, 0.8] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     function onClick() {
       markCurArticleSeen()
       playerSelectedArticleId.set(newsfeed.get()?[startArticleIdx].id)
     }
+    ...mkPressTransitionScale(stateFlags.get(), 0.8)
   }
 }
 
@@ -186,14 +185,13 @@ function articleTab(info) {
     watch = [isSelected, stateFlags]
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     function onClick() {
       markCurArticleSeen()
       playerSelectedArticleId.set(id)
     }
     children = articleTabBase(info, stateFlags.get(), isSelected.get(), isUnseen)
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
   }
 }
 
@@ -201,6 +199,7 @@ let tabsHotkeys = [
   ["J:LB", nextArticle, loc("mainmenu/btnPagePrev")],
   ["J:RB", prevArticle, loc("mainmenu/btnPageNext")],
 ]
+let selectorHotkeysBlock = { hotkeys = tabsHotkeys }
 let articleSelector = @() {
   watch = [newsfeed, curPageIdx, articlesPerPage, selectorBtnGap, isGamepad]
   size = [selectorBtnW + pagesStripGap + pagesStripW, FLEX]
@@ -216,7 +215,7 @@ let articleSelector = @() {
         .map(articleTab)
     }
     newsfeed.get().len() <= articlesPerPage.get() ? null : pagesStrip
-    !isGamepad.get() || newsfeed.get().len() <= 1 ? null : { hotkeys = tabsHotkeys }
+    !isGamepad.get() || newsfeed.get().len() <= 1 ? null : selectorHotkeysBlock
   ]
 }
 
@@ -280,6 +279,9 @@ let mkContent = @(content, title, formatter) {
     : [mkArticleTitle(title)].extend(content).append(seeMoreUrl))
 }
 
+let scrollUpBtn = scrollArticleBtn("^J:R.Thumb.Up | PageUp", -1)
+let scrollDownBtn = scrollArticleBtn("^J:R.Thumb.Down | PageDown", 1)
+
 let articleContent = @() {
   watch = [curArticleContent, curNewsStyle]
   size = FLEX
@@ -291,8 +293,8 @@ let articleContent = @() {
           scrollHandler = scrollHandler
           joystickScroll = false
         })
-        scrollArticleBtn("^J:R.Thumb.Up | PageUp", -1)
-        scrollArticleBtn("^J:R.Thumb.Down | PageDown", 1)
+        scrollUpBtn
+        scrollDownBtn
       ]
 }
 

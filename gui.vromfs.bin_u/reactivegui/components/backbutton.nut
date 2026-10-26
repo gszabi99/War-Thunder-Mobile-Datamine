@@ -22,7 +22,7 @@ function backButton(onClick, override = {}) {
     clickableInfo = loc("mainmenu/btnBack")
     hotkeys = [[btnBEscUp, loc("mainmenu/btnBack")]]
     onClick
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     transform = {}
     animations = blinkAnimation
     onDetach = clearBlinkInterval

@@ -170,6 +170,7 @@ let editPageContent = modalBg.__merge({
   ]
 })
 
+let toggleRotateTransitions = [{ prop = AnimProp.rotate, duration = 0.2, easing = InOutQuad }]
 let toggleBtn = @() {
   watch = isSidebarOptionsOpen
   hplace = ALIGN_LEFT
@@ -180,8 +181,8 @@ let toggleBtn = @() {
     isSidebarOptionsOpen.get() ? "hudTuning/toggle/desc/hide" : "hudTuning/toggle/desc/show",
     {
       color = btnBgColorDefault
-      transform = isSidebarOptionsOpen.get() ? { rotate = 270 } : { rotate = 90 }
-      transitions = [{ prop = AnimProp.rotate, duration = 0.2, easing = InOutQuad }]
+      transform = isSidebarOptionsOpen.get() ? const { rotate = 270 } : const { rotate = 90 }
+      transitions = toggleRotateTransitions
     })
 }
 
@@ -230,12 +231,13 @@ function content() {
           availableEvents.get().len() > 1 ? selectEventBtn : null
           curEventPages.get().len() > 1 ? selectPageBtn : null
           generatePagesBtn
-          { size = FLEX_V }
+          const { size = FLEX_V }
           deletePageBtn
         ]
   }
 }
 
+let sidebarSlideTransitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
 let mapEditorSidebarOptions = {
   size = FLEX_V
   padding = [optionBtnSize + optionsBtnGap + saBordersRv[0], 0]
@@ -249,7 +251,7 @@ let mapEditorSidebarOptions = {
       color = 0xC0000000
       children = content
       transform = { translate = [isSidebarOptionsOpen.get() ? 0 : hdpx(-800), 0] }
-      transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+      transitions = sidebarSlideTransitions
     }
     toggleBtn
   ]

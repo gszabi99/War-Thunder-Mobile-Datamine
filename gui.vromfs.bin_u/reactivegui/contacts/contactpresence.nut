@@ -36,7 +36,7 @@ function updatePresences(newPresences) {
 }
 onlineStatusBase.whiteListMutatorClosure(updatePresences)
 
-function isContactOnline(userId, onlineStatusVal) {
+function [pure, nodiscard] isContactOnline(userId, onlineStatusVal) {
   let uid = userId instanceof Integer ? userId.tostring() : userId
   return onlineStatusVal?[uid] == true
 }

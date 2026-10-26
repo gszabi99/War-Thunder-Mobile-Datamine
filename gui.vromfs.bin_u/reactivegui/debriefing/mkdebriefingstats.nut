@@ -37,11 +37,11 @@ function playerPlaceCtor(_uid, place, _printVal, startTime) {
       halign = ALIGN_CENTER
       children = [
         {
-          size = [playerPlaceIconSize, playerPlaceIconSize]
+          size = playerPlaceIconSize
           rendObj = ROBJ_IMAGE
           image = gradRadial
           color = placeGlowColor?[place] ?? placeGlowColor[0]
-          transform = { scale = [0.3, 0.3] }
+          transform = { scale = 0.3 }
           animations = [
             {
               prop = AnimProp.scale, to = [2, 2],
@@ -169,7 +169,7 @@ let mkText = @(text) {
 }.__update(fontTinyAccented)
 
 let mkInlineIcon = @(children) {
-  size = [iconInlineSize, iconInlineSize]
+  size = iconInlineSize
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children

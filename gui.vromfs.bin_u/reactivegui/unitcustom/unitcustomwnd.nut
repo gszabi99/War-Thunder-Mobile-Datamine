@@ -97,7 +97,7 @@ function penaltyDescription() {
     rendObj = ROBJ_9RECT
     image = gradTranspDoubleSideX
     texOffs = [0, gradDoubleTexOffset]
-    screenOffs = [0, hdpx(50)]
+    screenOffs = const [0, hdpx(50)]
     color = 0x90000000
     padding = const [hdpx(10), hdpx(30)]
     children = timeToEndDecalsPenalty.get() <= 0 ? null
@@ -116,17 +116,18 @@ let mkDecalText = @(text, ovr = {}) text == null ? null : {
   text
 }.__update(fontBoldSmallShaded, ovr)
 
+let shownDecalId = Computed(@() selectedDecalId.get() ?? selectedSlot.get()?.decalId ?? "")
+
 function decalDescriptionBlock() {
-  let decalId = Computed(@() selectedDecalId.get() ?? selectedSlot.get()?.decalId ?? "")
-  let decalDesc = mkDecalText(getDecalDesc(decalId.get()), fontSmallShaded)
+  let decalDesc = mkDecalText(getDecalDesc(shownDecalId.get()), fontSmallShaded)
   let decalDescHeight = min(calc_comp_size(decalDesc)[1], hdpx(500))
   return {
-    watch = [decalId, curSelectedSectionId]
+    watch = [shownDecalId, curSelectedSectionId]
     vplace = ALIGN_TOP
     hplace = ALIGN_LEFT
     flow = FLOW_VERTICAL
     gap = hdpx(20)
-    children = curSelectedSectionId.get() != SECTION_IDS.DECALS || decalId.get() == "" ? null
+    children = curSelectedSectionId.get() != SECTION_IDS.DECALS || shownDecalId.get() == "" ? null
       : [
           {
             pos = [-saBorders[0], 0]
@@ -138,7 +139,7 @@ function decalDescriptionBlock() {
             flow = FLOW_VERTICAL
             gap = sectionBtnGap
             children = [
-              mkDecalText(getDecalTitle(decalId.get()))
+              mkDecalText(getDecalTitle(shownDecalId.get()))
               makeVertScroll(
                 decalDesc,
                 {
@@ -147,7 +148,7 @@ function decalDescriptionBlock() {
               })
             ]
           }
-          mkDecalIcon(decalId.get(), round(decalIconSizeBig * getDecalDescPresentation(decalId.get()).scale).tointeger())
+          mkDecalIcon(shownDecalId.get(), round(decalIconSizeBig * getDecalDescPresentation(shownDecalId.get()).scale).tointeger())
         ]
   }
 }
@@ -242,14 +243,17 @@ let sectionActionsById = {
   }
 }
 
-let sectionContent = @(curSectionId, isExpanded) @() {
-  watch = curSectionId
-  size = FLEX_H
-  margin = [0, 0, sectionFooterById?[curSectionId.get()].footerHeight ?? 0, 0]
-  animations = wndSwitchAnim
-  children = isExpanded ? sectionContentById[curSectionId.get()] : null
-  transform = { translate = [0, !isExpanded ? hdpx(200) : 0] }
-  transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+function sectionContent(curSectionId, isExpanded) {
+  let transform = { translate = [0, !isExpanded ? hdpx(200) : 0] }
+  return @() {
+    watch = curSectionId
+    size = FLEX_H
+    margin = [0, 0, sectionFooterById?[curSectionId.get()].footerHeight ?? 0, 0]
+    animations = wndSwitchAnim
+    children = isExpanded ? sectionContentById[curSectionId.get()] : null
+    transform
+    transitions = const [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+  }
 }
 
 let sectionFooter = @(curSectionId) @() {

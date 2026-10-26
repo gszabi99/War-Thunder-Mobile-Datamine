@@ -13,7 +13,7 @@
     "bombType": "he_bomb",
     "bombName": "jp_mk6_mod1",
     "sound": "weapon.bomb_std",
-    "explosionFx": "water_under_explosion_big",
+    "waterExplosionEffect": "water_under_explosion_big",
     "drownFx": "bomb_reflection",
     "dynamicKv": true,
     "isMine": true,

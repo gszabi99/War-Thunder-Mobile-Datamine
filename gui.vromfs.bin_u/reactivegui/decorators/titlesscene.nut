@@ -19,7 +19,7 @@ from "%rGui/decorators/decoratorsPkg.nut" import choosenMark, mkTitle
 from "%rGui/decorators/mkDecoratorUnlockProgress.nut" import mkDecoratorUnlockProgress
 import "%rGui/decorators/purchaseDecorator.nut" as purchaseDecorator
 from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import hoverColor
 
 
@@ -62,6 +62,17 @@ function titleRow(name, locName, rowIdx) {
   let isChoosen = Computed(@() chosenTitleName.get() == name)
   let isSelected = Computed(@() selectedTitleName.get() == name)
   let isUnseen = Computed(@() name in unseenDecorators.get())
+  let lockedMark = {
+    size = const [hdpx(35),hdpx(45)]
+    rendObj = ROBJ_IMAGE
+    color = 0xFFFFB70B
+    image =  Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(35)}:{hdpxi(45)}:P")
+  }
+  let choosenTitleMark = choosenMark(hdpxi(45), const { hplace = ALIGN_CENTER })
+  let unseenMarkBlock = {
+    margin = const [hdpx(15), hdpx(20)]
+    children = priorityUnseenMark
+  }
   return {
     rendObj = ROBJ_SOLID
     size = const [FLEX, rowHeight]
@@ -97,30 +108,21 @@ function titleRow(name, locName, rowIdx) {
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           children = name != "" && name not in availTitles.get()
-            ? {
-                size = const [hdpx(35),hdpx(45)]
-                rendObj = ROBJ_IMAGE
-                color = 0xFFFFB70B
-                image =  Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(35)}:{hdpxi(45)}:P")
-              }
+            ? lockedMark
             : isChoosen.get() || isSelected.get()
               ? mkSpinnerHideBlock(isDecoratorInProgress,
-                isChoosen.get() ? choosenMark(hdpxi(45), { hplace = ALIGN_CENTER }) : null)
+                isChoosen.get() ? choosenTitleMark : null)
             : isUnseen.get()
-              ? {
-                  margin = const [hdpx(15), hdpx(20)]
-                  children = priorityUnseenMark
-                }
+              ? unseenMarkBlock
               : null
         }
         {
           rendObj = ROBJ_TEXT
           color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
           text = locName
-          transform = {
-            scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
-          }
-        }.__update(fontMedium)
+          ...mkPressTransitionScale(stateFlags.get())
+          ...fontMedium
+        }
       ]
     }
   }

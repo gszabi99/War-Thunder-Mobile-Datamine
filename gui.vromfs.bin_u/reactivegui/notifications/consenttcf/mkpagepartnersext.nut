@@ -92,33 +92,38 @@ function updatePartnersList(list, v) {
       p?.isEnabled.set(v)
 }
 
-let mkPartnersExtDesc = @() function() {
-  let partnersExtLists = mkPartnersExtLists(vendorsLists.get())
-  let partnersExtListFlat = partnersExtLists.reduce(@(res, v) res.extend(v), [])
-  let isAvailableAllSwitch = Watched(isAnyPartnerConsentSwitchesAvailable(partnersExtListFlat))
-  let getPartnersAllVal = @() isAllPartnerConsentSwitchesEnabled(partnersExtListFlat)
-  let isPartnersAllEnabled = Watched(getPartnersAllVal())
-  let onManualPartnersAllSwitch = @(v) updatePartnersList(partnersExtListFlat, v)
-  let onManualPartnerSwitch = @(_) isPartnersAllEnabled.set(getPartnersAllVal())
+let mkPartnersExtDesc = function() {
+  let descHeader = mkTextarea(loc("consent_tcf/partners/manage/desc"), fadedAndMinor.__merge(gapBelow))
+  let nbspGap = mkTextarea(nbsp)
 
-  let list = [
-    mkTextarea(loc("consent_tcf/partners/manage/desc"), fadedAndMinor.__merge(gapBelow))
-    mkSwitch(loc("consent_tcf/partners/consentToAll"),
-      isAvailableAllSwitch, isPartnersAllEnabled, onManualPartnersAllSwitch)
-    mkTextarea(nbsp)
-  ]
-  foreach (idx, vl in partnersExtLists)
-    if (vl.len()) {
-      let { titleLocId } = vendorsListsCfg[idx]
-      list.append(mkTextarea("".concat(loc(titleLocId), colon)), separatorLine)
-      foreach (p in vl)
-        list.append(mkPartnerSwitchComp(p, onManualPartnerSwitch, debugShowIds.get()), separatorLine)
+  return function() {
+    let partnersExtLists = mkPartnersExtLists(vendorsLists.get())
+    let partnersExtListFlat = partnersExtLists.reduce(@(res, v) res.extend(v), [])
+    let isAvailableAllSwitch = Watched(isAnyPartnerConsentSwitchesAvailable(partnersExtListFlat))
+    let getPartnersAllVal = @() isAllPartnerConsentSwitchesEnabled(partnersExtListFlat)
+    let isPartnersAllEnabled = Watched(getPartnersAllVal())
+    let onManualPartnersAllSwitch = @(v) updatePartnersList(partnersExtListFlat, v)
+    let onManualPartnerSwitch = @(_) isPartnersAllEnabled.set(getPartnersAllVal())
+
+    let list = [
+      descHeader
+      mkSwitch(loc("consent_tcf/partners/consentToAll"),
+        isAvailableAllSwitch, isPartnersAllEnabled, onManualPartnersAllSwitch)
+      nbspGap
+    ]
+    foreach (idx, vl in partnersExtLists)
+      if (vl.len()) {
+        let { titleLocId } = vendorsListsCfg[idx]
+        list.append(mkTextarea("".concat(loc(titleLocId), colon)), separatorLine)
+        foreach (p in vl)
+          list.append(mkPartnerSwitchComp(p, onManualPartnerSwitch, debugShowIds.get()), separatorLine)
+      }
+    return {
+      watch = [vendorsLists, debugShowIds]
+      size = FLEX_H
+      flow = FLOW_VERTICAL
+      children = list
     }
-  return {
-    watch = [vendorsLists, debugShowIds]
-    size = FLEX_H
-    flow = FLOW_VERTICAL
-    children = list
   }
 }
 

@@ -1,9 +1,9 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.localize" import doesLocTextExist
 from "dagor.random" import frnd
+from "dagor.workcycle" import deferOnce
 from "json" import parse_json
 from "math" import round
-from "%sqstd/frp.nut" import ComputedImmediate
 from "%sqstd/string.nut" import utf8ToUpper, toIntegerSafe
 from "%sqstd/underscore.nut" import arrayByRows, isEqual
 from "%appGlobals/clientState/clientState.nut" import isInMenu
@@ -13,6 +13,7 @@ from "%appGlobals/config/collectionPresentation.nut" import getCollectionPresent
 import "%appGlobals/config/currencyGoodsPresentation.nut" as getCurrencyGoodsPresentation
 from "%appGlobals/config/currencyPresentation.nut" import getCurrencyBigIcon
 from "%appGlobals/config/lootboxPresentation.nut" import getLootboxName
+from "%appGlobals/config/passPresentation.nut" import getPointsPresentation
 from "%appGlobals/config/skinPresentation.nut" import getSkinPresentation
 from "%appGlobals/currenciesState.nut" import orderByCurrency
 import "%appGlobals/decorators/avatars.nut" as getAvatarImage
@@ -28,18 +29,20 @@ import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/pServer/slots.nut" import curCampaignSlots, curSlots
 from "%appGlobals/queueState.nut" import isInQueue
 from "%appGlobals/rewardType.nut" import rewardTypeByValue, G_UNIT, G_UNIT_UPGRADE, G_BOOSTER, G_ITEM, G_LOOTBOX,
-  G_CURRENCY
+  G_CURRENCY, G_PIECE
 from "%appGlobals/timeToText.nut" import secondsToHoursLoc
 from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitName
 from "%appGlobals/unitsState.nut" import setCurrentUnit
 from "%rGui/collections/collectionComps.nut" import mkPuzzlePiece, mkPuzzleImagePiece, getPuzzleGrid, pieceBorder
+from "%rGui/collections/collectionsState.nut" import openPuzzle, activeCollectionsCfg
 from "%rGui/components/gradTexts.nut" import mkGradRankSmall
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
 from "%rGui/components/scrollbar.nut" import makeVertScroll
 from "%rGui/components/spinner.nut" import spinner
-from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon
+from "%rGui/components/textButton.nut" import textButtonPrimary
 from "%rGui/decorators/decoratorState.nut" import allDecorators
+import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
 from "%rGui/globals/fontUtils.nut" import getTextScaleToFitWidth
 from "%rGui/leaderboard/lbConfig.nut" import lbCfgOrdered
 from "%rGui/navState.nut" import tryResetToMainScene, canResetToMainScene
@@ -50,12 +53,14 @@ from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlateBg, mkRewardPlateIm
   mkProgressBarText, mkRewardPlate, mkRewardUnitFlag, mkRewardPlateUnknownImage
 from "%rGui/rewards/rewardPrizeSelect.nut" import showPrizeSelectDelayed, ticketToShow
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM, getRewardPlateSize, rewardTicketDefaultSlots
-from "%rGui/rewards/rewardViewInfo.nut" import ignoreSubIdRTypes, getRewardsViewInfo, isSingleRewardEmpty
+from "%rGui/rewards/rewardViewInfo.nut" import ignoreSubIdRTypes, getRewardsViewInfo, isSingleRewardEmpty,
+  getBlueprintMax, getBlueprintBarColor
+from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, COLLECTION_TAB, isSeasonTabVisible
 from "%rGui/shop/shopState.nut" import allShopGoods
-from "%rGui/shop/unseenPurchaseAddMessage.nut" import mkMsgConvert, mkMsgDiscount
+from "%rGui/shop/unseenPurchaseAddMessage.nut" import mkMsgConvert, mkMsgDiscount, mkUnitButton
 from "%rGui/shop/unseenPurchasesState.nut" import activeUnseenPurchasesGroup, markPurchasesSeen,
   hasActiveCustomUnseenView, skipUnseenMessageAnimOnce, isUnseenGoodsVisible, unseenPurchaseUnitPlateKey
-from "%rGui/slotBar/slotBarState.nut" import openSelectUnitToSlotWnd, canOpenSelectUnitWithModal
+from "%rGui/slotBar/slotBarState.nut" import canOpenSelectUnitWithModal
 from "%rGui/style/backgrounds.nut" import bgShadedDark
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import locColorTable
@@ -84,6 +89,7 @@ const rewTextMaxWidth = rewBlockWidth - hdpx(10)
 const unitPlatesGap = hdpx(40)
 let unitsPerRow = (wndWidth / (unitPlateWidth + unitPlatesGap)).tointeger()
 const trashIconSize = hdpx(50)
+const rewardBtnSize = { size = const [FLEX, hdpx(70)], minWidth = 0 }
 
 const textColor = 0xFFE0E0E0
 let ANIM_SKIP = {}
@@ -223,9 +229,10 @@ let stackData = Computed(function() {
     decal = []
     piece = []
     piece_dbl = []
+    bpPoints = []
   } = stacksSorted
   let rewardIcons = [].extend(lootbox, currency, premium, item, decorator, booster, skin, blueprint, prizeTicket,
-    decal, piece, piece_dbl)
+    decal, piece, piece_dbl, bpPoints)
   let unitPlates = [].extend(unitUpgrade, unit)
 
   local lastIdx = -1
@@ -260,7 +267,7 @@ let needShowCommon = Computed(@() 0 <
     + stackData.get().battleMod.len())
 let needShowAdd = Computed(@() stackData.get().convertions.len() + activeDiscounts.get().len() > 0)
 
-let needShowAny = keepref(ComputedImmediate(@() !hasActiveCustomUnseenView.get()
+let needShowAny = keepref(Computed(@() !hasActiveCustomUnseenView.get()
   && (needShowCommon.get() || needShowAdd.get())
   && activeUnseenPurchasesGroup.get().list.len() != 0
   && isInMenu.get()
@@ -278,19 +285,34 @@ const WND_ADD_UID = "unseenPurchaseWindow_add"
 let close = @() removeModalWindow(WND_UID)
 
 let isAnimFinished = Watched(false)
-needShowCommonWnd.subscribe(@(v) v ? isAnimFinished.set(false) : null)
+local rewardBtnVisibility = {}
 
-let mkRewardAnimProps = @(startDelay, scaleTo) {
+function getRewardBtnVisibleWatched(rewId) {
+  if (rewId not in rewardBtnVisibility)
+    rewardBtnVisibility[rewId] <- Watched(false)
+
+  return rewardBtnVisibility[rewId]
+}
+
+needShowCommonWnd.subscribe(function(v) {
+  if(v) {
+    isAnimFinished.set(false)
+    rewardBtnVisibility = {}
+  }
+})
+
+let mkRewardAnimProps = @(startDelay, scaleTo, opt = {}) {
   transform = {}
   animations = [
     { prop = AnimProp.opacity, from = 0, to = 0,
       duration = startDelay,
       play = true, trigger = ANIM_SKIP,
-      sound = { stop = "element_card_appear" }
+      sound = opt?.disableSound ? null : { stop = "element_card_appear" }
     }
     { prop = AnimProp.opacity, from = 0, to = 1,
       delay = startDelay, duration = aRewardOpacityTime,
-      play = true, trigger = ANIM_SKIP_DELAY
+      play = true, trigger = ANIM_SKIP_DELAY,
+      onStart = opt?.onStart
     }
     { prop = AnimProp.scale, from = [1, 1], to = [1, 1],
       duration = startDelay + aRewardScaleDelay,
@@ -308,45 +330,40 @@ function mkHighlight(startDelay, sizeMul) {
   let highlightSize = (sizeMul * rewIconSize + 0.5).tointeger()
   let startRotation = frnd() * 360
   return {
-    size = [highlightSize, highlightSize]
-    children = [
-      {
-        size = FLEX
-        rendObj = ROBJ_IMAGE
-        image = Picture("ui/images/effects/searchlight_earth_flare.avif:0:P")
-        opacity = 0
+    size = highlightSize
+    rendObj = ROBJ_IMAGE
+    image = Picture("ui/images/effects/searchlight_earth_flare.avif:0:P")
+    opacity = 0
 
-        transform = {}
-        animations = [
-          { prop = AnimProp.opacity, from = 0, to = 0,
-            duration = startDelay + aFlareDelay
-            play = true, trigger = ANIM_SKIP }
-          { prop = AnimProp.opacity, from = 0, to = aFlareOpacityMax,
-            delay = startDelay + aFlareDelay, duration = aFlareUpTime,
-            play = true, trigger = ANIM_SKIP }
-          { prop = AnimProp.opacity, from = aFlareOpacityMax, to = aFlareOpacityMax,
-            delay = startDelay + aFlareDelay + aFlareUpTime, duration = aFlareStayTime,
-            play = true, trigger = ANIM_SKIP }
-          { prop = AnimProp.opacity, from = aFlareOpacityMax, to = 0, easing = InCubic,
-            delay = startDelay + aFlareDelay + aFlareUpTime + aFlareStayTime, duration = aFlareDownTime,
-            play = true, trigger = ANIM_SKIP }
-          { prop = AnimProp.scale, from = [aFlareScaleMin, aFlareScaleMin], to = [aFlareScaleMin, aFlareScaleMin],
-            duration = startDelay + aFlareDelay,
-            play = true, trigger = ANIM_SKIP }
-          { prop = AnimProp.scale, from = [aFlareScaleMin, aFlareScaleMin], to = [1, 1],
-            delay = startDelay + aFlareDelay, duration = aFlareUpTime,
-            play = true, trigger = ANIM_SKIP }
-          { prop = AnimProp.scale, from = [1, 1], to = [1, 1], easing = InCubic,
-            delay = startDelay + aFlareDelay + aFlareUpTime, duration = aFlareStayTime,
-            play = true, trigger = ANIM_SKIP }
-          { prop = AnimProp.scale, from = [1, 1], to = [aFlareScaleMin, aFlareScaleMin], easing = InCubic,
-            delay = startDelay + aFlareDelay + aFlareUpTime + aFlareStayTime, duration = aFlareDownTime,
-            play = true, trigger = ANIM_SKIP }
-          { prop = AnimProp.rotate, from = startRotation, to = startRotation + (aFlareDelay * aFlareRotationSpeed),
-            delay = startDelay + aFlareDelay, duration = aFlareUpTime + aFlareStayTime + aFlareDownTime,
-            play = true, trigger = ANIM_SKIP }
-        ]
-      }
+    transform = {}
+    animations = [
+      { prop = AnimProp.opacity, from = 0, to = 0,
+        duration = startDelay + aFlareDelay
+        play = true, trigger = ANIM_SKIP }
+      { prop = AnimProp.opacity, from = 0, to = aFlareOpacityMax,
+        delay = startDelay + aFlareDelay, duration = aFlareUpTime,
+        play = true, trigger = ANIM_SKIP }
+      { prop = AnimProp.opacity, from = aFlareOpacityMax, to = aFlareOpacityMax,
+        delay = startDelay + aFlareDelay + aFlareUpTime, duration = aFlareStayTime,
+        play = true, trigger = ANIM_SKIP }
+      { prop = AnimProp.opacity, from = aFlareOpacityMax, to = 0, easing = InCubic,
+        delay = startDelay + aFlareDelay + aFlareUpTime + aFlareStayTime, duration = aFlareDownTime,
+        play = true, trigger = ANIM_SKIP }
+      { prop = AnimProp.scale, from = [aFlareScaleMin, aFlareScaleMin], to = [aFlareScaleMin, aFlareScaleMin],
+        duration = startDelay + aFlareDelay,
+        play = true, trigger = ANIM_SKIP }
+      { prop = AnimProp.scale, from = [aFlareScaleMin, aFlareScaleMin], to = [1, 1],
+        delay = startDelay + aFlareDelay, duration = aFlareUpTime,
+        play = true, trigger = ANIM_SKIP }
+      { prop = AnimProp.scale, from = [1, 1], to = [1, 1], easing = InCubic,
+        delay = startDelay + aFlareDelay + aFlareUpTime, duration = aFlareStayTime,
+        play = true, trigger = ANIM_SKIP }
+      { prop = AnimProp.scale, from = [1, 1], to = [aFlareScaleMin, aFlareScaleMin], easing = InCubic,
+        delay = startDelay + aFlareDelay + aFlareUpTime + aFlareStayTime, duration = aFlareDownTime,
+        play = true, trigger = ANIM_SKIP }
+      { prop = AnimProp.rotate, from = startRotation, to = startRotation + (aFlareDelay * aFlareRotationSpeed),
+        delay = startDelay + aFlareDelay, duration = aFlareUpTime + aFlareStayTime + aFlareDownTime,
+        play = true, trigger = ANIM_SKIP }
     ]
   }
 }
@@ -376,15 +393,17 @@ function mkCommonCurrencyIcon(startDelay, curId, amount, scale = 1.0) {
   let size = round(rewIconSize * scale).tointeger()
   let fullId = mkCurrencyFullId(curId)
   let cfg = Computed(@() getCurrencyGoodsPresentation(fullId.get(), amount))
+  let highlight = mkHighlight(startDelay, aRewardIconFlareScale)
+  let animProps = mkRewardAnimProps(startDelay, aRewardIconSelfScale)
   return @() {
     watch = cfg
     size = const [rewIconSize, rewIconSize]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
-      mkHighlight(startDelay, aRewardIconFlareScale)
+      highlight
       {
-        size = [size, size]
+        size = size
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#{cfg.get()?.img}:{size}:{size}:K:P")
         fallbackImage = cfg.get()?.fallbackImg
@@ -392,7 +411,7 @@ function mkCommonCurrencyIcon(startDelay, curId, amount, scale = 1.0) {
           : null
         keepAspect = true
         color = 0xFFFFFFFF
-      }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+      }.__update(animProps)
     ]
   }
 }
@@ -405,7 +424,7 @@ let mkTextDecoratorCtor = @(getText, font) function(decoratorId) {
   }.__update(font)
   let txtScale = getTextScaleToFitWidth(textComp, rewTextMaxWidth)
   if (txtScale < 1.0)
-    textComp.__update({ transform = { scale = [txtScale, txtScale] } })
+    textComp.__update({ transform = { scale = txtScale } })
   return {
     children = textComp
   }
@@ -413,7 +432,7 @@ let mkTextDecoratorCtor = @(getText, font) function(decoratorId) {
 
 let avatarIconSize = round(rewIconSize * 0.75).tointeger()
 let mkImageDecoratorCtor = @(decoratorId) {
-  size = [avatarIconSize, avatarIconSize]
+  size = avatarIconSize
   rendObj = ROBJ_IMAGE
   image = Picture($"{getAvatarImage(decoratorId)}:{avatarIconSize}:{avatarIconSize}:P")
 }
@@ -426,15 +445,17 @@ let decoratorCompByType = {
 
 function mkDecoratorRewardIcon(startDelay, decoratorId) {
   let decoratorType = Computed(@() allDecorators.get()?[decoratorId].dType)
+  let highlight = mkHighlight(startDelay, aRewardIconFlareScale)
+  let animProps = mkRewardAnimProps(startDelay, aRewardIconSelfScale)
   return @() {
     watch = decoratorType
     size = const [SIZE_TO_CONTENT, rewIconSize]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
-      mkHighlight(startDelay, aRewardIconFlareScale)
+      highlight
       decoratorCompByType?[decoratorType.get()](decoratorId)
-        .__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+        .__update(animProps)
     ]
   }
 }
@@ -467,7 +488,7 @@ function mkRewardLabel(startDelay, text) {
   }.__update(fontSmallShaded)
   let txtScale = getTextScaleToFitWidth(res, rewTextMaxWidth)
   if (txtScale < 1.0)
-    res.__update({ transform = { scale = [txtScale, txtScale] } })
+    res.__update({ transform = { scale = txtScale } })
   return res
 }
 
@@ -532,22 +553,24 @@ function mkSkinEquipButton(unitName, skinName) {
   let currentSkin = Computed(@() unit.get()?.skin
     ?? unit.get()?.currentSkins[unitName] 
     ?? "")
-
+  let applyBtn = textButtonPrimary(utf8ToUpper(loc("mainmenu/btnApply")),
+      function() {
+        enable_unit_skin(unitName, unitName, skinName)
+        if (skinName != "")
+          sendTelemetrySavedEvent("skin_equiped_1", telemetrySaveId)
+      },
+      { ovr = rewardBtnSize })
+  let isSkinBtnVisible = getRewardBtnVisibleWatched($"{unitName}_{skinName}")
   return @() {
-    watch = [currentSkin, unit, skinsInProgress]
+    watch = [currentSkin, unit, skinsInProgress, isSkinBtnVisible]
     size = FLEX_H
     halign = ALIGN_CENTER
     children = !unit.get() ? null
+      : !isSkinBtnVisible.get() ? rewardBtnSize
       : skinsInProgress.get() ? spinner
       : currentSkin.get() == skinName
-        ? mkGradText(utf8ToUpper(loc("skins/applied"))).__update({ size = const [FLEX, hdpx(70)], minWidth = 0, padding = hdpx(10) })
-      : textButtonPrimary(utf8ToUpper(loc("mainmenu/btnApply")),
-          function() {
-            enable_unit_skin(unitName, unitName, skinName)
-            if (skinName != "")
-              sendTelemetrySavedEvent("skin_equiped_1", telemetrySaveId)
-          },
-          { ovr = { size = const [FLEX, hdpx(70)], minWidth = 0 } })
+        ? mkGradText(utf8ToUpper(loc("skins/applied"))).__update({ ...rewardBtnSize, padding = hdpx(10) })
+      : applyBtn
   }
 }
 
@@ -562,7 +585,7 @@ function mkSkinRewardIcon(startDelay, unitName, skinName) {
     children = [
       mkHighlight(startDelay, aRewardIconFlareScale)
       {
-        size = [skinIconSize, skinIconSize]
+        size = skinIconSize
         rendObj = ROBJ_BOX
         fillColor = 0xFFFFFFFF
         borderRadius = skinIconBroderRadius
@@ -577,24 +600,27 @@ function mkBlueprintPlateTexts(r, rStyle) {
   let available = Computed(@() servProfile.get()?.blueprints?[id] ?? 0)
   let total = Computed(@() serverConfigs.get()?.allBlueprints?[id].targetCount ?? 1)
   let unitRank = Computed(@() serverConfigs.get()?.allUnits?[id]?.mRank)
-  let hasBlueprintUnit = Computed(@() id in campMyUnits.get())
+  let isCompleted = Computed(@() id in campMyUnits.get()
+    && getBlueprintMax(id, servProfile.get(), serverConfigs.get()) == 0)
+  let barColor = Computed(@() getBlueprintBarColor(id, serverConfigs.get()))
+  let progressBarText = mkProgressBarText(r, rStyle)
 
   return {
     size = FLEX
     children = [
       @() {
-        watch = [available, total, hasBlueprintUnit]
+        watch = [available, total, isCompleted, barColor]
         size = FLEX
         valign = ALIGN_BOTTOM
         flow = FLOW_VERTICAL
-        children = hasBlueprintUnit.get()
+        children = isCompleted.get()
           ? [
               mkProgressLabel(total.get(), total.get(), rStyle)
-              mkProgressBar(total.get(), total.get())
+              mkProgressBar(total.get(), total.get(), barColor.get())
             ]
           : [
               mkProgressLabel(available.get(), total.get(), rStyle)
-              mkProgressBar(available.get(), total.get())
+              mkProgressBar(available.get(), total.get(), barColor.get())
           ]
       }
       @() {
@@ -608,7 +634,7 @@ function mkBlueprintPlateTexts(r, rStyle) {
           unitRank.get()
             ? mkGradRankSmall(unitRank.get()).__update({ fontSize = rStyle.textStyle.fontSize, pos = const [0, hdpx(5)] })
             : null
-          mkProgressBarText(r, rStyle)
+          progressBarText
         ]
       }
     ]
@@ -624,24 +650,29 @@ function mkBlueprintRewardIcon(rewardInfo, rStyle) {
 
   let size = getRewardPlateSize(reward.slots, rStyle)
   let unit = Computed(@() serverConfigs.get()?.allUnits?[rewardInfo.id])
+  let highlightBlock = {
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    children = mkHighlight(startDelay, aRewardIconFlareScale)
+  }
+  let plateBg = mkRewardPlateBg(reward, rStyle)
+  let plateImage = mkRewardPlateImage(reward, rStyle)
+  let plateTexts = mkBlueprintPlateTexts(reward, rStyle)
+  let animProps = mkRewardAnimProps(startDelay, aRewardIconSelfScale)
 
   return @() {
     watch = unit
     size
     children = [
-      {
-        hplace = ALIGN_CENTER
-        vplace = ALIGN_CENTER
-        children = mkHighlight(startDelay, aRewardIconFlareScale)
-      }
+      highlightBlock
       {
         children = [
-          mkRewardPlateBg(reward, rStyle)
-          mkRewardPlateImage(reward, rStyle)
-          mkBlueprintPlateTexts(reward, rStyle)
+          plateBg
+          plateImage
+          plateTexts
           unit.get() == null ? null : mkRewardUnitFlag(unit.get(), rStyle)
         ]
-      }.__update(mkRewardAnimProps(startDelay, aRewardIconSelfScale))
+      }.__update(animProps)
     ]
   }
 }
@@ -693,10 +724,10 @@ let mkPuzzlePieceBlock = @(size, rarity, startDelay, children, ovr = {})
   mkPuzzlePiece(size, rarity,
     {
       padding = pieceBorder,
-      children
-    }.__update(
-      mkRewardAnimProps(startDelay, aRewardIconSelfScale),
-      ovr))
+      children,
+      ...mkRewardAnimProps(startDelay, aRewardIconSelfScale),
+      ...ovr,
+    })
 
 let mkPieceImage = @(cId, rarity, puzzleIdx, pieceIdx, startDelay) function() {
   let { puzzleScreenSize, puzzleTexSize } = getCollectionPresentation(cId)
@@ -742,6 +773,60 @@ function mkPuzzlePieceIcon(rInfo) {
     ]
   }
 }
+
+function mkPieceText(rInfo) {
+  let { startDelay, id, subId, count, gType } = rInfo
+  let [ _, puzzleIdxStr = "0" ] = subId.split(":")
+  let key = $"{gType}_{id}_{subId}"
+  let isBtnVisible = getRewardBtnVisibleWatched(key)
+  let browseBtn = textButtonPrimary(
+    utf8ToUpper(loc("msgbox/btn_browse")),
+    function() {
+      let eventId = activeCollectionsCfg.get()?[id].meta.event_id
+      openSeasonScene(eventId, COLLECTION_TAB)
+      deferOnce(function() {
+        openPuzzle(toIntegerSafe(puzzleIdxStr))
+        if (needShowAdd.get() && activeUnseenPurchasesGroup.get().list.len() > 0) {
+          close()
+          addWndOpenedFor.set(activeUnseenPurchasesGroup.get().list.map(@(_) true))
+        } else
+          markPurchasesSeen(activeUnseenPurchasesGroup.get().list.keys())
+      })
+    },
+    { ovr = rewardBtnSize })
+  let label = mkRewardLabelMultiline(startDelay + aPieceAppearTime,
+    gType == G_PIECE ? loc("collection/pieceDrop/new")
+      : count == 1 ? loc("collection/pieceDrop/duplicate")
+      : loc("collection/pieceDrop/duplicateProgressAdd", { count }))
+  let animProps = mkRewardAnimProps(
+    rInfo.startDelay,
+    aRewardIconSelfScale,
+    {
+      onStart = @() isBtnVisible.set(true)
+      disableSound = true
+    })
+
+  return function() {
+    let eventId = activeCollectionsCfg.get()?[id].meta.event_id
+    return {
+      watch = [activeCollectionsCfg, isBtnVisible, shouldShowEventMechanics]  
+      key
+      size = const [rewBlockWidth, SIZE_TO_CONTENT]
+      flow = FLOW_VERTICAL
+      halign = ALIGN_CENTER
+      gap = hdpx(10)
+      children = [
+        label
+        eventId == null || !isSeasonTabVisible[COLLECTION_TAB].calcByEventId(eventId) ? null
+          : !isBtnVisible.get() ? rewardBtnSize
+          : browseBtn
+      ]
+      ...animProps
+    }
+  }
+}
+
+let pieceCtors = { mkIcon = mkPuzzlePieceIcon, mkText = mkPieceText }
 
 let rewardCtors = {
   currency = {
@@ -805,6 +890,7 @@ let rewardCtors = {
   skin = {
     mkIcon = @(rewardInfo) mkSkinRewardIcon(rewardInfo.startDelay, rewardInfo.id, rewardInfo.subId)
     mkText = @(rewardInfo) {
+      key = $"{rewardInfo.id}_{rewardInfo.subId}"
       size = const [rewBlockWidth, SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
       halign = ALIGN_CENTER
@@ -813,6 +899,13 @@ let rewardCtors = {
         mkRewardLabelMultiline(rewardInfo.startDelay, loc("skins/title", { unitName = getUnitName(rewardInfo.id) }))
         mkSkinEquipButton(rewardInfo.id, rewardInfo.subId)
       ]
+      ...mkRewardAnimProps(
+        rewardInfo.startDelay,
+        aRewardIconSelfScale,
+        {
+          onStart = @() getRewardBtnVisibleWatched($"{rewardInfo.id}_{rewardInfo.subId}").set(true)
+          disableSound = true
+        })
     }
   }
   blueprint = {
@@ -844,14 +937,11 @@ let rewardCtors = {
     mkIcon = @(rewardInfo) mkDecalIconWithAnim(rewardInfo.startDelay, rewardInfo.id)
     mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, loc("reward/decal"))
   }
-  piece = {
-    mkIcon = mkPuzzlePieceIcon
-    mkText = @(rInfo) mkRewardLabelMultiline(rInfo.startDelay + aPieceAppearTime, loc("collection/pieceDrop/new"))
-  }
-  piece_dbl = {
-    mkIcon = mkPuzzlePieceIcon
-    mkText = @(rInfo) mkRewardLabelMultiline(rInfo.startDelay + aPieceAppearTime,
-      rInfo.count == 1 ? loc("collection/pieceDrop/duplicate") : loc("collection/pieceDrop/duplicateProgressAdd", { count = rInfo.count }))
+  piece = pieceCtors
+  piece_dbl = pieceCtors
+  bpPoints = {
+    mkIcon = @(rewardInfo) mkRewardIcon(rewardInfo.startDelay, $"{getPointsPresentation(rewardInfo.count).img}", 1.43, 1.4)
+    mkText = @(rewardInfo) mkRewardLabel(rewardInfo.startDelay, decimalFormat(rewardInfo.count))
   }
 }
 
@@ -904,51 +994,39 @@ function mkUnitPlate(unitInfo) {
   let key = unseenPurchaseUnitPlateKey(unitInfo.id)
 
   let p = getUnitPresentation(unit)
+  let onHoverTooltip = withTooltip(stateFlags, key, @() {
+    content = unitInfoPanel({}, mkUnitTitle, Watched(unit)),
+    flow = FLOW_HORIZONTAL
+  })
+  let onDetachTooltip = tooltipDetach(stateFlags)
+  let highlight = mkHighlight(startDelay, aUnitPlateFlareScale)
+  let plateBlock = {
+    size = [ unitPlateWidth, unitPlateHeight ]
+    children = {
+      size = [ unitPlateWidth, unitPlateHeight ]
+      vplace = ALIGN_BOTTOM
+      children = [
+        mkUnitBg(unit)
+        mkUnitImage(unit)
+        mkUnitTexts(unit, loc(p.locId))
+        mkUnitInfo(unit)
+      ]
+    }
+  }.__update(mkRewardAnimProps(startDelay, aUnitPlateSelfScale))
   return @(){
     key
     watch = stateFlags
     size = [ unitPlateWidth, unitPlateHeight ]
     behavior = Behaviors.Button
-    onElemState = withTooltip(stateFlags, key, @() {
-      content = unitInfoPanel({}, mkUnitTitle, Watched(unit)),
-      flow = FLOW_HORIZONTAL
-    })
-    onDetach = tooltipDetach(stateFlags)
+    onElemState = onHoverTooltip
+    onDetach = onDetachTooltip
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
-      mkHighlight(startDelay, aUnitPlateFlareScale)
-      {
-        size = [ unitPlateWidth, unitPlateHeight ]
-        children = {
-          size = [ unitPlateWidth, unitPlateHeight ]
-          vplace = ALIGN_BOTTOM
-          children = [
-            mkUnitBg(unit)
-            mkUnitImage(unit)
-            mkUnitTexts(unit, loc(p.locId))
-            mkUnitInfo(unit)
-          ]
-        }
-      }.__update(mkRewardAnimProps(startDelay, aUnitPlateSelfScale))
+      highlight
+      plateBlock
     ]
   }
-}
-
-function mkUnitButton(unitInfo, myUnits, cUnitInProgress, cSlots, cCampaignSlots) {
-  if (unitInfo?.unit == null)
-    return null
-  let btnOvr = { ovr = { size = [unitPlateWidth, hdpx(70)], margin = const [hdpx(10),0,0,0] } }
-  if (cCampaignSlots != null) {
-    let onClick = @() openSelectUnitToSlotWnd(unitInfo.id, unseenPurchaseUnitPlateKey(unitInfo.id))
-    return cSlots.findindex(@(slot) slot.name == unitInfo.id) == null
-      ? textButtonPrimary(utf8ToUpper(loc("mainmenu/btnEquip")), onClick, btnOvr)
-      : textButtonCommon(utf8ToUpper(loc("mainmenu/btnEquipped")), null, btnOvr)
-  }
-
-  return cUnitInProgress == null && unitInfo.id in myUnits && !myUnits[unitInfo.id].isCurrent
-    ? textButtonPrimary(utf8ToUpper(loc("mainmenu/btnEquip")), @() setCurrentUnit(unitInfo.id), btnOvr)
-    : null
 }
 
 function mkBattleModEventUnitPlate(bmp, reward) {
@@ -1273,6 +1351,8 @@ let mkTapToContinueText = @(startDelay, lootboxAmount) {
 
 function skipAnims() {
   isAnimFinished.set(true)
+  foreach(rewBtnWatch in rewardBtnVisibility)
+    rewBtnWatch.set(true)
   anim_skip(ANIM_SKIP)
   anim_skip_delay(ANIM_SKIP_DELAY)
 }

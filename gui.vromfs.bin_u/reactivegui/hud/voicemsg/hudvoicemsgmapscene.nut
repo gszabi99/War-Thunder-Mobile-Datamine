@@ -166,7 +166,7 @@ function crosshairDrawing() {
   let pointerSize = selectedObject.get() != null ? pointerObjectPickerSizePx : pointerCoordsPickerSizePx
   return {
     watch = selectedObject
-    size = [ pointerSize, pointerSize ]
+    size = pointerSize
     rendObj = ROBJ_VECTOR_CANVAS
     fillColor = 0
     commands = [].extend(
@@ -192,7 +192,7 @@ let crosshair = @() {
 let pointingInputProcessor = mkTacticalMapPointingInputProcessor(mapCoords)
 
 let tacticalMap = {
-  size = [ mapSizePx, mapSizePx ]
+  size = mapSizePx
   vplace = ALIGN_CENTER
   rendObj = ROBJ_TACTICAL_MAP
   children = [

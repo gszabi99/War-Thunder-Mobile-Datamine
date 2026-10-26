@@ -5,6 +5,7 @@ from "%rGui/components/infoButton.nut" import infoTooltipButton
 from "%rGui/components/textInput.nut" import textInput
 from "%rGui/options/optCtrlType.nut" import OCT_TEXTINPUT, OCT_MULTISELECT, OCT_MULTISELECT_MASK
 from "%rGui/options/tooltipCtors.nut" import mkOvrTooltipContent
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 const textColor = 0xFFFFFFFF
@@ -54,28 +55,30 @@ let mkCustomCheck = @(isChecked, isActive, customValue) {
 function mkFilterIcon(onClick, iconSize, img) {
   let stateFlags = Watched(0)
   let size = max(closeIconSize, clearIconSize)
+  let iconChild = {
+    size = iconSize
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#{img}:{iconSize}:{iconSize}")
+  }
   return @() {
     watch = stateFlags
-    size = [size, size]
+    size = size
     rendObj = ROBJ_SOLID
     color = 0xFF303030
     behavior = Behaviors.Button
     onClick
     onElemState = @(s) stateFlags.set(s)
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    children = {
-      size = [iconSize, iconSize]
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_CENTER
-      rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#{img}:{iconSize}:{iconSize}")
-    }
+    children = iconChild
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
   }
 }
 
 function mkCheckBtn(text, isChecked, hasValues, onClick, customValue = null, inBoxValue = null) {
   let stateFlags = Watched(0)
   let needShowText = !customValue && !inBoxValue
+  let customCheck = customValue ? mkCustomCheck(isChecked, hasValues, customValue) : null
   return @() {
     watch = stateFlags
     behavior = Behaviors.Button
@@ -86,7 +89,7 @@ function mkCheckBtn(text, isChecked, hasValues, onClick, customValue = null, inB
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
     children = [
-      customValue ? mkCustomCheck(isChecked, hasValues, customValue)
+      customValue ? customCheck
         : mkCheckIcon(isChecked, hasValues, stateFlags.get() & S_ACTIVE ? 0.5 : 1.0, inBoxValue)
       !needShowText ? null
         : {
@@ -104,6 +107,14 @@ function mkCheckBtn(text, isChecked, hasValues, onClick, customValue = null, inB
 
 function allToggleBtn(allValues, activeFiltersW, handleClick) {
   let stateFlags = Watched(0)
+  let allIconChild = {
+    size = const [checkIconSize, checkIconSize]
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#icon_filter_all.svg:{checkIconSize}:{checkIconSize}:P")
+    keepAspect = true
+  }
 
   let needMakeAllDisabled = Computed(function() {
     let total = allValues.len()
@@ -127,17 +138,8 @@ function allToggleBtn(allValues, activeFiltersW, handleClick) {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       padding = inputPadding
-      children = {
-        size = const [checkIconSize, checkIconSize]
-        hplace = ALIGN_CENTER
-        vplace = ALIGN_CENTER
-        rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#icon_filter_all.svg:{checkIconSize}:{checkIconSize}:P")
-        keepAspect = true
-      }
-      transform = {
-        scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
-      }
+      children = allIconChild
+      ...mkPressTransitionScale(stateFlags.get())
     }
   }
 }
@@ -237,6 +239,8 @@ function mkUnitsFilter(options, allUnits, closeFilters, clearFilters, fillFilter
   foreach (o in options)
     watch.append(o?.value, o?.allValues)
   watch = watch.filter(@(w) w != null)
+  let closeIcon = mkFilterIcon(closeFilters, closeIconSize, "btn_close.svg")
+  let clearIcon = mkFilterIcon(clearFilters, clearIconSize, "btn_trash.svg")
 
   return function() {
     local filtered = allUnits.get()
@@ -283,9 +287,9 @@ function mkUnitsFilter(options, allUnits, closeFilters, clearFilters, fillFilter
           gap = hdpx(10)
           halign = ALIGN_RIGHT
           children = [
-            mkFilterIcon(closeFilters, closeIconSize, "btn_close.svg")
+            closeIcon
 
-            { size = FLEX }
+            const { size = FLEX }
 
             {
               rendObj = ROBJ_TEXT
@@ -298,7 +302,7 @@ function mkUnitsFilter(options, allUnits, closeFilters, clearFilters, fillFilter
               text = loc("options/clearIt")
             }.__update(fontTiny)
 
-            mkFilterIcon(clearFilters, clearIconSize, "btn_trash.svg")
+            clearIcon
           ]
         }
       ]

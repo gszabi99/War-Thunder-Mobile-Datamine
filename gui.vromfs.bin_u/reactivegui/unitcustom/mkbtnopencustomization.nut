@@ -38,20 +38,21 @@ function mkBtnOpenCustomization(unitW, ovr) {
       && name in campMyUnits.get()
       && (name in unseenSkins.get() || unseenDecals.get().len() > 0)
   })
+  let children = [
+    mkCustomButton(customizationBtnContent,
+      @() (unitSizes.get()?[unitW.get().name] ?? 0) == 0 ? openUnitCustom()
+        : openDownloadAddonsWnd([], [unitW.get().name], "unitDownloadInfoBlock", {}, "openUnitCustom"),
+      mergeStyles(buttonStyles.COMMON, ovr))
+    @() {
+      watch = hasUnseenMark
+      margin = hdpx(10)
+      hplace = ALIGN_RIGHT
+      children = hasUnseenMark.get() ? priorityUnseenMark : null
+    }
+  ]
   return @() {
     watch = unitW
-    children = !unitW.get() ? null : [
-      mkCustomButton(customizationBtnContent,
-        @() (unitSizes.get()?[unitW.get().name] ?? 0) == 0 ? openUnitCustom()
-          : openDownloadAddonsWnd([], [unitW.get().name], "unitDownloadInfoBlock", {}, "openUnitCustom"),
-        mergeStyles(buttonStyles.COMMON, ovr))
-      @() {
-        watch = hasUnseenMark
-        margin = hdpx(10)
-        hplace = ALIGN_RIGHT
-        children = hasUnseenMark.get() ? priorityUnseenMark : null
-      }
-    ]
+    children = !unitW.get() ? null : children
   }
 }
 

@@ -1,8 +1,16 @@
 from "%globalsDarg/darg_library.nut" import *
 from "adjust" import setOnlineAdjust, getAdjustAdId
 from "appsFlyer" import startAppsFlyer, enableTCFCollection, startAppsFlyerConnector
+from "tikTok" import startTikTok
 from "auth_wt" import getCountryCode
 from "blkGetters" import get_local_custom_settings_blk
+from "consent.gaijin" import isConsentInited, initConsent, isConsentGiven, isVendorDataLoaded, loadVendorData,
+  unloadVendorData, getAllIABVendors, getAllGoogleVendors, getAllCustomVendors, setConsentForAll, saveConsentData,
+  getAllPurposes, getAllSpecialPurposes, getAllFeatures, hasConsentForPurpose, setConsentForPurpose, hasPurposeLIT,
+  setPurposeLIT, getVendorListByPurposeId, getVendorListBySpecialPurposeId, getVendorListByFeatureId,
+  isAbleConsentForIABVendor, hasConsentForIABVendor, setConsentForIABVendor, isAbleConsentForGoogleVendor,
+  hasConsentForGoogleVendor, setConsentForGoogleVendor, isAbleLITForIABVendor, hasVendorLIT, setVendorLIT,
+  getAllDataCategories
 from "console" import register_command
 from "dagor.shell" import shell_execute
 from "dagor.workcycle" import resetTimeout
@@ -18,17 +26,6 @@ from "%rGui/language.nut" import iso639p1LngId
 from "%rGui/login/stateIDFA.nut" import isIdfaDenied
 from "%rGui/style/stdAnimations.nut" import WND_REVEAL
 from "types" import String
-
-
-
-
-let { isConsentInited, initConsent, isConsentGiven, isVendorDataLoaded, loadVendorData,
-  unloadVendorData, getAllIABVendors, getAllGoogleVendors, getAllCustomVendors, setConsentForAll, saveConsentData,
-  getAllPurposes, getAllSpecialPurposes, getAllFeatures, hasConsentForPurpose, setConsentForPurpose, hasPurposeLIT,
-  setPurposeLIT, getVendorListByPurposeId, getVendorListBySpecialPurposeId, getVendorListByFeatureId,
-  isAbleConsentForIABVendor, hasConsentForIABVendor, setConsentForIABVendor, isAbleConsentForGoogleVendor,
-  hasConsentForGoogleVendor, setConsentForGoogleVendor, isAbleLITForIABVendor, hasVendorLIT, setVendorLIT,
-  getAllDataCategories } = require_optional("consent.gaijin") ?? require("consent")
 
 
 
@@ -129,8 +126,11 @@ let onFinishCbById = {
   [CONTINUE_LOGIN] = @() isTcfConsentAllowLogin.set(true)
 }
 
+const TIKTOK_IAB_VENDOR_ID = 986
+
 function setupAnalytics() {
-  logC("TCF Consent, analytics starting:")
+  let isGiven = isConsentGiven()
+  logC($"analytics starting, consent given: {isGiven}")
   let hasPurpose4 = hasConsentForPurpose(4)
   let hasPurpose5 = hasConsentForPurpose(5)
   let firebaseConsent = {
@@ -145,6 +145,9 @@ function setupAnalytics() {
   enableTCFCollection(true)
   startAppsFlyer()
   startAppsFlyerConnector()
+  let hasTikTokConsent = isGiven && hasConsentForIABVendor(TIKTOK_IAB_VENDOR_ID)
+  if (hasTikTokConsent)
+    startTikTok()
   setOnlineAdjust(true)
   getAdjustAdId()
 }
@@ -222,13 +225,10 @@ function onConsentDataSaved() {
   dataCache.clear()
 }
 
-function onSaveConsentDataEvent(p) {
+eventbus_subscribe("consent.gaijin.onSaveConsentData", function(p) {
   logC($"TCF Consent onSaveConsentData ({p.success})")
   onConsentDataSaved()
-}
-eventbus_subscribe("consent.gaijin.onSaveConsentData", onSaveConsentDataEvent)
-
-eventbus_subscribe("consent.onSaveConsentData", onSaveConsentDataEvent)
+})
 
 function doOnFinish() {
   onFinishCbById?[doOnceOnFinishCbId.get()]?()
@@ -356,14 +356,10 @@ function onInited(isSuccess) {
   else
     onVendorDataLoaded(true)
 }
-function onLoadVendorDataEvent(p) {
+eventbus_subscribe("consent.gaijin.onLoadVendorData", function(p) {
   logC($"TCF Consent onLoadVendorData ({p.success})")
   onVendorDataLoaded(p.success)
-}
-
-eventbus_subscribe("consent.gaijin.onLoadVendorData", onLoadVendorDataEvent)
-
-eventbus_subscribe("consent.onLoadVendorData", onLoadVendorDataEvent)
+})
 
 function startInit(onCloseOrErrorCbId, isForProfileWnd) {
   isOpenForProfileWnd.set(isForProfileWnd)
@@ -375,14 +371,10 @@ function startInit(onCloseOrErrorCbId, isForProfileWnd) {
   else
     onInited(true)
 }
-function onInitEvent(p) {
+eventbus_subscribe("consent.gaijin.onInit", function(p) {
   logC($"TCF Consent onInit ({p.success})")
   onInited(p.success)
-}
-
-eventbus_subscribe("consent.gaijin.onInit", onInitEvent)
-
-eventbus_subscribe("consent.onInit", onInitEvent)
+})
 
 function onReadyTcf(isReady) {
   if (isReady) {

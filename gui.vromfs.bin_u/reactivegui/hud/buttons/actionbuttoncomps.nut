@@ -15,7 +15,7 @@ let svgNullable = @(image, size) ((image ?? "") == "") ? null
 let countHeightUnderActionItem = (0.4 * touchButtonSize).tointeger()
 let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(50), ph(-50)] }
 
-let isAvailableActionItem = @(actionItem) (actionItem?.available ?? true)
+let isAvailableActionItem = @[pure, nodiscard](actionItem) (actionItem?.available ?? true)
   && ((actionItem?.count ?? 0) != 0 || actionItem?.control)
 
 function mkActionItemProgress(actionItem, isAvailable, isPrimaryStyle, btnSize) {
@@ -28,8 +28,14 @@ function mkActionItemProgress(actionItem, isAvailable, isPrimaryStyle, btnSize) 
   let hasCooldown = isAvailable && cooldownDuration > 0
   let cooldown = hasCooldown ? (1 - (cooldownDuration / max(time, 1))) : 1
   let trigger = $"action_cd_finish_{id}"
+  let progressFillAnim = [
+    { prop = AnimProp.fValue, from = cooldown, to = 1.0, duration = cooldownDuration, play = true
+      onFinish = @() isAvailable ? anim_start(trigger) : null
+    }
+  ]
+  let primaryStyleLoadingOvr = isPrimaryStyle ? { image = Picture($"ui/gameuiskin#hud_movement_stop2_bg_loading.svg:P") } : {}
   let item = {
-    size = [btnSize, btnSize]
+    size = btnSize
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#hud_movement_stop2_bg.svg:{btnSize}:{btnSize}:P")
     color = hudLightBlackColor
@@ -43,12 +49,8 @@ function mkActionItemProgress(actionItem, isAvailable, isPrimaryStyle, btnSize) 
       bgColor = btnBgStyle.get().empty
       fValue = isPrimaryStyle ? 0 : 1.0
       key = $"action_bg_{id}_{endTime}_{time}_{isAvailable}"
-      animations = [
-        { prop = AnimProp.fValue, from = cooldown, to = 1.0, duration = cooldownDuration, play = true
-          onFinish = @() isAvailable ? anim_start(trigger) : null
-        }
-      ]
-    }.__update(isPrimaryStyle ? { image = Picture($"ui/gameuiskin#hud_movement_stop2_bg_loading.svg:P") } : {})
+      animations = progressFillAnim
+    }.__update(primaryStyleLoadingOvr)
 
     transform = {}
     animations = [{ prop = AnimProp.scale, duration = 0.2,
@@ -81,7 +83,7 @@ let mkActionItemCount = @(count, scale = 1) count < 0 ? null
 let mkActionItemImage = @(getImage, isAvailable, size) @() {
   watch = unitType
   rendObj = ROBJ_IMAGE
-  size = [size, size]
+  size = size
   image = svgNullable(getImage(unitType.get()), size)
   keepAspect = KEEP_ASPECT_FIT
   color = !isAvailable ? imageDisabledColor : imageColor
@@ -102,7 +104,7 @@ let mkActionItemEditView = @(image) {
   flow = FLOW_VERTICAL
   children = [
     {
-      size = [touchButtonSize, touchButtonSize]
+      size = touchButtonSize
       rendObj = ROBJ_BOX
       fillColor = hudTransparentColor
       borderColor
@@ -111,7 +113,7 @@ let mkActionItemEditView = @(image) {
       halign = ALIGN_CENTER
       children = {
         rendObj = ROBJ_IMAGE
-        size = [touchButtonSize, touchButtonSize]
+        size = touchButtonSize
         image = Picture($"{image}:{touchButtonSize}:{touchButtonSize}:P")
         keepAspect = KEEP_ASPECT_FIT
         color = imageColor

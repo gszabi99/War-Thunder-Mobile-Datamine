@@ -13,6 +13,7 @@ let unitTypes = {
 let eventUnitTypes = {
   event_april_2025 = unitTypes.SAILBOAT
   april_event_2026 = unitTypes.WALKER
+  halloween_2026 = unitTypes.SAILBOAT
 }
 
 let bitsOrder = ["AIR", "TANK", "SHIP", "HELICOPTER", "BOAT", "SUBMARINE", "SAILBOAT", "WALKER"]
@@ -42,6 +43,10 @@ function calcUnitTypeFromTags(tagsCfg) {
     return unitTypes.TANK
   if ("walker" in tags)
     return unitTypes.WALKER
+
+
+
+
   if (tags?.type == "aircraft")
     return unitTypes.AIR
   return tags?.type ?? unitTypes.AIR

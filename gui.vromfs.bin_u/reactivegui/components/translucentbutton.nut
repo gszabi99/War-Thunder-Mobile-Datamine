@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/slotBar/slotBarConsts.nut" import unitPlateSize
 from "%rGui/style/stdColors.nut" import hoverColor
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 const translucentButtonsHeight = hdpx(96)
@@ -54,14 +55,12 @@ function mkBtnBg(bitMask, color, size) {
     rendObj = ROBJ_9RECT
     image = Picture($"ui/gameuiskin#{gradientSvgs?[bitMask] ?? defaultGradientSvg}:{h}:P")
     color
-    texOffs = [h / 2, h / 2]
-    screenOffs = [h / 2, h / 2]
+    texOffs = h / 2
+    screenOffs = h / 2
   }
 }
 
 let btnSound = { click = "click" }
-let btnTransitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
-let btnScale = @(sf) { scale = (sf & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
 
 function translucentButton(icon, onClick, text = null, mkChild = null, ovr = {}) {
   let stateFlags = Watched(0)
@@ -77,8 +76,6 @@ function translucentButton(icon, onClick, text = null, mkChild = null, ovr = {})
     onElemState = @(v) stateFlags.set(v)
     sound = btnSound
     onClick
-    transform = btnScale(stateFlags.get())
-    transitions = btnTransitions
     onAttach = ovr?.onAttach
     onDetach = ovr?.onDetach
     children = {
@@ -110,6 +107,7 @@ function translucentButton(icon, onClick, text = null, mkChild = null, ovr = {})
         mkChild?(stateFlags.get())
       ]
     }
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 
@@ -122,13 +120,11 @@ function translucentIconButton(image, onClick, imageSize = PRIMARY.iconSize, bgS
     onElemState = @(v) stateFlags.set(v)
     sound = btnSound
     onClick
-    transform = btnScale(stateFlags.get())
-    transitions = btnTransitions
     children = [
       mkBtnBg(RIGHT, bgColor(stateFlags.get()), bgSize)
       {
         rendObj = ROBJ_IMAGE
-        size = [imageSize, imageSize]
+        size = imageSize
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
         color = fgColor(stateFlags.get())
@@ -137,6 +133,7 @@ function translucentIconButton(image, onClick, imageSize = PRIMARY.iconSize, bgS
       }
       mkChild?(stateFlags.get())
     ]
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 
@@ -159,9 +156,9 @@ function mkSlotButton(mkChildren, onClick, ovr = {}) {
         children = mkChildren(stateFlags.get())
       }
     ]
-    transform = btnScale(stateFlags.get())
-    transitions = btnTransitions
-  }.__update(ovr)
+    ...mkPressTransitionScale(stateFlags.get())
+    ...ovr
+  }
 }
 
 let translucentTextSlotButton = @(text, onClick, child = null, ovr = {})
@@ -182,7 +179,7 @@ let translucentImgSlotButton = @(image, onClick, child = null, ovr = {})
     return [
       {
         rendObj = ROBJ_IMAGE
-        size = [imgSize, imgSize]
+        size = imgSize
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
         color = fgColor(sf)

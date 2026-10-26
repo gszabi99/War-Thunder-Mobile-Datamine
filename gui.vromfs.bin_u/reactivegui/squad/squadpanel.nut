@@ -5,7 +5,8 @@ import "%appGlobals/decorators/avatars.nut" as getAvatarImage
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/profileStates.nut" import myUserId
 from "%appGlobals/squadState.nut" import isInSquad, squadMembers, squadMembersOrder, isInvitedToSquad, squadId,
-  squadLeaderCampaign, squadLeaderReadyCheckTime, getMemberMaxMRank
+  squadLeaderCampaign, squadLeaderReadyCheckTime, getMemberMaxMRank, canInviteToSquad
+from "%rGui/chat/chatState.nut" import mkChatHasUnseen
 from "%rGui/components/gradTexts.nut" import mkGradRank
 from "%rGui/components/imageButton.nut" import framedImageBtn
 from "%rGui/components/spinner.nut" import mkSpinner
@@ -16,7 +17,10 @@ from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicIn
 from "%rGui/contacts/contactsState.nut" import openContacts, SEARCH_TAB, FRIENDS_TAB
 from "%rGui/gameModes/gameModeState.nut" import maxSquadSize
 import "%rGui/invitations/invitationsBtn.nut" as invitationsBtn
+from "%rGui/squad/squadChatState.nut" import squadChatId
+import "%rGui/squad/squadChatWnd.nut" as squadChatWnd
 import "%rGui/squad/squadMemberInfoWnd.nut" as squadMemberInfoWnd
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import hoverColor
 
 
@@ -57,7 +61,7 @@ let mkAvatar = @(info, onlineStatus, isInviteeV) function() {
   let { avatar = null } = info.get()?.decorators
   return {
     watch = [info, onlineStatus]
-    size = [avatarSize, avatarSize]
+    size = avatarSize
     rendObj = ROBJ_IMAGE
     image = Picture($"{getAvatarImage(avatar)}:{avatarSize}:{avatarSize}:P")
     picSaturate = isInviteeV ? 0.3 : 1.0
@@ -77,13 +81,13 @@ let mkStatus = @(image, color = 0xFFFFFFFF) {
 let memberStatus = @(isLeader, state, onlineStatus) function() {
   if (state.get() == null)
     return { watch = state }
-  let isInBattle = state.get()?.inBattle ?? false
+  let { inBattle = false } = state.get()
   let isWaitReadyCheck = squadLeaderReadyCheckTime.get() > (state.get()?.readyCheckTime ?? 0)
   return {
     watch = [isLeader, state, onlineStatus, squadLeaderReadyCheckTime]
     hplace = ALIGN_RIGHT
     vplace = ALIGN_TOP
-    children = isInBattle ? mkStatus("in_battle.svg")
+    children = inBattle ? mkStatus("in_battle.svg")
       : isLeader.get() ? mkStatus("icon_party_leader.svg", 0xFFFFFF00)
       : state.get()?.ready && !isWaitReadyCheck ? mkStatus("icon_party_ready.svg")
       : !onlineStatus.get() ? mkStatus("icon_party_offline.svg")
@@ -109,33 +113,34 @@ function mkMember(uid) {
   let onlineStatus = mkContactOnlineStatus(userId)
   let rank = Computed(@() getMemberMaxMRank(state.get(), squadLeaderCampaign.get(), serverConfigs.get()))
   let stateFlags = Watched(0)
+  let memberStatusRow = memberStatus(isLeader, state, onlineStatus)
+  let rankMark = mkRank(rank)
 
   return @() {
     watch = [isMe, isInvitee, stateFlags]
     key = uid
-    size = [memberSize, memberSize]
+    size = memberSize
     padding = 3 * borderWidth
     rendObj = ROBJ_SOLID
     color = stateFlags.get() & S_HOVER ? hoverColor
       : isMe.get() ? myBorderColor
       : borderColor
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
 
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
     clickableInfo = loc("squad/member_info")
     onClick = @(evt) squadMemberInfoWnd(uid, evt.targetRect)
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
 
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
       mkAvatar(info, onlineStatus, isInvitee.get())
-      memberStatus(isLeader, state, onlineStatus)
-      mkRank(rank)
+      memberStatusRow
+      rankMark
       isInvitee.get() ? spinner : null
     ]
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
   }
 }
 
@@ -146,10 +151,11 @@ function refreshMembersInfo() {
 
 function squadMembersList() {
   let children = squadMembersOrder.get().map(mkMember)
-  for(local i = children.len(); i < maxSquadSize.get(); i++)
-    children.append(squadInviteButton)
+  if (canInviteToSquad.get())
+    for(local i = children.len(); i < maxSquadSize.get(); i++)
+      children.append(squadInviteButton)
   return {
-    watch = [maxSquadSize, squadMembersOrder]
+    watch = [maxSquadSize, squadMembersOrder, canInviteToSquad]
     key = refreshMembersInfo
     onAttach = @() setInterval(1, refreshMembersInfo)
     onDetach = @() clearTimer(refreshMembersInfo)
@@ -166,25 +172,65 @@ let squadHeader = {
   valign = ALIGN_CENTER
 }.__update(fontTinyAccentedShaded)
 
-let buttonsRow = @(inSquad) {
+function mkChatUnseenMark(chatId) {
+  let hasUnseen = mkChatHasUnseen(chatId)
+  return @() {
+    watch = hasUnseen
+    pos = const [pw(50), ph(-50)]
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+    children = hasUnseen.get() ? priorityUnseenMark : null
+  }
+}
+
+let chatBtn = @() {
+  watch = squadChatId
+  children = squadChatId.get() == null ? null
+    : framedImageBtn("ui/gameuiskin#chat.svg",
+        @(evt) squadChatWnd(evt.targetRect),
+        {
+          sound = const { click  = "meta_squad_button" }
+          size = [memberSize, memberSize]
+        },
+        mkChatUnseenMark(squadChatId))
+}
+
+let mkButtonsRow = @(needInvites) @() {
+  watch = isInSquad
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap
   children = [
     invitationsBtn
-    contactsBtn
-    inSquad ? squadMembersList : squadInviteButton
+    chatBtn
+    needInvites ? contactsBtn : null
+    isInSquad.get() ? squadMembersList : squadInviteButton
   ]
 }
 
-return @() {
-  watch = [isInSquad, maxSquadSize]
-  flow = FLOW_VERTICAL
-  halign = ALIGN_CENTER
-  gap = hdpx(7)
-  children = maxSquadSize.get() <= 1 ? null
-    : [
-        isInSquad.get() ? squadHeader : null
-        buttonsRow(isInSquad.get())
-      ]
+function mkSquadPanel(needInvites) {
+  let buttonsRow = mkButtonsRow(needInvites)
+  return @() {
+    watch = [isInSquad, maxSquadSize]
+    flow = FLOW_VERTICAL
+    halign = ALIGN_CENTER
+    gap = hdpx(7)
+    children = maxSquadSize.get() <= 1 ? null
+      : [
+          isInSquad.get() ? squadHeader : null
+          buttonsRow
+        ]
+  }
+}
+
+let squadPanelShortButtons = mkButtonsRow(false)
+let squadPanelShort = @() {
+  watch = isInSquad
+  children = isInSquad.get() ? squadPanelShortButtons : null
+}
+
+return {
+  squadPanelFull = mkSquadPanel(true)
+  squadPanelNoInvites = mkSquadPanel(true)
+  squadPanelShort
 }

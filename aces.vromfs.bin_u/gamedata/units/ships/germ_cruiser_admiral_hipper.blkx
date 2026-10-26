@@ -2468,7 +2468,6 @@
           3
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "barrelDP": "tt_01_dm",
         "breechDP": "tt_01_dm",
         "startFx": "start_torpedo",
@@ -2537,7 +2536,6 @@
           9
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "barrelDP": "tt_03_dm",
         "breechDP": "tt_03_dm",
         "startFx": "start_torpedo",
@@ -2606,7 +2604,6 @@
           6
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "barrelDP": "tt_02_dm",
         "breechDP": "tt_02_dm",
         "startFx": "start_torpedo",
@@ -2675,7 +2672,6 @@
           12
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "barrelDP": "tt_04_dm",
         "breechDP": "tt_04_dm",
         "startFx": "start_torpedo",
@@ -4350,7 +4346,6 @@
                 3
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "barrelDP": "tt_01_dm",
               "breechDP": "tt_01_dm",
               "startFx": "start_torpedo",
@@ -4419,7 +4414,6 @@
                 9
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "barrelDP": "tt_03_dm",
               "breechDP": "tt_03_dm",
               "startFx": "start_torpedo",
@@ -4488,7 +4482,6 @@
                 6
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "barrelDP": "tt_02_dm",
               "breechDP": "tt_02_dm",
               "startFx": "start_torpedo",
@@ -4557,7 +4550,6 @@
                 12
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "barrelDP": "tt_04_dm",
               "breechDP": "tt_04_dm",
               "startFx": "start_torpedo",
@@ -6229,7 +6221,6 @@
                 3
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "barrelDP": "tt_01_dm",
               "breechDP": "tt_01_dm",
               "startFx": "start_torpedo",
@@ -6298,7 +6289,6 @@
                 9
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "barrelDP": "tt_03_dm",
               "breechDP": "tt_03_dm",
               "startFx": "start_torpedo",
@@ -6367,7 +6357,6 @@
                 6
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "barrelDP": "tt_02_dm",
               "breechDP": "tt_02_dm",
               "startFx": "start_torpedo",
@@ -6436,7 +6425,6 @@
                 12
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "barrelDP": "tt_04_dm",
               "breechDP": "tt_04_dm",
               "startFx": "start_torpedo",

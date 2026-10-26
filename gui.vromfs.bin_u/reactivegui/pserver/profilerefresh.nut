@@ -156,6 +156,11 @@ isLoggedIn.subscribe(function(v) {
 
 mnGenericSubscribe("profile", function(ev) {
   let func = ev?.func
+  
+  
+  if (func == "clan_update" || func == "clan_requests_decline")
+    return
+
   if (func == "updateConfig")
     isConfigsChanged.set(true)
   else

@@ -33,13 +33,15 @@ function setBattleDataToClientEcs(bd) {
     isFound = true
   })
 
-  if (!isFound)
-    ecs.g_entity_mgr.createEntity("hangar_battle_data",
+  if (!isFound) {
+    ecs.g_entity_mgr.createEntitySync("hangar_battle_data",
       {
         server_player__userId = [myUserId.get(), ecs.TYPE_UINT64]
         isBattleDataReceived = true
         hangarBattleData = bd
-      }, @(_e) logBD("Created wtm_server_player with battle data."))
+      })
+    logBD("Created hangar_battle_data entity with battle data.")
+  }
 
   lastHangarUnitBattleData.set(bd)
 }

@@ -24,7 +24,7 @@ let discountsToApply = Computed(function() {
   return res
 })
 
-function calculateNewGoodsDiscount(discountedPrice, originalPercent, newPrice) {
+function [pure, nodiscard] calculateNewGoodsDiscount(discountedPrice, originalPercent, newPrice) {
   if (originalPercent >= 100.0)
     return originalPercent
 
@@ -36,7 +36,7 @@ function calculateNewGoodsDiscount(discountedPrice, originalPercent, newPrice) {
   return (1.0 - newPrice / initialPrice) * 100.0
 }
 
-function applyDiscount(goods, discountsToApplyV) {
+function [pure, nodiscard] applyDiscount(goods, discountsToApplyV) {
   let { id, price, discountInPercent } = goods
   let personalFinalPrice = discountsToApplyV?[id]
   if (personalFinalPrice == null)

@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 let closeWndBtnSize = evenPx(40)
 let margin = closeWndBtnSize / 2
@@ -6,7 +7,7 @@ let lineWidth = evenPx(6)
 let l = 50.0 * lineWidth / closeWndBtnSize
 let r = 100.0 - l
 let btnBase = {
-  size = [closeWndBtnSize, closeWndBtnSize]
+  size = closeWndBtnSize
   margin
   hplace = ALIGN_RIGHT
   rendObj = ROBJ_VECTOR_CANVAS
@@ -25,11 +26,10 @@ function closeWndBtn(onClick, override = {}) {
     watch = stateFlags
     color = stateFlags.get() & S_HOVER ? 0xFFFFFFFF : 0xFF808080
     onElemState = @(sf) stateFlags.set(sf)
-    onClick
-
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
-  }, override)
+    onClick,
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
+    ...override
+  })
 }
 
 return {

@@ -1,0 +1,40 @@
+{
+  "entity": {
+    "_template": "spot_light",
+    "transform": [
+      [
+        -0.803739,
+        -0.556231,
+        -0.211216
+      ],
+      [
+        0.580502,
+        -0.655263,
+        -0.483371
+      ],
+      [
+        0.231042,
+        -0.905139,
+        1.50449
+      ],
+      [
+        464.623,
+        171.107,
+        3551.03
+      ]
+    ],
+    "light__nightly": false,
+    "light__brightness": 3000.0,
+    "light__max_radius": 110.0,
+    "light__color": [
+      255,
+      255,
+      245,
+      255
+    ],
+    "spot_light__inner_attenuation": 0.1,
+    "spot_light__shadows": false,
+    "light__affect_volumes": false,
+    "spot_light__cone_angle": 80.0
+  }
+}

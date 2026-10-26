@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/string.nut" import utf8ToUpper
-from "%rGui/battlePass/battlePassState.nut" import buyBPLevel, isBpActive, BP_PROGRESS_UNLOCK_ID, curStage
+from "%rGui/battlePass/battlePassObsoleteState.nut" import buyBPLevel, isBpActive, BP_PROGRESS_UNLOCK_ID, curStage
 from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle
 from "%rGui/components/msgBox.nut" import msgBoxText
 from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate
@@ -13,6 +13,10 @@ let textOvr = { size = FLEX_H }
 function purchaseContent(stageInfo) {
   let needReward = Computed(@() !stageInfo.isPaid || (stageInfo.isPaid && isBpActive.get()))
   let nextLevel = Computed(@() stageInfo.loopMultiply > 0 ? curStage.get() + 1 : stageInfo.progress)
+  let levelUpText = msgBoxText(utf8ToUpper(loc("battlepass/level_up")), textOvr.__merge(fontMedium))
+  let smallOvr = textOvr.__merge(fontSmall)
+  let rewardsListText = msgBoxText(loc("mainmenu/rewardsList"), textOvr.__merge(fontTiny))
+  let costText = msgBoxText(loc("mainmenu/cost"), textOvr)
   return @() {
     watch = [needReward, nextLevel]
     flow = FLOW_VERTICAL
@@ -20,12 +24,12 @@ function purchaseContent(stageInfo) {
     gap = hdpx(10)
     halign = ALIGN_CENTER
     children = [
-      msgBoxText(utf8ToUpper(loc("battlepass/level_up")), textOvr.__merge(fontMedium))
-      msgBoxText(" ".join([loc("mainmenu/btnLevelBoost"), nextLevel.get()]), textOvr.__merge(fontSmall))
-      needReward.get() ? msgBoxText(loc("mainmenu/rewardsList"), textOvr.__merge(fontTiny)) : null
+      levelUpText
+      msgBoxText(" ".join([loc("mainmenu/btnLevelBoost"), nextLevel.get()]), smallOvr)
+      needReward.get() ? rewardsListText : null
       !needReward.get() || stageInfo.viewInfo == null ? null
         : mkRewardPlate(stageInfo.viewInfo, bpCardStyle)
-      msgBoxText(loc("mainmenu/cost"), textOvr)
+      costText
     ]
   }
 }

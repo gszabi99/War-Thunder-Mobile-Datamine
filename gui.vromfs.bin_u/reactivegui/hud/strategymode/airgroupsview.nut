@@ -14,6 +14,7 @@ from "%rGui/hud/strategyMode/style.nut" import getNodeStyle, airGroupIcons, airG
 from "%rGui/hud/weaponsButtonsAnimations.nut" import mkActionGlare
 from "%rGui/options/options/hudStyleOptions.nut" import isHudPrimaryStyle
 from "%rGui/style/hudColors.nut" import hudGrayColorFade, hudTealColorFade, hudBrownRedFade
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 local prevAirGroupHealth = {}
@@ -21,24 +22,23 @@ local prevAirGroupHealth = {}
 function mkPathNodeSmall(nodeType, nodeSize, isActive) {
   let { icon, color } = getNodeStyle(nodeType)
   let iconSize = (nodeSize * 0.75).tointeger()
+  let iconChild = {
+    rendObj = ROBJ_IMAGE
+    size = iconSize
+    image = Picture($"{icon}:{iconSize}:{iconSize}:P")
+    color = isActive ? imageColor : color
+    keepAspect = KEEP_ASPECT_FIT
+  }
   return @() {
     watch = btnBgStyle
     rendObj = ROBJ_BOX
-    size = [nodeSize, nodeSize]
+    size = nodeSize
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     borderColor = borderNoAmmoColor
     borderWidth = borderWidth
     fillColor = isActive ? btnBgStyle.get().broken : btnBgStyle.get().ready
-    children = [
-      {
-        rendObj = ROBJ_IMAGE
-        size = [iconSize, iconSize]
-        image = Picture($"{icon}:{iconSize}:{iconSize}:P")
-        color = isActive ? imageColor : color
-        keepAspect = KEEP_ASPECT_FIT
-      }
-    ]
+    children = iconChild
   }
 }
 
@@ -58,7 +58,7 @@ function mkStrategyCommandsUi(data) {
           halign = ALIGN_CENTER
           valign = ALIGN_BOTTOM
           rendObj = ROBJ_TEXT
-          size = [nodeSize, nodeSize]
+          size = nodeSize
           text = "..."
         }.__update(fontSmall))
       }
@@ -182,6 +182,19 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
   let canClick = Computed(@() selectableIndex == -1 ? true : strategyDataRest.get()?[selectableIndex].groupNotDead)
   let buttonSize = airGroupButtonHeight
   let iconSize = (buttonSize * 0.65).tointeger()
+  let flashBox = {
+    size = FLEX
+    rendObj = ROBJ_BOX
+    fillColor = 0
+    animations = [{ prop = AnimProp.fillColor, from = hudBrownRedFade, duration = 1.5, easing = OutCubic, trigger }]
+  }
+  let unitIcon = {
+    rendObj = ROBJ_IMAGE
+    size = iconSize
+    image = Picture($"{icon}:{iconSize}:{iconSize}:P")
+    keepAspect = KEEP_ASPECT_FIT
+    color = imageColor
+  }
   return @() {
     watch = [isSelected, canClick, stateFlags, actionItem, isHudPrimaryStyle, btnBgStyle]
     size = [airGroupButtonWidth, SIZE_TO_CONTENT]
@@ -193,15 +206,8 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
     onClick = @() canClick.get() ? selectGroup(selectableIndex) : null
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = OutQuad }]
     children = [
-      {
-        size = FLEX
-        rendObj = ROBJ_BOX
-        fillColor = 0
-        animations = [{ prop = AnimProp.fillColor, from = hudBrownRedFade, duration = 1.5, easing = OutCubic, trigger }]
-      }
+      flashBox
       {
         flow = FLOW_HORIZONTAL
         vplace = ALIGN_BOTTOM
@@ -211,7 +217,7 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
         children = [
           unitUi
           {
-            size = [buttonSize, buttonSize]
+            size = buttonSize
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
             children = [
@@ -230,13 +236,7 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
                 borderColor = isSelected.get() ? borderColor : hudGrayColorFade
                 fillColor = actionItem == null ? btnBgStyle.get().ready : btnBgStyle.get().empty
                 children = [
-                  {
-                    rendObj = ROBJ_IMAGE
-                    size = [iconSize, iconSize]
-                    image = Picture($"{icon}:{iconSize}:{iconSize}:P")
-                    keepAspect = KEEP_ASPECT_FIT
-                    color = imageColor
-                  }
+                  unitIcon
                   actionItem == null ? null : {
                     rendObj = ROBJ_TEXT
                     halign = ALIGN_CENTER
@@ -251,6 +251,7 @@ function mkUnitSelectable(selectableIndex, icon, border, unitUi, actionItem, tri
         ]
       }
     ]
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 
@@ -269,12 +270,13 @@ function mkPlaneSelectable(airGroupIndex, actionItem) {
 }
 
 function mkShipSelectable() {
+  let shipDebugInfo = mkShipDebugInfo()
   return @() {
     watch = optDebugDraw
     flow = FLOW_HORIZONTAL
     children = [
       !optDebugDraw.get() ? null
-        : mkShipDebugInfo()
+        : shipDebugInfo
         mkUnitSelectable(-1, iconShip, borderWidth, shipUi, null, null)
     ]
   }

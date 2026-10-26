@@ -23,7 +23,7 @@ const imgRadar = "ui/gameuiskin#hud_switcher_radar.svg"
 
 let mkImg = @(image, size) {
   rendObj = ROBJ_IMAGE
-  size = [size, size]
+  size = size
   image = Picture($"{image}:{size}:{size}:P")
   keepAspect = KEEP_ASPECT_FIT
 }
@@ -72,6 +72,7 @@ function mkRadarToggleButton(scale) {
 
   let imgSize = scaleEven(toggleBtnH * imgMultiplier, scale)
   let imgActiveSize = scaleEven(toggleActiveBtnH * imgMultiplier, scale)
+  let borderCommand = mkRadarBorderCommand(0, 0)
   return function() {
     let mapImgSize = showRadarOverMapW.get() ? imgSize : imgActiveSize
     let radarImgSize = showRadarOverMapW.get() ? imgActiveSize : imgSize
@@ -97,7 +98,7 @@ function mkRadarToggleButton(scale) {
             lineWidth = 0
             fillColor = 0x80000000
             borderColor = 0x80000000
-            commands = mkRadarBorderCommand(0, 0)
+            commands = borderCommand
             children = mkImg(imgMap, mapImgSize).__update({ opacity = showRadarOverMapW.get() ? 0.5 : 1 })
           }
         }
@@ -118,7 +119,7 @@ function mkRadarToggleButton(scale) {
             lineWidth = 0
             fillColor = 0x80000000
             borderColor = 0x80000000
-            commands = mkRadarBorderCommand(0, 0)
+            commands = borderCommand
             children = mkImg(imgRadar, radarImgSize).__update({ opacity = showRadarOverMapW.get() ? 1 : 0.5 })
           }
         }

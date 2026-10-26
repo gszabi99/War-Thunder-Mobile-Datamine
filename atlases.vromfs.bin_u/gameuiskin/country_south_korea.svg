@@ -1,1 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 51.33"><defs><style>.cls-1{fill:#1f191a;}.cls-2{fill:#fff;}.cls-3{fill:#e6042d;}.cls-4{fill:#00317b;}</style></defs><rect class="cls-2" y="0" width="84" height="51.49"/><g><g><path class="cls-3" d="m43.02,12.66c-5.13,0-9.56,2.97-11.68,7.29-.48,1.86-.74,5.22,2.65,7.46,4.89,3.24,8.59-1.11,9.27-2.32.68-1.21,3.92-3.44,7.84-1.76,3.78,1.63,4.33,5.76,3.01,9.04,1.2-1.97,1.89-4.28,1.89-6.75,0-7.17-5.81-12.97-12.98-12.97Z"/><path class="cls-4" d="m51.11,23.34c-3.92-1.69-7.16.55-7.84,1.76s-4.38,5.55-9.27,2.32c-3.39-2.24-3.13-5.6-2.65-7.46-.84,1.72-1.31,3.64-1.31,5.69,0,7.17,5.81,12.97,12.98,12.97,4.7,0,8.82-2.5,11.09-6.23,1.32-3.29.78-7.41-3.01-9.04h0Z"/></g><g><rect class="cls-1" x="13.9" y="9.56" width="12.99" height="2.11" transform="translate(.16 21.52) rotate(-55.81)"/><rect class="cls-1" x="16.6" y="11.37" width="12.99" height="2.11" transform="translate(-.15 24.55) rotate(-55.81)"/><rect class="cls-1" x="19.37" y="13.16" width="12.99" height="2.11" transform="translate(-.43 27.62) rotate(-55.81)"/></g><g><rect class="cls-1" x="57.06" y="8.36" width="2.11" height="5.93" transform="translate(3.54 34.28) rotate(-33.84)"/><rect class="cls-1" x="60.92" y="14.22" width="2.11" height="5.93" transform="translate(.93 37.42) rotate(-33.84)"/><rect class="cls-1" x="61.7" y="5.92" width="2.11" height="12.99" transform="translate(3.71 37.05) rotate(-33.84)"/><rect class="cls-1" x="62.47" y="4.63" width="2.11" height="6.05" transform="translate(6.5 36.67) rotate(-33.84)"/><rect class="cls-1" x="66.34" y="10.58" width="2.11" height="5.94" transform="translate(3.87 39.82) rotate(-33.84)"/></g><g><rect class="cls-1" x="19.37" y="34.25" width="2.11" height="12.76" transform="translate(-19.17 18.26) rotate(-33.84)"/><rect class="cls-1" x="24.8" y="30.63" width="2.11" height="12.76" transform="translate(-16.23 20.67) rotate(-33.84)"/><rect class="cls-1" x="20.13" y="32.82" width="2.11" height="6.05" transform="translate(-16.38 17.87) rotate(-33.84)"/><rect class="cls-1" x="24.01" y="38.76" width="2.11" height="5.94" transform="translate(-18.99 21.03) rotate(-33.84)"/></g><g><polygon class="cls-1" points="55.42 41.81 57.17 43 60.53 38.04 58.78 36.89 55.42 41.81"/><polygon class="cls-1" points="64.47 32.25 62.73 31.07 59.4 35.97 61.16 37.13 64.47 32.25"/><polygon class="cls-1" points="67.17 34.06 65.43 32.87 62.11 37.75 63.87 38.91 67.17 34.06"/><polygon class="cls-1" points="58.12 43.61 59.87 44.8 63.25 39.83 61.48 38.67 58.12 43.61"/><polygon class="cls-1" points="69.93 35.85 68.19 34.67 64.86 39.56 66.62 40.73 69.93 35.85"/><polygon class="cls-1" points="60.88 45.42 62.63 46.59 65.99 41.64 64.24 40.48 60.88 45.42"/></g></g></svg>
+<svg viewBox="0 0 84 51.33" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<style>.cls-1{fill:#1f191a;}.cls-2{fill:#fff;}.cls-3{fill:#e6042d;}.cls-4{fill:#00317b;}</style>
+</defs>
+<rect class="cls-2" width="84" height="51.49"/>
+<path class="cls-3" d="m43.02 12.66c-5.13 0-9.56 2.97-11.68 7.29-0.48 1.86-0.74 5.22 2.65 7.46 4.89 3.24 8.59-1.11 9.27-2.32s3.92-3.44 7.84-1.76c3.78 1.63 4.33 5.76 3.01 9.04 1.2-1.97 1.89-4.28 1.89-6.75 0-7.17-5.81-12.97-12.98-12.97z"/>
+<path class="cls-4" d="m51.11,23.34c-3.92-1.69-7.16.55-7.84,1.76s-4.38,5.55-9.27,2.32c-3.39-2.24-3.13-5.6-2.65-7.46-.84,1.72-1.31,3.64-1.31,5.69,0,7.17,5.81,12.97,12.98,12.97,4.7,0,8.82-2.5,11.09-6.23,1.32-3.29.78-7.41-3.01-9.04h0Z"/>
+<rect class="cls-1" transform="translate(.16 21.52) rotate(-55.81)" x="13.9" y="9.56" width="12.99" height="2.11"/>
+<rect class="cls-1" transform="translate(-.15 24.55) rotate(-55.81)" x="16.6" y="11.37" width="12.99" height="2.11"/>
+<rect class="cls-1" transform="translate(-.43 27.62) rotate(-55.81)" x="19.37" y="13.16" width="12.99" height="2.11"/>
+<rect class="cls-1" transform="translate(3.54 34.28) rotate(-33.84)" x="57.06" y="8.36" width="2.11" height="5.93"/>
+<rect class="cls-1" transform="translate(.93 37.42) rotate(-33.84)" x="60.92" y="14.22" width="2.11" height="5.93"/>
+<rect class="cls-1" transform="translate(3.71 37.05) rotate(-33.84)" x="61.7" y="5.92" width="2.11" height="12.99"/>
+<rect class="cls-1" transform="translate(6.5 36.67) rotate(-33.84)" x="62.47" y="4.63" width="2.11" height="6.05"/>
+<rect class="cls-1" transform="translate(3.87 39.82) rotate(-33.84)" x="66.34" y="10.58" width="2.11" height="5.94"/>
+<rect class="cls-1" transform="translate(-19.17 18.26) rotate(-33.84)" x="19.37" y="34.25" width="2.11" height="12.76"/>
+<rect class="cls-1" transform="translate(-16.23 20.67) rotate(-33.84)" x="24.8" y="30.63" width="2.11" height="12.76"/>
+<rect class="cls-1" transform="translate(-16.38 17.87) rotate(-33.84)" x="20.13" y="32.82" width="2.11" height="6.05"/>
+<rect class="cls-1" transform="translate(-18.99 21.03) rotate(-33.84)" x="24.01" y="38.76" width="2.11" height="5.94"/>
+<polygon class="cls-1" points="55.42 41.81 57.17 43 60.53 38.04 58.78 36.89"/>
+<polygon class="cls-1" points="64.47 32.25 62.73 31.07 59.4 35.97 61.16 37.13"/>
+<polygon class="cls-1" points="67.17 34.06 65.43 32.87 62.11 37.75 63.87 38.91"/>
+<polygon class="cls-1" points="58.12 43.61 59.87 44.8 63.25 39.83 61.48 38.67"/>
+<polygon class="cls-1" points="69.93 35.85 68.19 34.67 64.86 39.56 66.62 40.73"/>
+<polygon class="cls-1" points="60.88 45.42 62.63 46.59 65.99 41.64 64.24 40.48"/>
+</svg>
+.73 69.93 35.85"/><polygon class="cls-1" points="60.88 45.42 62.63 46.59 65.99 41.64 64.24 40.48 60.88 45.42"/></g></g></svg>

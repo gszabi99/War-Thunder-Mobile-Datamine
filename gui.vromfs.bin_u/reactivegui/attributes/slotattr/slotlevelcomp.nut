@@ -15,10 +15,10 @@ let levelBg = {
   commands = [[VECTOR_POLY, 0, 100, 20, 0, 100, 0, 100, 100, 0, 100]]
 }
 
-let getSlotLevelIcon = @(level) format("ui/gameuiskin#slot_rank_%02d.svg", (level / STEP_ICON_COUNT) + 1)
+let getSlotLevelIcon = @[pure, nodiscard](level) format("ui/gameuiskin#slot_rank_%02d.svg", (level / STEP_ICON_COUNT) + 1)
 
 let mkSlotLevelIcon = @(level, imageSize, ovr = {}) {
-  size = [imageSize, imageSize]
+  size = imageSize
   rendObj = ROBJ_IMAGE
   hplace = ALIGN_LEFT
   color = slotExpColor

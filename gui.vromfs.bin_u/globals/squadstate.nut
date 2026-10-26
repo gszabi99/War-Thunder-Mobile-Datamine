@@ -10,9 +10,16 @@ let squadMembers = hardPersistWatched("squadMembers", {})
 let squadOnline = hardPersistWatched("squadOnline", {})
 let squadMembersOrder = hardPersistWatched("squadMembersOrder", [])
 let isReady = hardPersistWatched("squadIsReady", false)
+let squadDataToSet = hardPersistWatched("squadDataToSet", {})
+let squadDataRemote = hardPersistWatched("squadDataRemote", {})
 let squadLen = Computed(@() squadMembers.get().len())
 let squadMyState = Computed(@() squadMembers.get()?[myUserId.get()])
 let squadLeaderState = Computed(@() squadMembers.get()?[squadId.get()])
+let squadApplications = hardPersistWatched("squadApplications", [])
+let squadApplicationsInProgress = hardPersistWatched("squadApplicationsInProgress", {})
+let seenSquadApplications = hardPersistWatched("seenSquadApplications", {})
+let myMembershipRequestsInProgress = hardPersistWatched("myMembershipRequestsInProgress", {})
+let myMembershipRequestsRemote = hardPersistWatched("myMembershipRequestsRemote", {})
 
 let isInSquad = Computed(@() squadId.get() != null)
 let isSquadLeader = Computed(@() squadId.get() == myUserId.get())
@@ -20,8 +27,14 @@ let isLeavingWillDisbandSquad = Computed(@() squadLen.get() == 1 || (squadLen.ge
 let canInviteToSquad = Computed(@() !isInSquad.get() || isSquadLeader.get())
 let myClustersRTT = hardPersistWatched("myClustersRTT", {})
 let queueDataCheckTime = hardPersistWatched("queueDataCheckTime", 0)
+let squadData = Computed(@() !isSquadLeader.get() || squadDataToSet.get().len() == 0
+  ? squadDataRemote.get()
+  : squadDataRemote.get().__merge(squadDataToSet.get()))
+let myMembershipRequests = Computed(@() { ...myMembershipRequestsRemote.get(), ...myMembershipRequestsInProgress.get() })
+let unseenSquadApplications = Computed(@() squadApplications.get()
+  .reduce(@(res, id) id in seenSquadApplications.get() ? res : res.$rawset(id, true), {}))
 
-function getMemberMaxMRank(memberInfo, campaign, srvConfigs) {
+function [pure, nodiscard] getMemberMaxMRank(memberInfo, campaign, srvConfigs) {
   let unitInfos = memberInfo?.unitInfos
   if (unitInfos != null)
     return (unitInfos?[campaign] ?? []).reduce(@(res, u) max(res, srvConfigs?.allUnits[u.name].mRank ?? 0), -1)
@@ -60,5 +73,17 @@ return {
   myClustersRTT
   queueDataCheckTime
 
+  squadData
+  squadDataRemote
+  squadDataToSet
+
   getMemberMaxMRank
+
+  squadApplications
+  squadApplicationsInProgress
+  seenSquadApplications
+  unseenSquadApplications
+  myMembershipRequests
+  myMembershipRequestsRemote
+  myMembershipRequestsInProgress
 }

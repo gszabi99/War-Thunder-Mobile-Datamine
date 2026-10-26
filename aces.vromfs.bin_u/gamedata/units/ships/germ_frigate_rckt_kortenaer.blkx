@@ -871,7 +871,6 @@
         "weaponType": "rockets",
         "emitter": "bone_rocket_09",
         "flash": "bone_rocket_09",
-        "ammoDpGenFmt": "bone_rocket_%02d_dm",
         "emitterGenRange": [
           9,
           12
@@ -991,7 +990,6 @@
           2
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -1034,7 +1032,6 @@
           4
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -1418,7 +1415,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_09",
               "flash": "bone_rocket_09",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 9,
                 12
@@ -1538,7 +1534,6 @@
                 2
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -1581,7 +1576,6 @@
                 4
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -1949,7 +1943,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_09",
               "flash": "bone_rocket_09",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 9,
                 12
@@ -2069,7 +2062,6 @@
                 2
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -2112,7 +2104,6 @@
                 4
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,

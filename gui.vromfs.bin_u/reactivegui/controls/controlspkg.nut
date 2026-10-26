@@ -14,8 +14,8 @@ const borderOffs = 25
 let iconSize = fontSmall.fontSize.tointeger()
 let textWithIconWidth = textWidth - iconSize
 
-let mkSizeByParent = @(size) [pw(100.0 * size[0] / bgSize[0]), ph(100.0 * size[1] / bgSize[1])]
-let mkLines = @(lines) lines.map(@(v, i) 100.0 * v / bgSize[i % 2])
+let mkSizeByParent = @[pure, nodiscard](size) [pw(100.0 * size[0] / bgSize[0]), ph(100.0 * size[1] / bgSize[1])]
+let mkLines = @[pure, nodiscard](lines) lines.map(@(v, i) 100.0 * v / bgSize[i % 2])
 let keyWithCombination = @(v) $"{gamepadShortcuts["ID_COMBINATION"]} {v}"
 
 function mergeWithDefaults(cfg) {
@@ -47,7 +47,7 @@ let mkGamepadIcon = @(id) {
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = {
-      size = [iconSize, iconSize]
+      size = iconSize
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#{id}.svg:{iconSize}:{iconSize}:P")
       keepAspect = true
@@ -77,7 +77,7 @@ let mkTwoRowBlock = @(text, isLeft) {
   ]
 }.__update(fontTiny)
 
-function getHintText(hint, texts) {
+function [pure, nodiscard] getHintText(hint, texts) {
   if (hint.key instanceof String)
     return { sc = texts?[hint.key] }
   let list = []

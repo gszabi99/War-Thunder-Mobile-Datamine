@@ -21,7 +21,11 @@ require("%rGui/onlyAfterLogin.nut")
 const SAVE_ID = "hudTuning"
 const MAX_HISTORY_LEN = 200
 const VERSION = 2
-let allTuningUnitTypes = [TANK, AIR, SHIP, SUBMARINE, SAILBOAT, WALKER]
+let allTuningUnitTypes = [TANK, AIR,
+
+
+
+  SHIP, SUBMARINE, SAILBOAT, WALKER]
   .reduce(@(res, v) res.__update({ [v] = true }), {})
 
 let tuningUnitType = mkWatched(persist, "tuningUnitType", null)
@@ -61,7 +65,7 @@ let canShowRadar = mkWatched(persist, "canShowRadar", true)
 let shouldShowAirTacticalMap = Computed(@() isGtRace.get() && isInBattle.get())
 let shouldShowRadar = Computed(@() canShowRadar.get() && !shouldShowAirTacticalMap.get())
 
-let mkEmptyTuningState = @() { transforms = {}, options = {} }
+let mkEmptyTuningState = @[nodiscard]() { transforms = {}, options = {} }
 
 selectedId.subscribe(@(v) v != null ? isAllElemsOptionsOpened.set(false) : null)
 isAllElemsOptionsOpened.subscribe(@(v) v ? selectedId.set(null) : null)
@@ -204,6 +208,8 @@ register_command(function() {
 
 return {
   allTuningUnitTypes
+  presetsSaved
+  savePreset
   hudTuningStateByUnitType
   isTuningOpened
   tuningUnitType

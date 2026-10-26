@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/battlePass/battlePassState.nut" import receiveBpRewards, isBpRewardsInProgress, selectedStage,
+from "%rGui/battlePass/battlePassObsoleteState.nut" import receiveBpRewards, isBpRewardsInProgress, selectedStage,
   bpLevelPrice, tutorialFreeMarkIdx
 from "%rGui/battlePass/bpCardsStyle.nut" import bpCardStyle, bpCardPadding, bpCardHeight, bpCardMargin
 from "%rGui/battlePass/passRewardsListComp.nut" import hoverCard, cardBorder, cardContent, bgCard
@@ -15,32 +15,28 @@ function mkCard(stageInfo, idx) {
       receiveBpRewards(progress)
   }
   let cardWidth = getRewardPlateSize(viewInfo?.slots ?? 1, bpCardStyle)[0] + 2 * bpCardPadding[1]
+  let cardBody = {
+    key = $"battle_pass_reward_{idx}" 
+    size = [cardWidth, bpCardHeight]
+    rendObj = ROBJ_IMAGE
+    image = bgCard
+
+    behavior = Behaviors.Button
+    onElemState = @(v) stateFlags.set(v)
+    onClick
+    xmbNode = {}
+    sound = const { click  = "click" }
+
+    children = [
+      hoverCard(stateFlags)
+      cardBorder(cardWidth, selectedStage, progress)
+      cardContent(stageInfo, stateFlags, isBpRewardsInProgress)
+    ]
+  }
   return @(){
     size = [cardWidth, SIZE_TO_CONTENT]
     watch = [selectedStage, bpLevelPrice]
-    flow = FLOW_VERTICAL
-    gap = hdpx(10)
-    vplace = ALIGN_TOP
-    children = [
-      {
-        key = $"battle_pass_reward_{idx}" 
-        size = [cardWidth, bpCardHeight]
-        rendObj = ROBJ_IMAGE
-        image = bgCard
-
-        behavior = Behaviors.Button
-        onElemState = @(v) stateFlags.set(v)
-        onClick
-        xmbNode = {}
-        sound = { click  = "click" }
-
-        children = [
-          hoverCard(stateFlags)
-          cardBorder(cardWidth, selectedStage, progress)
-          cardContent(stageInfo, stateFlags, isBpRewardsInProgress)
-        ]
-      }
-    ]
+    children = cardBody
   }
 }
 

@@ -107,6 +107,30 @@ let getResultText = @(resultNum, isFFA) resultNum == null ? ""
 
 let textBgColor = Watched(whiteBgColor)
 let showText = Watched(false)
+let textBgColorTransitions = [{ prop = AnimProp.color, duration = changeTextBgColorDuration }]
+let textBounceAnimations = [
+  const { prop = AnimProp.scale, from = [0.7, 0.1], to = [0.8, 0.1], duration = textBlockBounceDuration / 3,
+    easing = InQuad, play = true }
+  const { prop = AnimProp.scale, from = [0.8, 0.1], to = [1.0, 1.0], duration = textBlockBounceDuration / 3,
+    easing = InQuad, play = true, delay = textBlockBounceDuration / 3 }
+  { prop = AnimProp.scale, from = const [1.0, 1.0], to = const [1.05, 1.2], duration = textBlockBounceDuration / 3,
+    easing = CosineFull, play = true, delay = (textBlockBounceDuration / 3) * 2,
+    onFinish = @() textBgColor.set(missionResult.get() == GO_WIN || isGtFFA.get() ? winBgColor : failBgColor) }
+]
+let textNotShownBlock = {
+  size = const [pw(60), hdpx(50)]
+  rendObj = ROBJ_9RECT
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  image = gradTranspDoubleSideX
+  texOffs = [0, gradDoubleTexOffset]
+  screenOffs = const [0, hdpx(250)]
+  transform = const { scale = [0.2, 1] }
+  animations = [
+    { prop = AnimProp.scale, to = const [1, 1], duration = textAppearanceDuration,
+      easing = InQuad, delay = textAppearanceDelay, play = true, onFinish = @() showText.set(true) }
+  ]
+}
 let animatedTextBlock = @() {
   watch = [showText, textBgColor]
   size = FLEX
@@ -116,18 +140,10 @@ let animatedTextBlock = @() {
   color = textBgColor.get()
   image = gradTranspDoubleSideX
   texOffs = [0 , gradDoubleTexOffset]
-  screenOffs = [0, hdpx(250)]
+  screenOffs = const [0, hdpx(250)]
   transform = {}
-  transitions = [{ prop = AnimProp.color, duration = changeTextBgColorDuration }]
-  animations = [
-    { prop = AnimProp.scale, from = [0.7, 0.1], to = [0.8, 0.1], duration = textBlockBounceDuration / 3,
-      easing = InQuad, play = true }
-    { prop = AnimProp.scale, from = [0.8, 0.1], to = [1.0, 1.0], duration = textBlockBounceDuration / 3,
-      easing = InQuad, play = true, delay = textBlockBounceDuration / 3 }
-    { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.05, 1.2], duration = textBlockBounceDuration / 3,
-      easing = CosineFull, play = true, delay = (textBlockBounceDuration / 3) * 2,
-      onFinish = @() textBgColor.set(missionResult.get() == GO_WIN || isGtFFA.get() ? winBgColor : failBgColor) }
-  ]
+  transitions = textBgColorTransitions
+  animations = textBounceAnimations
   children =
     showText.get()
       ? @() {
@@ -137,26 +153,14 @@ let animatedTextBlock = @() {
           transform = {}
           animations = opacityAnims(missionResultOpacityDuration, 0)
             .append({
-              prop = AnimProp.scale, from = [1.0, 1.0], to = [1.15, 1.15], duration = missionResultScaleDuration,
+              prop = AnimProp.scale, from = const [1.0, 1.0], to = const [1.15, 1.15], duration = missionResultScaleDuration,
               easing = InQuad, play = true
             })
         }.__update(fontVeryLargeShaded)
-      : {
-          size = const [pw(60), hdpx(50)]
-          rendObj = ROBJ_9RECT
-          halign = ALIGN_CENTER
-          valign = ALIGN_CENTER
-          image = gradTranspDoubleSideX
-          texOffs = [0, gradDoubleTexOffset]
-          screenOffs = [0, hdpx(250)]
-          transform = { scale = [0.2, 1] }
-          animations = [
-            { prop = AnimProp.scale, to = [1, 1], duration = textAppearanceDuration,
-              easing = InQuad, delay = textAppearanceDelay, play = true, onFinish = @() showText.set(true) }
-          ]
-        }
+      : textNotShownBlock
 }
 
+let borderColorTransitions = [{ prop = AnimProp.borderColor, duration = borderColorTransitionDuration}]
 let resultTextBlock = @() {
   watch = textBgColor
   rendObj = ROBJ_BOX
@@ -164,7 +168,7 @@ let resultTextBlock = @() {
   size = const [FLEX, hdpx(180)]
   borderColor = textBgColor.get() == whiteBgColor ? noBgColor : blackBgColor
   borderWidth = const [8, 0]
-  transitions = [{ prop = AnimProp.borderColor, duration = borderColorTransitionDuration}]
+  transitions = borderColorTransitions
 }
 
 let mkUserScoresText = @(text) {
@@ -215,7 +219,7 @@ let achievements = function(streaks) {
 }
 
 let achievementsBlock = @() {
-  watch = [debriefingData]
+  watch = debriefingData
   children = 0 < (debriefingData.get()?.streaks.len() ?? 0)
     ? mkUserScores(achievements(debriefingData.get()?.streaks), "debriefing/Unlocks")
     : null

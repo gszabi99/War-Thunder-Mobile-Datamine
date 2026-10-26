@@ -69,6 +69,20 @@ let textBlock = @() {
     : null
 }
 
+let tacticalMapPlaceholder = {
+  margin = const [hdpx(20), hdpx(40), hdpx(20), hdpx(42)]
+  size = FLEX
+  rendObj = ROBJ_TACTICAL_MAP
+}
+
+let loadingHeaderBlock = {
+  vplace = ALIGN_TOP
+  size = const [FLEX, borderSize]
+  rendObj = ROBJ_SOLID
+  color = 0xFF000000
+  children = loadingHeader
+}
+
 return @() {
   watch = curCampaign
   size = FLEX
@@ -78,8 +92,8 @@ return @() {
   image = Picture("ui/images/loading/campaign_back.avif")
   children =
   [
-    mkImage("ui/images/loading/decor2.avif", [hdpxi(300), hdpxi(150)], { pos = const [pw(50), hdpxi(200)] })
-    mkImage("ui/images/loading/decor3.avif", [hdpxi(300), hdpxi(600)], {
+    mkImage("ui/images/loading/decor2.avif", const [hdpxi(300), hdpxi(150)], const { pos = [pw(50), hdpxi(200)] })
+    mkImage("ui/images/loading/decor3.avif", const [hdpxi(300), hdpxi(600)], const {
       hplace = ALIGN_RIGHT
       vplace = ALIGN_CENTER
     })
@@ -102,11 +116,7 @@ return @() {
                         rendObj = ROBJ_IMAGE
                         image = Picture(mapBgByCamp[curCampaign.get()])
                       }
-                  {
-                    margin = const [hdpx(20), hdpx(40), hdpx(20), hdpx(42)]
-                    size = FLEX
-                    rendObj = ROBJ_TACTICAL_MAP
-                  }
+                  tacticalMapPlaceholder
                 ]
               })
             textBlock
@@ -114,17 +124,11 @@ return @() {
         }
         {
           size = FLEX
-          transform = { scale = [2.5, 1] }
+          transform = const { scale = [2.5, 1] }
           rendObj = ROBJ_IMAGE
           image = Picture("ui/images/loading/briefingshade.avif:0:P")
         }
-        {
-          vplace = ALIGN_TOP
-          size = const [FLEX, borderSize]
-          rendObj = ROBJ_SOLID
-          color = 0xFF000000
-          children = loadingHeader
-        }
+        loadingHeaderBlock
         {
           vplace = ALIGN_BOTTOM
           size = const [FLEX, borderSize]

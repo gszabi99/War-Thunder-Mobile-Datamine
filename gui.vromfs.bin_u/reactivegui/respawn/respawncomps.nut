@@ -94,7 +94,7 @@ let headerText = @(text) {
   color = textColor
 }.__update(fontTinyAccented)
 
-let header = @(children, ovr = {}) bg.__merge({
+let header = @[nodiscard](children, ovr = {}) bg.__merge({
   size = const [FLEX, headerHeight]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -102,7 +102,7 @@ let header = @(children, ovr = {}) bg.__merge({
   children
 }, ovr)
 
-let headerMarquee = @(width) {
+let headerMarquee = @[pure, nodiscard](width) {
   size = [width, SIZE_TO_CONTENT]
   behavior = Behaviors.Marquee
   delay = defMarqueeDelay
@@ -114,7 +114,7 @@ function mkBulletsLegendBlock(text, bulletIcon, width, height) {
   let legendTxt = {
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea
-    size = [bulletsLegendTxtWidth, SIZE_TO_CONTENT]
+    size = const [bulletsLegendTxtWidth, SIZE_TO_CONTENT]
     halign = ALIGN_CENTER
     color = textColor
     text
@@ -159,7 +159,7 @@ let bulletsLegend = {
 }
 
 let mkSimpleIcon = @(image) {
-  size = [imgSize, imgSize]
+  size = imgSize
   rendObj = ROBJ_IMAGE
   image = Picture($"{image}:{imgSize}:{imgSize}:P")
   keepAspect = true
@@ -176,7 +176,7 @@ function mkBeltImage(bullets, beltSize = weaponSize) {
   let list = array(TOTAL_VIEW_BULLETS).map(@(_, i) bullets[i % bullets.len()])
 
   return {
-    size = [beltSize, beltSize]
+    size = beltSize
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#shadow.avif:{beltSize}:{beltSize}:P")
     keepAspect = true
@@ -184,7 +184,7 @@ function mkBeltImage(bullets, beltSize = weaponSize) {
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
     children = list.map(@(name, idx) {
-      size = [beltImgSize, beltImgSize]
+      size = beltImgSize
       rendObj = ROBJ_IMAGE
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER

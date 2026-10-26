@@ -3,13 +3,17 @@ from "blkGetters" import get_settings_blk
 from "frp" import get_slow_subscriber_threshold_usec, set_slow_subscriber_threshold_usec
 from "nestdb" import ndbRead, ndbWrite, ndbExists
 from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/clientState/initialState.nut" import shouldDisableMenu
 
 
 const SAVE_ID = "frp.subscriber_threshold"
 let isProduction = get_cur_circuit_name().indexof("production") != null
+let thresholdMul = isProduction ? 5
+  : shouldDisableMenu ? 20 
+  : 1
 let threshold = ndbExists(SAVE_ID) ? ndbRead(SAVE_ID)
   : (get_settings_blk()?.debug.frpSlowSubscriberThresholdUsec
-      ?? (get_slow_subscriber_threshold_usec() * (isProduction ? 5 : 1)))
+      ?? (get_slow_subscriber_threshold_usec() * thresholdMul))
 if (!ndbExists(SAVE_ID))
   ndbWrite(SAVE_ID, threshold)
 

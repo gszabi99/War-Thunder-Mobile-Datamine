@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/hudColors.nut" import hudBlueColor, hudWhiteColor, hudVeilGrayColorFade, hudLightGreenColor,
   hudClassicRedColor, hudGrayColorFade
 from "%rGui/tooltip.nut" import mkButtonHoldTooltip
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "types" import String
 
 
@@ -17,7 +18,7 @@ let btnImgColor = hudWhiteColor
 let btnImgColorDisabled = hudVeilGrayColorFade
 
 let tuningBtnImg = @(image, ovr = {}) {
-  size = [imgSize, imgSize]
+  size = imgSize
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
@@ -30,24 +31,25 @@ function tuningBtn(image, onClick, description, ovr = {}) {
   let stateFlags = Watched(0)
   let children = image instanceof String ? tuningBtnImg(image) : image
   let key = {}
+  let tooltipHandlers = mkButtonHoldTooltip(onClick, stateFlags, key,
+    @() {
+      content = loc(description)
+      flow = FLOW_VERTICAL
+      valign = ALIGN_BOTTOM
+    })
   return @() {
     key
     watch = stateFlags
-    size = [tuningBtnSize, tuningBtnSize]
+    size = tuningBtnSize
     rendObj = ROBJ_SOLID
     color = btnBgColorDefault
     behavior = Behaviors.Button
-    sound = { click  = "click" }
-    children
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
-  }.__update(ovr,
-    mkButtonHoldTooltip(onClick, stateFlags, key,
-      @() {
-        content = loc(description)
-        flow = FLOW_VERTICAL
-        valign = ALIGN_BOTTOM
-      }))
+    sound = const { click  = "click" }
+    children,
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
+    ...ovr
+    ...tooltipHandlers
+  }
 }
 
 let tuningBtnInactive = @(image, onClick, description)

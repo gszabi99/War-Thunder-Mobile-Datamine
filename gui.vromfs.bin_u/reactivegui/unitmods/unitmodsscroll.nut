@@ -26,8 +26,8 @@ let catsHeight = Computed(function() {
   return min(calcCatsBlockHeight - tabsGap, catsBlockHeight)
 })
 
-let getCarouselPosX = @(idx) idx * (modW + modsGap) - (modsWidth - modW) / 2
-let getCatsPosY = @(idx, catsHeightV) idx * (tabH + tabsGap) - (catsHeightV - tabH) / 2
+let getCarouselPosX = @[pure, nodiscard](idx) idx * (modW + modsGap) - (modsWidth - modW) / 2
+let getCatsPosY = @[pure, nodiscard](idx, catsHeightV) idx * (tabH + tabsGap) - (catsHeightV - tabH) / 2
 
 function updateCarouselAnimScroll() {
   if (carouselAnimScrollCfg == null) {

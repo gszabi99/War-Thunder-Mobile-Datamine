@@ -25,49 +25,58 @@ const flagBgColor = 0xFF000000
 let gradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(0xFFFFFFFF, 0, gradTexSize / 2, gradTexSize / 2, 0, 0))
 
-let flagBg = @(isSelected) @() {
-  watch = isSelected
-  key = {}
-  size = FLEX
-  rendObj = ROBJ_IMAGE
-  image = gradient()
-  color = isSelected.get() ? selectColor : flagBgColor
-  opacity = 0.7
-  transform = {}
-  transitions = [{ prop = AnimProp.color, duration = 0.3, easing = InOutQuad }]
+function flagBg(isSelected) {
+  let bgImage = gradient()
+  return @() {
+    watch = isSelected
+    key = {}
+    size = FLEX
+    rendObj = ROBJ_IMAGE
+    image = bgImage
+    color = isSelected.get() ? selectColor : flagBgColor
+    opacity = 0.7
+    transform = {}
+    transitions = const [{ prop = AnimProp.color, duration = 0.3, easing = InOutQuad }]
+  }
 }
 
 function mkTreeNodesFlag(height, country, curCountry, onClick, showUnseenMark, needBlink) {
   let isSelected = Computed(@() curCountry.get() == country)
+  let flagBgRow = flagBg(isSelected)
+  let selectedLineRow = selectedLineVertSolid(isSelected)
+  let blinkOverlay = {
+    key = {}
+    size = FLEX
+    rendObj = ROBJ_IMAGE
+    vplace = ALIGN_TOP
+    image = gradient()
+    color = 0x40FFFFFF
+    opacity = 0
+    transform = {}
+    animations = [
+      {
+        prop = AnimProp.opacity, from = 0.0, to = 0.3, duration = 1,
+        easing = CosineFull, play = true, loop = true, globalTimer = true, loopPause = 1
+      }
+    ]
+  }
+  let flagImage = mkFlagImage(country, country == "legacy" ? flagSizeBig : flagSize, const { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER })
+  let unseenBranchMark = priorityUnseenMarkFeature.__merge(const { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT })
+  let unseenMarkRow = mkPriorityUnseenMarkWatch(showUnseenMark, const { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT })
   return @() {
     watch = [needBlink, isSelected, curCampaignUnseenBranches]
     size = [flagsWidth, height]
     behavior = Behaviors.Button
     onClick
-    sound = { click = "choose" }
+    sound = const { click = "choose" }
     children = [
-      flagBg(isSelected)
-      selectedLineVertSolid(isSelected)
+      flagBgRow
+      selectedLineRow
       !needBlink.get() || isSelected.get() ? null
-        : {
-            key = {}
-            size = FLEX
-            rendObj = ROBJ_IMAGE
-            vplace = ALIGN_TOP
-            image = gradient()
-            color = 0x40FFFFFF
-            opacity = 0
-            transform = {}
-            animations = [
-              {
-                prop = AnimProp.opacity, from = 0.0, to = 0.3, duration = 1,
-                easing = CosineFull, play = true, loop = true, globalTimer = true, loopPause = 1
-              }
-            ]
-          }
-      mkFlagImage(country, country == "legacy" ? flagSizeBig : flagSize, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER })
-      curCampaignUnseenBranches.get()?[country] ? priorityUnseenMarkFeature.__merge({ vplace = ALIGN_TOP, hplace = ALIGN_RIGHT })
-        : mkPriorityUnseenMarkWatch(showUnseenMark, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT })
+        : blinkOverlay
+      flagImage
+      curCampaignUnseenBranches.get()?[country] ? unseenBranchMark
+        : unseenMarkRow
     ]
   }
 }
@@ -88,7 +97,6 @@ return {
   flagTreeOffset
   gamercardOverlap
   platesGap
-  unitPlateSize
   blockSize
   infoPanelWidth
 }

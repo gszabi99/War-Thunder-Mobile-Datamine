@@ -22,7 +22,8 @@ let msg = @(text) {
   color = commonTextColor
   text
   halign = ALIGN_CENTER
-}.__update(fontSmall)
+  ...fontSmall
+}
 
 function rewardInfo() {
   if (previewGoods.get() == null)

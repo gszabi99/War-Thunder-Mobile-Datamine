@@ -29,7 +29,7 @@ function reinit() {
 isTacticalMapSceneOpened.subscribe(@(v) v ? reinit() : null)
 
 let tacticalMap = {
-  size = [ mapSizePx, mapSizePx ]
+  size = mapSizePx
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_TACTICAL_MAP

@@ -2,8 +2,8 @@ from "%globalsDarg/darg_library.nut" import *
 from "types" import String
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%appGlobals/user/nickTools.nut" import getPlayerName
-from "%rGui/matching/matchingApi.nut" import matchingRpcCall, matchingRpcRegisterHandler, matchingCallRpcHandler,
-  matchingCallRpcHandlerDeffered
+from "%rGui/matching/matchingApi.nut" import matchingRequest, matchingRegisterHandler, matchingCallHandler,
+  matchingCallHandlerDeffered
 
 
 const invalidNickName = "????????"
@@ -67,16 +67,16 @@ function validateNickNames(allUids, onFinish = null) {
   }
 
   if (!uids.len()) {
-    matchingCallRpcHandlerDeffered(onFinish, {})
+    matchingCallHandlerDeffered(onFinish, {})
     return
   }
 
-  matchingRpcCall("mproxy.nick_server_request",
+  matchingRequest("mproxy.nick_server_request",
     { ids = uids.map(@(u) u.tointeger()) },
     { id = "onReceiveNicknames", uids, onFinish })
 }
 
-matchingRpcRegisterHandler("onReceiveNicknames", function(result, context) {
+matchingRegisterHandler("onReceiveNicknames", function(result, context) {
   let { uids, onFinish } = context
   let changeList = {} 
   foreach (uid in uids) {
@@ -89,7 +89,7 @@ matchingRpcRegisterHandler("onReceiveNicknames", function(result, context) {
   }
 
   updateContactNames(changeList)
-  matchingCallRpcHandler(onFinish, result)
+  matchingCallHandler(onFinish, result)
 })
 
 return {

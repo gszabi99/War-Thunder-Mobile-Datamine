@@ -52,11 +52,11 @@ function mkCapZone(idx, zoneSize) {
       return res
     res.__update(
       capZoneCtr(zone.get()).__update({
-        size = [zoneSize, zoneSize]
+        size = zoneSize
         image = getZoneIcon(iconIdx, zoneSize * bigZoneMul)
         transform = {
-          pivot = [0.5, 0],
-          scale = isProgressMarker ? [bigZoneMul, bigZoneMul] : [1.0, 1.0]
+          pivot = const [0.5, 0],
+          scale = isProgressMarker ? bigZoneMul : 1.0
         }
       }))
     return res
@@ -82,16 +82,16 @@ let capZonesEditView = {
   children = array(3).map(@(_, i) i != 1
     ? {
         rendObj = ROBJ_IMAGE
-        size = [zoneSizeBase, zoneSizeBase]
+        size = zoneSizeBase
         image = getZoneIcon(i, zoneSizeBase)
       }
     : {
         rendObj = ROBJ_IMAGE
-        size = [zoneSizeBase, zoneSizeBase]
+        size = zoneSizeBase
         image = getZoneIcon(i, zoneSizeBase * bigZoneMul)
         transform = {
           pivot = [0.5, 0],
-          scale = [bigZoneMul, bigZoneMul]
+          scale = bigZoneMul
         }
       })
 }

@@ -51,21 +51,38 @@ function btnBase(textOrCtor, sf, isSelected) {
   }
 }
 
+let mkSelectedBorder = @(isSelected) @() {
+  watch = isSelected
+  size = FLEX
+  rendObj = ROBJ_BOX
+  borderWidth = isSelected.get() ? hdpx(4) : 0
+  borderColor = selectColor
+}
+
 function listButton(textOrCtor, isSelected, onClick, override = {}) {
   let stateFlags = Watched(0)
+  let useBorder = override?.hasBorderSelection ?? false
+  let selectedLine = useBorder ? null : selectedLineHorSolid(isSelected)
+  let selectedBorder = !useBorder ? null : mkSelectedBorder(isSelected)
   return @() {
     watch = [isSelected, stateFlags]
     size = FLEX_H
     flow = FLOW_VERTICAL
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
-    sound = { click = "click" }
+    sound = const { click = "click" }
     onClick
     xmbNode = {}
 
     children = [
-      selectedLineHorSolid(isSelected)
-      btnBase(textOrCtor, stateFlags.get(), isSelected.get())
+      selectedLine
+      {
+        size = FLEX_H
+        children = [
+          btnBase(textOrCtor, stateFlags.get(), isSelected.get())
+          selectedBorder
+        ]
+      }
     ]
   }.__update(override)
 }

@@ -2395,7 +2395,6 @@
           2
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -2449,7 +2448,6 @@
           4
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -3744,7 +3742,6 @@
                 2
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -3798,7 +3795,6 @@
                 4
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -5090,7 +5086,6 @@
                 2
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -5144,7 +5139,6 @@
                 4
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,

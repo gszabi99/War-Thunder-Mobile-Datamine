@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 from "math" import round
-from "wt.behaviors" import TouchScreenButton
 from "%appGlobals/activeControls.nut" import isGamepad
 from "%globalsDarg/screenMath.nut" import scaleArr
 from "%rGui/controls/shortcutSimpleComps.nut" import mkContinuousButtonParams, mkGamepadShortcutImage
@@ -43,6 +42,11 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
     ovrExt.$rawdelete("size")
   let horAnimSize = horAnimSizeMul.map(@(v, i) round(v * size[i]).tointeger())
   let cornerOffset = (0.72 * horAnimSize[0]).tointeger()
+  let bgImage = Picture($"ui/gameuiskin#hud_movement_arrow_left_bg.svg:{size[0]}:{size[1]}")
+  let animMarkerImage = Picture($"ui/gameuiskin#hud_movement_left_animated_marker.svg:{horAnimSize[0]}:{horAnimSize[1]}")
+  let animMarkerTransitions = [{ prop = AnimProp.translate, duration = animTime, easing = Linear }]
+  let outlineImage = Picture($"ui/gameuiskin#hud_movement_arrow_left_outline.svg:{size[0]}:{size[1]}")
+  let cornerImage = Picture($"ui/gameuiskin#hud_movement_arrow_left_corner.svg:{horAnimSize[0]}:{horAnimSize[1]}")
 
   return @() res.__update({
     watch = isDisabled
@@ -55,7 +59,7 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
         watch = [stateFlags, isActiveWithPieMenu]
         rendObj = ROBJ_IMAGE
         size
-        image = Picture($"ui/gameuiskin#hud_movement_arrow_left_bg.svg:{size[0]}:{size[1]}")
+        image = bgImage
         color = (stateFlags.get() & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? bgColorPushed : bgColor
         flipX
       }
@@ -65,7 +69,7 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
             watch = [stateFlags, isActiveWithPieMenu]
             size = horAnimSize
             rendObj = ROBJ_IMAGE
-            image = Picture($"ui/gameuiskin#hud_movement_left_animated_marker.svg:{horAnimSize[0]}:{horAnimSize[1]}")
+            image = animMarkerImage
             vplace = ALIGN_CENTER
             opacity = (stateFlags.get() & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? 1 : 0
             transform = {
@@ -73,14 +77,14 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
                 ? [flipX ? 0.6 * size[0] : 0.4 * size[0] - horAnimSize[0], 0]
                 : [flipX ? 0.5 * size[0] : 0.5 * size[0] - horAnimSize[0], 0]
             }
-            transitions = [{ prop = AnimProp.translate, duration = animTime, easing = Linear }]
+            transitions = animMarkerTransitions
             flipX
           }
           @() {
             watch = outlineColor
             rendObj = ROBJ_IMAGE
             size
-            image = Picture($"ui/gameuiskin#hud_movement_arrow_left_outline.svg:{size[0]}:{size[1]}")
+            image = outlineImage
             color = outlineColor.get()
             flipX
           }
@@ -88,7 +92,7 @@ let mkMoveHorCtor = @(flipX) kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, 
             watch = [outlineColor, stateFlags]
             rendObj = ROBJ_IMAGE
             size = horAnimSize
-            image = Picture($"ui/gameuiskin#hud_movement_arrow_left_corner.svg:{horAnimSize[0]}:{horAnimSize[1]}")
+            image = cornerImage
             hplace = flipX ? ALIGN_RIGHT : ALIGN_LEFT
             vplace = ALIGN_CENTER
             color = (stateFlags.get() & S_ACTIVE) != 0 ? fillColorDef.get() : outlineColor.get()
@@ -113,6 +117,8 @@ let mkAltMoveHorCtor = @(flipX, hplace) kwarg(function mkMoveHor(onTouchBegin, o
   let ovrExt = clone ovr
   if ("size" in ovrExt)
     ovrExt.$rawdelete("size")
+  let arrowImage = Picture($"ui/gameuiskin#hud_movement_air_arrow_right.svg:{size[0]}:{size[1]}")
+  let arrowTransitions = [{ prop = AnimProp.translate, duration = animTime, easing = Linear }]
 
   return @() res.__update({
     watch = isDisabled
@@ -127,10 +133,10 @@ let mkAltMoveHorCtor = @(flipX, hplace) kwarg(function mkMoveHor(onTouchBegin, o
             watch = [stateFlags, isActiveWithPieMenu]
             size
             rendObj = ROBJ_IMAGE
-            image = Picture($"ui/gameuiskin#hud_movement_air_arrow_right.svg:{size[0]}:{size[1]}")
+            image = arrowImage
             vplace = ALIGN_CENTER
             opacity = (stateFlags.get() & S_ACTIVE) != 0 && isActiveWithPieMenu.get() ? 1 : 0
-            transitions = [{ prop = AnimProp.translate, duration = animTime, easing = Linear }]
+            transitions = arrowTransitions
             flipX
           }
           mkGamepadShortcutImage(shortcutId,
@@ -149,11 +155,13 @@ let mkStopBtn = kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = 
   let stopSize = stopSizeMul.map(@(v, i) (v * size[i]).tointeger())
   let res = mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags)
   let scale = size[0].tofloat() / verSize[0]
+  let bgImage = Picture($"ui/gameuiskin#hud_movement_stop2_bg.svg:{stopSize[0]}:{stopSize[1]}")
+  let textTransform = scale == 1 ? null : { pivot = const [0.5, 0.5], scale = [scale, scale] }
+  let outlineImage = Picture($"ui/gameuiskin#hud_movement_stop2_outline.svg:{stopSize[0]}:{stopSize[1]}")
   return res.__update({
     size
     vplace = ALIGN_CENTER
     halign = ALIGN_CENTER
-    behavior = TouchScreenButton
     cameraControl = false
     children = [
       @() {
@@ -161,14 +169,14 @@ let mkStopBtn = kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = 
         rendObj = ROBJ_IMAGE
         keepAspect = true
         size = stopSize
-        image = Picture($"ui/gameuiskin#hud_movement_stop2_bg.svg:{stopSize[0]}:{stopSize[1]}")
+        image = bgImage
         color = (stateFlags.get() & S_ACTIVE) != 0 ? bgColorPushed : bgColor
         children = {
           rendObj = ROBJ_TEXT
           vplace = ALIGN_CENTER
           hplace = ALIGN_CENTER
           text =loc("hud/movementArrows/stopBtn")
-          transform = scale == 1 ? null : { pivot = [0.5, 0.5], scale = [scale, scale] }
+          transform = textTransform
         }.__update(fontTiny)
       }
       @() {
@@ -176,52 +184,60 @@ let mkStopBtn = kwarg(function mkMoveHor(onTouchBegin, onTouchEnd, shortcutId = 
         rendObj = ROBJ_IMAGE
         keepAspect = true
         size = stopSize
-        image = Picture($"ui/gameuiskin#hud_movement_stop2_outline.svg:{stopSize[0]}:{stopSize[1]}")
+        image = outlineImage
         color = outlineColor.get()
       }
     ]
   }, ovr)
 })
 
-let mkMoveVertBtnAnimBg = @(flipY, calcPart = @() 1.0, size = verSize, fillColor = fillColorDef) {
-  rendObj = ROBJ_MASK
-  size
-  image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_selection.svg:{size[0]}:{size[1]}")
-  transform = { rotate = flipY ? 180 : 0 }
-  children = @() {
-    watch = fillColor
-    rendObj = ROBJ_SOLID
-    size = FLEX
-    transform = { pivot = [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = animTime, easing = Linear }]
-    behavior = Behaviors.RtPropUpdate
-    color = fillColor.get()
-    update = @() { transform = { scale = [1, calcPart()] } }
+function mkMoveVertBtnAnimBg(flipY, calcPart = @() 1.0, size = verSize, fillColor = fillColorDef) {
+  let transitions = [{ prop = AnimProp.scale, duration = animTime, easing = Linear }]
+  return {
+    rendObj = ROBJ_MASK
+    size
+    image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_selection.svg:{size[0]}:{size[1]}")
+    transform = { rotate = flipY ? 180 : 0 }
+    children = @() {
+      watch = fillColor
+      rendObj = ROBJ_SOLID
+      size = FLEX
+      transform = const { pivot = 1 }
+      transitions
+      behavior = Behaviors.RtPropUpdate
+      color = fillColor.get()
+      update = @() { transform = { scale = [1, calcPart()] } }
+    }
   }
 }
 
-let mkMoveVertBtnOutline = @(flipY, size = verSize, outlineColor = outlineColorDef) @() {
-  watch = outlineColor
-  rendObj = ROBJ_IMAGE
-  size
-  image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_outline.svg:{size[0]}:{size[1]}")
-  color = outlineColor.get()
-  flipY
+function mkMoveVertBtnOutline(flipY, size = verSize, outlineColor = outlineColorDef) {
+  let image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_outline.svg:{size[0]}:{size[1]}")
+  return @() {
+    watch = outlineColor
+    rendObj = ROBJ_IMAGE
+    size
+    image
+    color = outlineColor.get()
+    flipY
+  }
 }
 
 function mkMoveVertBtnCorner(flipY, cornerColor = Watched(hudAshGrayColor), btnSize = verSize) {
   let verCornerSize = verCornerSizeMul.map(@(v, i) (v * btnSize[i]).tointeger())
   let cornerOffset = (0.3 * verCornerSize[1]).tointeger()
+  let image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_corner.svg:{verCornerSize[0]}:{verCornerSize[1]}")
+  let transitions = [{ prop = AnimProp.color, duration = animTime }]
   return @() {
     watch = cornerColor
     rendObj = ROBJ_IMAGE
     size = verCornerSize
-    image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_corner.svg:{verCornerSize[0]}:{verCornerSize[1]}")
+    image
     vplace = flipY ? ALIGN_BOTTOM : ALIGN_TOP
     hplace = ALIGN_CENTER
     margin = [flipY ? 0 : cornerOffset, 0, flipY ? cornerOffset : 0, 0]
     color = cornerColor.get()
-    transitions = [{ prop = AnimProp.color, duration = animTime }]
+    transitions
     flipY
   }
 }
@@ -283,6 +299,9 @@ function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(hudAshGray
   let size = ver2stepSizeMul.map(@(v, i) (v * btnSize[i]).tointeger())
   let verCornerSize = verCornerSizeMul.map(@(v, i) (v * btnSize[i]).tointeger())
   let offset = -(0.42 * verCornerSize[1]).tointeger()
+  let cornerImage = Picture($"ui/gameuiskin#hud_movement_arrow_forward_corner.svg:{verCornerSize[0]}:{verCornerSize[1]}")
+  let cornerTransitions = [{ prop = AnimProp.color, duration = animTime }]
+  let fillTransitions = [{ prop = AnimProp.scale, duration = animTime, easing = Linear }]
   return {
     hplace = ALIGN_CENTER
     pos = [0, offset]
@@ -292,11 +311,11 @@ function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(hudAshGray
         watch = cornerColor
         size = verCornerSize
         rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#hud_movement_arrow_forward_corner.svg:{verCornerSize[0]}:{verCornerSize[1]}")
+        image = cornerImage
         vplace = ALIGN_TOP
         hplace = ALIGN_CENTER
         color = cornerColor.get()
-        transitions = [{ prop = AnimProp.color, duration = animTime }]
+        transitions = cornerTransitions
       }
       {
         size
@@ -306,8 +325,8 @@ function mkMoveVertBtn2step(calcPart = @() 1.0, cornerColor = Watched(hudAshGray
           watch = fillColor
           rendObj = ROBJ_SOLID
           size = FLEX
-          transform = { pivot = [1, 1] }
-          transitions = [{ prop = AnimProp.scale, duration = animTime, easing = Linear }]
+          transform = const { pivot = 1 }
+          transitions = fillTransitions
           behavior = Behaviors.RtPropUpdate
           color = fillColor.get()
           update = @() { transform = { scale = [1, calcPart()] } }

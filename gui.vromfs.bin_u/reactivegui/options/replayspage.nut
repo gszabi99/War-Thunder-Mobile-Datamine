@@ -330,6 +330,7 @@ let mkTrashButton = @(onClick) iconButtonCommon("ui/gameuiskin#btn_trash.svg", o
 
 function mkCheckBtn(isChecked, onClick, text, description) {
   let stateFlags = Watched(0)
+  let contentText = mkContentText(text)
   return {
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
@@ -345,7 +346,7 @@ function mkCheckBtn(isChecked, onClick, text, description) {
         gap = hdpx(10)
         children = [
           mkCheckIcon(isChecked.get(), stateFlags.get() & S_ACTIVE ? 0.5 : 1.0)
-          mkContentText(text)
+          contentText
         ]
       }
       infoTooltipButton(
@@ -429,24 +430,22 @@ function mkAvatar(player) {
 
 let mkPlayer = @(player, teamColor, halign) {
   size = const [FLEX, playerRowHeight]
-  children = [
-    {
-      size = FLEX
-      flow = FLOW_HORIZONTAL
-      padding = halign == ALIGN_RIGHT ? [hdpx(2), 0, hdpx(2), hdpx(4)] : [hdpx(2), hdpx(4), hdpx(2), 0]
-      gap = hdpx(4)
-      halign
-      children = halign == ALIGN_RIGHT
-        ? [
-            mkPlayerName(player, teamColor, halign)
-            mkAvatar(player)
-          ]
-        : [
-            mkAvatar(player)
-            mkPlayerName(player, teamColor, halign)
-          ]
-    }
-  ]
+  children = {
+    size = FLEX
+    flow = FLOW_HORIZONTAL
+    padding = halign == ALIGN_RIGHT ? [hdpx(2), 0, hdpx(2), hdpx(4)] : [hdpx(2), hdpx(4), hdpx(2), 0]
+    gap = hdpx(4)
+    halign
+    children = halign == ALIGN_RIGHT
+      ? [
+          mkPlayerName(player, teamColor, halign)
+          mkAvatar(player)
+        ]
+      : [
+          mkAvatar(player)
+          mkPlayerName(player, teamColor, halign)
+        ]
+  }
 }
 
 let mkTeamColumn = @(team, teamColor, align) {
@@ -491,7 +490,7 @@ let mkFoldableContent = @(replay, isActive) @() {
               ? mkContentText(loc("mainmenu/replay/version/unavailable", { version = replay.version }),
                   { color = badTextColor })
               : mkContentText(loc("mainmenu/replay/version", { version = replay.version }))
-            {
+            const {
               size = FLEX_V
             }
             @() {

@@ -44,6 +44,7 @@ function changeUnitType(unitType) {
   })
 }
 
+let unitTypeBtnOvr = { ovr = { size = const [FLEX, hdpx(100)] } }
 let content = @() {
   watch = [tuningUnitType, unitTypesByEvent]
   size = FLEX_H
@@ -54,7 +55,7 @@ let content = @() {
     (ut == tuningUnitType.get() ? textButtonCommon : textButtonPrimary)(
       utf8ToUpper(loc($"mainmenu/type_{ut}")),
       @() changeUnitType(ut),
-      { ovr = { size = const [FLEX, hdpx(100)] } })
+      unitTypeBtnOvr)
   )
 }
 

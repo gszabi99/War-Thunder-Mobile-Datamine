@@ -300,10 +300,8 @@ def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
                                 gm_engine_sound__event, gm_engine_sound__start_inside_event,
                                 gm_engine_sound__stop_inside_event, gm_engine_sound__event_inside)
 
-[sideeffects, unused_argument(eid, is_hero)]
 def private reinit_hero_vehicle_sounds(eid : EntityId; is_hero : bool)
-  static_if typeinfo(builtin_function_exists @@ < (arg0 : EntityId; arg1 : bool) : void > _::gm_reinit_sounds)
-    gm_reinit_sounds(eid, is_hero)
+  gm_reinit_sounds(eid, is_hero)
 
 [es(tag=sound, REQUIRE = heroVehicle, REQUIRE_NOT = controlledHero, no_order)]
 def gm_engine_sound_update_inside_hero_vehicle_es(act : UpdateStageInfoAct;
@@ -321,14 +319,7 @@ def gm_engine_sound_update_inside_hero_vehicle_es(act : UpdateStageInfoAct;
   if unit.isDelayed
     return
 
-  var insideCovered = false
-  static_if typeinfo safe_has_property < isHeroInside > (*unit)
-    insideCovered = unit.isHeroInside
-  else
-    ecs::query() <| $ [es(REQUIRE=controlledHero)] (isInVehicle : bool = false;
-                                                    human_anim__vehicleSelected : EntityId = INVALID_ENTITY_ID;
-                                                    human_vehicle__isInsideCovered : bool = false)
-      insideCovered = isInVehicle && human_vehicle__isInsideCovered && human_anim__vehicleSelected == unit.eid
+  let insideCovered = unit.isHeroInside
 
   if gm_engine_sound__is_inside != insideCovered
     gm_engine_sound__loadswitch = false

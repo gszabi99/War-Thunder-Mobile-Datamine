@@ -21,19 +21,19 @@ from "%rGui/components/textButton.nut" import textButtonCommon, textButtonBattle
 from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 from "%rGui/navState.nut" import registerScene
 from "%rGui/style/backgrounds.nut" import bgShaded
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import locColorTable
 let { getCountryCode } = require(isDownloadedFromGooglePlay() ? "android.billing.googleplay" : "auth_wt")
 
-const INCOMPATIBLE_FROM_VERSION = "1.27.0.0"
+const INCOMPATIBLE_FROM_VERSION = "1.28.0.0"
 const GAIJIN_ID_MSG_UID = "gaijinIdToMigrate"
 
 local info = null
 
 let wndW = min(hdpx(1782), saSize[0])
 let wndH = min(hdpx(972),  saSize[1])
-let wndCompletedW = hdpx(1050)
-let wndCompletedH = hdpx(500)
+const wndCompletedW = hdpx(1050)
+const wndCompletedH = hdpx(500)
 const wndPadW = hdpx(90)
 const wndPadH = hdpx(50)
 let contentW = wndW - (2 * wndPadW)
@@ -194,17 +194,17 @@ function mkUrlLink(text, action) {
     color = (stateFlags.get() & S_HOVER) ? urlHoverColor : urlColor
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     onClick = action
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
     children = {
       size = const [flex(), urlLineWidth]
       vplace = ALIGN_BOTTOM
       rendObj = ROBJ_SOLID
       color = (stateFlags.get() & S_HOVER) ? urlHoverColor : urlColor
     }
-  }.__update(fontTinyAccented)
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
+    ...fontTinyAccented
+  }
 }
 
 let mkSuggestMigrationContentWnd = @() modalWndBg.__merge({
@@ -239,7 +239,7 @@ let mkSuggestMigrationContentWnd = @() modalWndBg.__merge({
               valign = ALIGN_CENTER
               children = @() {
                 watch = useGpTexts
-                size = [flex(), SIZE_TO_CONTENT]
+                size = const [flex(), SIZE_TO_CONTENT]
                 flow = FLOW_HORIZONTAL
                 gap = parGap
                 children = mkParComps(useGpTexts.get())
@@ -276,7 +276,7 @@ let mkSuggestMigrationContentWnd = @() modalWndBg.__merge({
 })
 
 let mkSwitchClientContentWnd = @() modalWndBg.__merge({
-  size = [wndCompletedW, wndCompletedH]
+  size = const [wndCompletedW, wndCompletedH]
   flow = FLOW_VERTICAL
   children = [
     {
@@ -300,7 +300,7 @@ let mkSwitchClientContentWnd = @() modalWndBg.__merge({
           size = const [flex(), SIZE_TO_CONTENT]
           vplace = ALIGN_BOTTOM
           flow = FLOW_HORIZONTAL
-          gap = { size = FLEX }
+          gap = const { size = FLEX }
           children = [
             textButtonCommon(utf8ToUpper(loc("msgbox/btn_logout")), doLogout)
             useGpTexts.get()

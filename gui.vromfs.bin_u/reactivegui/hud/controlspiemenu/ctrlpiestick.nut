@@ -10,7 +10,7 @@ let stickHeadIconSize = 2 * (stickHeadSize / 4.0 + 0.5).tointeger()
 function stickHeadIcon(scale, isEnabled) {
   let size = scaleEven(stickHeadIconSize, scale)
   return {
-    size = [size, size]
+    size = size
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
     rendObj = ROBJ_IMAGE

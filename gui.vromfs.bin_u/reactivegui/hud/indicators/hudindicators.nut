@@ -40,7 +40,7 @@ function mkHudIndicatorsContainer(playerId, teamColor, children) {
     children = [
       @() {
         watch = [isOnScrEdge, posShiftY]
-        pos = isOnScrEdge.get() ? [0, 0] : [0, posShiftY.get()]
+        pos = isOnScrEdge.get() ? const [0, 0] : [0, posShiftY.get()]
         hplace = ALIGN_CENTER
         vplace = isOnScrEdge.get() ? ALIGN_CENTER : ALIGN_BOTTOM
         transform = {}
@@ -49,7 +49,7 @@ function mkHudIndicatorsContainer(playerId, teamColor, children) {
         children
       }
       {
-        size = [ARROW_LAYER_SIZE, ARROW_LAYER_SIZE]
+        size = ARROW_LAYER_SIZE
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
         opacity = 0

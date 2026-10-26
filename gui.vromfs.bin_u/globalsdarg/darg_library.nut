@@ -4,13 +4,13 @@ from "math" import max, min, clamp
 from "%sqstd/underscore.nut" import getSubArray, getSubTable
 import "%darg/darg_library.nut" as dargBaseLib
 import "%globalScripts/logs.nut" as log
-from "%appGlobals/safeArea.nut" import safeAreaW, safeAreaH
 import "fontsStyle.nut" as fontsStyle
 import "screenUnits.nut" as screenUnits
 
 
 if (require_optional("json") != null) 
   require("%sqstd/globalState.nut").setUniqueNestKey("darg")
+let { safeAreaW, safeAreaH } = require("%appGlobals/safeArea.nut")
 
 let colorArr = @(color) [(color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF, (color >> 24) & 0xFF]
 

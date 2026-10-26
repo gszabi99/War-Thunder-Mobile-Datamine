@@ -94,7 +94,7 @@ let skipsEnded = {
   size = [FLEX, defButtonHeight]
   children = [
     {
-      size = [iconSizeBig, iconSizeBig]
+      size = iconSizeBig
       rendObj = ROBJ_IMAGE
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
@@ -117,7 +117,7 @@ let contentVip = @(leftCount) leftCount < 1 ? skipsEnded : {
   gap = hdpx(-4)
   children = [
     {
-      size = [iconSizeBig, iconSizeBig]
+      size = iconSizeBig
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#icon_repeatable.svg:{iconSizeBig}:{iconSizeBig}:P")
       keepAspect = KEEP_ASPECT_FIT
@@ -139,7 +139,7 @@ let contentCommon = @() {
       children = mkSubsIcon("vip", vipIconH)
     }
     {
-      size = [iconSize, iconSize]
+      size = iconSize
       pos = const [hdpx(10), -hdpx(8)]
       rendObj = ROBJ_IMAGE
       hplace = ALIGN_RIGHT
@@ -150,6 +150,16 @@ let contentCommon = @() {
   ]
 }
 
+let skipsInProgress = {
+  size = defButtonHeight
+  minWidth = defButtonHeight
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = spinner
+}
+let notActiveStyle = mergeStyles(COMMON, { ovr = ovrBtn })
+let genNewOfferStyle = mergeStyles(PRIMARY, { ovr = ovrBtn })
+
 let skipOfferBtn = @() {
   watch = [hasVip, needShowSkipButton, leftSkipOfferCount, skipOfferInProgress, hasMoreOffer]
   key = isAttached
@@ -159,16 +169,10 @@ let skipOfferBtn = @() {
   children = !needShowSkipButton.get() ? null
     : !hasVip.get() ? mkCustomButton(contentCommon, onClickNotVip, mergeStyles(COMMON, { ovr = ovrBtn }))
     : skipOfferInProgress.get()
-      ? {
-          size = defButtonHeight
-          minWidth = defButtonHeight
-          halign = ALIGN_CENTER
-          valign = ALIGN_CENTER
-          children = spinner
-        }
+      ? skipsInProgress
     : leftSkipOfferCount.get() < 1 || !hasMoreOffer.get()
-      ? mkCustomButton(contentVip(leftSkipOfferCount.get()), onClickNotActive, mergeStyles(COMMON, { ovr = ovrBtn }))
-    : mkCustomButton(contentVip(leftSkipOfferCount.get()), onClickGenNewOffer, mergeStyles(PRIMARY, { ovr = ovrBtn }))
+      ? mkCustomButton(contentVip(leftSkipOfferCount.get()), onClickNotActive, notActiveStyle)
+    : mkCustomButton(contentVip(leftSkipOfferCount.get()), onClickGenNewOffer, genNewOfferStyle)
   }
 
 return skipOfferBtn

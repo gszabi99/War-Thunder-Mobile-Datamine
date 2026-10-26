@@ -1,9 +1,9 @@
+import "matching.errors" as mErrors
+from "%globalScripts/logs.nut" import console_print
+from "%sqstd/string.nut" import hexStringToInt
+from "string" import format
+from "console" import register_command
 from "types" import Integer, String
-let { format } =  require("string")
-let { register_command } = require("console")
-let mErrors = require("matching.errors")
-let { console_print } = require("%globalScripts/logs.nut")
-let { hexStringToInt } =  require("%sqstd/string.nut")
 
 register_command(function() {
   let res = []

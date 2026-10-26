@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/hud/actionBar/actionBarState.nut" import startActionBarUpdate, stopActionBarUpdate
+from "%rGui/hud/buttons/sailboatGuns.nut" import sailboatGunsRangeControls
 import "%rGui/hud/hudBottomCenter.nut" as hudBottomCenter
 from "%rGui/hud/hudThreatRocketsBlock.nut" import threatRocketsBlock
 import "%rGui/hud/hudTimersBlock.nut" as hudTimersBlock
@@ -14,29 +15,32 @@ from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/hudHints/killerInfo.nut" import hudKillerInfo
 
 
+let shipHudTouchBlock = {
+  size = saSize
+  hplace = ALIGN_CENTER
+  vplace = ALIGN_CENTER
+  key = "ship-hud-touch"
+  onAttach = @() startActionBarUpdate("shipHud")
+  onDetach = @() stopActionBarUpdate("shipHud")
+  children = [
+    hudBottomCenter
+    hudTopMainLog
+    hudTuningElems
+    threatRocketsBlock
+    hudTimersBlock
+    shipSight
+    hitIndicator
+    currentWeaponNameText
+    hudKillerInfo
+    sailboatGunsRangeControls
+  ]
+  animations = wndSwitchAnim
+}
+
 return @() {
   watch = isInStrategyMode
   size = FLEX
   children = isInStrategyMode.get()
     ? strategyHud
-    : {
-      size = saSize
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_CENTER
-      key = "ship-hud-touch"
-      onAttach = @() startActionBarUpdate("shipHud")
-      onDetach = @() stopActionBarUpdate("shipHud")
-      children = [
-        hudBottomCenter
-        hudTopMainLog
-        hudTuningElems
-        threatRocketsBlock
-        hudTimersBlock
-        shipSight
-        hitIndicator
-        currentWeaponNameText
-        hudKillerInfo
-      ]
-      animations = wndSwitchAnim
-    }
+    : shipHudTouchBlock
 }

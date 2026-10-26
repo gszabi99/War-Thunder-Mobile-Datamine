@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-from "android.platform" import enqueueDownload, queryDownloadStatus, tryToInstall, getApkFileVersion,
-  DOWNLOAD_STASUS_UNKNOWN, DOWNLOAD_STATUS_PENDING, DOWNLOAD_STATUS_RUNNING, DOWNLOAD_STATUS_PAUSED,
-  DOWNLOAD_STATUS_SUCCESSFUL, DOWNLOAD_STATUS_FAILED
+from "android.platform" import enqueueDownload, queryDownloadStatus, tryToInstall, requestApkFileVersion,
+  DOWNLOAD_STATUS_PENDING, DOWNLOAD_STATUS_RUNNING, DOWNLOAD_STATUS_PAUSED, DOWNLOAD_STATUS_SUCCESSFUL,
+  DOWNLOAD_STATUS_FAILED
 from "app" import get_base_game_version_str
 from "blkGetters" import get_local_custom_settings_blk
 from "dagor.workcycle" import deferOnce, resetTimeout
@@ -24,12 +24,16 @@ let logD = log_with_prefix("[DOWNLOAD] ")
 let isSuggested = hardPersistWatched("suggestInstall.isSuggested", false)
 let cachedDownloadId = hardPersistWatched("suggestInstall.downloadId", null)
 const SUGGEST_INSTALL_APK = "suggestInstallApk"
-const DOWNLOAD_SUCCESSFUL_BY_SITE = "downloadSuccessfulBySite"
+const SAVED_DOWNLOAD_BLK = "downloadSuccessfulBySite" 
 const TIME_TO_CHECK_DOWNLOAD_STATUS = 2
+const DOWNLOAD_DESCRIPTION = "Download WTM RC"
 let getApkName = @() $"wtm_{apkTag}_{actualGameVersion.get()}.apk"
 
-let hasDownloadedApk = Watched(false)
-let isDownloadInProgress = Watched(false)
+let hasDownloadedApk = hardPersistWatched("suggestInstall.hasDownloadedApk", false)
+let isDownloadInProgress = hardPersistWatched("suggestInstall.isDownloadInProgress", false)
+let checkedDownloadId = hardPersistWatched("suggestInstall.checkedDownloadId", null)
+let checkedApkName = hardPersistWatched("suggestInstall.checkedApkName", null)
+let exitCheckDownloadId = hardPersistWatched("suggestInstall.exitCheckDownloadId", null)
 
 let needShowModal = keepref(Computed(@() !hasModalWindows.get()
   && !isDownloadInProgress.get()
@@ -40,13 +44,20 @@ let needShowModal = keepref(Computed(@() !hasModalWindows.get()
   && isMainMenuAttached.get()
   && isLoggedIn.get()))
 
-function saveDownloadId(id) {
+let getSavedDownload = @() get_local_custom_settings_blk()?[SAVED_DOWNLOAD_BLK]
+
+function saveDownload(downloadId, apkName) {
   let blk = get_local_custom_settings_blk()
-  blk.addBlock(DOWNLOAD_SUCCESSFUL_BY_SITE)["downloadId"] <- id
+  blk.removeBlock(SAVED_DOWNLOAD_BLK)
+  if (apkName != null) {
+    let saved = blk.addBlock(SAVED_DOWNLOAD_BLK)
+    saved["apkName"] <- apkName
+    saved["downloadId"] <- downloadId
+  }
   eventbus_send("saveProfile", {})
 }
 
-let getDownloadedId = @() get_local_custom_settings_blk()?[DOWNLOAD_SUCCESSFUL_BY_SITE]["downloadId"]
+let clearSavedDownload = @() saveDownload(null, null)
 
 let showSuggestInstallModal = @() openFMsgBox({
   uid = SUGGEST_INSTALL_APK
@@ -57,66 +68,124 @@ let showSuggestInstallModal = @() openFMsgBox({
     { text = loc("ugm/btnInstall"), eventId = "tryToInstallApk", styleId = "PRIMARY", isDefault = true }
   ]})
 
-let customStatusHandlers = {
-  [DOWNLOAD_STASUS_UNKNOWN] = @(id) logD($"Unknown download status for download: {id}"),
-  [DOWNLOAD_STATUS_PENDING] = @(id) logD($"Download pending: {id}"),
-  [DOWNLOAD_STATUS_RUNNING] = @(id) logD($"Download running: {id}"),
-  [DOWNLOAD_STATUS_PAUSED] = @(id) logD($"Download paused: {id}"),
-  [DOWNLOAD_STATUS_SUCCESSFUL] = function(id) {
-    logD("Download successful")
-    saveDownloadId(id)
-    hasDownloadedApk.set(true)
-    isDownloadInProgress.set(false)
-  },
-  [DOWNLOAD_STATUS_FAILED] = function(id) {
-    logerr($"Download failed: {id}")
-    isDownloadInProgress.set(false)
-  }
+function onDownloadSuccessful(downloadId) {
+  logD($"Download successful: {downloadId}")
+  hasDownloadedApk.set(true)
+  isDownloadInProgress.set(false)
 }
 
-eventbus_subscribe("android.platform.onCompleteApkDownload", function (event) {
-  let { downloadId } = event
-  let status = queryDownloadStatus(downloadId)
-  logD($"On complete apk download id : {downloadId}, status : {status}")
-  customStatusHandlers[status](downloadId)
-})
+function onDownloadFailed(downloadId) {
+  logerr($"Download failed: {downloadId}")
+  if (getSavedDownload()?.downloadId == downloadId)
+    clearSavedDownload()
+  isDownloadInProgress.set(false)
+}
 
 function delayedCheckDownloadStatus() {
   if (isLoggedIn.get() || cachedDownloadId.get() == null)
     return
 
-  let downloadId = cachedDownloadId.get()
-  let status = queryDownloadStatus(downloadId)
-
-  logD($"On delayed check for id : {downloadId}, status : {status}")
-
+  exitCheckDownloadId.set(cachedDownloadId.get())
   cachedDownloadId.set(null)
-
-  if (isDownloadInProgress.get() && status != DOWNLOAD_STATUS_FAILED)
-    eventbus_send("exit_for_download_apk", { message = loc("updater/newVersion/exitGame", { actionBtn = loc("msgbox/btn_exit")}) })
-  else
-    eventbus_send("fMsgBox.onClick.exitAndLinkToStore", null)
+  queryDownloadStatus(exitCheckDownloadId.get())
 }
 
 if (cachedDownloadId.get() != null)
   resetTimeout(TIME_TO_CHECK_DOWNLOAD_STATUS, delayedCheckDownloadStatus)
 
+function startDownload() {
+  isDownloadInProgress.set(true)
+  enqueueDownload(getApkLinkWithHash(actualGameHash.get()), getApkName(), DOWNLOAD_DESCRIPTION, false, false)
+}
+
+function checkApkFile(apkName) {
+  checkedApkName.set(apkName)
+  requestApkFileVersion(apkName)
+}
+
+function checkSavedDownload(downloadId) {
+  checkedDownloadId.set(downloadId)
+  queryDownloadStatus(downloadId)
+}
+
+eventbus_subscribe("android.platform.onCompleteApkDownload", function(evt) {
+  let { downloadId } = evt
+  logD($"On complete apk download id : {downloadId}")
+  queryDownloadStatus(downloadId)
+})
+
+eventbus_subscribe("android.platform.onDownloadStatus", function(evt) {
+  let { downloadId, status } = evt
+  logD($"Download status / id : {downloadId}, status : {status}")
+
+  if (downloadId == exitCheckDownloadId.get()) {
+    exitCheckDownloadId.set(null)
+    if (isDownloadInProgress.get() && status != DOWNLOAD_STATUS_FAILED)
+      eventbus_send("exit_for_download_apk", { message = loc("updater/newVersion/exitGame", { actionBtn = loc("msgbox/btn_exit")}) })
+    else
+      eventbus_send("fMsgBox.onClick.exitAndLinkToStore", null)
+  }
+
+  if (downloadId == checkedDownloadId.get()) {
+    checkedDownloadId.set(null)
+    if ([DOWNLOAD_STATUS_PENDING, DOWNLOAD_STATUS_RUNNING, DOWNLOAD_STATUS_PAUSED].contains(status)) {
+      cachedDownloadId.set(downloadId)
+      isDownloadInProgress.set(true)
+    }
+    else {
+      clearSavedDownload()
+      checkApkFile(getApkName())
+    }
+  }
+  else if (status == DOWNLOAD_STATUS_SUCCESSFUL)
+    onDownloadSuccessful(downloadId)
+  else if (status == DOWNLOAD_STATUS_FAILED)
+    onDownloadFailed(downloadId)
+})
+
+eventbus_subscribe("android.platform.onApkFileVersion", function(evt) {
+  let { fileName, version = null } = evt
+  if (fileName != checkedApkName.get())
+    return
+
+  checkedApkName.set(null)
+  logD($"Ready to install version: {version}")
+  if (version != null && version == actualGameVersion.get()) {
+    logD("The most recent version is already downloaded")
+    saveDownload(null, fileName)
+    hasDownloadedApk.set(true)
+    return
+  }
+  startDownload()
+})
+
+eventbus_subscribe("android.platform.onEnqueueDownload", function(evt) {
+  let { fileName, downloadId } = evt
+  logD($"On start downloading apk / id : {downloadId}, apk name : {fileName}")
+  if (downloadId < 0) {
+    logerr($"Download enqueue failed: {fileName}")
+    isDownloadInProgress.set(false)
+    return
+  }
+  cachedDownloadId.set(downloadId)
+  saveDownload(downloadId, fileName)
+  resetTimeout(TIME_TO_CHECK_DOWNLOAD_STATUS, delayedCheckDownloadStatus)
+})
+
 function downloadAPK() {
   resetTimeout(TIME_TO_CHECK_DOWNLOAD_STATUS, delayedCheckDownloadStatus)
-
-  if (getDownloadedId() != null && queryDownloadStatus(getDownloadedId()) == DOWNLOAD_STATUS_SUCCESSFUL)
-    return customStatusHandlers[DOWNLOAD_STATUS_SUCCESSFUL](getDownloadedId())
 
   if (isDownloadInProgress.get()) {
     logD("Download is already in progress")
     return
   }
+  if (checkedDownloadId.get() != null || checkedApkName.get() != null) {
+    logD("Download check is already in progress")
+    return
+  }
 
-  let apkToInstall = getApkName()
-  logD($"Available apk name: {apkToInstall}")
   let availableForDownload = actualGameVersion.get()
   logD($"Available for download: {availableForDownload}")
-
   if (availableForDownload == null) {
     logD("Available for download version is unknown")
     return
@@ -124,38 +193,27 @@ function downloadAPK() {
 
   let installedVersion = get_base_game_version_str()
   logD($"Installed version: {installedVersion}")
-
   if (installedVersion == availableForDownload) {
     logD("No new vesion available")
     return
   }
 
-  let downloadedVersion = getApkFileVersion(apkToInstall)
-  logD($"Ready to install version: {downloadedVersion}")
-
-  if (downloadedVersion == availableForDownload) {
-    logD("The most recent version is already downloaded")
-    hasDownloadedApk.set(true)
-    return
-  }
-
-  isDownloadInProgress.set(true)
-
-  let downloadId = enqueueDownload(getApkLinkWithHash(actualGameHash.get()), apkToInstall, "Download WTM RC", false, false)
-  let status = queryDownloadStatus(downloadId)
-
-  logD($"On start downloading apk / id : {downloadId}, status : {status}, apk name : {apkToInstall}")
-
-  cachedDownloadId.set(downloadId)
-  customStatusHandlers[status](downloadId)
+  let apkName = getApkName()
+  logD($"Available apk name: {apkName}")
+  let saved = getSavedDownload()
+  if (saved?.apkName == apkName && saved?.downloadId != null)
+    checkSavedDownload(saved.downloadId)
+  else
+    checkApkFile(apkName)
 }
 
 subscribeFMsgBtns({
   tryToInstallApk = function(_) {
-    saveDownloadId(null)
+    let apkName = getSavedDownload()?.apkName ?? getApkName()
+    clearSavedDownload()
     hasDownloadedApk.set(false)
-    tryToInstall(getApkName())
-    logD($"On trying install downloaded apk : {getApkName()}")
+    tryToInstall(apkName)
+    logD($"On trying install downloaded apk : {apkName}")
   }
   markSuggestInstallSeen = @(_) isSuggested.set(true)
   tryToDownloadApkFromSite = @(_) downloadAPK()

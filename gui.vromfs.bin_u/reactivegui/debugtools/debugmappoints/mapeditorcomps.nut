@@ -5,11 +5,12 @@ from "%rGui/components/textInput.nut" import textInput
 from "%rGui/debugTools/debugMapPoints/mapEditorConsts.nut" import optionBtnSize, imgSize, btnBgColorDefault,
   btnBgColorDisabled, btnImgColor, btnImgColorDisabled
 from "%rGui/style/stdColors.nut" import commonTextColor, markTextColor
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/tooltip.nut" import mkButtonHoldTooltip
 
 
 let mkOptionBtnImg = @(image, ovr = {}) {
-  size = [imgSize, imgSize]
+  size = imgSize
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
@@ -22,30 +23,36 @@ function mkOptionBtn(image, onClick, description, ovr = {}) {
   let stateFlags = Watched(0)
   let children = image instanceof String ? mkOptionBtnImg(image) : image
   let key = {}
+  let holdTooltip = mkButtonHoldTooltip(onClick, stateFlags, key,
+    @() {
+      content = loc(description)
+      flow = FLOW_VERTICAL
+      valign = ALIGN_BOTTOM
+    })
   return @() {
     key
     watch = stateFlags
-    size = [optionBtnSize, optionBtnSize]
+    size = optionBtnSize
     rendObj = ROBJ_SOLID
     color = btnBgColorDefault
     brightness = stateFlags.get() & S_HOVER ? 1.5 : 1
     behavior = Behaviors.Button
-    sound = { click  = "click" }
-    children
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
-  }.__update(ovr,
-    mkButtonHoldTooltip(onClick, stateFlags, key,
-      @() {
-        content = loc(description)
-        flow = FLOW_VERTICAL
-        valign = ALIGN_BOTTOM
-      }))
+    sound = const { click  = "click" }
+    children,
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
+    ...ovr
+    ...holdTooltip
+  }
 }
 
 function mkTextOptionBtnNoUpper(text, onClick, ovr = {}) {
   let stateFlags = Watched(0)
   let key = {}
+  let label = {
+    rendObj = ROBJ_TEXT
+    text,
+    ...fontTinyAccented
+  }
   return @() {
     key
     watch = stateFlags
@@ -57,16 +64,13 @@ function mkTextOptionBtnNoUpper(text, onClick, ovr = {}) {
     behavior = Behaviors.Button
     onClick
     onElemState = @(v) stateFlags.set(v)
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
-    children = {
-      rendObj = ROBJ_TEXT
-      text
-    }.__update(fontTinyAccented)
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
-  }.__update(ovr)
+    children = label
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
+    ...ovr
+  }
 }
 
 let mkTextOptionBtn = @(text, onClick, ovr = {})

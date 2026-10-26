@@ -5,16 +5,19 @@ from "%rGui/style/gradients.nut" import mkRingGradientLazy
 
 let gradient = mkRingGradientLazy(50, 10, 20)
 
-let damagePanelBacklight = @(stateFlags, size) @() !stateFlags || !(stateFlags.get() & S_ACTIVE)
-  ? { watch = stateFlags }
-  : {
-      watch = [stateFlags, btnBgStyle]
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_CENTER
-      size
-      rendObj = ROBJ_IMAGE
-      image = gradient()
-      color = btnBgStyle.get().ready
-    }
+function damagePanelBacklight(stateFlags, size) {
+  let glowImage = gradient()
+  return @() !stateFlags || !(stateFlags.get() & S_ACTIVE)
+    ? { watch = stateFlags }
+    : {
+        watch = [stateFlags, btnBgStyle]
+        hplace = ALIGN_CENTER
+        vplace = ALIGN_CENTER
+        size
+        rendObj = ROBJ_IMAGE
+        image = glowImage
+        color = btnBgStyle.get().ready
+      }
+}
 
 return damagePanelBacklight

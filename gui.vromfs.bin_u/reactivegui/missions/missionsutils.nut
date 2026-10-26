@@ -4,6 +4,7 @@ import "DataBlock" as DataBlock
 from "guiMission" import get_current_mission_desc, get_player_army_for_hud
 from "string" import split_by_chars
 from "guiScriptUtils" import get_mission_progress
+from "%rGui/globals/missionUtils.nut" import getMissionFullName
 
 
 let missionAvailabilityFlag = {
@@ -30,7 +31,7 @@ function isMissionComplete(chapterName, missionName) {
   return progress >= 0 && progress < 3
 }
 
-function getLocIdsArray(config, key = "locId") {
+function getLocIdsArray(config, key) {
   let keyValue = config?[key] ?? ""
   let parsedString = split_by_chars(keyValue, "; ")
   if (parsedString.len() <= 1)
@@ -50,7 +51,7 @@ function getLocIdsArray(config, key = "locId") {
   return result
 }
 
-let getMissionLocName = @(config, key = "locId")
+let getMissionLocName = @(config, key)
   "".join(getLocIdsArray(config, key)
       .map(@(locId) locId.len() == 1 ? locId : loc(locId)))
 
@@ -60,7 +61,7 @@ function getCombineLocNameMission(missionInfo) {
   if ((missionInfo?["locNameTeamA"].len() ?? 0) > 0)
     locName = getMissionLocName(missionInfo, "locNameTeamA")
   else if ((missionInfo?.locName.len() ?? 0) > 0)
-    locName = getMissionLocName(missionInfo, "locName")
+    locName = getMissionFullName(missionInfo)
   else
     locName = loc($"missions/{misInfoName}", "")
 
@@ -88,7 +89,7 @@ function locCurrentMissionName() {
   if ((misBlk?[locNameByTeamParamName].len() ?? 0) > 0)
     ret = getMissionLocName(misBlk, locNameByTeamParamName)
   else if ((misBlk?.locName.len() ?? 0) > 0)
-    ret = getMissionLocName(misBlk, "locName")
+    ret = getMissionFullName(misBlk)
   else if ((misBlk?.loc_name ?? "") != "")
     ret = loc($"missions/{misBlk.loc_name}", "")
   if (ret == "")

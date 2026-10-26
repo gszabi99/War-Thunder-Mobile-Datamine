@@ -36,7 +36,7 @@ function winchButton(scale) {
     let shortcutId = $"ID_ACTION_BAR_ITEM_{shortcutIdx + 1}"
 
     return res.__update({
-      size = [bgSize, bgSize]
+      size = bgSize
       rendObj = ROBJ_BOX
       borderColor = stateFlags.get() & S_ACTIVE ? 0 : color
       fillColor = hudLightBlackColor
@@ -51,7 +51,7 @@ function winchButton(scale) {
       children = [
         {
           rendObj = ROBJ_IMAGE
-          size = [imgSize, imgSize]
+          size = imgSize
           image = Picture($"ui/gameuiskin#{image}:{imgSize}:{imgSize}")
           keepAspect = KEEP_ASPECT_FIT
           color

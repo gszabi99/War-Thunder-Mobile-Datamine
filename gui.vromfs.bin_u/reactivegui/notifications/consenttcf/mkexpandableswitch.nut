@@ -45,7 +45,7 @@ let switchActiveBg = @(val) {
 }
 
 let switchKnob = @(val, sf) {
-  size  = [knobSize, knobSize]
+  size  = knobSize
   rendObj = ROBJ_BOX
   borderRadius = knobSize / 2
   fillColor = textColor
@@ -67,7 +67,7 @@ function mkSwitchComp(isAvailableW, valueW, onManualSwitch = null) {
 
     behavior = !isAvailableW.get() ? null : Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     onClick = !isAvailableW.get() ? null : function() {
       let val = !valueW.get()
       valueW.set(val)
@@ -86,25 +86,33 @@ function mkSwitchComp(isAvailableW, valueW, onManualSwitch = null) {
   }
 }
 
-let mkExpandArrowImg = @(isExpanded) @() {
-  watch = isExpanded,
-  size = arrowSize
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#scroll_arrow.svg:{arrowSize[0]}:{arrowSize[1]}:P")
-  keepAspect = true
-  color = 0xFFFFFFFF
-  transform = {
-    rotate = isExpanded.get() ? 0 : -90
-    translate = isExpanded.get() ? [0, 0] : [-arrowCollapsedShiftX, 0]
-  }
-  transitions = [
+function mkExpandArrowImg(isExpanded) {
+  let arrowImg = Picture($"ui/gameuiskin#scroll_arrow.svg:{arrowSize[0]}:{arrowSize[1]}:P")
+  let transitions = [
     { prop = AnimProp.rotate, from = 0, to = -90, duration = expandTime }
-    { prop = AnimProp.translate, from = [0, 0], to = [-arrowCollapsedShiftX, 0], duration = expandTime }
+    { prop = AnimProp.translate, from = const [0, 0], to = [-arrowCollapsedShiftX, 0], duration = expandTime }
   ]
+  return @() {
+    watch = isExpanded,
+    size = arrowSize
+    rendObj = ROBJ_IMAGE
+    image = arrowImg
+    keepAspect = true
+    color = 0xFFFFFFFF
+    transform = {
+      rotate = isExpanded.get() ? 0 : -90
+      translate = isExpanded.get() ? const [0, 0] : [-arrowCollapsedShiftX, 0]
+    }
+    transitions
+  }
 }
 
 function mkExpandableLabel(text, isExpanded) {
   let stateFlags = Watched(0)
+  let children = [
+    mkExpandArrowImg(isExpanded)
+    mkLabel(text)
+  ]
   return @() {
     watch = [stateFlags, isExpanded]
     size = FLEX_H
@@ -114,13 +122,10 @@ function mkExpandableLabel(text, isExpanded) {
 
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     onClick = @() isExpanded.set(!isExpanded.get())
 
-    children = [
-      mkExpandArrowImg(isExpanded)
-      mkLabel(text)
-    ]
+    children
   }
 }
 
@@ -128,6 +133,10 @@ function mkExpandableSwitch(text, isAvailableW = null, valueW = null, onManualSw
   let isSwitchable = valueW != null
   let isExpandable = mkExpandedContent != null
   let isExpanded = isExpandedW ?? Watched(false)
+  let transitions = [
+    { prop = AnimProp.translate, duration = expandTime }
+    { prop = AnimProp.opacity, duration = expandTime }
+  ]
 
   return {
     size = FLEX_H
@@ -150,10 +159,7 @@ function mkExpandableSwitch(text, isAvailableW = null, valueW = null, onManualSw
         padding = [0, 0, 0, expandableContentLPad]
         opacity = isExpanded.get() ? 1 : 0
         transform = { translate = [0, isExpanded.get() ? 0 : -textH] }
-        transitions = [
-          { prop = AnimProp.translate, duration = expandTime }
-          { prop = AnimProp.opacity, duration = expandTime }
-        ]
+        transitions
         clipChildren = true
         flow = FLOW_VERTICAL
         children = isExpanded.get() ? mkExpandedContent() : null

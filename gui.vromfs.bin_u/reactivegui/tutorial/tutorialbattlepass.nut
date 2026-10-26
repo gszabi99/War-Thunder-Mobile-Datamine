@@ -4,8 +4,8 @@ from "dagor.workcycle" import deferOnce, resetTimeout
 from "%appGlobals/pServer/campaign.nut" import firstLoginTime
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/squadState.nut" import isInSquad
-from "%rGui/battlePass/battlePassState.nut" import tutorialFreeMarkIdx, isBpSeasonActive
-from "%rGui/battlePass/passState.nut" import BATTLE_PASS, isPassSceneAttached
+from "%rGui/battlePass/battlePassObsoleteState.nut" import tutorialFreeMarkIdx, isBpSeasonActive
+from "%rGui/battlePass/passState.nut" import BATTLE_PASS
 from "%rGui/components/modalWindows.nut" import hasModalWindows
 from "%rGui/components/msgBox.nut" import openMsgBox
 import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
@@ -13,11 +13,12 @@ from "%rGui/gameModes/newbieOfflineMissions.nut" import hasFirstBattleRewards
 from "%rGui/mainMenu/mainMenuState.nut" import isMainMenuTopScene
 from "%rGui/quests/bqQuests.nut" import sendBqQuestsTask, sendBqQuestsStage
 from "%rGui/quests/questBar.nut" import calcStageCompletion
-from "%rGui/quests/questsState.nut" import COMMON_TAB, isQuestsAttached, questsCfg, questsBySection,
+from "%rGui/quests/questsState.nut" import COMMON_TAB, questsCfg, questsBySection,
   getStarsTotalNonUpdatable, progressUnlockByTab, progressUnlockBySection, DAILY_SECTION, tutorialSectionId,
   tutorialQuestBtnKey
 from "%rGui/quests/rewardsComps.nut" import getRewardsPreviewInfo, getEventCurrencyReward
-from "%rGui/seasonScene/seasonSceneState.nut" import openMainSeasonScene, PASS_SCENE, openQuestsWndOnTab
+from "%rGui/seasonScene/seasonSceneState.nut" import openMainSeasonScene, PASS_OBSOLETE_SCENE, openQuestsWndOnTab,
+  isSeasonSceneTop
 from "%rGui/tutorial/completedTutorials.nut" import markTutorialCompleted, isFinishedArsenal, isFinishedBattlePass,
   isFinishedSlotAttributes
 from "%rGui/tutorial/tutorialConst.nut" import TUTORIAL_BATTLE_PASS_ID, questTutorialOptionalTime
@@ -71,8 +72,7 @@ let showTutorial = keepref(Computed(@() canStartTutorial.get()
 
 let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.get() == TUTORIAL_BATTLE_PASS_ID
   && !isMainMenuTopScene.get()
-  && !isQuestsAttached.get()
-  && !isPassSceneAttached.get()))
+  && !isSeasonSceneTop.get()))
 
 let finishEarly = @() shouldEarlyCloseTutorial.get() ? finishTutorial() : null
 shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
@@ -194,7 +194,7 @@ function startTutorial() {
         text = loc("tutorial/battlePass/openBattlePassWnd")
         objects = [{
           keys = "pass_tab_btn"
-          onClick = @() openMainSeasonScene(PASS_SCENE, BATTLE_PASS)
+          onClick = @() openMainSeasonScene(PASS_OBSOLETE_SCENE, BATTLE_PASS)
           needArrow = true
         }]
         charId = "mary_points"

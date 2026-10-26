@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout
 from "eventbus" import eventbus_subscribe
 from "%sqstd/time.nut" import secondsToTimeSimpleString
 from "%sqstd/underscore.nut" import isEqual
@@ -43,6 +44,11 @@ let clearTimers = @(_) activeTimers.set({})
 let removeTimer = @(timerId) timerId not in activeTimers.get() ? null
   : activeTimers.mutate(@(t) t.$rawdelete(timerId))
 
+let removeTimerIfExpired = @(timerId, expectedEndTime) activeTimers.mutate(function(actTimers) {
+  if (actTimers?[timerId].endTime == expectedEndTime)
+    deleteF(actTimers, timerId)
+})
+
 let onCancelAction = @(timerId, time) activeTimers.mutate(function onCancelActionImpl(actTimers) {
   if (time <= 0)
     deleteF(actTimers, timerId)
@@ -62,11 +68,14 @@ let onRepair = @(data) activeTimers.mutate(function onRepairImpl(actTimers) {
     return
 
   let timerId = state == "repairingAuto" ? "repair_auto_status" : "repair_status"
-  actTimers[timerId] <- mkTimerOffset(totalTime, totalTime - time, {
+  let timer = mkTimerOffset(totalTime, totalTime - time, {
     needCountdown = !isPrepare
     isForward = !isPrepare
     winkPeriod = isPrepare ? winkFast : 0
   })
+  actTimers[timerId] <- timer
+  if (!isPrepare)
+    setTimeout(0.001 * (timer.endTime - get_time_msec()), @() removeTimerIfExpired(timerId, timer.endTime))
 })
 subscribeHudEvent("TankDebuffs:Repair", onRepair)
 subscribeHudEvent("ShipDebuffs:Repair", onRepair)

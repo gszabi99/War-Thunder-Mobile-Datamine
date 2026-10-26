@@ -38,6 +38,7 @@ from "%rGui/options/options/airControlsOptions.nut" import currentControlByGyroA
   currentThrottleStick
 from "%rGui/style/hudColors.nut" import hudWhiteColor, hudCoralRedColor, hudRedColor, hudPearlGrayColor,
   hudTransparentColor
+from "%rGui/unitDetails/unitBlkDetails.nut" import getUnitBlkDetails
 
 
 let { ailerons, mouse_aim_x, mouse_aim_y, throttle_axis, turret_x, turret_y} = shortcutsMap.gamepadAxes
@@ -161,12 +162,13 @@ function changeThrottleValue(val) {
 
 function mkGamepadHotkey(hotkey, isVisible, isActive, ovr) {
   let imageComp = mkBtnImageComp(hotkey, hdpxi(50))
+  let scaleTransition = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
   return @() {
     watch = [isVisible, isGamepad, isActive]
     key = imageComp
     children = isVisible.get() && isGamepad.get() ? imageComp : null
-    transform = { scale = isActive.get() ? [0.8, 0.8] : [1.0, 1.0] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+    transform = { scale = isActive.get() ? 0.8 : 1.0 }
+    transitions = scaleTransition
   }.__update(ovr)
 }
 
@@ -241,9 +243,12 @@ function brakeButtonImpl(scale) {
   })
 }
 
-let brakeButton = @(scale) @() {
-  watch = isOnGroundSmoothed
-  children = isOnGroundSmoothed.get() ? brakeButtonImpl(scale) : null
+function brakeButton(scale) {
+  let brakeBtn = brakeButtonImpl(scale)
+  return @() {
+    watch = isOnGroundSmoothed
+    children = isOnGroundSmoothed.get() ? brakeBtn : null
+  }
 }
 
 let brakeButtonEditView = {
@@ -261,101 +266,107 @@ let brakeButtonEditView = {
   ]
 }
 
-let throttleSlider = kwarg(@(height, scaleWidth, knobSize, knobPadding, sliderPadding, fullWidth,
+let throttleSlider = kwarg(function(height, scaleWidth, knobSize, knobPadding, sliderPadding, fullWidth,
   throttleScaleHeight, lineWidth, scale
-) function() {
-  let sliderV = sliderValue.get()
-  let knobPos = sliderV <= sliderWepValue ? 0
-    : ((clamp(sliderV, 0, maxThrottle) - sliderWepValue).tofloat()
-        / (maxThrottle - sliderWepValue) * throttleScaleHeight).tointeger()
-  let knob = {
-    size  = [knobSize + 2 * knobPadding, knobSize + 2 * knobPadding]
-    hplace = ALIGN_CENTER
-    padding = knobPadding
+) {
+  let maskImageLeft = getSvgImage("hud_plane_gradient_left", knobSize, throttleScaleHeight)
+  let knobScaleTransition = [{ prop = AnimProp.scale, duration = 0.5, easing = InOutQuad }]
+  let opacityTransition = [{ prop = AnimProp.opacity, duration = 0.5, easing = Linear }]
+  let throttleImage = {
+    size = [scaleWidth, throttleScaleHeight + scaleWidth]
+    pos =  [scaleWidth, 0]
+    padding = [scaleWidth / 2, 0]
+    vplace = ALIGN_CENTER
+    rendObj = ROBJ_IMAGE
+    image = throttleBgrImage
     children = [
-      {
-        pos = [0, knobPos - knobPadding]
-        size  = [knobSize, knobSize]
-        fillColor = knobColor
-        color = knobColor
-        rendObj = ROBJ_VECTOR_CANVAS
-        commands = [
-          [VECTOR_ELLIPSE, 50, 50, 50, 50]
-        ]
-      },
+      throttleScale(scaleWidth, throttleScaleHeight, knobSize, lineWidth)
       @() {
-        watch = [Trt0, IsTrtWep0, wheelBrake, isOnGroundSmoothed]
-        key = "air_throttle_slider_text"
-        rendObj = ROBJ_TEXT
-        pos = [-1.1 * knobSize, pw(-80)]
-        hplace = ALIGN_RIGHT
-        vplace = ALIGN_BOTTOM
-        color = IsTrtWep0.get() && !wheelBrake.get() ? hudRedColor : knobColor
-        text = wheelBrake.get() && isOnGroundSmoothed.get() ? loc("hotkeys/ID_WHEEL_BRAKE")
-          : IsTrtWep0.get() ? wepText
-          : Trt0.get() >= maxThrottle ? maxThrottleText
-          : $"{Trt0.get()}{percentText}"
-      }.__update(getScaledFont(wheelBrake.get() && isOnGroundSmoothed.get() ? fontVeryTinyShaded : fontTinyShaded, scale))
+        watch = Trt0
+        rendObj = ROBJ_MASK
+        size = [knobSize, throttleScaleHeight]
+        pos = [-knobSize, 0]
+        image = maskImageLeft
+        children = {
+          rendObj = ROBJ_SOLID
+          size = FLEX
+          transform = {
+            pivot = 1,
+            scale = [1,
+              (Trt0.get() <= maxThrottle ? Trt0.get().tofloat()
+                  : lerp(1.0, wepAxisValue, maxThrottle, maxThrottle - sliderWepValue, Trt0.get().tofloat() / maxThrottle))
+                / (maxThrottle - sliderWepValue)
+            ]
+          }
+          transitions = knobScaleTransition
+        }
+      }
     ]
   }
-  return {
-    watch = [ sliderValue, needOpacityThrottle, isThrottleDisabled]
-    key = "air_throttle_slider"
-    size = [fullWidth, height]
-    padding = [0, sliderPadding]
-    behavior = Behaviors.Slider
-    fValue = sliderV
-    knob = knob
-    min = sliderWepValue
-    max = maxThrottle
-    unit = stepThrottle
-    orientation = O_VERTICAL
-    opacity = isThrottleDisabled.get() ? 0.2
-      : needOpacityThrottle.get() ? 0.5
-      : 1.0
-
-    transitions = [{ prop = AnimProp.opacity, duration = 0.5, easing = Linear }]
-    children = [
-      {
-        size = [scaleWidth, throttleScaleHeight + scaleWidth]
-        pos =  [scaleWidth, 0]
-        padding = [scaleWidth / 2, 0]
-        vplace = ALIGN_CENTER
-        rendObj = ROBJ_IMAGE
-        image = throttleBgrImage
-        children = [
-          throttleScale(scaleWidth, throttleScaleHeight, knobSize, lineWidth)
-          @() {
-            watch = Trt0
-            rendObj = ROBJ_MASK
-            size = [knobSize, throttleScaleHeight]
-            pos = [-knobSize, 0]
-            image = getSvgImage("hud_plane_gradient_left", knobSize, throttleScaleHeight)
-            children = {
-              rendObj = ROBJ_SOLID
-              size = FLEX
-              transform = {
-                pivot = [1, 1],
-                scale = [1,
-                  (Trt0.get() <= maxThrottle ? Trt0.get().tofloat()
-                      : lerp(1.0, wepAxisValue, maxThrottle, maxThrottle - sliderWepValue, Trt0.get().tofloat() / maxThrottle))
-                    / (maxThrottle - sliderWepValue)
-                ]
-              }
-              transitions = [{ prop = AnimProp.scale, duration = 0.5, easing = InOutQuad }]
-            }
-          }
-        ]
-      }
-      knob
-      btnImageThrottleInc
-      btnImageThrottleDec
-    ]
-    function onAttach() {
-      resetTimeout(0.1, @() sliderValue.set(throttleToSlider(Trt0.get())))
-      needOpacityThrottle.set(true)
+  return function() {
+    let sliderV = sliderValue.get()
+    let knobPos = sliderV <= sliderWepValue ? 0
+      : ((clamp(sliderV, 0, maxThrottle) - sliderWepValue).tofloat()
+          / (maxThrottle - sliderWepValue) * throttleScaleHeight).tointeger()
+    let knob = {
+      size  = [knobSize + 2 * knobPadding, knobSize + 2 * knobPadding]
+      hplace = ALIGN_CENTER
+      padding = knobPadding
+      children = [
+        {
+          pos = [0, knobPos - knobPadding]
+          size  = knobSize
+          fillColor = knobColor
+          color = knobColor
+          rendObj = ROBJ_VECTOR_CANVAS
+          commands = const [
+            [VECTOR_ELLIPSE, 50, 50, 50, 50]
+          ]
+        },
+        @() {
+          watch = [Trt0, IsTrtWep0, wheelBrake, isOnGroundSmoothed]
+          key = "air_throttle_slider_text"
+          rendObj = ROBJ_TEXT
+          pos = [-1.1 * knobSize, pw(-80)]
+          hplace = ALIGN_RIGHT
+          vplace = ALIGN_BOTTOM
+          color = IsTrtWep0.get() && !wheelBrake.get() ? hudRedColor : knobColor
+          text = wheelBrake.get() && isOnGroundSmoothed.get() ? loc("hotkeys/ID_WHEEL_BRAKE")
+            : IsTrtWep0.get() ? wepText
+            : Trt0.get() >= maxThrottle ? maxThrottleText
+            : $"{Trt0.get()}{percentText}"
+        }.__update(getScaledFont(wheelBrake.get() && isOnGroundSmoothed.get() ? fontVeryTinyShaded : fontTinyShaded, scale))
+      ]
     }
-    onChange = !isThrottleDisabled.get() ? changeThrottleValue : null
+    return {
+      watch = [ sliderValue, needOpacityThrottle, isThrottleDisabled]
+      key = "air_throttle_slider"
+      size = [fullWidth, height]
+      padding = [0, sliderPadding]
+      behavior = Behaviors.Slider
+      fValue = sliderV
+      knob = knob
+      min = sliderWepValue
+      max = maxThrottle
+      unit = stepThrottle
+      orientation = O_VERTICAL
+      opacity = isThrottleDisabled.get() ? 0.2
+        : needOpacityThrottle.get() ? 0.5
+        : 1.0
+
+      transitions = opacityTransition
+      children = [
+        throttleImage
+        knob
+        btnImageThrottleInc
+        btnImageThrottleDec
+      ]
+      function onAttach() {
+        resetTimeout(0.1, @() sliderValue.set(throttleToSlider(Trt0.get())))
+        needOpacityThrottle.set(true)
+      }
+      onChange = !isThrottleDisabled.get() ? changeThrottleValue : null
+    }
   }
 })
 
@@ -482,7 +493,7 @@ const imgBgSize = 2 * bgRadius
 const stickSize = hdpx(100)
 
 let imgBg = @(size) {
-  size = [size, size]
+  size = size
   image = Picture($"ui/gameuiskin#hud_tank_stick_bg.svg:{size}:{size}:P")
   rendObj = ROBJ_IMAGE
   vplace = ALIGN_CENTER
@@ -500,7 +511,7 @@ let mkImgBgComp = @(scale) {
 function mkImgStick(scale) {
   let size = scaleEven(stickSize, scale)
   return {
-    size = [size, size]
+    size = size
     image = Picture($"ui/gameuiskin#joy_head.svg:{size}:{size}:P")
     rendObj = ROBJ_IMAGE
     vplace = ALIGN_CENTER
@@ -518,7 +529,7 @@ function aircraftMoveStickBase(scale) {
     key = currentAircraftCtrlType
     behavior = TouchScreenSteeringStick
     size = FLEX
-    touchStickAction = {
+    touchStickAction = const {
       horizontal = "mouse_aim_x"
       vertical = "mouse_aim_y"
     }
@@ -538,12 +549,16 @@ function aircraftMoveStickBase(scale) {
   }
 }
 
-let aircraftMoveStick = @(scale) @() {
-  watch = currentAircraftCtrlType
-  size = array(2, scaleEven(stickZoneSize, scale))
-  children = currentAircraftCtrlType.get() == "stick" || currentAircraftCtrlType.get() == "stick_static"
-    ? aircraftMoveStickBase(scale)
-    : null
+function aircraftMoveStick(scale) {
+  let zoneSize = array(2, scaleEven(stickZoneSize, scale))
+  let stickBase = aircraftMoveStickBase(scale)
+  return @() {
+    watch = currentAircraftCtrlType
+    size = zoneSize
+    children = currentAircraftCtrlType.get() == "stick" || currentAircraftCtrlType.get() == "stick_static"
+      ? stickBase
+      : null
+  }
 }
 
 function aircraftMoveSecondaryStickBase(scale) {
@@ -581,12 +596,16 @@ function aircraftMoveSecondaryStickBase(scale) {
   }
 }
 
-let aircraftMoveSecondaryStick = @(scale) @() {
-  watch = currentAircraftCtrlType
-  size = array(2, scaleEven(stickZoneSize, scale))
-  children = currentAircraftCtrlType.get() == "stick" || currentAircraftCtrlType.get() == "stick_static"
-    ? aircraftMoveSecondaryStickBase(scale)
-    : null
+function aircraftMoveSecondaryStick(scale) {
+  let zoneSize = array(2, scaleEven(stickZoneSize, scale))
+  let secondaryStickBase = aircraftMoveSecondaryStickBase(scale)
+  return @() {
+    watch = currentAircraftCtrlType
+    size = zoneSize
+    children = currentAircraftCtrlType.get() == "stick" || currentAircraftCtrlType.get() == "stick_static"
+      ? secondaryStickBase
+      : null
+  }
 }
 
 let aircraftMoveStickView = {
@@ -633,28 +652,26 @@ function mkEditView() {
   return {
     size = [fullWidth, height]
     padding = [0, sliderPadding]
-    children = [
-      {
-        size = [scaleWidth, throttleScaleHeight]
-        pos =  [scaleWidth, 0]
-        vplace = ALIGN_CENTER
-        rendObj = ROBJ_IMAGE
-        image = throttleBgrImage
-        children = [
-          throttleScale(scaleWidth, throttleScaleHeight, knobSize, lineWidth)
-          {
-            rendObj = ROBJ_MASK
-            size = [knobSize, throttleScaleHeight]
-            pos = [scaleWidth, 0]
-            image = getSvgImage("hud_plane_gradient", knobSize, throttleScaleHeight)
-            children = {
-              rendObj = ROBJ_SOLID
-              size = FLEX
-            }
+    children = {
+      size = [scaleWidth, throttleScaleHeight]
+      pos =  [scaleWidth, 0]
+      vplace = ALIGN_CENTER
+      rendObj = ROBJ_IMAGE
+      image = throttleBgrImage
+      children = [
+        throttleScale(scaleWidth, throttleScaleHeight, knobSize, lineWidth)
+        {
+          rendObj = ROBJ_MASK
+          size = [knobSize, throttleScaleHeight]
+          pos = [scaleWidth, 0]
+          image = getSvgImage("hud_plane_gradient", knobSize, throttleScaleHeight)
+          children = {
+            rendObj = ROBJ_SOLID
+            size = FLEX
           }
-        ]
-      }
-    ]
+        }
+      ]
+    }
   }
 }
 
@@ -681,6 +698,8 @@ let txtFuelShort = loc("HUD/FUEL_SHORT")
 let altitudeMeters = Computed(@() DistanceToGround.get().tointeger())
 
 let formatFuelText = @(fuel) format("%d:%02d", floor(fuel / 60), fuel % 60)
+let hasBoosterFuelTimer = Computed(@() (playerUnitName.get() ?? "") != ""
+  && getUnitBlkDetails(playerUnitName.get()).hasBoosterFuelTimer)
 let getFuelState = @(fuel, hasExternalFuel, externalFuel, fuelState) fuelState == TemperatureState.FUEL_LEAK
     ? loc("HUD_FUEL_LEAK")
   : fuelState == TemperatureState.FUEL_DUMPING ? loc("HUD_FUEL_DUMPING")
@@ -693,10 +712,11 @@ function aircraftIndicators(scale) {
   let font = prettyScaleForSmallNumberCharVariants(fontTinyAccentedShaded, scale)
   let fontMono = prettyScaleForSmallNumberCharVariants(fontMonoTinyAccentedShaded, scale)
   let fuelText = Computed(@() !hasFuel.get() ? ""
+    : hasBoosterFuelTimer.get() ? formatFuelText(ExternalFuel.get())
     : getFuelState(Fuel.get(), HasExternalFuel.get(), ExternalFuel.get(), FuelState.get()))
   let fuelColor = Computed(@() !hasFuel.get() ? null
-    : Fuel.get() < TIME_MINUTE_IN_SECONDS ? redColor
-    : neutralColor)
+    : (hasBoosterFuelTimer.get() || Fuel.get() >= TIME_MINUTE_IN_SECONDS) ? neutralColor
+    : redColor)
   return {
     size = [hdpx(250 * scale), hdpx(150 * scale)]
     valign = ALIGN_BOTTOM
@@ -812,32 +832,34 @@ let toInt = @(list) list.map(@(v) v.tointeger())
 let verBtnSizeInPercent = [0.6, 0.3]
 let horBtnSizeInPercent = [0.5, 0.48]
 
-let mkVerticalArrow = @(id, isControlDisabled, verSize, upDirection, vplace) mkAltMoveVertBtn(
-  function onTouchBegin() {
-    setShortcutOn(id)
-  },
-  @() setShortcutOff(id),
-  id,
-  {
-    size = verSize
-    key = id
-    flipY = upDirection
-    vplace
-    children = @() {
-      watch = isControlDisabled
-      children = isControlDisabled.get() ? null
-        : [
-            {
-              size = verSize
-              rendObj = ROBJ_IMAGE
-              image = Picture($"ui/gameuiskin#hud_movement_air_arrow_forward.svg:{verSize[0]}:{verSize[1]}")
-              vplace = ALIGN_CENTER
-              flipY = upDirection
-            }
-            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(50)] }, verSize)
-          ]
+function mkVerticalArrow(id, isControlDisabled, verSize, upDirection, vplace, scale) {
+  let arrowChildren = [
+    {
+      size = verSize
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#hud_movement_air_arrow_forward.svg:{verSize[0]}:{verSize[1]}")
+      vplace = ALIGN_CENTER
+      flipY = upDirection
     }
-  })
+    mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(50)] }, scale)
+  ]
+  return mkAltMoveVertBtn(
+    function onTouchBegin() {
+      setShortcutOn(id)
+    },
+    @() setShortcutOff(id),
+    id,
+    {
+      size = verSize
+      key = id
+      flipY = upDirection
+      vplace
+      children = @() {
+        watch = isControlDisabled
+        children = isControlDisabled.get() ? null : arrowChildren
+      }
+    })
+}
 
 let mkHorizontalMovementParams = @(id, disableId, scale) {
   scale
@@ -861,8 +883,8 @@ function aircraftMoveArrows(scale) {
 
   let leftArrow = mkAirMoveLeftBtn(mkHorizontalMovementParams($"{horizontal}_rangeMin", horizontal, scale))
   let rightArrow = mkAirMoveRightBtn(mkHorizontalMovementParams($"{horizontal}_rangeMax", horizontal, scale))
-  let topArrow = mkVerticalArrow(vertical_min, isVertControlDisabled, verSize, false, ALIGN_TOP)
-  let bottomArrow = mkVerticalArrow(vertical_max, isVertControlDisabled, verSize, true, ALIGN_BOTTOM)
+  let topArrow = mkVerticalArrow(vertical_min, isVertControlDisabled, verSize, false, ALIGN_TOP, scale)
+  let bottomArrow = mkVerticalArrow(vertical_max, isVertControlDisabled, verSize, true, ALIGN_BOTTOM, scale)
   let buttons = { topArrow, bottomArrow, leftArrow, rightArrow }
 
   let scaledFullSize = scaleArr(fullSizeAirBase, scale)

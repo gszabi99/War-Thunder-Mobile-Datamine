@@ -6,8 +6,9 @@ from "%sqstd/datablock.nut" import isDataBlock, blk2SquirrelObjNoArrays, getBlkB
 from "%sqstd/math.nut" import round, round_by_value, fabs
 from "%sqstd/underscore.nut" import deep_clone
 from "%appGlobals/unitConst.nut" import TANK, SHIP, AIR
-from "%appGlobals/unitTags.nut" import getUnitTags
+from "%appGlobals/unitTags.nut" import getUnitTags, getUnitTagsShop
 from "%rGui/hud/hudConfigParameters.nut" import getHudConfigParameter
+from "unitCalculcation" import calc_plane_max_speed_mult
 
 
 const iconDamage = "►"
@@ -34,6 +35,7 @@ let tankAttrToTankCrewParamsMap = {
   vitality = [ "driver", "damageMultiplier" ]
   driving = [ "driver", "brakesTau" ]
   field_repair = [ "driver", "fieldRepairSpeedMultiplier" ]
+  extinguishing = [ "driver", "extinguishSpeedMultiplier" ]
 }
 
 let planeAttrToCrewParamsMap = {
@@ -147,12 +149,12 @@ function mkValCfg(cfg) {
       labelLocId = $"stats/{relatedStat}"
       getBaseVal = @(shopCfg) shopCfg?[relatedStat] ?? 0.0
       getMulMin = @(_attrId) 1.0
-      updateStats = @(stats, mul) mulStat(stats, relatedStat, mul)
+      updateStats = @(stats, mul, _) mulStat(stats, relatedStat, mul)
     }.__update(res)
   if (relatedWeapStat)
     res = {
       getBaseVal = @(shopCfg) getTopWeaponByTypes(shopCfg?.weapons, relatedWeapTypes)?[relatedWeapStat] ?? 0.0
-      updateStats = @(stats, mul) mulWeap(stats, relatedWeapStat, mul, relatedWeapTypes)
+      updateStats = @(stats, mul, _) mulWeap(stats, relatedWeapStat, mul, relatedWeapTypes)
     }.__update(res)
   return attrValCfgDefault.__merge(res)
 }
@@ -211,7 +213,7 @@ let shipAttrs = {
     getMulMax = @(attrId) attrMaxMulsShip?[attrId].mulMetaPartsHp ?? 1.0
     valueToText = @(v) round(v)
     relatedStat = "shipCrewMax"
-    function updateStats(stats, mul) {
+    function updateStats(stats, mul, _) {
       mulStat(stats, "shipCrewMin", mul)
       mulStat(stats, "shipCrewMax", mul)
       mulStat(stats, "shipCrewRating", mul)
@@ -221,7 +223,7 @@ let shipAttrs = {
     getMulMax = @(attrId) attrMaxMulsShip?[attrId].mulMaxSpeed ?? 1.0
     valueToText = @(v) "".concat(round_by_value(v * 3.6, 0.1), loc("measureUnits/kmh"))
     relatedStat = "maxSpeed"
-    function updateStats(stats, mul) {
+    function updateStats(stats, mul, _) {
       mulStat(stats, "surfaceSpeed", mul * (get_game_params_blk()?.difficulty_settings.noArcadeBoost.off.submarineSurfaceSlowMult ?? 1))
       mulStat(stats, "periscopeSpeed", mul * (get_game_params_blk()?.difficulty_settings.noArcadeBoost.off.submarineSurfaceSlowMult ?? 1))
       mulStat(stats, "maxSpeed", mul)
@@ -293,14 +295,14 @@ function mkAttrFromMinus0prcUp(attrId, roundBy = 0.1) {
 let tankAttrs = {
   loading_time_mult = mkAttrFromMinus0prcUp("loading_time_mult")
     .__update({
-      updateStats = @(stats, mul) stats.weapons.each(function(el) {
+      updateStats = @(stats, mul, _) stats.weapons.each(function(el) {
         if (!el?.autoLoader)
           mulStat(el, "reloadTime", attrRangesTank["loading_time_mult"].begin - mul)
       })
     })
   tracking = mkAttrUpTo100prc("tracking")
     .__update({
-      updateStats = @(stats, mul) stats.weapons.each(@(el) mulStat(el, "gunnerTurretRotationSpeed", mul / attrRangesTank.tracking.begin))
+      updateStats = @(stats, mul, _) stats.weapons.each(@(el) mulStat(el, "gunnerTurretRotationSpeed", mul / attrRangesTank.tracking.begin))
     })
   accuracy = mkAttrUpTo100prc("accuracy")
   eyesight = mkAttrFrom100prcUp("eyesight")
@@ -311,7 +313,7 @@ let tankAttrs = {
     valueToText = @(v) "".concat(round_by_value(v, 0.1), loc("measureUnits/seconds"))
   }
   vitality = mkAttrFrom100prcUp("vitality")
-  battleRepairItems = {
+  battleRepairItems = { 
     function getValDataByServConfigs(attr, step, servConfigs) {
       let { allItems = {}, itemsByAttributes = [] } = servConfigs
       let cfg = itemsByAttributes.filter(@(c) c.attribute == attr.id) 
@@ -330,9 +332,30 @@ let tankAttrs = {
       return res
     }
   }
+  extinguishing = {
+    getBaseVal = @(_shopCfg) 1.0
+    getMulMax = @(_attrId) attrRangesTank.extinguishing.begin != 0
+      ? (attrRangesTank.extinguishing.end / attrRangesTank.extinguishing.begin) : 1.0
+    valueToText = @(v) "".concat(round_by_value(v * 100, 0.1), "%")
+  }
   driving = mkAttrUpTo100prc("driving")
   field_repair = mkAttrUpTo100prc("field_repair", 1.0)
 }.map(@(c) mkValCfg(c))
+
+let planeMaxSpeedAttrs = ["plane_engine", "plane_compressor", "plane_fuselage", "plane_flaps_wings"]
+
+function mkPlaneMaxSpeedUpdate(attrId, begin, end, mulMax) {
+  if (!planeMaxSpeedAttrs.contains(attrId) || begin <= 0.0 || mulMax <= 1.0)
+    return null
+  return function(stats, mul, unitName) {
+    if (unitName == null)
+      return
+    let crewMul = begin + ((end - begin) * ((mul - 1.0) / (mulMax - 1.0)))
+    let shopCfg = getUnitTagsShop(unitName)
+    mulStat(stats, "maxSpeed", calc_plane_max_speed_mult(unitName, attrId, crewMul,
+      (shopCfg?.maxSpeed ?? 0.0).tofloat(), (shopCfg?.maxSpeedAlt ?? 0.0).tofloat()))
+  }
+}
 
 function mkAttributePlusPercent(attrId, roundBy = 0.1) {
     let { begin, end } = attrMultsPlane[attrId]
@@ -344,6 +367,7 @@ function mkAttributePlusPercent(attrId, roundBy = 0.1) {
     getMulMin = @(_) 1.0
     getMulMax = @(_) mulMax
     valueToText = @(v) "".concat("+", round_by_value(fabs(v - 1.0) * 100, roundBy), "%")
+    updateStats = mkPlaneMaxSpeedUpdate(attrId, begin, end, mulMax)
   }
 }
 
@@ -432,8 +456,8 @@ function applyAttrLevels(unitType, shopCfg, attrLevels, attrPreset, mods, unitNa
       }
       let mul = getAttrMul(cfg, attrId, step, stepsTotal) * modsMul(attrId, mods) * submarineMul
       let baseMul = getAttrMul(cfg, attrId, 0, stepsTotal) * modsMul(attrId, mods) * submarineMul
-      cfg.updateStats(stats, mul)
-      cfg.updateStats(baseStats, baseMul)
+      cfg.updateStats(stats, mul, unitName)
+      cfg.updateStats(baseStats, baseMul, unitName)
     }
   }
 

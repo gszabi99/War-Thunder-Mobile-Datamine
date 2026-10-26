@@ -176,7 +176,7 @@ let xrayCommonGetters = {
   getUnitFmBlk
   getUnitWeaponsList
   getAircraftFuelTankPartInfo = @(_commonData, _partName) null
-  getShopDevMode = @() false
+  getXrayDevMode = @() false
 
   sharedWatches
 

@@ -48,6 +48,7 @@
       "light__render_gpu_objects": false,
       "light__force_max_light_radius": false,
       "light__radius_scale": 1.0,
+      "light__source_radius": 0.0,
       "light__enable_lens_flares": false
     }
   },

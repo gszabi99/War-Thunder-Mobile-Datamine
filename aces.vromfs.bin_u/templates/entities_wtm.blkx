@@ -206,10 +206,12 @@
   "player_battle_data": {
     "isBoostersApplied": false,
     "isOfflineUser": false,
+    "clanId": -1,
     "_group": {
       "_replicate": true,
       "deserterLockStart": 0,
       "isBattleDataReceived": false,
+      "isClanIdReceived": false,
       "isUnitsOverrided": false,
       "ovrUnitUpgradesPreset": "",
       "unitSlots:list<t>": {},
@@ -306,7 +308,8 @@
     "raceLog:array": {},
     "missionScoreLog:array": {},
     "unitClasses:object": {},
-    "bigQueryEvents:object": {}
+    "bigQueryEvents:object": {},
+    "usersInClanSquads:object": {}
   },
   "statistic_players": {
     "statisticPlayers:object": {},
@@ -372,7 +375,7 @@
     "_group": [
       {
         "_tags": "netClient",
-        "air_speed_booster__fov": 0.2,
+        "air_speed_booster__fov": 1.0,
         "air_speed_booster__fovLast": 1.0
       },
       {
@@ -384,6 +387,44 @@
         "air_speed_booster__enableWep": true
       }
     ]
+  },
+  "air_oil_spill": {
+    "_use": "replicating",
+    "air_oil_spill__strength": 1.0,
+    "air_oil_spill__fxName": "trail_oil",
+    "air_oil_spill__splatterLevelSpeed": 0.1,
+    "air_oil_spill__splatterOpacitySpeed": 0.5,
+    "air_oil_spill__splatterDistance": 300.0,
+    "air_oil_spill__splatterConeHalfAngleDeg": 10.0,
+    "air_oil_spill__ownerEid:eid": {},
+    "_group": {
+      "_tags": "server",
+      "air_oil_spill__time": 10.0
+    },
+    "air_oil_spill__effects": {
+      "_tags": "gameClient"
+    }
+  },
+  "air_oil_spill_screen_splatter": {
+    "_use": "replicating",
+    "_singleton": true,
+    "_group": {
+      "_tags": "render",
+      "air_oil_spill_screen_splatter__color": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "air_oil_spill_screen_splatter__tex": "splatter",
+      "air_oil_spill_screen_splatter__levelDecreaseSpeed": 0.1,
+      "air_oil_spill_screen_splatter__opacityDecreaseSpeed": 0.2,
+      "air_oil_spill_screen_splatter__opacityDecreaseAfterLevel": 0.8,
+      "air_oil_spill_screen_splatter__sourceMinSpeed": 10.0
+    },
+    "air_oil_spill_screen_splatter__state": {
+      "_tags": "render"
+    }
   },
   "hangar_major_banner_tank": {
     "_use": "rendinst",
@@ -408,5 +449,12 @@
     "pickup_airdrop__duration_landed": 5.0,
     "pickup_airdrop__groundFx": "smoke_point_red",
     "pickup_zone__miniMapIconName": "iconAirDrop"
+  },
+  "bloom": {
+    "_override": true,
+    "_tags": "render",
+    "bloom__radius": 15.0,
+    "bloom__mul": 0.35,
+    "bloom__threshold": 0.6
   }
 }

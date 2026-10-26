@@ -1,5 +1,7 @@
 {
   "fmFile": "fm/po-2_nw.blk",
+  "ForceFiniteFuel1": true,
+  "hudBoosterFuelTimer": true,
   "model": "po_2_hw",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "useTouchTargeting": true,
@@ -44,6 +46,9 @@
     "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
     "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk"
   ],
+  "engineFxMap0": 0,
+  "engineFxMap1": 1,
+  "engineFxMap2": 1,
   "DamageArcade": {
     "hp": 150.0
   },
@@ -1722,14 +1727,78 @@
         "pylon_bomb6"
       ]
     },
-    "WeaponSlot": {
-      "index": 0,
-      "notUseforDisbalanceCalculation": true,
-      "WeaponPreset": {
-        "name": "common"
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "name": "common",
+          "Weapon": [
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_hw.blk",
+              "emitter": "gun1",
+              "bullets": 3,
+              "external": true,
+              "bulletsCartridge": 1,
+              "separate": false,
+              "realisticGunnery": true,
+              "sizeSalvo": 1
+            },
+            {
+              "trigger": "fuel tanks",
+              "blk": "gamedata/weapons/payloadguns/po_2_nw_booster_fuel_tank.blk",
+              "emitter": "gun1",
+              "bullets": 1,
+              "external": false,
+              "jettisonable": false
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 9,
+        "order": 1,
+        "WeaponPreset": {
+          "iconType": "missile_air_to_air",
+          "name": "halloween_aam",
+          "isDefault": true,
+          "ShowNodes": {
+            "node": "pylon_bomb6"
+          },
+          "Weapon": {
+            "trigger": "rockets",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/halloween_aam.blk",
+            "emitter": "bomb2",
+            "bullets": 1,
+            "zeroAmmoStart": true,
+            "needPickupAmmo": true
+          }
+        }
+      }
+    ]
+  },
+  "engineFx": [
+    {
+      "trail": "trail_jet",
+      "haze": "haze_jet",
+      "exhaust": {
+        "afterburner": "motor_exhaust"
+      }
+    },
+    {
+      "haze": "haze_jet",
+      "trail": "trail_jet",
+      "exhaust": {
+        "standard": "booster_fire",
+        "afterburner": "booster_fire",
+        "start": "jet_start_exhaust"
       }
     }
-  },
+  ],
   "damagePartsDependencyMap": {
     "dp": [
       {

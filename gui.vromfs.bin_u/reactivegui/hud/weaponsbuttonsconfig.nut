@@ -3,7 +3,7 @@ from "%appGlobals/unitConst.nut" import *
 from "blkGetters" import get_current_mission_info_cached
 from "%rGui/hud/actionBar/actionType.nut" import AB_TORPEDO, AB_TOOLKIT, AB_EXTINGUISHER, AB_SMOKE_SCREEN,
   AB_SMOKE_GRENADE, AB_MEDICALKIT, AB_DEPTH_CHARGE, AB_MINE, AB_MORTAR, AB_ROCKET, AB_ROCKET_SECONDARY,
-  AB_TOOLKIT_WITH_MEDICAL, AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_ELECTRONIC_WARFARE,
+  AB_SPECIAL_FIGHTER, AB_SPECIAL_BOMBER, AB_ARTILLERY_TARGET, AB_IRCM, AB_ELECTRONIC_WARFARE,
   AB_ROCKET_ASW, AB_ACOUSTIC_DECOY, AB_CIWS, AB_ROCKET_TERTIARY
 from "%rGui/hud/hudHaptic.nut" import HAPT_SHOOT_TORPEDO, HAPT_SHOOT_MINES, HAPT_REPAIR, HAPT_SMOKE, HAPT_IRCM
 from "%rGui/hudState.nut" import hasCountermeasures
@@ -23,6 +23,7 @@ function getActionBarShortcut(unitType, itemConfig) {
 let mkToolkitCfg = @(image, ovr = {}) {
   getShortcut = getActionBarShortcut
   getImage = @(_) image
+  alternativeImage = @(_) "ui/gameuiskin#hud_free_toolkit.svg"
   actionType = AB_TOOLKIT
   mkButtonFunction = "mkRepairActionItem"
   haptPatternId = HAPT_REPAIR
@@ -43,14 +44,6 @@ let actionBarItemsConfig = {
   },
   EII_TOOLKIT = mkToolkitCfg("ui/gameuiskin#hud_consumable_repair.svg"),
   EII_TOOLKIT_SPLIT = mkToolkitCfg("ui/gameuiskin#hud_consumable_toolkit.svg"),
-  EII_TOOLKIT_WITH_MEDICAL = {
-    getShortcut = getActionBarShortcut
-    getImage = @(_) "ui/gameuiskin#hud_consumable_repair.svg"
-    actionType = AB_TOOLKIT_WITH_MEDICAL
-    mkButtonFunction = "mkRepairActionItem"
-    haptPatternId = HAPT_REPAIR
-    getAnimationKey = @(unitType) unitType == TANK ? "tank_tool_kit_expendable" : "ship_tool_kit"
-  },
   EII_EXTINGUISHER = {
     getShortcut = getActionBarShortcut
     getImage = @(_) "ui/gameuiskin#fire_indicator.svg"
@@ -111,6 +104,8 @@ let actionBarItemsConfig = {
     getImage = @(_) "ui/gameuiskin#hud_consumable_medicalkit.svg"
     actionType = AB_MEDICALKIT
     mkButtonFunction = "mkRepairActionItem"
+    actionKey = "btn_medicalkit"
+    getAnimationKey = @(_) "tank_medical_kit"
   },
   EII_DEPTH_CHARGE = {
     getShortcut = @(unitType, __) unitType == SUBMARINE ? "ID_SUBMARINE_WEAPON_DEPTH_CHARGE" : "ID_SHIP_WEAPON_DEPTH_CHARGE"

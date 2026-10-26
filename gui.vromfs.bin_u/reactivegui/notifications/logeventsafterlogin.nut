@@ -4,12 +4,13 @@ from "eventbus" import eventbus_send
 from "%sqstd/frp.nut" import ComputedImmediate
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%appGlobals/loginState.nut" import isLoggedIn
-from "%appGlobals/pServer/campaign.nut" import lastBattles, sharedStats, curCampaign, campaignsList
+from "%appGlobals/pServer/campaign.nut" import isProfileReceived, lastBattles, sharedStats, curCampaign, campaignsList
 from "%appGlobals/pServer/profile.nut" import playerLevelInfo
+import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/userstats/serverTime.nut" import serverTime
-from "%rGui/battlePass/battlePassState.nut" import curStage
+from "%rGui/battlePass/battlePassObsoleteState.nut" import curStage
 from "%rGui/debriefing/debriefingState.nut" import debriefingData
-from "%rGui/notifications/logEvents.nut" import sendTelemetryEvent
+from "%rGui/notifications/logEvents.nut" import sendTelemetryEvent, sendTelemetrySavedEvent, logTikTok
 from "%rGui/tutorial/tutorialMissions.nut" import firstBattleTutor, tutorialMissions
 from "%rGui/unlocks/userstat.nut" import isUserstatMissingData, userstatStats
 
@@ -39,6 +40,36 @@ function sendEventByValue(eventId, watch, valueToSend, notInitedValue = null) {
 let lastBattlesTotal = keepref(Computed(@() lastBattles.get().len()))
 sendEventByValue("played_battles_5", lastBattlesTotal, 5, 0)
 
+function sendEventOnReach(eventId, watch, threshold, sendEvent = sendTelemetryEvent) {
+  local prev = watch.get()
+  watch.subscribe(function(v) {
+    if (prev != null && prev < threshold && v >= threshold)
+      sendEvent(eventId)
+    prev = v
+  })
+}
+
+let unitsTotal = keepref(Computed(@() !isProfileReceived.get() ? null
+  : (servProfile.get()?.units.len() ?? 0)))
+sendEventOnReach("get_units_8", unitsTotal, 8, @(id) sendTelemetrySavedEvent(id, id))
+
+let statsByCampaign = Computed(@() !isProfileReceived.get() ? null
+  : (servProfile.get()?.sharedStatsByCampaign ?? {}))
+
+let onlineBattlesTotal = keepref(Computed(@() statsByCampaign.get() == null ? null
+  : statsByCampaign.get().reduce(@(res, s) res + (s?.battles ?? 0), 0)))
+let onlineBattlesTanks = keepref(Computed(@() statsByCampaign.get() == null ? null
+  : (statsByCampaign.get()?.tanks.battles ?? 0)))
+let onlineBattlesAir = keepref(Computed(@() statsByCampaign.get() == null ? null
+  : (statsByCampaign.get()?.air.battles ?? 0)))
+
+foreach (count in [2, 8, 21])
+  sendEventOnReach($"battles_{count}", onlineBattlesTotal, count)
+
+sendEventOnReach("battles_tanks_7", onlineBattlesTanks, 7)
+sendEventOnReach("battles_air_7", onlineBattlesAir, 7)
+sendEventOnReach("battleNum_01", onlineBattlesTotal, 1, logTikTok)
+
 const LAST_SUBMITTED_COUNT_OF_BATTLES = "lastSubmittedCountOfBattles"
 let battlesListCountToSend = [50, 100, 500, 1000, 1100, 1200, 1300, 1400, 1500, 1800, 2000]
 
@@ -53,7 +84,7 @@ function findClosestOrEqualLowerValue(list, target) {
   return res
 }
 
-let playerStats = ComputedImmediate(@() userstatStats.get()?.stats["global"])
+let playerStats = Computed(@() userstatStats.get()?.stats["global"])
 let totalProfileBattles = keepref(Computed(function() {
   let res = {}
   foreach (campaign in campaignsList.get())

@@ -9,8 +9,11 @@ from "%rGui/shop/lootboxPreviewState.nut" import previewLootboxId
 let isOpened = mkWatched(persist, "isOpened", false)
 let selectedLootbox = mkWatched(persist, "selectedLootbox", null)
 let lootboxesCfg = Computed(@() serverConfigs.get()?.lootboxesCfg ?? {})
-let rewardsViewInfo = Computed(@() !selectedLootbox.get() ? null
-  : getAllLootboxRewardsViewInfo(lootboxesCfg.get()?[selectedLootbox.get()]))
+let allLootboxes = Computed(@() lootboxesCfg.get().keys().sort())
+let curLootbox = Computed(@() allLootboxes.get().contains(selectedLootbox.get()) ? selectedLootbox.get()
+  : allLootboxes.get()?[0])
+let rewardsViewInfo = Computed(@() !curLootbox.get() ? null
+  : getAllLootboxRewardsViewInfo(lootboxesCfg.get()?[curLootbox.get()]))
 let allRewards = Computed(@() !rewardsViewInfo.get() ? {}
   : fillRewardsCounts(rewardsViewInfo.get(), servProfile.get(), serverConfigs.get()))
 
@@ -23,7 +26,8 @@ register_command(function() {
 }, "ui.debug.lootboxes_rewards")
 
 return {
-  lootboxesCfg,
+  allLootboxes,
+  curLootbox,
   allRewards,
   isOpened,
   selectedLootbox

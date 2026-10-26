@@ -24,7 +24,6 @@ let tuningStateDefault = {
   customOptions = {
     doublePrimaryGuns = true
     doubleCourseGuns = false
-    hasDoubleRepair = false
     splitSideGunBullets = false
   }
 }

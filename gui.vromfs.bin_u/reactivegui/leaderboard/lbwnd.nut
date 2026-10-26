@@ -5,6 +5,7 @@ from "%appGlobals/profileStates.nut" import myUserName, myUserRealName
 from "%appGlobals/timeToText.nut" import secondsToHoursLoc, parseUnixTimeCached
 from "%appGlobals/user/nickTools.nut" import getPlayerName
 from "%appGlobals/userstats/serverTime.nut" import serverTime
+from "%appGlobals/activeControls.nut" import isGamepad
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderBg
 from "%rGui/components/paginator.nut" import mkPaginator
 from "%rGui/components/playerPlaceIcon.nut" import mkPlaceIconSmall
@@ -37,9 +38,9 @@ const premIconSize = hdpx(50)
 let nameCellWidth = lbRowHeight + nameGap + nameWidth + premIconSize
 const defTxtColor = 0xFFD8D8D8
 const bgColor = 0x60000000
-let iconTimerSize = hdpxi(50)
-let tabH = hdpx(80)
-let statImageSize = hdpxi(60)
+const iconTimerSize = hdpxi(50)
+const tabH = hdpx(80)
+const statImageSize = hdpxi(60)
 
 function timeToEnd() {
   let { start = null, end = null } = curLbTimeRange.get()
@@ -93,7 +94,7 @@ function rewardsTimer() {
 }
 
 let lbTabs = {
-  size = [FLEX, SIZE_TO_CONTENT]
+  size = const [FLEX, SIZE_TO_CONTENT]
   children = mkHorizontalTabsSelectedText(
     lbCfgOrdered.map(@(cfg) { id = cfg.id, locId = cfg.locId, image = cfg.icon }),
     curLbId,
@@ -175,7 +176,7 @@ function mkPrizeCell(category, rowData) {
     halign = ALIGN_CENTER
     vplace = ALIGN_CENTER
     children = {
-      size = [headerIconHeight, headerIconHeight]
+      size = headerIconHeight
       rendObj = ROBJ_IMAGE
       image = rewardIdx.get() not in prizeIcons ? null
         : Picture($"ui/gameuiskin#{prizeIcons[rewardIdx.get()]}:{headerIconHeight}:{headerIconHeight}:P")
@@ -363,10 +364,10 @@ let lbRewardsWarning = {
   margin = hdpx(10)
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
-  halign = ALIGN_CENTER
+  halign = ALIGN_LEFT
   text = loc("lb/warning/rewards")
   color = defTxtColor
-}.__update(fontSmall)
+}.__update(fontTiny)
 
 function lbNoDataMsg() {
   let textsList = [loc("leaderboard/noLbData")]
@@ -377,64 +378,77 @@ function lbNoDataMsg() {
     .__update({ watch = [minRatingBattles, bestBattlesCount] })
 }
 
-let content = @(hasRewards) @() {
-  watch = [curLbCfg, curLbData, curLbSelfRow, isLbRequestInProgress, curLbErrName]
-  size = FLEX
-  flow = FLOW_VERTICAL
-  children = [
-    {
-      size = [FLEX, SIZE_TO_CONTENT]
-      children = [
-        {
-          flow = FLOW_HORIZONTAL
-          valign = ALIGN_CENTER
-          gap = hdpx(10)
-          children = [
-            rewardsTimer
-            @() {
-              watch = hasBestBattles
-              children = !hasBestBattles.get() ? null
-                : mkCustomButton(
-                    {
-                      size = statImageSize
-                      rendObj = ROBJ_IMAGE
-                      image = Picture($"ui/gameuiskin#menu_stats.svg:{statImageSize}:P")
-                      keepAspect = true
-                    },
-                    @() isLbBestBattlesOpened.set(true),
-                    mergeStyles(COMMON,
-                    {
-                      ovr = { minWidth = hdpx(80), size = [hdpx(95), hdpx(72)] }
-                      hotkeys = ["^J:X | Enter"]
-                    }))
-            }
-          ]
-        }
-        lbTabs
-      ]
-    }
-    {
-      rendObj = ROBJ_SOLID
-      color = selectColor
-      size = [FLEX, selLineSize]
-    }
-    curLbCfg.get() != null && (curLbData.get()?.len() ?? 0) > 0
-        ? lbTableFull(curLbCfg.get().categories, curLbData.get(), curLbSelfRow.get(), hasRewards)
-      : isLbRequestInProgress.get() ? waitLeaderBoard
-      : curLbErrName.get() == null ? lbNoDataMsg
-      : lbErrorMsg(loc($"error/{curLbErrName.get()}"))
-  ]
+function content(hasRewards) {
+  let rewardsHeader = {
+    size = const [FLEX, SIZE_TO_CONTENT]
+    children = [
+      {
+        flow = FLOW_HORIZONTAL
+        valign = ALIGN_CENTER
+        gap = hdpx(10)
+        children = [
+          rewardsTimer
+          @() {
+            watch = [hasBestBattles, isGamepad]
+            children = !hasBestBattles.get() ? null
+              : isGamepad.get() ? {
+                  hotkeys = [[
+                    "^J:LT",
+                    loc("lb/bestBattles"),
+                    @() isLbBestBattlesOpened.set(true)
+                  ]]
+                }
+              : mkCustomButton(
+                  {
+                    size = statImageSize
+                    rendObj = ROBJ_IMAGE
+                    image = Picture($"ui/gameuiskin#menu_stats.svg:{statImageSize}:P")
+                    keepAspect = true
+                  },
+                  @() isLbBestBattlesOpened.set(true),
+                  mergeStyles(COMMON,
+                  {
+                    ovr = { minWidth = hdpx(80), size = const [hdpx(95), hdpx(72)] }
+                    hotkeys = ["^J:X | Enter"]
+                  }))
+          }
+        ]
+      }
+      lbTabs
+    ]
+  }
+  let separatorLine = {
+    rendObj = ROBJ_SOLID
+    color = selectColor
+    size = [FLEX, selLineSize]
+  }
+  return @() {
+    watch = [curLbCfg, curLbData, curLbSelfRow, isLbRequestInProgress, curLbErrName]
+    size = FLEX
+    flow = FLOW_VERTICAL
+    children = [
+      rewardsHeader
+      separatorLine
+      curLbCfg.get() != null && (curLbData.get()?.len() ?? 0) > 0
+          ? lbTableFull(curLbCfg.get().categories, curLbData.get(), curLbSelfRow.get(), hasRewards)
+        : isLbRequestInProgress.get() ? waitLeaderBoard
+        : curLbErrName.get() == null ? lbNoDataMsg
+        : lbErrorMsg(loc($"error/{curLbErrName.get()}"))
+    ]
+  }
 }
 
 let needPaginator = Computed(@(prev) curLbData.get() == null
   ? (prev == FRP_INITIAL ? false : prev)
   : curLbData.get().len() != 0)
+let paginatorBuilder = mkPaginator(lbPage, lbLastPage, lbMyPage, { key = needPaginator, animations = wndSwitchAnim })
 let paginator = @() {
   watch = needPaginator
   hplace = ALIGN_RIGHT
   children = !needPaginator.get() ? null
-    : mkPaginator(lbPage, lbLastPage, lbMyPage, { key = needPaginator, animations = wndSwitchAnim })
+    : paginatorBuilder
 }
+let paginatorBlock = { size = const [FLEX, tabH], children = paginator }
 
 let lbScene = {
   key = {}
@@ -462,10 +476,7 @@ let lbScene = {
         pos = [0, selLineSize]
         flow = FLOW_VERTICAL
         children = [
-          {
-            size = [FLEX, tabH]
-            children = paginator
-          }
+          paginatorBlock
           hasCurLbRewards.get() ? lbRewardsBlock : lbRewardsWarning
         ]
       }

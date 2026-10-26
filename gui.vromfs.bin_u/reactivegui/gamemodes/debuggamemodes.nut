@@ -36,6 +36,8 @@ let noGameModes = {
   text = "No debug game modes at this moment"
 }.__update(fontMedium)
 
+let modeBtnOpts = { ovr = { size = const [FLEX, hdpx(100)] }, useFlexText = true }
+
 function gameModesList() {
   let res = {
     watch = [debugModes, selectedCampaign]
@@ -60,7 +62,7 @@ function gameModesList() {
           return
         eventbus_send("queueToGameMode", { modeId })
       },
-      { ovr = { size = const [FLEX, hdpx(100)] }, useFlexText = true }))
+      modeBtnOpts))
 
   if (modes.len() == 0)
     return res

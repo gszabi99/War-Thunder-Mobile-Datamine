@@ -41,9 +41,7 @@ let mkPremiumDaysTitle = function(amount, oldAmount) {
     children = [
       {
         pos = const [ 0, hdpx(38) ]
-        children = [
-          mkGradGlowText(numberToTextForWtFont(amount), fontWtExtraLarge, numFontGrad)
-        ]
+        children = mkGradGlowText(numberToTextForWtFont(amount), fontWtExtraLarge, numFontGrad)
       }
       oldAmount <= 0 ? null
         : mkGradGlowText(numberToTextForWtFont(oldAmount), fontWtBig, numFontGrad, {

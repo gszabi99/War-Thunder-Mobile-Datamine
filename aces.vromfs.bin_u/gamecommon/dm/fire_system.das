@@ -124,8 +124,8 @@ def fire_damage_process_start_burn_event(eid : EntityId;
   let coll_node_bsph = collres_get_node_bsphere(*dm.collisionResource, int(coll_node.nodeIndex))
   let radius = fire_system_calc_burn_radius(*fire_params, coll_node_bsph, unit.boundingSphere.r)
   var offset : float3
-  if pos != float4(0.0f) && unit.collNodeTree != null && (fire_params.allowMultipleFires || fire_params.allowMultipleFx)
-    offset = fire_system_calc_burn_offset(*fire_params, coll_node_bsph, *unit.collNodeTree, geom_node_id, float3(pos.x, pos.y, pos.z))
+  if pos != float4(0.0f) && dm.collNodeTree != null && (fire_params.allowMultipleFires || fire_params.allowMultipleFx)
+    offset = fire_system_calc_burn_offset(*fire_params, coll_node_bsph, *dm.collNodeTree, geom_node_id, float3(pos.x, pos.y, pos.z))
   else
     offset = coll_node_bsph.c
 
@@ -334,6 +334,8 @@ def fire_system_net_sync_handle_es(evt : EventFireSystemNetSync;
     burning_parts |> push((packed_part_id = packed_part_id, fire_params_id = fire_params_id, fx_id = fx_id, already_burning = false))
 
   for fire_id, packed_part_id in iter_range(v.fire_data__packedPartId), v.fire_data__packedPartId
+    if v.fire_data__startTime[fire_id] < 0.0f
+      continue
     var fire_found = false
     for part in burning_parts
       if packed_part_id == part.packed_part_id

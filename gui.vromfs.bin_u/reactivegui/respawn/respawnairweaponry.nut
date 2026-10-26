@@ -36,7 +36,7 @@ let mkCardTitle = @(title) title == "" ? null
 
 let mkCard = @(iconComp, title, bottomTitle = "", isSelectedStyle = false) {
   behavior = Behaviors.Button
-  size = [weaponSize, weaponSize]
+  size = weaponSize
   rendObj = ROBJ_BOX
   fillColor = 0xFF45545D
   borderColor = 0xFFFFFFFF
@@ -147,13 +147,13 @@ function mkLinks(selSlot, weaponGroupsLen) {
       : posY > 100 ? 101
       : posY
   })
+  let unitToYArr = array(weaponGroupsLen).map(@(_, idx) calcUnitToY(idx + 1))
+  let unitToLines = unitToYArr.map(@(posY) [VECTOR_LINE, 50, posY, 100, posY])
+  let linksLineWidth = evenPx(4)
   return function() {
     let unitFromY = unitFromYComp.get()
     let unitFromLine = unitFromY < 0 || unitFromY > 100 ? null
       : [VECTOR_LINE, 0, unitFromY, 50, unitFromY]
-
-    let unitToYArr = array(weaponGroupsLen).map(@(_, idx) calcUnitToY(idx + 1))
-    let unitToLines = unitToYArr.map(@(posY) [VECTOR_LINE, 50, posY, 100, posY])
 
     let baseTop = max(0, min(unitToYArr[0], unitFromY))
     let baseBottom = min(100, max(unitToYArr[unitToYArr.len() - 1], unitFromY))
@@ -163,7 +163,7 @@ function mkLinks(selSlot, weaponGroupsLen) {
       size = [bulletsBlockMargin, unitListHeight]
       margin = [gap + headerHeight, 0, 0, 0]
       rendObj = ROBJ_VECTOR_CANVAS
-      lineWidth = evenPx(4)
+      lineWidth = linksLineWidth
       color = 0xFFFFFFFF
       commands = [
         baseLine,
@@ -178,6 +178,7 @@ function respawnAirWeaponry(selSlot) {
   let unitNameW = Watched(selSlot.name)
   let { weaponPreset } = mkWeaponPreset(unitNameW)
   let { chosenBelts } = mkChosenBelts(unitNameW)
+  let selectWeaponHeader = header(headerText(loc("respawn/select_weapon")))
   return function() {
     let courseBeltWeapons = []
     let turretBeltWeapons = []
@@ -229,7 +230,7 @@ function respawnAirWeaponry(selSlot) {
     else if (wSlots.len() > 1 && !isBattleDataFake.get())
       rows.append(mkGroup("weaponry/secondaryWeapons", mkEmptyInfo(loc("weaponry/tapToChooseSecondary")), {
         onClick = @() showAirRespChooseSecWnd(1)
-        sound = { click = "click" }
+        sound = const { click = "click" }
         behavior = Behaviors.Button
         scrollHandler = null
         key = secondaryMenuKey
@@ -252,7 +253,7 @@ function respawnAirWeaponry(selSlot) {
           flow = FLOW_VERTICAL
           gap
           children = [
-            header(headerText(loc("respawn/select_weapon")))
+            selectWeaponHeader
           ].extend(rows)
           animations = wndSwitchAnim
         }

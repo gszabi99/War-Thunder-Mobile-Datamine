@@ -39,6 +39,8 @@ function dmViewerTouchPartSelector() {
       x
       y
     }))
+    pointerScreenX.set(x)
+    pointerScreenY.set(y)
     return 0 
   }
 
@@ -68,6 +70,8 @@ function dmViewerTouchPartSelector() {
       v.x = x
       v.y = y
     })
+    pointerScreenX.set(x)
+    pointerScreenY.set(y)
   }
 
   function reset() {
@@ -75,13 +79,6 @@ function dmViewerTouchPartSelector() {
     pointerScreenX.set(0)
     pointerScreenY.set(0)
   }
-
-  processorState.subscribe(function(v) {
-    if (v.devId == null)
-      return
-    pointerScreenX.set(v.x)
-    pointerScreenY.set(v.y)
-  })
 
   return res.__update({
     key = {}

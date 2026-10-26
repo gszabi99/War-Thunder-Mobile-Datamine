@@ -11,7 +11,5 @@ return {
   halign = ALIGN_CENTER
   flow = FLOW_VERTICAL
   pos = const [0, -hudTimerPosY]
-  children = [
-    hudTimers
-  ]
+  children = hudTimers
 }

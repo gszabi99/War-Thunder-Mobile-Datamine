@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/underscore.nut" import arrayByRows
 from "%rGui/components/expandArrow.nut" import expandArrow, defaultExpandAnimationDuration
 from "%rGui/style/gradients.nut" import mkColoredGradientY
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 const headerH = hdpx(90)
 const headerGap = hdpx(20)
@@ -15,14 +16,19 @@ const itemBgColor = 0xFF29292C
 const itemBgHoverColor = 0xFF2F2F33
 
 let arrowSize = [evenPx(30), evenPx(24)]
-let arrowOvr = {
-  margin = const [0, hdpx(30)]
-  image = Picture($"ui/gameuiskin#triangle.svg:{arrowSize[0]}:{arrowSize[1]}:P")
-}
+const arrowMarginX = hdpx(30)
 
 function mkFoldableList(listContent, headerContent, curOpenedSelector, selectorId, handleClick = null) {
   let stateFlags = Watched(0)
   let isExpanded = Computed(@() curOpenedSelector.get() == selectorId)
+  let arrowOvr = {
+    margin = const [0, arrowMarginX]
+    image = Picture($"ui/gameuiskin#triangle.svg:{arrowSize[0]}:{arrowSize[1]}:P")
+  }
+  let headerChildren = [
+    expandArrow(isExpanded, defaultExpandAnimationDuration, arrowSize, arrowOvr)
+    headerContent
+  ]
 
   let header = @() {
     watch = stateFlags
@@ -39,10 +45,7 @@ function mkFoldableList(listContent, headerContent, curOpenedSelector, selectorI
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = headerGap
-    children = [
-      expandArrow(isExpanded, defaultExpandAnimationDuration, arrowSize, arrowOvr)
-      headerContent
-    ]
+    children = headerChildren
   }
 
   let content = {
@@ -67,7 +70,7 @@ function mkFoldableList(listContent, headerContent, curOpenedSelector, selectorI
     children = [
       header
       {
-        size = isExpanded.get() ? FLEX_H : [FLEX, 0]
+        size = isExpanded.get() ? FLEX_H : const [FLEX, 0]
         children = content
       }
     ]
@@ -121,12 +124,11 @@ function mkListItem(id, isSelectedW, onClick, w, h, content) {
     onElemState = @(v) stateFlags.set(v)
     onClick
     sound = { click  = "click" }
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
     children = [
       @() { watch = isSelectedW }.__merge(isSelectedW.get() ? selItemBg : {})
       content
     ]
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
   })
 }
 
@@ -141,5 +143,5 @@ return {
   contentBgColor
   headerBgColor
   headerGap
-  arrowFullSizeW = arrowSize[0] + arrowOvr.margin[1] * 2
+  arrowFullSizeW = arrowSize[0] + arrowMarginX * 2
 }

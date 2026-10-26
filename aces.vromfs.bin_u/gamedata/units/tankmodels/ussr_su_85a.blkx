@@ -2736,8 +2736,7 @@
     "tank_tool_kit_expendable": {},
     "art_support_smoke": {},
     "art_support_mortars": {},
-    "art_support_highcaliber": {},
-    "tank_additional_armor": {}
+    "art_support_highcaliber": {}
   },
   "default_skin": {
     "set_tex": [

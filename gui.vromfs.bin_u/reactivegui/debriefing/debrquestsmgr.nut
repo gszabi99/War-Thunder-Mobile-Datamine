@@ -5,6 +5,7 @@ from "%sqstd/underscore.nut" import prevIfEqual
 from "%appGlobals/clientState/clientState.nut" import isInBattle, isInDebriefing
 from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/clans/clanQuestsState.nut" import CLAN_QUESTS_TAB, clanQuests
 from "%rGui/event/eventLocName.nut" import getSpecialEventRewardUnitName
 from "%rGui/event/eventState.nut" import specialEventsOrdered
 import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
@@ -16,9 +17,9 @@ from "%rGui/unlocks/unlocksConst.nut" import MAIN_EVENT_ID
 
 let prevProgress = keepref(hardPersistWatched("prevProgress", null))
 
-function getTreeEventQuests() {
+function getTreeEventQuests(unlocks) {
   let res = {}
-  foreach (name, u in activeUnlocks.get()) {
+  foreach (name, u in unlocks) {
     let { event_id = null, tree_quest = false, quests = null } = u?.meta
     if ((tree_quest || quests != null) && event_id != null) {
       if (event_id not in res)
@@ -29,11 +30,14 @@ function getTreeEventQuests() {
   return res
 }
 
-let sectionsWithoutEvents = [ "promo_quest", "achievement" ].totable()
+let sectionsWithoutEvents = [ "promo_quest", "achievement", CLAN_QUESTS_TAB ].totable()
+
+let mergeQuestSections = @(bySection, unlocks, clanQuestsList)
+  { ...bySection, ...getTreeEventQuests(unlocks), [CLAN_QUESTS_TAB] = clanQuestsList }
 
 function savePrevProgress() {
   let res = {}
-  foreach (sId, section in {}.__merge(questsBySection.get(), getTreeEventQuests()))
+  foreach (sId, section in mergeQuestSections(questsBySection.get(), activeUnlocks.get(), clanQuests.get()))
     if (shouldShowEventMechanics.get() || sId in sectionsWithoutEvents)
       foreach (id, quest in section)
         res[id] <- quest.current
@@ -73,7 +77,7 @@ let questProgressDiff = keepref(Computed(function(prev) {
     return null
 
   let res = {}
-  foreach (section in {}.__merge(questsBySection.get(), getTreeEventQuests()))
+  foreach (section in mergeQuestSections(questsBySection.get(), activeUnlocks.get(), clanQuests.get()))
     foreach (id, quest in section) {
       let previous = prevValues?[id] ?? (quest?.meta.quests != null ? 0 : null)
       if (previous != null && quest.current > previous) {

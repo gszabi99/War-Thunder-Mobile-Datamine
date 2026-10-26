@@ -57,7 +57,7 @@ struct UpdateStageInfoBeforeRender
 
 
 [cpp_event(broadcast)]
-struct AfterDeviceReset
+struct EventAfterDeviceReset
   fullReset : bool
 
 [cpp_event(broadcast)]

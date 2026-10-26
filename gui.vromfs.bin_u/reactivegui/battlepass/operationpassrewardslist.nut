@@ -15,31 +15,30 @@ function mkCard(stageInfo) {
       receiveOPRewards(progress)
   }
   let cardWidth = getRewardPlateSize(viewInfo?.slots ?? 1, bpCardStyle)[0] + 2 * bpCardPadding[1]
+  let cardBody = {
+    size = [cardWidth, bpCardHeight]
+    rendObj = ROBJ_IMAGE
+    image = bgCard
+
+    behavior = Behaviors.Button
+    onElemState = @(v) stateFlags.set(v)
+    onClick
+    xmbNode = {}
+    sound = const { click  = "click" }
+
+    children = [
+      hoverCard(stateFlags)
+      cardBorder(cardWidth, selectedStage, progress)
+      cardContent(stageInfo, stateFlags, isOPRewardsInProgress)
+    ]
+  }
   return @() {
     size = [cardWidth, SIZE_TO_CONTENT]
     watch = [selectedStage, OPLevelPrice]
     flow = FLOW_VERTICAL
     gap = hdpx(10)
     vplace = ALIGN_TOP
-    children = [
-      {
-        size = [cardWidth, bpCardHeight]
-        rendObj = ROBJ_IMAGE
-        image = bgCard
-
-        behavior = Behaviors.Button
-        onElemState = @(v) stateFlags.set(v)
-        onClick
-        xmbNode = {}
-        sound = { click  = "click" }
-
-        children = [
-          hoverCard(stateFlags)
-          cardBorder(cardWidth, selectedStage, progress)
-          cardContent(stageInfo, stateFlags, isOPRewardsInProgress)
-        ]
-      }
-    ]
+    children = cardBody
   }
 }
 

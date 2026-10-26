@@ -82,7 +82,7 @@ function mkCrosshairIcon(icon, size) {
   return {
     key = "airCrosshairDirection"
     behavior = Behaviors.RtPropUpdate
-    size = [size, size]
+    size = size
     pos = [- size / 2, - size / 2]
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#{icon}:{size}:{size}:P")

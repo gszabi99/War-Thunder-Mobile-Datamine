@@ -29,7 +29,7 @@ let actualSlotIdx = Computed(@() curSlots.get().findindex(@(s) s?.name == curUni
   ?? curSlots.get().findindex(@(s) s?.name == hangarUnitName.get()))
 
 const slotBarArsenalKey = "slot_bar_arsenal"
-let slotBarSlotKey = @(idx) $"slotbar_slot_{idx}"
+let slotBarSlotKey = @[pure, nodiscard](idx) $"slotbar_slot_{idx}"
 
 let selectSlotByHangarUnit = @() selectedSlotIdx.set(actualSlotIdx.get())
 let selectTreeSlotByUnitName = @(unitName) selectedTreeSlotIdx.set(curSlots.get().findindex(@(s) s?.name == unitName))
@@ -48,7 +48,7 @@ let selectedUnitAABBKey = Computed(@() slotBarOpenParams.get()?.aabb)
 let canOpenSelectUnitWithModal = Watched(false)
 let slotBarSelectWndAttached = Watched(false)
 
-let getSlotAnimTrigger = @(idx, name, prefix = -1) $"slot_{prefix}_{idx}_{name}"
+let getSlotAnimTrigger = @[pure, nodiscard](idx, name, prefix = -1) $"slot_{prefix}_{idx}_{name}"
 let mkCurSlotsInfo = @() { prevCampaign = isLoggedIn.get() ? curCampaign.get() : null, prevSlots = curSlots.get().map(@(s) s?.name ?? "") }
 let prevSlotsInfo = persist("prevSlotsInfo", mkCurSlotsInfo)
 

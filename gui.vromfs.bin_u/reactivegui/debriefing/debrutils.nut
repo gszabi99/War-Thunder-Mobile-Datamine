@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-function getLevelProgress(curLevelConfig, totalExp) {
+function [pure, nodiscard] getLevelProgress(curLevelConfig, totalExp) {
   let { exp = 0, level = 1, nextLevelExp = 0, isLastLevel = false, levelsExp = [], levelsExpCfg = null
   } = curLevelConfig
   let res = {
@@ -53,13 +53,13 @@ function getLevelProgress(curLevelConfig, totalExp) {
   return res
 }
 
-function getResearchedUnit(debrData) {
+function [pure, nodiscard] getResearchedUnit(debrData) {
   let { exp = 0, reqExp = 0, unit = null } = debrData?.researchingUnit
   let { totalExp = 0 } = debrData?.reward.playerExp
   return reqExp > 0 && totalExp > 0 && (exp + totalExp) >= reqExp ? unit : null
 }
 
-let getBestUnitName = @(debrData) debrData?.reward.unitName ?? ""
+let getBestUnitName = @[pure, nodiscard](debrData) debrData?.reward.unitName ?? ""
 
 function getUnitsSet(debrData) {
   let { unit = null } = debrData
@@ -88,7 +88,7 @@ function getUnit(unitName, debrData) {
   return unitsList.findvalue(@(u) u?.name == unitName)?.__merge({ platoonUnits = [] })
 }
 
-function getUnitRewards(unitName, debrData) {
+function [pure, nodiscard] getUnitRewards(unitName, debrData) {
   if (unitName == null)
     return {}
   if (debrData?.reward.unitExp != null && unitName == getBestUnitName(debrData))
@@ -96,7 +96,7 @@ function getUnitRewards(unitName, debrData) {
   return (debrData?.reward.units ?? []).findvalue(@(v) v?.name == unitName) ?? {}
 }
 
-function getSlotExpByUnit(unitName, debrData) {
+function [pure, nodiscard] getSlotExpByUnit(unitName, debrData) {
   let { exp = {}, slotExp = {} } = getUnitRewards(unitName, debrData)
   return slotExp.len() > 0 ? slotExp
     : exp.__merge({
@@ -119,13 +119,13 @@ function isSlotReceiveLevel(unitName, debrData) {
     && exp + totalExp >= nextLevelExp
 }
 
-function getSlotLevelCfg(unit, debrData) {
+function [pure, nodiscard] getSlotLevelCfg(unit, debrData) {
   let { slot = {}, slotIdx = 0, name = "" } = unit
   let { levelsExp = [], levelsExpCfg = null } = debrData?.slots 
   return slot.__merge({ levelsExp, levelsExpCfg, slotIdx, name, isSlot = true })
 }
 
-function getNextUnitLevelWithRewards(levelMin, levelMax, modPresetCfg, unitWeaponryCfg, campaign) {
+function [pure, nodiscard] getNextUnitLevelWithRewards(levelMin, levelMax, modPresetCfg, unitWeaponryCfg, campaign) {
   let { weaponPresets = {}, ammoForWeapons = {} } = unitWeaponryCfg
   for (local l = levelMin; l <= levelMax; l++) {
     let modId = modPresetCfg.findindex(@(v) v?.reqLevel == l)
@@ -162,7 +162,7 @@ function getSlotOrUnitLevelUnlockRewards(debrData) {
   return { has = false }
 }
 
-let sortUnitMods = @(a, b) (a?.reqLevel ?? 0) <=> (b?.reqLevel ?? 0)
+let sortUnitMods = @[pure, nodiscard](a, b) (a?.reqLevel ?? 0) <=> (b?.reqLevel ?? 0)
   || (a?.group ?? "") <=> (b?.group ?? "")
   || (a?.costGold ?? 0) <=> (b?.costGold ?? 0)
   || (a?.name ?? "") <=> (b?.name ?? "")

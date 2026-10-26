@@ -23,6 +23,7 @@ const CHINABOND = "chinabond"
 const ANNIVERSARYBOND = "anniversarybond"
 const ANNIVERSARYTOKEN = "anniversarytoken"
 const HALLOWEENBOND = "halloweenbond"
+const HALLOWEENTOKEN = "halloweentoken"
 const VALENTINEBOND = "valentinebond"
 const CANDYBOND = "candybond"
 const LOLLIPOPBOND = "lollipopbond"
@@ -66,6 +67,7 @@ let currenciesRes = {
   ANNIVERSARYBOND
   ANNIVERSARYTOKEN
   HALLOWEENBOND
+  HALLOWEENTOKEN
   VALENTINEBOND
   CANDYBOND
   LOLLIPOPBOND

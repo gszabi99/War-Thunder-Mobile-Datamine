@@ -1,1 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 177.96 41"><defs><style>.cls-1{fill:url(#linear-gradient-2);stroke:#ffff1d;stroke-width:2px;}.cls-2{fill:url(#linear-gradient);stroke:#774200;stroke-width:4px;}</style><linearGradient id="linear-gradient" x1="89.41" y1="37.9" x2="88.61" y2="4.9" gradientTransform="translate(0 41.89) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#dd8f10"/><stop offset="1" stop-color="#fbd91b"/></linearGradient><linearGradient id="linear-gradient-2" x1="89.43" y1="37.9" x2="88.63" y2="4.9" gradientTransform="translate(0 41.89) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#dd8f10"/><stop offset="1" stop-color="#fbd91b"/></linearGradient></defs><path class="cls-2" d="m162.25,2l.6.83,11.82,16.5.83,1.17-.83,1.17-11.82,16.5-.6.83H16.72l-.6-.78L3.46,21.72l-.93-1.22.93-1.22L16.12,2.78l.6-.78h145.53Z"/><path class="cls-1" d="m161.74,3l.3.42,11.82,16.5.42.58-.42.58-11.82,16.5-.3.42H17.21l-.3-.39L4.25,21.11l-.47-.61.47-.61L16.91,3.39l.3-.39h144.52Z"/></svg>
+<svg viewBox="0 0 177.96 41" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<style>.cls-1{fill:url(#a);stroke:#ffff1d;stroke-width:2px;}.cls-2{fill:url(#b);stroke:#774200;stroke-width:4px;}</style>
+<linearGradient id="b" x1="89.41" x2="88.61" y1="37.9" y2="4.9" gradientTransform="translate(0 41.89) scale(1 -1)" gradientUnits="userSpaceOnUse">
+<stop stop-color="#dd8f10" offset="0"/>
+<stop stop-color="#fbd91b" offset="1"/>
+</linearGradient>
+<linearGradient id="a" x1="89.43" x2="88.63" y1="37.9" y2="4.9" gradientTransform="translate(0 41.89) scale(1 -1)" gradientUnits="userSpaceOnUse">
+<stop stop-color="#dd8f10" offset="0"/>
+<stop stop-color="#fbd91b" offset="1"/>
+</linearGradient>
+</defs>
+<path class="cls-2" d="m162.25,2l.6.83,11.82,16.5.83,1.17-.83,1.17-11.82,16.5-.6.83H16.72l-.6-.78L3.46,21.72l-.93-1.22.93-1.22L16.12,2.78l.6-.78h145.53Z"/>
+<path class="cls-1" d="m161.74,3l.3.42,11.82,16.5.42.58-.42.58-11.82,16.5-.3.42H17.21l-.3-.39L4.25,21.11l-.47-.61.47-.61L16.91,3.39l.3-.39h144.52Z"/>
+</svg>
+3l.3.42,11.82,16.5.42.58-.42.58-11.82,16.5-.3.42H17.21l-.3-.39L4.25,21.11l-.47-.61.47-.61L16.91,3.39l.3-.39h144.52Z"/></svg>

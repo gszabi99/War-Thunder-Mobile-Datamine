@@ -154,6 +154,7 @@ return {
   platformGoods
   platformGoodsFromRussia = platformGoods
   platformOffer
+  platformOfferFromRussia = platformOffer
   platformSubs
   platformPurchaseInProgress
   buyPlatformGoods

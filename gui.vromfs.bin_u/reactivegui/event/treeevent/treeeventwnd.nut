@@ -35,13 +35,13 @@ const gradientHeightBottom = saBorders[1]
 
 const NODE_FOCUS_WND_UID = "tree_event_node_focus"
 
-let defBgMapImage = "ui/gameuiskin#icon_primary_attention.svg"
+const defBgMapImage = "ui/gameuiskin#icon_primary_attention.svg"
 let defBgMapOffs = [0, 0, 0, 0]
 let tabsAreaWidth = tabW + hdpx(25)
-let connectorWndGap = hdpx(60)
+const connectorWndGap = hdpx(60)
 
-let modalOverlayShadeColor = 0xC0020B19
-let contentOverlayShadeColor = 0x73020B19
+const modalOverlayShadeColor = 0xC0020B19
+const contentOverlayShadeColor = 0x73020B19
 
 let nodeInfoWndKey = {}
 let nodeInfoWndPadding = [saBordersRv[0] + seasonHeaderHeight, saBordersRv[1], saBordersRv[0], saBordersRv[1]]
@@ -150,6 +150,12 @@ function nodeFocusContent() {
   let allQuestsDone = mkNodeAllQuestsDone(id)
   let isCompleted = Computed(@() nodeStatusKind.get()?[id] == NODE_RECEIVED && allQuestsDone.get())
   let isStart = Computed(@() startNodeIds.get()?[id] ?? false)
+  let modalOverlay = {
+    size = FLEX
+    rendObj = ROBJ_SOLID
+    color = modalOverlayShadeColor
+    animations = wndSwitchAnim
+  }
 
   return function() {
     let { nodeBox, showNode } = focusGeom.get()
@@ -158,12 +164,7 @@ function nodeFocusContent() {
       size = FLEX
       children = node.get() == null ? null
         : [
-            {
-              size = FLEX
-              rendObj = ROBJ_SOLID
-              color = modalOverlayShadeColor
-              animations = wndSwitchAnim
-            }
+            modalOverlay
             !showNode ? null
               : mkNodeMarkerPreview(node.get(), focusedNodeEffView.get(), nodeBox, isCompleted.get(), isStart.get())
             focusLines
@@ -311,21 +312,25 @@ function mapContainer(viewportSize) {
   }
 }
 
-let mkTabPageLock = @(page) @() {
-  watch = lockedPages
-  size = FLEX_H
-  halign = ALIGN_RIGHT
-  children = (lockedPages.get()?[page] ?? false) ? mkLockIcon(lineLockSize) : null
+function mkTabPageLock(page) {
+  let lockIcon = mkLockIcon(lineLockSize)
+  return @() {
+    watch = lockedPages
+    size = FLEX_H
+    halign = ALIGN_RIGHT
+    children = (lockedPages.get()?[page] ?? false) ? lockIcon : null
+  }
 }
 
 function mkTabPageDone(page) {
   let isDone = mkPageCompleted(page)
+  let checkIcon = mkCheckIcon(lineLockSize)
 
   return @() {
     watch = isDone
     size = FLEX_H
     halign = ALIGN_RIGHT
-    children = isDone.get() ? mkCheckIcon(lineLockSize) : null
+    children = isDone.get() ? checkIcon : null
   }
 }
 
@@ -368,6 +373,12 @@ let tabsList = @(tabs) mkTabsVerticalPannableArea(
 
 let bgMap = Computed(@() getEventPresentation(openedTreeEventId.get())?.bgMap)
 
+let contentOverlay = {
+  size = FLEX
+  rendObj = ROBJ_SOLID
+  color = contentOverlayShadeColor
+}
+
 function treeEventMapWnd() {
   if (openedTreeEventId.get() == null)
     return { watch = openedTreeEventId }
@@ -388,11 +399,7 @@ function treeEventMapWnd() {
     onClick = @() selectedPointId.set(null)
     onDetach = @() selectedPointId.set(null)
     children = [
-      {
-        size = FLEX
-        rendObj = ROBJ_SOLID
-        color = contentOverlayShadeColor
-      }
+      contentOverlay
       {
         size = bgScreenSize
         rendObj = ROBJ_9RECT

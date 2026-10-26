@@ -26,14 +26,14 @@ let attrPresets = Computed(function() {
   )
 })
 
-function sumCost(costTbl, curLvl, finalLvl) {
+function [pure, nodiscard] sumCost(costTbl, curLvl, finalLvl) {
   local res = 0
   for (local i = curLvl; i < finalLvl; i++)
     res += costTbl?[i] ?? 0
   return res
 }
 
-function calcStatus(avail) {
+function [pure, nodiscard] calcStatus(avail) {
   let minCount = AVAIL_PART_FOR_GROUP * avail[0]
   if (minCount == 0 || avail[1] == 0)
     return -1 
@@ -43,7 +43,7 @@ function calcStatus(avail) {
   return 0 
 }
 
-function getMaxAttrLevelData(attr, fromLevel, availSp) {
+function [pure, nodiscard] getMaxAttrLevelData(attr, fromLevel, availSp) {
   local maxLevel = fromLevel
   local maxLevelSp = 0
   for (maxLevel; maxLevel < attr.levelCost.len(); maxLevel++) {
@@ -65,7 +65,7 @@ function setAttribute(catId, attrId, value) {
   lastModifiedAttr.set(attrId)
 }
 
-let getSpCostText = @(val) $"⋥{val}"
+let getSpCostText = @[pure, nodiscard](val) $"⋥{val}"
 
 return {
   slotAttrPreset,

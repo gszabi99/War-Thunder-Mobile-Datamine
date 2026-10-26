@@ -15,6 +15,7 @@ let missionScoreBlockSize = [hdpxi(180), 2 * missionScoreIconSize[1]]
 function scoreLineCtr(data, scale) {
   let font = scaleFontWithTransform(fontVeryTinyShaded, scale, [0, 1])
   let size = scaleArr(missionScoreIconSize, scale)
+  let icon = Picture($"ui/gameuiskin#{data.icon}:{missionScoreIconSize[0]}:{missionScoreIconSize[1]}:P")
   return @() {
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
@@ -27,7 +28,7 @@ function scoreLineCtr(data, scale) {
         color = data.army == localMPlayerTeam.get() ? teamBlueColor
           : data.army == 0 ? hudWhiteColor
           : teamRedColor
-        image = Picture($"ui/gameuiskin#{data.icon}:{missionScoreIconSize[0]}:{missionScoreIconSize[1]}:P")
+        image = icon
       }
       {
         rendObj = ROBJ_TEXT

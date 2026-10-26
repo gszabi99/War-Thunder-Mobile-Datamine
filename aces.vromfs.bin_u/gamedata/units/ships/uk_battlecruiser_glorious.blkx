@@ -9204,6 +9204,18 @@
         }
       }
     },
+    "weapons_torpedo_movement_mode": {
+      "effects": {
+        "splashDamageMul": 0.7,
+        "maxSpeedInWater": 6.171
+      }
+    },
+    "weapons_torpedo_damage_mode": {
+      "effects": {
+        "splashDamageMul": 1.3,
+        "maxSpeedInWater": -6.171
+      }
+    },
     "maintanance_new_propellers": {},
     "maintanance_new_engines": {},
     "maintanance_powered_toolkit": {}

@@ -5,6 +5,7 @@ from "%appGlobals/activeControls.nut" import isGamepad
 from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkContinuousButtonParams
 from "%rGui/hudState.nut" import isInZoom, zoomMult
 from "%rGui/style/hudColors.nut" import hudPearlGrayColorFade
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 const stepZoom = 0.01
@@ -84,8 +85,7 @@ function mkGamepadShortcutImg(shortcutId, isPushed, isVisible, scale, ovr) {
         key = imageComp
         vplace = ALIGN_CENTER
         children = isVisible.get() && isGamepad.get() ? imageComp : null
-        transform = { scale = stateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1.0, 1.0] }
-        transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+        ...mkPressTransitionScale(stateFlags.get(), 0.8)
       })
 }
 
@@ -109,7 +109,7 @@ function mkZoomSliderImpl(scale) {
     hplace = ALIGN_CENTER
     padding = knobPadding
     children = {
-      size  = [knobSize, knobSize]
+      size  = knobSize
       fillColor = knobColor
       color = knobColor
       rendObj = ROBJ_VECTOR_CANVAS
@@ -122,6 +122,19 @@ function mkZoomSliderImpl(scale) {
   let zoomScale = mkZoomScale(scaleWidth, lineWidth)
   let inc = btnImageZoomInc(scale)
   let dec = btnImageZoomDec(scale)
+  let zoomBgrBlock = {
+    flow = FLOW_HORIZONTAL
+    vplace = ALIGN_CENTER
+    pos =  [scaleWidth, 0]
+    children = [
+      {
+        size = [scaleWidth, zoomScaleHeight]
+        rendObj = ROBJ_IMAGE
+        image = zoomBgrImage
+      }
+      zoomScale
+    ]
+  }
 
   return @() {
     watch = zoomMult
@@ -136,19 +149,7 @@ function mkZoomSliderImpl(scale) {
     orientation = O_VERTICAL
     children = [
       inc
-      {
-        flow = FLOW_HORIZONTAL
-        vplace = ALIGN_CENTER
-        pos =  [scaleWidth, 0]
-        children = [
-          {
-            size = [scaleWidth, zoomScaleHeight]
-            rendObj = ROBJ_IMAGE
-            image = zoomBgrImage
-          }
-          zoomScale
-        ]
-      }
+      zoomBgrBlock
       knob.__merge({ pos = [0, ((1.0 - zoomMult.get()) * zoomScaleHeight).tointeger() - knobPadding] })
       dec
     ]
@@ -156,9 +157,12 @@ function mkZoomSliderImpl(scale) {
   }
 }
 
-let mkZoomSlider = @(scale) @() {
-  watch = isInZoom
-  children = !isInZoom.get() ? null : mkZoomSliderImpl(scale)
+function mkZoomSlider(scale) {
+  let slider = mkZoomSliderImpl(scale)
+  return @() {
+    watch = isInZoom
+    children = !isInZoom.get() ? null : slider
+  }
 }
 
 function mkEditView() {
@@ -182,7 +186,7 @@ function mkEditView() {
         ]
       }
       {
-        size  = [knobSize, knobSize]
+        size  = knobSize
         pos = [- knobSize * 0.6, knobSize * 0.5]
         rendObj = ROBJ_IMAGE
         image = Picture("ui/gameuiskin#hud_binoculars_zoom.svg")

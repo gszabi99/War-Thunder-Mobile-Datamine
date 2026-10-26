@@ -4,7 +4,8 @@ from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/pServer/slots.nut" import curCampaignSlotUnits
 from "%rGui/components/levelBlockPkg.nut" import mkProgressLevelBg
-from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
+from "%rGui/rewards/rewardViewInfo.nut" import getBlueprintBarColor
+from "%rGui/unit/unitAccess.nut" import byBlockedUnits
 from "%rGui/unitsTree/treeAnimConsts.nut" import attractColor, aTimeHint, aTimePriceScale
 from "%rGui/unitsTree/unitNodesReceiveInfo.nut" import getReceiveDesc
 from "%rGui/unitsTree/unitsTreeNodesState.nut" import unitsResearchStatus
@@ -13,7 +14,6 @@ from "%rGui/unitsTree/unitsTreeNodesState.nut" import unitsResearchStatus
 const statsWidth = hdpx(495)
 let barSize = [statsWidth, hdpx(30)]
 
-const blueprintBarColor = 0xFF3384C4
 const unitResearchExpColor = 0xFFE86C00
 const researchBlockWidth = statsWidth
 
@@ -52,25 +52,27 @@ let mkBarText = @(text) {
 function blueprintBar(unit) {
   let curBluebrintsCount = Computed(@() servProfile.get()?.blueprints?[unit.name] ?? 0)
   let reqBluebrintsCount = Computed(@() serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1)
-  let isBlocked = unit.name in unitsBlockedByBattleMode.get()
-  return @() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in campMyUnits.get() && !isBlocked
+  let blueprintDescText = mkBarText(loc("blueprints/desc"))
+  let isBlocked = Computed(@() unit.name in byBlockedUnits.get())
+  return @() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in campMyUnits.get() && !isBlocked.get()
     ? {
-      watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, campMyUnits, unitsBlockedByBattleMode]
+      watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, campMyUnits, isBlocked]
       size = FLEX_H
       flow = FLOW_VERTICAL
       gap = hdpx(5)
       children = [
-        mkBarText(loc("blueprints/desc"))
-        mkLevelLine(curBluebrintsCount.get(), reqBluebrintsCount.get(), blueprintBarColor)
+        blueprintDescText
+        mkLevelLine(curBluebrintsCount.get(), reqBluebrintsCount.get(),
+          getBlueprintBarColor(unit.name, serverConfigs.get()))
       ]}
-    : { watch = [serverConfigs, campMyUnits, unitsBlockedByBattleMode]}
+    : { watch = [serverConfigs, campMyUnits, isBlocked] }
 }
 
 let unitExpBar = @(unitName, unitResearch) function() {
   let { isCurrent = false, canResearch = false, exp = 0, reqExp = 1, hasAccessLock = true } = unitResearch.get()
-  let isBlocked = hasAccessLock && unitName in unitsBlockedByBattleMode.get()
+  let isBlocked = hasAccessLock && unitName in byBlockedUnits.get()
   return {
-    watch = [unitResearch, campMyUnits, unitsBlockedByBattleMode]
+    watch = [unitResearch, campMyUnits, byBlockedUnits]
     children = unitName not in campMyUnits.get() && (isCurrent || canResearch) && !isBlocked
       ? mkLevelLine(exp, reqExp, unitResearchExpColor)
       : null
@@ -89,7 +91,7 @@ function unitResearchBar(unitName) {
     let { isCurrent = false, canResearch = false, canBuy = false, isResearched = false,
       hasAccessLock = true
     } = unitResearch.get()
-    if (hasAccessLock && unitName in unitsBlockedByBattleMode.get())
+    if (hasAccessLock && unitName in byBlockedUnits.get())
       return null
     return isCurrent ? "unitsTree/currentResearch"
       : canResearch ? "unitsTree/availableForResearch"
@@ -99,6 +101,26 @@ function unitResearchBar(unitName) {
   })
 
   let needHint = Computed(@() hintLocId.get() != null || unitName not in campMyUnits.get())
+  let hintAnimations = [
+    { prop = AnimProp.color, to = attractColor, duration = aTimeHint, easing = CosineFull,
+      trigger = "unitInfoActionHint" }
+    { prop = AnimProp.scale, to = const [1.2, 1.2], duration = aTimePriceScale, easing = CosineFull,
+      trigger = "unitInfoActionHint" }
+  ]
+  let hintRow = [
+    @() {
+      watch = hintLocId
+      key = hintLocId
+      size = const [statsWidth, SIZE_TO_CONTENT]
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      halign = ALIGN_LEFT
+      text = hintLocId.get() == null ? null : loc(hintLocId.get())
+      transform = {}
+      animations = hintAnimations
+    }.__update(fontTiny)
+    unitExpBar(unitName, unitResearch)
+  ]
   return @() !needHint.get() ? { watch = needHint }
     : {
         watch = needHint
@@ -106,25 +128,7 @@ function unitResearchBar(unitName) {
         halign = ALIGN_RIGHT
         flow = FLOW_VERTICAL
         gap = hdpx(10)
-        children = [
-          @() {
-            watch = hintLocId
-            key = hintLocId
-            size = const [statsWidth, SIZE_TO_CONTENT]
-            rendObj = ROBJ_TEXTAREA
-            behavior = Behaviors.TextArea
-            halign = ALIGN_LEFT
-            text = hintLocId.get() == null ? null : loc(hintLocId.get())
-            transform = {}
-            animations = [
-              { prop = AnimProp.color, to = attractColor, duration = aTimeHint, easing = CosineFull,
-                trigger = "unitInfoActionHint" }
-              { prop = AnimProp.scale, to = [1.2, 1.2], duration = aTimePriceScale, easing = CosineFull,
-                trigger = "unitInfoActionHint" }
-            ]
-          }.__update(fontTiny)
-          unitExpBar(unitName, unitResearch)
-        ]
+        children = hintRow
       }
 }
 

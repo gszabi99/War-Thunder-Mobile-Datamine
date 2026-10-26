@@ -2650,7 +2650,6 @@
     "bone_turret": "bone_turret_01"
   },
   "modifications": {
-    "tank_additional_armor": {},
     "art_support": {},
     "tank_extinguisher": {},
     "tank_tool_kit_expendable": {},

@@ -128,14 +128,12 @@ let attrDetails = @() {
         padding = 0
         margin = const [hdpx(20),0,0]
         fillColor = 0xA0000000
-        children = [
-          {
-            size = FLEX_H
-            flow = FLOW_VERTICAL
-            children = (curCategory.get()?.attrList ?? [])
-              .map(@(attr) mkAttrDetailsRow(attr.id, lastModifiedAttr.get()))
-          }
-        ]
+        children = {
+          size = FLEX_H
+          flow = FLOW_VERTICAL
+          children = (curCategory.get()?.attrList ?? [])
+            .map(@(attr) mkAttrDetailsRow(attr.id, lastModifiedAttr.get()))
+        }
       })
     : null
 }
@@ -215,7 +213,7 @@ let actionButtons = @() {
           { hotkeys = ["^J:Y"], ovr = { key = "attrLevelBoostBtn" }}) 
     selAttrSpCost.get() <= 0 ? null
       : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAction, {
-          ovr = { sound = { click  = "characteristics_apply" } }.__update(isWidescreen ? {} : { minWidth = hdpx(250) })
+          ovr = { sound = const { click  = "characteristics_apply" } }.__update(isWidescreen ? const {} : const { minWidth = hdpx(250) })
           hotkeys = ["^J:X"]
         })
   ]

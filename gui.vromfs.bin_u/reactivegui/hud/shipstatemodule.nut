@@ -1,5 +1,6 @@
 from "%globalScripts/gameRendObjs.nut" import *
 from "%globalsDarg/darg_library.nut" import *
+from "dagor.workcycle" import deferOnce
 from "math" import round
 from "sound_wt" import tryPlaySound
 from "wt.behaviors" import TouchAreaOutButton
@@ -65,10 +66,11 @@ let healthColor = Computed(function() {
   return currConfig.color
 })
 
+let playDamageHaptic = @() playHapticPattern(HAPT_DAMAGE, getOptValue(OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT))
+
 remainingHpPercent.subscribe(function(value) {
-  if (value < 1.0 && value < prevHpPercent) {
-    playHapticPattern(HAPT_DAMAGE, getOptValue(OPT_HAPTIC_INTENSITY_ON_HERO_GET_SHOT))
-  }
+  if (value < 1.0 && value < prevHpPercent)
+    deferOnce(playDamageHaptic)
   prevHpPercent = value
 })
 
@@ -76,26 +78,29 @@ let hpToRepairColor = hudCoralRedColor
 let isVisibleHpToRepair = Computed(@() maxHpToRepair.get() > curRelativeHealth.get())
 let hpToRepairPercent = Computed(@() ((maxHpToRepair.get() - curRelativeHealth.get() + 0.005) * 100).tointeger())
 
-let xrayDoll = @(size, stateFlags) {
-  size
-  children = [
-    damagePanelBacklight(stateFlags, size)
-    @() {
-      watch = healthColor
-      color = getHudConfigParameter("changeDmPanelColorDependingOnHp") ? healthColor.get() : teamBlueLightColor
-      size = FLEX
-      transform = {
-        rotate = 90
+function xrayDoll(size, stateFlags) {
+  let changeColorByHp = getHudConfigParameter("changeDmPanelColorDependingOnHp")
+  return {
+    size
+    children = [
+      damagePanelBacklight(stateFlags, size)
+      @() {
+        watch = healthColor
+        color = changeColorByHp ? healthColor.get() : teamBlueLightColor
+        size = FLEX
+        transform = const {
+          rotate = 90
+        }
+        rendObj = ROBJ_XRAYDOLL
+        rotateWithCamera = false
+        drawOutlines = false
+        drawSilhouette = true
+        drawTargetingSightLine = true
+        limitSizeToRect = true
+        modulateSilhouetteColor = true
       }
-      rendObj = ROBJ_XRAYDOLL
-      rotateWithCamera = false
-      drawOutlines = false
-      drawSilhouette = true
-      drawTargetingSightLine = true
-      limitSizeToRect = true
-      modulateSilhouetteColor = true
-    }
-  ]
+    ]
+  }
 }
 
 function useShortcutOn(shortcutId) {
@@ -157,7 +162,7 @@ function mkDebuff(watch, imageId, size) {
   let icon = mkDebuffIcon(imageId, size)
   return @() {
     watch
-    size = [size, size]
+    size = size
     children = watch.get() ? icon : null
   }
 }
@@ -181,7 +186,7 @@ let shipDebuffsEditView = mkDebuffsEditView(debuffsCfg)
 let sailboatDebuffsEditView = mkDebuffsEditView(debuffsCfgSailboat)
 
 let mkCrewIcon = @(icon, size = crewIconSize) {
-  size = [size, size]
+  size = size
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#{icon}:{size}:{size}:P")
   keepAspect = true
@@ -190,6 +195,16 @@ let mkCrewIcon = @(icon, size = crewIconSize) {
 let mkCrewHealthCtor = @(size, hasCrewWounded = true) function(scale) {
   let iSize = round(crewIconSize * scale).tointeger()
   let font = prettyScaleForSmallNumberCharVariants(fontSmallShaded, scale)
+  let injuredGap = shHud(0.4)
+  let injuredIcons = [
+    mkCrewIcon("hud_crew_wounded.svg", iSize)
+    @() {
+      watch = hpToRepairPercent
+      rendObj = ROBJ_TEXT
+      color = hpToRepairColor
+      text =  $"{hpToRepairPercent.get()} %"
+    }.__update(font)
+  ]
   return {
     size = [round(calcCrewHealthWidth(size[0]) * scale), iSize]
     halign = ALIGN_RIGHT
@@ -215,18 +230,10 @@ let mkCrewHealthCtor = @(size, hasCrewWounded = true) function(scale) {
             watch = isVisibleHpToRepair
             flow = FLOW_HORIZONTAL
             valign = ALIGN_CENTER
-            gap = shHud(0.4)
+            gap = injuredGap
             key = "crew_injured"
             children = !isVisibleHpToRepair.get() ? null
-              : [
-                  mkCrewIcon("hud_crew_wounded.svg", iSize)
-                  @() {
-                    watch = hpToRepairPercent
-                    rendObj = ROBJ_TEXT
-                    color = hpToRepairColor
-                    text =  $"{hpToRepairPercent.get()} %"
-                  }.__update(font)
-                ]
+              : injuredIcons
           }
     ]
   }

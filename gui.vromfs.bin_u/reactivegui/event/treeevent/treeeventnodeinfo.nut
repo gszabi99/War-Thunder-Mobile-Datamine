@@ -168,7 +168,7 @@ function mkQuestRow(questName) {
         gap = hdpx(6)
         children = [
           mkText(loc($"{quest.get()?.meta.lang_id ?? quest.get().name}/desc"), { halign = ALIGN_LEFT }.__update(fontTiny))
-          { size = FLEX_V }
+          const { size = FLEX_V }
           mkQuestBar(quest.get())
         ]
       }
@@ -209,9 +209,9 @@ function mkQuestsInfo(title, node, id) {
   let nodeStatus = nodeStatusById(id)
   return mkNodeInfoPanel(title, id, @() {
     watch = [nodeStatus, pageStartNodes]
-    size = [questPopupWidth, SIZE_TO_CONTENT]
+    size = const [questPopupWidth, SIZE_TO_CONTENT]
     children = makeVertScroll({
-      size = [questPopupWidth, SIZE_TO_CONTENT]
+      size = const [questPopupWidth, SIZE_TO_CONTENT]
       flow = FLOW_VERTICAL
       padding = hdpx(20)
       gap = separator
@@ -224,6 +224,7 @@ function mkQuestsInfo(title, node, id) {
 function mkClaimBtn(id) {
   let node = nodeById(id)
   let nodeStatus = nodeStatusById(id)
+  let inactiveBtn = textButtonInactive(utf8ToUpper(loc("btn/receive")), @() null)
 
   return function() {
     let eventId = openedTreeEventId.get()
@@ -232,7 +233,7 @@ function mkClaimBtn(id) {
     return {
       watch = [nodeStatus, node, eventMapNodeInProgress, openedTreeEventId]
       children = !isClaimable ? null
-        : isInProgress || eventId == null ? textButtonInactive(utf8ToUpper(loc("btn/receive")), @() null)
+        : isInProgress || eventId == null ? inactiveBtn
         : textButtonPrimary(utf8ToUpper(loc("btn/receive")), @() receive_event_map_node_reward(eventId, id))
     }
   }
@@ -252,6 +253,8 @@ function mkRewardInfo(title, node, id) {
     return null
 
   let nodeStatus = nodeStatusById(id)
+  let rewardsPreview = mkRewardsPreview(rewards, false)
+  let claimBtn = mkClaimBtn(id)
 
   return mkNodeInfoPanel(title, id, @() {
     watch = [nodeStatus, nodeViewTypes, pageStartNodes]
@@ -266,8 +269,8 @@ function mkRewardInfo(title, node, id) {
       gap = questItemsGap
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      children = mkRewardsPreview(rewards, false)
-    }, mkClaimBtn(id))
+      children = rewardsPreview
+    }, claimBtn)
   })
 }
 

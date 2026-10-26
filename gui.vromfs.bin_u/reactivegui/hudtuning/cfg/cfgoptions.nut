@@ -44,20 +44,6 @@ let optDoubleCourseGuns = {
   valToString = @(v) loc("options/buttonCount", { count = v ? 2 : 1 })
 }
 
-let hasDoubleRepair = @(options, _ = null) options?.hasDoubleRepair ?? tuningStateDefault.customOptions.hasDoubleRepair
-let optDoubleRepairBtn = {
-  id = "hasDoubleRepair"
-  locId = "options/repair"
-  ctrlType = OCT_LIST
-  has = hasDoubleRepair
-  list = [false, true]
-  getValue = hasDoubleRepair
-  function setValue(options, _, value) {
-    options.hasDoubleRepair <- value
-  }
-  valToString = @(v) loc("options/buttonCount", { count = v ? 2 : 1 })
-}
-
 let optScale = {
   id = "scale"
   locId = "options/scale"
@@ -82,7 +68,7 @@ let optVisible = {
   icon = "hud_replay_toggle.svg"
 }
 
-let getTextWidth = @(options, id) options?.textWidth[id] ?? tuningStateDefault.options.textWidth
+let getTextWidth = @[pure, nodiscard](options, id) options?.textWidth[id] ?? tuningStateDefault.options.textWidth
 
 let optTextWidth = {
   id = "textWidth"
@@ -167,7 +153,7 @@ let optSplitSideGunBullets = {
   valToString = @(v) v ? loc("options/separateSideGunBullets") : loc("options/combinedSideGunBullets")
 }
 
-let isBulletsRight = @(options, elemId) options?.bulletsRight[elemId] ?? tuningStateDefault.options.bulletsRight
+let isBulletsRight = @[pure, nodiscard](options, elemId) options?.bulletsRight[elemId] ?? tuningStateDefault.options.bulletsRight
 let optBulletsRight = {
   id = "bulletsRight"
   locId = "options/bulletsAlign"
@@ -199,7 +185,6 @@ return {
   optTankMoveControlType
   optWalkerMoveControlType
   gearDownOnStopButtonTouch
-  optDoubleRepairBtn
 
   getElemFont
   getTextWidth

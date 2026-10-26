@@ -158,7 +158,7 @@ let mkExpText = @(exp, color) {
       text = "+"
     }.__update(fontTiny)
     {
-      size = [expTextStarSize, expTextStarSize]
+      size = expTextStarSize
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#experience_icon.svg:{expTextStarSize}:{expTextStarSize}:P")
       color
@@ -190,7 +190,7 @@ let mkProgressBar = @(animId, curLevelIdxWatch, levelUpsArray, lineColor) functi
         size = [receivedExpWidth, FLEX]
         rendObj = ROBJ_SOLID
         color = receivedExpProgressColor
-        transform = { pivot = [0, 0] }
+        transform = { pivot = 0 }
         animations = isMaxLevel ? null : [
           {
             prop = AnimProp.scale, from = [0.0, 0.0],
@@ -244,8 +244,8 @@ let mkSlotPlateLevelComp = @(animId, curLevelIdxWatch, levelUpsArray, lineColor)
         animations = mkCurLevelBgAnimations(stepAnimDelay, stepAnimTime, levelSplashAnimTrigger, 1.2)
       })
       {
-        size = [slotLevelIconSize, slotLevelIconSize]
-        pos = [hdpx(22), 0]
+        size = slotLevelIconSize
+        pos = const [hdpx(22), 0]
         rendObj = ROBJ_IMAGE
         hplace = ALIGN_LEFT
         color = lineColor
@@ -273,7 +273,7 @@ let mkUnitPlateLevelComp = @(animId, curLevelIdxWatch, levelUpsArray, lineColor)
     key = $"line_{animId}"
     onAttach = @() curLevelIdxWatch.set(0)
     onDetach = stopLevelLineSound
-    size = [unitLevelBlockSize, unitLevelBlockSize]
+    size = unitLevelBlockSize
     hplace = ALIGN_RIGHT
     vplace = ALIGN_BOTTOM
     valign = ALIGN_CENTER
@@ -287,7 +287,7 @@ let mkUnitPlateLevelComp = @(animId, curLevelIdxWatch, levelUpsArray, lineColor)
         animations = mkCurLevelBgAnimations(stepAnimDelay, stepAnimTime, levelSplashAnimTrigger, 1.5)
       })
       {
-        pos = [0, -hdpx(2)]
+        pos = const [0, -hdpx(2)]
         rendObj = ROBJ_TEXT
         text = isMaxLevel ? maxLevelStarChar : (curLevel - curStarLevel)
         color = isLevelUpPrevSteps || isLevelUpCurStep ? levelUpTextColor : levelTextColor
@@ -420,18 +420,20 @@ function mkPlateWithLevelProgress(debrData, levelCfg, reward, animStartTime, lin
 
   let key = {}
   let stateFlags = Watched(0)
+  let hoverTooltip = withTooltip(stateFlags, key, function mkTooltip() {
+    let tooltipData = mkTotalRewardCountsUnit(debrData, 0.5, levelCfg)?.totalRewardCountsComp
+    return tooltipData == null
+      ? null
+      : { content = tooltipData, flow = FLOW_HORIZONTAL }
+  })
+  let detachTooltip = tooltipDetach(stateFlags)
 
   let plateBaseComp = @() {
       key
       watch = stateFlags
       behavior = Behaviors.Button
-      onElemState = withTooltip(stateFlags, key, function mkTooltip() {
-        let tooltipData = mkTotalRewardCountsUnit(debrData, 0.5, levelCfg)?.totalRewardCountsComp
-        return tooltipData == null
-          ? null
-          : { content = tooltipData, flow = FLOW_HORIZONTAL }
-      })
-      onDetach = tooltipDetach(stateFlags)
+      onElemState = hoverTooltip
+      onDetach = detachTooltip
       children = (isSlot ? mkSlotPlateBase : mkUnitPlateBase)(levelCfg, campaign)
     }
 

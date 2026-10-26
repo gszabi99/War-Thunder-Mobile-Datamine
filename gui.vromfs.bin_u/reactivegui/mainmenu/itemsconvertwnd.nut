@@ -64,6 +64,7 @@ function mkFromRow(conversionInfo, fromAllTotal) {
     : rType.get() == G_ITEM ? (servProfile.get()?.items[fromName].count ?? 0)
     : 0)
   let fromTotal = Computed(@() min(fromAllTotal.get()?[fromName] ?? 0, count.get()))
+  let fromTxt = txt(from)
   return {
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
@@ -100,7 +101,7 @@ function mkFromRow(conversionInfo, fromAllTotal) {
             valign = ALIGN_BOTTOM
             flow = FLOW_HORIZONTAL
             children = [
-              txt(from)
+              fromTxt
               txt(" >>> ").__update({ color = selectColor })
               txt(to).__update({ color = selectColor })
             ]
@@ -224,6 +225,10 @@ return function openBarterImpl(itemId) {
     return res
   })
   let canApply = Computed(@() null != fromAllTotal.get().findvalue(@(v) v > 0))
+  let inactiveApplyBtn = textButtonInactive(utf8ToUpper(loc("mainmenu/btnApply")), @() null)
+  let applyBtn = textButtonPrimary(utf8ToUpper(loc("mainmenu/btnApply")),
+    @() !canApply.get() ? null : tryConvertItems(itemId, prices.get(), fromAllTotal.get()))
+  let barterContent = mkBarterContent(itemId, prices, fromAllTotal)
   addModalWindow(bgShaded.__merge({
     key = WND_UID
     size = FLEX
@@ -239,11 +244,10 @@ return function openBarterImpl(itemId) {
           gap = hdpx(40)
           padding = const [hdpx(40), hdpx(60)]
           children = [
-            mkBarterContent(itemId, prices, fromAllTotal)
+            barterContent
             mkSpinnerHideBlock(ItemConversionInProgress, !canApply.get()
-              ? textButtonInactive(utf8ToUpper(loc("mainmenu/btnApply")), @() null)
-              : textButtonPrimary(utf8ToUpper(loc("mainmenu/btnApply")),
-                  @() !canApply.get() ? null : tryConvertItems(itemId, prices.get(), fromAllTotal.get())))
+              ? inactiveApplyBtn
+              : applyBtn)
           ]
         }
       ]

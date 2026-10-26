@@ -5,7 +5,7 @@ from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%rGui/style/gradients.nut" import simpleHorGrad
 
 
-let iconTimerSize = hdpxi(30)
+const iconTimerSize = hdpxi(30)
 
 let timerIcon = {
   rendObj = ROBJ_IMAGE

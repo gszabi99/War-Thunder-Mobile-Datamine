@@ -30,7 +30,7 @@ let mkLevelLockBase = @(reqLevel, iconSize, textOvr = {}) {
   gap = hdpx(30)
   children = {
     rendObj = ROBJ_IMAGE
-    size = [iconSize, iconSize]
+    size = iconSize
     image = Picture($"ui/gameuiskin#lock_unit.svg:{iconSize}:{iconSize}:P")
     keepAspect = KEEP_ASPECT_FIT
     halign = ALIGN_CENTER
@@ -47,8 +47,11 @@ let mkLevelLock = @(reqLevel)
 let mkLevelLockSmall = @(reqLevel)
   mkLevelLockBase(reqLevel, hdpxi(60), { pos = const [hdpx(1), hdpx(9)] }.__update(fontVeryVeryTiny))
 
-let mkNotPurchasedShade = @(isPurchased) @() isPurchased.get() ? { watch = isPurchased }
-  : bgShade.__merge({ watch = isPurchased })
+function mkNotPurchasedShade(isPurchased) {
+  let notPurchasedShade = bgShade.__merge({ watch = isPurchased })
+  return @() isPurchased.get() ? { watch = isPurchased }
+    : notPurchasedShade
+}
 
 let mkModImage = @(mod) mod?.name == null ? null : {
   size = FLEX

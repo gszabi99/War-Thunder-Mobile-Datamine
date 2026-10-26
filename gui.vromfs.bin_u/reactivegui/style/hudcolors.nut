@@ -41,6 +41,7 @@ return {
   hudBurgundyFade = 0x66550101
 
   hudOrangeColor = 0xFFF6B236
+  hudOrangeDeepColor = 0xFFF87C00
 
   hudGoldColor = 0xFFFFCC00
 

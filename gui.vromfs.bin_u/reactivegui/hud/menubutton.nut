@@ -12,7 +12,7 @@ function mkMenuButton(scale = 1.0, ovr = {}) {
     behavior = Behaviors.Button
     cameraControl = true
     rendObj = ROBJ_IMAGE
-    size = [size, size]
+    size = size
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     image = getSvgImage("hud_menu", size)
@@ -24,7 +24,7 @@ function mkMenuButton(scale = 1.0, ovr = {}) {
 
 let mkMenuButtonEditView = {
   rendObj = ROBJ_IMAGE
-  size = [touchMenuButtonSize, touchMenuButtonSize]
+  size = touchMenuButtonSize
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   image = getSvgImage("hud_menu", touchMenuButtonSize)

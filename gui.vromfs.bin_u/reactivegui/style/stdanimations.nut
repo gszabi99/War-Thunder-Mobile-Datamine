@@ -10,7 +10,7 @@ let wndSwitchAnim = [
 ]
 
 let scaleTransition = freeze([{ prop = AnimProp.scale, duration = 0.14, easing = Linear }])
-let mkPressTransitionScale = @(sf, scale = 0.95) {
+let mkPressTransitionScale = @[pure, nodiscard](sf, scale = 0.95) {
   transform = { scale = sf & S_ACTIVE ? [scale, scale] : [1, 1] }
   transitions = scaleTransition
 }

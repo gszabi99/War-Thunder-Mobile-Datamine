@@ -1,6 +1,6 @@
+from "%sqstd/string.nut" import tostring_r
+from "frp" import Watched
 from "types" import Function
-let { Watched } = require("frp")
-let { tostring_r } = require("%sqstd/string.nut")
 
 let log = require("%sqstd/log.nut")([
   {
@@ -16,7 +16,7 @@ let log = require("%sqstd/log.nut")([
 
 let { console_print, dlog, wlog, wdlog, with_prefix, logerr, debugTableData } = log
 
-return {
+return freeze({
   log = log.log
   console_print
   wlog
@@ -25,4 +25,4 @@ return {
   log_with_prefix = with_prefix
   logerr
   debugTableData
-}
+})

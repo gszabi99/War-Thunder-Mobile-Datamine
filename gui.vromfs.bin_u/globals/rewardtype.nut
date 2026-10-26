@@ -2,6 +2,9 @@ let allTypes = {
   G_BATTLE_MOD = "battleMod"
   G_BLUEPRINT = "blueprint"
   G_BOOSTER = "booster"
+  G_BP_GRADE = "bpGrade"
+  G_BP_POINTS = "bpPoints"
+  G_CLAN_PROGRESS = "clan_progress"
   G_CURRENCY = "currency"
   G_DECAL = "decal"
   G_DECORATOR = "decorator"
@@ -28,6 +31,7 @@ let allTypes = {
 let rewardTypeByValue = allTypes.reduce(@(res, v, k) res.$rawset(v, k), {})
 let unitRewardTypes = [allTypes.G_UNIT, allTypes.G_UNIT_UPGRADE, allTypes.G_BLUEPRINT].totable()
 let statRewardTypes = [allTypes.G_STAT_SET, allTypes.G_STAT_ADD].totable()
+let hiddenRewardTypes = [allTypes.G_BP_GRADE].totable()
 let oneTimeRewardTypes = [allTypes.G_UNIT, allTypes.G_UNIT_UPGRADE, allTypes.G_SKIN, allTypes.G_DECORATOR,
   allTypes.G_DECAL, allTypes.G_DISCOUNT
 ].totable()
@@ -36,5 +40,6 @@ return allTypes.__merge({
   rewardTypeByValue
   unitRewardTypes
   statRewardTypes
+  hiddenRewardTypes
   oneTimeRewardTypes
 })

@@ -240,7 +240,7 @@ function mkCampaignSkipTutorButton() {
         size = [SIZE_TO_CONTENT, backButtonHeight + doubleSideGradientPaddingY * 2]
         flow = FLOW_HORIZONTAL
         behavior = Behaviors.Button
-        sound = { click = "click" }
+        sound = const { click = "click" }
         onClick = @() skipTutor.set(!skipTutor.get())
         hplace = ALIGN_RIGHT
         valign = ALIGN_CENTER
@@ -294,7 +294,7 @@ let mkScaledCampaignImage = @(img, pivot, scale) {
   imageHalign = ALIGN_CENTER
   imageValign = ALIGN_CENTER
   image = PictureImmediate(img)
-  transform = { pivot, scale = [scale, scale] }
+  transform = { pivot, scale }
   transitions = [{ prop = AnimProp.scale, duration = ANIM_DUR, easing = OutQuad }]
 }
 
@@ -302,7 +302,7 @@ let mkPanelContent = @(campaign, imagePivot = [0.5, 0.5], idleScale = 1.025, hov
   watch = focusedCampaign
   size = FLEX
   children = [
-    {
+    const {
       size = FLEX
       rendObj = ROBJ_SOLID
       color = 0xFF57595B
@@ -335,6 +335,13 @@ let mkCenterBorderLines = @(panelScale) @() {
 function mkTitleSlot(campaign, colX, colW, activeXShift = 0, getTitleXShift = null) {
   let slotXShift = Computed(@() focusedCampaign.get() == campaign ? activeXShift : 0)
   let titleXShift = Computed(@() getTitleXShift != null ? getTitleXShift(focusedCampaign.get()) : 0)
+  let translateTransition = [{ prop = AnimProp.translate, duration = ANIM_DUR, easing = OutQuad }]
+  let titleTransitions = [
+    { prop = AnimProp.translate, duration = ANIM_DUR, easing = OutQuad }
+    { prop = AnimProp.scale, duration = ANIM_DUR, easing = OutQuad }
+    { prop = AnimProp.color, duration = ANIM_DUR, easing = OutQuad }
+  ]
+  let unseenMarkForTitle = priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = const [hdpx(6), hdpx(-6)] })
 
   return @() {
     watch = [slotXShift, titleXShift, unseenCampaigns, can_use_debug_console]
@@ -346,13 +353,13 @@ function mkTitleSlot(campaign, colX, colW, activeXShift = 0, getTitleXShift = nu
       pos = [0, -TITLE_BOTTOM_PAD]
       halign = ALIGN_CENTER
       transform = { translate = [slotXShift.get(), 0] }
-      transitions = [{ prop = AnimProp.translate, duration = ANIM_DUR, easing = OutQuad }]
+      transitions = translateTransition
       children = {
         halign = ALIGN_CENTER
         flow = FLOW_VERTICAL
         gap = smallGap
         transform = { translate = [titleXShift.get(), 0] }
-        transitions = [{ prop = AnimProp.translate, duration = ANIM_DUR, easing = OutQuad }]
+        transitions = translateTransition
         children = [
           @() {
             watch = [focusedCampaign, pushedCampaign]
@@ -360,16 +367,12 @@ function mkTitleSlot(campaign, colX, colW, activeXShift = 0, getTitleXShift = nu
             text = utf8ToUpper(loc(getCampaignPresentation(campaign).headerLocId))
             color = pushedCampaign.get() == campaign ? selectColor : textColor
             transform = focusedCampaign.get() == campaign
-              ? { translate = [0, -hdpxi(10)], scale = [1.075, 1.075] }
-              : { translate = [0, 0], scale = [1.0, 1.0] }
-            transitions = [
-              { prop = AnimProp.translate, duration = ANIM_DUR, easing = OutQuad }
-              { prop = AnimProp.scale, duration = ANIM_DUR, easing = OutQuad }
-              { prop = AnimProp.color, duration = ANIM_DUR, easing = OutQuad }
-            ]
+              ? const { translate = [0, -hdpxi(10)], scale = 1.075 }
+              : const { translate = 0, scale = 1.0 }
+            transitions = titleTransitions
           }.__update(titleFont)
           campaign not in unseenCampaigns.get() ? null
-            : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = const [hdpx(6), hdpx(-6)] })
+            : unseenMarkForTitle
           !can_use_debug_console.get() ? null
             : imageBtn(underConstructionBg, @() onResetCampaign(campaign), {
                 size = bgResetCampaignSize
@@ -414,47 +417,52 @@ function calcCenterPanelState(hovered, leftCamp, centerCamp, rightCamp) {
   }
 }
 
-let mkCenterPanel = @(key, leftCamp, centerCamp, rightCamp, centerImageX, centerImageW, centerContent) {
-  key
-  pos = [CENTER_X, 0]
-  size = [CENTER_W, sh(100)]
-  children = @() {
-    watch = focusedCampaign
-    size = FLEX
-    clipChildren = true
-    transform = {
-      pivot = [0.5, 0.5]
-      translate = [calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).shiftX, 0]
-      scale = [calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).scale, 1.0]
+function mkCenterPanel(key, leftCamp, centerCamp, rightCamp, centerImageX, centerImageW, centerContent) {
+  let centerTransitions = [
+    {
+      prop = AnimProp.translate
+      duration = ANIM_DUR
+      easing = OutQuad
+      onFinish = @() focusedAnimFinishedCampaign.set(focusedCampaign.get())
     }
-    transitions = [
-      {
-        prop = AnimProp.translate
-        duration = ANIM_DUR
-        easing = OutQuad
-        onFinish = @() focusedAnimFinishedCampaign.set(focusedCampaign.get())
+    { prop = AnimProp.scale, duration = ANIM_DUR, easing = OutQuad }
+  ]
+  let maskImg = centerPanelMask()
+  let imageScaleTransition = [{ prop = AnimProp.scale, duration = ANIM_DUR, easing = OutQuad }]
+  return {
+    key
+    pos = [CENTER_X, 0]
+    size = [CENTER_W, sh(100)]
+    children = @() {
+      watch = focusedCampaign
+      size = FLEX
+      clipChildren = true
+      transform = {
+        pivot = 0.5
+        translate = [calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).shiftX, 0]
+        scale = [calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).scale, 1.0]
       }
-      { prop = AnimProp.scale, duration = ANIM_DUR, easing = OutQuad }
-    ]
-    children = [
-      {
-        size = FLEX
-        rendObj = ROBJ_MASK
-        image = centerPanelMask()
-        clipChildren = true
-        children = {
-          pos = [centerImageX, 0]
-          size = [centerImageW, sh(100)]
-          transform = {
-            pivot = [0.5, 0.5]
-            scale = [calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).scaleInv, 1.0]
+      transitions = centerTransitions
+      children = [
+        {
+          size = FLEX
+          rendObj = ROBJ_MASK
+          image = maskImg
+          clipChildren = true
+          children = {
+            pos = [centerImageX, 0]
+            size = [centerImageW, sh(100)]
+            transform = {
+              pivot = 0.5
+              scale = [calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).scaleInv, 1.0]
+            }
+            transitions = imageScaleTransition
+            children = centerContent
           }
-          transitions = [{ prop = AnimProp.scale, duration = ANIM_DUR, easing = OutQuad }]
-          children = centerContent
         }
-      }
-      mkCenterBorderLines(calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).scale)
-    ]
+        mkCenterBorderLines(calcCenterPanelState(focusedCampaign.get(), leftCamp, centerCamp, rightCamp).scale)
+      ]
+    }
   }
 }
 

@@ -54,16 +54,11 @@
       0.1,
       2.0
     ],
-    "cumulativeByNormal": false,
+    "cumulativeByNormal": true,
     "shellAnimation": "video/shells_animations/hesh.ivf",
     "bulletName": "165mm_m123",
-    "hitPowerMult": 20.0,
     "relativeVelHitShift": [
       300.0,
-      1000.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
       1000.0
     ],
     "fuseOnWater": true,
@@ -99,20 +94,8 @@
         1.0,
         500.0
       ],
-      "HitPower1000m": [
-        0.9,
-        1000.0
-      ],
-      "HitPower1500m": [
-        0.65,
-        1500.0
-      ],
-      "HitPower2500m": [
-        0.5,
-        2500.0
-      ],
       "HitPower7000m": [
-        0.0,
+        0.9,
         7000.0
       ]
     },
@@ -349,16 +332,11 @@
         0.1,
         2.0
       ],
-      "cumulativeByNormal": false,
+      "cumulativeByNormal": true,
       "shellAnimation": "video/shells_animations/hesh.ivf",
       "bulletName": "165mm_m123",
-      "hitPowerMult": 20.0,
       "relativeVelHitShift": [
         300.0,
-        1000.0
-      ],
-      "relativeVelArmorShift": [
-        200.0,
         1000.0
       ],
       "fuseOnWater": true,
@@ -394,20 +372,8 @@
           1.0,
           500.0
         ],
-        "HitPower1000m": [
-          0.9,
-          1000.0
-        ],
-        "HitPower1500m": [
-          0.65,
-          1500.0
-        ],
-        "HitPower2500m": [
-          0.5,
-          2500.0
-        ],
         "HitPower7000m": [
-          0.0,
+          0.9,
           7000.0
         ]
       },

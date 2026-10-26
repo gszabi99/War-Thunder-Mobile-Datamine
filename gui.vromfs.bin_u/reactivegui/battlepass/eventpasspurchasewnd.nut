@@ -52,6 +52,8 @@ let contentGradientSize = [contentGap, saBorders[1]]
 
 let playerSelectedBp = mkWatched(persist, "playerSelectedBp", null)
 
+let currenciesBtns = mkCurrenciesBtns(const [PLATINUM])
+
 let header = @() {
   watch = [curEventId, epSeasonEndTime]
   size = [FLEX, gamercardHeight]
@@ -60,8 +62,8 @@ let header = @() {
   children = [
     backButton(closeEPPurchaseWnd)
     battlePassSeason($"events/name/{curEventId.get()}" epSeasonEndTime.get())
-    { size = FLEX }
-    mkCurrenciesBtns([PLATINUM])
+    const { size = FLEX }
+    currenciesBtns
   ]
 }
 
@@ -241,107 +243,114 @@ function getNextFromList(list, cur) {
   return list[idx % list.len()]
 }
 
-let battlePassIcon = @(bpList, selBpInfo) function() {
-  if ((curEventId.get() ?? "") == "")
-    return {
-      size = [bpIconSize * (bpList.get().len() + 1) / 2, SIZE_TO_CONTENT]
-      watch = [bpList, selBpInfo, curEventId]
-    }
+function battlePassIcon(bpList, selBpInfo) {
+  let iconTransitions = [
+    { prop = AnimProp.color, duration = 0.3, easing = InOutQuad }
+    { prop = AnimProp.scale, duration = 0.3, easing = InOutQuad }
+  ]
+  return function() {
+    if ((curEventId.get() ?? "") == "")
+      return {
+        size = [bpIconSize * (bpList.get().len() + 1) / 2, SIZE_TO_CONTENT]
+        watch = [bpList, selBpInfo, curEventId]
+      }
 
-  let children = []
-  foreach(idx, bp in bpList.get()) {
-    let isCurrent = bp == selBpInfo.get()
-    let child = {
-      key = bp.bpType
-      size = const [bpIconSize, bpIconSize]
-      pos = [idx * bpIconSize / 2, 0]
-      rendObj = ROBJ_IMAGE
-      image = Picture($"{getEpIcon(bp.bpType, curEventId.get())}:{bpIconSize}:{bpIconSize}:P")
-      color = isCurrent ? 0xFFFFFFFF : 0x40404040
-      keepAspect = true
-      transform = { scale = isCurrent ? [1.0, 1.0] : [0.9, 0.9] }
-      transitions = [
-        { prop = AnimProp.color, duration = 0.3, easing = InOutQuad }
-        { prop = AnimProp.scale, duration = 0.3, easing = InOutQuad }
+    let children = []
+    foreach(idx, bp in bpList.get()) {
+      let isCurrent = bp == selBpInfo.get()
+      let child = {
+        key = bp.bpType
+        size = const [bpIconSize, bpIconSize]
+        pos = [idx * bpIconSize / 2, 0]
+        rendObj = ROBJ_IMAGE
+        image = Picture($"{getEpIcon(bp.bpType, curEventId.get())}:{bpIconSize}:{bpIconSize}:P")
+        color = isCurrent ? 0xFFFFFFFF : 0x40404040
+        keepAspect = true
+        transform = isCurrent ? const { scale = [1.0, 1.0] } : const { scale = [0.9, 0.9] }
+        transitions = iconTransitions
+      }
+      if (isCurrent)
+        children.append(child)
+      else
+        children.insert(0, child)
+    }
+    return {
+      watch = [bpList, selBpInfo, curEventId]
+      size = [bpIconSize * (bpList.get().len() + 1) / 2, SIZE_TO_CONTENT]
+      flow = FLOW_VERTICAL
+      halign = ALIGN_CENTER
+      hplace = ALIGN_RIGHT
+      behavior = Behaviors.Button
+      onClick = @() playerSelectedBp.set(getNextFromList(bpList.get(), selBpInfo.get())?.bpType)
+      children = [
+        {
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          maxWidth = rightBlockWidth
+          halign = ALIGN_CENTER
+          hplace = ALIGN_RIGHT
+          text = getEpName(selBpInfo.get()?.bpType, curEventId.get())
+        }.__update(fontBig)
+        {
+          size = [FLEX, bpIconSize]
+          children
+        }
       ]
     }
-    if (isCurrent)
-      children.append(child)
-    else
-      children.insert(0, child)
-  }
-  return {
-    watch = [bpList, selBpInfo, curEventId]
-    size = [bpIconSize * (bpList.get().len() + 1) / 2, SIZE_TO_CONTENT]
-    flow = FLOW_VERTICAL
-    halign = ALIGN_CENTER
-    hplace = ALIGN_RIGHT
-    behavior = Behaviors.Button
-    onClick = @() playerSelectedBp.set(getNextFromList(bpList.get(), selBpInfo.get())?.bpType)
-    children = [
-      {
-        rendObj = ROBJ_TEXTAREA
-        behavior = Behaviors.TextArea
-        maxWidth = rightBlockWidth
-        halign = ALIGN_CENTER
-        hplace = ALIGN_RIGHT
-        text = getEpName(selBpInfo.get()?.bpType, curEventId.get())
-      }.__update(fontBig)
-      {
-        size = [FLEX, bpIconSize]
-        children
-      }
-    ]
   }
 }
 
-let buyBlock = @(bpList, selBpInfo) function() {
-  let { goods = null, price = null, purchList = null } = selBpInfo.get()
-  return {
-    watch = [purchasedEp, bpList, selBpInfo]
-    size = [FLEX, defButtonHeight]
-    valign = ALIGN_CENTER
-    halign = ALIGN_RIGHT
-    flow = FLOW_HORIZONTAL
-    gap = hdpx(30)
-    children = [
-      bpList.get().len() <= 1 ? null
-        : mkCustomButton(
-            {
-              size = const [swIconSz, swIconSz]
-              rendObj = ROBJ_IMAGE
-              image = Picture($"ui/gameuiskin#decor_change_icon.svg:{swIconSz}:{swIconSz}:P")
-              keepAspect = true
-            },
-            @() playerSelectedBp.set(getNextFromList(bpList.get(), selBpInfo.get())?.bpType),
-            mergeStyles(COMMON, { ovr = { minWidth = defButtonHeight } }))
-      purchasedEp.get() == selBpInfo.get()?.bpType
-        ? {
-            rendObj = ROBJ_TEXT
-            text = loc("battlePass/alreadyBought")
-          }.__update(fontSmall)
-        : (price?.price ?? 0) > 0
-          ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
-              mkCurrencyComp(price.price, price.currencyId)
-              function() {
-                sendEpBqEvent("purchase_pass_press")
-                let eventPassRemainder = loc("eventpass/remainder", {
-                  time = colorize(userlogTextColor, secondsToHoursLoc(epSeasonEndTime.get() - serverTime.get()))
-                })
-                if (purchList == null)
-                  purchaseGoods(goods?.id, eventPassRemainder)
-                else
-                  purchaseGoodsSeq(purchList, getEpName(selBpInfo.get()?.bpType, curEventId.get()), eventPassRemainder)
-              },
-              { ovr = { minWidth = bpIconSize }})
-        : {
-            size = FLEX_H
-            rendObj = ROBJ_TEXTAREA
-            behavior = Behaviors.TextArea
-            text = loc("error/googleplay/GP_ITEM_UNAVAILABLE")
-            halign = ALIGN_CENTER
-          }.__update(fontSmall)
-    ]
+function buyBlock(bpList, selBpInfo) {
+  let switchBpButton = mkCustomButton(
+    {
+      size = const [swIconSz, swIconSz]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#decor_change_icon.svg:{swIconSz}:{swIconSz}:P")
+      keepAspect = true
+    },
+    @() playerSelectedBp.set(getNextFromList(bpList.get(), selBpInfo.get())?.bpType),
+    mergeStyles(COMMON, { ovr = { minWidth = defButtonHeight } }))
+  let purchaseBtnOvr = { ovr = { minWidth = bpIconSize } }
+  return function() {
+    let { goods = null, price = null, purchList = null } = selBpInfo.get()
+    return {
+      watch = [purchasedEp, bpList, selBpInfo]
+      size = [FLEX, defButtonHeight]
+      valign = ALIGN_CENTER
+      halign = ALIGN_RIGHT
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(30)
+      children = [
+        bpList.get().len() <= 1 ? null
+          : switchBpButton
+        purchasedEp.get() == selBpInfo.get()?.bpType
+          ? {
+              rendObj = ROBJ_TEXT
+              text = loc("battlePass/alreadyBought")
+            }.__update(fontSmall)
+          : (price?.price ?? 0) > 0
+            ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_purchase")),
+                mkCurrencyComp(price.price, price.currencyId)
+                function() {
+                  sendEpBqEvent("purchase_pass_press")
+                  let eventPassRemainder = loc("eventpass/remainder", {
+                    time = colorize(userlogTextColor, secondsToHoursLoc(epSeasonEndTime.get() - serverTime.get()))
+                  })
+                  if (purchList == null)
+                    purchaseGoods(goods?.id, eventPassRemainder)
+                  else
+                    purchaseGoodsSeq(purchList, getEpName(selBpInfo.get()?.bpType, curEventId.get()), eventPassRemainder)
+                },
+                purchaseBtnOvr)
+          : {
+              size = FLEX_H
+              rendObj = ROBJ_TEXTAREA
+              behavior = Behaviors.TextArea
+              text = loc("error/googleplay/GP_ITEM_UNAVAILABLE")
+              halign = ALIGN_CENTER
+            }.__update(fontSmall)
+      ]
+    }
   }
 }
 

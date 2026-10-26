@@ -32,7 +32,7 @@ let resultBlink = {
   opacity = 0
 
   key = {}
-  transform = { pivot = [0.5, 0.5] }
+  transform = { pivot = 0.5 }
   animations = [
     { prop = AnimProp.opacity, from = blinkOpacity, to = blinkOpacity, duration = animTimeBlinkFullOpaque,
       easing = OutQuad, play = true }
@@ -45,7 +45,7 @@ let resultBlink = {
 
 let mkHitResultTextAnimProps = @(finalScale) {
   key = {}
-  transform = { pivot = [0, 0.5], scale = [finalScale, finalScale] }
+  transform = { pivot = [0, 0.5], scale = finalScale }
   animations = [
     { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = animTimeResultTitle,
       easing = InQuad, play = true }

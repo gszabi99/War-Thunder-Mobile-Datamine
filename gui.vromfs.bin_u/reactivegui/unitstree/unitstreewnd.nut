@@ -13,10 +13,10 @@ from "%rGui/navState.nut" import registerScene
 from "%rGui/slotBar/slotBarConsts.nut" import slotBarTreeHeight
 from "%rGui/slotBar/slotBarState.nut" import selectedTreeSlotIdx
 from "%rGui/style/gamercardStyle.nut" import gamercardHeight
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/unit/components/unitInfoPanel.nut" import unitInfoPanel, mkUnitTitle, statsWidth, scrollHandlerInfoPanel
 from "%rGui/unit/hangarUnit.nut" import hangarUnit
-from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
+from "%rGui/unit/unitAccess.nut" import byBlockedUnits
 from "%rGui/unit/unitsFilterPkg.nut" import isFiltersVisible, filterStateFlags, openFilters
 from "%rGui/unit/unitsFilterState.nut" import mkFilters, resetFilters
 from "%rGui/unit/unitsWndActions.nut" import unitActions, discountBlock
@@ -70,46 +70,49 @@ let unselectBtn = {
   onClick = @() curSelectedUnit.set(null)
 }
 
-let unitFilterButton = @(filters, allUnits) @() {
-  watch = [isGamepad, filterStateFlags]
-  size = btnSize
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  rendObj = ROBJ_BOX
-  borderWidth = hdpxi(1)
-  fillColor = filterStateFlags.get() & S_ACTIVE ? 0x20000000 : 0x50000000
-  borderColor = 0xFFFFFFFF
-}.__update(isGamepad.get()
-    ? {
-        key = filterStateFlags
-        children = { hotkeys = [[
-          "^J:LT",
-          loc("filter"),
-          @(e) openFiltersPopup(e, filters, allUnits)
-        ]] }
-      }
-  : {
-      padding = const [hdpx(10), hdpx(25)]
-      behavior = Behaviors.Button
-      onElemState = @(s) filterStateFlags.set(s)
-      onClick = @(e) openFiltersPopup(e, filters, allUnits)
-      flow = FLOW_HORIZONTAL
-      gap = hdpx(20)
-      children = [
-        {
-          size = const [filterIconSize, filterIconSize]
-          rendObj = ROBJ_IMAGE
-          image = Picture($"ui/gameuiskin#filter_icon.svg:{filterIconSize}:{filterIconSize}:P")
-        }
-        {
-          rendObj = ROBJ_TEXT
-          text = loc("filter")
-        }.__update(fontTinyAccented)
-      ]
-      transform = {
-        scale = filterStateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
-      }
-    })
+function unitFilterButton(filters, allUnits) {
+  let gamepadOvr = {
+    key = filterStateFlags
+    children = { hotkeys = [[
+      "^J:LT",
+      loc("filter"),
+      @(e) openFiltersPopup(e, filters, allUnits)
+    ]] }
+  }
+  let filterIconRow = [
+    {
+      size = const [filterIconSize, filterIconSize]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#filter_icon.svg:{filterIconSize}:{filterIconSize}:P")
+    }
+    {
+      rendObj = ROBJ_TEXT
+      text = loc("filter")
+      ...fontTinyAccented
+    }
+  ]
+  return @() {
+    watch = [isGamepad, filterStateFlags]
+    size = btnSize
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    rendObj = ROBJ_BOX
+    borderWidth = hdpxi(1)
+    fillColor = filterStateFlags.get() & S_ACTIVE ? 0x20000000 : 0x50000000
+    borderColor = 0xFFFFFFFF
+  }.__update(isGamepad.get()
+      ? gamepadOvr
+    : {
+        padding = const [hdpx(10), hdpx(25)]
+        behavior = Behaviors.Button
+        onElemState = @(s) filterStateFlags.set(s)
+        onClick = @(e) openFiltersPopup(e, filters, allUnits)
+        flow = FLOW_HORIZONTAL
+        gap = hdpx(20)
+        children = filterIconRow
+        ...mkPressTransitionScale(filterStateFlags.get())
+      })
+}
 
 let clearFiltersButton = {
   key = {}
@@ -140,6 +143,7 @@ let mkTreeBg = @(isVisible) @() !isVisible.get() ? { watch = isVisible } : {
 
 function mkLevelCheckbox(text, isActive, onClick) {
   let stateFlags = Watched(0)
+  let checkImg = Picture($"ui/gameuiskin#check.svg:{checkIconSize}:{checkIconSize}")
   return @() {
     watch = [stateFlags, isActive]
     behavior = Behaviors.Button
@@ -163,7 +167,7 @@ function mkLevelCheckbox(text, isActive, onClick) {
           vplace = ALIGN_CENTER
           hplace = ALIGN_CENTER
           rendObj = ROBJ_IMAGE
-          image = isActive.get() ? Picture($"ui/gameuiskin#check.svg:{checkIconSize}:{checkIconSize}") : null
+          image = isActive.get() ? checkImg : null
           keepAspect = KEEP_ASPECT_FIT
           opacity = stateFlags.get() & S_ACTIVE ? 0.5 : 1.0
         }
@@ -176,8 +180,7 @@ function mkLevelCheckbox(text, isActive, onClick) {
         text
       }.__update(fontTinyAccented)
     ]
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
-  }
+  }.__update(mkPressTransitionScale(stateFlags.get()))
 }
 
 let unitsTreeGamercard = @(filters, activeFilters, allUnits) headerGradientWithRightBlock(
@@ -216,12 +219,12 @@ let mkBottomInfoPanel = @(unitW, unitReceiveInfoW) {
   ]
 }
 
-let infoPanel = @(nodesReceiveInfo) function() {
+function infoPanel(nodesReceiveInfo) {
   let hasUnitActions = mkHasUnitActions()
   let isBlockedUnit = Computed(function() {
     let { name = "" } = hangarUnit.get()
     return name not in campMyUnits.get()
-      && name in unitsBlockedByBattleMode.get()
+      && name in byBlockedUnits.get()
       && (unitsResearchStatus.get()?[name].hasAccessLock ?? true)
       && (name not in serverConfigs.get()?.allBlueprints || canBuyUnitsStatus.get()?[name] != US_CAN_BUY)
   })
@@ -230,7 +233,7 @@ let infoPanel = @(nodesReceiveInfo) function() {
     && !isBlockedUnit.get())
   let hasDarkScreen = mkHasDarkScreen()
   let unitReceiveInfo = Computed(@() nodesReceiveInfo.get()?[curSelectedUnit.get()])
-  return {
+  return @() {
     watch = [hasSelectedUnit, isCampaignWithSlots, hasDarkScreen, isBlockedUnit]
     key = {}
     size = FLEX
@@ -251,7 +254,7 @@ let infoPanel = @(nodesReceiveInfo) function() {
                   animations = wndSwitchAnim
                 },
                 mkUnitTitle, hangarUnit, {})
-              {
+              const {
                 size = FLEX
               }
               @() {

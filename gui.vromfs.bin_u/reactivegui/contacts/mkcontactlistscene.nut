@@ -46,12 +46,13 @@ function contactsBlock(uidsList, playerSelectedUserId, responseAction, emptyText
   let emptyMsg = emptyText == null
     ? mkNoContactsMsg(loc("contacts/list_empty"))
     : mkNoContactsMsg(emptyText)
+  let list = contactsList(uidsList, playerSelectedUserId, responseAction, leftContent)
   return @() {
     watch = hasContacts
     size = FLEX
     children = !hasContacts.get()
       ? emptyMsg
-      : contactsList(uidsList, playerSelectedUserId, responseAction, leftContent)
+      : list
   }
 }
 

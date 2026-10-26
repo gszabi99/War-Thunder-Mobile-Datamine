@@ -380,18 +380,16 @@
       "role": "sailor",
       "crew": 66
     },
-    "sailor4": [
-      {
-        "dmPart": "compartment_04_dm",
-        "role": "sailor",
-        "crew": 66
-      },
-      {
-        "dmPart": "compartment_05_dm",
-        "role": "sailor",
-        "crew": 66
-      }
-    ],
+    "sailor4": {
+      "dmPart": "compartment_04_dm",
+      "role": "sailor",
+      "crew": 66
+    },
+    "sailor5": {
+      "dmPart": "compartment_05_dm",
+      "role": "sailor",
+      "crew": 66
+    },
     "sailor6": {
       "dmPart": "compartment_06_dm",
       "role": "sailor",
@@ -701,7 +699,8 @@
       30.0,
       -105.0
     ],
-    "detectionHeight": 23.6
+    "detectionHeight": 23.6,
+    "cameraAhead": true
   },
   "sound": {
     "EngineName": "engine_shipmid01",
@@ -743,7 +742,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "bulletsCartridge": 6,
-        "reloadTime": 18.0,
+        "reloadTime": 17.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -780,7 +779,6 @@
         "weaponType": "rockets",
         "emitter": "bone_rocket_08",
         "flash": "bone_rocket_08",
-        "ammoDpGenFmt": "bone_rocket_%02d_dm",
         "emitterGenRange": [
           8,
           15
@@ -854,7 +852,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 10.0,
         "speedYaw": 100.0,
-        "shotFreq": 0.083,
+        "shotFreq": 0.091,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -897,7 +895,6 @@
           2
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "isSharedAmmoOnTriggerGroup": true,
         "startFx": "start_torpedo",
         "startFxOffset": [
@@ -942,7 +939,6 @@
           4
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -1288,7 +1284,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "bulletsCartridge": 6,
-              "reloadTime": 18.0,
+              "reloadTime": 17.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -1325,7 +1321,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_08",
               "flash": "bone_rocket_08",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 8,
                 15
@@ -1399,7 +1394,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 100.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.091,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -1442,7 +1437,6 @@
                 2
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "isSharedAmmoOnTriggerGroup": true,
               "startFx": "start_torpedo",
               "startFxOffset": [
@@ -1487,7 +1481,6 @@
                 4
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -1809,7 +1802,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "bulletsCartridge": 6,
-              "reloadTime": 18.0,
+              "reloadTime": 17.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -1846,7 +1839,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_08",
               "flash": "bone_rocket_08",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 8,
                 15
@@ -1920,7 +1912,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 100.0,
-              "shotFreq": 0.083,
+              "shotFreq": 0.091,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -1963,7 +1955,6 @@
                 2
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "isSharedAmmoOnTriggerGroup": true,
               "startFx": "start_torpedo",
               "startFxOffset": [
@@ -2008,7 +1999,6 @@
                 4
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,

@@ -36,15 +36,16 @@ function mkActionButton(popup) {
     return closeButton
 
   let hasAction = mkHasAction?(params) ?? Watched(true)
+  let browseButton = textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")),
+    function() {
+      markCurPopupSeen()
+      exec(params)
+    },
+    { hotkeys = ["^J:A"] })
   return @() {
     watch = hasAction
     children = !hasAction.get() ? closeButton
-      : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")),
-          function() {
-            markCurPopupSeen()
-            exec(params)
-          },
-          { hotkeys = ["^J:A"] })
+      : browseButton
   }
 }
 

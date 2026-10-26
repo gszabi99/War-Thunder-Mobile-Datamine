@@ -52,6 +52,22 @@ function mkAttrRow(unitName, catId, attr, idx) {
   let hasSp = Computed(@() totalSlotSp.get() > 0 )
   let hasChanges = Computed(@() selValueData.get().len() > 0)
 
+  let decBtn = mkProgressBtn(mkProgressBtnContentDec(canDec), mkBtnOnClick(-1))
+  let rowContent = {
+    size = FLEX
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(10)
+    children = [
+      mkRowLabel(attrLocName)
+      mkRowValue(curValueData, selValueData)
+    ]
+  }
+  let incBtnRow = {
+    key = $"slotAttrProgressBtn_{idx}" 
+    children = mkProgressBtn(mkProgressBtnContentInc(canInc), mkBtnOnClick(1))
+  }
+  let nextIncCostBlock = mkNextIncCost(nextIncCost, canInc, totalSlotSp)
+
   return @() {
     watch = hasSp
     size = [FLEX, rowHeight]
@@ -59,29 +75,18 @@ function mkAttrRow(unitName, catId, attr, idx) {
     gap = progressBtnGap
     valign = ALIGN_CENTER
     children = [
-      mkProgressBtn(mkProgressBtnContentDec(canDec), mkBtnOnClick(-1))
+      decBtn
       @() {
         watch = hasChanges
         size = FLEX
         valign = ALIGN_CENTER
         children = [
-          {
-            size = FLEX
-            flow = FLOW_HORIZONTAL
-            gap = hdpx(10)
-            children = [
-              mkRowLabel(attrLocName)
-              mkRowValue(curValueData, selValueData)
-            ]
-          }
+          rowContent
           mkProgressBarSlider(selLevel, totalLevels, onChangeValue, hasChanges.get())
         ]
       }
-      {
-        key = $"slotAttrProgressBtn_{idx}" 
-        children = mkProgressBtn(mkProgressBtnContentInc(canInc), mkBtnOnClick(1))
-      }
-      hasSp.get() ? mkNextIncCost(nextIncCost, canInc, totalSlotSp) : null
+      incBtnRow
+      hasSp.get() ? nextIncCostBlock : null
     ]
   }
 }

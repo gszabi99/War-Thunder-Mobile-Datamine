@@ -38,8 +38,9 @@ isLoaded.subscribe(function(v) {
   }
 })
 
-let content = @()
-  modalWndBg.__merge({
+function content() {
+  let cancelBtn = textButtonCommon(utf8ToUpper(loc("msgbox/btn_cancel")), closeAdsPreloader)
+  return modalWndBg.__merge({
     size = const [hdpx(800), SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     valign = ALIGN_TOP
@@ -64,12 +65,13 @@ let content = @()
             size = [SIZE_TO_CONTENT, defButtonHeight]
             vplace = ALIGN_BOTTOM
             hplace = ALIGN_CENTER
-            children = canClosePreloader.get() ? textButtonCommon(utf8ToUpper(loc("msgbox/btn_cancel")), closeAdsPreloader) : null
+            children = canClosePreloader.get() ? cancelBtn : null
           }
         ]
       }
     ]
   })
+}
 
 isOpenedAdsPreloaderWnd.subscribe(function(v) {
   removeModalWindow(PRELOAD_WND_UID)

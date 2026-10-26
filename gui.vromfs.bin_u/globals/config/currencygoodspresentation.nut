@@ -1,7 +1,7 @@
 from "math" import max
 from "%appGlobals/currenciesState.nut" import WP, GOLD, WARBOND, EVENT_KEY, NYBOND, PLATINUM, APRILINTEL,
   APRILMAPPIECE, APRILDOUBLON, BLACKFRIDAYBOND, HOTMAYBOND, INDEPENDENCEBOND, CHINABOND, ANNIVERSARYBOND, ANNIVERSARYTOKEN,
-  HALLOWEENBOND, VALENTINEBOND, CANDYBOND, LOLLIPOPBOND, CHOCOLATEBOND, LUNARBOND, UKBOND, JAPANBOND, MAPTOKEN
+  HALLOWEENBOND, HALLOWEENTOKEN, VALENTINEBOND, CANDYBOND, LOLLIPOPBOND, CHOCOLATEBOND, LUNARBOND, UKBOND, JAPANBOND, MAPTOKEN
 from "currencyPresentation.nut" import getBaseCurrency, getSeasonStr, getCurrencyBigIcon
 
 
@@ -91,6 +91,11 @@ let presentations = {
     { img = "halloweenbond_goods_2025_01.avif", amountAtLeast = 0 }
     { img = "halloweenbond_goods_2025_02.avif", amountAtLeast = 500 }
     { img = "halloweenbond_goods_2025_03.avif", amountAtLeast = 1500 }
+  ],
+  [HALLOWEENTOKEN] = [
+    { img = "halloweentoken_goods_2026_01.avif", amountAtLeast = 0 }
+    { img = "halloweentoken_goods_2026_02.avif", amountAtLeast = 500 }
+    { img = "halloweentoken_goods_2026_03.avif", amountAtLeast = 1500 }
   ],
   [VALENTINEBOND] = [
     { img = "valentinebond_goods_2026_01.avif", amountAtLeast = 0 }

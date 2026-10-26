@@ -7,6 +7,7 @@ from "%sqstd/underscore.nut" import isEqual
 from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
 from "%appGlobals/config/goodsPresentation.nut" import getSlotsPreviewBg, getSlotsTexts
 from "%appGlobals/currenciesState.nut" import GOLD
+from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_SLOTS_PREVIEW
 from "%appGlobals/pServer/campaign.nut" import todayPurchasesCount
 from "%appGlobals/pServer/pServerApi.nut" import registerHandler, shopPurchaseInProgress, shopGenSlotInProgress,
   gen_goods_slots, buy_goods_slot, reset_reward_slots
@@ -18,7 +19,6 @@ import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
 from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, getDay, dayOffset, dayEndsAt
-from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_SLOTS_PREVIEW
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp
 from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
@@ -26,6 +26,7 @@ from "%rGui/components/infoButton.nut" import infoTooltipButton
 from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
 from "%rGui/components/spinner.nut" import spinner
 from "%rGui/components/textButton.nut" import textButtonPricePurchase, buttonsHGap, buttonStyles, buttonTextWidth
+from "%rGui/components/timerBlock.nut" import mkTimer
 from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
 from "%rGui/navState.nut" import registerScene
 from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts,
@@ -43,13 +44,12 @@ from "%rGui/shop/goodsView/goods.nut" import getGoodsLocName
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase, PURCHASE_BOX_UID
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/gradients.nut" import mkGradientCtorRadial, gradTexSize
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import userlogTextColor
 from "%rGui/tooltip.nut" import mkTooltipText
 from "%rGui/unit/components/unitUnlockAnimation.nut" import revealAnimation
-from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
+from "%rGui/unit/unitAccess.nut" import byBlockedUnits
 from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
-from "%rGui/components/timerBlock.nut" import mkTimer
 
 
 let { defButtonHeight, PRIMARY } = buttonStyles
@@ -161,6 +161,8 @@ function balanceButtons() {
   }
 }
 
+let dayEndTime = Computed(@() dayEndsAt(serverTime.get(), dayOffset.get()))
+
 function timer() {
   let { count = 0 } = todayPurchasesCount.get()?[previewGoods.get()?.id]
   if(count == 0)
@@ -175,7 +177,7 @@ function timer() {
         halign = ALIGN_CENTER
         text = loc("shop/hint/updatePriceTimer")
       }.__update(fontSmall)
-      mkTimer(Computed(@() dayEndsAt(serverTime.get(), dayOffset.get())), {halign = ALIGN_CENTER})
+      mkTimer(dayEndTime, const {halign = ALIGN_CENTER})
     ]
   }
 }
@@ -183,14 +185,17 @@ function timer() {
 function headerText() {
   let previewG = previewGoods.get()
   let allLeftSlotNames = (goodsRewardSlots.get()?.variants ?? []).reduce(
-    @(res, v) isRewardEmpty(v, servProfile.get()) || v[0].id in unreleasedUnits.get() || v[0].id in unitsBlockedByBattleMode.get()
-      ? res
-      : res.append(getUnitName(v[0].id).replace(" ", nbsp)),
+    @(res, v)
+      isRewardEmpty(v, servProfile.get())
+          || v[0].id in unreleasedUnits.get()
+          || v[0].id in byBlockedUnits.get()
+        ? res
+        : res.append(getUnitName(v[0].id).replace(" ", nbsp)),
     [])
   let description = loc(getSlotsTexts(openedGoodsId.get()).description)
   return {
     watch = [previewGoods, openedGoodsId, goodsRewardSlots, campMyUnits, serverConfigs,
-      servProfile, unreleasedUnits, unitsBlockedByBattleMode
+      servProfile, unreleasedUnits, byBlockedUnits
     ]
     flow = FLOW_HORIZONTAL
     gap = hdpx(30)
@@ -206,7 +211,7 @@ function headerText() {
           allLeftSlotNames.len() == 0 ? description
             : "\n\n".concat(description, loc("shop/hint/availableSlots", { slots = ", ".join(allLeftSlotNames) })),
           { maxWidth = hdpx(1000) }.__update(fontTinyAccented)),
-        { halign = ALIGN_RIGHT },
+        const { halign = ALIGN_RIGHT },
         {
           size = hdpx(52)
           fillColor = 0x80000000
@@ -270,6 +275,9 @@ function mkSlot(reward, rStyle) {
   let stateFlags = Watched(0)
   let isSelected = Computed(@() selIndex.get() == reward.slotIdx)
   let unit = Computed(@() serverConfigs.get()?.allUnits?[reward.id])
+  let plateBg = mkRewardPlateBg(reward, rStyle)
+  let plateImage = mkRewardPlateImage(reward, rStyle)
+  let plateTexts = mkRewardPlateTexts(reward, rStyle)
 
   return @() {
     watch = [isSelected, stateFlags, rewardSlots, unit, openedUnitFromTree]
@@ -282,20 +290,19 @@ function mkSlot(reward, rStyle) {
       : isSelected.get()
         ? openUnit(reward.id)
       : selIndex.set(reward.slotIdx)
-    sound = rewardSlots.get()?.isPurchased ? {} : { click  = "click" }
+    sound = rewardSlots.get()?.isPurchased ? const {} : const { click  = "click" }
     onAttach = @() openedUnitFromTree.get() == unit.get()?.name ? selIndex.set(reward.slotIdx) : null
 
     children = [
-      mkRewardPlateBg(reward, rStyle)
-      mkRewardPlateImage(reward, rStyle)
+      plateBg
+      plateImage
       !isSelected.get() && !(stateFlags.get() & S_HOVER) ? null
         : mkHightlightPlate(isSelected.get(), rStyle)
-      mkRewardPlateTexts(reward, rStyle)
+      plateTexts
       reward.rType == GPT_BLUEPRINT && unit.get() != null ? mkRewardUnitFlag(unit.get(), rStyle) : null
     ]
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14 }]
     animations = openedUnitFromTree.get() == unit.get()?.name ? rerollUnitAnim : null
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 

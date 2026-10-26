@@ -6,9 +6,9 @@ from "serverTime.nut" import serverTime, gameStartServerTimeMsec
 
 
 const DAY = 24 * 3600
-let getDay = @(t, offset) (t - offset) / DAY
-let untilNextDaySec = @(t, offset) DAY - ((t - offset) % DAY)
-let dayEndsAt = @(t, offset) t + untilNextDaySec(t, offset)
+let getDay = @[pure, nodiscard](t, offset) (t - offset) / DAY
+let untilNextDaySec = @[pure, nodiscard](t, offset) DAY - ((t - offset) % DAY)
+let dayEndsAt = @[pure, nodiscard](t, offset) t + untilNextDaySec(t, offset)
 
 let serverTimeDay = Watched(0)
 let dayOffset = Computed(@() serverConfigs.get()?.circuit.daySwitchOffset ?? 0)

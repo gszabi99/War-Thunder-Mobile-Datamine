@@ -12,6 +12,8 @@ from "%sqstd/time.nut" import secondsToTimeSimpleString
 from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath, getBlkValueByPath
 from "%appGlobals/clientState/clientState.nut" import localMPlayerTeam, isInBattle
 from "%appGlobals/unitConst.nut" import TANK, AIR
+from "%rGui/hud/actionBar/actionBarState.nut" import actionBarItems
+from "%rGui/hud/actionBar/actionType.nut" import AB_MEDICALKIT
 from "%rGui/hud/airState.nut" import hasMGun0, hasCanon0, Cannon0, MGun0
 from "%rGui/hud/bullets/hudUnitBulletsState.nut" import bulletsInfo, currentBulletName
 from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
@@ -306,12 +308,13 @@ eventbus_subscribe("hint:this_is_score_board", function(p) {
 const HEALING_HINT_ID = "healing_hint"
 eventbus_subscribe("hint:healing_hint:show", function(_) {
   addCommonHintWithTtl(loc("hints/show_healing_hint"), 10, HEALING_HINT_ID)
-  addHudElementPointer("btn_repair_with_medical", 10)
+  if (actionBarItems.get()?[AB_MEDICALKIT] != null)
+    addHudElementPointer("btn_medicalkit", 10)
 })
 
 eventbus_subscribe("hint:healing_hint:hide", function(_) {
   removeEvent({ id = HEALING_HINT_ID })
-  removeHudElementPointer("btn_repair_with_medical")
+  removeHudElementPointer("btn_medicalkit")
 })
 
 let bailoutTimer = mkWatched(persist,"bailoutTimer", 0)

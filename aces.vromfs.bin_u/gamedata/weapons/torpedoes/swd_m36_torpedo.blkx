@@ -5,7 +5,7 @@
   "bullets": 1,
   "shotFreq": 1.5,
   "external": true,
-  "mesh": "torpedo_g7a",
+  "mesh": "torpedo_18in_mk15",
   "tags": {
     "antiShipBomb": true
   },

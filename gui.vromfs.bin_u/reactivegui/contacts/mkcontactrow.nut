@@ -15,6 +15,8 @@ function mkContactRow(uid, rowIdx, isSelected, onClick, responseAction = null, l
   let onlineStatus = mkContactOnlineStatus(userId)
   let battleUnit = Computed(@() serverConfigs.get()?.allUnits[presences.get()?[userId].battleUnit])
   let stateFlags = Watched(0)
+  let onlineStatusBlock = contactOnlineStatusBlock(onlineStatus, battleUnit)
+  let squadStatusBlock = contactSquadStatusBlock(uid.tointeger(), { margin = [0, gap, 0, 0]})
   return @() {
     watch = [contact, info, isSelected]
     key = uid
@@ -28,7 +30,7 @@ function mkContactRow(uid, rowIdx, isSelected, onClick, responseAction = null, l
     onAttach = @() refreshPublicInfo(uid)
     gap
     children = [
-      contactOnlineStatusBlock(onlineStatus, battleUnit)
+      onlineStatusBlock
       {
         size = FLEX
         valign = ALIGN_CENTER
@@ -49,10 +51,10 @@ function mkContactRow(uid, rowIdx, isSelected, onClick, responseAction = null, l
             ]
           }
           contactNameBlock(contact.get(), info.get())
-          {
+          const {
             size = FLEX
           }
-          contactSquadStatusBlock(uid.tointeger(), { margin = [0, gap, 0, 0]})
+          squadStatusBlock
           responseAction
         ]
       }

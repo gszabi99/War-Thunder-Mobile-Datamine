@@ -112,7 +112,7 @@ function mkBtnImageComp(hotkey, baseHeight = defHeight, isActive = false) {
     btnId = $"{btnId}_PRESSED"
   let height = getBtnImageHeight(btnId, baseHeight)
   return {
-    size = [height, height]
+    size = height
     rendObj = ROBJ_IMAGE
     image = getBtnPicture(btnId, height)
     keepAspect = true

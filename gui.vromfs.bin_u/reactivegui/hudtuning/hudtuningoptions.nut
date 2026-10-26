@@ -34,6 +34,7 @@ function askSaveAndClose() {
   })
 }
 
+let toggleTransitions = [{ prop = AnimProp.rotate, duration = 0.2, easing = InOutQuad }]
 let toggleBtn = @() {
   watch = isOpen
   hplace = ALIGN_LEFT
@@ -43,8 +44,8 @@ let toggleBtn = @() {
     isOpen.get() ? "hudTuning/toggle/desc/hide" : "hudTuning/toggle/desc/show",
     {
       color = btnBgColorDefault
-      transform = isOpen.get() ? {} : { rotate = 180 }
-      transitions = [{ prop = AnimProp.rotate, duration = 0.2, easing = InOutQuad }]
+      transform = isOpen.get() ? const {} : const { rotate = 180 }
+      transitions = toggleTransitions
     })
 }
 
@@ -125,17 +126,18 @@ let content = @() {
     historyBackBtn
     historyFwdBtn
     resetBtn
-    { size = FLEX }
+    const { size = FLEX }
     curUnitTypeInfo
     hasAnyOfAllElemOptions.get() ? allElemsOptions : null
   ]
 }
 
+let translateTransitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
 let hudTuningOptions = @() {
   watch = transformInProgress
   size = FLEX_H
   transform = { translate = [0, transformInProgress.get() == null ? 0 : hdpx(-500)] }
-  transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+  transitions = translateTransitions
   children = [
     @() {
       watch = isOpen
@@ -145,7 +147,7 @@ let hudTuningOptions = @() {
       color = 0xC0000000
       children = content
       transform = { translate = [0, isOpen.get() ? 0 : hdpx(-500)] }
-      transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+      transitions = translateTransitions
     }
     toggleBtn
   ]

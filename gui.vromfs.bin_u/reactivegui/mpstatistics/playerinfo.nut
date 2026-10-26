@@ -2,12 +2,17 @@ from "%rGui/style/gamercardStyle.nut" import *
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import deferOnce
 from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/clientState/clientState.nut" import isInBattle
 from "%appGlobals/config/campaignPresentation.nut" import campaignPresentations, getCampaignPresentation
 from "%appGlobals/pServer/campaign.nut" import campaignsList
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
 from "%appGlobals/permissions.nut" import can_view_player_uids
 from "%appGlobals/timeToText.nut" import secondsToTimeAbbrString
+from "%rGui/clans/clanPermissions.nut" import clanGrades
+from "%rGui/clans/clanState.nut" import canManageMember
+from "%rGui/clans/components/clanManageSection.nut" import mkManageSection
+from "%rGui/clans/currentClanState.nut" import currentClan, myClanGrade
 from "%rGui/components/buttonStyles.nut" import COMMON
 from "%rGui/components/clipboard.nut" import copyToClipboard
 from "%rGui/components/levelBlockPkg.nut" import mkLevelBg
@@ -35,6 +40,7 @@ from "%rGui/mpStatistics/viewProfile.nut" import selectedPlayerForInfo, SECTION_
 from "%rGui/report/reportPlayerState.nut" import mkTimeToNextReport
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/gradients.nut" import mkColoredGradientY
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import selectColor
 from "%rGui/tooltip.nut" import calcPosition
 
@@ -107,36 +113,41 @@ let mkContactInfo = @(contact, info) @() {
   ]
 }
 
-let mkBotNameContent = @(player, info) @() {
-  watch = info
-  flow = FLOW_HORIZONTAL
-  gap = hdpx(15)
-  size = const [SIZE_TO_CONTENT, contactInfoHeight]
-  children = [
-    contactAvatar(info.get(), contactInfoHeight)
-    {
-      size = FLEX_V
-      flow = FLOW_VERTICAL
-      children = [
-        textProps.__merge({
-          text = player.name
-        })
-        mkTitle(info.get()?.decorators.title, fontTinyAccented)
-        contactLevelBlock(info.get())
-      ]
-    }
-  ]
+function mkBotNameContent(player, info) {
+  let nameText = textProps.__merge({
+    text = player.name
+  })
+  return @() {
+    watch = info
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(15)
+    size = const [SIZE_TO_CONTENT, contactInfoHeight]
+    children = [
+      contactAvatar(info.get(), contactInfoHeight)
+      {
+        size = FLEX_V
+        flow = FLOW_VERTICAL
+        children = [
+          nameText
+          mkTitle(info.get()?.decorators.title, fontTinyAccented)
+          contactLevelBlock(info.get())
+        ]
+      }
+    ]
+  }
 }
 
 function mkPlayerUidInfo(player, contact) {
   let stateFlags = Watched(0)
+  let botDebugText = mkText("".concat("Debug: ", loc("multiplayer/state/bot_ready")), grayColor)
+  let iconBtn = mkIconBtn("ui/gameuiskin#icon_copy.svg", fontTiny.fontSize, stateFlags, grayColor)
   return function() {
     let res = { watch = can_view_player_uids }
     if (!can_view_player_uids.get())
       return res
     if (player?.isBot)
       return res.__update({
-        children = mkText("".concat("Debug: ", loc("multiplayer/state/bot_ready")), grayColor)
+        children = botDebugText
       })
     let uidInfoText = $"{player?.userId} ({contact.get()?.realnick})"
     return {
@@ -144,15 +155,14 @@ function mkPlayerUidInfo(player, contact) {
       behavior = Behaviors.Button
       onClick = @(evt) copyToClipboard(evt, uidInfoText)
       onElemState = @(s) stateFlags.set(s)
-      transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
-      transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       gap = hdpx(10)
       children = [
         mkText($"Debug: UID {uidInfoText}", grayColor)
-        mkIconBtn("ui/gameuiskin#icon_copy.svg", fontTiny.fontSize, stateFlags, grayColor)
+        iconBtn
       ]
+      ...mkPressTransitionScale(stateFlags.get())
     }
   }
 }
@@ -202,19 +212,21 @@ let mkTextReportBtn = @(text) {
 function mkReportButton(userId) {
   let isVisibleReport = REPORT.mkIsVisible(userId)
   let timeToNextReport = mkTimeToNextReport(userId)
+  let readyReportBtn = textButtonCommon(utf8ToUpper(loc(REPORT.locId)),
+    @() REPORT.action(userId),
+    { hotkeys = ["^J:LB"] })
+  let reportBtnStyle = mergeStyles(COMMON, {})
 
   return @() {
     watch = [isVisibleReport, timeToNextReport]
     hplace = ALIGN_RIGHT
     children = !isVisibleReport.get() ? null
       : timeToNextReport.get() <= 0
-        ? textButtonCommon(utf8ToUpper(loc(REPORT.locId)),
-          @() REPORT.action(userId),
-          { hotkeys = ["^J:LB"] })
+        ? readyReportBtn
       : mkCustomButton(
           mkTextReportBtn($"{utf8ToUpper(loc(REPORT.locId))} {secondsToTimeAbbrString(timeToNextReport.get())}"),
           @() null,
-          mergeStyles(COMMON, {}))
+          reportBtnStyle)
   }
 }
 
@@ -257,49 +269,54 @@ function mkTabsCampaignName() {
   }
 }
 
-let mkMedals = @(info, selCampaign) function() {
-  let children = []
-
-  let curr = info.get()?.campaigns?[selCampaign] ?? {}
-  foreach(v in curr?.starLevelHistory ?? [])
-    children.append(levelMark(v.level, v.starLevel + 1))
-  if ((curr?.starLevel ?? 0) > 0)
-    children.append(levelMark(curr.level - curr.starLevel, curr.starLevel - 1))
-
-  let campaignExt = getCampaignPresentation(selCampaign).campaign
-  foreach(medal in info.get()?.medals ?? {}) {
-    let { campaign = campaignExt, ctor } = getMedalPresentationWithCtor(medal.name)
-    if (campaign == campaignExt)
-      children.append(ctor(medal, profileMedalSize))
-  }
+function mkMedals(info, selCampaign) {
   let scrollHandler = ScrollHandler()
-  return {
-    watch = info
-    size = FLEX
-    halign = ALIGN_RIGHT
-    flow = FLOW_VERTICAL
-    gap = hdpx(10)
-    children = [
-      mkText(loc("mainmenu/btnMedal"), hlColor).__update(fontTinyAccented)
-      children.len() == 0 ? mkText(loc("mainmenu/noMedal"))
-        : {
-          size = FLEX
-          pos = const [medalOffset, 0]
-          children = [
-            makeHorizScroll({
-              size = FLEX_V
-              minWidth = pw(100)
-              valign = ALIGN_CENTER
-              halign = ALIGN_RIGHT
-              padding = const [0, medalOffset]
-              flow = FLOW_HORIZONTAL
-              gap = mainBlockGap
-              children = children
-            }, { size = FLEX, scrollHandler, scrollbarWidth = 0 })
-            mkScrollArrow(scrollHandler, MR_R, scrollArrowImageVerySmall, {pos = const [mainBlockGap, 0]})
-          ]
-        }
-    ]
+  let noMedalText = mkText(loc("mainmenu/noMedal"))
+  let medalTitle = mkText(loc("mainmenu/btnMedal"), hlColor).__update(fontTinyAccented)
+  let scrollArrow = mkScrollArrow(scrollHandler, MR_R, scrollArrowImageVerySmall, {pos = const [mainBlockGap, 0]})
+  return function() {
+    let children = []
+
+    let curr = info.get()?.campaigns?[selCampaign] ?? {}
+    foreach(v in curr?.starLevelHistory ?? [])
+      children.append(levelMark(v.level, v.starLevel + 1))
+    if ((curr?.starLevel ?? 0) > 0)
+      children.append(levelMark(curr.level - curr.starLevel, curr.starLevel - 1))
+
+    let campaignExt = getCampaignPresentation(selCampaign).campaign
+    foreach(medal in info.get()?.medals ?? {}) {
+      let { campaign = campaignExt, ctor } = getMedalPresentationWithCtor(medal.name)
+      if (campaign == campaignExt)
+        children.append(ctor(medal, profileMedalSize))
+    }
+    return {
+      watch = info
+      size = FLEX
+      halign = ALIGN_RIGHT
+      flow = FLOW_VERTICAL
+      gap = hdpx(10)
+      children = [
+        medalTitle
+        children.len() == 0 ? noMedalText
+          : {
+            size = FLEX
+            pos = const [medalOffset, 0]
+            children = [
+              makeHorizScroll({
+                size = FLEX_V
+                minWidth = pw(100)
+                valign = ALIGN_CENTER
+                halign = ALIGN_RIGHT
+                padding = const [0, medalOffset]
+                flow = FLOW_HORIZONTAL
+                gap = mainBlockGap
+                children = children
+              }, { size = FLEX, scrollHandler, scrollbarWidth = 0 })
+              scrollArrow
+            ]
+          }
+      ]
+    }
   }
 }
 
@@ -320,7 +337,7 @@ let mkSectionBtn = @(id, onClick, isSelected) {
       rendObj = ROBJ_IMAGE
       image = bgGradient
       opacity = isSelected.get() ? 1 : 0
-      transitions = [{ prop = AnimProp.opacity, duration = 0.3, easing = InOutQuad }]
+      transitions = const [{ prop = AnimProp.opacity, duration = 0.3, easing = InOutQuad }]
     }
     {
       size = FLEX
@@ -365,6 +382,14 @@ function mkProfileSectionContent(player, info, globalStats, campaign, isInvitesA
   let isWaitInfo = mkIsPublicInfoWait(userId)
   let publicStats = isBot ? mkBotStats(player) : mkStatsInfo(userId)
   let isWaitStats = mkIsStatsWait(userId)
+  let waitSpinner = mkSpinner()
+  let premiumIconOvr = {
+    size = iconSize
+    rendObj = ROBJ_IMAGE
+    keepAspect = KEEP_ASPECT_FIT
+    image = Picture($"ui/gameuiskin#icon_premium.svg:{iconSize[0]}:{iconSize[1]}:P")
+    vplace = ALIGN_CENTER
+  }
 
   return [
     mkTabsCampaignName
@@ -376,7 +401,7 @@ function mkProfileSectionContent(player, info, globalStats, campaign, isInvitesA
           let my = info.get()?.campaigns[campaign].units
           let all = globalStats.get()?[campaign]
           if (isWaitInfo.get())
-            return { watch = [isWaitInfo, globalStats, info], children = mkSpinner() }
+            return { watch = [isWaitInfo, globalStats, info], children = waitSpinner }
           if (!my || !all)
             return { watch = [isWaitInfo, globalStats, info] }
           return {
@@ -389,13 +414,7 @@ function mkProfileSectionContent(player, info, globalStats, campaign, isInvitesA
               mkText(loc("lobby/vehicles"), hlColor).__update(fontTinyAccented)
               mkRow(loc("stats/line"), $"{my.wp}/{all.wp}")
               mkRow(loc("stats/maxLevel"), $"{my.maxLevel}/{my.wp + my.prem + my.rare}")
-              mkRow(loc("stats/premium"), $"{my.prem}/{all.prem}", {
-                size = iconSize
-                rendObj = ROBJ_IMAGE
-                keepAspect = KEEP_ASPECT_FIT
-                image = Picture($"ui/gameuiskin#icon_premium.svg:{iconSize[0]}:{iconSize[1]}:P")
-                vplace = ALIGN_CENTER
-              })
+              mkRow(loc("stats/premium"), $"{my.prem}/{all.prem}", premiumIconOvr)
               mkRow(loc("stats/rare"), $"{my.rare}")
             ]
           }
@@ -403,7 +422,7 @@ function mkProfileSectionContent(player, info, globalStats, campaign, isInvitesA
         function() {
           let stats = publicStats.get()?.stats["global"][campaign]
           if (isWaitStats.get())
-            return { watch = [isWaitStats, publicStats], children = mkSpinner() }
+            return { watch = [isWaitStats, publicStats], children = waitSpinner }
           if (!stats)
             return { watch = [isWaitStats, publicStats] }
           return {
@@ -439,6 +458,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed, sections 
   let sectionContentById = {
     [SECTION_PROFILE_IDS.PROFILE] = @() mkProfileSectionContent(player, info, globalStats, campaign, isInvitesAllowed),
     [SECTION_PROFILE_IDS.SCORE] = @() mkScoreSection(player, scoreStats ?? []),
+    [SECTION_PROFILE_IDS.MANAGE] = @() mkManageSection(userId)
   }
 
   let mkSectionLayer = @(content, isCurrent) {
@@ -457,7 +477,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed, sections 
     children = [
       mkSectionLayer(sectionContentById?[refSectionId](), curSectionId.get() == refSectionId)
       curSectionId.get() == refSectionId ? null
-        : { size = FLEX, stopMouse = true }
+        : const { size = FLEX, stopMouse = true }
       curSectionId.get() == refSectionId ? null
         : mkSectionLayer(sectionContentById?[curSectionId.get()](), true)
     ]
@@ -494,6 +514,14 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed, sections 
       }
     ]
   })
+}
+
+function addManageSection(sections, player) {
+  let { userId = null, isBot = false } = player
+  if (isBot || userId == null || isInBattle.get()
+      || !canManageMember(clanGrades.get(), myClanGrade.get(), currentClan.get(), userId.tointeger()))
+    return sections
+  return [...(sections ?? defSections), SECTION_PROFILE_IDS.MANAGE]
 }
 
 let close = @() selectedPlayerForInfo.set(null)
@@ -549,7 +577,8 @@ selectedPlayerForInfo.subscribe(function(v) {
         transform = {}
         safeAreaMargin = saBordersRv
         behavior = Behaviors.BoundToArea
-        children = mkPlayerInfo(player, globalStats, selCampaign, isInvitesAllowed, sections, scoreStats)
+        children = mkPlayerInfo(player, globalStats, selCampaign, isInvitesAllowed,
+          addManageSection(sections, player), scoreStats)
       }
     })
   }))

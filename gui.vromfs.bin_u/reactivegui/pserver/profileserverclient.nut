@@ -16,7 +16,7 @@ from "types" import String, Table
 
 
 let logPSC = log_with_prefix("[profileServerClient] ")
-let startRelogin = @() eventbus_send("login.startRelogin", {}) 
+let startRelogin = @() eventbus_send("login.startRelogin", {})
 
 const MAX_REQUESTS_HISTORY = 20
 const PROGRESS_TIMEOUT_SEC = 90 
@@ -39,6 +39,9 @@ let noNeedLogerrOnErrors = [
   "Couldn't connect to server", "Timeout was reached",
   "RETRY_LIMIT_EXCEED", "OUT_OF_RETRIES", "NO_TOKEN",
   "unknownDeeplinkReward", "notAllowedDeeplinkReward",
+  "USER_ALREADY_HAVE_CLAN", "FIELD_REQUIRED", "CLAN_IS_FULL",
+  "CLAN_IS_DELETED", "VALIDATOR_SERVER_REJECT_VALUE",
+  "UNKNOWN_USERID", "DECLINE_TO_CREATE_NEW_PROFILE",
 ]
   .totable()
 

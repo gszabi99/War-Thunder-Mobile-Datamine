@@ -6,6 +6,7 @@ from "wt.behaviors" import TouchScreenStick
 from "%sqstd/string.nut" import utf8ToUpper
 from "%rGui/components/textButton.nut" import textButtonPrimary
 from "%rGui/style/stdColors.nut" import textColor
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 import "%rGui/unitCustom/unitDecals/decalSideOptions.nut" as decalSideOptions
 from "%rGui/unitCustom/unitDecals/unitDecalsState.nut" import exitDecalMode, rotateDecalMode, moveDecalMode,
   scaleDecalMode, rotateDecal, moveDecal, scaleDecal, curDecalPosition, isManipulatorInProgress
@@ -27,6 +28,7 @@ let rotateOffset = Point2(hdpx(63), -hdpx(63))
 
 function mkStickOptBtn(icon, stickColor, handleTouch, handleChange) {
   let stateFlags = Watched(0)
+  let optImg = Picture($"{icon}:{optImgSize}:{optImgSize}:P")
 
   return @() {
     watch = [stateFlags, isManipulatorInProgress]
@@ -43,7 +45,7 @@ function mkStickOptBtn(icon, stickColor, handleTouch, handleChange) {
     children = {
       size = optImgSize
       rendObj = ROBJ_IMAGE
-      image = Picture($"{icon}:{optImgSize}:{optImgSize}:P")
+      image = optImg
       keepAspect = true
       color = (stateFlags.get() & S_ACTIVE) || isManipulatorInProgress.get() ? 0x00000000 : textColor
     }
@@ -51,9 +53,8 @@ function mkStickOptBtn(icon, stickColor, handleTouch, handleChange) {
     onTouchEnd = @() handleTouch(false)
     onChange = @(v) handleChange(v)
     onElemState = @(sf) stateFlags.set(sf)
-    sound = { click  = "click" }
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.98, 0.98] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+    sound = const { click  = "click" }
+    ...mkPressTransitionScale(stateFlags.get(), 0.98)
   }
 }
 
@@ -71,7 +72,7 @@ let mkBtnLink = @(color, ovr = {}) @() {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   color = isManipulatorInProgress.get() ? 0x00000000 : color
-  transform = { rotate = -45 }
+  transform = const { rotate = -45 }
 }.__update(ovr)
 
 let decalActions = @() {

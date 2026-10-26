@@ -3,8 +3,10 @@ from "dagor.localize" import loc
 from "dagor.random" import rnd_int
 from "eventbus" import eventbus_send,eventbus_subscribe
 from "frp" import Watched
+from "json" import object_to_json_string
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%appGlobals/loginState.nut" import isAuthorized
+from "clanServConfigs.nut" import updateClanConfigs
 from "servConfigs.nut" import updateAllConfigs
 import "servProfile.nut" as servProfile
 from "types" import String, Array, Table
@@ -32,12 +34,25 @@ const PROGRESS_QUEUE_PENALTY = "QueuePenaltyInProgress"
 const PROGRESS_SLOTS_UNITS = "CampaignSlotsInProgress"
 const PROGRESS_AD_BUDGET = "AdBudgetInProgress"
 const PROGRESS_ITEM_CONVERSION = "ItemConversionInProgress"
+const PROGRESS_ITEM_ACTIVATION = "ItemActivationInProgress"
 const PROGRESS_SKIP_OFFER = "SkipOfferInProgress"
 const PROGRESS_CLIENT_MISSION_REWARD = "ClientMissionRewardInProgress"
+const PROGRESS_CLANS = "ClansInProgress"
+const PROGRESS_LOOKUP_CLANS = "ClansLookupInProgress"
+const PROGRESS_CLAN_INFO = "ClanInfoInProgress"
+const PROGRESS_CLAN_JOIN_LIST = "ClanRequestsInProgress"
+const PROGRESS_CLAN_USER_JOIN_REQUESTS = "ClanUserJoinRequestsInProgress"
+const PROGRESS_CLAN_JOIN_RESPONSE = "ClanRequestResponseInProgress"
+const PROGRESS_CLAN_CHANGE_MEMBER = "ClanChangeMemberInProgress"
+const PROGRESS_CLAN_LOGS = "ClanLogsInProgress"
+const PROGRESS_CLAN_PROGRESS = "ClanProgressInProgress"
+const PROGRESS_CLAN_PROGRESS_REWARD = "ClanProgressRewardInProgress"
 const PROGRESS_UNIT_MASTERY_TIER = "UnitMasteryTierInProgress"
 const PROGRESS_MIG_ACC_INFO = "MigAccInfoInProgress"
 const PROGRESS_COLLECTION = "CollectionInProgress"
+const PROGRESS_BATTLE_PASS = "BattlePassInProgress"
 
+const CLAN_SERVER_PROJECT_ID = "war_thunder_mobile_clans"
 const PROGRESS_CALENDAR_REWARD = "CalendarRewardInProgress"
 const PROGRESS_EVENT_MAP_NODE = "EventMapNodeInProgress"
 
@@ -86,6 +101,12 @@ function handleMessages(msg) {
   let result = msg.data?.result
   if (!result) {
     popCallback(msg.id, { error = "unknown error" }.__update(msg.data instanceof Table ? msg.data : { data = msg.data }))
+    return
+  }
+
+  if (msg?.projectId == CLAN_SERVER_PROJECT_ID) {
+    updateClanConfigs(result)
+    popCallback(msg.id, result)
     return
   }
 
@@ -271,13 +292,25 @@ return {
   campaignSlotsInProgress = mkProgress(PROGRESS_SLOTS_UNITS)
   adBudgetInProgress = mkProgress(PROGRESS_AD_BUDGET)
   ItemConversionInProgress = mkProgress(PROGRESS_ITEM_CONVERSION)
+  itemActivationInProgress = mkProgress(PROGRESS_ITEM_ACTIVATION)
   skipOfferInProgress = mkProgress(PROGRESS_SKIP_OFFER)
   clientMissionRewardInProgress = mkProgress(PROGRESS_CLIENT_MISSION_REWARD)
+  clansInProgress = mkProgress(PROGRESS_CLANS)
+  clansLookupInProgress = mkMultiProgress(PROGRESS_LOOKUP_CLANS)
+  clanInfoInProgress = mkMultiProgress(PROGRESS_CLAN_INFO)
+  clanRequestsInProgress = mkProgress(PROGRESS_CLAN_JOIN_LIST)
+  clanUserJoinRequestsInProgress = mkProgress(PROGRESS_CLAN_USER_JOIN_REQUESTS)
+  clanRequestResponseInProgress = mkMultiProgress(PROGRESS_CLAN_JOIN_RESPONSE)
+  clanChangeMemberInProgress = mkMultiProgress(PROGRESS_CLAN_CHANGE_MEMBER)
+  clanLogsInProgress = mkProgress(PROGRESS_CLAN_LOGS)
+  clanProgressInProgress = mkMultiProgress(PROGRESS_CLAN_PROGRESS)
+  clanProgressRewardInProgress = mkProgress(PROGRESS_CLAN_PROGRESS_REWARD)
   unitMasteryTierInProgress = mkProgress(PROGRESS_UNIT_MASTERY_TIER)
   migAccInfoInProgress = mkProgress(PROGRESS_MIG_ACC_INFO)
   isCalendarRewardInProgress = mkProgress(PROGRESS_CALENDAR_REWARD, false)
   eventMapNodeInProgress = mkProgress(PROGRESS_EVENT_MAP_NODE)
   collectionInProgress = mkProgress(PROGRESS_COLLECTION)
+  battlePassInProgress = mkProgress(PROGRESS_BATTLE_PASS)
 
   get_profile  = @(sysInfo = {}, cb = null) request({
     method = "get_profile"
@@ -852,6 +885,13 @@ return {
     progressValue = name
   }, cb)
 
+  toggle_item_activation = @(name, isDisabled, cb = null) request({
+    method = "toggle_item_activation"
+    params = { name, isDisabled }
+    progressId = PROGRESS_ITEM_ACTIVATION
+    progressValue = name
+  }, cb)
+
   add_blueprints = @(name, count, cb = null) request({
     method = "add_blueprints_common"
     params = { name, count }
@@ -1060,6 +1100,159 @@ return {
     params = { idx }
   }, cb)
 
+  clan_lookup = @(query, after, limit, cb = null) request({
+    method = "clan_lookup"
+    projectId = CLAN_SERVER_PROJECT_ID
+    progressId = PROGRESS_LOOKUP_CLANS
+    progressValue = object_to_json_string(query)
+    params = { query, after, limit }
+  }, cb)
+
+  clan_create = @(userProjectId, info, cb = null) request({
+    method = "clan_create"
+    progressId = PROGRESS_CLANS
+    progressValue = true
+    params = { userProjectId, info }
+  }, cb)
+
+  clan_update = @(clanId, texts, privacy, cb = null) request({
+    method = "clan_change_info"
+    projectId = CLAN_SERVER_PROJECT_ID
+    progressId = PROGRESS_CLANS
+    progressValue = true
+    userid = clanId
+    params = { info = { texts }.__update(privacy != null ? { privacy } : {}) }
+  }, cb)
+
+  get_static_clans_data = @(cb = null) request({
+    method = "get_static_data"
+    projectId = CLAN_SERVER_PROJECT_ID
+  }, cb)
+
+  clan_update_login_timestamp = @(clanId, cb = null) request({
+    method = "clan_update_login_timestamp"
+    userid = clanId
+    projectId = CLAN_SERVER_PROJECT_ID
+  }, cb)
+
+  get_user_clan_info = @(userId, cb = null) request({
+    method = "get_user_clan_info"
+    projectId = CLAN_SERVER_PROJECT_ID
+    params = { userId }
+  }, cb)
+
+  get_clan_info = @(clanId, cb = null) request({
+    method = "get_clan_info"
+    userid = clanId
+    projectId = CLAN_SERVER_PROJECT_ID
+    progressId = PROGRESS_CLAN_INFO
+    progressValue = clanId
+  }, cb)
+
+  send_join_request = @(clanId, userProjectId, message, cb = null) request({
+    method = "send_join_request"
+    progressId = PROGRESS_CLANS
+    progressValue = true
+    params = { clanId, userProjectId, message }
+  }, cb)
+
+  clan_leave = @(clanId, cb = null) request({
+    method = "clan_leave"
+    userid = clanId
+    projectId = CLAN_SERVER_PROJECT_ID
+    progressId = PROGRESS_CLANS
+    progressValue = true
+  }, cb)
+
+  clan_remove = @(clanId, cb = null) request({
+    method = "clan_remove"
+    userid = clanId
+    projectId = CLAN_SERVER_PROJECT_ID
+    progressId = PROGRESS_CLANS
+    progressValue = true
+  }, cb)
+
+  clan_join_list = @(clanId, cb = null) request({
+    method = "clan_join_list"
+    userid = clanId
+    projectId = CLAN_SERVER_PROJECT_ID
+    progressId = PROGRESS_CLAN_JOIN_LIST
+    progressValue = true
+  }, cb)
+
+  clan_complete_request = @(clanId, accept, requestorId, requestorProjectId, cb = null) request({
+    method = "clan_complete_request"
+    userid = clanId
+    projectId = CLAN_SERVER_PROJECT_ID
+    progressId = PROGRESS_CLAN_JOIN_RESPONSE
+    progressValue = requestorId
+    params = { accept, requestorId, requestorProjectId }
+  }, cb)
+
+  get_user_join_requests = @(userProjectId, cb = null) request({
+    method = "get_user_join_requests"
+    projectId = CLAN_SERVER_PROJECT_ID
+    progressId = PROGRESS_CLAN_USER_JOIN_REQUESTS
+    progressValue = true
+    params = { userProjectId }
+  }, cb)
+
+  clan_change_grade = @(clanId, targetUserId, newGrade, cb = null) request({
+    method = "clan_change_grade"
+    userid = clanId
+    projectId = CLAN_SERVER_PROJECT_ID
+    progressId = PROGRESS_CLAN_CHANGE_MEMBER
+    progressValue = targetUserId
+    params = { targetUserId, newGrade }
+  }, cb)
+
+  clan_transfer_ownership = @(clanId, targetUserId, cb = null) request({
+    method = "clan_transfer_ownership"
+    userid = clanId
+    projectId = CLAN_SERVER_PROJECT_ID
+    progressId = PROGRESS_CLAN_CHANGE_MEMBER
+    progressValue = targetUserId
+    params = { targetUserId }
+  }, cb)
+
+  clan_kick_user = @(clanId, targetUser, cb = null) request({
+    method = "clan_kick_user"
+    userid = clanId
+    projectId = CLAN_SERVER_PROJECT_ID
+    progressId = PROGRESS_CLAN_CHANGE_MEMBER
+    progressValue = targetUser
+    params = { targetUser }
+  }, cb)
+
+  clan_get_user_token = @(clanId, cb = null) request({
+    method = "clan_get_user_token"
+    userid = clanId
+    projectId = CLAN_SERVER_PROJECT_ID
+  }, cb)
+
+  clan_get_logs = @(clanId, maxLog, lastEndOid = "", cb = null) request({
+    method = "clan_get_logs"
+    userid = clanId
+    projectId = CLAN_SERVER_PROJECT_ID
+    progressId = PROGRESS_CLAN_LOGS
+    progressValue = true
+    params = { maxLog, lastEndOid }
+  }, cb)
+
+  get_clan_progress = @(clanProgressId, seasonIdx, cb = null) request({
+    method = "get_clan_progress"
+    params = { progressId = clanProgressId, seasonIdx }
+    progressId = PROGRESS_CLAN_PROGRESS
+    progressValue = seasonIdx
+  }, cb)
+
+  receive_clan_progress_reward = @(clanProgressId, seasonIdx, value, cb = null) request({
+    method = "receive_clan_progress_reward"
+    params = { progressId = clanProgressId, seasonIdx, value }
+    progressId = PROGRESS_CLAN_PROGRESS_REWARD
+    progressValue = seasonIdx
+  }, cb)
+
   increase_vehicle_mastery_tier = @(unitName, masteryTier, cb = null) request({
     method = "increase_vehicle_mastery_tier"
     params = { unitName, masteryTier }
@@ -1121,5 +1314,12 @@ return {
     params = { collectionId }
     progressId = PROGRESS_COLLECTION
     progressValue = collectionId
+  }, cb)
+
+  receive_bp_reward = @(bpId, pageIdx, slotIdx, cost, cb = null) request({
+    method = "receive_bp_reward"
+    params = { bpId, pageIdx, slotIdx, cost }
+    progressId = PROGRESS_BATTLE_PASS
+    progressValue = bpId
   }, cb)
 }

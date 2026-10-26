@@ -19,27 +19,30 @@ let contentMargin = [hdpx(10), hdpx(15)]
 let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(activeColor, 0, gradTexSize / 8, gradTexSize / 2.5, gradTexSize / 2, gradTexSize / 4))
 
-let mkModContent = @(content, isActive, isHover) {
-  size = [SIZE_TO_CONTENT, modH]
+function mkModContent(content, isActive, isHover) {
+  let bgImg = bgGradient()
+  return {
+    size = [SIZE_TO_CONTENT, modH]
 
-  children = [
-    @() {
-      size = FLEX
-      rendObj = ROBJ_SOLID
-      color = bgColor
-      transitions = opacityTransition
-    }
-    @() {
-      watch = [isActive, isHover]
-      size = FLEX
-      rendObj = ROBJ_IMAGE
-      image = bgGradient()
-      opacity = isActive.get() ? 1
-        : isHover.get() ? 0.5
-        : 0
-      transitions = opacityTransition
-    }
-  ].append(content)
+    children = [
+      @() {
+        size = FLEX
+        rendObj = ROBJ_SOLID
+        color = bgColor
+        transitions = opacityTransition
+      }
+      @() {
+        watch = [isActive, isHover]
+        size = FLEX
+        rendObj = ROBJ_IMAGE
+        image = bgImg
+        opacity = isActive.get() ? 1
+          : isHover.get() ? 0.5
+          : 0
+        transitions = opacityTransition
+      }
+    ].append(content)
+  }
 }
 
 let mkIcon = @(icon, size) {

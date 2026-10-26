@@ -38,8 +38,8 @@
     448.0,
     1048.0
   ],
-  "weatherPreset": "gameData/environments/weather_preset_1.blk",
-  "weatherTypes": "gameData/environments/weather_types.blk",
+  "weatherPreset": "gamedata/environments/weather_preset_1.blk",
+  "weatherTypes": "gamedata/environments/weather_types.blk",
   "windDir": [
     1.0,
     0.0
@@ -67,6 +67,11 @@
   },
   "clipmap": {
     "texelSize": 0.1
+  },
+  "clustered_lights": {
+    "enabled": true,
+    "maxClusteredDist": 2000.0,
+    "waterReflectionLights": true
   },
   "micro_details": {
     "micro_detail": [
@@ -119,6 +124,110 @@
     "tree_date_palm_small_c": {
       "lod0": 140.0,
       "lod1": 8000.0
+    },
+    "phi_tropic_hb_cliff_03_ri": {
+      "lod0": 100000.0
+    },
+    "phi_tropic_hb_cliff_02_ri": {
+      "lod0": 100000.0
+    },
+    "phi_tropic_hb_cliff_01_ri": {
+      "lod0": 100000.0
+    },
+    "phi_tropic_cr_rock_06_ri": {
+      "lod0": 100000.0
+    },
+    "phi_isl_small_rock_01_ri": {
+      "lod0": 100000.0
+    },
+    "phi_tropic_cr_rock_09_ri": {
+      "lod0": 100000.0
+    },
+    "zhang_park_rock_c_01_ri": {
+      "lod0": 100000.0
+    }
+  },
+  "overloaded_sounds": {
+    "music": {
+      "eventShipsSuspense": {
+        "name": "ships_suspense_halloween_2026",
+        "path": "event/caribean/music"
+      },
+      "eventWin": {
+        "name": "win_battle_music_april_2025",
+        "path": "event/caribean/music"
+      },
+      "eventLoose": {
+        "name": "loose_battle_music_april_2025",
+        "path": "event/caribean/music"
+      }
+    },
+    "overload_lang": {
+      "ru": "ca",
+      "en": "ca",
+      "fr": "ca",
+      "de": "ca",
+      "jp": "ca",
+      "it": "ca"
+    },
+    "gui": {
+      "session_start": {
+        "name": "session_start",
+        "path": "event/caribean/effects"
+      },
+      "enemy_destr_by_ship": {
+        "name": "enemy_destroyed",
+        "path": "event/caribean/effects"
+      },
+      "weapon_primary_ready": {
+        "name": "weapon_primary_ready",
+        "path": "event/caribean/effects"
+      },
+      "weapon_secondary_ready": {
+        "name": "weapon_primary_ready",
+        "path": "event/caribean/effects"
+      },
+      "message_debuff_cant_shoot": {
+        "name": "message_debuff_cant_shoot",
+        "path": "event/caribean/messages"
+      },
+      "message_debuff_loosing_speed": {
+        "name": "message_debuff_loosing_speed",
+        "path": "event/caribean/messages"
+      }
+    },
+    "bullet_hits": {
+      "eventBulletHitShipBig": {
+        "name": "hit_cannon",
+        "path": "event/caribean/effects",
+        "path_ai": "event/caribean/effects/ai"
+      }
+    },
+    "sound_effect_events": {
+      "eventBulletPassBy": {
+        "name": "cannon_passby",
+        "path": "event/caribean/effects"
+      }
+    },
+    "gm_sound_effect_events": {
+      "eventTelegraph": {
+        "name": "bell_ring",
+        "path": "event/caribean/effects"
+      },
+      "eventShipCollisionUnit": {
+        "name": "collision_ship_wood",
+        "path": "naval/effects"
+      }
+    },
+    "various_effects": {
+      "eventAlarmDepth": {
+        "name": "alarm_depth",
+        "path": "event/caribean/effects"
+      },
+      "eventAlarmFire": {
+        "name": "alarm_depth",
+        "path": "event/caribean/effects"
+      }
     }
   }
 }

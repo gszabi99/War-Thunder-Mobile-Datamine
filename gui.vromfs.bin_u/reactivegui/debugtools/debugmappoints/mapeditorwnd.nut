@@ -93,7 +93,7 @@ let bottomBar = {
 }
 
 let point = {
-  size = [selBorderWidth, selBorderWidth]
+  size = selBorderWidth
   children = {
     size = [3 * selBorderWidth, 3 * selBorderWidth]
     rendObj = ROBJ_SOLID
@@ -133,6 +133,14 @@ function mkPoint(id, state, nodeViews) {
 
   return function() {
     let size = sizeExt.get()
+    let pointImg = {
+      size
+      pos = [offset[0] * size, offset[1] * size]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"{image}:{size}:P")
+      color
+      keepAspect = true
+    }
     return {
       watch = [posExt, sizeExt]
       pos = posExt.get()
@@ -142,14 +150,7 @@ function mkPoint(id, state, nodeViews) {
         watch = isSelected
         size = FLEX
         children = [
-          {
-            size
-            pos = [offset[0] * size, offset[1] * size]
-            rendObj = ROBJ_IMAGE
-            image = Picture($"{image}:{size}:P")
-            color
-            keepAspect = true
-          }
+          pointImg
           isSelected.get() ? selectBorder : null
         ]
       }
@@ -202,6 +203,8 @@ function mkBgElement(state, idx) {
   let sizeExt = Computed(@() (isSelected.get() ? transformInProgress.get()?.size : null)
     ?? sizeBase)
   let flipExt = Computed(@() isSelected.get() ? transformInProgress.get()?.flip : null)
+  let bgImage = Picture($"{img}:{sizeBase[0]}:{sizeBase[1]}:P")
+  let bgTransform = { rotate }
   return @() {
     watch = [posExt, sizeExt, flipExt, isSelected]
     pos = posExt.get()
@@ -212,14 +215,14 @@ function mkBgElement(state, idx) {
         {
           size = sizeExt.get()
           rendObj = ROBJ_IMAGE
-          image = Picture($"{img}:{sizeBase[0]}:{sizeBase[1]}:P")
+          image = bgImage
           keepAspect = true
           flipX = flipExt.get()?[0] ? !flipX : flipX
           flipY = flipExt.get()?[1] ? !flipY : flipY
         }
         isSelected.get() ? selectBorder : null
       ]
-      transform = { rotate }
+      transform = bgTransform
     }
   }
 }
@@ -254,7 +257,7 @@ function mkMarker(isSelected, key, pRel, mapSize, unselColor) {
   return @() {
     watch = [isSelected, posExt]
     key
-    size = [midpointSize, midpointSize]
+    size = midpointSize
     pos = posExt.get()
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
@@ -262,7 +265,7 @@ function mkMarker(isSelected, key, pRel, mapSize, unselColor) {
     color = isSelected.get() ? selMarkerColor : unselColor
     fillColor = 0x00202020
     lineWidth = hdpx(6)
-    commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
+    commands = const [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
   }
 }
 
@@ -358,6 +361,7 @@ function mapSnapLines() {
   }
 }
 
+let scaleHintText = mkText("Hold Ctrl and drag mouse to scale", fontTinyAccentedShaded)
 function comboHint() {
   let { shiftInfo = null, info = "", isFit = null } = shiftActions?[selectedElem.get()?.eType]
   return {
@@ -369,7 +373,7 @@ function comboHint() {
     children = selectedElem.get() == null ? null
       : [
           !scalableETypes?[selectedElem.get().eType] ? null
-            : mkText("Hold Ctrl and drag mouse to scale", fontTinyAccentedShaded)
+            : scaleHintText
           !(isFit?(selectedElem.get().id) ?? true) ? null
             : mkText((isShiftPressed.get() ? shiftInfo : null) ?? info, fontTinyAccentedShaded)
         ]
@@ -377,6 +381,19 @@ function comboHint() {
 }
 
 let mapSize = Computed(@() pageMapSize.get().map(hdpx))
+let mapAreaChildren = [
+  mapBackground
+  bgElements
+  mapNet(pageMapSize, pageGridSize)
+  bgElementsOnTop
+  mapLines
+  mapPoints
+  mapMidpoints
+  mapLineEnds
+  mapRewards
+  mapSnapLines
+  manipulator
+]
 let mapContainer = {
   size = [mapBlockSize[0], mapBlockSize[1]]
   clipChildren = true
@@ -393,19 +410,7 @@ let mapContainer = {
       vplace = mapBlockSize[1] > mapSize.get()[1] ? ALIGN_CENTER : null
       rendObj = ROBJ_IMAGE
       image = mapDefaultBackground
-      children = [
-        mapBackground
-        bgElements
-        mapNet(pageMapSize, pageGridSize)
-        bgElementsOnTop
-        mapLines
-        mapPoints
-        mapMidpoints
-        mapLineEnds
-        mapRewards
-        mapSnapLines
-        manipulator
-      ]
+      children = mapAreaChildren
     }
   }
 }

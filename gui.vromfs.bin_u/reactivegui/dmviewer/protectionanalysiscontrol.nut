@@ -118,7 +118,7 @@ let cursorHidingLayer = @() {
 
 let cameraControlLayer = @() {
   watch = needCursorForActiveInputDevice
-  size = needCursorForActiveInputDevice.get() ? FLEX : [sw(50), FLEX]
+  size = needCursorForActiveInputDevice.get() ? FLEX : const [sw(50), FLEX]
   behavior = HangarCameraControl
   touchMarginPriority = TOUCH_BACKGROUND
 }

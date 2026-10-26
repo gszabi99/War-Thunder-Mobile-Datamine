@@ -7,6 +7,7 @@ from "%rGui/components/slider.nut" import btnTextDec, btnTextInc, mkIconBtn, btn
   mkSliderOnChangeSound
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, mkColoredGradientY
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import textColor, badTextColor, hoverColor, selectColor
 
 
@@ -42,11 +43,10 @@ const boost_cooldown = 500
 local lastClickTime = 0
 
 let progressBtnBase = {
-  size = [progressBtnSize, progressBtnSize]
+  size = progressBtnSize
   behavior = Behaviors.Button
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
 }
 
 let incBtnGlare = @() {
@@ -64,7 +64,7 @@ let incBtnGlare = @() {
 }
 
 let progressBtnContentBase = {
-  size = [progressBtnSize, progressBtnSize]
+  size = progressBtnSize
   rendObj = ROBJ_MASK
   image = Picture($"ui/gameuiskin#rhombus.svg:{progressBtnSize}:{progressBtnSize}:P")
   halign = ALIGN_CENTER
@@ -101,7 +101,7 @@ function mkProgressBtn(childrenCtor, onClick) {
     onClick
     onElemState = @(v) stateFlags.set(v)
     children = childrenCtor(stateFlags.get())
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
   })
 }
 
@@ -111,7 +111,7 @@ let txt = @(ovr) {
   color = textColor
 }.__merge(fontTinyShaded, ovr)
 
-let mkRowLabel = @(label) txt({
+let mkRowLabel = @[pure, nodiscard](label) txt({
   size=FLEX_H
   vplace = ALIGN_TOP
   valign = ALIGN_BOTTOM
@@ -203,8 +203,7 @@ function mkRowCell(cellColor, onClick, level, hoveredLevel, isInteractive) {
       borderRadius = hdpx(2)
       borderColor = 0
     }
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.8, 0.8] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
+    ...mkPressTransitionScale(stateFlags.get(), 0.8)
   }
 }
 

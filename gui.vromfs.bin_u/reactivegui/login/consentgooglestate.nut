@@ -11,8 +11,7 @@ from "types" import Integer
 
 let logC = log_with_prefix("[consent] ")
 
-
-let ump = is_ios || is_android ? (require_optional("consent.googleump") ?? require(is_ios ? "ios.ads" : "android.ads"))
+let ump = is_ios || is_android ? require("consent.googleump")
   : require("%rGui/ads/byPlatform/adsAndroidDbg.nut")
 let { requestConsent } = ump
 
@@ -51,6 +50,3 @@ isReadyForGoogleConsent.subscribe(function(isReady) {
 
 eventbus_subscribe("consent.googleump.onConsentRequest", @(msg) onConsentResponse("request_result", msg))
 eventbus_subscribe("consent.googleump.onConsentShow",    @(msg) onConsentResponse("show_result", msg))
-
-eventbus_subscribe(is_ios ?  "ios.ads.onConsentRequest" : "android.ads.onConsentRequest", @(msg) onConsentResponse("request_result", msg))
-eventbus_subscribe(is_ios ? "ios.ads.onConsentShow" : "android.ads.onConsentShow",    @(msg) onConsentResponse("show_result", msg))

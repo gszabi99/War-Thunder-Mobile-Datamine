@@ -9,6 +9,7 @@ from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardPlateVip,
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM
 from "%rGui/rewards/rewardViewInfo.nut" import isSingleViewInfoRewardEmpty
 from "%rGui/style/gradients.nut" import mkColoredGradientY
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 let rewardBoxSize = bpCardStyle.boxSize
@@ -18,7 +19,7 @@ const purchBtnHeight = hdpx(60)
 
 let bgCard = mkColoredGradientY(0xFFC49E4B, 0xFFCB7119)
 
-function markAvailableReward(slot){
+function [nodiscard] markAvailableReward(slot){
   const defaulScale = 1.25
   let widthScale = (defaulScale - 1) / slot
   return{
@@ -81,44 +82,44 @@ let freeMark = {
 function cardContent(stageInfo, stateFlags, isRewardsInProgress, addChild = null) {
   let { canReceive, viewInfo, isPaid, isReceived, isVip = false } = stageInfo
   let isEmptyReward = Computed(@() viewInfo != null && isSingleViewInfoRewardEmpty(viewInfo, servProfile.get()))
+  let rewardPlateContent = viewInfo == null ? emptySlot
+    : isVip ? mkRewardPlateVip(viewInfo, bpCardStyle)
+    : mkRewardPlate(viewInfo, bpCardStyle)
+  let receivedMark = mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
+  let canReceiveMarkContent = canReceive ? canReceiveMark(isRewardsInProgress) : null
   return @() {
     watch = [stateFlags, isEmptyReward]
-    children = [
-      {
-        flow = FLOW_VERTICAL
-        gap = bpCardGap
-        margin = bpCardPadding
-        hplace = ALIGN_CENTER
-        vplace = ALIGN_CENTER
-        children = [
-          {
-            halign = ALIGN_CENTER
-            valign = ALIGN_CENTER
-            children = [
-              canReceive ? markAvailableReward(viewInfo?.slots ?? 1) : null
-              viewInfo == null ? emptySlot
-                : isVip ? mkRewardPlateVip(viewInfo, bpCardStyle)
-                : mkRewardPlate(viewInfo, bpCardStyle)
-              addChild
-              isReceived || isEmptyReward.get() ? mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
-                : canReceive ? null
-                : lockedMark
-            ]
-          }
-          canReceive ? canReceiveMark(isRewardsInProgress)
-            : isVip ? vipMark
-            : isPaid ? paidMark
-            : freeMark
-          !isVip ? null : {
-            hplace = ALIGN_CENTER
-            rendObj = ROBJ_TEXT
-            text = loc("battlePass/VIP/mark")
-          }.__update(fontSmallShaded)
-        ]
-      }
-    ]
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
+    children = {
+      flow = FLOW_VERTICAL
+      gap = bpCardGap
+      margin = bpCardPadding
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      children = [
+        {
+          halign = ALIGN_CENTER
+          valign = ALIGN_CENTER
+          children = [
+            canReceive ? markAvailableReward(viewInfo?.slots ?? 1) : null
+            rewardPlateContent
+            addChild
+            isReceived || isEmptyReward.get() ? receivedMark
+              : canReceive ? null
+              : lockedMark
+          ]
+        }
+        canReceive ? canReceiveMarkContent
+          : isVip ? vipMark
+          : isPaid ? paidMark
+          : freeMark
+        !isVip ? null : {
+          hplace = ALIGN_CENTER
+          rendObj = ROBJ_TEXT
+          text = loc("battlePass/VIP/mark")
+        }.__update(fontSmallShaded)
+      ]
+    }
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 
@@ -133,13 +134,16 @@ let cardBorder = @(cardWidth, selStage, progress) @() {
   borderColor = progress == selStage.get() ? 0xFFFFFFFF : 0
 }
 
-let hoverCard = @(stateFlags) @() {
-  watch = stateFlags
-  size = FLEX
-  rendObj = ROBJ_IMAGE
-  image = stateFlags.get() & S_HOVER
-    ? Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
-    : null
+function hoverCard(stateFlags) {
+  let hoverGlowImage = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
+  return @() {
+    watch = stateFlags
+    size = FLEX
+    rendObj = ROBJ_IMAGE
+    image = stateFlags.get() & S_HOVER
+      ? hoverGlowImage
+      : null
+  }
 }
 
 return {

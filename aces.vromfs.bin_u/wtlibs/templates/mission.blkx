@@ -250,6 +250,7 @@
     "capture_zone__name": "",
     "capture_zone__radius": 1.0,
     "capture_zone__progress": 0.0,
+    "capture_zone__aiHint": 0,
     "_tracked": [
       "active",
       "capzone__progress",
@@ -284,6 +285,9 @@
       "capzone__outsideNavmeshPositions:list<p3>": {}
     }
   },
+  "navmesh_disabler": {
+    "navmeshDisabler:tag": {}
+  },
   "capture_zone_proxy_sphere": {
     "_use": "base_capture_zone_proxy",
     "sphere_zone__radius": 8.0
@@ -301,6 +305,79 @@
   "capture_zone_proxy_polygon": {
     "_use": "base_capture_zone_proxy",
     "capzone__approximateRadius": -1.0
+  },
+  "capture_zone_proxy_strongpoint": {
+    "strongpoint:tag": {}
+  },
+  "capture_zone_proxy_sectored": {
+    "_use": "capture_zone_proxy_polygon",
+    "sectored_capzone__nextUpdateAt": 0.0,
+    "sectored_capzone__lastUpdateAt": 0.0,
+    "sectored_capzone__updatePeriod": 1.0,
+    "sectoredCapzone:tag": {},
+    "sectored_capzone__sectorEids:list<eid>": {}
+  },
+  "capzone_sector": {
+    "_use": [
+      "replicating",
+      "objective_zone_navmesh"
+    ],
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "capzone_sector__bottomY": 0.0,
+    "capzone_sector__topY": 0.0,
+    "capzone_sector__index": -1,
+    "capzone_sector__zoneId": -1,
+    "capzone_sector__strongpointName": "",
+    "capzone_sector__captureTime": 15.0,
+    "capzone_sector__timeMultiplier": 1.0,
+    "capzone_sector__owningTeam": -1,
+    "capzone_sector__capTeam": -1,
+    "capzone_sector__progress": 0.0,
+    "_tracked": [
+      "capzone_sector__owningTeam",
+      "capzone_sector__capTeam",
+      "capzone_sector__progress"
+    ],
+    "_replicated": [
+      "capzone_sector__owningTeam",
+      "capzone_sector__capTeam",
+      "capzone_sector__progress"
+    ],
+    "active": false,
+    "capzone__owningTeam": -1,
+    "capzone__capTeam": -1,
+    "capzone__progress": 0.0,
+    "capzone__approximateRadius": -1.0,
+    "capzoneSector:tag": {},
+    "capzone_sector__points:list<p2>": {},
+    "capzone_sector__parentEid:eid": {},
+    "teamPresence:object": {},
+    "_group": {
+      "_tags": "server",
+      "capzone_sector__neighborEids:list<eid>": {},
+      "capzone_sector__strongpointEid:eid": {}
+    }
   },
   "infantry_spawn_zone_proxy": {
     "_use": "replicating",

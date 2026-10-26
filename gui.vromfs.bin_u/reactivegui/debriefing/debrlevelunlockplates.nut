@@ -18,7 +18,7 @@ let plateH = plateW * unitPlateRatio
 const platesGap = hdpx(20)
 const plateBlinkScale = 1.25
 
-let getLevelUnlockPlateAnimTime = @(count) count == 0 ? 0
+let getLevelUnlockPlateAnimTime = @[pure, nodiscard](count) count == 0 ? 0
   : min(levelUnlockPlateTime, levelUnlockPlatesTotalTimeMax / count)
 
 

@@ -137,12 +137,10 @@ function mkTab(uType) {
     padding = const [hdpx(10), 0, 0, 0]
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
-    children = [
-      {
-        rendObj = ROBJ_TEXT
-        text = loc($"mainmenu/type_{uType}")
-      }.__update(fontSmallShaded)
-    ]
+    children = {
+      rendObj = ROBJ_TEXT
+      text = loc($"mainmenu/type_{uType}")
+    }.__update(fontSmallShaded)
   }
 }
 

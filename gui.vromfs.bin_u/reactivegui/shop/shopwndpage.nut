@@ -6,14 +6,14 @@ from "%sqstd/underscore.nut" import arrayByRows, prevIfEqual
 from "%appGlobals/pServer/campaign.nut" import purchasesCount, curCampaign, subscriptions
 from "%appGlobals/pServer/pServerApi.nut" import shopPurchaseInProgress, schRewardInProgress, personalGoodsInProgress
 from "%appGlobals/pServer/profile.nut" import campMyUnits
-from "%appGlobals/rewardType.nut" import G_PREMIUM, G_CURRENCY, G_ITEM, G_SKIN, unitRewardTypes
+from "%appGlobals/rewardType.nut" import G_PREMIUM, G_CURRENCY, G_ITEM, G_SKIN, G_BP_POINTS, unitRewardTypes
 from "%appGlobals/unitTags.nut" import getUnitTagsCfg
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/currencyStyles.nut" import gamercardGap
 from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
 from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText
-from "%rGui/mainMenu/balanceComps.nut" import mkItemsBalance
+from "%rGui/mainMenu/balanceComps.nut" import mkItemsBalance, mkBpPointsBalance
 from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
 from "%rGui/seasonScene/seasonSceneState.nut" import openShopByGoods
 from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview, openSubsPreview
@@ -82,6 +82,8 @@ function purchaseFunc(goods) {
     return purchaseGoods(goods.id)
   buyPlatformGoods(goods.id)
 }
+
+let notReadyGoodsState = Watched(NOT_READY)
 
 let mkGoodsState = @(goods, addState = 0) Computed(function() {
   local res = addState
@@ -156,21 +158,25 @@ function onGoodsClick(goods) {
     purchaseFunc(goods)
 }
 
-function mkItemRefillClick(id, shopId, curCatId) {
-  let has = @(g) null != (g?.rewards ?? g?.goods ?? []).findvalue(@(r) r.id == id && r.gType == G_ITEM)
-  let category = goodsByShop.get()?[shopId].findindex(@(goods) null != goods.findvalue(has))
-  if (category != null)
-    return category == curCatId ? null : @() onTabChange(category, shopId)
-  let goods = shopGoods.get().findvalue(@(goods) null != goods.rewards.findvalue(@(r) r.id == id && r.gType == G_ITEM))
-  return goods == null || getGoodsShopId(goods) == shopId ? null : @() openShopByGoods(goods)
+function mkGamercardShopBalanceBtnsCtor(mkBalance, gType) {
+  function mkRefillClick(shopId, curCatId, id) {
+    let has = @(g) null != (g?.rewards ?? g?.goods ?? []).findvalue(@(r) r.id == id && r.gType == gType)
+    let category = goodsByShop.get()?[shopId].findindex(@(goods) null != goods.findvalue(has))
+    if (category != null)
+      return category == curCatId ? null : @() onTabChange(category, shopId)
+    let goods = shopGoods.get().findvalue(@(goods) null != goods.rewards.findvalue(@(r) r.id == id && r.gType == gType))
+    return goods == null || getGoodsShopId(goods) == shopId ? null : @() openShopByGoods(goods)
+  }
+  return @(shopId, catId, assets) {
+    flow = FLOW_HORIZONTAL
+    valign = ALIGN_CENTER
+    gap = gamercardGap
+    children = assets.map(@(id) mkBalance(id, mkRefillClick(shopId.get(), catId.get(), id)))
+  }
 }
 
-let gamercardShopItemsBalanceBtns = @(shopId, catId, items) {
-  flow = FLOW_HORIZONTAL
-  valign = ALIGN_CENTER
-  gap = gamercardGap
-  children = items.map(@(id) mkItemsBalance(id, mkItemRefillClick(id, shopId.get(), catId.get())))
-}
+let gamercardShopItemsBalanceBtns = mkGamercardShopBalanceBtnsCtor(mkItemsBalance, G_ITEM)
+let gamercardShopBpPointsBalanceBtns = mkGamercardShopBalanceBtnsCtor(mkBpPointsBalance, G_BP_POINTS)
 
 function mkShopHeaderRight(shopId, catId) {
   let list = mkShopCurrenciesAndItemsList(shopId, catId)
@@ -180,9 +186,12 @@ function mkShopHeaderRight(shopId, catId) {
     flow = FLOW_HORIZONTAL
     gap = gamercardGap
     children = [
-      gamercardShopItemsBalanceBtns(shopId, catId, list.get().items)
-      mkCurrenciesBtns(list.get().currencies).__update({ size = SIZE_TO_CONTENT })
-    ]
+      list.get().bpIds.len() == 0 ? null
+        : gamercardShopBpPointsBalanceBtns(shopId, catId, list.get().bpIds)
+      list.get().items.len() == 0 ? null
+        : gamercardShopItemsBalanceBtns(shopId, catId, list.get().items)
+      mkCurrenciesBtns(list.get().currencies, const {}, const { size = SIZE_TO_CONTENT })
+    ].filter(@(v) v != null)
   }
 }
 
@@ -264,6 +273,15 @@ function mkPersonalGoodsCard(pGoods, animParams) {
 
 function mkSoonPersonalGoodsCard(pGoodsSlot, listLen, animParams) {
   let { baseId, slotId, id } = pGoodsSlot
+  let goodsBaseId = getPersonalGoodsBaseId(id)
+  let limitText = mkLimitText(1, 1)
+  let cardAnimations = [
+    { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.8,
+      easing = OutQuad, trigger = $"soonPGoodsAnim",
+      onFinish = @() pGoodsOffsets.mutate(@(v) v[baseId] <- (v?[baseId] ?? 0) + listLen) }
+    { prop = AnimProp.opacity, from = 0.0, to = 1.0, delay = 0.8, duration = 0.4,
+      easing = OutQuad, trigger = $"soonPGoodsAnim" }
+  ]
   let pGoods = Computed(function(prev) {
     let cfg = personalGoodsCfg.get()?[baseId] ?? {}
     let combinations = (cfg?.groups ?? {}).reduce(@(resV, v) resV + (v?.variants.len() ?? 0), 0)
@@ -290,7 +308,7 @@ function mkSoonPersonalGoodsCard(pGoodsSlot, listLen, animParams) {
   return function() {
     let { lifeTime, goods } = pGoods.get()
 
-    let popLocId = $"shop/{getPersonalGoodsBaseId(id)}"
+    let popLocId = $"shop/{goodsBaseId}"
     let pShopGoods = personalGoodsToShopGoods(pGoods.get()).__update({
       endTime = 0  
       isPopular = true
@@ -305,7 +323,7 @@ function mkSoonPersonalGoodsCard(pGoodsSlot, listLen, animParams) {
         margin = bottomPad
         hplace = ALIGN_RIGHT
         vplace = ALIGN_BOTTOM
-        children = mkLimitText(1, 1)
+        children = limitText
       })
     return {
       watch = pGoods
@@ -315,17 +333,11 @@ function mkSoonPersonalGoodsCard(pGoodsSlot, listLen, animParams) {
       children = mkGoods(
         pShopGoods,
         @() null,
-        Watched(NOT_READY),
+        notReadyGoodsState,
         animParams,
         addChildren)
       transform = {}
-      animations = [
-        { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.8,
-          easing = OutQuad, trigger = $"soonPGoodsAnim",
-          onFinish = @() pGoodsOffsets.mutate(@(v) v[baseId] <- (v?[baseId] ?? 0) + listLen) }
-        { prop = AnimProp.opacity, from = 0.0, to = 1.0, delay = 0.8, duration = 0.4,
-          easing = OutQuad, trigger = $"soonPGoodsAnim" }
-      ]
+      animations = cardAnimations
     }
   }
 }

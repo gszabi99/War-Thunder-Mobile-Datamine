@@ -45,7 +45,7 @@ registerHintCreator(HINT_TYPE, @(_, __) @() {
   color = alertDMColor
   halign = ALIGN_CENTER
   transform = {}
-  animations = [
+  animations = const [
     { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.3, easing = OutQuad, play = true }
     { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.2, 1.2], duration = 0.7,
       easing = DoubleBlink, play = true }

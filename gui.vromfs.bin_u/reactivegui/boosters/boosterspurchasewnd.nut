@@ -12,6 +12,7 @@ from "%rGui/components/currencyComp.nut" import mkCurrencyComp
 from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
 from "%rGui/components/infoButton.nut" import infoCommonButton
 from "%rGui/components/spinner.nut" import mkWaitDimmingSpinner
+from "%rGui/components/activationCheckbox.nut" import mkActivationCheckbox
 from "%rGui/components/textButton.nut" import textButtonPricePurchase
 from "%rGui/mainMenu/gamercard.nut" import gamercardBalanceBtns
 from "%rGui/navState.nut" import registerScene
@@ -20,14 +21,13 @@ from "%rGui/shop/goodsView/sharedParts.nut" import mkBgParticles, tinyLimitReach
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/gradients.nut" import mkColoredGradientY, simpleHorGrad
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
-from "%rGui/style/stdColors.nut" import hoverColor, warningTextColor
+from "%rGui/style/stdColors.nut" import warningTextColor
 
 
 let close = @() isOpenedBoosterWnd.set(false)
 
 const cardWidth = hdpxi(370)
 const cardPadding = hdpx(10)
-const checkBoxIconSize = hdpxi(72)
 const bgSize = [cardWidth, hdpxi(412)]
 const boosterSize = hdpxi(230)
 const infoBtnSize = evenPx(60)
@@ -75,9 +75,9 @@ function mkPricePlate(bst, count) {
         ? textButtonPricePurchase(null,
             mkCurrencyComp(bst.price, bst.currencyId),
             @() null,
-            { ovr = { size = FLEX, minWidth = 0, behavior = null } })
+            const { ovr = { size = FLEX, minWidth = 0, behavior = null } })
       : null
-    transitions = [{ prop = AnimProp.picSaturate, duration = 1.0, easing = InQuad }]
+    transitions = const [{ prop = AnimProp.picSaturate, duration = 1.0, easing = InQuad }]
   }
 }
 
@@ -91,13 +91,13 @@ let gamercardPannel = headerGradientWithRightBlock(
 let infoBtn = @(id) infoCommonButton(
   @() boosterDesc(id),
   {
-    size = [infoBtnSize, infoBtnSize]
+    size = infoBtnSize
     hplace = ALIGN_LEFT
   }
 )
 
 let cardTitle = @(id) {
-  size = [titleWidth, SIZE_TO_CONTENT]
+  size = const [titleWidth, SIZE_TO_CONTENT]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   halign = ALIGN_LEFT
@@ -195,46 +195,27 @@ let boosterSlot = @(bst, count, sf) {
   ]
 }
 
-let textBase = @(battlesLeft) {
-  rendObj = ROBJ_TEXT
-  size = FLEX_H
-  padding = const [0, cardPadding]
-  halign = ALIGN_CENTER
-  behavior = Behaviors.Marquee
-  delay = defMarqueeDelay
-  hplace = ALIGN_CENTER
-  opacity = battlesLeft <= 0 ? 0.5 : 1
-}.__update(fontTinyAccentedShaded)
-
-let battlesLeftTitle = @(sf, battlesLeft, isDisabled) {
-  size = FLEX_H
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_CENTER
-  flow = FLOW_VERTICAL
-  clipChildren = true
-  children = textBase(battlesLeft).__merge({
-      text = isDisabled || battlesLeft <= 0 ? loc("booster/use") : loc("booster/using")
-      color = battlesLeft > 0 && (sf & S_HOVER) ? hoverColor : null
-    })
-}
-
 function boosterCard(bst) {
   let stateFlags = Watched(0)
-  let cbStateFlags = Watched(0)
   let isDisabled = Computed(@() servProfile.get()?.boosters[bst.id].isDisabled ?? false)
   let battlesLeft = Computed(@() servProfile.get()?.boosters[bst.id].battlesLeft ?? 0)
+  let isDisabledCheckBox = Computed(@() isDisabled.get() || battlesLeft.get() <= 0)
   let hasSpinner = Computed(@() boosterInProgress.get() == bst.id)
   let { limit = 0 } = bst
-  battlesLeft.subscribe(@(_) anim_start(animTrigger(bst.id)))
+  let startCountAnim = @(_) anim_start(animTrigger(bst.id))
+  let waitSpinner = mkWaitDimmingSpinner(hasSpinner)
   return {
+    key = battlesLeft
     flow = FLOW_VERTICAL
+    onAttach = @() battlesLeft.subscribe(startCountAnim)
+    onDetach = @() battlesLeft.unsubscribe(startCountAnim)
     children = [
       @() {
         watch = [stateFlags, battlesLeft]
         behavior = Behaviors.Button
         flow = FLOW_VERTICAL
-        sound = { click  = "click" }
-        transform = { scale = battlesLeft.get() > 0 && (stateFlags.get() & S_ACTIVE) ? [0.95, 0.95] : [1, 1] }
+        sound = const { click  = "click" }
+        transform = { scale = battlesLeft.get() > 0 && (stateFlags.get() & S_ACTIVE) ? 0.95 : 1 }
         onElemState = @(sf) stateFlags.set(sf)
         onClick = @() (limit > 0 && limit <= battlesLeft.get()) ? null
           : purchaseBooster(bst.id, loc($"boosters/{bst.id}"),
@@ -244,48 +225,14 @@ function boosterCard(bst) {
           {
             children = [
               boosterSlot(bst, battlesLeft.get(), stateFlags.get())
-              mkWaitDimmingSpinner(hasSpinner)
+              waitSpinner
             ]
           }
           mkPricePlate(bst, battlesLeft.get())
         ]
       }
-      @() {
-        watch = [cbStateFlags, battlesLeft, isDisabled, hasSpinner]
-        behavior = Behaviors.Button
-        size = FLEX_H
-        flow = FLOW_HORIZONTAL
-        margin = const [hdpx(20), 0, 0, 0]
-        transform = {
-          scale = battlesLeft.get() > 0 && (cbStateFlags.get() & S_ACTIVE) ? [0.95, 0.95] : [1, 1]
-        }
-        onElemState = @(sf) cbStateFlags.set(sf)
-        onClick = @() battlesLeft.get() <= 0 || hasSpinner.get() ? null
-          : toggle_booster_activation(bst.id, !isDisabled.get())
-        children = [
-          {
-            size = array(2, hdpx(80))
-            rendObj = ROBJ_BOX
-            opacity = isDisabled.get() || battlesLeft.get() <= 0 ? 0.5 : 1.0
-            borderColor = battlesLeft.get() > 0 && (cbStateFlags.get() & S_HOVER) ? hoverColor : 0xFF9FA7AF
-            borderWidth = hdpx(3)
-            fillColor = 0x88000000
-            padding = hasSpinner.get() ? null : [0,0, cardPadding, cardPadding]
-            valign = ALIGN_CENTER
-            halign = ALIGN_CENTER
-            children = hasSpinner.get() ? mkWaitDimmingSpinner(hasSpinner, hdpxi(50))
-              : {
-                  size = array(2, checkBoxIconSize)
-                  rendObj = ROBJ_IMAGE
-                  image = isDisabled.get() || battlesLeft.get() <= 0 ? null
-                    : Picture($"ui/gameuiskin#daily_mark_claimed.avif:{checkBoxIconSize}:{checkBoxIconSize}:P")
-                  keepAspect = KEEP_ASPECT_FIT
-                  color = 0xFFFFFFFF
-                }
-          }
-          battlesLeftTitle(cbStateFlags.get(), battlesLeft.get(), isDisabled.get())
-        ]
-      }
+      mkActivationCheckbox(isDisabledCheckBox, hasSpinner,
+        @() battlesLeft.get() <= 0 ? null : toggle_booster_activation(bst.id, !isDisabled.get()))
     ]
   }
 }

@@ -6,6 +6,7 @@ from "%sqstd/platform.nut" import is_nswitch
 from "%sqstd/underscore.nut" import arrayByRows
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride, isExternalOperator
 from "%rGui/feedback/supportWnd.nut" import openSupportTicketWndOrUrl
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 const iconSize = hdpxi(120)
@@ -80,9 +81,7 @@ function mkNetworkItem(item){
     behavior = Behaviors.Button
     onClick = @() eventbus_send("openUrl", { baseUrl = url })
     onElemState = @(v) stateFlags.set(v)
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     flow = FLOW_VERTICAL
     children = [
       {
@@ -95,8 +94,10 @@ function mkNetworkItem(item){
         minWidth = hdpx(200)
         rendObj = ROBJ_TEXT
         text = loc(text)
-      }.__update(fontTinyAccented)
+        ...fontTinyAccented
+      }
     ]
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
   }
 }
 
@@ -110,9 +111,7 @@ function mkFeedBackButtons(item){
     behavior = Behaviors.Button
     onClick
     onElemState = @(v) stateFlags.set(v)
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     flow = FLOW_HORIZONTAL
     gap = hdpx(25)
     children = [
@@ -125,9 +124,11 @@ function mkFeedBackButtons(item){
           size = const [hdpx(300), SIZE_TO_CONTENT]
           behavior = Behaviors.TextArea
           rendObj = ROBJ_TEXTAREA
-          text
-        }.__update(fontSmall)
+          text,
+          ...fontSmall
+        }
     ]
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 

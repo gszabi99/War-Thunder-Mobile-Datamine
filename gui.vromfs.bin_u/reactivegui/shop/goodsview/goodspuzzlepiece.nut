@@ -35,7 +35,7 @@ function getPiecesInfo(rewards, sConfigs) {
         if (rId in rewardsCfg) {
           let res = getPiecesInfo(rewardsCfg[rId], sConfigs)
           if (res != emptyPiecesInfo)
-            return r.count == 1 ? res : res.__merge({ count = res.count * r.count })
+            return r.count == 1 ? res : { ...res, count = res.count * r.count }
         }
     }
   return emptyPiecesInfo

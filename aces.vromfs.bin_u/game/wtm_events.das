@@ -227,7 +227,3 @@ struct EventRacePlayerFinish
 struct EventChangeHangarBanners
   newRiExName : string
   bannerType : string
-
-
-
-

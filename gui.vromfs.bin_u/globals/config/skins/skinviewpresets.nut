@@ -129,6 +129,9 @@ let skinsByTag = {
     "leopard_2a4m_can_sm_elsa"
     "mbt2000_sm_ling"
     "uk_camo_challenger_2_tes_prem"
+    "us_camo_t58_halloween"
+    "fr_camo_amx_10m_acra_halloween"
+    "germ_camo_leopard_2a5_pso"
   ],
 
   [DESERT] = [
@@ -348,6 +351,7 @@ let skinsByTag = {
     "camo_blackwhite_net"
     "camo_desert_threecolors"
     "camo_shuttle_los_angeles"
+    "camo_battle_allies_saar5"
 
     "camo_arctic_minesweeper_block"
     "camo_bluegray_longspot"
@@ -404,6 +408,7 @@ let skinsByTag = {
     "camo_yellow"
     "gev_ann_camo"
     "camo_hw_25"
+    "camo_hw_26"
     "camo_force_z"
     "camo_lny_26"
     "camo_bismarck_february_skin_c"
@@ -413,9 +418,12 @@ let skinsByTag = {
   ],
 
   [AIR] = [
+    "ar_ia_58a_pucara"
+    "ar_ia_58a_pucara_zombie"
     "cz_l_39za"
     "cz_l_39za_winter"
     "ger_me262a_1_u4_halloween"
+    "ger_me262a_1_u4_mummy"
     "ger_hs_129b_2_bat"
     "germ_190a_5_u14"
     "germ_bf_109a"

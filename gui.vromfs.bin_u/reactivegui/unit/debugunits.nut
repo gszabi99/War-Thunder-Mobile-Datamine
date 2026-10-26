@@ -44,8 +44,9 @@ function debug_start_testflight(unitName, missionName) {
 }
 
 let needToShowHiddenUnitsDebug = mkWatched(persist, "needToShowHiddenUnitsDebug", false)
+let toggleShowHiddenUnits = @() needToShowHiddenUnitsDebug.set(!needToShowHiddenUnitsDebug.get())
 
-register_command(@() needToShowHiddenUnitsDebug.set(!needToShowHiddenUnitsDebug.get()), "ui.showHiddenUnits")
+register_command(toggleShowHiddenUnits, "ui.showHiddenUnits")
 register_command(debugUnitStats, "debug.unitStats")
 register_command(
   @(unitName) console_print($"Tags of '{unitName}': ", getUnitTags(unitName)), 
@@ -61,4 +62,5 @@ register_command(@(unitName) debug_start_testflight(unitName, "testFlight_plane"
 
 return {
   needToShowHiddenUnitsDebug
+  toggleShowHiddenUnits
 }

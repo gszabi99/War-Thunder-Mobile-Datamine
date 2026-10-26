@@ -111,6 +111,14 @@ function lootboxPreviewContent(lootbox, ovr = {}) {
   let sizes = mkRewardsSizes(rewards, style)
   let needScroll = Computed(@() sizes.get().height > rewardsMaxHeight)
   let rewardsBlock = mkRewardsBlock(rewards, style, sizes)
+  let scrollableRewardsBlock = [
+    pannableArea(
+      rewardsBlock,
+      {},
+      { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+    mkScrollArrow(scrollHandler, MR_B, scrollArrowImageVerySmall,
+      { vplace = ALIGN_CENTER, pos = [0, 0.5 * (rewardsMaxHeight + saBorders[1])] })
+  ]
   return @() {
     watch = needScroll
     size = FLEX
@@ -123,23 +131,16 @@ function lootboxPreviewContent(lootbox, ovr = {}) {
         watch = needScroll
         size = [rewardsMaxWidth, rewardsMaxHeight]
         children = !needScroll.get() ? rewardsBlock
-          : [
-              pannableArea(
-                rewardsBlock,
-                {},
-                { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
-              mkScrollArrow(scrollHandler, MR_B, scrollArrowImageVerySmall,
-                { vplace = ALIGN_CENTER, pos = [0, 0.5 * (rewardsMaxHeight + saBorders[1])] })
-            ]
+          : scrollableRewardsBlock
       }
       {
         size = FLEX
         flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
         children = [
-          { size = FLEX }
+          const { size = FLEX }
           lootboxImageWithTimer(lootbox)
-          { size = flex(2) }
+          const { size = flex(2) }
         ]
       }
     ]

@@ -1,23 +1,28 @@
 from "%globalScripts/weaponConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
 from "controlsOptions" import set_can_lower_camera
+from "dagor.time" import get_time_msec
 from "dagor.workcycle" import defer, resetTimeout
+from "eventbus" import eventbus_send
 from "hapticVibration" import playHapticPattern
 from "hudActionBar" import activateActionBarAction
 from "hudState" import setDrawWeaponAllowableAngles
-from "math" import round
+from "math" import round, max
 from "mission" import get_mission_time
 from "sound_wt" import playSound
 from "wt.behaviors" import TouchAreaOutButton
 from "%sqstd/math.nut" import getRomanNumeral, ceil
 from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut, setShortcutOn, setShortcutOff
+from "%appGlobals/clientState/clientState.nut" import isInBattle
+import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/unitConst.nut" import TANK, SHIP, BOAT, SUBMARINE
 from "%globalsDarg/fontScale.nut" import getScaledFont, scaleFontWithTransform
 from "%globalsDarg/screenMath.nut" import scaleArr
+from "%rGui/battleData/battleData.nut" import lastClientBattleData
 from "%rGui/controls/disabledControls.nut" import mkIsControlDisabled
 from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkGamepadHotkey, mkContinuousButtonParams
 from "%rGui/hud/actionBar/actionBarState.nut" import updateActionBarDelayed, actionItemsInCd
-from "%rGui/hud/actionBar/actionType.nut" import AB_TORPEDO, getActionType, AB_EXTINGUISHER, AB_MEDICALKIT
+from "%rGui/hud/actionBar/actionType.nut" import AB_TORPEDO, getActionType, AB_EXTINGUISHER, AB_MEDICALKIT, AB_TOOLKIT
 from "%rGui/hud/bullets/hudUnitBulletsState.nut" import nextBulletIdx, currentBulletIdxPrim, currentBulletIdxSec
 from "%rGui/hud/buttons/actionButtonComps.nut" import isAvailableActionItem, mkActionItemProgress, mkActionItemCount,
   mkActionItemImage, countHeightUnderActionItem, mkActionItemBorder, abShortcutImageOvr
@@ -27,10 +32,13 @@ from "%rGui/hud/currentWeaponsStates.nut" import markWeapKeyHold, unmarkWeapKeyH
 from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize, touchSizeForRhombButton, borderWidth, btnBgStyle,
   imageColor, imageDisabledColor, borderColor, borderColorPushed, zoneRadiusX, zoneRadiusY
 from "%rGui/hud/shipState.nut" import fire, isFullBuoyancy, isAsmCaptureAllowed
+from "%rGui/hud/spendItems.nut" import tankToolkitSpent
 from "%rGui/hud/submarineDepthBlock.nut" import isNotOnTheSurface, isDeeperThanPeriscopeDepth
 from "%rGui/hud/weaponsButtonsAnimations.nut" import mkActionGlare, mkConsumableSpend, mkActionBtnGlare
 from "%rGui/hudHints/commonHintLogState.nut" import addCommonHint
-from "%rGui/hudState.nut" import hasTarget, targetState, torpedoDistToLive, unitType, isInAntiairMode, repairAssistAllow
+from "%rGui/hudHints/hudTimersState.nut" import activeTimers
+from "%rGui/hudState.nut" import hasTarget, targetState, torpedoDistToLive, unitType, isInAntiairMode, repairAssistAllow,
+  isPlayingReplay, playerUnitName
 from "%rGui/options/guiOptions.nut" import getOptValue, OPT_HAPTIC_INTENSITY_ON_SHOOT
 from "%rGui/options/options/hudStyleOptions.nut" import isHudPrimaryStyle
 from "%rGui/style/hudColors.nut" import hudBlueColor, hudCoralRedColor, hudWhiteColor, hudPearlGrayColor,
@@ -59,7 +67,22 @@ let svgNullable = @(image, size) ((image ?? "") == "") ? null
   : Picture($"{image}:{size}:{size}:P")
 
 const weaponryButtonRotate = 45
+let alwaysDisabled = WatchedRo(true)
 let rotatedShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(-70)] }
+
+const TANK_TOOLKIT = "tank_tool_kit_expendable"
+let tankToolkitStartCount = mkWatched(persist, "tankToolkitStartCount", 0)
+isInBattle.subscribe(@(v) tankToolkitStartCount.set(v ? (servProfile.get()?.items[TANK_TOOLKIT].count ?? 0) : 0))
+
+let tankToolkitItemsPerUse = Computed(function() {
+  let bd = lastClientBattleData.get()
+  let unitName = playerUnitName.get()
+  let unit = (bd?.unit.platoonUnits ?? []).findvalue(@(u) u?.name == unitName) ?? bd?.unit
+  return max(1, unit?.customItemsPerUse[TANK_TOOLKIT] ?? bd?.customItemsPerUse[TANK_TOOLKIT] ?? unit?.itemsPerUse ?? 1)
+})
+
+let tankToolkitRemainder = Computed(@()
+  max(0, tankToolkitStartCount.get() - tankToolkitSpent.get()) % tankToolkitItemsPerUse.get())
 
 function useShortcut(shortcutId) {
   toggleShortcut(shortcutId)
@@ -86,6 +109,11 @@ function mkActionItem(buttonConfig, actionItem, scale) {
   let btnSize = scaleEven(touchButtonSize, scale)
   let footerHeight = round(countHeightUnderActionItem * scale).tointeger()
   let borderW = round(borderWidth * scale).tointeger()
+  let hotkeysArr = mkGamepadHotkey(shortcutId)
+  let border = mkActionItemBorder(borderW, stateFlags, isAvailable ? isDisabled : alwaysDisabled)
+  let glare = mkActionGlare(actionItem, btnSize)
+  let shortcutImg = mkGamepadShortcutImage(shortcutId, abShortcutImageOvr, scale)
+  let consumableSpend = mkConsumableSpend(animationKey)
   return {
     size = [btnSize, btnSize + footerHeight]
     flow = FLOW_VERTICAL
@@ -97,7 +125,7 @@ function mkActionItem(buttonConfig, actionItem, scale) {
         cameraControl = true
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
-        size = [btnSize, btnSize]
+        size = btnSize
         function onClick() {
           if ((actionItemsInCd.get()?[actionType] ?? false) || isDisabled.get())
             return
@@ -106,18 +134,18 @@ function mkActionItem(buttonConfig, actionItem, scale) {
           activateActionBarAction(shortcutIdx)
           playHapticPattern(haptPatternId)
         }
-        hotkeys = mkGamepadHotkey(shortcutId)
+        hotkeys = hotkeysArr
         onElemState = @(v) stateFlags.set(v)
         children = [
           mkActionItemProgress(actionItem, isAvailable && !isDisabled.get(), isHudPrimaryStyle.get(), btnSize)
-          mkActionItemBorder(borderW, stateFlags, isAvailable ? isDisabled : Watched(true))
+          border
           mkActionItemImage(actionItem?.isAlternativeImage ? alternativeImage : getImage,
             isAvailable && !isDisabled.get() && !(actionItemsInCd.get()?[actionType] ?? false),
             btnSize)
-          mkActionGlare(actionItem, btnSize)
+          glare
           isDisabled.get() ? null
-            : mkGamepadShortcutImage(shortcutId, abShortcutImageOvr, scale)
-          mkConsumableSpend(animationKey)
+            : shortcutImg
+          consumableSpend
         ]
       }
       mkActionItemCount(actionItem.count, scale)
@@ -181,6 +209,12 @@ function mkCountermeasureItem(buttonConfig, actionItem, scale) {
   let btnSize = scaleEven(touchButtonSize, scale)
   let footerHeight = round(countHeightUnderActionItem * scale).tointeger()
   let borderW = round(borderWidth * scale).tointeger()
+  let borderStateFlags = Computed(@() progressTime.get() ? S_ACTIVE : stateFlags.get())
+  let hotkeysArr = mkGamepadHotkey(shortcutId)
+  let border = mkActionItemBorder(borderW, borderStateFlags, isAvailable ? isDisabled : alwaysDisabled)
+  let glare = mkActionGlare(actionItem, btnSize)
+  let shortcutImg = mkGamepadShortcutImage(shortcutId, abShortcutImageOvr, scale)
+  let consumableSpend = mkConsumableSpend(animationKey)
   return {
     size = [btnSize, btnSize + footerHeight]
     flow = FLOW_VERTICAL
@@ -188,7 +222,7 @@ function mkCountermeasureItem(buttonConfig, actionItem, scale) {
       @() {
         watch = [isDisabled, progressTime, isHudPrimaryStyle, actionItemsInCd]
         key = key ?? shortcutId
-        size = [btnSize, btnSize]
+        size = btnSize
         behavior = Behaviors.Button
         cameraControl = true
         function onClick() {
@@ -199,23 +233,21 @@ function mkCountermeasureItem(buttonConfig, actionItem, scale) {
           useShortcut(shortcutId)
           playHapticPattern(haptPatternId)
         }
-        hotkeys = mkGamepadHotkey(shortcutId)
+        hotkeys = hotkeysArr
         onElemState = @(v) stateFlags.set(v)
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
         children = [
           progressTime.get() ? progressText : null
           mkActionItemProgress(actionItem, isAvailable && !isDisabled.get(), isHudPrimaryStyle.get(), btnSize)
-          mkActionItemBorder(borderW,
-            Computed(@() progressTime.get() ? S_ACTIVE : stateFlags.get()),
-            isAvailable ? isDisabled : Watched(true))
+          border
           mkActionItemImage(alternativeImage && actionItem?.isAlternativeImage ? alternativeImage : getImage,
             isAvailable && !isDisabled.get() && !(actionItemsInCd.get()?[actionType] ?? false),
             btnSize)
-          mkActionGlare(actionItem, btnSize)
+          glare
           isDisabled.get() ? null
-            : mkGamepadShortcutImage(shortcutId, abShortcutImageOvr, scale)
-          mkConsumableSpend(animationKey)
+            : shortcutImg
+          consumableSpend
         ]
       }
       mkActionItemCount(actionItem.count, scale)
@@ -275,12 +307,13 @@ function setNextRepairImage() {
 }
 
 function mkRepairActionItem(buttonConfig, actionItem, scale) {
-  let { getShortcut, getImage, haptPatternId = -1, actionKey = "btn_repair", getAnimationKey = null,
+  let { getShortcut, getImage, alternativeImage = null, haptPatternId = -1, actionKey = "btn_repair", getAnimationKey = null,
     relImageSize = 1.0, actionType = null
   } = buttonConfig
   let { shortcutIdx = -1 } = actionItem
   let stateFlags = Watched(0)
   let isAvailable = actionItem != null && isAvailableActionItem(actionItem)
+  let isRepairCancelActive = actionType == AB_TOOLKIT && (actionItem?.active ?? false)
   let isOnCd = Computed(@() actionItemsInCd.get()?[actionType] ?? false)
   let shortcutId = actionItem == null ? null
     : getShortcut(unitType.get(), actionItem) 
@@ -292,15 +325,69 @@ function mkRepairActionItem(buttonConfig, actionItem, scale) {
   let debuffSize = scaleEven(debuffImgSize, scale)
   let footerHeight = round(countHeightUnderActionItem * scale).tointeger()
   let borderW = round(borderWidth * scale).tointeger()
+  let hotkeysArr = mkGamepadHotkey(hotkey)
+  let border = mkActionItemBorder(borderW, stateFlags, isAvailable ? isDisabled : alwaysDisabled)
+  let circleAnimImage = Picture($"ui/gameuiskin#hud_circle_animation.svg:{btnSize}:{btnSize}:P")
+  let circleAnimations = [
+    { prop = AnimProp.scale, from = const [0.2, 0.2], to = const [1.6, 1.6], play = true,
+      duration = 3.0, easing = Linear,
+      onFinish = @() setNextRepairImage()
+    }
+  ]
+  let glare = mkActionGlare(actionItem)
+  let shortcutImg = mkGamepadShortcutImage(shortcutId, abShortcutImageOvr, scale)
+  let consumableSpend = mkConsumableSpend(animationKey)
+  let nativeCount = actionItem?.count ?? 0
+  let isItemsCount = actionType == AB_TOOLKIT && nativeCount >= 0 && !(actionItem?.isFreeToolkit ?? false)
+  let repairCount = !isItemsCount ? mkActionItemCount(nativeCount, scale)
+    : @() {
+        watch = [unitType, isPlayingReplay, tankToolkitItemsPerUse, tankToolkitRemainder]
+        size = FLEX
+        children = mkActionItemCount(unitType.get() == TANK && !isPlayingReplay.get()
+            ? nativeCount * tankToolkitItemsPerUse.get() + tankToolkitRemainder.get()
+            : nativeCount,
+          scale)
+      }
 
-  function getRepairIcon(assistState, aType, uType) {
+  function getRepairIcon(assistState, aType, uType, isFreeToolkit, isActive) {
     if (aType != AB_EXTINGUISHER && aType != AB_MEDICALKIT) {
+      if (aType == AB_TOOLKIT && isActive)
+        return "ui/gameuiskin#hud_cancel_toolkit.svg"
       if (assistState == 1)
         return "ui/gameuiskin#hud_repair_assist.svg"
       else if (assistState > 1)
         return "ui/gameuiskin#hud_cancel_repair_assist.svg"
     }
-    return getImage(uType)
+    return isFreeToolkit && alternativeImage ? alternativeImage(uType) : getImage(uType)
+  }
+
+  function mkRepairCancelRing(timer) {
+    if (timer == null || !(timer?.isForward ?? false))
+      return null
+    let totalMs = max(timer.endTime - timer.startTime, 1)
+    let remainMs = max(timer.endTime - get_time_msec(), 0)
+    let progressNow = clamp(1.0 - remainMs.tofloat() / totalMs, 0.0, 1.0)
+    let ringSize = round(btnSize * 0.8).tointeger()
+    return {
+      size = ringSize
+      rendObj = ROBJ_PROGRESS_CIRCULAR
+      image = Picture($"ui/gameuiskin#circular_progress_1.svg:{ringSize}:{ringSize}")
+      fgColor = hudWhiteColor
+      bgColor = 0
+      fValue = progressNow
+      key = $"repair_cancel_progress_{timer.startTime}_{timer.endTime}"
+      animations = [
+        { prop = AnimProp.fValue, from = progressNow, to = 1.0, duration = 0.001 * remainMs, play = true }
+      ]
+    }
+  }
+
+  let mkRepairCancelProgress = @() {
+    watch = activeTimers
+    size = FLEX
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    children = mkRepairCancelRing(activeTimers.get()?.repair_status)
   }
 
   return {
@@ -314,7 +401,7 @@ function mkRepairActionItem(buttonConfig, actionItem, scale) {
         cameraControl = true
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
-        size = [btnSize, btnSize]
+        size = btnSize
         function onClick() {
           if (actionItem == null) {
             addCommonHint(loc("hint/noItemsForRepair"))
@@ -325,12 +412,14 @@ function mkRepairActionItem(buttonConfig, actionItem, scale) {
           playSound("repair")
           activateActionBarAction(shortcutIdx)
           playHapticPattern(haptPatternId)
+          if (actionType == AB_MEDICALKIT)
+            eventbus_send("hint:healing_hint:hide")
         }
-        hotkeys = mkGamepadHotkey(hotkey)
+        hotkeys = hotkeysArr
         onElemState = @(v) stateFlags.set(v)
         children = [
           mkActionItemProgress(actionItem, (isAvailable || isOnCd.get()) && !isDisabled.get(), isHudPrimaryStyle.get(), btnSize)
-          mkActionItemBorder(borderW, stateFlags, isAvailable ? isDisabled : Watched(true))
+          border
           @() {
             watch = [debuffImages, curRepairImageIdx, unitType, isOnCd]
             size = FLEX
@@ -342,24 +431,19 @@ function mkRepairActionItem(buttonConfig, actionItem, scale) {
                 ? {
                     rendObj = ROBJ_IMAGE
                     size = FLEX
-                    image = Picture($"ui/gameuiskin#hud_circle_animation.svg:{btnSize}:{btnSize}:P")
+                    image = circleAnimImage
                     keepAspect = KEEP_ASPECT_FIT
                     color = isOnCd.get() ? 0
                       : !isAvailable ? imageDisabledColor
                       : imageColor
                     key = $"switch_repair_image_{curRepairImageIdx.get()}"
-                    animations = [
-                      { prop = AnimProp.scale, from = [0.2, 0.2], to = [1.6, 1.6], play = true,
-                        duration = 3.0, easing = Linear,
-                        onFinish = @() setNextRepairImage()
-                      }
-                    ]
-                    transform = { pivot = [0.5, 0.5] }
+                    animations = circleAnimations
+                    transform = const { pivot = 0.5 }
                   }
                 : null,
               curRepairImageIdx.get() in debuffImages.get()
                 ? {
-                    size = [debuffSize, debuffSize]
+                    size = debuffSize
                     rendObj = ROBJ_IMAGE
                     image = Picture($"ui/gameuiskin#{debuffImages.get()[curRepairImageIdx.get()]}:{debuffSize}:{debuffSize}:P")
                     keepAspect = KEEP_ASPECT_FIT
@@ -367,21 +451,23 @@ function mkRepairActionItem(buttonConfig, actionItem, scale) {
                   }
                 : @() {
                     watch = [ repairAssistAllow, unitType ]
-                    size = [imgSize, imgSize]
+                    size = imgSize
                     rendObj = ROBJ_IMAGE
-                    image = svgNullable(getRepairIcon(repairAssistAllow.get(), actionType, unitType.get()), imgSize)
+                    image = svgNullable(getRepairIcon(repairAssistAllow.get(), actionType, unitType.get(), actionItem?.isFreeToolkit ?? false,
+                      isRepairCancelActive), imgSize)
                     keepAspect = KEEP_ASPECT_FIT
                     color = !isAvailable ? imageDisabledColor : imageColor
                   }
             ]
           }
-          mkActionGlare(actionItem)
+          isRepairCancelActive ? mkRepairCancelProgress : null
+          glare
           isDisabled.get() ? null
-            : mkGamepadShortcutImage(shortcutId, abShortcutImageOvr, scale)
-          mkConsumableSpend(animationKey)
+            : shortcutImg
+          consumableSpend
         ]
       }
-      mkActionItemCount(actionItem?.count ?? 0, scale)
+      repairCount
     ]
   }
 }
@@ -408,24 +494,27 @@ function getWeapStateFlags(key) {
   return weaponryItemStateFlags[key]
 }
 
-let mkWeaponBlockReasonIcon = @(isAvailable, iconComponent, scale) @() {
-  watch = isAvailable
-  pos = [0, hdpx(10 * scale)]
-  vplace = ALIGN_BOTTOM
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  children = !isAvailable.get() ? null
-    : [
-        {
-          size = array(2, scaleEven(touchButtonSize, scale) / 2)
-          rendObj = ROBJ_BOX
-          fillColor = hudCoralRedColor
-          transform = { rotate = weaponryButtonRotate }
-          borderWidth = 2
-          borderColor = hudPearlGrayColor
-        },
-        iconComponent
-      ]
+function mkWeaponBlockReasonIcon(isAvailable, iconComponent, scale) {
+  let reasonIcon = [
+    {
+      size = array(2, scaleEven(touchButtonSize, scale) / 2)
+      rendObj = ROBJ_BOX
+      fillColor = hudCoralRedColor
+      transform = { rotate = weaponryButtonRotate }
+      borderWidth = 2
+      borderColor = hudPearlGrayColor
+    },
+    iconComponent
+  ]
+  return @() {
+    watch = isAvailable
+    pos = [0, hdpx(10 * scale)]
+    vplace = ALIGN_BOTTOM
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = !isAvailable.get() ? null
+      : reasonIcon
+  }
 }
 
 let mkWeaponRightBlock = @(scale, content) {
@@ -567,20 +656,26 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
   let imgSize = scaleEven((needUseAltImg ? altImageSize : relImageSize) * defImageSize, scale)
   let zRadiusX = scaleEven(zoneRadiusX, scale)
   let zRadiusY = scaleEven(zoneRadiusY, scale)
+  let btnZone = mkBtnZone(key, zRadiusX, zRadiusY)
+  let ammoCount = mkAmmoCount(actionItem.count, scale, !hasAim || (actionItem?.aimReady ?? true))
+  let waitForAimImage = hasAim ? mkWaitForAimImage(isWaitForAim, scale) : null
+  let actionBtnGlare = mkActionBtnGlare(actionItem, btnSize)
+  let hotkeyShortcutImg = mkGamepadShortcutImage(hotkeyShortcut, rotatedShortcutImageOvr, scale)
+  let numberDisplay = number != -1 ? weaponNumber(number, scale) : null
   return @() {
     watch = [isDisabled, isOnCd, isBlocked, isHudPrimaryStyle, btnBgStyle]
-    size = [btnSize, btnSize]
+    size = btnSize
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
       mkRhombBtnBg((isOnCd.get() || isAvailable) && !isDisabled.get(), actionItem, scale, isHudPrimaryStyle.get(), btnBgStyle.get()
         @() playSound(key == TRIGGER_GROUP_PRIMARY ? "weapon_primary_ready" : "weapon_secondary_ready"))
       mkRhombBtnBorder(stateFlags, (isOnCd.get() || isAvailable) && !isDisabled.get(), scale)
-      mkBtnZone(key, zRadiusX, zRadiusY)
+      btnZone
       @() {
         watch = [canShoot, unitType, isBlocked, isDisabled, isOnCd]
         rendObj = ROBJ_IMAGE
-        size = [imgSize, imgSize]
+        size = imgSize
         pos = const [0, -hdpx(5)] 
         image = svgNullable(needUseAltImg ? alternativeImage : getImage(unitType.get()), imgSize)
         keepAspect = KEEP_ASPECT_FIT
@@ -588,16 +683,16 @@ function mkWeaponryItem(buttonConfig, actionItem, scale) {
           ? imageDisabledColor
           : imageColor
       }
-      mkAmmoCount(actionItem.count, scale, !hasAim || (actionItem?.aimReady ?? true))
-      hasAim ? mkWaitForAimImage(isWaitForAim, scale) : null
-      mkActionBtnGlare(actionItem, btnSize)
+      ammoCount
+      waitForAimImage
+      actionBtnGlare
       isDisabled.get() ? null
-        : mkGamepadShortcutImage(hotkeyShortcut, rotatedShortcutImageOvr, scale)
+        : hotkeyShortcutImg
       addChild
-      number != -1 ? weaponNumber(number, scale) : null
+      numberDisplay
       mkContinuousButtonParams(onTouchBegin, onButtonReleaseWhileActiveZone, hotkeyShortcut, stateFlags,
         isBulletBelt && ((!isAvailable && !isOnCd.get()) || isBlocked.get()), onStopTouch).__update({
-        size = [btnTouchSize, btnTouchSize]
+        size = btnTouchSize
         behavior
         cameraControl = mainShortcut != "ID_BOMBS"
         zoneRadiusX = zRadiusX
@@ -615,15 +710,16 @@ function weaponRightBlockPrimary(number, curBulletIdxW, scale) {
   let isNeedChange = Computed(@() curBulletIdxW.get() != nextBulletIdx.get())
   let changeSize = scaleEven(changeMarkSize, scale)
   let weaponChangeMark = mkWeaponRightBlock(scale, {
-    size = [changeSize, changeSize]
+    size = changeSize
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#cursor_size_hor.svg:{changeSize}:{changeSize}")
     color = wNumberColor
     keepAspect = true
   })
+  let numberDisplay = number >= 0 ? weaponNumber(number, scale) : null
   return @() { watch = isNeedChange }.__update(
     isNeedChange.get() ? weaponChangeMark
-      : number >= 0 ? weaponNumber(number, scale)
+      : number >= 0 ? numberDisplay
       : {})
 }
 
@@ -651,7 +747,7 @@ function mkSubmarineWeaponryItem(buttonConfig, actionItem, scale) {
 }
 
 let surfacingIcon = @(size) {
-  size = [size, size]
+  size = size
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#hud_submarine_surfacing.svg:{size}:{size}:P")
 }
@@ -680,7 +776,7 @@ function mkWeaponryItemByTrigger(buttonConfig, actionItem, scale) {
   let btnSize = scaleEven(touchButtonSize, scale)
   return {
     key = $"btn_weapon_{trigger}"
-    size = [btnSize, btnSize]
+    size = btnSize
     children = [
       mkWeaponryItem(btnCfg, actionItem, scale)
       number < 0 && (trigger not in curBulletIdxByTrigger) ? null
@@ -701,7 +797,7 @@ function mkSimpleButton(buttonConfig, actionItem, scale) {
   return {
     behavior = Behaviors.Button
     cameraControl = true
-    size = [btnSize, btnSize]
+    size = btnSize
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     onClick = @() toggleShortcut(shortcutId)
@@ -715,11 +811,11 @@ function mkSimpleButton(buttonConfig, actionItem, scale) {
         borderColor = (stateFlags.get() & S_ACTIVE) != 0 ? borderColorPushed : borderColor
         borderWidth = borderW
         fillColor = btnBgStyle.get().empty
-        transform = { rotate = 45 }
+        transform = const { rotate = 45 }
       }
       {
         rendObj = ROBJ_IMAGE
-        size = [imgSize, imgSize]
+        size = imgSize
         image = Picture($"{image}:{imgSize}:{imgSize}:P")
         keepAspect = KEEP_ASPECT_FIT
       }

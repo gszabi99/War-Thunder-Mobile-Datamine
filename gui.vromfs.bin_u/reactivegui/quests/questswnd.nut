@@ -4,7 +4,7 @@ from "dagor.workcycle" import deferOnce
 from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
 from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
-from "%rGui/battlePass/battlePassState.nut" import isBpSeasonActive
+from "%rGui/battlePass/battlePassObsoleteState.nut" import isBpSeasonActive
 from "%rGui/battlePass/eventPassState.nut" import eventsPassList, getEventPassName, mkHasEpRewardsToReceive
 from "%rGui/battlePass/operationPassState.nut" import hasOPRewardsToReceive, OP_EVENT_ID
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
@@ -16,7 +16,7 @@ import "%rGui/options/mkChildrenOptions.nut" as mkChildrenOptions
 import "%rGui/options/mkOptionsTabs.nut" as mkOptionsTabs
 from "%rGui/options/optionsStyle.nut" import contentWidth, contentWidthFull, tabW, tabPadding, minContentOffset
 from "%rGui/quests/questsState.nut" import hasUnseenQuestsBySection, questsCfg, questsBySection, curTabId,
-  isQuestsAttached, COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, PERSONAL_TAB, progressUnlockByTab,
+  COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB, PERSONAL_TAB, progressUnlockByTab,
   progressUnlockBySection, tabIdToOpen
 from "%rGui/quests/questsWndPage.nut" import questsWndPage, mkQuest, mkAchievement
 from "%rGui/shop/shopState.nut" import allShopGoods
@@ -319,7 +319,7 @@ function questsWndCtor() {
 
   let tabsListBlock = @() {
     watch = isFullScreenWidth
-    size = isFullScreenWidth.get() ? [0, flex()] : [tabW + minContentOffset, flex()]
+    size = isFullScreenWidth.get() ? const [0, flex()] : [tabW + minContentOffset, flex()]
     children = isFullScreenWidth.get() ? null : tabsList
   }
 
@@ -332,13 +332,11 @@ function questsWndCtor() {
       foreach (w in tabsVisibleWatches)
         w.subscribe(onTabVisibleChange)
       updateFullScreenWidth()
-      isQuestsAttached.set(true)
     }
     function onDetach() {
       tabIdToOpen.unsubscribe(setTabById)
       foreach (w in tabsVisibleWatches)
         w.unsubscribe(onTabVisibleChange)
-      isQuestsAttached.set(false)
     }
     flow = FLOW_HORIZONTAL
     halign = ALIGN_CENTER

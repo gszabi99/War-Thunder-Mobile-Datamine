@@ -20,7 +20,7 @@ from "%appGlobals/updater/addons.nut" import initialAddons, initialAddonsByCamp,
 from "%appGlobals/updater/addonsState.nut" import hasAddons, addonsSizes, isAddonsSizesActual,
   isAddonsAndUnitsInfoActual, isUnitSizesActual, unitSizes
 from "%appGlobals/updater/campaignAddons.nut" import getAddonCampaign, getCampaignPkgsForOnlineBattle,
-  getPkgsForCampaign, getCampaignPkgsForNewbieCoop, getCampaignPkgsForNewbieSingle, localizeUnitsResources
+  getCampaignPkgsForNewbieCoop, getCampaignPkgsForNewbieSingle, localizeUnitsResources
 from "%appGlobals/updater/gameModeAddons.nut" import allMyBattleUnits, missingUnitResourcesByRank, allUnitsRanks,
   maxReleasedUnitRanks
 from "%appGlobals/updater/missionUnits.nut" import getMGameModeMissionUnitsAndAddons, getBotUnits
@@ -39,7 +39,6 @@ from "types" import Bool, Table
 let logA = log_with_prefix("[ADDONS] ")
 let { get_free_disk_space = @() -1,
   download_content_in_background, stop_updater, is_updater_running,
-  remove_addons_resources_async = @(_) null,
   UPDATER_RESULT_SUCCESS, UPDATER_ERROR, UPDATER_EVENT_STAGE, UPDATER_EVENT_DOWNLOAD_SIZE, UPDATER_EVENT_PROGRESS,
   UPDATER_EVENT_ERROR, UPDATER_EVENT_FINISH, UPDATER_DOWNLOADING, UPDATER_EVENT_INCOMPATIBLE_VERSION
 } = require("contentUpdater")
@@ -581,10 +580,6 @@ eventbus_subscribe("openDownloadAddonsWnd", function(msg) {
   openDownloadAddonsWnd(addons, units, bqSource, bqParams, successEventId, context)
 })
 
-function removeAddonsForCampaign(campaigns) {
-  remove_addons_resources_async(getPkgsForCampaign(campaigns))
-}
-
 return {
   startDownloadAddons  
   openDownloadAddonsWnd
@@ -611,5 +606,4 @@ return {
   updaterError
   progressPercent
   isStageDownloading
-  removeAddonsForCampaign
 }

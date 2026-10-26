@@ -95,7 +95,7 @@ let mkSectionBtn = @(id, onClick, isSelected, hasUnseenContent) {
       rendObj = ROBJ_IMAGE
       image = bgGradient
       opacity = isSelected.get() ? 1 : 0
-      transitions = [{ prop = AnimProp.opacity, duration = 0.3, easing = InOutQuad }]
+      transitions = const [{ prop = AnimProp.opacity, duration = 0.3, easing = InOutQuad }]
     }
     {
       size = FLEX

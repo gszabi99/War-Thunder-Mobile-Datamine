@@ -56,6 +56,8 @@ function bulletHeader(selSlot, bSlot, bSet, bInfo, chosenBullets, hasUnseenShell
   let slotOvr = isLocked ? { watch = [fromUnitTags, bSet], opacity = 0.5 } : { watch = [fromUnitTags, bSet] }
   let hasUnseenBullets = isLocked ? null : Computed(@() (bSlot.get()?.idx ?? 0) > 0
     && hasUnseenShells.get()?[selSlot.get()?.id ?? 0].findvalue(@(v) v) != null)
+  let arrowBtnStyle = mergeStyles(buttonStyles.PRIMARY, { ovr = { size = [FLEX, headerSlotHeight], minWidth = 0 } })
+  let unseenBulletsMark = mkPriorityUnseenMarkWatch(hasUnseenBullets, const { margin = hdpx(7) })
   return @() {
     watch = [bSet, fromUnitTags]
     onAttach = isLocked ? null
@@ -94,8 +96,8 @@ function bulletHeader(selSlot, bSlot, bSet, bInfo, chosenBullets, hasUnseenShell
         children = [
           mkCustomButton(arrowBtnImage(openedSlot.get() < 0 || idx != openedSlot.get()),
             @() onHeaderClick(key, idx),
-            mergeStyles(buttonStyles.PRIMARY, { ovr = { size = [FLEX, headerSlotHeight], minWidth = 0 } }))
-          mkPriorityUnseenMarkWatch(hasUnseenBullets, { margin = hdpx(7) })
+            arrowBtnStyle)
+          unseenBulletsMark
         ]
       }
     ]
@@ -116,18 +118,21 @@ let btnTextInc = mkBtnTextCtor({ text = "+" })
 let mkKnobCtor = @(sliderKnobSize) @(relValue, stateFlags, fullW)
   mkSliderKnob(relValue, stateFlags, fullW, { size = [sliderKnobSize, sliderKnobSize] })
 
-let mkBulletSlider = @(size, count, unitValue, maxValue, onChange) @() {
-  watch = [unitValue, maxValue]
-  children = slider(count,
-    {
-      size
-      unit = unitValue.get()
-      min = 0
-      max = maxValue.get()
-      onChange
-    },
-    mkKnobCtor(size[1])
-  ).__update({ vplace = ALIGN_TOP })
+function mkBulletSlider(size, count, unitValue, maxValue, onChange) {
+  let knobCtor = mkKnobCtor(size[1])
+  return @() {
+    watch = [unitValue, maxValue]
+    children = slider(count,
+      {
+        size
+        unit = unitValue.get()
+        min = 0
+        max = maxValue.get()
+        onChange
+      },
+      knobCtor
+    ).__update({ vplace = ALIGN_TOP })
+  }
 }
 
 let mkBulletCountText = @(text, ovr = {}) {
@@ -192,24 +197,22 @@ function mkBulletSliderSlot(idx, selSlot, bInfo, bullets, bTotalSteps, bStep, ma
 
   return @() {
     watch = bTotalSteps
-    children = [
-      {
-        flow = FLOW_VERTICAL
-        children = [
-          bulletHeader(selSlot, bSlot, bSet, bInfo, bullets, hasUnseenShells, openedSlot)
-          bTotalSteps.get() <= 1 ? null
-            : mkBulletSliderWithBtns(bSlot, maxCount, maxBulletsWithExtraCount, withExtraBullets,
-                bStep, bLeftSteps, cardStyle, onChangeSlider)
-          bg.__merge({
-            size = [FLEX, bTotalSteps.get() <= 1 ? SIZE_TO_CONTENT : 0]
-            children = @() mkBulletCountText(countText.get(), {
-              watch = countText
-              pos = [0, bTotalSteps.get() <= 1 ? 0 : -hdpx(40)]
-            })
+    children = {
+      flow = FLOW_VERTICAL
+      children = [
+        bulletHeader(selSlot, bSlot, bSet, bInfo, bullets, hasUnseenShells, openedSlot)
+        bTotalSteps.get() <= 1 ? null
+          : mkBulletSliderWithBtns(bSlot, maxCount, maxBulletsWithExtraCount, withExtraBullets,
+              bStep, bLeftSteps, cardStyle, onChangeSlider)
+        bg.__merge({
+          size = [FLEX, bTotalSteps.get() <= 1 ? SIZE_TO_CONTENT : 0]
+          children = @() mkBulletCountText(countText.get(), {
+            watch = countText
+            pos = [0, bTotalSteps.get() <= 1 ? 0 : -hdpx(40)]
           })
-        ]
-      }
-    ]
+        })
+      ]
+    }
   }
 }
 
@@ -228,16 +231,18 @@ let lockedSideOverlay = @(iconImage) {
 function mkBulletLockedSlot(idx, bInfo, bullets, iconImage = "lock_icon") {
   let bSlot = Computed(@() bullets.get()?[idx])
   let bSet = Computed(@() bInfo.get()?.bulletSets[bSlot.get()?.name])
+  let lockOverlay = lockedSideOverlay(iconImage)
+  let emptyCountRow = bg.__merge({
+    size = FLEX_H
+    children = mkBulletCountText("0") 
+  })
   return @() {
     watch = bSet
     children = bSet.get() == null ? null : {
       flow = FLOW_VERTICAL
       children = [
-        bulletHeader(null, bSlot, bSet, bInfo, bullets, null, null, lockedSideOverlay(iconImage))
-        bg.__merge({
-          size = FLEX_H
-          children = mkBulletCountText("0") 
-        })
+        bulletHeader(null, bSlot, bSet, bInfo, bullets, null, null, lockOverlay)
+        emptyCountRow
       ]
     }
   }

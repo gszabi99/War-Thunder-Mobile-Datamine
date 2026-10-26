@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
 from "%rGui/components/textButton.nut" import textButtonPrimary
-from "%rGui/debugTools/debugLootboxState.nut" import lootboxesCfg, isOpened, selectedLootbox, allRewards
+from "%rGui/debugTools/debugLootboxState.nut" import allLootboxes, curLootbox, isOpened, selectedLootbox, allRewards
 import "%rGui/debugTools/debugSkins/chooseByNameWnd.nut" as chooseByNameWnd
 from "%rGui/navState.nut" import registerScene
 from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, REWARD_STYLE_MEDIUM
@@ -54,14 +54,8 @@ let mkSelector = @(curValue, allValues, setValue, mkLoc, mkValues, title = "") @
 }
 
 function mkDebugRewardPlateCompWnd() {
-  let allLootboxes = lootboxesCfg.get().keys().sort()
-  let curLootbox = Computed(@() allLootboxes.contains(selectedLootbox.get()) ? selectedLootbox.get() : allLootboxes?[0])
-
-  if (selectedLootbox.get() == null)
-    selectedLootbox.set(curLootbox.get())
-
   return {
-    watch = [lootboxesCfg, allRewards]
+    watch = allRewards
     key = isOpened
     size = FLEX
     padding = saBordersRv

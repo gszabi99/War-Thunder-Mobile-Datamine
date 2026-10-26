@@ -130,6 +130,7 @@ function mkRentBattlesButton(rentalCd, campaign, toBattleFunc) {
   let leftTime = Computed(@()
     max(0, (rentals.get()?[campaign].entryTime ?? 0) + rentalCd - serverTime.get()))
   let defToBattleText = utf8ToUpper(loc("mainmenu/toBattle/try"))
+  let penaltyOvr = battleBtnPenaltyOvr(campaign)
   return function() {
     let hasCooldown = leftTime.get() > 0
     let leftTimeText = secondsToHoursLoc(leftTime.get())
@@ -139,7 +140,7 @@ function mkRentBattlesButton(rentalCd, campaign, toBattleFunc) {
         !hasCooldown ? defToBattleText
           : "\n".join([defToBattleText, $"{loc("icon/timer")}{leftTimeText}"])
         @() hasCooldown ? openMsgBox({ text = loc("mainmenu/toBattle/restrict/cooldown", { time = leftTimeText }) }) : toBattleFunc(),
-        mergeStyles(hasCooldown ? battleBtnOvr : battleBtnPenaltyOvr(campaign), ovr))
+        mergeStyles(hasCooldown ? battleBtnOvr : penaltyOvr, ovr))
     }.__update(ovr)
   }
 }

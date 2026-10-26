@@ -52,6 +52,7 @@
       "environment": "8",
       "weather": "cloudy",
       "killLimit": 10,
+      "panoramaForced": true,
       "gt_ffa": true,
       "gt_race": true,
       "openDiffLevels": true,
@@ -60,7 +61,7 @@
       "country_allies": "ussr",
       "raceLaps": 2,
       "raceWinners": 1,
-      "raceForceCannotShoot": true,
+      "raceForceCannotShoot": false,
       "restoreType": "attempts",
       "difficulty": "",
       "optionalTakeOff": false,
@@ -111,22 +112,22 @@
       "actions": {
         "unitSetProperties": [
           {
+            "object": "all_units_squad",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "all_units_squad",
             "accuracy": 0.2,
             "effShootingRate": 0.0,
             "speed": 40.0,
             "lockSpeed": true
           },
           {
+            "object": "air_defence_squad",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "air_defence_squad",
             "stealthRadius": 0.0,
             "calmDetection": true,
             "attack_type": "hold_fire",
@@ -134,20 +135,20 @@
             "effShootingRate": 1.0
           },
           {
+            "object": "all_units_squad",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "all_units_squad",
             "stealthRadius": 0.0,
             "calmDetection": true
           },
           {
+            "object": "players_squad",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "players_squad",
             "forceVisibleOnMap": true,
             "startFullSpeed": true
           }
@@ -217,20 +218,7 @@
         "missionMarkAsRespawnPoint": {
           "loc_name": "missions/spawn_random",
           "spawnEffect": false,
-          "isAirfield": false,
-          "isUnit": false,
-          "isStrictSpawn": true,
           "radius": -1.0,
-          "useExisting": false,
-          "canSpawnOnNeutral": false,
-          "showOnMap": true,
-          "resetStrictSpawnIndex": false,
-          "forceCreate": false,
-          "ignoreTeamsOnReuse": false,
-          "isIndividual": false,
-          "onlyOnePlayerPerSpawnPoint": false,
-          "removeAreas": false,
-          "replaceAreas": false,
           "target": [
             "spawn01",
             "spawn02",
@@ -239,9 +227,26 @@
             "spawn05",
             "spawn06",
             "spawn07",
-            "spawn08"
+            "spawn08",
+            "spawn09",
+            "spawn10",
+            "spawn11",
+            "spawn12"
           ],
           "team": "Both",
+          "isStrictSpawn": true,
+          "resetStrictSpawnIndex": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "forceCreate": false,
+          "useExisting": false,
+          "ignoreTeamsOnReuse": false,
+          "isIndividual": false,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "removeAreas": false,
+          "replaceAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
           "tags": {
             "tank": false,
             "artillery": false,
@@ -290,7 +295,7 @@
           "respawnForwardOffset": -50.0,
           "statisticsScreenAfterFinish": true,
           "reverse": false,
-          "defaultTimeToDisableWeapon": 35.0,
+          "defaultTimeToDisableWeapon": -1.0,
           "isPathClosed": true,
           "tankRace": false,
           "animChar": "ring_target_char",
@@ -318,13 +323,13 @@
           "target": "a_player_is_active_requirement"
         },
         "unitSetProperties": {
+          "object": "players_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "players_squad",
           "targetableByAi": false,
-          "cannotShoot": true
+          "cannotShoot": false
         }
       },
       "else_actions": {}
@@ -368,7 +373,7 @@
           "respawnForwardOffset": -50.0,
           "statisticsScreenAfterFinish": true,
           "reverse": true,
-          "defaultTimeToDisableWeapon": 35.0,
+          "defaultTimeToDisableWeapon": -1.0,
           "isPathClosed": true,
           "tankRace": false,
           "animChar": "ring_target_char",
@@ -396,13 +401,13 @@
           "target": "a_player_is_active_requirement"
         },
         "unitSetProperties": {
+          "object": "players_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "players_squad",
           "targetableByAi": false,
-          "cannotShoot": true
+          "cannotShoot": false
         }
       },
       "else_actions": {}
@@ -446,7 +451,7 @@
           "respawnForwardOffset": -50.0,
           "statisticsScreenAfterFinish": true,
           "reverse": false,
-          "defaultTimeToDisableWeapon": 35.0,
+          "defaultTimeToDisableWeapon": -1.0,
           "isPathClosed": true,
           "tankRace": false,
           "animChar": "ring_target_char",
@@ -474,13 +479,13 @@
           "target": "a_player_is_active_requirement"
         },
         "unitSetProperties": {
+          "object": "players_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "players_squad",
           "targetableByAi": false,
-          "cannotShoot": true
+          "cannotShoot": false
         }
       },
       "else_actions": {}
@@ -524,7 +529,7 @@
           "respawnForwardOffset": -50.0,
           "statisticsScreenAfterFinish": true,
           "reverse": true,
-          "defaultTimeToDisableWeapon": 35.0,
+          "defaultTimeToDisableWeapon": -1.0,
           "isPathClosed": true,
           "tankRace": false,
           "animChar": "ring_target_char",
@@ -552,13 +557,13 @@
           "target": "a_player_is_active_requirement"
         },
         "unitSetProperties": {
+          "object": "players_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "players_squad",
           "targetableByAi": false,
-          "cannotShoot": true
+          "cannotShoot": false
         }
       },
       "else_actions": {}
@@ -657,21 +662,28 @@
         },
         "unitSetProperties": [
           {
+            "object": "players_squad",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "players_squad",
+            "invulnerabilityTimer": 20.0,
             "forceVisibleOnMap": true,
             "speed": 230.0,
             "throttle": 1.0,
             "ignoreCollisions": true
           },
           {
+            "object": "players_squad",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "cannotShoot": false,
+            "playerEnabled": true,
+            "aiEnabled": true
+          },
+          {
             "object": [
               "t1_player01",
               "t1_player08",
@@ -679,14 +691,14 @@
               "t2_player05",
               "t2_player12"
             ],
-            "forceVisibleOnMap": true,
-            "persistentAerobaticsSmoke": true
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "forceVisibleOnMap": true,
+            "persistentAerobaticsSmoke": false
+          },
+          {
             "object": [
               "t1_player02",
               "t1_player09",
@@ -694,14 +706,14 @@
               "t2_player06",
               "t2_player13"
             ],
-            "forceVisibleOnMap": true,
-            "persistentAerobaticsSmoke": true
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "forceVisibleOnMap": true,
+            "persistentAerobaticsSmoke": false
+          },
+          {
             "object": [
               "t1_player03",
               "t1_player10",
@@ -709,64 +721,76 @@
               "t2_player07",
               "t2_player14"
             ],
-            "forceVisibleOnMap": true,
-            "persistentAerobaticsSmoke": true
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "forceVisibleOnMap": true,
+            "persistentAerobaticsSmoke": false
+          },
+          {
             "object": [
               "t1_player04",
               "t1_player11",
               "t2_player01",
               "t2_player08"
             ],
-            "forceVisibleOnMap": true,
-            "persistentAerobaticsSmoke": true
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "forceVisibleOnMap": true,
+            "persistentAerobaticsSmoke": false
+          },
+          {
             "object": [
               "t1_player05",
               "t1_player12",
               "t2_player02",
               "t2_player09"
             ],
-            "forceVisibleOnMap": true,
-            "persistentAerobaticsSmoke": true
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "forceVisibleOnMap": true,
+            "persistentAerobaticsSmoke": false
+          },
+          {
             "object": [
               "t1_player06",
               "t1_player13",
               "t2_player03",
               "t2_player10"
             ],
-            "forceVisibleOnMap": true,
-            "persistentAerobaticsSmoke": true
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "forceVisibleOnMap": true,
+            "persistentAerobaticsSmoke": false
+          },
+          {
             "object": [
               "t1_player07",
               "t1_player14",
               "t2_player04",
               "t2_player11"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "forceVisibleOnMap": true,
-            "persistentAerobaticsSmoke": true
+            "persistentAerobaticsSmoke": false
+          }
+        ],
+        "triggerDisable": [
+          {
+            "target": "race_lock_controls"
+          },
+          {
+            "target": "race_start_timer"
           }
         ],
         "wait": {
@@ -785,11 +809,36 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "shouldBlink": false
-        },
-        "triggerDisable": {
-          "target": "race_start_timer"
         }
       }
+    },
+    "race_lock_controls": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.5
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": {
+          "object": "players_squad",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "cannotShoot": true,
+          "playerEnabled": false,
+          "aiEnabled": false
+        }
+      },
+      "else_actions": {}
     },
     "race_shooting_enabled": {
       "is_enabled": false,
@@ -807,11 +856,11 @@
       "conditions": {},
       "actions": {
         "unitSetProperties": {
+          "object": "players_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "players_squad",
           "cannotShoot": false
         }
       },
@@ -844,11 +893,11 @@
       },
       "actions": {
         "unitSetProperties": {
+          "object": "air_defence_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "air_defence_squad",
           "attack_type": "fire_at_will"
         },
         "unitAttackTarget": {
@@ -890,11 +939,11 @@
       },
       "actions": {
         "unitSetProperties": {
+          "object": "air_defence_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "air_defence_squad",
           "attack_type": "hold_fire",
           "accuracy": 1.0,
           "effShootingRate": 1.0
@@ -4690,9 +4739,9 @@
       "type": "Sphere",
       "tm": [
         [
-          9.54873,
+          6.16896,
           0.0,
-          -17.5734
+          -19.0249
         ],
         [
           0.0,
@@ -4700,14 +4749,14 @@
           0.0
         ],
         [
-          17.5734,
+          19.0249,
           0.0,
-          9.54873
+          6.16896
         ],
         [
-          235.352,
+          250.9,
           111.165,
-          2952.34
+          2996.1
         ]
       ],
       "objLayer": 0,
@@ -4719,9 +4768,9 @@
       "type": "Sphere",
       "tm": [
         [
-          6.40373,
+          2.82556,
           0.0,
-          -18.9472
+          -19.7995
         ],
         [
           0.0,
@@ -4729,14 +4778,14 @@
           0.0
         ],
         [
-          18.9472,
+          19.7995,
           0.0,
-          6.40373
+          2.82556
         ],
         [
-          274.158,
+          290.509,
           111.165,
-          2960.31
+          2996.83
         ]
       ],
       "objLayer": 0,
@@ -4748,9 +4797,9 @@
       "type": "Sphere",
       "tm": [
         [
-          4.52499,
+          0.88076,
           0.0,
-          -19.4814
+          -19.9806
         ],
         [
           0.0,
@@ -4758,14 +4807,14 @@
           0.0
         ],
         [
-          19.4814,
+          19.9806,
           0.0,
-          4.52499
+          0.88076
         ],
         [
-          310.85,
+          327.958,
           111.165,
-          2967.83
+          2997.5
         ]
       ],
       "objLayer": 0,
@@ -4777,9 +4826,9 @@
       "type": "Sphere",
       "tm": [
         [
-          2.03942,
+          -1.63865,
           0.0,
-          -19.8957
+          -19.9327
         ],
         [
           0.0,
@@ -4787,14 +4836,14 @@
           0.0
         ],
         [
-          19.8957,
+          19.9327,
           0.0,
-          2.03942
+          -1.63865
         ],
         [
-          346.17,
+          363.651,
           111.165,
-          2973.13
+          2996.24
         ]
       ],
       "objLayer": 0,
@@ -4806,9 +4855,9 @@
       "type": "Sphere",
       "tm": [
         [
-          0.545772,
+          -3.1248,
           0.0,
-          -19.9927
+          -19.7545
         ],
         [
           0.0,
@@ -4816,14 +4865,14 @@
           0.0
         ],
         [
-          19.9927,
+          19.7545,
           0.0,
-          0.545772
+          -3.1248
         ],
         [
-          382.262,
+          400.017,
           111.165,
-          2977.96
+          2994.38
         ]
       ],
       "objLayer": 0,
@@ -4835,9 +4884,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -1.98526,
+          -5.59629,
           0.0,
-          -19.9013
+          -19.2012
         ],
         [
           0.0,
@@ -4845,14 +4894,14 @@
           0.0
         ],
         [
-          19.9013,
+          19.2012,
           0.0,
-          -1.98526
+          -5.59629
         ],
         [
-          421.612,
+          439.515,
           111.165,
-          2982.4
+          2991.54
         ]
       ],
       "objLayer": 0,
@@ -4864,9 +4913,9 @@
       "type": "Sphere",
       "tm": [
         [
-          5.68507,
+          2.07731,
           0.0,
-          -19.1751
+          -19.8919
         ],
         [
           0.0,
@@ -4874,14 +4923,14 @@
           0.0
         ],
         [
-          19.1751,
+          19.8919,
           0.0,
-          5.68507
+          2.07731
         ],
         [
-          249.864,
-          70.9785,
-          2900.11
+          255.602,
+          70.9784,
+          2942.1
         ]
       ],
       "objLayer": 0,
@@ -4893,9 +4942,9 @@
       "type": "Sphere",
       "tm": [
         [
-          5.54924,
+          1.93653,
           0.0,
-          -19.2147
+          -19.906
         ],
         [
           0.0,
@@ -4903,14 +4952,43 @@
           0.0
         ],
         [
-          19.2147,
+          19.906,
           0.0,
-          5.54924
+          1.93653
         ],
         [
-          286.364,
-          70.9785,
-          2912.05
+          293.671,
+          70.9784,
+          2947.15
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_0001": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          298.05,
+          70.1,
+          2498.85
         ]
       ],
       "objLayer": 0,
@@ -5672,7 +5750,7 @@
         "forceReplication": true
       }
     },
-    "race_wp_v1_049.05": {
+    "race_wp_v1_050": {
       "type": "Sphere",
       "tm": [
         [
@@ -5701,7 +5779,7 @@
         "forceReplication": true
       }
     },
-    "race_wp_v1_049.06": {
+    "race_wp_v1_051": {
       "type": "Sphere",
       "tm": [
         [
@@ -5730,7 +5808,7 @@
         "forceReplication": true
       }
     },
-    "race_wp_v1_049.07": {
+    "race_wp_v1_052": {
       "type": "Sphere",
       "tm": [
         [
@@ -5759,7 +5837,7 @@
         "forceReplication": true
       }
     },
-    "race_wp_v1_049.08": {
+    "race_wp_v1_053": {
       "type": "Sphere",
       "tm": [
         [
@@ -5788,7 +5866,7 @@
         "forceReplication": true
       }
     },
-    "race_wp_v1_049.09": {
+    "race_wp_v1_054": {
       "type": "Sphere",
       "tm": [
         [
@@ -5817,7 +5895,7 @@
         "forceReplication": true
       }
     },
-    "race_wp_v1_049.10": {
+    "race_wp_v1_055": {
       "type": "Sphere",
       "tm": [
         [
@@ -5846,7 +5924,7 @@
         "forceReplication": true
       }
     },
-    "race_wp_v1_049.11": {
+    "race_wp_v1_056": {
       "type": "Sphere",
       "tm": [
         [
@@ -5875,7 +5953,7 @@
         "forceReplication": true
       }
     },
-    "race_wp_v1_049.12": {
+    "race_wp_v1_057": {
       "type": "Sphere",
       "tm": [
         [
@@ -5904,7 +5982,7 @@
         "forceReplication": true
       }
     },
-    "race_wp_v1_049.13": {
+    "race_wp_v1_058": {
       "type": "Sphere",
       "tm": [
         [
@@ -5933,7 +6011,7 @@
         "forceReplication": true
       }
     },
-    "race_wp_v1_049.14": {
+    "race_wp_v1_059": {
       "type": "Sphere",
       "tm": [
         [
@@ -5962,7 +6040,7 @@
         "forceReplication": true
       }
     },
-    "race_wp_v1_049.15": {
+    "race_wp_v1_060": {
       "type": "Sphere",
       "tm": [
         [
@@ -5991,7 +6069,7 @@
         "forceReplication": true
       }
     },
-    "race_wp_v1_049.16": {
+    "race_wp_v1_061": {
       "type": "Sphere",
       "tm": [
         [
@@ -6020,993 +6098,7 @@
         "forceReplication": true
       }
     },
-    "race_wp_v1_050": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -44.6591,
-          70.5767,
-          -533.159
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_051": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -242.303,
-          82.1165,
-          -549.645
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_052": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -452.496,
-          107.971,
-          -784.664
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_053": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -565.833,
-          105.622,
-          -1124.5
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_054": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -502.575,
-          158.913,
-          -1487.54
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_055": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -488.059,
-          202.6,
-          -1720.95
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_056": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -720.939,
-          218.637,
-          -1908.16
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_058": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -1079.66,
-          276.65,
-          -2070.52
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_059": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -1078.2,
-          293.593,
-          -2249.4
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_060": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000217321,
-          240.0,
-          -0.000015217
-        ],
-        [
-          196.596,
-          -0.00002506,
-          -137.658
-        ],
-        [
-          -137.659,
-          0.0,
-          -196.596
-        ],
-        [
-          -1089.76,
-          307.86,
-          -2429.55
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_061": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000217321,
-          240.0,
-          -0.000015217
-        ],
-        [
-          196.596,
-          -0.00002506,
-          -137.658
-        ],
-        [
-          -137.659,
-          0.0,
-          -196.596
-        ],
-        [
-          -1220.5,
-          216.669,
-          -2542.3
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
     "race_wp_v1_062": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000217321,
-          240.0,
-          -0.000015217
-        ],
-        [
-          196.596,
-          -0.00002506,
-          -137.658
-        ],
-        [
-          -137.659,
-          0.0,
-          -196.596
-        ],
-        [
-          -1539.0,
-          241.217,
-          -2657.31
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_063": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208834,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -1984.74,
-          211.35,
-          -2792.33
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_064": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208834,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -2293.15,
-          40.85,
-          -2687.55
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_067": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000217321,
-          240.0,
-          -0.000015217
-        ],
-        [
-          196.596,
-          -0.0000250601,
-          -137.658
-        ],
-        [
-          -137.659,
-          0.0,
-          -196.596
-        ],
-        [
-          -2396.85,
-          120.024,
-          -2483.95
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_068": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -2420.53,
-          163.65,
-          -2255.0
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_070": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -2568.84,
-          87.3274,
-          -2001.95
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_070.1": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -2840.85,
-          76.8391,
-          -1881.95
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_071": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -3040.61,
-          85.844,
-          -997.542
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_072": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -3386.69,
-          69.4426,
-          712.508
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_073": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -3451.7,
-          93.6,
-          1286.87
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_074": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -3466.6,
-          135.05,
-          1528.4
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_075": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -3441.29,
-          163.409,
-          1736.94
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_076": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -3393.8,
-          157.698,
-          1976.3
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_077": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -3314.97,
-          165.3,
-          2074.09
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_078": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -3230.19,
-          156.2,
-          2082.76
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_079": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -3084.35,
-          150.95,
-          2035.0
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_080": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -2962.1,
-          179.3,
-          1924.45
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_081": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -2735.75,
-          124.35,
-          1770.25
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_082": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -2280.3,
-          94.15,
-          1683.55
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_083": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -1905.75,
-          77.5489,
-          1860.55
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_084": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -1561.75,
-          99.85,
-          2169.8
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_085": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -1321.35,
-          93.15,
-          2486.1
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_086": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          -986.5,
-          100.282,
-          2837.35
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_049.17": {
       "type": "Sphere",
       "tm": [
         [
@@ -7035,7 +6127,529 @@
         "forceReplication": true
       }
     },
-    "race_wp_v1_070.2": {
+    "race_wp_v1_063": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -44.6591,
+          70.5767,
+          -533.159
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_064": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -242.303,
+          82.1165,
+          -549.645
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_065": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -452.496,
+          107.971,
+          -784.664
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_066": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -565.833,
+          105.622,
+          -1124.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_067": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -502.575,
+          158.913,
+          -1487.54
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_068": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -488.059,
+          202.6,
+          -1720.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_069": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -720.939,
+          218.637,
+          -1908.16
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_071": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -1079.66,
+          276.65,
+          -2070.52
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_072": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -1078.2,
+          293.593,
+          -2249.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_073": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000217321,
+          240.0,
+          -0.000015217
+        ],
+        [
+          196.596,
+          -0.00002506,
+          -137.658
+        ],
+        [
+          -137.659,
+          0.0,
+          -196.596
+        ],
+        [
+          -1089.76,
+          307.86,
+          -2429.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_074": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000217321,
+          240.0,
+          -0.000015217
+        ],
+        [
+          196.596,
+          -0.00002506,
+          -137.658
+        ],
+        [
+          -137.659,
+          0.0,
+          -196.596
+        ],
+        [
+          -1220.5,
+          216.669,
+          -2542.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_075": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000217321,
+          240.0,
+          -0.000015217
+        ],
+        [
+          196.596,
+          -0.00002506,
+          -137.658
+        ],
+        [
+          -137.659,
+          0.0,
+          -196.596
+        ],
+        [
+          -1539.0,
+          241.217,
+          -2657.31
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_076": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208834,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -1984.74,
+          176.1,
+          -2792.33
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_077": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208834,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -2293.15,
+          40.85,
+          -2687.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_080": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000217321,
+          240.0,
+          -0.000015217
+        ],
+        [
+          196.596,
+          -0.0000250601,
+          -137.658
+        ],
+        [
+          -137.659,
+          0.0,
+          -196.596
+        ],
+        [
+          -2396.85,
+          120.024,
+          -2483.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_081": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -2420.53,
+          163.65,
+          -2255.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_083": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -2568.84,
+          87.3274,
+          -2001.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_084": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -2840.85,
+          76.8391,
+          -1881.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_085": {
       "type": "Sphere",
       "tm": [
         [
@@ -7064,6 +6678,35 @@
         "forceReplication": true
       }
     },
+    "race_wp_v1_086": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -3040.61,
+          85.844,
+          -997.542
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
     "race_wp_v1_087": {
       "type": "Sphere",
       "tm": [
@@ -7083,9 +6726,9 @@
           -163.83
         ],
         [
-          -762.95,
-          55.6,
-          2922.35
+          -3059.35,
+          85.0,
+          -589.1
         ]
       ],
       "objLayer": 0,
@@ -7112,9 +6755,531 @@
           -163.83
         ],
         [
-          -365.9,
-          12.9,
-          2875.05
+          -2946.45,
+          85.0,
+          -130.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_089": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -2734.5,
+          85.0,
+          167.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_090": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -2460.6,
+          85.0,
+          488.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_091": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -2117.35,
+          84.25,
+          739.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_092": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -1880.45,
+          101.0,
+          876.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_093": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -1699.85,
+          79.75,
+          1092.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_094": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -1624.4,
+          75.8001,
+          1505.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_095": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -1503.05,
+          80.8,
+          1785.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_096": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -1199.45,
+          94.85,
+          1670.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_097": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -1013.5,
+          94.1498,
+          1336.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_098": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -898.7,
+          77.5496,
+          1099.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_099": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -760.95,
+          99.8499,
+          911.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_100": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -576.85,
+          93.151,
+          778.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_101": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -362.15,
+          100.282,
+          729.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_102": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -213.2,
+          112.4,
+          918.25
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_103": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -120.7,
+          108.35,
+          1263.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_104": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -152.2,
+          120.6,
+          1550.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_105": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          -118.7,
+          83.9,
+          1784.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "race_wp_v1_106": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0000181101,
+          200.0,
+          -0.0000126808
+        ],
+        [
+          163.83,
+          -0.0000208833,
+          -114.715
+        ],
+        [
+          -114.716,
+          0.0,
+          -163.83
+        ],
+        [
+          2.6,
+          36.6,
+          2121.0
         ]
       ],
       "objLayer": 0,
@@ -7146,123 +7311,7 @@
           -0.85
         ]
       ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_89": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          91.6,
-          12.9,
-          2873.35
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_90": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          297.45,
-          12.9,
-          2666.15
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_91": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          434.1,
-          12.9,
-          2417.05
-        ]
-      ],
-      "objLayer": 0,
-      "props": {
-        "forceReplication": true
-      }
-    },
-    "race_wp_v1_0001": {
-      "type": "Sphere",
-      "tm": [
-        [
-          0.0000181101,
-          200.0,
-          -0.0000126808
-        ],
-        [
-          163.83,
-          -0.0000208833,
-          -114.715
-        ],
-        [
-          -114.716,
-          0.0,
-          -163.83
-        ],
-        [
-          438.05,
-          31.7264,
-          2345.6
-        ]
-      ],
-      "objLayer": 0,
+      "objLayer": 3,
       "props": {
         "forceReplication": true
       }
@@ -7271,9 +7320,9 @@
       "type": "Sphere",
       "tm": [
         [
-          3.32214,
+          -0.345846,
           0.0,
-          -19.7222
+          -19.9971
         ],
         [
           0.0,
@@ -7281,14 +7330,14 @@
           0.0
         ],
         [
-          19.7222,
+          19.9971,
           0.0,
-          3.32214
+          -0.345846
         ],
         [
-          326.145,
-          70.9785,
-          2919.91
+          334.218,
+          70.9784,
+          2947.59
         ]
       ],
       "objLayer": 0,
@@ -7300,9 +7349,9 @@
       "type": "Sphere",
       "tm": [
         [
-          1.54914,
+          -2.12873,
           0.0,
-          -19.9399
+          -19.8864
         ],
         [
           0.0,
@@ -7310,14 +7359,14 @@
           0.0
         ],
         [
-          19.9399,
+          19.8864,
           0.0,
-          1.54914
+          -2.12873
         ],
         [
-          367.488,
-          70.9786,
-          2925.16
+          375.824,
+          70.9785,
+          2945.18
         ]
       ],
       "objLayer": 0,
@@ -7329,9 +7378,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -0.45544,
+          -4.10946,
           0.0,
-          -19.9948
+          -19.5732
         ],
         [
           0.0,
@@ -7339,14 +7388,14 @@
           0.0
         ],
         [
-          19.9948,
+          19.5732,
           0.0,
-          -0.45544
+          -4.10946
         ],
         [
-          406.438,
-          70.9785,
-          2925.08
+          414.1,
+          70.9784,
+          2937.97
         ]
       ],
       "objLayer": 0,
@@ -7358,9 +7407,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -3.27906,
+          -6.83673,
           0.0,
-          -19.7294
+          -18.7952
         ],
         [
           0.0,
@@ -7368,14 +7417,14 @@
           0.0
         ],
         [
-          19.7294,
+          18.7952,
           0.0,
-          -3.27906
+          -6.83673
         ],
         [
-          446.473,
-          70.9784,
-          2926.98
+          453.806,
+          70.9783,
+          2932.51
         ]
       ],
       "objLayer": 0,
@@ -7384,6 +7433,21 @@
       }
     }
   },
-  "objLayers": {},
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
   "wayPoints": {}
 }

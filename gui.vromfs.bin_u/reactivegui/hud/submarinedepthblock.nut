@@ -104,14 +104,15 @@ let isControlDepthAllowed = Computed(function(prev) {
 function mkGamepadShortcutImg(shortcutId, isPushed, isVisible, scale, ovr) {
   let imageComp = mkGamepadShortcutImage(shortcutId, {}, scale)
   let watch = [isVisible, isGamepad, isPushed]
+  let scaleTransitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
   return @() !isGamepad.get() ? { watch }
     : {
         watch
         key = imageComp
         vplace = ALIGN_CENTER
         children = isVisible.get() && isGamepad.get() ? imageComp : null
-        transform = { scale = isPushed.get() ? [0.8, 0.8] : [1.0, 1.0] }
-        transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+        transform = isPushed.get() ? const { scale = [0.8, 0.8] } : const { scale = [1.0, 1.0] }
+        transitions = scaleTransitions
       }.__update(ovr)
 }
 
@@ -130,6 +131,20 @@ function mkDepthSlider(scale) {
   let { height, scaleWidth, scaleImgHeight, knobSize, sliderPadding, fullWidth } = getSizes(scale)
   let inc = btnImageDepthInc(scale)
   let dec = btnImageDepthDec(scale)
+  let knobHandle = {
+    size  = knobSize
+    rendObj = ROBJ_SOLID
+    color = knobColor
+    transform = const { rotate = 45 }
+  }
+  let scaleSlider = {
+    size = [scaleWidth, height - 2 * sliderPadding + scaleWidth]
+    vplace = ALIGN_CENTER
+    rendObj = ROBJ_9RECT
+    image = Picture($"ui/gameuiskin#hud_plane_slider.avif:{scaleWidth}:{scaleImgHeight}:P")
+    texOffs = [scaleWidth, 0]
+    screenOffs = [scaleWidth, 0]
+  }
   return function() {
     let minVal = maxControlDepth.get() > 0 ? periscopeDepthCtrl.get() / maxControlDepth.get() : 0.0
     let deadZoneVal = maxControlDepth.get() > 0 ? deadZoneDepth.get() / maxControlDepth.get() : 0.0
@@ -142,12 +157,7 @@ function mkDepthSlider(scale) {
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER
       pos = [0, ph(100.0 * (wishDistClamped - minVal) / (1.0 - minVal) - 50)]
-      children = {
-        size  = [knobSize, knobSize]
-        rendObj = ROBJ_SOLID
-        color = knobColor
-        transform = { rotate = 45 }
-      }
+      children = knobHandle
     }
 
     return {
@@ -166,14 +176,7 @@ function mkDepthSlider(scale) {
         {
           size = [scaleWidth, FLEX]
           children = [
-            {
-              size = [scaleWidth, height - 2 * sliderPadding + scaleWidth]
-              vplace = ALIGN_CENTER
-              rendObj = ROBJ_9RECT
-              image = Picture($"ui/gameuiskin#hud_plane_slider.avif:{scaleWidth}:{scaleImgHeight}:P")
-              texOffs = [scaleWidth, 0]
-              screenOffs = [scaleWidth, 0]
-            }
+            scaleSlider
             knob
             inc
             dec
@@ -203,13 +206,14 @@ function mkDepthSlider(scale) {
 
 function depthSliderBlock(scale) {
   let depthSlider = mkDepthSlider(scale)
+  let opacityTransitions = [
+    { prop = AnimProp.opacity, duration = 0.5, easing = InOutQuad }
+  ]
   return @() {
     watch = isControlDepthAllowed
     opacity = isControlDepthAllowed.get() ? 1 : 0.3
     children = depthSlider
-    transitions = [
-      { prop = AnimProp.opacity, duration = 0.5, easing = InOutQuad }
-    ]
+    transitions = opacityTransitions
   }
 }
 
@@ -232,7 +236,7 @@ function mkDepthSliderEditView() {
             screenOffs = [scaleWidth, 0]
           }
           {
-            size  = [knobSize, knobSize]
+            size  = knobSize
             vplace = ALIGN_CENTER
             hplace = ALIGN_CENTER
             rendObj = ROBJ_SOLID

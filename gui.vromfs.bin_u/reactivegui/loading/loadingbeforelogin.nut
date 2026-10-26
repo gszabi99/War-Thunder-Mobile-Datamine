@@ -16,16 +16,18 @@ eventbus_subscribe("shaderWarmupStatusUpdate", function(p) {
   isProgressbarVisible.set(!done)
 })
 
+let progressbarChildren = [
+  mkProgressStatusText(progressStatusText)
+  mkProgressbar(progressPercent)
+]
+
 let loadingProgressbar = @() !isProgressbarVisible.get() ? { watch = isProgressbarVisible } : {
   watch = isProgressbarVisible
   size = FLEX
   valign = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   gap = progressbarGap
-  children = [
-    mkProgressStatusText(progressStatusText)
-    mkProgressbar(progressPercent)
-  ]
+  children = progressbarChildren
 }
 
 return {

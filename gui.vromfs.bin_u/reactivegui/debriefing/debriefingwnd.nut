@@ -48,6 +48,7 @@ from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, LOOTBOX_TA
 import "%rGui/shop/missingPremiumAccWnd.nut" as showNoPremMessageIfNeed
 import "%rGui/shop/offerMissingUnitItemsMessage.nut" as offerMissingUnitItemsMessage
 from "%rGui/slotBar/slotBarState.nut" import selectedSlotIdx
+from "%rGui/squad/squadPanel.nut" import squadPanelShort
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/tutorial/tutorialConst.nut" import TUTORIAL_UNITS_RESEARCH_ID, TUTORIAL_ARSENAL_ID
 from "%rGui/unit/hangarUnit.nut" import setHangarUnit, setHangarUnitGroup
@@ -103,33 +104,39 @@ let btnSaveReplay = @() {
     )
 }
 
-let buttonDescText = @(needShowW, text) @() !needShowW.get() ? { watch = needShowW } : {
-  watch = needShowW
-  vplace = ALIGN_CENTER
-  children = {
-    maxWidth = hdpx(400)
-    halign = ALIGN_CENTER
-    rendObj = ROBJ_TEXTAREA
-    behavior = Behaviors.TextArea
-    text
-    color = 0xFFFFFFFF
+function buttonDescText(needShowW, text) {
+  let animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 1.0, easing = OutQuad, play = true }]
+  return @() !needShowW.get() ? { watch = needShowW } : {
+    watch = needShowW
+    vplace = ALIGN_CENTER
+    children = {
+      maxWidth = hdpx(400)
+      halign = ALIGN_CENTER
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      text
+      color = 0xFFFFFFFF
 
-    key = {}
-    transform = {}
-    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 1.0, easing = OutQuad, play = true }]
-  }.__update(fontSmall)
+      key = {}
+      transform = {}
+      animations
+    }.__update(fontSmall)
+  }
 }
 
-let mkBtnAppearAnim = @(needBlink, needShowW, children) @() !needShowW.get() ? { watch = needShowW } : {
-  watch = needShowW
-  children = {
-    key = {}
-    transform = {}
-    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.3, easing = OutQuad, play = true }]
-      .extend(needBlink
-        ? [{ prop = AnimProp.scale, from = [1, 1], to = [1.3, 1.3], duration = 0.5, easing = Blink, play = true }]
-        : [])
-    children
+function mkBtnAppearAnim(needBlink, needShowW, children) {
+  let animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.3, easing = OutQuad, play = true }]
+    .extend(needBlink
+      ? const [{ prop = AnimProp.scale, from = [1, 1], to = [1.3, 1.3], duration = 0.5, easing = Blink, play = true }]
+      : [])
+  return @() !needShowW.get() ? { watch = needShowW } : {
+    watch = needShowW
+    children = {
+      key = {}
+      transform = {}
+      animations
+      children
+    }
   }
 }
 
@@ -273,14 +280,16 @@ let mkNextGameModeInfo = @(roomInfo, prevCamp) Computed(function() {
     : { gmId = game_mode_id, isCommonBattle = false, campaign = prevCamp ?? rCampaign }
 })
 
-let mkBtnToBattlePlace = @(needShow, nextGMInfo, debrData) mkBtnAppearAnim(false, needShow,
+function mkBtnToBattlePlace(needShow, nextGMInfo, debrData) {
+  let boosterBtn = (debrData?.unit?.isFake ?? false) ? null : boostersListActive("debriefing")
+  return mkBtnAppearAnim(false, needShow,
   function() {
     let { isCustomOfflineBattle = false, unit = null, mission = null } = debrData
     let { gmId, isCommonBattle, campaign } = nextGMInfo.get()
-    let { name = null, isFake = false } = unit
+    let { name = null } = unit
     let children = []
-    if (!isFake)
-      children.append(boostersListActive("debriefing"))
+    if (boosterBtn != null)
+      children.append(boosterBtn)
     return {
       watch = [isNextBattleNewbieOffline, isInSquad, isSquadLeader, nextGMInfo, shouldStartNewbieSingleOnline]
       flow = FLOW_HORIZONTAL
@@ -294,6 +303,7 @@ let mkBtnToBattlePlace = @(needShow, nextGMInfo, debrData) mkBtnAppearAnim(false
         : null
     }
   })
+}
 
 let btnNextTab = function() {
   let res = { watch = [ isDebriefingAnimFinished, nextDebrTabId ] }
@@ -340,6 +350,28 @@ function debriefingWnd() {
   let tabsShowTime = debrTabsInfo.filter(@(v) v.needAutoAnim).map(@(v)  { id = v.id, timeShow = v.timeShow })
   let debrAnimTime = tabsShowTime.reduce(@(res, v) res + v.timeShow, 0)
   debrTabsShowTime.set(tabsShowTime)
+  let tapListenerComp = tapListener(debrTabsInfo)
+  let debrEmpty = mkDebriefingEmpty(debrData)
+  let leftFooterBlock = {
+    size = FLEX_H
+    halign = ALIGN_LEFT
+    flow = FLOW_HORIZONTAL
+    gap = footerGap
+    children = [
+      researchedUnit != null || needForceQuitToHangar || isFirstBattleRewardPart ? null
+        : hasUnitLevelUp ? mkBtnUpgradeUnit(needShowBtns_Unit, campaign)
+        : {
+            flow = FLOW_HORIZONTAL
+            gap = footerGap
+            children = [
+              mkBtnToHangar(needShowBtns_Final, debrData, false, unlockedReward)
+              isCustomOfflineBattle ? mkBtnToOfflineBattles(needShowBtns_Final, debrData) : null
+            ]
+          },
+      mkBtnAppearAnim(false, needShowBtns_Final, btnSaveReplay)
+    ]
+  }
+  let btnToBattlePlace = mkBtnToBattlePlace(needShowBtns_Final, mkNextGameModeInfo(roomInfo, campaign), debrData)
 
   function reinitScene() {
     if (!needReinitScene.get())
@@ -373,23 +405,27 @@ function debriefingWnd() {
     children = [
       @() {
         watch = isDebriefingAnimFinished
-        children = !isDebriefingAnimFinished.get() ? null : tapListener(debrTabsInfo)
+        children = !isDebriefingAnimFinished.get() ? null : tapListenerComp
       }
       {
         size = FLEX
-        flow = FLOW_VERTICAL
-        gap = footerGap
         padding = [0, 0, footerHeight + footerGap, 0]
-        children = @() {
-          watch = curDebrTabId
-          size = FLEX
-          halign = ALIGN_CENTER
-          children = debrTabComps?[curDebrTabId.get()] ?? mkDebriefingEmpty(debrData)
-        }
+        children = [
+          @() {
+            watch = curDebrTabId
+            size = FLEX
+            halign = ALIGN_CENTER
+            children = debrTabComps?[curDebrTabId.get()] ?? debrEmpty
+          }
+          {
+            hplace = ALIGN_RIGHT
+            children = squadPanelShort
+          }
+        ]
       }
       @() {
         watch = isDebriefingAnimFinished
-        children = isDebriefingAnimFinished.get() ? null : tapListener(debrTabsInfo)
+        children = isDebriefingAnimFinished.get() ? null : tapListenerComp
       }
       debriefingTabBar(debrData, debrTabsInfo)
       
@@ -400,25 +436,7 @@ function debriefingWnd() {
         valign = ALIGN_BOTTOM
         flow = FLOW_HORIZONTAL
         children = [
-          {
-            size = FLEX_H
-            halign = ALIGN_LEFT
-            flow = FLOW_HORIZONTAL
-            gap = footerGap
-            children = [
-              researchedUnit != null || needForceQuitToHangar || isFirstBattleRewardPart ? null
-                : hasUnitLevelUp ? mkBtnUpgradeUnit(needShowBtns_Unit, campaign)
-                : {
-                    flow = FLOW_HORIZONTAL
-                    gap = footerGap
-                    children = [
-                      mkBtnToHangar(needShowBtns_Final, debrData, false, unlockedReward)
-                      isCustomOfflineBattle ? mkBtnToOfflineBattles(needShowBtns_Final, debrData) : null
-                    ]
-                  },
-              mkBtnAppearAnim(false, needShowBtns_Final, btnSaveReplay)
-            ]
-          }
+          leftFooterBlock
           {
             size = FLEX_H
             halign = ALIGN_RIGHT
@@ -434,9 +452,7 @@ function debriefingWnd() {
                   ]
                 : isFirstBattleRewardPart ? [mkBtnNewUnitResearched(needShowBtns_Campaign, researchedUnit)]
                 : hasUnitLevelUp && countUpgradeButtonPushed.get() < minCountUpgradeButtonPushed ? []
-                : [
-                    mkBtnToBattlePlace(needShowBtns_Final, mkNextGameModeInfo(roomInfo, campaign), debrData)
-                  ]
+                : [btnToBattlePlace]
               ).append(btnNextTab)  
             }
           }

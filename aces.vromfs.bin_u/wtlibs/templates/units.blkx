@@ -150,6 +150,17 @@
     "ammo_slots__numAmmo:list<ip2>": {},
     "ammo_slots__node": {}
   },
+  "unit_aps": {
+    "_use": "replicating",
+    "_group": {
+      "_replicate": true,
+      "_track": true,
+      "aps__rearmState": 3,
+      "aps__timeToRearm": -1.0,
+      "aps__shotCountRemain:list<i>": {},
+      "aps__timeToReady:list<r>": {}
+    }
+  },
   "tank_engine": {
     "_use": "replicating",
     "tank_engine__startSoundDelayTimer": -1.0,
@@ -166,7 +177,8 @@
       {
         "_replicate": true,
         "tank_engine__overheat": false,
-        "tank_engine__isWorking": true
+        "tank_engine__isWorking": true,
+        "apu__autoEnabled": true
       },
       {
         "_tags": "server",
@@ -770,6 +782,7 @@
     "vehicle_net_phys": {},
     "humanAdditionalCollisionChecks:tag": {},
     "unit_tag__tank:tag": {},
+    "unit_tag__ground_vehicle:tag": {},
     "unit_tag__gm:tag": {},
     "mods:list<t>": {
       "mod": [
@@ -853,6 +866,7 @@
     "unit_storage__tank": {},
     "vehicle_net_phys": {},
     "unit_tag__tank:tag": {},
+    "unit_tag__ground_vehicle:tag": {},
     "unit_tag__gm:tag": {}
   },
   "simple_ship": {
@@ -887,6 +901,7 @@
     ],
     "unit_storage__light_vehicle": {},
     "unit_tag__light_vehicle:tag": {},
+    "unit_tag__ground_vehicle:tag": {},
     "unit_tag__gm:tag": {}
   },
   "fortification": {

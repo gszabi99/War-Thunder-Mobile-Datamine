@@ -2,7 +2,6 @@ from "%globalsDarg/darg_library.nut" import *
 
 let allStages = [
   "stageAuth.nut"
-  "stageUpdateGame.nut"
   "stageMatching.nut"
   "stageContacts.nut"
   "stageProfile.nut"

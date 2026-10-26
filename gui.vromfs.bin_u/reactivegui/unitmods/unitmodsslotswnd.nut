@@ -231,6 +231,7 @@ function mkBeltSlotContent(weapon, idx) {
   let gunCount = Computed(@() equippedWeaponIdCount.get()?[weapon.weaponId] ?? 0)
   let isUnseen = Computed(@() curUnseenMods.get()?[idx]
     .findindex(@(_, mod) mod in (beltWeapons.get()?[idx].bulletSets ?? {})) != null)
+  let unseenIndicator = mkUnseenModIndicator(isUnseen)
   return @() {
     watch = [beltId, gunCount, isUnseen]
     size = [FLEX, tabH]
@@ -239,8 +240,8 @@ function mkBeltSlotContent(weapon, idx) {
       : [
           mkBeltImage(weapon.bulletSets?[beltId.get()].bullets ?? [])
           mkSlotText(getWeaponShortNameWithCount(weapon.__merge({ count = gunCount.get() })))
-          mkSlotText(getBulletBeltShortName(beltId.get()), { vplace = ALIGN_BOTTOM, halign = ALIGN_LEFT })
-          mkUnseenModIndicator(isUnseen)
+          mkSlotText(getBulletBeltShortName(beltId.get()), const { vplace = ALIGN_BOTTOM, halign = ALIGN_LEFT })
+          unseenIndicator
         ]
   }
 }
@@ -317,7 +318,7 @@ let notUsedCurGunInfo = panelBg.__merge({
     behavior = Behaviors.TextArea
     text = curBeltWeapon.get() == null ? ""
       : "\n".concat(
-          getWeaponShortNameWithCount(curBeltWeapon.get().__merge({ count = 0 })),
+          getWeaponShortNameWithCount(curBeltWeapon.get().__merge(const { count = 0 })),
           loc("weaponry/hint/needToInstallSecondaryGun")
         )
      color = commonTextColor

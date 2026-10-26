@@ -89,12 +89,12 @@ let hints = [
     pos = mkSizeByParent([right, 270 - borderOffs])
   }
   {
-    key = "J:X"
+    key = "J:A"
     lines = mkLines([680, 280, right, 340])
     pos = mkSizeByParent([right, 340 - borderOffs])
   }
   {
-    key = "J:A"
+    key = "J:X"
     lines = mkLines([620, 240, 650, 300, right , 410])
     pos = mkSizeByParent([right, 410 - borderOffs])
   }

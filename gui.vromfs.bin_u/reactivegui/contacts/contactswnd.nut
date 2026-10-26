@@ -1,11 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%appGlobals/squadState.nut" import squadApplications, isSquadLeader
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/gradientDefComps.nut" import headerGradientBg
+import "%rGui/contacts/clanSquadApplicationsScene.nut" as clanSquadApplicationsScene
 from "%rGui/contacts/contactActions.nut" import CANCEL_INVITE, REMOVE_FROM_FRIENDS, ADD_TO_BLACKLIST,
   REMOVE_FROM_BLACKLIST, INVITE_TO_SQUAD, PROFILE_VIEW
 from "%rGui/contacts/contactLists.nut" import friendsUids, myRequestsUids, requestsToMeUids, myBlacklistUids
-from "%rGui/contacts/contactsState.nut" import isContactsOpened, SEARCH_TAB, FRIENDS_TAB, SQUAD_TAB, contactsOpenTabId
+from "%rGui/contacts/contactsState.nut" import isContactsOpened, SEARCH_TAB, FRIENDS_TAB, SQUAD_TAB, contactsOpenTabId,
+  SQUAD_APPLICATIONS_TAB
 from "%rGui/contacts/mkContactActionBtn.nut" import mkContactActionBtn, mkContactActionBtnPrimary
 from "%rGui/contacts/mkContactListScene.nut" import mkContactListScene
 import "%rGui/contacts/mkContactResponse.nut" as friendRequestToMeResponse
@@ -66,6 +69,14 @@ let tabs = [
     content = squadContactsScene
     isFullWidth = true
     isVisible = Computed(@() invitationsUids.get().len() > 0)
+  }
+  {
+    id = SQUAD_APPLICATIONS_TAB
+    locId = "clan/squad/applications"
+    image = "ui/gameuiskin#clan_squad_applications.svg"
+    content = clanSquadApplicationsScene
+    isFullWidth = true
+    isVisible = Computed(@() squadApplications.get().len() > 0 && isSquadLeader.get())
   }
   {
     locId = "contacts/block"

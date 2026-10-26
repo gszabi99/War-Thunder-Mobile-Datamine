@@ -47,7 +47,42 @@
           "killOutOfBattleArea": false,
           "approachWarning": false,
           "area": "@battlearea_exclude_squad_name",
-          "team": "Both"
+          "team": "Both",
+          "mapVisibilityDistance": 0.0
+        }
+      },
+      "else_actions": {}
+    },
+    "init_battlearea_exclude_far": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "@battlearea_exclude_far_squad_name",
+          "type": "squad"
+        }
+      },
+      "actions": {
+        "missionBattleArea": {
+          "air": false,
+          "ground": true,
+          "mapArea": false,
+          "airMapArea": false,
+          "killArea": true,
+          "detectionArea": false,
+          "killOutOfBattleArea": false,
+          "approachWarning": true,
+          "area": "@battlearea_exclude_far_squad_name",
+          "team": "Both",
+          "mapVisibilityDistance": -1.0
         }
       },
       "else_actions": {}
@@ -58,7 +93,8 @@
     "is_enabled": true
   },
   "variables": {
-    "battlearea_exclude_squad_name": "battlearea_exclude_squad"
+    "battlearea_exclude_squad_name": "battlearea_exclude_squad",
+    "battlearea_exclude_far_squad_name": "battlearea_exclude_far_squad"
   },
   "dialogs": {},
   "airfields": {},

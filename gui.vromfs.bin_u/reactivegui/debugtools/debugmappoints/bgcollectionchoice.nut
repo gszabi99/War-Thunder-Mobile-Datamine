@@ -9,7 +9,7 @@ from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
 let imgSize = evenPx(180)
 const gap = hdpxi(10)
 const borderWidth = hdpxi(2)
-let footerHeight = hdpx(30)
+const footerHeight = hdpx(30)
 let cardWidth = imgSize + 2 * borderWidth
 let cardHeight = cardWidth + footerHeight
 let maxColumns = (sw(100).tointeger() - gap) / (cardWidth + gap)
@@ -20,14 +20,22 @@ let ip2ToArr = @(p) [p.x.tointeger(), p.y.tointeger()]
 function mkCard(id, elem, onSelect) {
   let stateFlags = Watched(0)
   let image = Picture($"{elem.img}:0:P")
+  let onElemState = withTooltip(stateFlags, id, @() id)
+  let onDetach = tooltipDetach(stateFlags)
+  let cardImage = {
+    size = imgSize
+    rendObj = ROBJ_IMAGE
+    image
+    keepAspect = true
+  }
   return @() {
     watch = stateFlags
     key = id
     size = [cardWidth, cardHeight]
 
     behavior = Behaviors.Button
-    onElemState = withTooltip(stateFlags, id, @() id)
-    onDetach = tooltipDetach(stateFlags)
+    onElemState
+    onDetach
     onClick = @() onSelect(elem, ip2ToArr(image.getLoadedPicSize()))
 
     flow = FLOW_VERTICAL
@@ -39,12 +47,7 @@ function mkCard(id, elem, onSelect) {
         fillColor = stateFlags.get() & S_HOVER ? 0xFF000010 : 0xFF8080A0
         borderColor = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
         borderWidth
-        children = {
-          size = imgSize
-          rendObj = ROBJ_IMAGE
-          image
-          keepAspect = true
-        }
+        children = cardImage
       }
       {
         size = FLEX

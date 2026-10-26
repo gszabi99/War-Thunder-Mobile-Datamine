@@ -22,7 +22,7 @@ const itemH = hdpx(40)
 const itemsGap = hdpx(10)
 const itemBlinkScale = 1.2
 
-let getLevelUnlockLineAnimTime = @(count) count == 0 ? 0
+let getLevelUnlockLineAnimTime = @[pure, nodiscard](count) count == 0 ? 0
   : min(levelUnlockLineTime, levelUnlockLinesTotalTimeMax / count)
 
 

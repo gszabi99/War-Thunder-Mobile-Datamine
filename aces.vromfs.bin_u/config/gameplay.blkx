@@ -3150,6 +3150,9 @@
       "treesNonTransparencyMult": 0.25
     }
   },
+  "accelControl": {
+    "useVelocityFrameRefMatrix": true
+  },
   "fmConstants": {
     "oilLeakSpeed": 0.002381,
     "oilLeakTime": [
@@ -4513,7 +4516,110 @@
       "pickupFxName": "misc_markers_pickup",
       "pickupFxScale": 1.0,
       "rewards": {
-        "air_speed_boost_percent": 600
+        "air_speed_boost_percent": 450
+      }
+    },
+    "airRaceRandom": {
+      "fxName": "misc_markers_booster_question",
+      "fxScale": 1.0,
+      "pickupFxName": "misc_markers_pickup",
+      "pickupFxScale": 1.0,
+      "rewardsRace": {
+        "1": {
+          "drop01": {
+            "weight": 0.5,
+            "hintLocId": "hints/race/pickup/oilSpill",
+            "repair_percent": 100,
+            "ammo_percent": 100,
+            "oil_spill": {
+              "duration": 15,
+              "strength": 1.0
+            }
+          },
+          "drop02": {
+            "weight": 0.5,
+            "hintLocId": "hints/race/pickup/fuel",
+            "fuel_percent": 100,
+            "repair_percent": 100
+          }
+        },
+        "2-3": {
+          "air_speed_boost_percent": 120,
+          "drop01": {
+            "weight": 0.2,
+            "hintLocId": "hints/race/pickup/missile",
+            "repair_percent": 100,
+            "add_pickup_ammo": 1
+          },
+          "drop02": {
+            "weight": 0.2,
+            "hintLocId": "hints/race/pickup/oilSpill",
+            "repair_percent": 100,
+            "ammo_percent": 100,
+            "oil_spill": {
+              "duration": 15,
+              "strength": 1.0
+            }
+          },
+          "drop03": {
+            "weight": 0.5,
+            "hintLocId": "hints/race/pickup/fuel",
+            "fuel_percent": 100,
+            "repair_percent": 100
+          }
+        },
+        "4-6": {
+          "air_speed_boost_percent": 135,
+          "drop01": {
+            "weight": 0.3,
+            "hintLocId": "hints/race/pickup/missile",
+            "repair_percent": 100,
+            "add_pickup_ammo": 1
+          },
+          "drop02": {
+            "weight": 0.3,
+            "hintLocId": "hints/race/pickup/oilSpill",
+            "repair_percent": 100,
+            "ammo_percent": 100,
+            "oil_spill": {
+              "duration": 15,
+              "strength": 1.0
+            }
+          },
+          "drop03": {
+            "weight": 0.3,
+            "hintLocId": "hints/race/pickup/fuel",
+            "fuel_percent": 100,
+            "repair_percent": 100
+          }
+        },
+        "7-8": {
+          "air_speed_boost_percent": 150,
+          "drop01": {
+            "weight": 0.7,
+            "hintLocId": "hints/race/pickup/missile",
+            "repair_percent": 100,
+            "add_pickup_ammo": 1
+          },
+          "drop02": {
+            "weight": 0.3,
+            "hintLocId": "hints/race/pickup/fuel",
+            "fuel_percent": 100,
+            "repair_percent": 100
+          }
+        }
+      }
+    },
+    "airOilSpill": {
+      "fxName": "misc_markers_booster",
+      "fxScale": 1.0,
+      "pickupFxName": "misc_markers_pickup",
+      "pickupFxScale": 1.0,
+      "rewards": {
+        "oil_spill": {
+          "duration": 15,
+          "strength": 1.0
+        }
       }
     }
   },

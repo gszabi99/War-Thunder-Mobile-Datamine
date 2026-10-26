@@ -121,6 +121,20 @@ let mkCurrencyComp = @(value, currencyId, isInactive) {
 function mkSlotBtn(slot, idx) {
   let stateFlags = Watched(0)
   let isSelected = Computed(@() selIndexes.get().indexof(idx) != null)
+  let unitIcon = {
+    size = FLEX
+    rendObj = ROBJ_IMAGE
+    image = bgUnit
+    children = [
+      {
+        size = slotSize
+        rendObj = ROBJ_IMAGE
+        keepAspect = true
+        image = Picture($"ui/gameuiskin/upgrades_tank_crew_icon.avif:{slotSize[0]}:{slotSize[1]}:P")
+      }
+      mkSlotInfo(slot, idx)
+    ]
+  }
 
   return @() {
     watch = [isSelected, stateFlags]
@@ -128,22 +142,9 @@ function mkSlotBtn(slot, idx) {
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
     onClick = @() selectSlot(idx)
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     children = [
-      {
-        size = FLEX
-        rendObj = ROBJ_IMAGE
-        image = bgUnit
-        children = [
-          {
-            size = slotSize
-            rendObj = ROBJ_IMAGE
-            keepAspect = true
-            image = Picture($"ui/gameuiskin/upgrades_tank_crew_icon.avif:{slotSize[0]}:{slotSize[1]}:P")
-          }
-          mkSlotInfo(slot, idx)
-        ]
-      }
+      unitIcon
       !isSelected.get() && !(stateFlags.get() & S_HOVER) ? null
         : mkHightlightPlate(isSelected.get())
     ]
@@ -168,6 +169,12 @@ function mkSlotExp(slot) {
     }
     return res
   })
+  let expIcon = {
+    size = levelImageSize
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#experience_icon.svg:{levelImageSize}:{levelImageSize}:P")
+    color = 0xFF65BC82
+  }
   return @() {
     watch = fullSlotExp
     children = {
@@ -175,12 +182,7 @@ function mkSlotExp(slot) {
       valign = ALIGN_CENTER
       gap = hdpx(10)
       children = [
-        {
-          size = levelImageSize
-          rendObj = ROBJ_IMAGE
-          image = Picture($"ui/gameuiskin#experience_icon.svg:{levelImageSize}:{levelImageSize}:P")
-          color = 0xFF65BC82
-        }
+        expIcon
         textComp(decimalFormat(fullSlotExp.get()))
       ]
     }

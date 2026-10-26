@@ -38,6 +38,9 @@
   "minSecondaryShatterAngleFromArmor": 15.0,
   "splashPenetrationPrecheck": true,
   "shattersMinSolidArmorThicknessMult": 0.5,
+  "usedArmorOverlap": 0.1,
+  "minArmorOverlap": 0.3,
+  "maxArmorOverlap": 0.8,
   "ricochetPenetrationModifier": {
     "mod1": [
       0.0,
@@ -281,17 +284,6 @@
     }
   },
   "splash": {
-    "voxelBoxResolution": 80,
-    "minVoxelSize": 0.02,
-    "minObstacleSize": 0.02,
-    "thicknessMapEnabled": true,
-    "thicknessMapResolution": 32,
-    "thicknessMapMinVoxelSize": 0.1,
-    "thicknessMapRelLimits": [
-      0.35,
-      6.0
-    ],
-    "thicknessMapMinObstacleSize": 0.02,
     "pushOutCenter": true,
     "underwaterPenetrationScale": 1.0,
     "underwaterDamageScale": 1.0,
@@ -299,6 +291,22 @@
       1.0,
       1.0
     ],
+    "voxelMap": {
+      "voxelBoxResolution": 80,
+      "minVoxelSize": 0.02,
+      "minObstacleSize": 0.02
+    },
+    "thicknessMap": {
+      "enabled": true,
+      "resolution": 32,
+      "minVoxelSize": 0.1,
+      "relLimits": [
+        0.1,
+        6.0
+      ],
+      "minObstacleSize": 0.02,
+      "faceNormalMinCosine": 0.1
+    },
     "squashArmorAnglesScale": {
       "p0": [
         0.0,

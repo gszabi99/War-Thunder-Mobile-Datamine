@@ -36,6 +36,7 @@ let stateByValue = @(cur, vMax, crit, vMin) cur < vMin ? KILLED
 function mkCommonDebuff(icon, scale, textW, stateW) {
   let size = scaleEven(iconSize, scale)
   let font = getScaledFont(fontVeryTiny, scale)
+  let iconPic = Picture($"{icon}:{size}:{size}")
   return @() {
     watch = stateW
     flow = FLOW_HORIZONTAL
@@ -43,9 +44,9 @@ function mkCommonDebuff(icon, scale, textW, stateW) {
     children = stateW.get() == HIDDEN ? null
       : [
           {
-            size = [size, size]
+            size = size
             rendObj = ROBJ_IMAGE
-            image = Picture($"{icon}:{size}:{size}")
+            image = iconPic
             color = iconColor?[stateW.get()] ?? defIconColor
           }
           @() {

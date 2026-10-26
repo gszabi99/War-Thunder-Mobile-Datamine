@@ -1,7 +1,7 @@
 {
   "model": "tu_14t",
   "fmFile": "fm/tu_14t.blk",
-  "MetaPartsBlk": "gamedata/flightModels/dm/metaparts/2x_engine_jet_bomber_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_bomber_metaparts.blk",
   "useTouchTargeting": true,
   "noEffectsDist": 8.0,
   "gearSinkRangeLR": 0.27,
@@ -16,7 +16,7 @@
   "engineFxMap4": 1,
   "engineFxMap5": 1,
   "disableExhaustFxIfContrailIsActive": true,
-  "overheatBlk": "gamedata/flightModels/dm/overheat.blk",
+  "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
@@ -26,7 +26,7 @@
   "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "explosion_dmBlk": "gamedata/flightModels/dm/commonExplosion.blk",
+  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "900kph_nbj",
   "fightAiBehaviour": "bomber",
   "DamageParts": {
@@ -2707,46 +2707,46 @@
     "preset": [
       {
         "name": "tu_14t_default",
-        "blk": "gamedata/flightModels/weaponPresets/empty.blk"
+        "blk": "gameData/FlightModels/weaponPresets/empty.blk"
       },
       {
         "name": "tu_14t_fab100",
-        "blk": "gamedata/flightModels/weaponPresets/tu_14t_fab100.blk"
+        "blk": "gameData/FlightModels/weaponPresets/tu_14t_fab100.blk"
       },
       {
         "name": "tu_14t_fab250",
-        "blk": "gamedata/flightModels/weaponPresets/tu_14t_fab250.blk"
+        "blk": "gameData/FlightModels/weaponPresets/tu_14t_fab250.blk"
       },
       {
         "name": "tu_14t_fab500",
-        "blk": "gamedata/flightModels/weaponPresets/tu_14t_fab500.blk"
+        "blk": "gameData/FlightModels/weaponPresets/tu_14t_fab500.blk"
       },
       {
         "name": "tu_14t_fab1000",
-        "blk": "gamedata/flightModels/weaponPresets/tu_14t_fab1000.blk",
+        "blk": "gameData/FlightModels/weaponPresets/tu_14t_fab1000.blk",
         "reqModification": "kd4_181"
       },
       {
         "name": "tu_14t_fab1500",
-        "blk": "gamedata/flightModels/weaponPresets/tu_14t_fab1500.blk"
+        "blk": "gameData/FlightModels/weaponPresets/tu_14t_fab1500.blk"
       },
       {
         "name": "tu_14t_fab3000",
-        "blk": "gamedata/flightModels/weaponPresets/tu_14t_fab3000.blk"
+        "blk": "gameData/FlightModels/weaponPresets/tu_14t_fab3000.blk"
       },
       {
         "name": "tu_14t_torpedo",
-        "blk": "gamedata/flightModels/weaponPresets/tu_14t_torpedo.blk",
+        "blk": "gameData/FlightModels/weaponPresets/tu_14t_torpedo.blk",
         "reqModification": "der4_47bmt"
       },
       {
         "name": "tu_14t_torpedo_45_54vt",
-        "blk": "gamedata/flightModels/weaponPresets/tu_14t_torpedo_45_54vt.blk",
+        "blk": "gameData/FlightModels/weaponPresets/tu_14t_torpedo_45_54vt.blk",
         "reqModification": "der4_47bmt"
       },
       {
         "name": "tu_14t_default",
-        "blk": "gamedata/flightModels/weaponPresets/tu_14t_default.blk",
+        "blk": "gameData/FlightModels/weaponPresets/tu_14t_default.blk",
         "tags": {
           "aux": true
         }
@@ -2775,7 +2775,7 @@
           "Weapon": [
             {
               "trigger": "cannon",
-              "blk": "gamedata/weapons/cannonNR23.blk",
+              "blk": "gameData/Weapons/cannonNR23.blk",
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "cannon1_dm",
@@ -2789,7 +2789,7 @@
             },
             {
               "trigger": "cannon",
-              "blk": "gamedata/weapons/cannonNR23.blk",
+              "blk": "gameData/Weapons/cannonNR23.blk",
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "cannon2_dm",
@@ -2803,7 +2803,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gamedata/weapons/cannonNR23_turret.blk",
+              "blk": "gameData/Weapons/cannonNR23_turret.blk",
               "emitter": "gun1",
               "flash": "flare3",
               "shell": "emtr_shellrejection1",
@@ -2830,7 +2830,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gamedata/weapons/cannonNR23_turret.blk",
+              "blk": "gameData/Weapons/cannonNR23_turret.blk",
               "emitter": "gun1",
               "flash": "flare4",
               "shell": "emtr_shellrejection2",
@@ -2867,112 +2867,112 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_4",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_8",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_6",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_2",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_12",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_16",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_14",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_10",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_9",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_13",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_15",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_11",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_1",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_5",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_7",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab50.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab50.blk",
                 "separate": true,
                 "emitter": "su_fab50_3",
                 "bullets": 1
@@ -2985,112 +2985,112 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_12",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_4",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_2",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_10",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_16",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_8",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_6",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_14",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_13",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_5",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_7",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_15",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_9",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_1",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_3",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_100m_43.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_100m_43.blk",
                 "separate": true,
                 "emitter": "su_fab100_11",
                 "bullets": 1
@@ -3103,73 +3103,73 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_250m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_250m_46.blk",
                 "emitter": "fab_250m_46_002",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_250m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_250m_46.blk",
                 "emitter": "fab_250m_46_004",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_250m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_250m_46.blk",
                 "emitter": "fab_250m_46_005",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_250m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_250m_46.blk",
                 "emitter": "fab_250m_46_006",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_250m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_250m_46.blk",
                 "emitter": "fab_250m_46_003",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_250m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_250m_46.blk",
                 "emitter": "fab_250m_46_001",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_250m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_250m_46.blk",
                 "emitter": "fab_250m_46_008",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_250m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_250m_46.blk",
                 "emitter": "fab_250m_46_010",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_250m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_250m_46.blk",
                 "emitter": "fab_250m_46_011",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_250m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_250m_46.blk",
                 "emitter": "fab_250m_46_012",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_250m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_250m_46.blk",
                 "emitter": "fab_250m_46_009",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_250m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_250m_46.blk",
                 "emitter": "fab_250m_46_007",
                 "bullets": 1
               }
@@ -3181,37 +3181,37 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_500m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_500m_46.blk",
                 "emitter": "fab_500m_46_002",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_500m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_500m_46.blk",
                 "emitter": "fab_500m_46_004",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_500m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_500m_46.blk",
                 "emitter": "fab_500m_46_005",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_500m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_500m_46.blk",
                 "emitter": "fab_500m_46_006",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_500m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_500m_46.blk",
                 "emitter": "fab_500m_46_003",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_500m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_500m_46.blk",
                 "emitter": "fab_500m_46_001",
                 "bullets": 1
               }
@@ -3222,7 +3222,7 @@
             "name": "su_fab1000",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gamedata/weapons/bombguns/su_fab1000.blk",
+              "blk": "gameData/Weapons/bombGuns/su_fab1000.blk",
               "emitter": "su_fab_1000sv_1",
               "bullets": 1
             }
@@ -3233,13 +3233,13 @@
             "Weapon": [
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_1500m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_1500m_46.blk",
                 "emitter": "su_fab1000_1",
                 "bullets": 1
               },
               {
                 "trigger": "bombs",
-                "blk": "gamedata/weapons/bombguns/su_fab_1500m_46.blk",
+                "blk": "gameData/Weapons/bombGuns/su_fab_1500m_46.blk",
                 "emitter": "su_fab1000_2",
                 "bullets": 1
               }
@@ -3250,7 +3250,7 @@
             "name": "su_fab_3000m_46",
             "Weapon": {
               "trigger": "bombs",
-              "blk": "gamedata/weapons/bombguns/su_fab_3000m_46.blk",
+              "blk": "gameData/Weapons/bombGuns/su_fab_3000m_46.blk",
               "emitter": "fab_3000m",
               "bullets": 1
             }
@@ -3260,7 +3260,7 @@
             "name": "su_45_36man_1952_torpedo",
             "Weapon": {
               "trigger": "torpedoes",
-              "blk": "gamedata/weapons/torpedoes/su_45_36man_1952_torpedo.blk",
+              "blk": "gameData/weapons/torpedoes/su_45_36man_1952_torpedo.blk",
               "emitter": "torp",
               "bullets": 1
             }

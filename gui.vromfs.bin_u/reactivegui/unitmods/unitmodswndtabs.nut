@@ -42,6 +42,7 @@ function tabData(tab, ovr = {}) {
 
   let hasModNotOwn = Computed(@() !isLocked.get() && !isOwn.get() && cost.get().price == 0)
   let isPurchased = Computed(@() isDisplayedAsPurchased.get() || unitMods.get()?[tabModName.get()] != null)
+  let fallbackTabImage = Picture(defImage)
 
   return {
     id
@@ -55,7 +56,7 @@ function tabData(tab, ovr = {}) {
           size = FLEX
           rendObj = ROBJ_IMAGE
           image = tabModName.get() == null ? null : Picture($"ui/gameuiskin/{tabModName.get()}.avif:0:P")
-          fallbackImage = Picture(defImage)
+          fallbackImage = fallbackTabImage
           keepAspect = KEEP_ASPECT_FILL
           imageHalign = ALIGN_LEFT
           imageValign = ALIGN_BOTTOM

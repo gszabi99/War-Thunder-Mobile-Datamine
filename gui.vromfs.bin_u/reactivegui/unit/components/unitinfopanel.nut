@@ -316,6 +316,12 @@ function unitPriceBlock(unit) {
       || isPremium)
     return null
   let price = Computed(@() getUnitAnyPrice(unit, unitDiscounts.get()))
+  let priceLabel = mkText({ text = loc("unitsTree/purchasePrice"), size = FLEX_H })
+  let priceCurrencyStyle = CS_COMMON.__merge({
+    iconSize = bonusTinySize
+    fontStyle = fontVeryTinyAccented
+    iconGap = hdpx(6)
+  })
   return @() price.get()?.price
     ? {
       watch = [serverConfigs, campMyUnits, price]
@@ -323,12 +329,8 @@ function unitPriceBlock(unit) {
       margin = const [statsGap, 0, 0, 0]
       flow = FLOW_HORIZONTAL
       children = [
-        mkText({ text = loc("unitsTree/purchasePrice"), size = FLEX_H })
-        mkCurrencyComp(price.get().price, price.get().currencyId, CS_COMMON.__merge({
-          iconSize = bonusTinySize
-          fontStyle = fontVeryTinyAccented
-          iconGap = hdpx(6)
-        }))
+        priceLabel
+        mkCurrencyComp(price.get().price, price.get().currencyId, priceCurrencyStyle)
       ]
     }
     : { watch = price }
@@ -507,6 +509,7 @@ function calcPadding(c) {
 function unitInfoPanel(ovr = {}, headerCtor = mkUnitTitle, unit = hangarUnit, bg = panelBg) {
   let attrPreset = mkAttrPreset(unit)
   let attrLevels = mkAttrLevels(unit)
+  let headerSpacer = { size = const [0, hdpx(15)] }
   return function() {
     if (unit.get() == null)
       return { watch = unit }
@@ -520,14 +523,14 @@ function unitInfoPanel(ovr = {}, headerCtor = mkUnitTitle, unit = hangarUnit, bg
       halign = ALIGN_RIGHT
       children = [
         unitHeaderBlock(unit.get(), headerCtor)
-        { size = const [0, hdpx(15)] }
+        headerSpacer
         unitClassBlock(unit.get())
         unitMRankBlock(unit.get())
         unitRewardsBlock(unit.get(), loc("attrib_section/battleRewards"))
         unit.get()?.isUpgraded || unit.get()?.isPremium || !unit.get()?.isUpgradeable
           ? null
           : unitRewardsBlock(unit.get().__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
-            { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
+            const { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
         unit.get()?.isUpgraded || unit.get()?.isPremium
           ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"))
           : null
@@ -546,7 +549,7 @@ function unitInfoPanel(ovr = {}, headerCtor = mkUnitTitle, unit = hangarUnit, bg
 
     let maxHeight = ovr?.maxHeight ?? bg?.maxHeight
     if (isNumeric(maxHeight)) {
-      let height = calc_comp_size(res.__merge({ maxHeight = null }))[1]
+      let height = calc_comp_size(res.__merge(const { maxHeight = null }))[1]
       if (height > maxHeight) {
         let { onClick = null, behavior = null } = ovr
         res.children = makeVertScroll(
@@ -590,7 +593,7 @@ function unitInfoPanelFull(unit = hangarUnit, ovr = {}) {
                 unit.get()?.isUpgraded || unit.get()?.isPremium || !unit.get()?.isUpgradeable
                   ? null
                   : unitRewardsBlock(unit.get().__merge(campConfigs.get()?.gameProfile.upgradeUnitBonus ?? {}
-                    { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
+                    const { isUpgraded = true }), loc("attrib_section/upgradeBattleRewards"))
                 unit.get()?.isUpgraded || unit.get()?.isPremium
                   ? unitRewardsDailyBlock(unit.get(), loc("attrib_section/battleRewardsDaylyLimit"))
                   : null
@@ -599,7 +602,7 @@ function unitInfoPanelFull(unit = hangarUnit, ovr = {}) {
                 unitConsumablesBlock(unit.get(), itemsCfgByCampaignOrdered.get()?[unit.get()?.campaign] ?? [])
               ]
             },
-            { size = FLEX_V, isBarOutside = true })
+            const { size = FLEX_V, isBarOutside = true })
     }.__update(ovr)
   }
 }

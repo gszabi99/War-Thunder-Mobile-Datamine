@@ -388,18 +388,16 @@
       "role": "sailor",
       "crew": 29
     },
-    "sailor4": [
-      {
-        "dmPart": "compartment_04_dm",
-        "role": "sailor",
-        "crew": 29
-      },
-      {
-        "dmPart": "compartment_05_dm",
-        "role": "sailor",
-        "crew": 29
-      }
-    ],
+    "sailor4": {
+      "dmPart": "compartment_04_dm",
+      "role": "sailor",
+      "crew": 29
+    },
+    "sailor5": {
+      "dmPart": "compartment_05_dm",
+      "role": "sailor",
+      "crew": 29
+    },
     "sailor6": {
       "dmPart": "compartment_06_dm",
       "role": "sailor",
@@ -800,7 +798,6 @@
         "weaponType": "rockets",
         "emitter": "bone_rocket_33",
         "flash": "bone_rocket_33",
-        "ammoDpGenFmt": "bone_rocket_%02d_dm",
         "emitterGenRange": [
           33,
           40
@@ -820,7 +817,7 @@
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "reloadTime": 16.0,
+        "reloadTime": 15.0,
         "bulletsCartridge": 4,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
@@ -858,7 +855,6 @@
         "weaponType": "rockets",
         "emitter": "bone_rocket_01",
         "flash": "bone_rocket_01",
-        "ammoDpGenFmt": "bone_rocket_%02d_dm",
         "emitterGenRange": [
           1,
           16
@@ -920,7 +916,6 @@
         "weaponType": "rockets",
         "emitter": "bone_rocket_17",
         "flash": "bone_rocket_17",
-        "ammoDpGenFmt": "bone_rocket_%02d_dm",
         "emitterGenRange": [
           17,
           32
@@ -941,7 +936,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "speedYaw": 0.0,
-        "reloadTime": 16.0,
+        "reloadTime": 14.0,
         "bulletsCartridge": 6,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
@@ -985,7 +980,6 @@
           3
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -1029,7 +1023,6 @@
           6
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -1481,7 +1474,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_33",
               "flash": "bone_rocket_33",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 33,
                 40
@@ -1501,7 +1493,7 @@
               ],
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "reloadTime": 16.0,
+              "reloadTime": 15.0,
               "bulletsCartridge": 4,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1539,7 +1531,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_01",
               "flash": "bone_rocket_01",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 1,
                 16
@@ -1601,7 +1592,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_17",
               "flash": "bone_rocket_17",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 17,
                 32
@@ -1622,7 +1612,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 0.0,
-              "reloadTime": 16.0,
+              "reloadTime": 14.0,
               "bulletsCartridge": 6,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1666,7 +1656,6 @@
                 3
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -1710,7 +1699,6 @@
                 6
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -2138,7 +2126,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_33",
               "flash": "bone_rocket_33",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 33,
                 40
@@ -2158,7 +2145,7 @@
               ],
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "reloadTime": 16.0,
+              "reloadTime": 15.0,
               "bulletsCartridge": 4,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -2196,7 +2183,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_01",
               "flash": "bone_rocket_01",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 1,
                 16
@@ -2258,7 +2244,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_17",
               "flash": "bone_rocket_17",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 17,
                 32
@@ -2279,7 +2264,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 0.0,
-              "reloadTime": 16.0,
+              "reloadTime": 14.0,
               "bulletsCartridge": 6,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -2323,7 +2308,6 @@
                 3
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -2367,7 +2351,6 @@
                 6
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,

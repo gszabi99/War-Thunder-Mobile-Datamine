@@ -1,5 +1,5 @@
+import "utf8" as utf8
 from "%globalScripts/logs.nut" import *
-let utf8 = require("utf8")
 
 let whitespaceCharsAllowed = [ "\u0020" "\u00A0" ] 
 
@@ -63,9 +63,9 @@ let clearExcessiveWhitespace = @(name) "".join(getUnicodeCharsArray(name)
   .reduce(@(res, c) (c != " " || (res?[res.len() - 1] ?? " ") != " ") ? res.append(c) : res, [])
 ).strip().replace(" ", "\u00A0")
 
-return {
+return freeze({
   isNameNormallyVisible
   clearAllWhitespace
   clearExcessiveWhitespace
   getUnicodeCharsArray
-}
+})

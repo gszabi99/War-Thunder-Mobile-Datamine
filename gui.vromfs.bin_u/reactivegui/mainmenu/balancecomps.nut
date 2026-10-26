@@ -7,10 +7,12 @@ from "%appGlobals/pServer/campaign.nut" import isProfileReceived
 from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%rGui/ads/adsState.nut" import isAdsVisible
-from "%rGui/components/currencyComp.nut" import mkCurrencyComp, CS_GAMERCARD
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkCurrencyWaitComp, CS_GAMERCARD
 from "%rGui/mainMenu/balanceAnimations.nut" import mkBalanceDiffAnims, mkBalanceHiglightAnims
+from "%rGui/battlePass/battlePassState.nut" import battlePasses
 from "%rGui/shop/goodsPreviewState.nut" import GPT_PREMIUM
 from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import goodTextColor2, badTextColor2, hoverColor
 from "%rGui/textFormatByLang.nut" import decimalFormat
 
@@ -46,6 +48,9 @@ let initCurrencyBalance = @(currencyId) currencyId in visibleBalance.get()  || !
 let initItemBalance = @(itemId) itemId in visibleBalance.get() ? null
   : visibleBalance.mutate(@(v) v[itemId] <- items.get()?[itemId].count
       ?? (isProfileReceived.get() ? 0 : null))
+let initBpPointsBalance = @(bpId) bpId in visibleBalance.get() ? null
+  : visibleBalance.mutate(@(v) v[bpId] <- battlePasses.get()?[bpId].curPoints
+      ?? (isProfileReceived.get() ? 0 : null))
 
 function applyChanges(changes) {
   if (changes.len() != 0)
@@ -58,20 +63,25 @@ function applyChanges(changes) {
     })
 }
 
-local prevBalance = clone balance.get()
-balance.subscribe(function(b) {
+function getBalanceChanges(subscribePrev, globalPrev, getBalance) {
   let changes = {}
   let visBalanceApply = {}
   foreach (id, val in visibleBalance.get()) {
-    let cur = b?[id] ?? 0
+    let cur = getBalance(subscribePrev, id)
     if (val == null) {
       visBalanceApply[id] <- cur
       continue
     }
-    let diff = cur - (prevBalance?[id] ?? 0)
+    let diff = cur - getBalance(globalPrev, id)
     if (diff != 0)
       changes[id] <- { cur, diff }
   }
+  return { changes, visBalanceApply }
+}
+
+local prevBalance = clone balance.get()
+balance.subscribe(function(prev) {
+  let { changes, visBalanceApply } = getBalanceChanges(prev, prevBalance, @(bal, id) bal?[id] ?? 0)
   prevBalance = clone balance.get()
   applyChanges(changes)
   if (visBalanceApply.len() > 0)
@@ -79,20 +89,18 @@ balance.subscribe(function(b) {
 })
 
 local prevItems = clone items.get()
-items.subscribe(function(it) {
-  let changes = {}
-  let visBalanceApply = {}
-  foreach (id, val in visibleBalance.get()) {
-    let cur = it?[id].count ?? 0
-    if (val == null) {
-      visBalanceApply[id] <- cur
-      continue
-    }
-    let diff = cur - (prevItems?[id].count ?? 0)
-    if (diff != 0)
-      changes[id] <- { cur, diff }
-  }
+items.subscribe(function(prev) {
+  let { changes, visBalanceApply } = getBalanceChanges(prev, prevItems, @(item, id) item?[id].count ?? 0)
   prevItems = clone items.get()
+  applyChanges(changes)
+  if (visBalanceApply.len() > 0)
+    visibleBalance.set(visibleBalance.get().__merge(visBalanceApply))
+})
+
+local prevBattlePasses = clone battlePasses.get()
+battlePasses.subscribe(function(prev) {
+  let { changes, visBalanceApply } = getBalanceChanges(prev, prevBattlePasses, @(bp, id) bp?[id].curPoints ?? 0)
+  prevBattlePasses = clone battlePasses.get()
   applyChanges(changes)
   if (visBalanceApply.len() > 0)
     visibleBalance.set(visibleBalance.get().__merge(visBalanceApply))
@@ -149,8 +157,7 @@ function mkBalance(baseId, style, onClick, initBalance) {
   let id = Computed(@() currencyToFullId.get()?[baseId] ?? baseId)
   id.subscribe(@(v) initBalance(v))
 
-  let visCount = Computed(@() visibleBalance.get()?[id.get()]
-    ?? (isBalanceReceived.get() ? 0 : loc("leaderboards/notAvailable")))
+  let visCount = Computed(@() visibleBalance.get()?[id.get()] ?? (isBalanceReceived.get() ? 0 : null))
   let nextChange = Computed(@() isAdsVisible.get() ? null : changeOrders.get()?[id.get()][0])
   let stateFlags = Watched(0)
   let currencyOvr = {}
@@ -175,13 +182,11 @@ function mkBalance(baseId, style, onClick, initBalance) {
       }
       {
         children = [
-          @() mkCurrencyComp(visCount.get(), id.get(), style, imgChild)
-            .__update(currencyOvr,
+          @() (visCount.get() == null ? mkCurrencyWaitComp(id.get(), style, imgChild)
+              : mkCurrencyComp(visCount.get(), id.get(), style, imgChild))
+            .__update(mkPressTransitionScale(stateFlags.get()), currencyOvr,
               {
                 watch = [visCount, stateFlags, id]
-                transform = {
-                  scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1]
-                }
                 animations = mkBalanceHiglightAnims($"balance_{id.get()}")
               })
           @() {
@@ -198,15 +203,11 @@ function mkBalance(baseId, style, onClick, initBalance) {
   }
 }
 
-function mkCurrencyBalance(currencyId, onClick = null, style = CS_GAMERCARD) {
-  return mkBalance(currencyId, style, onClick, initCurrencyBalance)
-}
-
-function mkItemsBalance(itemId, onClick = null, style = CS_GAMERCARD) {
-  return mkBalance(itemId, style, onClick, initItemBalance)
-}
-
 return {
-  mkCurrencyBalance
-  mkItemsBalance
+  mkCurrencyBalance = @(currencyId, onClick = null, style = CS_GAMERCARD)
+    mkBalance(currencyId, style, onClick, initCurrencyBalance)
+  mkItemsBalance = @(itemId, onClick = null, style = CS_GAMERCARD)
+    mkBalance(itemId, style, onClick, initItemBalance)
+  mkBpPointsBalance = @(bpId, onClick = null, style = CS_GAMERCARD)
+    mkBalance(bpId, style, onClick, initBpPointsBalance)
 }

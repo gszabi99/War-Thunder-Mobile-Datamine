@@ -2191,7 +2191,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gamedata/weapons/groundModels_weapons/125mm_Type_88C_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/125mm_Type_88C_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
         "shellCasingEmitter": "emtr_shell",
@@ -2316,7 +2316,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Type86_user_machinegun.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Type86_user_machinegun.blk",
         "emitter": "bone_mg_twin",
         "flash": "emtr_mg_twin_flame",
         "defaultYaw": 0.0,
@@ -2359,7 +2359,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
-        "blk": "gamedata/weapons/groundModels_weapons/12_7mm_QJC_88A_user_machinegun.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/12_7mm_QJC_88A_user_machinegun.blk",
         "emitter": "bone_mg_aa_v_01",
         "flash": "emtr_mg_aa_flame_01",
         "barrelDP": "gun_barrel_02_dm",
@@ -2433,14 +2433,14 @@
   "weapon_presets": {
     "preset": {
       "name": "cn_ztz_96a_prot_default",
-      "blk": "gamedata/units/tankModels/weaponPresets/cn_ztz_96a_prot_default.blk"
+      "blk": "gameData/units/tankModels/weaponPresets/cn_ztz_96a_prot_default.blk"
     }
   },
   "counterMeasures": {
     "counterMeasure": [
       {
         "turretIndex": 0,
-        "blk": "gamedata/counterMeasures/jd_3_right.blk",
+        "blk": "gameData/counterMeasures/jd_3_right.blk",
         "dmPart": "countermeasure_01_dm",
         "ircmProjector": {
           "node": "countermeasure_01",
@@ -2461,7 +2461,7 @@
       },
       {
         "turretIndex": 0,
-        "blk": "gamedata/counterMeasures/jd_3_left.blk",
+        "blk": "gameData/counterMeasures/jd_3_left.blk",
         "dmPart": "countermeasure_02_dm",
         "ircmProjector": {
           "node": "countermeasure_02",
@@ -3114,7 +3114,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gamedata/weapons/groundModels_weapons/125mm_Type_88C_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/125mm_Type_88C_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame",
               "shellCasingEmitter": "emtr_shell",
@@ -3239,7 +3239,7 @@
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gamedata/weapons/groundModels_weapons/7_62mm_Type86_user_machinegun.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_Type86_user_machinegun.blk",
               "emitter": "bone_mg_twin",
               "flash": "emtr_mg_twin_flame",
               "defaultYaw": 0.0,
@@ -3282,7 +3282,7 @@
             {
               "trigger": "gunner2",
               "triggerGroup": "machinegun",
-              "blk": "gamedata/weapons/groundModels_weapons/12_7mm_QJC_88A_user_machinegun.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_QJC_88A_user_machinegun.blk",
               "emitter": "bone_mg_aa_v_01",
               "flash": "emtr_mg_aa_flame_01",
               "barrelDP": "gun_barrel_02_dm",
@@ -3354,7 +3354,7 @@
             {
               "trigger": "gunner4",
               "triggerGroup": "smoke",
-              "blk": "gamedata/weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_smoke_grenade_launcher.blk",
               "weaponType": "rockets",
               "useEmitter": true,
               "emitter": "emtr_mortar_flame_10",

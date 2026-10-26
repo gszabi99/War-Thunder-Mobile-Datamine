@@ -1,1 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45.1 45.1"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#414141;}</style></defs><polygon class="cls-1" points="42.1 24.21 42.1 19.22 37.11 21.69 42.1 24.21"/><path class="cls-2" d="m30.39,21.67l14.72,7.41v-14.69l-14.72,7.28Zm11.72,2.54l-5-2.52,5-2.47v4.99Z"/><polygon class="cls-1" points="25.05 3 20.06 3 22.53 8 25.05 3"/><path class="cls-2" d="m15.23,0l7.28,14.72L29.92,0h-14.69Zm9.82,3l-2.52,5-2.47-5h4.99Z"/><polygon class="cls-1" points="3 19.22 3 24.21 8 21.74 3 19.22"/><path class="cls-2" d="m0,14.35v14.69l14.72-7.28L0,14.35Zm3,4.87l5,2.52-5,2.47v-4.99Z"/><polygon class="cls-1" points="20.06 42.1 25.04 42.1 22.57 37.1 20.06 42.1"/><path class="cls-2" d="m22.6,30.39l-7.41,14.72h14.69l-7.28-14.72Zm2.45,11.72h-4.99l2.52-5,2.47,5Z"/></svg>
+<svg viewBox="0 0 45.1 45.1" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<style>.cls-1{fill:#fff;}.cls-2{fill:#414141;}</style>
+</defs>
+<polygon class="cls-1" points="42.1 24.21 42.1 19.22 37.11 21.69"/>
+<path class="cls-2" d="m30.39 21.67 14.72 7.41v-14.69l-14.72 7.28zm11.72 2.54-5-2.52 5-2.47v4.99z"/>
+<polygon class="cls-1" points="25.05 3 20.06 3 22.53 8"/>
+<path class="cls-2" d="m15.23,0l7.28,14.72L29.92,0h-14.69Zm9.82,3l-2.52,5-2.47-5h4.99Z"/>
+<polygon class="cls-1" points="3 19.22 3 24.21 8 21.74"/>
+<path class="cls-2" d="m0,14.35v14.69l14.72-7.28L0,14.35Zm3,4.87l5,2.52-5,2.47v-4.99Z"/>
+<polygon class="cls-1" points="20.06 42.1 25.04 42.1 22.57 37.1"/>
+<path class="cls-2" d="m22.6 30.39-7.41 14.72h14.69l-7.28-14.72zm2.45 11.72h-4.99l2.52-5 2.47 5z"/>
+</svg>
+14.72h14.69l-7.28-14.72Zm2.45,11.72h-4.99l2.52-5,2.47,5Z"/></svg>

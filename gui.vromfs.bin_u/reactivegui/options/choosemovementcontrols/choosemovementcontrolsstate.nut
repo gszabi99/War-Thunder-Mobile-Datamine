@@ -31,7 +31,7 @@ function applyCtrlType(v) {
   }
 }
 
-function reorderList(list, valToPlaceFirst) {
+function [pure, nodiscard] reorderList(list, valToPlaceFirst) {
   return (orderByFirstVal?[valToPlaceFirst] ?? orderByFirstVal.stick)
     .filter(@(v) list.contains(v))
 }

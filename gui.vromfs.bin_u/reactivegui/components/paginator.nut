@@ -1,21 +1,21 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/components/circleBtn.nut" import mkCircleBtn, circleBtnStyles
 from "%rGui/style/stdColors.nut" import localPlayerColor, hoverColor, textColor
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 const defPageColor = 0xFFC0C0C0
-const circleBtnImgSize = evenPx(30)
 const pageHeight = evenPx(60)
 const pageGap = hdpx(20)
-const arrowImage = "ui/gameuiskin#spinnerListBox_arrow_up.svg"
 
 let transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
 
 let pageText = @(text, color) {
   rendObj = ROBJ_TEXT
   text
-  color
-}.__update(fontSmall)
+  color,
+  ...fontSmall
+}
 
 let underline = @(color) {
   size = const [FLEX, hdpx(5)]
@@ -33,8 +33,9 @@ let pageContainer = @(children, ovr) {
     children
   }
   transform = {}
-  transitions
-}.__update(ovr)
+  transitions,
+  ...ovr
+}
 
 let dots = pageContainer([
     pageText("...", defPageColor)
@@ -63,39 +64,50 @@ function mkPage(page, onClick, color) {
       behavior = Behaviors.Button
       sound = { click  = "click" }
       onElemState = @(sf) stateFlags.set(sf)
-      onClick
-      transform = { scale = stateFlags.get() & S_ACTIVE ? [0.8, 0.8] : [1, 1] }
+      onClick,
+      ...mkPressTransitionScale(stateFlags.get(), 0.8)
     })
 }
 
-function mkArrowBtn(imgRotate) {
-  let sizeOvr = { size = pageHeight, imgSize = circleBtnImgSize, imgRotate }
-  let style = freeze(circleBtnStyles.COMMON.__merge(sizeOvr))
-  let inactiveStyle = freeze(circleBtnStyles.INACTIVE.__merge(sizeOvr))
+function mkArrowBtn(needRotate = false, height = pageHeight) {
+  let style = freeze({ ...circleBtnStyles.COMMON, size = height })
+  let inactiveStyle = freeze({ ...circleBtnStyles.INACTIVE, size = height })
+
+  let contentSize = height * 0.5
+  let arrowComp = {
+    pos = [(needRotate ? -1 : 1) * contentSize * 0.1, 0],
+    transform = { rotate = needRotate ? 0 : 180 }
+    size = [contentSize * 0.5, contentSize]
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = hdpxi(1)
+    fillColor = 0xFFFFFFFF
+    commands = [[VECTOR_POLY, 0, 50, 100, 100, 100, 0]]
+  }
 
   return @(onClick, isEnabled) isEnabled
-    ? mkCircleBtn(arrowImage, onClick, style)
-    : mkCircleBtn(arrowImage, @() null, inactiveStyle)
+    ? mkCircleBtn(arrowComp, onClick, style)
+    : mkCircleBtn(arrowComp, @() null, inactiveStyle)
 }
 
-let prevBtn = mkArrowBtn(-90)
-let nextBtn = mkArrowBtn(90)
+let prevBtn = mkArrowBtn(true)
+let nextBtn = mkArrowBtn()
 
-let mkPaginatorRow = @(watch, children, ovr) {
+let mkPaginatorRow = @(watch, children, ovr, height = pageHeight) {
   watch
-  size = [SIZE_TO_CONTENT, pageHeight]
+  size = [SIZE_TO_CONTENT, height]
   valign = ALIGN_CENTER
   hplace = ALIGN_CENTER
   gap = pageGap
   flow = FLOW_HORIZONTAL
-  children
-}.__update(ovr)
+  children,
+  ...ovr
+}
 
 
 let mkPaginator = @(curPage, lastPage, myPage = Watched(-1), ovr = {}) function() {
   let watch = [curPage, lastPage, myPage]
   if (lastPage.get() >= 0 && lastPage.get() < 1)
-    return { watch }.__update(ovr)
+    return { watch, ...ovr }
 
   let cur = curPage.get()
   let my = myPage.get()
@@ -129,25 +141,28 @@ let mkPaginator = @(curPage, lastPage, myPage = Watched(-1), ovr = {}) function(
   return mkPaginatorRow(watch, children, ovr)
 }
 
-let mkPaginatorCurPage = @(curPage, lastPage, ovr = {}) function() {
+let mkDefaultIndicator = @(pageIdx) {
+  minWidth = pageHeight
+  halign = ALIGN_CENTER
+  children = pageText(pageIdx + 1, textColor)
+}
+
+let mkPaginatorCurPage = @(curPage, lastPage, ovr = {}, height = pageHeight, indicatorCtor = mkDefaultIndicator) function() {
   let watch = [curPage, lastPage]
   if (lastPage.get() >= 0 && lastPage.get() < 1)
-    return { watch }.__update(ovr)
+    return { watch, ...ovr }
 
   let cur = curPage.get()
   let last = lastPage.get() >= 0 ? lastPage.get() : max(cur, 1) + 1
 
   return mkPaginatorRow(watch,
     [
-      prevBtn(@() curPage.set(cur - 1), cur > 0)
-      {
-        minWidth = pageHeight
-        halign = ALIGN_CENTER
-        children = pageText(cur + 1, textColor)
-      }
-      nextBtn(@() curPage.set(cur + 1), cur < last)
+      mkArrowBtn(true, height)(@() curPage.set(cur - 1), cur > 0)
+      indicatorCtor(cur, @(v) curPage.set(v))
+      mkArrowBtn(false, height)(@() curPage.set(cur + 1), cur < last)
     ],
-    ovr)
+    ovr,
+    height)
 }
 
 return {

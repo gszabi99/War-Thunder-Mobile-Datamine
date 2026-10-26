@@ -39,7 +39,7 @@ let buttonImgSize = (0.65 * buttonSize + 0.5).tointeger()
 let disabledColor = hudSmokyGreyColor
 const HOLDING_ANIM_DURATION = 0.1
 
-let oneBombShortcutId = "ID_BOMBS"
+const oneBombShortcutId = "ID_BOMBS"
 const seriesBombShortcutId = "ID_BOMBS_SERIES"
 const oneBombImg = "ui/gameuiskin#hud_bomb.svg"
 const seriesBombImg = "ui/gameuiskin#hud_bomb_multiple.svg"
@@ -218,12 +218,30 @@ function stickControl(scale) {
     onButtonReleaseWhileActiveZone()
   }
 
+  let seriesBackgroundBox = {
+    pos = [scaledSeriesButtonX / 2, -scaledSeriesButtonY / 2]
+    size = [
+      scaledButtonSize + backgroundPadding,
+      distanceBetweenButtons + scaledButtonSize + backgroundPadding
+    ]
+    borderRadius = hdpx(1000)
+    rendObj = ROBJ_BOX
+    fillColor = background
+    transform = { rotate = seriesAngle }
+  }
+  let seriesBtnBg = mkBtnBg(scaledButtonSize, hudLightBlackColor)
+  let seriesGlare = mkCircleGlare(scaledButtonSize, seriesBombShortcutId)
+  let oneBombBtnBg = mkBtnBg(scaledButtonSize, hudLightBlackColor)
+  let oneBombProgress = mkCircleProgressOneBomb(isAvailable, isOnOneBomb, isSeriesBtnHolding, hasAmmo, bombStickState, scaledButtonSize)
+  let oneBombGlare = mkCircleGlare(scaledButtonSize, oneBombShortcutId)
+  let oneBombGamepadShortcut = mkGamepadShortcutImage(oneBombShortcutId, defShortcutOvr, scale)
+
   return @() !hasBombs.get() ? { watch = BombsState, key = oneBombShortcutId }
     : {
         key = oneBombShortcutId
         watch = [isAvailable, hasAmmo, bombStickState]
         behavior = TouchScreenStick
-        size = [scaledButtonSize, scaledButtonSize]
+        size = scaledButtonSize
 
         useCenteringOnTouchBegin = false
 
@@ -254,7 +272,7 @@ function stickControl(scale) {
           stateFlags.set(0)
           onStateRelease()
         }
-        hotkeys = (oneBombShortcutId in allShortcutsUp) ? [allShortcutsUp[oneBombShortcutId]] : null
+        hotkeys = allShortcutsUp?[oneBombShortcutId] ? [allShortcutsUp?[oneBombShortcutId]] : null
 
         children = [
           !(bombStickState.get() & BOMB_STICK_ACTIVE) || !hasAmmo.get() ? null : {
@@ -263,45 +281,35 @@ function stickControl(scale) {
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
             children = [
-              {
-                pos = [scaledSeriesButtonX / 2, -scaledSeriesButtonY / 2]
-                size = [
-                  scaledButtonSize + backgroundPadding,
-                  distanceBetweenButtons + scaledButtonSize + backgroundPadding
-                ]
-                borderRadius = hdpx(1000)
-                rendObj = ROBJ_BOX
-                fillColor = background
-                transform = { rotate = seriesAngle }
-              }
+              seriesBackgroundBox
               {
                 pos = [scaledSeriesButtonX, -scaledSeriesButtonY]
-                size = [scaledButtonSize, scaledButtonSize]
+                size = scaledButtonSize
                 children = [
                   mkBombCounter
-                  mkBtnBg(scaledButtonSize, hudLightBlackColor)
+                  seriesBtnBg
                   mkCircleProgressHolding(scaledButtonSize, seriesBombShortcutId, isSeriesBtnHolding, isOnSeries)
                   mkBorderPlane(scaledButtonSize, isAvailable.get(), stateFlags, scale)
                   mkBtnImage(scaledButtonImgSize, seriesBombImg, isAvailable.get() && hasAmmo.get() ? imageColor : imageDisabledColor)
-                  mkCircleGlare(scaledButtonSize, seriesBombShortcutId)
+                  seriesGlare
                 ]
               }
             ]
             animations = wndSwitchAnim
           }
           {
-            size = [scaledButtonSize, scaledButtonSize]
+            size = scaledButtonSize
             hplace = ALIGN_CENTER
             vplace = ALIGN_CENTER
             color = hudWhiteColor
             children = [
-              mkBtnBg(scaledButtonSize, hudLightBlackColor)
-              mkCircleProgressOneBomb(isAvailable, isOnOneBomb, isSeriesBtnHolding, hasAmmo, bombStickState, scaledButtonSize)
+              oneBombBtnBg
+              oneBombProgress
               mkBorderPlane(scaledButtonSize, isAvailable.get(), stateFlags, scale)
               mkBtnImage(scaledButtonImgSize, oneBombImg, isAvailable.get() && hasAmmo.get() ? imageColor : imageDisabledColor)
               mkBombCounter
-              mkCircleGlare(scaledButtonSize, oneBombShortcutId)
-              mkGamepadShortcutImage(oneBombShortcutId, defShortcutOvr, scale)
+              oneBombGlare
+              oneBombGamepadShortcut
             ]
           }
         ]

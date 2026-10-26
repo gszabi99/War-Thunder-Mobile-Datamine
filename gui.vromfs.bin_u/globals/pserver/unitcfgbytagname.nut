@@ -1,4 +1,4 @@
-function getUnitCfgByTagName(tagName, serverConfigsV, campaign) {
+function [pure, nodiscard] getUnitCfgByTagName(tagName, serverConfigsV, campaign) {
   let unitOrig = serverConfigsV?.allUnits[tagName]
   if (unitOrig != null && unitOrig.campaign == campaign)
     return unitOrig

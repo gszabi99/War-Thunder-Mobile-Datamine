@@ -31,6 +31,7 @@
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_battleship",
   "addTorpedoesCountPack": 1,
+  "explosionFx": "explosion_ship_large",
   "smokeScreenActivateTime": 2.0,
   "smokeScreenEffectTime": 30.0,
   "smokeScreenRad": 50.0,
@@ -8007,6 +8008,353 @@
     "maintanance_new_propellers": {},
     "maintanance_new_engines": {},
     "maintanance_powered_toolkit": {}
+  },
+  "Effects": {
+    "waterSplashFx": "water_splash_massive",
+    "sideSplashSpeedMult": 1.0,
+    "sideSplashUpDirMult": 1.5,
+    "sideSplashSpawnRate": 2.0,
+    "sideSplashNormalMult": 1.5,
+    "sideSplashEmissionCurve": [
+      1.5,
+      1.0,
+      -1.4
+    ],
+    "waterSplashFxBow": "water_splash_medium_bow",
+    "bowSplashSpeedMult": 3.0,
+    "bowSplashUpDirMult": 0.3,
+    "bowSplashSpawnRate": 1.0,
+    "bowSplashNormalMult": 5.0
+  },
+  "relativeHpFx": {
+    "thresholdHpToevent": [
+      {
+        "thresholdHp": 0.15,
+        "eventName": "total_fire"
+      },
+      {
+        "thresholdHp": 0.4,
+        "eventName": "light_fire"
+      },
+      {
+        "thresholdHp": 0.7,
+        "eventName": "light_smoke"
+      },
+      {
+        "thresholdHp": 0.9
+      }
+    ]
+  },
+  "unitFx": {
+    "event": [
+      {
+        "name": "big_bang",
+        "fx": [
+          {
+            "name": "explosion_ship_large",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "water_explosion_big",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "explosion_ship_large_second",
+            "emitter": "emtr_explosion_center_02"
+          },
+          {
+            "name": "explosion_ship_large_second",
+            "emitter": "emtr_explosion_center_03"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_explosion_center_02"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_explosion_center_03"
+          }
+        ]
+      },
+      {
+        "name": "local_fire",
+        "fx": {
+          "name": "ship_fire_huge",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "engine_fire",
+        "fx": [
+          {
+            "name": "ship_smoke_big",
+            "emitter": "emtr_mainsmoke_engine_01"
+          },
+          {
+            "name": "ship_fire_huge",
+            "emitter": "emtr_fire_engine_01"
+          },
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_engine_02"
+          },
+          {
+            "name": "ship_fire_huge",
+            "emitter": "emtr_fire_engine_03"
+          },
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_engine_04"
+          },
+          {
+            "name": "ship_fire_huge",
+            "emitter": "emtr_fire_engine_05"
+          },
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_engine_06"
+          },
+          {
+            "name": "ship_fire_huge",
+            "emitter": "emtr_fire_engine_07"
+          },
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_smoke_engine_01"
+          },
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_smoke_engine_02"
+          },
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_smoke_engine_03"
+          },
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_smoke_engine_04"
+          },
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_smoke_engine_05"
+          },
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_smoke_engine_06"
+          },
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_smoke_engine_07"
+          },
+          {
+            "name": "ship_fire_exhaust",
+            "emitter": "emtr_exhaust_01"
+          },
+          {
+            "name": "ship_fire_exhaust",
+            "emitter": "emtr_exhaust_02"
+          },
+          {
+            "name": "ship_fire_exhaust",
+            "emitter": "emtr_exhaust_03"
+          },
+          {
+            "name": "ship_fire_exhaust",
+            "emitter": "emtr_exhaust_04"
+          },
+          {
+            "name": "ship_fire_exhaust",
+            "emitter": "emtr_exhaust_05"
+          },
+          {
+            "name": "ship_fire_exhaust",
+            "emitter": "emtr_exhaust_06"
+          }
+        ]
+      },
+      {
+        "name": "total_fire",
+        "fx": [
+          {
+            "name": "ship_smoke_big",
+            "emitter": "emtr_smoke_dmg_01"
+          },
+          {
+            "name": "ship_smoke_big",
+            "emitter": "emtr_smoke_dmg_02"
+          },
+          {
+            "name": "ship_fire_huge",
+            "emitter": "emtr_fire_dmg_01"
+          },
+          {
+            "name": "ship_fire_huge",
+            "emitter": "emtr_fire_dmg_02"
+          },
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_engine_01"
+          },
+          {
+            "name": "ship_fire_huge",
+            "emitter": "emtr_fire_engine_02"
+          },
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_engine_03"
+          },
+          {
+            "name": "ship_fire_huge",
+            "emitter": "emtr_fire_engine_04"
+          },
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_engine_05"
+          },
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_engine_06"
+          },
+          {
+            "name": "ship_smoke_big",
+            "emitter": "emtr_smoke_engine_01"
+          },
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_smoke_engine_02"
+          },
+          {
+            "name": "ship_smoke_big",
+            "emitter": "emtr_smoke_engine_03"
+          },
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_smoke_engine_04"
+          },
+          {
+            "name": "ship_smoke_big",
+            "emitter": "emtr_smoke_engine_05"
+          },
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_smoke_engine_06"
+          }
+        ]
+      },
+      {
+        "name": "light_fire",
+        "fx": [
+          {
+            "name": "ship_smoke_big",
+            "emitter": "emtr_smoke_dmg_01"
+          },
+          {
+            "name": "ship_smoke_big",
+            "emitter": "emtr_smoke_dmg_02"
+          },
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_dmg_01"
+          },
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_dmg_02"
+          }
+        ]
+      },
+      {
+        "name": "light_smoke",
+        "fx": [
+          {
+            "name": "ship_smoke_big",
+            "emitter": "emtr_smoke_dmg_01"
+          },
+          {
+            "name": "ship_smoke_big",
+            "emitter": "emtr_smoke_dmg_02"
+          },
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_fire_dmg_01"
+          },
+          {
+            "name": "ship_smoke_medium",
+            "emitter": "emtr_fire_dmg_02"
+          }
+        ]
+      },
+      {
+        "name": "ammo_expl",
+        "fx": {
+          "name": "explosion_ship_ammo",
+          "centerDmgPart": true
+        }
+      },
+      {
+        "name": "fire_after_hit_huge",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_huge",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_huge",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_huge",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_big",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_big",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "fire_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_med",
+        "lifetime": 8.0,
+        "fx": {
+          "name": "smoke_after_hit_med",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "fire_after_hit_small",
+          "setOrientation": true
+        }
+      },
+      {
+        "name": "fire_after_hit_small",
+        "lifetime": 5.0,
+        "fx": {
+          "name": "smoke_after_hit_small",
+          "setOrientation": true
+        }
+      }
+    ]
   },
   "breaches": {
     "repairSpeed": 100.0,

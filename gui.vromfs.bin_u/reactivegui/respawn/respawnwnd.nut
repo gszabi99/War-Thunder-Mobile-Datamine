@@ -13,7 +13,7 @@ from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitName
 from "%rGui/components/animGrowLines.nut" import mkAnimGrowLines, mkAGLinesCfgOrdered, mkStaticLines
 from "%rGui/components/buttonStyles.nut" import defButtonHeight, BATTLE, INACTIVE
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkCurrencyImage
-from "%rGui/components/currencyStyles.nut" import CS_RESPAWN, CS_GAMERCARD
+from "%rGui/components/currencyStyles.nut" import CS_RESPAWN, CS_GAMERCARD, gamercardGap
 from "%rGui/components/infoButton.nut" import infoTooltipButton
 from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
@@ -81,15 +81,13 @@ let spareBalance = @() {
   ]
 }
 
-
-
 let balanceBlock = @() {
   watch = needSpareBalance
   size = FLEX_V
   hplace = ALIGN_RIGHT
-  flow = FLOW_VERTICAL
+  flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
-  gap = hdpx(10)
+  gap = gamercardGap
   children = [
     spawnScoreBalance
     needSpareBalance.get() ? spareBalance : null
@@ -138,6 +136,12 @@ function mkSlotScorePrice(slot) {
 
   let score = Computed(@() spawnScoreCosts.get()?[name] ?? 0)
   let isEnough = Computed(@() score.get() <= mySpawnScore.get())
+  let scoreIcon = {
+    size = scoreIconSize
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#icon_spawn_points.svg:{scoreIconSize}:P")
+    keepAspect = true
+  }
   return @() {
     watch = [score, isEnough]
     vplace = ALIGN_BOTTOM
@@ -147,12 +151,7 @@ function mkSlotScorePrice(slot) {
     gap = hdpx(5)
     children = score.get() <= 0 ? null
       : [
-          {
-            size = scoreIconSize
-            rendObj = ROBJ_IMAGE
-            image = Picture($"ui/gameuiskin#icon_spawn_points.svg:{scoreIconSize}:P")
-            keepAspect = true
-          }
+          scoreIcon
           mkPlateText(score.get(), isEnough.get() ? {} : notEnoughScoreStyle)
         ]
   }
@@ -392,6 +391,12 @@ function slotsBlock() {
   }
 }
 
+let mapBg = bg.__merge({
+  size = const [FLEX, pw(100)]
+  padding = gap
+  children = respawnMap
+})
+
 let map = @() {
   watch = visibleRespawnBases
   size = FLEX_H
@@ -401,11 +406,7 @@ let map = @() {
   gap
   children = [
     visibleRespawnBases.get().len() > 0 ? header(headerText(loc("respawn/choose_respawn_point"))) : null
-    bg.__merge({
-      size = const [FLEX, pw(100)]
-      padding = gap
-      children = respawnMap
-    })
+    mapBg
   ]
 }
 
@@ -460,6 +461,7 @@ function toBattleButton(onClick, styleOvr) {
   let needShowSpareDesc = Computed(@() selSlot.get()?.isSpawnBySpare ?? false)
   let spawnCost = Computed(@() spawnScoreCosts.get()?[selSlot.get()?.name] ?? 0)
   let btnStyle = Computed(@() isUseSpawnScore.get() && spawnCost.get() > mySpawnScore.get() ? INACTIVE : BATTLE)
+  let toBattleBtnText = mkButtonTextMultiline(utf8ToUpper(loc("mainmenu/toBattle/short")), fontBoldTinyAccentedShaded)
   return @() {
     watch = [selSlotUnitType, needShowSpareDesc, spawnCost, btnStyle]
     flow = FLOW_HORIZONTAL
@@ -480,7 +482,7 @@ function toBattleButton(onClick, styleOvr) {
               halign = ALIGN_CENTER
               gap = hdpx(5)
               children = [
-                mkButtonTextMultiline(utf8ToUpper(loc("mainmenu/toBattle/short")), fontBoldTinyAccentedShaded)
+                toBattleBtnText
                 needShowSpareDesc.get() ? mkCurrencyComp(1, SPARE, CS_GAMERCARD) : null
                 spawnCost.get() <= 0 ? null : mkSpawnScore(spawnCost.get(), CS_GAMERCARD)
               ]

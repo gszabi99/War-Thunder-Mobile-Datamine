@@ -2,6 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "math" import round
 from "%rGui/debriefing/debriefingState.nut" import curDebrTabId, nextDebrTabId, isDebriefingAnimFinished,
   stopDebriefingAnimation
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 let tabSize = hdpx(75).tointeger()
@@ -23,7 +24,7 @@ function tabBase(info, debrData, sf, isSelected, isInAnim) {
     children = [
       (!isInAnim || !isSelected) ? null : {
         rendObj = ROBJ_IMAGE
-        size = [tabSize, tabSize]
+        size = tabSize
         image = Picture($"ui/gameuiskin#hud_circle_animation.svg:{tabSize}:{tabSize}:P")
         color = activeColor
         opacity = 0
@@ -35,7 +36,7 @@ function tabBase(info, debrData, sf, isSelected, isInAnim) {
         ]
       }
       {
-        size = [iconSize, iconSize]
+        size = iconSize
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
         rendObj = ROBJ_IMAGE
@@ -55,7 +56,7 @@ function tabBase(info, debrData, sf, isSelected, isInAnim) {
         color = activeColor
       }.__update(!isInAnim ? {} : {
           key = $"progress_{id}"
-          transform = { pivot = [0, 0] }
+          transform = { pivot = 0 }
           animations = [{
             prop = AnimProp.scale, from = [0, 1], duration = timeShow, play = true,
             onFinish = @() nextDebrTabId.get() != null
@@ -76,14 +77,13 @@ function mkTab(info, debrData) {
     watch = [stateFlags, isSelected, isDebriefingAnimFinished]
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     function onClick() {
       isDebriefingAnimFinished.set(true)
       curDebrTabId.set(id)
     }
     children = tabBase(info, debrData, stateFlags.get(), isSelected.get(), !isDebriefingAnimFinished.get())
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
   }
 }
 

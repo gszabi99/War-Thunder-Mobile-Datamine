@@ -57,7 +57,7 @@ serverConfigs.subscribe(@(_) updateInactiveLootboxes())
 isServerTimeValid.subscribe(@(_) updateInactiveLootboxes())
 updateInactiveLootboxes()
 
-function orderLootboxesBySlot(lList) {
+function [pure, nodiscard] orderLootboxesBySlot(lList) {
   let res = []
   let lootboxesBySlot = {}
   foreach (lootbox in lList) {

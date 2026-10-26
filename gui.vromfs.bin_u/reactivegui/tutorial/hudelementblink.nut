@@ -116,11 +116,13 @@ updateInterval.subscribe(function(interval) {
   setInterval(interval, updateCurBoxes)
 })
 
+let pointerArrowSize = calc_comp_size(pointerArrow)
+
 function arrows() {
   let boxes = arrowCurBoxes.get()
   if (boxes.len() == 0)
     return { watch = arrowCurBoxes }
-  let size = calc_comp_size(pointerArrow)
+  let size = pointerArrowSize
   let obstacles = clone boxes
   let children = []
   foreach (box in boxes) {

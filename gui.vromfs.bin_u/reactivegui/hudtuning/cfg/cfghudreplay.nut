@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%appGlobals/unitConst.nut" import TANK, SHIP, SUBMARINE
+from "%appGlobals/unitConst.nut" import AIR, TANK, SHIP, SUBMARINE
 from "%rGui/hud/aircraftStateModule.nut" import xrayModel
 from "%rGui/hud/menuButton.nut" import mkMenuButton
 from "%rGui/hud/scoreBoard.nut" import needScoreBoard, scoreBoardCfgByType, scoreBoardType
@@ -31,7 +31,7 @@ return initHudTuningCfg({
   xrayModel = {
     ctor = xrayModel
     defTransform = mkLBPos([hdpx(480), hdpx(30)])
-    isVisibleInBattle = Computed(@() hudUnitType.get() != TANK && hudUnitType.get() != SHIP && hudUnitType.get() != SUBMARINE)
+    isVisibleInBattle = Computed(@() hudUnitType.get() == AIR)
   }
 
   doll = {

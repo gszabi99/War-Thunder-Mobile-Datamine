@@ -1,11 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
-from "console" import register_command
-from "dagor.random" import rnd_int
-from "%rGui/hud/crewState.nut" import crewDriverState, crewGunnerState, crewLoaderState
+from "%rGui/hud/tankHudDebuffsState.nut" import debugDebuff
 import "%rGui/interopGen.nut" as interopGen
 
-
-let debugDebuff = mkWatched(persist, "debugDebuff", 0)
 
 let tankStateNative = {
   speed = Watched(0)
@@ -31,24 +27,12 @@ interopGen({
 
 let { hasDebuffGuns, hasDebuffTurretDrive, hasDebuffEngine, hasDebuffTracks, hasDebuffFire, hasDebuffFireExternal } = tankStateNative
 
-let driverReady = Computed(@() crewDriverState.get().state == "ok")
-let gunnerReady = Computed(@() crewGunnerState.get().state == "ok")
-let loaderReady = Computed(@() crewLoaderState.get().state == "ok")
 
-let export = tankStateNative.__merge({
-  hasDebuffGuns = Computed(@() !!hasDebuffGuns.get() != ((debugDebuff.get() & 1) != 0))
-  hasDebuffTurretDrive = Computed(@() !!hasDebuffTurretDrive.get() != ((debugDebuff.get() & 2) != 0))
-  hasDebuffEngine = Computed(@() !!hasDebuffEngine.get() != ((debugDebuff.get() & 4) != 0))
-  hasDebuffTracks = Computed(@() !!hasDebuffTracks.get() != ((debugDebuff.get() & 8) != 0))
-  hasDebuffFire = Computed(@()   !!hasDebuffFire.get() != ((debugDebuff.get() & 16) != 0))
-  hasDebuffDriver = Computed(@() !driverReady.get() != ((debugDebuff.get() & 32) != 0))
-  hasDebuffGunner = Computed(@() !gunnerReady.get() != ((debugDebuff.get() & 64) != 0))
-  hasDebuffLoader = Computed(@() !loaderReady.get() != ((debugDebuff.get() & 128) != 0))
-  hasDebuffFireExternal = Computed(@() !!hasDebuffFireExternal.get() != ((debugDebuff.get() & 256) != 0))
+return tankStateNative.__merge({
+  hasDebuffGuns = Computed(@() !!hasDebuffGuns.get() != ((debugDebuff.get() & 0x0001) != 0))
+  hasDebuffTurretDrive = Computed(@() !!hasDebuffTurretDrive.get() != ((debugDebuff.get() & 0x0002) != 0))
+  hasDebuffEngine = Computed(@() !!hasDebuffEngine.get() != ((debugDebuff.get() & 0x0004) != 0))
+  hasDebuffTracks = Computed(@() !!hasDebuffTracks.get() != ((debugDebuff.get() & 0x0008) != 0))
+  hasDebuffFire = Computed(@()   !!hasDebuffFire.get() != ((debugDebuff.get() & 0x0010) != 0))
+  hasDebuffFireExternal = Computed(@() !!hasDebuffFireExternal.get() != ((debugDebuff.get() & 0x0100) != 0))
 })
-
-const maxDebugDebuff = 255
-register_command(@() debugDebuff.set(debugDebuff.get() == maxDebugDebuff ? 0 : maxDebugDebuff), "hud.debug.tankDebuffsAll")
-register_command(@() debugDebuff.set(rnd_int(0, maxDebugDebuff)), "hud.debug.tankDebuffsRandom")
-
-return export

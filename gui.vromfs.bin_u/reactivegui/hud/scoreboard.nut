@@ -171,10 +171,11 @@ function mkIconScoreBar(teamName, scale) {
   let size = round(scoreBarIconSize * scale).tointeger()
   let gap = round(scoreBarIconGap * scale).tointeger()
   let p = Computed(@() getCtfFlagPresentation(ctfFlagPreset.get()))
+  let barPos = scaleArr([0, (scoreBarOffesetY / 2)], scale)
   return @() {
     watch = [iconScoreTable, p]
     size = [size * (iconScoreTable.get()?.maxValue ?? 0) + gap * ((iconScoreTable.get()?.maxValue ?? 0) - 1), size]
-    pos = scaleArr([0, (scoreBarOffesetY / 2)], scale)
+    pos = barPos
     halign
     children = !iconScoreTable.get() ? null : [
       mkIconRow(p.get().emptyIcon, size, iconScoreTable.get().maxValue, gap)
@@ -248,6 +249,7 @@ isInBattle.subscribe(function(v) {
 
 function mkBasesIndicators(scoreParams, basesBlockHeight, iconSize) {
   let { bases, baseCount, baseImage, fillColor, fillDisabledColor, halign } = scoreParams
+  let baseProgressIcon = Picture($"ui/gameuiskin#circular_progress_1.svg:{basesBlockHeight}:{basesBlockHeight}:P")
   return @() {
     watch = baseCount
     rendObj = ROBJ_BOX
@@ -261,22 +263,22 @@ function mkBasesIndicators(scoreParams, basesBlockHeight, iconSize) {
       let b = Computed(@(prev) isEqual(bases.get()?[i], prev) ? prev : bases.get()?[i])
       return @() {
         watch = b
-        size = [basesBlockHeight, basesBlockHeight]
+        size = basesBlockHeight
         rendObj = ROBJ_VECTOR_CANVAS
         fillColor = b.get().zoneIntegrity > 0 ? hudBlackColor : hudTranslucentBlackColor
         color = b.get().zoneIntegrity > 0 ? hudBlackColor : hudTranslucentBlackColor
         lineWidth = 2
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
-        commands = [
+        commands = const [
           [VECTOR_ELLIPSE, 50, 50, 50, 50],
         ]
         children = [
           b.get().zoneIntegrity == 0 ? null : {
-            size = [basesBlockHeight, basesBlockHeight]
+            size = basesBlockHeight
             rendObj = ROBJ_PROGRESS_CIRCULAR
             keepAspect = true
-            image = Picture($"ui/gameuiskin#circular_progress_1.svg:{basesBlockHeight}:{basesBlockHeight}:P")
+            image = baseProgressIcon
             bgColor = fillColor
             fgColor = hudBlackColor
             fValue = 1 - b.get().zoneIntegrity
@@ -330,6 +332,7 @@ function mkLinearScoreBarWithScore(teamName, scale) {
   let penaltyBlockSize = scaleArr(penaltyReasonBlockSize, scale)
   let iconSize = round(baseIconSize * scale / 2) * 2
   let basesBlockHeight = progressBarSize[1] * 2
+  let attentionAnimations = getScoreBarAttentionAnimations($"{teamName}AirportDamaged")
   return mkScoreBarBg(image, progressBarSize).__update({
     padding = [padding + paddingInc, 2 * padding + paddingInc]
     halign
@@ -345,7 +348,7 @@ function mkLinearScoreBarWithScore(teamName, scale) {
           halign == ALIGN_RIGHT
             ? [VECTOR_POLY, 100, 100, full, 0, full - full * progress.get(), 0, 100.0 - full * progress.get(), 100]
             : [VECTOR_POLY, 0, 100, ofs, 0, ofs + full * progress.get(), 0, full * progress.get(), 100]]
-        animations = getScoreBarAttentionAnimations($"{teamName}AirportDamaged")
+        animations = attentionAnimations
       }
       @() {
         watch = prevScore
@@ -376,12 +379,15 @@ function mkLinearScoreBarWithScore(teamName, scale) {
 }
 
 const shortcutId = "ID_MPSTATSCREEN"
-let shortcutImg = @(scale) @() {
-  watch = isHudAttached
-  hplace = ALIGN_LEFT
-  vplace = ALIGN_CENTER
-  pos = [hdpx(-70 * scale), hdpx(10 * scale)]
-  children = !isHudAttached.get() ? null : mkGamepadShortcutImage(shortcutId, {}, scale)
+function shortcutImg(scale) {
+  let shortcutImage = mkGamepadShortcutImage(shortcutId, {}, scale)
+  return @() {
+    watch = isHudAttached
+    hplace = ALIGN_LEFT
+    vplace = ALIGN_CENTER
+    pos = [hdpx(-70 * scale), hdpx(10 * scale)]
+    children = !isHudAttached.get() ? null : shortcutImage
+  }
 }
 
 let barCtors = {
@@ -432,13 +438,24 @@ function mkTimer(triggerTime, scale, iconSize, fontScaled) {
     setInterval(1.0, updateLeftTime)
   }
 
+  let gap = scaleEven(hdpx(16), scale)
+  let airdropIconAnimations = [
+    {
+      prop = AnimProp.color,
+      to = airDropActiveColor,
+      trigger = animTrigger,
+      loop = true,
+      easing = CosineFull,
+      duration = 1,
+    }
+  ]
   return @() {
     watch = leftTime
     key = triggerTimeSubscription
     flow = FLOW_HORIZONTAL
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    gap = scaleEven(hdpx(16), scale)
+    gap
     function onAttach() {
       triggerTime.subscribe(triggerTimeSubscription)
       setInterval(1.0, updateLeftTime)
@@ -454,16 +471,7 @@ function mkTimer(triggerTime, scale, iconSize, fontScaled) {
       }.__update(fontScaled)
       mkIcon(battleRoyaleScoreBoardCfg.airdropImage, iconSize, leftTime.get() < 0 ? airDropActiveColor : hudSilverGray)
         .__update({
-          animations = [
-            {
-              prop = AnimProp.color,
-              to = airDropActiveColor,
-              trigger = animTrigger,
-              loop = true,
-              easing = CosineFull,
-              duration = 1,
-            }
-          ]
+          animations = airdropIconAnimations
         })
     ]
   }
@@ -537,18 +545,23 @@ function mkIsoscelesTrapezoid(size, angle, ovr = {}) {
   }, ovr)
 }
 
-function mkTimeWarningBattleRoyale(scale) {
+function mkTimeWarning(scale, isColored) { 
   let timeWarningIconSize = scaleArr([timeWarningIconSide, timeWarningIconSide], scale)
   let timeWarningIconActiveSize = scaleArr([round(timeWarningIconSide / 40.0 * 84).tointeger(), timeWarningIconSide], scale)
-  let isBattleRoyaleZoneShrink = mkMissionVar("BRzoneShrink", false)
   let iconNormal = mkIcon("ui/gameuiskin#hud_danger_timer.svg", timeWarningIconSize)
   let iconActive = mkIcon("ui/gameuiskin#hud_danger_timer_active.svg", timeWarningIconActiveSize)
-  return @() {
-    watch = isBattleRoyaleZoneShrink
-    size = timeWarningIconSize
-    halign = ALIGN_CENTER
-    children = isBattleRoyaleZoneShrink.get() ? iconActive : iconNormal
-  }
+  return isColored instanceof Watched
+    ? @() {
+        watch = isColored
+        size = timeWarningIconSize
+        halign = ALIGN_CENTER
+        children = isColored.get() ? iconActive : iconNormal
+      }
+    : {
+        size = timeWarningIconSize
+        halign = ALIGN_CENTER
+        children = isColored ? iconActive : iconNormal
+      }
 }
 
 function mkScoreBoardBattleRoyale(scale) {
@@ -568,11 +581,14 @@ function mkScoreBoardBattleRoyale(scale) {
 
   let zoneTimer = mkMissionVar("BRzoneTimer", 0)
   let airDropTimer = mkMissionVar("AirDropTimer", 0)
+  let isBattleRoyaleZoneShrink = mkMissionVar("BRzoneShrink", false)
 
   const backgroundWidth = hdpx(500)
   let backgroundSize = scaleArr([backgroundWidth, timerBgHeight], scale)
   const backgroundAngle = scoreBlockAngle
   let padding = getEmptyWidthRatioPercent(backgroundSize, backgroundAngle) / 100 * backgroundSize[0]
+  let aliveGap = scaleEven(hdpx(8), scale)
+  let placeIconSize = scaleEven(evenPx(100), scale)
   return scoreBoardBase.__merge({
     key = "score_board_battle_roayle"
     behavior = Behaviors.Button
@@ -594,7 +610,7 @@ function mkScoreBoardBattleRoyale(scale) {
               flow = FLOW_HORIZONTAL
               valign = ALIGN_CENTER
               halign = ALIGN_RIGHT
-              gap = scaleEven(hdpx(8), scale)
+              gap = aliveGap
               children = [
                 mkIcon(battleRoyaleScoreBoardCfg.aliveImage, aliveAmountIconSize, hudSilverGray)
                 cellTextProps.__merge({ text = aliveAmount.get() }, fontTinyAccentedScaled)
@@ -606,7 +622,7 @@ function mkScoreBoardBattleRoyale(scale) {
               valign = ALIGN_CENTER
               gap = scaleEven(hdpx(16), scale)
               children = [
-                mkTimeWarningBattleRoyale(scale)
+                mkTimeWarning(scale, isBattleRoyaleZoneShrink)
                 mkTime(zoneTimer, fontMonoTinyScaled)
               ]
             }
@@ -622,7 +638,7 @@ function mkScoreBoardBattleRoyale(scale) {
         valign = ALIGN_CENTER
         halign = ALIGN_LEFT
         children = [
-          mkPlaceIcon(place.get(), scaleEven(evenPx(100), scale), fontTinyScaled)
+          mkPlaceIcon(place.get(), placeIconSize, fontTinyScaled)
           mkImageWithCount(kills, battleRoyaleScoreBoardCfg.killImage, scale)
         ]
       }
@@ -683,6 +699,17 @@ function mkScoreBoardRace(scale) {
     { children = mkTime(raceTime, fontMonoTinyScaled) })
   let timeInfo1Lap = mkIsoscelesTrapezoid(timeBlockSize1Lap, scoreBlockAngle,
     { children = mkTime(raceTime, fontMonoTinyScaled) })
+  let multiLapInfo = [
+    {
+      flow = FLOW_HORIZONTAL
+      gap = hGap
+      children = [
+        timeInfo
+        lapsInfo
+      ]
+    }
+    checkpointsInfo
+  ]
 
   return scoreBoardBase.__merge({
     key = "score_board_race"
@@ -704,17 +731,7 @@ function mkScoreBoardRace(scale) {
                 checkpointsInfo
                 timeInfo1Lap
               ]
-          : [
-              {
-                flow = FLOW_HORIZONTAL
-                gap = hGap
-                children = [
-                  timeInfo
-                  lapsInfo
-                ]
-              }
-              checkpointsInfo
-            ]
+          : multiLapInfo
       }
     ]
   })

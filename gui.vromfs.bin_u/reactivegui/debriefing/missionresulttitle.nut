@@ -124,18 +124,16 @@ function mkMissionResultTitle(debrData, needAnim) {
   return {
     size = FLEX_H
     margin = const [0, 0, hdpx(32), 0]
-    children = [
-      {
-        flow = FLOW_VERTICAL
-        halign = ALIGN_CENTER
-        hplace = ALIGN_CENTER
-        gap = rowGap
-        children = [
-          mkMissionResultText(needAnim, missionResult)
-          mkMissionResultLine(needAnim, missionResult)
-        ]
-      }
-    ]
+    children = {
+      flow = FLOW_VERTICAL
+      halign = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+      gap = rowGap
+      children = [
+        mkMissionResultText(needAnim, missionResult)
+        mkMissionResultLine(needAnim, missionResult)
+      ]
+    }
   }
 }
 

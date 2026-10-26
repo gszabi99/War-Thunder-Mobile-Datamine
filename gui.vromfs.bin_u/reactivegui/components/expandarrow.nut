@@ -9,6 +9,12 @@ let defArrowW = round(defArrowH / 2.0 / 24 * 40).tointeger() * 2
 let defaultArrowSize = [defArrowW, defArrowH]
 
 function mkArrowImageComp(isExpanded, duration, size, ovr) {
+  let transitions = [{
+    prop = AnimProp.rotate
+    from = 0
+    to = 180
+    duration
+  }]
   return @() {
     watch = isExpanded,
     size
@@ -16,12 +22,7 @@ function mkArrowImageComp(isExpanded, duration, size, ovr) {
     image = Picture($"ui/gameuiskin#scroll_arrow.svg:{size[0]}:{size[1]}:P")
     color = 0xFFFFFFFF
     transform = {rotate = !isExpanded.get()? 0 : 180}
-    transitions = [{
-      prop = AnimProp.rotate
-      from = 0
-      to = 180
-      duration
-    }]
+    transitions
   }.__update(ovr)
 }
 

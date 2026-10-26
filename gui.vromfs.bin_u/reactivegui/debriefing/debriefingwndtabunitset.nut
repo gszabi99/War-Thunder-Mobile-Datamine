@@ -218,30 +218,28 @@ function mkDebriefingWndTabUnitsSet(debrData, params) {
 
   let comp = {
     size = FLEX
-    children = [
-      {
-        size = FLEX
-        flow = FLOW_VERTICAL
-        halign = ALIGN_CENTER
-        children = [
-          mkMissionResultTitle(debrData, false)
-          {
-            size = const [hdpx(1600), FLEX]
-            halign = ALIGN_CENTER
-            flow = FLOW_HORIZONTAL
-            gap = columnGap
-            children = slotColumnsData.map(@(v) v.columnComp)
-          }
-          {
-            size = const [hdpx(1600), FLEX]
-            halign = ALIGN_CENTER
-            flow = FLOW_HORIZONTAL
-            gap = columnGap
-            children = unitColumnsData.map(@(v) v.columnComp)
-          }
-        ]
-      }
-    ]
+    children = {
+      size = FLEX
+      flow = FLOW_VERTICAL
+      halign = ALIGN_CENTER
+      children = [
+        mkMissionResultTitle(debrData, false)
+        {
+          size = const [hdpx(1600), FLEX]
+          halign = ALIGN_CENTER
+          flow = FLOW_HORIZONTAL
+          gap = columnGap
+          children = slotColumnsData.map(@(v) v.columnComp)
+        }
+        {
+          size = const [hdpx(1600), FLEX]
+          halign = ALIGN_CENTER
+          flow = FLOW_HORIZONTAL
+          gap = columnGap
+          children = unitColumnsData.map(@(v) v.columnComp)
+        }
+      ]
+    }
   }
 
   return {

@@ -9,6 +9,7 @@ from "%rGui/components/scrollbar.nut" import makeVertScroll
 from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary
 from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 from "%rGui/notifications/consentTcf/consentTcfState.nut" import doAnswerAllAndClose, doSaveAndClose
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "types" import Function
 
 
@@ -51,13 +52,14 @@ function mkLink(text, onClick, ovr = {}) {
     behavior = Behaviors.Button
     onClick
     onElemState = @(v) stateFlags.set(v)
-    sound = { click = "click" }
+    sound = const { click = "click" }
 
     color = linkColor
     children = urlUnderline
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
-  }.__update(fontDefault, ovr)
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
+    ...fontDefault
+    ...ovr
+  }
 }
 
 let separatorLine = {
@@ -75,20 +77,19 @@ let backBtnW  = (78.0 / 59 * backBtnH).tointeger()
 
 function mkBackBtn(onClick, override = {}) {
   let stateFlags = Watched(0)
+  let backBtnImage = Picture($"ui/gameuiskin#back_icon.svg:{backBtnW}:{backBtnH}:P")
   return @() {
     watch = stateFlags
     size = [backBtnW, backBtnH]
     margin = closeWndBtnSize / 2
     rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin#back_icon.svg:{backBtnW}:{backBtnH}:P")
+    image = backBtnImage
 
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     onClick
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
-  }.__update(override)
+  }.__update(mkPressTransitionScale(stateFlags.get(), 0.9), override)
 }
 
 let gapAbove = freeze({ margin = [textGap, 0, 0, 0] })

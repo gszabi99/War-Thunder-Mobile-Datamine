@@ -10,14 +10,13 @@ from "%rGui/event/eventState.nut" import curEventLootboxes, isFitSeasonRewardsRe
 import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
 from "%rGui/gameModes/newbieOfflineMissions.nut" import hasFirstBattleRewards
 from "%rGui/mainMenu/mainMenuState.nut" import isMainMenuTopScene
-from "%rGui/navState.nut" import scenesOrder
 from "%rGui/quests/bqQuests.nut" import sendBqQuestsTask
 from "%rGui/quests/questsState.nut" import COMMON_TAB, tabIdToOpen, EVENT_TAB, questsBySection,
   getStarsTotalNonUpdatable, tutorialSectionId, tutorialSectionIdWithReward, isSameTutorialSectionId,
   tutorialQuestBtnKey
 from "%rGui/quests/rewardsComps.nut" import getRewardsPreviewInfo, getEventCurrencyReward
 from "%rGui/seasonScene/seasonSceneState.nut" import openMainSeasonScene, LOOTBOX_TAB, COLLECTION_TAB,
-  openQuestsWndOnTab, isSeasonTabVisible, SEASON_SCENE_ID
+  openQuestsWndOnTab, isSeasonTabVisible, isSeasonSceneTop
 from "%rGui/shop/lootboxPreviewState.nut" import openEventWndLootbox
 from "%rGui/tutorial/completedTutorials.nut" import markTutorialCompleted, mkIsTutorialCompleted,
   isFinishedBattlePass, isFinishedSlotAttributes, isFinishedArsenal
@@ -51,8 +50,6 @@ let canStartTutorial = Computed(@() !hasModalWindows.get()
   && shouldShowEventMechanics.get())
 let showTutorial = keepref(Computed(@() canStartTutorial.get()
   && (needShowTutorial.get() || isDebugMode.get())))
-
-let isSeasonSceneTop = Computed(@() scenesOrder.get()?[scenesOrder.get().len() - 1] == SEASON_SCENE_ID)
 
 let shouldEarlyCloseTutorial = keepref(Computed(@() activeTutorialId.get() == TUTORIAL_ID
   && !isMainMenuTopScene.get()

@@ -85,7 +85,7 @@ function updateErrorsTimer() {
   }
 
   if (timesUpdate.len() != 0)
-    errorTimeById.set(errorTimeById.get().__merge(timesUpdate).filter(@(v) v != null))
+    errorTimeById.set({ ...errorTimeById.get(), ...timesUpdate }.filter(@(v) v != null))
   if (nextTime != null)
     resetTimeout(max(1, 0.001 * (nextTime - curTime)), updateErrorsTimer)
 }

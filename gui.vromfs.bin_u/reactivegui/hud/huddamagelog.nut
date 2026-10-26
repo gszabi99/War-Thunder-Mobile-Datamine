@@ -37,8 +37,19 @@ let textStyle = {
   rendObj = ROBJ_TEXT
 }.__update(fontTinyShaded)
 
+let resSize = [shHud(50), hdpx(50)]
+let contentGap = shHud(5)
+let mainAnimations = [
+  { prop = AnimProp.opacity, from = 1.0, to = 1.0, duration = visibleAnimTime, easing = Linear,
+    play = true, onExit = "damageLog_hide"
+  }
+  { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = opacityAnimTime, easing = Linear,
+    trigger = "damageLog_hide"
+  }
+]
+
 function damageLogUi() {
-  let resObj = { watch = visibleLog, size = [shHud(50), hdpx(50)] }
+  let resObj = { watch = visibleLog, size = resSize }
   if (visibleLog.get().len() == 0)
     return resObj
 
@@ -56,17 +67,10 @@ function damageLogUi() {
     children = {
       size = FLEX
       flow = FLOW_HORIZONTAL
-      gap = shHud(5)
+      gap = contentGap
       key = $"damageLog_{visibleLog.get()}"
       opacity = 0.0
-      animations = [
-        { prop = AnimProp.opacity, from = 1.0, to = 1.0, duration = visibleAnimTime, easing = Linear,
-          play = true, onExit = "damageLog_hide"
-        }
-        { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = opacityAnimTime, easing = Linear,
-          trigger = "damageLog_hide"
-        }
-      ]
+      animations = mainAnimations
       children = [
         {
           size = FLEX_H
@@ -77,12 +81,12 @@ function damageLogUi() {
           size = FLEX_H
           text = damageCount
           halign = ALIGN_LEFT
-          animations = [
+          animations = const [
             { prop = AnimProp.scale, from = [0.93, 0.93], to = [0.93, 0.93], play = true,
               delay = delayAnimTime, duration = scaleAnimTime, easing = Linear
             }
           ]
-          transform = { pivot = [0.2, 0.5] }
+          transform = const { pivot = [0.2, 0.5] }
         }.__update(textStyle)
       ]
     }

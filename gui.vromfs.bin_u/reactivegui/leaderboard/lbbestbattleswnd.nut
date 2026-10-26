@@ -62,7 +62,7 @@ let header = @() {
         ratedCountHint
       ]
     }
-    { size = FLEX }
+    const { size = FLEX }
   ]
 }
 

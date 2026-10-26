@@ -74,7 +74,7 @@ let missingUnitResourcesByRank = Computed(function(prev) {
   return prevIfEqual(prev, res)
 })
 
-function getMissingUnitsForRank(campaign, mRank, missingList) {
+function [pure, nodiscard] getMissingUnitsForRank(campaign, mRank, missingList) {
   let res = {}
   foreach (rank, list in missingList?[campaign] ?? {})
     if (rank <= mRank)

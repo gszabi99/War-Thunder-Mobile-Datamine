@@ -83,7 +83,7 @@ function depthControl(scale) {
           rendObj = ROBJ_TEXTAREA
           size = FLEX_H
           halign = ALIGN_RIGHT
-          behavior = [Behaviors.TextArea]
+          behavior = Behaviors.TextArea
           text = depthText.get()
         }.__update(font2)
       }
@@ -108,38 +108,41 @@ let depthControlEditView = {
       rendObj = ROBJ_TEXTAREA
       size = FLEX_H
       halign = ALIGN_RIGHT
-      behavior = [Behaviors.TextArea]
+      behavior = Behaviors.TextArea
       text = loc("controls/submarine_depth")
     }.__update(fontVeryTinyShaded)
   ]
 }
 
-let oxygenLevel = @(scale) {
-  size = scaleArr(oxigenBlockSize, scale)
-  halign = ALIGN_RIGHT
-  flow = FLOW_VERTICAL
-  gap = hdpx(5 * scale)
-  children = [
-    oxygenMark(scale)
-    {
-      size = scaleArr(oxigenProgressSize, scale)
-      children = [
-        {
-          rendObj = ROBJ_SOLID
-          color = hudDarkGrayColor
-          size = FLEX
-        },
-        @() {
-          watch = oxygen
-          rendObj = ROBJ_SOLID
-          color = hudBlueColor
-          size = FLEX
-          transform = { pivot = [0, 1], scale = [oxygen.get() / 100.0, 1] }
-          transitions = [{ prop = AnimProp.scale, duration = 0.5 }]
-        }
-      ]
-    }
-  ]
+function oxygenLevel(scale) {
+  let scaleTransitions = [{ prop = AnimProp.scale, duration = 0.5 }]
+  return {
+    size = scaleArr(oxigenBlockSize, scale)
+    halign = ALIGN_RIGHT
+    flow = FLOW_VERTICAL
+    gap = hdpx(5 * scale)
+    children = [
+      oxygenMark(scale)
+      {
+        size = scaleArr(oxigenProgressSize, scale)
+        children = [
+          {
+            rendObj = ROBJ_SOLID
+            color = hudDarkGrayColor
+            size = FLEX
+          },
+          @() {
+            watch = oxygen
+            rendObj = ROBJ_SOLID
+            color = hudBlueColor
+            size = FLEX
+            transform = { pivot = const [0, 1], scale = [oxygen.get() / 100.0, 1] }
+            transitions = scaleTransitions
+          }
+        ]
+      }
+    ]
+  }
 }
 
 let oxygenLevelEditView = {
@@ -151,13 +154,11 @@ let oxygenLevelEditView = {
     oxygenMark(1)
     {
       size = oxigenProgressSize
-      children = [
-        {
-          rendObj = ROBJ_SOLID
-          color = hudBlueColor
-          size = FLEX
-        }
-      ]
+      children = {
+        rendObj = ROBJ_SOLID
+        color = hudBlueColor
+        size = FLEX
+      }
     }
   ]
 }

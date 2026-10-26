@@ -81,11 +81,13 @@ function appendActionsUnits(resTbl, blk) {
 }
 
 function appendOverrideUnits(resTbl, overrideUnit) {
-  let ovrUnits = overrideUnit.split(";")
-    .filter(@(v) v != "")
-    .map(@(str) str.split(":")[0])
-  foreach (u in ovrUnits)
-    resTbl[u] <- true 
+  foreach (units in overrideUnit.split("|")) {
+    let ovrUnits = units.split(";")
+      .filter(@(v) v != "")
+      .map(@(str) str.split(":")[0])
+    foreach (u in ovrUnits)
+      resTbl[u] <- true 
+  }
 }
 
 let getMissionUnitsAndAddons = memoize(function getMissionUnitsImpl(missionId) {
@@ -135,7 +137,7 @@ function getKillStreakUnits(preset, mRankFrom, mRankTo) {
   return res
 }
 
-function getHighestRankRange(mode, mRankFrom, mRankTo) {
+function [pure, nodiscard] getHighestRankRange(mode, mRankFrom, mRankTo) {
   let { mmRanges = [] } = mode?.matchmaking
   local from = mRankTo
   local to = mRankTo

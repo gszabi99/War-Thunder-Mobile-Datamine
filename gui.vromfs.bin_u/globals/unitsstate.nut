@@ -34,15 +34,14 @@ let buyUnitsData = Computed(function() {
     let { name } = unit
     if (name in campMyUnits.get())
       return US_OWN
+    if (name in allBlueprints && (blueprints?[name] ?? 0) < (allBlueprints?[name]?.targetCount ?? 0))
+      return US_NEED_BLUEPRINTS
     if (unit.costGold <= 0 && unit.costWp <= 0)
       return US_NOT_FOR_SALE
 
     if (name in allBlueprints) {
-      if ((blueprints?[name] ?? 0) >= (allBlueprints?[name]?.targetCount ?? 0)) {
-        canBuy[name] <- unit
-        return US_CAN_BUY
-      }
-      return US_NEED_BLUEPRINTS
+      canBuy[name] <- unit
+      return US_CAN_BUY
     }
     if (unitsResearch?[name].canResearch && name in unitResearchExp)
       return US_CAN_RESEARCH
@@ -86,7 +85,7 @@ registerHandler("onSetCurrentUnit", function(_, context) {
 selectedUnitByPlayer.subscribe(@(v) v == null || curUnitInProgress.get() != null ? null
   : set_current_unit(v, { id = "onSetCurrentUnit", unit = v }))
 
-let getUnitCategory = @(unit, unitResearchExp, allBlueprints)
+let getUnitCategory = @[pure, nodiscard](unit, unitResearchExp, allBlueprints)
   unit.name in unitResearchExp ? UC_RESEARCHABLE
     : unit.name in allBlueprints ? UC_BLUEPRINT
     : unit.isCollectible ? UC_COLLECTIBLE

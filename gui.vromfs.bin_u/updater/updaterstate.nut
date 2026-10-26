@@ -16,17 +16,17 @@ let { set_accept_user_react, get_total_download_mb, get_progress_percent, get_et
   UPDATER_EVENT_ERROR, UPDATER_EVENT_INCOMPATIBLE_VERSION, UPDATER_EVENT_NOT_ENOUGH_DISK_SPACE
 } = contentUpdater
 
-let updaterStage = Watched(null)
+let updaterStage = mkWatched(persist, "updaterStage", null)
 let totalSizeBytes = Watched((get_total_download_mb() * MB).tointeger())
-let freeDiskSpaceMB = Watched(0)
-let requiredDiskSpaceMB = Watched(0)
+let freeDiskSpaceMB = mkWatched(persist, "freeDiskSpaceMB", 0)
+let requiredDiskSpaceMB = mkWatched(persist, "requiredDiskSpaceMB", 0)
 let progress = Watched({
   percent = get_progress_percent()
   etaSec = get_eta()
   dspeed = get_download_speed()
 })
 let progressPercent = Computed(@() progress.get().percent)
-let updaterError = Watched(null)
+let updaterError = mkWatched(persist, "updaterError", null)
 let isFailedToGetVersion = mkWatched(persist, "isFailedToGetVersion", false)
 let needUpdateMsg = mkWatched(persist, "needUpdateMsg", false)
 let needRestartMsg = mkWatched(persist, "needRestartMsg", false)
@@ -49,8 +49,21 @@ foreach(id, val in contentUpdater)
     errorNames[val] <- id
 let getErrorName = @(v) errorNames?[v] ?? v
 
+let stageNames = {}
+let eventNames = {}
+foreach(id, val in contentUpdater)
+  if (!(val instanceof Integer) || id.startswith("UPDATER_RESULT_"))
+    continue
+  else if (id.startswith("UPDATER_EVENT_"))
+    eventNames[val] <- id
+  else if (id.startswith("UPDATER_") && !id.startswith("UPDATER_ERROR_"))
+    stageNames[val] <- id
+
 let updaterEvents = {
-  [UPDATER_EVENT_STAGE]         = @(evt) updaterStage.set(evt.stage),
+  [UPDATER_EVENT_STAGE]         = function(evt) {
+    logU($"Stage change to {stageNames?[evt.stage] ?? evt.stage}")
+    updaterStage.set(evt.stage)
+  },
   [UPDATER_EVENT_DOWNLOAD_SIZE] = function (evt) {
     totalSizeBytes.set(evt.toDownload)
     local showWarning = evt?.showWarning ?? false
@@ -66,7 +79,11 @@ let updaterEvents = {
     etaSec = evt.etaSec
     dspeed = evt.dspeed
   }),
-  [UPDATER_EVENT_ERROR]         = @(evt) updaterError.set(getErrorName(evt.error)),
+  [UPDATER_EVENT_ERROR]         = function(evt) {
+    let name = getErrorName(evt.error)
+    logU($"Error: {name}")
+    updaterError.set(name)
+  },
   [UPDATER_EVENT_INCOMPATIBLE_VERSION] = function(p) {
     let { needExeUpdate = true, remoteVersion = null } = p
     isFailedToGetVersion.set(remoteVersion == "0.0.0.0")
@@ -79,19 +96,6 @@ let updaterEvents = {
     needNotEnoughDiskSpaceMsg.set(true)
   }
 }
-
-let stageNames = {}
-let eventNames = {}
-foreach(id, val in contentUpdater)
-  if (!(val instanceof Integer) || id.startswith("UPDATER_RESULT_"))
-    continue
-  else if (id.startswith("UPDATER_EVENT_"))
-    eventNames[val] <- id
-  else if (id.startswith("UPDATER_") && !id.startswith("UPDATER_ERROR_"))
-    stageNames[val] <- id
-
-updaterStage.subscribe(@(v) logU($"Stage change to {stageNames?[v] ?? v}"))
-updaterError.subscribe(@(v) logU($"Error: {v}"))
 
 eventbus_subscribe("android.embedded.updater.event", function (evt) {
   let { eventType } = evt

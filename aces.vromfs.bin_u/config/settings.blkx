@@ -1,7 +1,6 @@
 {
   "dasMain": "%appGame/main.das",
   "dasMainDedicated": "%dedScripts/main.das",
-  "sqMain": "%scripts/main.nut",
   "sqMainDedicated": "%dedScripts/main_ds.nut",
   "playerTemplate": "wtm_player",
   "version": "",
@@ -86,10 +85,6 @@
       "forSource": "../../skyquake/prog/scripts/game",
       "forVromfs": "gameCommon"
     },
-    "%scripts": {
-      "forSource": "../../skyquake/prog/scripts/wtm/scripts",
-      "forVromfs": "scripts"
-    },
     "%dedScripts": {
       "forSource": "../../skyquake/prog/scripts/wtm/dedicatedScripts",
       "forVromfs": "dedicatedScripts"
@@ -125,10 +120,6 @@
     "%lang": {
       "forSource": "../../skyquake/prog/gamebase_wtm/lang_src/lang",
       "forVromfs": "lang"
-    },
-    "%gui": {
-      "forSource": "../../skyquake/prog/scripts/wtm/gui",
-      "forVromfs": "gui"
     },
     "%guiConfig": {
       "forSource": "../../skyquake/prog/gamebase_wtm/gamebase/config",
@@ -183,10 +174,6 @@
       },
       {
         "vrom": "dldata.pc.vromfs.bin",
-        "vromOptional": true
-      },
-      {
-        "vrom": "game-dev.vromfs.bin",
         "vromOptional": true
       },
       {
@@ -325,6 +312,10 @@
     "pkg_sound_event": {
       "hq": false,
       "modelsPatch": false
+    },
+    "pkg_sound_caribean": {
+      "hq": false,
+      "modelsPatch": false
     }
   },
   "ui": {
@@ -371,6 +362,7 @@
     "cloudsQuality": 2,
     "nonVolumeCloudsQuality": 2,
     "volumeCloudsQuality": 1,
+    "skiesGroundRelativeFroxels": false,
     "applyCloudsShadow": false,
     "contactShadowsQuality": 0,
     "tireTracksQuality": 2,
@@ -427,6 +419,7 @@
     "beforeRenderFrameFrameBoundary": true,
     "dynrendInitialMainRingBufferSize": 65536,
     "dynrendInitialRingBufferSize": 65536,
+    "dynrendMaxRingBufferSize": 65536,
     "enableZoomVignette": true,
     "resetManagedTexturesOnSettingsChanged": true,
     "allow_uhq_textures": false,
@@ -434,11 +427,11 @@
     "shoreHeightmapRange": 10.0,
     "wfxHeightLimit": 1.0,
     "waterVisibilityOffDelaySeconds": 4.0,
-    "allowHighresFxDepthReprojection": true,
     "csmReflectionSampleBias": -0.0075,
     "dynDecalsInitialAtlasSizeIndex": 1,
     "enableWaterReflections": true,
     "shouldRenderStaticSceneToReflection": false,
+    "tiledLightsResizeTilesRT": false,
     "refractionDistMulForTanks": 0.01,
     "refractionDistMulForShips": 0.1,
     "forceLowPreset": false,
@@ -490,13 +483,13 @@
     "harmonicsSimilarityEps": 0.05,
     "listAllAaOptions": true,
     "mobile_demonpostfx": true,
-    "enableWaterPresetInterpolation": false,
+    "enableWaterPresetInterpolation": true,
     "occlusionNeedsPlayerDepth": false,
     "vaporStepSize": 0.4,
     "vaporCalcSunTransmittance": false,
     "replaceEnviProbeWithLocal": true,
     "allowRIsInDynamicCube": false,
-    "tiledRenderLights": false,
+    "tiledRenderLights": true,
     "guiHdrTonemap": [
       1.25,
       1.2
@@ -515,7 +508,6 @@
       "maxBlasBuildFrames": 30,
       "additionalElementsCheck": false,
       "geometryLimit": 1024,
-      "shoulRebuildSkinnedElems": true,
       "softnessUnderwaterMedium": 0.15,
       "softnessUnderwaterHigh": 0.1,
       "blasCompaction": true
@@ -627,6 +619,7 @@
     "verifyRendinstMaterials": true,
     "verifyNoTranspRendinstMaterials": false,
     "benchFirstFramesToSkip": 100,
+    "gpuFreqProbeScale": 40.0,
     "unsupportedVfxShaders": {
       "shader": [
         "dafx_modfx_volshape_render",
@@ -702,7 +695,8 @@
     "useFeedbackTexFilter": true,
     "allowPrebakedLastclip": true,
     "allowFallback": false,
-    "useFramegraphBuffers": true
+    "useFramegraphBuffers": true,
+    "useLevelBinLastclip": true
   },
   "clipmapImpostor": {
     "enabled": false,
@@ -841,6 +835,18 @@
           0
         ],
         "gamma1": true
+      },
+      {
+        "tag": "vol_nx_ny_nx_ny",
+        "idx": 9,
+        "type": "vol",
+        "color": [
+          128,
+          128,
+          128,
+          128
+        ],
+        "gamma1": true
       }
     ],
     "biasGroup": [
@@ -975,11 +981,7 @@
       "riExLod0InCascade0": true,
       "maxUpdateTexelPart": 0.005,
       "minSizeForRiextraCascade1": 10.0,
-      "small_ship": {
-        "maxHeight": 100.0,
-        "maxHeightRange": 150.0
-      },
-      "big_ship": {
+      "ship": {
         "maxHeight": 100.0,
         "maxHeightRange": 150.0
       },
@@ -989,7 +991,15 @@
         "depthBiasForCascade0": 0.000025,
         "cascade0Dist": 100.0,
         "maxHeight": 4500.0,
-        "maxHeightRange": 4550.0
+        "maxHeightRange": 4550.0,
+        "cockpit": {
+          "cascade0Dist": 800.0,
+          "depthBias": 0.05,
+          "depthBiasForCascade0": 0.002,
+          "maxDist": 4000.0,
+          "maxHeight": 300.0,
+          "maxHeightRange": 350.0
+        }
       },
       "tank": {
         "maxHeight": 100.0,
@@ -1016,13 +1026,15 @@
       "useOcclusion": false,
       "renderHeightmap": false,
       "enableSparseUpdate": false,
+      "snapAnchorToHero": true,
+      "snapAnchorToHeroMaxCascadeNo": 0,
       "aircraft": {
-        "useFixedShadowCascade": true
+        "useFixedShadowCascade": true,
+        "cockpit": {
+          "useFixedShadowCascade": false
+        }
       },
       "hangar": {
-        "useFixedShadowCascade": true
-      },
-      "hangar_ship": {
         "useFixedShadowCascade": true
       },
       "underwater": {
@@ -1035,17 +1047,18 @@
         "cascadeWidth": 512,
         "aircraft": {
           "shadowDist": 1000.0,
-          "powWeight": 0.98
+          "powWeight": 0.98,
+          "cockpit": {
+            "powWeight": 0.99,
+            "shadowDist": 100.0
+          }
         },
         "tank": {
-          "shadowDist": 200.0,
-          "powWeight": 0.7
+          "shadowDist": 50.0,
+          "powWeight": 0.85,
+          "useFixedShadowCascade": true
         },
-        "small_ship": {
-          "shadowDist": 700.0,
-          "powWeight": 0.45
-        },
-        "big_ship": {
+        "ship": {
           "shadowDist": 700.0,
           "powWeight": 0.45
         },
@@ -1054,13 +1067,15 @@
           "powWeight": 0.9,
           "zNearForCascadeDistribution": 0.5,
           "fadeOut": 5.0,
-          "dynmodelShadowMinTexels": 0.0
-        },
-        "hangar_ship": {
-          "shadowDist": 150.0,
-          "powWeight": 0.5,
-          "zNearForCascadeDistribution": 0.5,
-          "dynmodelShadowMinTexels": 0.0
+          "dynmodelShadowMinTexels": 0.0,
+          "ship": {
+            "shadowDist": 150.0,
+            "powWeight": 0.5,
+            "fadeOut": 30.0
+          },
+          "aircraft": {
+            "shadowDist": 180.0
+          }
         },
         "underwater": {
           "shadowDist": 500.0,
@@ -1078,17 +1093,17 @@
         "cascadeWidth": 1024,
         "aircraft": {
           "shadowDist": 1000.0,
-          "powWeight": 0.98
+          "powWeight": 0.98,
+          "cockpit": {
+            "powWeight": 0.99,
+            "shadowDist": 100.0
+          }
         },
         "tank": {
           "shadowDist": 500.0,
           "powWeight": 0.9
         },
-        "small_ship": {
-          "shadowDist": 1000.0,
-          "powWeight": 0.6
-        },
-        "big_ship": {
+        "ship": {
           "shadowDist": 1000.0,
           "powWeight": 0.6
         },
@@ -1097,13 +1112,15 @@
           "powWeight": 0.9,
           "zNearForCascadeDistribution": 0.5,
           "fadeOut": 5.0,
-          "dynmodelShadowMinTexels": 0.0
-        },
-        "hangar_ship": {
-          "shadowDist": 250.0,
-          "powWeight": 0.7,
-          "zNearForCascadeDistribution": 0.5,
-          "dynmodelShadowMinTexels": 0.0
+          "dynmodelShadowMinTexels": 0.0,
+          "ship": {
+            "shadowDist": 250.0,
+            "powWeight": 0.7,
+            "fadeOut": 30.0
+          },
+          "aircraft": {
+            "shadowDist": 180.0
+          }
         },
         "underwater": {
           "shadowDist": 500.0,
@@ -1122,17 +1139,17 @@
         "cascadeWidth": 1536,
         "aircraft": {
           "shadowDist": 1000.0,
-          "powWeight": 0.98
+          "powWeight": 0.98,
+          "cockpit": {
+            "powWeight": 0.99,
+            "shadowDist": 100.0
+          }
         },
         "tank": {
           "shadowDist": 500.0,
           "powWeight": 0.9
         },
-        "small_ship": {
-          "shadowDist": 1000.0,
-          "powWeight": 0.6
-        },
-        "big_ship": {
+        "ship": {
           "shadowDist": 1000.0,
           "powWeight": 0.6
         },
@@ -1141,13 +1158,15 @@
           "powWeight": 0.9,
           "zNearForCascadeDistribution": 0.5,
           "fadeOut": 5.0,
-          "dynmodelShadowMinTexels": 0.0
-        },
-        "hangar_ship": {
-          "shadowDist": 250.0,
-          "powWeight": 0.7,
-          "zNearForCascadeDistribution": 0.5,
-          "dynmodelShadowMinTexels": 0.0
+          "dynmodelShadowMinTexels": 0.0,
+          "ship": {
+            "shadowDist": 250.0,
+            "powWeight": 0.7,
+            "fadeOut": 30.0
+          },
+          "aircraft": {
+            "shadowDist": 180.0
+          }
         },
         "underwater": {
           "shadowDist": 500.0,
@@ -1155,6 +1174,9 @@
           "shadowStart": 0.01,
           "cascadeWidth": 1024
         }
+      },
+      "dynamicLightsShadows": {
+        "shadowQuality": 1
       }
     },
     "shadow_movie": {
@@ -1167,17 +1189,17 @@
         "cascadeWidth": 4096,
         "aircraft": {
           "shadowDist": 1000.0,
-          "powWeight": 0.9
+          "powWeight": 0.9,
+          "cockpit": {
+            "powWeight": 0.99,
+            "shadowDist": 100.0
+          }
         },
         "tank": {
           "shadowDist": 500.0,
           "powWeight": 0.9
         },
-        "small_ship": {
-          "shadowDist": 1000.0,
-          "powWeight": 0.6
-        },
-        "big_ship": {
+        "ship": {
           "shadowDist": 1000.0,
           "powWeight": 0.6
         },
@@ -1186,13 +1208,15 @@
           "powWeight": 0.9,
           "zNearForCascadeDistribution": 0.5,
           "fadeOut": 5.0,
-          "dynmodelShadowMinTexels": 0.0
-        },
-        "hangar_ship": {
-          "shadowDist": 250.0,
-          "powWeight": 0.7,
-          "zNearForCascadeDistribution": 0.5,
-          "dynmodelShadowMinTexels": 0.0
+          "dynmodelShadowMinTexels": 0.0,
+          "ship": {
+            "shadowDist": 250.0,
+            "powWeight": 0.7,
+            "fadeOut": 30.0
+          },
+          "aircraft": {
+            "shadowDist": 180.0
+          }
         },
         "underwater": {
           "shadowDist": 500.0,
@@ -1200,6 +1224,9 @@
           "shadowStart": 0.01,
           "cascadeWidth": 1024
         }
+      },
+      "dynamicLightsShadows": {
+        "shadowQuality": 1
       }
     }
   },
@@ -1218,13 +1245,7 @@
     "aircraft": {
       "dafx_sim_lod_dist": 1800.0
     },
-    "cockpit": {
-      "dafx_sim_lod_dist": 1800.0
-    },
-    "small_ship": {
-      "dafx_sim_lod_dist": 1200.0
-    },
-    "big_ship": {
+    "ship": {
       "dafx_sim_lod_dist": 1200.0
     },
     "nswitch": {
@@ -1326,41 +1347,8 @@
     }
   },
   "overrides": {
-    "specific_adreno650_wakefx_workaround": {
-      "codename": [
-        "Xiaomi 23043RP34G",
-        "OPPO OPD2101",
-        "Xiaomi 22081281AC",
-        "vivo V2203A",
-        "Xiaomi 22021211RC",
-        "Xiaomi 23043RP34C",
-        "vivo V2244A",
-        "Xiaomi 23043RP34I",
-        "Xiaomi M2012K11AC",
-        "HUAWEI DBY-W09",
-        "Xiaomi M2105K81AC",
-        "OPPO PENM00",
-        "vivo PA2170",
-        "vivo PA2353",
-        "vivo V2118A",
-        "OPPO PDEM30",
-        "OPPO PDRM00",
-        "OnePlus KB2000",
-        "realme RMX3366",
-        "realme RMX3370",
-        "vivo V1955A",
-        "vivo V2055A",
-        "HUAWEI DBR-W00"
-      ],
-      "graphics": {
-        "shipWakeFxWake": false
-      }
-    },
     "xiaomi_11t": {
       "codename": "21081111RG",
-      "vulkan": {
-        "preRotation": false
-      },
       "android": {
         "highPerfCores": 240,
         "antiThrottlingSleepMs": 5,
@@ -1475,9 +1463,6 @@
       "graphics": {
         "fallbackFxaaLowToBilinear": true
       },
-      "vulkan": {
-        "preRotation": false
-      },
       "android_presets": {
         "graphics": {
           "sceneResolutionPreset": [
@@ -1505,7 +1490,7 @@
       }
     },
     "broken_sgsr": {
-      "gpu": "PowerVR BXM-8-256",
+      "gpu": "BXM-8-256",
       "graphics": {
         "listAllAaOptions": false
       }
@@ -1514,6 +1499,20 @@
       "codename": "motorola moto g(20) ",
       "graphics": {
         "disallowTaa": true
+      }
+    },
+    "broken_bloom": {
+      "gpu": "Samsung Xclipse",
+      "android_presets": {
+        "graphics": {
+          "bloomQuality": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
       }
     },
     "broken_foliage": {
@@ -1797,6 +1796,13 @@
         "high",
         "high"
       ],
+      "sceneDetail": [
+        "low",
+        "low",
+        "high",
+        "high",
+        "high"
+      ],
       "underwaterFogUseShadows": [
         0,
         1,
@@ -1948,7 +1954,7 @@
         0,
         0,
         0,
-        0,
+        2,
         2
       ],
       "landmeshParallaxDisplacement": [
@@ -2328,6 +2334,12 @@
         "high",
         "high"
       ],
+      "sceneDetail": [
+        "low",
+        "high",
+        "high",
+        "high"
+      ],
       "underwaterFogUseShadows": [
         0,
         1,
@@ -2411,6 +2423,12 @@
         false,
         true,
         true
+      ],
+      "bloomQuality": [
+        0,
+        0,
+        0,
+        2
       ],
       "landmeshParallaxDisplacement": [
         false,
@@ -2537,334 +2555,342 @@
     "debugGarbadgeReads": true,
     "vendor": {
       "Qualcomm": {
-        "driverProps": {
-          "extensions": {
-            "entry": {
+        "extensions": {
+          "entry": [
+            {
+              "priority": 1,
+              "gpu": [
+                "740",
+                "750",
+                "830",
+                "840"
+              ],
+              "data": {
+                "VK_EXT_device_memory_report": false
+              }
+            },
+            {
+              "priority": 2,
               "driverMaxVer0": 512,
               "driverMaxVer1": 676,
               "data": {
                 "VK_EXT_extended_dynamic_state": false
               }
-            }
-          },
-          "adrenoClearStoreRace": {
-            "entry": [
-              {
-                "driverMinVer0": 512,
-                "driverMinVer1": 530,
-                "data": {
-                  "affected": true
-                }
-              },
-              {
-                "gpu": [
-                  "640",
-                  "642",
-                  "642L",
-                  "644",
-                  "650",
-                  "660"
-                ],
-                "driverMinVer0": 512,
-                "driverMinVer1": 445,
-                "data": {
-                  "affected": true
-                }
+            },
+            {
+              "priority": 3,
+              "gpu": [
+                "740",
+                "750"
+              ],
+              "driverMaxVer0": 512,
+              "driverMaxVer1": 676,
+              "data": {
+                "VK_EXT_device_memory_report": false,
+                "VK_EXT_extended_dynamic_state": false
               }
-            ]
-          },
-          "brokenMsaaInputAttachment": {
-            "entry": {
+            }
+          ]
+        },
+        "adrenoClearStoreRace": {
+          "entry": [
+            {
+              "priority": 1,
+              "driverMinVer0": 512,
+              "driverMinVer1": 530,
+              "data": {
+                "affected": true
+              }
+            },
+            {
+              "priority": 0,
               "gpu": [
                 "640",
                 "642",
-                "642L"
+                "642L",
+                "644",
+                "650",
+                "660"
               ],
+              "driverMinVer0": 512,
+              "driverMinVer1": 445,
               "data": {
                 "affected": true
               }
             }
-          },
-          "pipelineCompiler": {
-            "entry": [
-              {
-                "driverMaxVer0": 512,
-                "driverMaxVer1": 444,
-                "data": {
-                  "maxSecondaryThreads": 0,
-                  "usePipelineCacheMutex": true
-                }
-              },
-              {
-                "driverMinVer0": 512,
-                "driverMinVer1": 499,
-                "driverMaxVer0": 512,
-                "driverMaxVer1": 502,
-                "data": {
-                  "maxSecondaryThreads": 0,
-                  "usePipelineCacheMutex": true
-                }
+          ]
+        },
+        "brokenMsaaInputAttachment": {
+          "entry": {
+            "gpu": [
+              "640",
+              "642",
+              "642L"
+            ],
+            "data": {
+              "affected": true
+            }
+          }
+        },
+        "pipelineCompiler": {
+          "entry": [
+            {
+              "driverMaxVer0": 512,
+              "driverMaxVer1": 444,
+              "data": {
+                "maxSecondaryThreads": 0,
+                "usePipelineCacheMutex": true
               }
-            ]
-          },
-          "brokenSubpasses": {
-            "entry": [
-              {
-                "driverMaxVer0": 512,
-                "driverMaxVer1": 420,
-                "data": {
-                  "affected": true
-                }
-              },
-              {
-                "gpu": "620",
-                "driverMinVer0": 512,
-                "driverMinVer1": 444,
-                "driverMaxVer0": 512,
-                "driverMaxVer1": 445,
-                "data": {
-                  "affected": true
-                }
+            },
+            {
+              "driverMinVer0": 512,
+              "driverMinVer1": 499,
+              "driverMaxVer0": 512,
+              "driverMaxVer1": 502,
+              "data": {
+                "maxSecondaryThreads": 0,
+                "usePipelineCacheMutex": true
               }
-            ]
-          },
-          "hasFloatClearBug": {
-            "entry": {
-              "gpu": [
-                "610",
-                "613",
-                "618"
-              ],
+            }
+          ]
+        },
+        "brokenSubpasses": {
+          "entry": [
+            {
+              "driverMaxVer0": 512,
+              "driverMaxVer1": 420,
               "data": {
                 "affected": true
               }
+            },
+            {
+              "gpu": "620",
+              "driverMinVer0": 512,
+              "driverMinVer1": 444,
+              "driverMaxVer0": 512,
+              "driverMaxVer1": 445,
+              "data": {
+                "affected": true
+              }
+            }
+          ]
+        },
+        "hasFloatClearBug": {
+          "entry": {
+            "gpu": [
+              "610",
+              "613",
+              "618"
+            ],
+            "data": {
+              "affected": true
             }
           }
         }
       },
       "ARM": {
-        "driverProps": {
-          "signalWaitStage": {
-            "entry": {
-              "driverMinVer0": 29,
-              "data": {
-                "value": 33562240
-              }
+        "signalWaitStage": {
+          "entry": {
+            "data": {
+              "value": 33562240
             }
-          },
-          "brokenSubpasses": {
-            "entry": [
-              {
-                "gpu": "G610",
-                "data": {
-                  "affected": true
-                }
-              },
-              {
-                "gpu": "G710",
-                "driverMinVer0": 38,
-                "driverMinVer1": 1,
-                "driverMaxVer0": 38,
-                "driverMaxVer1": 1,
-                "data": {
-                  "affected": true
-                }
-              }
-            ]
-          },
-          "brokenInstanceID": {
-            "entry": {
-              "data": {
-                "affected": true
-              }
-            }
-          },
-          "barrierMerge": {
-            "entry": {
+          }
+        },
+        "brokenSubpasses": {
+          "entry": [
+            {
               "gpu": "G610",
               "data": {
-                "mode": 4
+                "affected": true
               }
-            }
-          },
-          "extensions": {
-            "entry": [
-              {
-                "driverMinVer0": 38,
-                "driverMaxVer0": 49,
-                "data": {
-                  "VK_EXT_extended_dynamic_state": false
-                }
-              },
-              {
-                "gpu": [
-                  "G52",
-                  "G72"
-                ],
-                "driverMinVer0": 38,
-                "driverMaxVer0": 49,
-                "data": {
-                  "VK_KHR_buffer_device_address": false,
-                  "VK_EXT_extended_dynamic_state": false
-                }
-              },
-              {
-                "gpu": [
-                  "G57",
-                  "G52"
-                ],
-                "driverMaxVer0": 37,
-                "data": {
-                  "VK_KHR_buffer_device_address": false
-                }
-              },
-              {
-                "gpu": [
-                  "G57",
-                  "G52"
-                ],
-                "driverMinVer0": 50,
-                "data": {
-                  "VK_KHR_buffer_device_address": false
-                }
-              }
-            ]
-          },
-          "ignoreDeviceLost": {
-            "entry": [
-              {
-                "gpu": "G51",
-                "data": {
-                  "affected": true
-                }
-              },
-              {
-                "gpu": "G57",
-                "driverMaxVer0": 28,
-                "data": {
-                  "affected": true
-                }
-              }
-            ]
-          },
-          "pollFences": {
-            "entry": {
-              "gpu": [
-                "G51",
-                "G52",
-                "G57"
-              ],
+            },
+            {
+              "gpu": "G710",
+              "driverMinVer0": 38,
+              "driverMinVer1": 1,
+              "driverMaxVer0": 38,
+              "driverMaxVer1": 1,
               "data": {
                 "affected": true
               }
             }
-          },
-          "pipelineCompiler": {
-            "entry": [
-              {
-                "driverMinVer0": 49,
-                "driverMinVer1": 1,
-                "gpu": "G925",
-                "data": {
-                  "maxSecondaryThreads": 0,
-                  "usePipelineCacheMutex": true
-                }
-              },
-              {
-                "gpu": "G610",
-                "driverMaxVer0": 30,
-                "data": {
-                  "allowPipelineCache": false
-                }
-              },
-              {
-                "driverMaxVer0": [
-                  25,
-                  2
-                ],
-                "driverMinVer1": [
-                  25,
-                  1
-                ],
-                "gpu": "G52",
-                "data": {
-                  "maxSecondaryThreads": 0,
-                  "usePipelineCacheMutex": true
-                }
-              }
-            ]
+          ]
+        },
+        "brokenInstanceID": {
+          "entry": {
+            "data": {
+              "affected": true
+            }
           }
+        },
+        "barrierMerge": {
+          "entry": {
+            "gpu": "G610",
+            "data": {
+              "mode": 4
+            }
+          }
+        },
+        "extensions": {
+          "entry": [
+            {
+              "driverMinVer0": 38,
+              "driverMaxVer0": 49,
+              "priority": 0,
+              "data": {
+                "VK_EXT_extended_dynamic_state": false
+              }
+            },
+            {
+              "priority": 2,
+              "gpu": [
+                "G57",
+                "G52"
+              ],
+              "driverMinVer0": 38,
+              "driverMaxVer0": 49,
+              "data": {
+                "VK_KHR_buffer_device_address": false,
+                "VK_EXT_extended_dynamic_state": false
+              }
+            },
+            {
+              "priority": 1,
+              "gpu": [
+                "G57",
+                "G52"
+              ],
+              "data": {
+                "VK_KHR_buffer_device_address": false
+              }
+            }
+          ]
+        },
+        "ignoreDeviceLost": {
+          "entry": {
+            "gpu": "G51",
+            "data": {
+              "affected": true
+            }
+          }
+        },
+        "pollFences": {
+          "entry": {
+            "gpu": [
+              "G51",
+              "G52",
+              "G57"
+            ],
+            "data": {
+              "affected": true
+            }
+          }
+        },
+        "pipelineCompiler": {
+          "entry": [
+            {
+              "driverMinVer0": 49,
+              "driverMinVer1": 1,
+              "gpu": "G925",
+              "data": {
+                "maxSecondaryThreads": 0,
+                "usePipelineCacheMutex": true
+              }
+            },
+            {
+              "gpu": "G610",
+              "driverMaxVer0": 30,
+              "data": {
+                "allowPipelineCache": false
+              }
+            },
+            {
+              "driverMaxVer0": [
+                25,
+                2
+              ],
+              "driverMinVer1": [
+                25,
+                1
+              ],
+              "gpu": "G52",
+              "data": {
+                "maxSecondaryThreads": 0,
+                "usePipelineCacheMutex": true
+              }
+            }
+          ]
         }
       },
       "AMD": {
-        "driverProps": {
-          "multiQueue": {
-            "entry": {
-              "gpu": "RX 6600",
-              "data": {
-                "allow": false
-              }
+        "extensions": {
+          "entry": {
+            "gpuMask": "RX 6",
+            "data": {
+              "VK_KHR_fragment_shader_barycentric": false
             }
-          },
-          "clearColorBug": {
-            "entry": {
-              "data": {
-                "affected": true
-              }
+          }
+        },
+        "multiQueue": {
+          "entry": {
+            "gpu": "RX 6600",
+            "data": {
+              "allow": false
+            }
+          }
+        },
+        "clearColorBug": {
+          "entry": {
+            "data": {
+              "affected": true
             }
           }
         }
       },
       "Huawei": {
-        "driverProps": {
-          "resourceHeaps": {
-            "entry": {
-              "data": {
-                "allowed": false
-              }
+        "resourceHeaps": {
+          "entry": {
+            "data": {
+              "allowed": false
             }
-          },
-          "extensions": {
-            "entry": {
-              "gpu": "Maleoon 935",
-              "data": {
-                "VK_KHR_ray_tracing_pipeline": false,
-                "VK_KHR_ray_query": false,
-                "VK_KHR_acceleration_structure": false
-              }
+          }
+        },
+        "extensions": {
+          "entry": {
+            "gpu": "Maleoon 935",
+            "data": {
+              "VK_KHR_ray_tracing_pipeline": false,
+              "VK_KHR_ray_query": false,
+              "VK_KHR_acceleration_structure": false
             }
           }
         }
       },
       "default": {
         "android": {
-          "driverProps": {
-            "disallowedFormats": {
-              "list": "RGBUN_BC1, RGBs_BC1, RGBAUN_BC1, RGBAs_BC1, UN_BC2, s_BC2, UN_BC3, s_BC3, UN_BC4, SN_BC4, UN_BC5, SN_BC5, UF_BC6H, SF_BC6H, UN_BC7, s_BC7"
-            }
+          "disallowedFormats": {
+            "list": "RGBUN_BC1, RGBs_BC1, RGBAUN_BC1, RGBAs_BC1, UN_BC2, s_BC2, UN_BC3, s_BC3, UN_BC4, SN_BC4, UN_BC5, SN_BC5, UF_BC6H, SF_BC6H, UN_BC7, s_BC7"
           }
         },
-        "driverProps": {
-          "hasTileBasedArchitecture": {
-            "affected": true
-          },
-          "disableMultiDrawIndirect": {
-            "affected": true
-          },
-          "memsetOnRub": {
-            "affected": false
-          },
-          "latencyWait": {
-            "useSharedFenceWait": false,
-            "waitApp": false,
-            "waitWorker": false
-          },
-          "brokenUAVOnlyPasses": {
-            "affected": true
-          },
-          "delayCompactionSizeCopy": {
-            "affected": true
-          }
+        "hasTileBasedArchitecture": {
+          "affected": true
+        },
+        "disableMultiDrawIndirect": {
+          "affected": true
+        },
+        "memsetOnRub": {
+          "affected": false
+        },
+        "latencyWait": {
+          "useSharedFenceWait": false,
+          "waitApp": false,
+          "waitWorker": false
+        },
+        "brokenUAVOnlyPasses": {
+          "affected": true
+        },
+        "delayCompactionSizeCopy": {
+          "affected": true
         }
       }
     },
@@ -2952,6 +2978,10 @@
             },
             {
               "includes": "Adreno",
+              "mask": "650"
+            },
+            {
+              "includes": "Adreno",
               "mask": "740"
             }
           ]
@@ -2962,7 +2992,6 @@
   "metal": {
     "enable_manual_hazard_tracking": true,
     "enable_postmortem": true,
-    "brokenUAVOnlyPasses": true,
     "allowResourceHeaps": false
   },
   "win64": {
@@ -2996,9 +3025,6 @@
     },
     "video": {
       "dynamic_hdr": true
-    },
-    "clipmap": {
-      "useFramegraphBuffers": false
     }
   },
   "stcode": {

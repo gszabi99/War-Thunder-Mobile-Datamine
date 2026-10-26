@@ -9,6 +9,7 @@ from "%rGui/shop/shopCommon.nut" import SC_PREMIUM
 from "%rGui/shop/shopState.nut" import openShopWnd
 from "%rGui/state/profilePremium.nut" import havePremium
 from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradRadial
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 const btnW = hdpx(400)
@@ -25,8 +26,6 @@ const glareHeight = btnH * 1.25
 const glowColor = 0xFF8A5627
 const bgColor = 0xFF1A1D1E
 const textColor = 0xFFFFFFFF
-
-let isActive = @(sf) (sf & S_ACTIVE) != 0
 
 let btnBg = {
   size = FLEX
@@ -65,6 +64,14 @@ let btnText = @() {
   color = textColor
 }.__update(fontTinyShaded)
 
+let glareTransform = { translate = [-glareWidth * 3, 0], rotate = 25 }
+let glareAnimations = [{
+  prop = AnimProp.translate, duration = glareAnimDuration, delay = 0.5, play = true,
+  to = [btnW + glareWidth * 2, 0],
+  trigger = "glareAnim",
+  onFinish = @() resetTimeout(glareRepeatDelay, startGlareAnim),
+}]
+
 let glare = @() !isDebriefingAnimFinished.get() ? { watch = isDebriefingAnimFinished } : {
   watch = isDebriefingAnimFinished
   key = "glare"
@@ -72,19 +79,34 @@ let glare = @() !isDebriefingAnimFinished.get() ? { watch = isDebriefingAnimFini
   size = const [glareWidth, glareHeight]
   image = gradTranspDoubleSideX
   color = 0x00A0A0A0
-  transform = { translate = [-glareWidth * 3, 0], rotate = 25 }
+  transform = glareTransform
   vplace = ALIGN_CENTER
   onAttach = @() clearTimer(startGlareAnim)
-  animations = [{
-    prop = AnimProp.translate, duration = glareAnimDuration, delay = 0.5, play = true,
-    to = [btnW + glareWidth * 2, 0],
-    trigger = "glareAnim",
-    onFinish = @() resetTimeout(glareRepeatDelay, startGlareAnim),
-  }]
+  animations = glareAnimations
 }
 
 function mkTryPremiumButton(mulComps, sessionId = null) {
   let stateFlags = Watched(0)
+  let children = [
+    btnBg
+    btnGlow
+    btnText
+    {
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_BOTTOM
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(20)
+      children = [
+        btnIcon
+        {
+          flow = FLOW_VERTICAL
+          vplace = ALIGN_CENTER
+          children = mulComps
+        }
+      ]
+    }
+    glare
+  ]
   return @() havePremium.get() ? { watch = havePremium } : {
     watch = [havePremium, stateFlags]
     size = const [btnW, btnH]
@@ -97,9 +119,7 @@ function mkTryPremiumButton(mulComps, sessionId = null) {
       sendUiBqEvent("open_shop", { id = "open", from = PURCH_SRC_DEBRIEFING, status = PURCH_TYPE_PREMIUM} )
     }
     onElemState = @(v) stateFlags.set(v)
-    transform = { scale = isActive(stateFlags.get()) ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
 
     rendObj = ROBJ_BOX
     borderWidth = hdpx(3)
@@ -107,26 +127,8 @@ function mkTryPremiumButton(mulComps, sessionId = null) {
     padding = hdpx(3)
     clipChildren = true
 
-    children = [
-      btnBg
-      btnGlow
-      btnText
-      {
-        hplace = ALIGN_CENTER
-        vplace = ALIGN_BOTTOM
-        flow = FLOW_HORIZONTAL
-        gap = hdpx(20)
-        children = [
-          btnIcon
-          {
-            flow = FLOW_VERTICAL
-            vplace = ALIGN_CENTER
-            children = mulComps
-          }
-        ]
-      }
-      glare
-    ]
+    children,
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 

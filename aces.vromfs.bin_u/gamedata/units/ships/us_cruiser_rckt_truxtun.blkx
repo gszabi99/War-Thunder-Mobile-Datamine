@@ -803,7 +803,6 @@
         "weaponType": "rockets",
         "emitter": "rckt_head_09",
         "flash": "rckt_head_09",
-        "ammoDpGenFmt": "rckt_head_%02d_dm",
         "emitterGenRange": [
           9,
           10
@@ -1376,7 +1375,6 @@
               "weaponType": "rockets",
               "emitter": "rckt_head_09",
               "flash": "rckt_head_09",
-              "ammoDpGenFmt": "rckt_head_%02d_dm",
               "emitterGenRange": [
                 9,
                 10
@@ -1933,7 +1931,6 @@
               "weaponType": "rockets",
               "emitter": "rckt_head_09",
               "flash": "rckt_head_09",
-              "ammoDpGenFmt": "rckt_head_%02d_dm",
               "emitterGenRange": [
                 9,
                 10

@@ -55,9 +55,10 @@
     0.1,
     3.0
   ],
-  "weather": "halloween_thunder",
-  "hqWeather": "halloween_thunder",
+  "weather": "thunder",
+  "hqWeather": "thunder",
   "level": "levels/avg_abandoned_factory.bin",
+  "clusteredLightsOverride": true,
   "defCameraTime": [
     5.0,
     10.0
@@ -678,21 +679,21 @@
     {
       "hangarPlace": "aircraft",
       "modelPos": [
-        3712.6,
-        25.9,
-        3549.2
+        5963.75,
+        44.38,
+        2230.4
       ],
-      "modelRotation": 285.0,
+      "modelRotation": 266.0,
       "unitOffset": [
         0.0,
         0.0,
         0.0
       ],
       "cameraEllipsoidWeights": [
+        0.5,
         0.25,
-        0.0,
-        0.0,
-        0.5
+        0.25,
+        0.75
       ]
     },
     {
@@ -725,7 +726,7 @@
       "modelPos": [
         2927.2,
         3.5,
-        -2742.61
+        -2742.6
       ],
       "modelRotation": -197.0,
       "unitOffset": [
@@ -745,9 +746,9 @@
       "hangarPlace": "ship",
       "tag": "submarine",
       "modelPos": [
-        3026.1,
+        3029.8,
         3.5,
-        -2773.2
+        -2766.4
       ],
       "modelRotation": 164.0,
       "unitOffset": [
@@ -799,11 +800,20 @@
       "cameraMinDistanceToModel": 40.0
     }
   ],
-  "env": {
-    "env": "12",
-    "weight": 1.0,
-    "compatibilityWeight": 1.0
-  },
+  "env": [
+    {
+      "env": "19.55",
+      "weight": 1.0,
+      "compatibilityWeight": 1.0,
+      "sceneDetailLowWeight": 0.0
+    },
+    {
+      "env": "19.1",
+      "weight": 0.0,
+      "compatibilityWeight": 0.0,
+      "sceneDetailLowWeight": 1.0
+    }
+  ],
   "premiumVehicle": [
     {
       "unitName": "xp-55",
@@ -2368,6 +2378,21 @@
           ],
           "shootAfterTime": 3.0,
           "numShots": 1,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": {
             "point": [
               {
@@ -2431,6 +2456,21 @@
           ],
           "shootAfterTime": 3.0,
           "numShots": 1,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": {
             "point": [
               {
@@ -2494,6 +2534,21 @@
           ],
           "shootAfterTime": 3.0,
           "numShots": 1,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": {
             "point": [
               {
@@ -2564,6 +2619,21 @@
           ],
           "shootAfterTime": 3.0,
           "numShots": 1,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              254
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": {
             "point": [
               {
@@ -2627,6 +2697,21 @@
           ],
           "shootAfterTime": 3.0,
           "numShots": 1,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": {
             "point": [
               {
@@ -2683,6 +2768,21 @@
           ],
           "shootAfterTime": 2.2,
           "numShots": 1,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": {
             "point": [
               {
@@ -2747,6 +2847,21 @@
           ],
           "shootAfterTime": 2.2,
           "numShots": 1,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": {
             "point": [
               {
@@ -2811,6 +2926,21 @@
           ],
           "shootAfterTime": 2.2,
           "numShots": 1,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": {
             "point": [
               {
@@ -2988,6 +3118,21 @@
           ],
           "shootAfterTime": 5.2,
           "numShots": 50,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": {
             "speed": 2.75,
             "point": [
@@ -3147,6 +3292,21 @@
           ],
           "shootAfterTime": 5.2,
           "numShots": 50,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": {
             "speed": 2.75,
             "point": [
@@ -3306,6 +3466,21 @@
           ],
           "shootAfterTime": 5.2,
           "numShots": 50,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": [
             {
               "relative": false,
@@ -3514,6 +3689,21 @@
           ],
           "shootAfterTime": 5.2,
           "numShots": 50,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": [
             {
               "relative": false,
@@ -3726,6 +3916,21 @@
           ],
           "shootAfterTime": 5.2,
           "numShots": 50,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": {
             "speed": 1.5,
             "point": [
@@ -3887,6 +4092,21 @@
           ],
           "shootAfterTime": 5.2,
           "numShots": 50,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": {
             "speed": 1.5,
             "point": [
@@ -4048,6 +4268,21 @@
           ],
           "shootAfterTime": 5.2,
           "numShots": 50,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": {
             "speed": 1.3,
             "point": [
@@ -4168,6 +4403,21 @@
           ],
           "shootAfterTime": 5.2,
           "numShots": 50,
+          "light": {
+            "color": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "inCameraPos": true,
+            "pos": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "brightness": 1.0
+          },
           "cameraPath": {
             "speed": 1.3,
             "point": [

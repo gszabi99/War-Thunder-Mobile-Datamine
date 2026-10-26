@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/loginState.nut" import isAuthorized
 from "%rGui/components/backButton.nut" import backButton
-from "%rGui/components/gradientDefComps.nut" import headerGradientBg
+from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock, headerHeightInSafeArea, headerMargin
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
 from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
 from "%rGui/navState.nut" import registerScene
@@ -9,6 +9,7 @@ import "%rGui/options/mkChildrenOptions.nut" as mkChildrenOptions
 import "%rGui/options/mkOption.nut" as mkOption
 import "%rGui/options/mkOptionsTabs.nut" as mkOptionsTabs
 from "%rGui/options/optionsStyle.nut" import contentOffset, minContentOffset, contentWidth, tabW
+from "%rGui/squad/squadChatBtn.nut" import squadChatBtn
 from "%rGui/style/backgrounds.nut" import bgShadedDark
 from "%rGui/style/listConst.nut" import tabExtraWidth
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
@@ -120,7 +121,6 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, headerC
     key = {}
     size = FLEX
     padding = saBordersRv
-    flow = FLOW_VERTICAL
 
     function onAttach() {
       if (curTabIdx.get() not in tabs || !(tabs[curTabIdx.get()]?.isVisible.get() ?? true))
@@ -128,16 +128,20 @@ function mkOptionsScene(sceneId, tabs, isOpened = null, curTabId = null, headerC
     }
 
     children = [
-      headerComp ?? headerGradientBg(backBtn)
       {
-        size = [saSize[0] + tabExtraWidth, FLEX]
-        pos = [-tabExtraWidth, 0]
-        flow = FLOW_HORIZONTAL
-        children = [
-          tabsList
-          curOptionsContent
-        ]
+        size = FLEX
+        padding = [headerHeightInSafeArea + headerMargin, 0, 0, 0]
+        children = {
+          size = [saSize[0] + tabExtraWidth, FLEX]
+          pos = [-tabExtraWidth, 0]
+          flow = FLOW_HORIZONTAL
+          children = [
+            tabsList
+            curOptionsContent
+          ]
+        }
       }
+      headerComp ?? headerGradientWithRightBlock(backBtn, squadChatBtn)
     ]
     animations = wndSwitchAnim
   })

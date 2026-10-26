@@ -1861,7 +1861,7 @@
           3
         ],
         "emitterGenFmt": "bone_rocket_%02d",
-        "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "ammoDpGenFmt": "ammo_body_%02d_dm",
         "stopForFire": true,
         "maxSpeedForFire": 5.0,
         "changeBulletTypeForSet": true,
@@ -2486,54 +2486,64 @@
   },
   "repairParts": {
     "wheel_l_01_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_r_01_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_l_02_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_r_02_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_l_03_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_r_03_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_l_04_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_r_04_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_l_drive_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "wheel_r_drive_dm": {
-      "speed": 1.7,
+      "speed": 3.825,
       "completely": true,
-      "modRequired": false
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     }
   },
   "unitFx": {
@@ -3057,7 +3067,7 @@
                 3
               ],
               "emitterGenFmt": "bone_rocket_%02d",
-              "ammoDpGenFmt": "ammo_turret_%02d_dm",
+              "ammoDpGenFmt": "ammo_body_%02d_dm",
               "stopForFire": true,
               "maxSpeedForFire": 5.0,
               "changeBulletTypeForSet": true,

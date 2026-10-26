@@ -4,7 +4,7 @@ from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign
 from "%appGlobals/pServer/pServerApi.nut" import buy_slot_level, slotInProgress, registerHandler
 from "%appGlobals/pServer/slots.nut" import curSlots
 from "%rGui/attributes/attrState.nut" import hasSlotAttrPreset, getSpCostText
-from "%rGui/attributes/buyLevelComp.nut" import generateDataDiscount, mkLevelBlock
+from "%rGui/attributes/buyLevelComp.nut" import generateDataDiscount, mkLevelBlock, noFreeLevelToBuy
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
 from "%rGui/components/textButton.nut" import buttonsHGap
@@ -67,8 +67,8 @@ function wndContent() {
         slotInProgress,
         onClickPurchase,
         0xFF65BC82,
-        v.levels == 1 ? hasFreeLevelToBuy : Watched(false),
-        v.levels == 1 ? { key = "slotAttrOneLevelBtn" } : {}))
+        v.levels == 1 ? hasFreeLevelToBuy : noFreeLevelToBuy,
+        v.levels == 1 ? const { key = "slotAttrOneLevelBtn" } : {}))
   })
 }
 

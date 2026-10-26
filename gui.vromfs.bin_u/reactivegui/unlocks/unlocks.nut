@@ -153,11 +153,11 @@ function getStagePrice(stage) {
   return price > 0 && currencyCode != "" ? mkPrice(price, currencyCode) : null
 }
 
-let getUnlockPrice = @(unlock)
+let getUnlockPrice = @[pure, nodiscard](unlock)
   getStagePrice(unlock) ?? getStagePrice(unlock?.stages[unlock?.stage]) ?? mkPrice()
 
 
-function getRelativeStageData(unlock) {
+function [pure, nodiscard] getRelativeStageData(unlock) {
   let { stages = [], lastRewardedStage = 0, stage = 0, periodic = false, startStageLoop = 1 } = unlock
   if (!periodic || stages.len() == 0 || lastRewardedStage < stages.len())
     return { stages, lastRewardedStage, stage }

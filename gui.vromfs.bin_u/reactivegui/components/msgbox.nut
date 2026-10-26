@@ -56,6 +56,7 @@ function mkBtn(b, wndUid) {
   let hasClicked = Watched(isInProgress.get())
   let needRemoveWnd = Computed(@() hasClicked.get() && !isInProgress.get())
   let onRemoveWnd = @(v) v ? removeModalWindow(wndUid) : null
+  let inactiveStyleOvr = mergeStyles(styleOvr, buttonStyles.INACTIVE)
   function onClickWithProgress() {
     if (hasClicked.get() || isInProgress.get())
       return
@@ -64,7 +65,7 @@ function mkBtn(b, wndUid) {
   }
 
   return function() {
-    let inProgressStyleOvr = hasClicked.get() || isInProgress.get() ? mergeStyles(styleOvr, buttonStyles.INACTIVE) : styleOvr
+    let inProgressStyleOvr = hasClicked.get() || isInProgress.get() ? inactiveStyleOvr : styleOvr
     return {
       watch = [isInProgress, hasClicked]
       key = onRemoveWnd

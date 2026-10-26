@@ -37,6 +37,13 @@ subscribeHudEvent("warn:stamina_loose_control", function(data) {
     removeEvent({id = "warn:stamina_loose_control"})
 })
 
+subscribeHudEvent("warn:missile_incoming", function(data) {
+  if (data?.isVisible)
+    addWarning(loc("hints/missile_incoming"), "warn:missile_incoming")
+  else
+    removeEvent({id = "warn:missile_incoming"})
+})
+
 subscribeHudEvent("warn:crit_overload", function(data) {
   let overloadText = "".concat(loc("HUD_CRIT_OVERLOAD")," ", data?.val ?? "", loc("HUD_CRIT_OVERLOAD_G"))
   if (data?.isVisible)

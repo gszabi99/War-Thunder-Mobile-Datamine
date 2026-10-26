@@ -9,12 +9,12 @@ from "%rGui/rewards/rewardStyles.nut" import getRewardPlateSize
 from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideY, gradTexSize, simpleHorGrad
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import selectColor
-from "battlePassWnd.nut" import contentBP, scrollToCardBP
+from "battlePassObsoleteWnd.nut" import contentBP, scrollToCardBP
 from "eventPassWnd.nut" import contentEP, scrollToCardEP
 from "operationPassWnd.nut" import contentOP, scrollToCardOP
 from "passPkg.nut" import sideTabWidth, vGradientGapSize, tabSize, tabIconSize
 from "passState.nut" import passPageId, playerSelectedScene, passPageIdx, BATTLE_PASS, EVENT_PASS, OPERATION_PASS,
-  visibleTabs, seenPasses, isPassGoodsUnseen, getTabStateData, isPassSceneAttached
+  visibleTabs, seenPasses, isPassGoodsUnseen, getTabStateData
 
 
 let lineGradientVert = mkBitmapPictureLazy(4, gradTexSize, mkGradientCtorDoubleSideY(0, 0x80000000, 0.07))
@@ -49,6 +49,13 @@ function mkTab(idx, name, campaign) {
   let hasAnyReward = hasReward ?? mkHasReward?(Watched(name)) ?? Watched(false)
   let tabGoods = goods ?? mkGoods?(name) ?? Watched(null)
   let isUnseen = Computed(@() isPassGoodsUnseen(tabGoods.get(), seenPasses.get()))
+  let tabIcon = {
+    size = tabIconSize
+    rendObj = ROBJ_IMAGE
+    image = Picture($"{getTabData(name).icon(campaign)}:{tabIconSize}:{tabIconSize}:P")
+    keepAspect = true
+  }
+  let unseenMark = priorityUnseenMark.__merge({ pos = [-0.35 * tabSize[0], -0.25 * tabSize[1]] })
   return @() {
     watch = [isActive, hasAnyReward, isUnseen]
     size = tabSize
@@ -61,14 +68,9 @@ function mkTab(idx, name, campaign) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
-      {
-        size = tabIconSize
-        rendObj = ROBJ_IMAGE
-        image = Picture($"{getTabData(name).icon(campaign)}:{tabIconSize}:{tabIconSize}:P")
-        keepAspect = true
-      }
+      tabIcon
       isActive.get() || (!hasAnyReward.get() && !isUnseen.get()) ? null
-        : priorityUnseenMark.__merge({ pos = [-0.35 * tabSize[0], -0.25 * tabSize[1]] })
+        : unseenMark
     ]
   }
 }
@@ -114,42 +116,48 @@ let mkTabContent = @(isFullScreenWidth) function () {
     let res = { scrollX, scrollLastRewardX, lastRewardProgress = lastRewardProgress.get(), selProgress }
     return isEqual(prev, res) ? prev : res
   })
-  recommendInfo.subscribe(@(v) !v ? null : scrollToCard(v.scrollX, v.selProgress))
+  let scrollToRecommended = @(v) !v ? null : scrollToCard(v.scrollX, v.selProgress)
 
   return {
     watch = passPageId
     size = flex()
     padding = isFullScreenWidth ? [0, saBorders[0]] : [0, saBorders[0], 0, 0]
-    children = content(stagesList, recommendInfo, isFullScreenWidth)
+    children = {
+      key = recommendInfo
+      size = FLEX
+      onAttach = @() recommendInfo.subscribe(scrollToRecommended)
+      onDetach = @() recommendInfo.unsubscribe(scrollToRecommended)
+      children = content(stagesList, recommendInfo, isFullScreenWidth)
+    }
   }
 }
 
 let wndKey = {}
 let visibleTabsCount = Computed(@() visibleTabs.get().len())
+let tabsGap = {
+  size = vGradientGapSize
+  rendObj = ROBJ_SOLID
+  color = 0xFFACACAC
+}
 
 function passSceneWnd() {
   if (visibleTabsCount.get() == 0 )
     return { watch = visibleTabsCount }
 
+  let vertGradient = lineGradientVert()
   return {
     watch = visibleTabsCount
     key = wndKey
     size = FLEX
     flow = FLOW_HORIZONTAL
-    gap = {
-      size = vGradientGapSize
-      rendObj = ROBJ_SOLID
-      color = 0xFFACACAC
-    }
-    onAttach = @() isPassSceneAttached.set(true)
-    onDetach = @() isPassSceneAttached.set(false)
+    gap = tabsGap
     children = [
       visibleTabsCount.get() <= 1 ? null
         : @() {
             watch = [visibleTabs, OPCampaign]
             size = [sideTabWidth, sh(100)]
             rendObj = ROBJ_IMAGE
-            image = lineGradientVert()
+            image = vertGradient
             flow = FLOW_VERTICAL
             halign = ALIGN_RIGHT
             gap = hdpx(10)

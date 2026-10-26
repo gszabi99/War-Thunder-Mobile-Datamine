@@ -4,7 +4,7 @@ from "%appGlobals/rewardType.nut" import G_CURRENCY, G_PREMIUM
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
 from "%rGui/style/backgrounds.nut" import bgShaded
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 
 
 let buyPlatformGoodsIOS = require("%rGui/shop/byPlatform/goodsIos.nut").buyPlatformGoods
@@ -103,18 +103,20 @@ function mkBtn(params){
           {
             rendObj = ROBJ_TEXT
             text = loc(textKey)
-          }.__update(fontTiny)
+            ...fontTiny
+          }
           !isPriorityBtn ? null
             : @() {
                 watch = goodsToPaySpecialWnd
                 rendObj = ROBJ_TEXT
                 color = 0xFF65DD3E
                 text = getBonusDesc(goodsToPaySpecialWnd.get())
-              }.__update(fontVeryTinyAccented)
+                ...fontVeryTinyAccented
+              }
         ]
       }
     ]
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 

@@ -14,22 +14,22 @@ from "types" import Table, Array, String, Function, Integer, Float, Null, Bool, 
 
 
 
-let isTable = @(v) v instanceof Table
-let isArray = @(v) v instanceof Array
-let isString = @(v) v instanceof String
-let isFunction = @(v) v instanceof Function
-let isInteger = @(v) v instanceof Integer
-let isFloat = @(v) v instanceof Float
-let isNull = @(v) v instanceof Null
-let isBool = @(v) v instanceof Bool
+let isTable = @[pure](v): bool v instanceof Table
+let isArray = @[pure](v): bool v instanceof Array
+let isString = @[pure](v): bool v instanceof String
+let isFunction = @[pure](v): bool v instanceof Function
+let isInteger = @[pure](v): bool v instanceof Integer
+let isFloat = @[pure](v): bool v instanceof Float
+let isNull = @[pure](v): bool v instanceof Null
+let isBool = @[pure](v): bool v instanceof Bool
 
-let isInstance = @(v) type(v) == "instance"
-let isGenerator = @(v) v instanceof Generator
-let isUserdata = @(v) v instanceof UserData
-let isThread = @(v) v instanceof Thread
-let isWeakref = @(v) v instanceof WeakRef
+let isInstance = @[pure](v): bool type(v) == "instance"
+let isGenerator = @[pure](v): bool v instanceof Generator
+let isUserdata = @[pure](v): bool v instanceof UserData
+let isThread = @[pure](v): bool v instanceof Thread
+let isWeakref = @[pure](v): bool v instanceof WeakRef
 
-function isDataBlock(obj): bool {
+function [pure] isDataBlock(obj): bool {
   
   if (obj?.paramCount!=null && obj?.blockCount != null)
     return true
@@ -59,7 +59,7 @@ function mkIteratee(func){
 
 
 
-function funcCheckArgsNum(func, numRequired): bool {
+function [pure] funcCheckArgsNum(func, numRequired): bool {
   let infos = func.getfuncinfos()
   let params = infos.parameters
   local plen = params.len() - 1
@@ -118,14 +118,6 @@ function pluck(list, propertyName){
       throw null
     return v[propertyName]
   })
-
-
-
-
-
-
-
-
 }
 
 
@@ -291,7 +283,7 @@ function arrayByRows(arr, columns): array {
 
 
 
-function chunk(list, count): array {
+function chunk(list, count: number|null): array {
   if (count == null || count < 1) return []
   let result = []
   local i = 0

@@ -30,7 +30,7 @@ class public MemSerializer : Serializer {
     
     def MemSerializer {
         
-        pass    
+        pass
     }
     def MemSerializer(from : array<uint8>) {
         
@@ -55,7 +55,7 @@ class public MemSerializer : Serializer {
     def override write(bytes : void? implicit; size : int) : bool {
         
         let pos = length(data)
-        data |> ensure_capacity(pos + size)
+        unsafe(data |> scratch_ensure_capacity(pos + size))
         data |> resize_no_init(pos + size)
         unsafe {
             memcpy(addr(data[pos]), bytes, size)
@@ -67,8 +67,6 @@ class public MemSerializer : Serializer {
         let newOffset = readOffset + size
         let maxOffset = length(data)
         if (newOffset > maxOffset) {
-            
-            
             self->error("reading past the end of stream")   
             readOffset = maxOffset
             return false
@@ -219,7 +217,7 @@ def public serialize(var arch : Archive; var value : array<auto(TT)>) {
         }
         arch |> read_raw(len)
         static_if (typeinfo is_workhorse(type<TT>) && typeinfo is_raw(type<TT>)) {
-            value |> reserve(len)   
+            value |> reserve(len)
             value |> resize_no_init(len)
             if (len > 0) {
                 arch.stream->read(unsafe(addr(value[0])), len * typeinfo sizeof(type<TT>))
@@ -276,7 +274,7 @@ def public serialize(var arch : Archive; var value : string&) {
             arch |> read_raw(len)
             if (len > 0) {
                 var tbuf : array<uint8>
-                tbuf |> resize_no_init(len + 1)                         
+                tbuf |> resize_no_init(len + 1)
                 arch.stream->read(addr(tbuf[0]), len)
                 tbuf[len] = 0u8
                 value = clone_string(reinterpret<string#>(addr(tbuf[0])))

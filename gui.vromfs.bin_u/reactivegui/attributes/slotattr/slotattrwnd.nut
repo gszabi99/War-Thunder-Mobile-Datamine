@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
 from "%appGlobals/config/slotAttrPresentation.nut" import getSlotAttrBg, getAttrTabPresentation
-from "%appGlobals/currenciesState.nut" import orderByCurrency, GOLD
+from "%appGlobals/currenciesState.nut" import GOLD
 from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
 from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%appGlobals/pServer/pServerApi.nut" import slotInProgress
@@ -28,10 +28,9 @@ from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
 import "%rGui/components/panelBg.nut" as panelBg
 from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
 from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon, buttonsHGap
-from "%rGui/mainMenu/balanceComps.nut" import mkCurrencyBalance
+from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
 from "%rGui/navState.nut" import registerScene, setSceneBg
 from "%rGui/notifications/logEvents.nut" import sendTelemetryEvent
-from "%rGui/shop/shopState.nut" import openShopWndByCurrencyId
 from "%rGui/slotBar/slotBarState.nut" import selectedSlotIdx, slotLevelsCfg
 from "%rGui/style/gamercardStyle.nut" import gamercardHeight
 from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
@@ -141,14 +140,12 @@ let attrDetails = @() {
         padding = 0
         margin = const [hdpx(20),0,0]
         fillColor = 0xA0000000
-        children = [
-          {
-            size = FLEX_H
-            flow = FLOW_VERTICAL
-            children = (curCategory.get()?.attrList ?? [])
-              .map(@(attr) mkAttrDetailsRow(attr.id, lastModifiedAttr.get()))
-          }
-        ]
+        children = {
+          size = FLEX_H
+          flow = FLOW_VERTICAL
+          children = (curCategory.get()?.attrList ?? [])
+            .map(@(attr) mkAttrDetailsRow(attr.id, lastModifiedAttr.get()))
+        }
       })
     : null
 }
@@ -205,10 +202,10 @@ let actionButtons = @() {
   gap = buttonsHGap * 0.5
   children = [
     textButtonCommon(utf8ToUpper(loc("terms_wnd/more_detailed")), @() null,
-      { hotkeys = ["^J:LB"], stateFlags = showAttrStateFlags, ovr = isWidescreen ? {} : { maxWidth = hdpx(510) } })
+      { hotkeys = ["^J:LB"], stateFlags = showAttrStateFlags, ovr = isWidescreen ? {} : const { maxWidth = hdpx(510) } })
     isResetSlotLevelAllowed.get() || isResetSlotSkillsAllowed.get()
       ? textButtonCommon(utf8ToUpper(loc("msgbox/btn_reset")), openSlotResetWnd,
-        { ovr = isWidescreen ? {} : { maxWidth = hdpx(510) } })
+        { ovr = isWidescreen ? {} : const { maxWidth = hdpx(510) } })
       : null
     slotLevelsToMax.get() <= 0 ? null
       : textButtonVehicleLevelUp(utf8ToUpper(loc("mainmenu/btnLevelBoost")),
@@ -227,11 +224,11 @@ let actionButtons = @() {
       : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), applyAction,
           {
             ovr = {
-              sound = { click = "characteristics_apply" }
+              sound = const { click = "characteristics_apply" }
               key = "slotAttrApplyBtn" 
               onAttach = @() isApplyBtnAttached.set(true)
               onDetach = @() isApplyBtnAttached.set(false)
-            }.__update(isWidescreen ? {} : { minWidth = hdpx(250) })
+            }.__update(isWidescreen ? {} : const { minWidth = hdpx(250) })
             hotkeys = ["^J:X"]
           })
   ]
@@ -324,7 +321,7 @@ let mkLeftBlockSlotCampaign = @(backCb, keyHintText, slotNameBlock) @() {
   valign = ALIGN_CENTER
   gap = gamercardGap
   children = [
-    backCb != null ? backButton(backCb, { vplace = ALIGN_CENTER }) : null
+    backCb != null ? backButton(backCb, const { vplace = ALIGN_CENTER }) : null
     selectedSlotIdx.get() not in curSlots.get() ? null
       : gamercardSlotLevelLine(curSlots.get()[selectedSlotIdx.get()],
           keyHintText,
@@ -333,30 +330,22 @@ let mkLeftBlockSlotCampaign = @(backCb, keyHintText, slotNameBlock) @() {
   ]
 }
 
-function balanceButtons() {
-  let currenciesIds = { [GOLD] = true } 
-  currenciesIds[slotLevelResetPrice.get()?.currencyId ?? ""] <- true
-  currenciesIds[slotSkillsResetPrice.get()?.currencyId ?? ""] <- true
-  currenciesIds.$rawdelete("")
-  return {
-    watch = [slotLevelResetPrice, slotSkillsResetPrice]
-    size = FLEX_V
-    hplace = ALIGN_RIGHT
-    valign = ALIGN_CENTER
-    flow = FLOW_HORIZONTAL
-    gap = gamercardGap
-    children = currenciesIds.keys()
-      .sort(@(a, b) (orderByCurrency?[a] ?? 100) <=> (orderByCurrency?[b] ?? 100))
-      .map(@(c) mkCurrencyBalance(c, @() openShopWndByCurrencyId(c)))
+function mkGamercardSlotCampaign(backCb, keyHintText, slotNameBlock = null) {
+  let currencies = Computed(function() {
+    let currenciesIds = { [GOLD] = true } 
+    currenciesIds[slotLevelResetPrice.get()?.currencyId ?? ""] <- true
+    currenciesIds[slotSkillsResetPrice.get()?.currencyId ?? ""] <- true
+    currenciesIds.$rawdelete("")
+    return currenciesIds.keys()
+  })
+  return @() {
+    watch = currencies
+    size = [ saSize[0], gamercardHeight ]
+    children = [
+      mkLeftBlockSlotCampaign(backCb, keyHintText, slotNameBlock)
+      mkCurrenciesBtns(currencies.get())
+    ]
   }
-}
-
-let mkGamercardSlotCampaign = @(backCb, keyHintText, slotNameBlock = null){
-  size = [ saSize[0], gamercardHeight ]
-  children = [
-    mkLeftBlockSlotCampaign(backCb, keyHintText, slotNameBlock)
-    balanceButtons
-  ]
 }
 
 let slotAttrWnd = {

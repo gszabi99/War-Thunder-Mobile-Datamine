@@ -52,6 +52,7 @@ function dropDownMenu(state, styles = {}) {
 
   let stateFlags = Watched(0)
   let isOptionsVisible = Watched(false)
+  let arrowImage = Picture($"ui/gameuiskin#spinnerListBox_arrow_up.svg:{iconSize}:{iconSize}:P")
   return @() {
     watch = [stateFlags, currentOption, isOptionsVisible]
     key = state
@@ -65,7 +66,7 @@ function dropDownMenu(state, styles = {}) {
     padding = const [hdpx(10), hdpx(25)]
     behavior = Behaviors.Button
     onElemState = @(s) stateFlags.set(s)
-    sound = { click = "click" }
+    sound = const { click = "click" }
     onClick = @(e) openSelectOptions(e, values, currentOption.get(), setValue,
       isOptionsVisible, valToString, { size = [width, SIZE_TO_CONTENT] })
     flow = FLOW_HORIZONTAL
@@ -77,16 +78,16 @@ function dropDownMenu(state, styles = {}) {
         rendObj = ROBJ_TEXT
         text = valToString(currentOption.get())
       }.__update(fontTinyAccented)
-      {
+      const {
         size = FLEX
       }
       {
-        size = [iconSize, iconSize]
+        size = iconSize
         rendObj = ROBJ_IMAGE
         transform = {
           rotate = isOptionsVisible.get() ? 0 : 180
         }
-        image = Picture($"ui/gameuiskin#spinnerListBox_arrow_up.svg:{iconSize}:{iconSize}:P")
+        image = arrowImage
       }
     ]
   }

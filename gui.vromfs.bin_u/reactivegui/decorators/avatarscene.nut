@@ -19,7 +19,7 @@ from "%rGui/decorators/mkDecoratorUnlockProgress.nut" import mkDecoratorUnlockPr
 import "%rGui/decorators/purchaseDecorator.nut" as purchaseDecorator
 from "%rGui/options/optionsStyle.nut" import contentWidthFull
 from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_PROFILE, PURCH_TYPE_DECORATOR, mkBqPurchaseInfo
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import hoverColor
 
 
@@ -60,6 +60,18 @@ function avatarBtn(item) {
   let isSelected = Computed(@() selectedAvatarName.get() == name)
   let isAvailable = Computed(@() name in availAvatars.get() || name == "")
   let isUnseen = Computed(@() name in unseenDecorators.get())
+  let avatarImage = Picture($"{getAvatarImage(name)}:{avatarSize}:{avatarSize}:P")
+  let lockedMark = {
+    size = const [hdpx(25),hdpx(32)]
+    margin = const [hdpx(10),hdpx(15)]
+    rendObj = ROBJ_IMAGE
+    color = 0xFFAA1111
+    image = Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(25)}:{hdpxi(32)}:P")
+  }
+  let unseenMarkBlock = {
+    margin = const [hdpx(15), hdpx(20)]
+    children = priorityUnseenMark
+  }
   return {
     rendObj = ROBJ_SOLID
     color = 0xAA000000
@@ -77,9 +89,6 @@ function avatarBtn(item) {
         applySelectedAvatar()
     }
     onHover = name == "" ? null : hoverHoldAction("markDecoratorsSeen", name, markDecoratorSeen)
-    transform = {
-      scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
-    }
     children = [
       @() {
         watch = isAvailable
@@ -89,7 +98,7 @@ function avatarBtn(item) {
         color = isAvailable.get() ? 0xFFFFFFFF
           : 0xFF707070
         size = const [avatarSize, avatarSize]
-        image = Picture($"{getAvatarImage(name)}:{avatarSize}:{avatarSize}:P")
+        image = avatarImage
       }.__update(fontBig)
       @() {
         watch = [isChoosen, isSelected, isAvailable, stateFlags, isUnseen]
@@ -100,21 +109,12 @@ function avatarBtn(item) {
           : (stateFlags.get() & S_ACTIVE) || isSelected.get() ? 0xFFFFFFFF
           : 0xFF4F4F4F
         children = !isAvailable.get()
-          ? {
-              size = const [hdpx(25),hdpx(32)]
-              margin = const [hdpx(10),hdpx(15)]
-              rendObj = ROBJ_IMAGE
-              color = 0xFFAA1111
-              image = Picture($"ui/gameuiskin#lock_icon.svg:{hdpxi(25)}:{hdpxi(32)}:P")
-            }
+          ? lockedMark
           : isChoosen.get() || isSelected.get()
             ? mkSpinnerHideBlock(isDecoratorInProgress,
               isChoosen.get() ? choosenMark : null)
           : isUnseen.get()
-            ? {
-                margin = const [hdpx(15), hdpx(20)]
-                children = priorityUnseenMark
-              }
+            ? unseenMarkBlock
           : null
       }
       price.price <= 0 || isAvailable.get() ? null
@@ -125,6 +125,7 @@ function avatarBtn(item) {
             children = mkCurrencyComp(price.price, price.currencyId, CS_COMMON)
           }
     ]
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 

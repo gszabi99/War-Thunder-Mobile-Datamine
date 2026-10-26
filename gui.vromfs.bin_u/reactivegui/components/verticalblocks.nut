@@ -24,10 +24,17 @@ let mkBlockRadialGradient = @(isActive) isActive ? activeBlockBgGradient : notAc
 
 function mkBlock(content, idx, activeBlockIdx, mkBlockContent, onClick) {
   let isSelected = Computed(@() idx == activeBlockIdx.get() )
+  let blockContent = mkBlockContent(content, idx)
+  let selectedLineChild = {
+    size = FLEX
+    valign = ALIGN_TOP
+    pos = const [0, 0]
+    children = selectedLineHorUnits(isSelected)
+  }
   return @() {
     watch = isSelected
     behavior = Behaviors.Button
-    sound = { click = "choose" }
+    sound = const { click = "choose" }
     rendObj = ROBJ_SOLID
     color = 0xFF383B3E
     onClick = @() onClick(idx)
@@ -37,13 +44,8 @@ function mkBlock(content, idx, activeBlockIdx, mkBlockContent, onClick) {
         rendObj = ROBJ_IMAGE
         image = mkBlockRadialGradient(isSelected.get())
       }
-      mkBlockContent(content, idx)
-      {
-        size = FLEX
-        valign = ALIGN_TOP
-        pos = [0, 0]
-        children = selectedLineHorUnits(isSelected)
-      }
+      blockContent
+      selectedLineChild
     ]
   }
 }

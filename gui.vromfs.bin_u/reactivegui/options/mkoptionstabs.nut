@@ -1,8 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/components/tabs.nut" import mkTabs
-from "%rGui/components/unseenMark.nut" import mkUnseenMark, unseenSize
+from "%rGui/components/unseenMark.nut" import mkUnseenMark
 from "%rGui/options/optionsStyle.nut" import tabW, tabH, tabPadding
-from "%rGui/unseenPriority.nut" import SEEN
+from "%rGui/unseenPriority.nut" import SEEN, UNSEEN_HIGH
 
 
 const iconSizeDef = hdpxi(80)
@@ -14,7 +14,7 @@ function mkTabImage(image, imageSizeMul, imageTabOffset) {
   let w = (1.5 * h + 0.5).tointeger()
   let blockSize = max(iconSizeDef, h)
   return {
-    size = [blockSize, blockSize]
+    size = blockSize
     vplace = ALIGN_CENTER
     children = {
       size = [w, h]
@@ -32,7 +32,7 @@ function mkTabImage(image, imageSizeMul, imageTabOffset) {
 let mkImage = @(image, imageSizeMul, imageTabOffset) function() {
   let imageTab = image instanceof Watched ? image.get() : image
   let imageTabSizeMul = imageSizeMul instanceof Watched ? imageSizeMul.get() : imageSizeMul ?? 1
-  let imageTabOffsetVal = imageTabOffset instanceof Watched ? imageTabOffset.get() : imageTabOffset ?? [0, 0]
+  let imageTabOffsetVal = imageTabOffset instanceof Watched ? imageTabOffset.get() : imageTabOffset ?? const [0, 0]
 
   local watchesList = []
   if(image instanceof Watched)
@@ -53,11 +53,12 @@ let mkImage = @(image, imageSizeMul, imageTabOffset) function() {
 function tabData(tab, idx, curTabIdx) {
   let { locId  = "", image = null, imageSizeMul = null, isVisible = null, unseen = null,
     tabContent = null, tabHeight = tabH, ovr = {}, imageTabOffset = null } = tab
-  let unseenMarkPos = [tabPadding[1] + unseenSize[1] / 5, -tabPadding[0] - unseenSize[1] / 5]
   local unseenMark = null
   if (unseen != null) {
-    let unseenExt = Computed(@() curTabIdx.get() == idx ? SEEN : unseen.get())
-    unseenMark = mkUnseenMark(unseenExt, { vplace = ALIGN_TOP, hplace = ALIGN_RIGHT, pos = unseenMarkPos })
+    let unseenExt = Computed(@() curTabIdx.get() == idx || unseen.get() == false ? SEEN
+      : unseen.get() == true ? UNSEEN_HIGH
+      : unseen.get())
+    unseenMark = mkUnseenMark(unseenExt)
   }
 
   return {

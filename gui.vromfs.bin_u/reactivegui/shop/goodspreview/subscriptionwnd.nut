@@ -102,6 +102,8 @@ let bonusInfoBySubs = {
 
 let getInfoList = @(subs) bonusInfoBySubs?[subs] ?? [subs]
 
+let bonusRowTransitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+
 function description() {
   if (subsGroup.get().len() == 0)
     return { watch = subsGroup }
@@ -136,7 +138,7 @@ function description() {
                 key = ctorId
                 children = bonusInfoCtors[ctorId]
                 transform = { translate = [0, posY] }
-                transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+                transitions = bonusRowTransitions
                 animations = wndSwitchAnim
               }
             }
@@ -236,6 +238,8 @@ function purchBlock(subs, isActive, subsList, totalConvertAmount, currencyId, le
   let toggle = subsList.len() <= 1 ? null : toggleSubsBtn(subs, subsList)
   let isGroupActive = Computed(@() subsList.findindex(@(s) (subscriptions.get()?[s].isActive ?? false)
     || s in activeInternalSubs.get()))
+  let subsPeriodStr = getSubsPeriodString(subs)
+  let smallGapBlock = { size = [FLEX, smallGap] }
   return @() {
     watch = [subscriptions, can_upgrade_subscription, isGroupActive]
     size = FLEX_H
@@ -257,14 +261,14 @@ function purchBlock(subs, isActive, subsList, totalConvertAmount, currencyId, le
             rendObj = ROBJ_TEXT
             color = textColor
             text = loc("pricePerTime",
-              { price = subs.priceExt.priceText, time = getSubsPeriodString(subs) })
+              { price = subs.priceExt.priceText, time = subsPeriodStr })
           }.__update(fontMedium)
           {
             rendObj = ROBJ_TEXT
             color = textColor
             text = loc("subscrition/autoRenewal")
           }.__update(fontTiny)
-          { size = [FLEX, smallGap] }
+          smallGapBlock
           btnRow([
             toggle
             mkSpinnerHideBlock(platformPurchaseInProgress,
@@ -294,6 +298,11 @@ let urls = {
   ]
 }
 
+let subsIconTransitions = [
+  { prop = AnimProp.color, duration = 0.3, easing = InOutQuad }
+  { prop = AnimProp.scale, duration = 0.3, easing = InOutQuad }
+]
+
 let subsIcons = @(list) function() {
   let children = []
   foreach(idx, subs in list) {
@@ -306,11 +315,8 @@ let subsIcons = @(list) function() {
       image = Picture($"{getSubsPresentation(subs).image}:0:P")
       color = isCurrent ? 0xFFFFFFFF : 0x40404040
       keepAspect = true
-      transform = { scale = isCurrent ? [1.0, 1.0] : [0.9, 0.9] }
-      transitions = [
-        { prop = AnimProp.color, duration = 0.3, easing = InOutQuad }
-        { prop = AnimProp.scale, duration = 0.3, easing = InOutQuad }
-      ]
+      transform = isCurrent ? const { scale = [1.0, 1.0] } : const { scale = [0.9, 0.9] }
+      transitions = subsIconTransitions
     }
     if (isCurrent)
       children.append(child)

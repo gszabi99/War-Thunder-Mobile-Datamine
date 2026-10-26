@@ -117,6 +117,21 @@ function mkGoods(goods, onClick, state, animParams) {
   let timeText = mkTimeTextComputed(goods)
   let isAvailable = Computed(@() timeText.get() == null)
   let fullId = mkCurrencyFullId(id)
+  let pricePlate = mkPricePlate(goods, state, animParams)
+  let timeOverlay = {
+    size = FLEX
+    rendObj = ROBJ_BOX
+    fillColor = 0xBF000000
+    children = @() {
+      watch = timeText
+      size = FLEX_H
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      vplace = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      text = timeText.get()
+    }.__update(fontTinyShaded)
+  }
   return @() {
     watch = [isAvailable, fullId]
     children = [
@@ -131,24 +146,11 @@ function mkGoods(goods, onClick, state, animParams) {
           mkCurrencyAmountTitle(count, viewBaseValue, titleFontGrad)
           mkGoodsLimitAndEndTime(goods)
         ].extend(mkGoodsCommonParts(goods, state)),
-        mkPricePlate(goods, state, animParams),
+        pricePlate,
         { size = goodsSize },
         { size = goodsBgSize }
       )
-      isAvailable.get() ? null : {
-        size = FLEX
-        rendObj = ROBJ_BOX
-        fillColor = 0xBF000000
-        children = @() {
-          watch = timeText
-          size = FLEX_H
-          rendObj = ROBJ_TEXTAREA
-          behavior = Behaviors.TextArea
-          vplace = ALIGN_CENTER
-          halign = ALIGN_CENTER
-          text = timeText.get()
-        }.__update(fontTinyShaded)
-      }
+      isAvailable.get() ? null : timeOverlay
     ]
   }
 }
@@ -256,15 +258,12 @@ let buyEventCurrenciesDesc = function() {
 
 let buyEventCurrenciesGamercard = @() {
   watch = [currencyId, buyCurrencyWndGamercardCurrencies]
-  size = [flex(), SIZE_TO_CONTENT]
+  size = const [flex(), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
-  children = [
-    headerGradientWithRightBlock([ backButton(closeBuyEventCurrenciesWnd), buyEventCurrenciesHeader ],
-      mkCurrenciesBtns(buyCurrencyWndGamercardCurrencies.get(), { [currencyId.get()] = true })
-    )
-
-  ]
+  children = headerGradientWithRightBlock([ backButton(closeBuyEventCurrenciesWnd), buyEventCurrenciesHeader ],
+    mkCurrenciesBtns(buyCurrencyWndGamercardCurrencies.get(), { [currencyId.get()] = true })
+  )
 }
 
 return {

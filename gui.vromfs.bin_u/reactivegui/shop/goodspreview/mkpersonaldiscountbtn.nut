@@ -64,11 +64,11 @@ function mkPersonalDiscountBtn(previewGoods, aTimeHeaderStart) {
           }
           transform = {}
           animations = opacityAnims(0.5 * aTimePackNameFull, aTimeHeaderStart).append(
-            { prop = AnimProp.translate, from = [-hdpx(100), 0.0], to = [0.0, 0.0], easing = InQuad, play = true,
+            { prop = AnimProp.translate, from = const [-hdpx(100), 0.0], to = const [0.0, 0.0], easing = InQuad, play = true,
               duration = 0.5 * aTimePackNameFull, delay = aTimeHeaderStart, trigger = ANIM_SKIP }
-            { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.5, 1.5], easing = Linear, play = true,
+            { prop = AnimProp.scale, from = const [1.0, 1.0], to = const [1.5, 1.5], easing = Linear, play = true,
               duration = giftBoxAnimDur, delay = aTimeHeaderStart + 0.5, trigger = ANIM_SKIP_DELAY }
-            { prop = AnimProp.scale, from = [1.5, 1.5], to = [1, 1], easing = Linear, play = true,
+            { prop = AnimProp.scale, from = const [1.5, 1.5], to = const [1, 1], easing = Linear, play = true,
               duration = giftBoxAnimDur, delay = giftBoxAnimDur + aTimeHeaderStart + 0.5, trigger = ANIM_SKIP_DELAY }
           )
         }

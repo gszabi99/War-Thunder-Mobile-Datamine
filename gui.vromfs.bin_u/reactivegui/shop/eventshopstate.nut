@@ -4,7 +4,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 
 
-function getShopIdForEventId(eventId, specialEventsV, goodsByShopV, soonGoodsByShopV, soonPersonalGoodsByShopV,
+function [pure, nodiscard] getShopIdForEventId(eventId, specialEventsV, goodsByShopV, soonGoodsByShopV, soonPersonalGoodsByShopV,
   personalGoodsByShopV
 ) {
   if (eventId == null || eventId == "")

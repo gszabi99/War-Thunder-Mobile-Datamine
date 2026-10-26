@@ -3,7 +3,8 @@ from "%rGui/options/optCtrlType.nut" import *
 from "eventbus" import eventbus_subscribe, eventbus_send
 from "language" import getLocalLanguage, getSpeechLanguage, setSpeechLanguage
 from "nestdb" import ndbRead, ndbExists
-from "soundOptions" import set_option_speech_country_type, get_option_speech_country_type, UNIT_LANG, GAME_LANG
+from "soundOptions" import set_option_speech_country_type, get_option_speech_country_type, UNIT_LANG, GAME_LANG,
+  get_option_use_special_speech_language, set_option_use_special_speech_language
 from "%appGlobals/loginState.nut" import isSettingsAvailable
 from "%appGlobals/permissions.nut" import has_extended_sound
 
@@ -56,6 +57,13 @@ function applySpeechUnitType() {
   eventbus_send("saveProfile", {})
 }
 
+function forceSpecialSpeechLanguage() {
+  if (!isSettingsAvailable.get() || get_option_use_special_speech_language())
+    return
+  set_option_use_special_speech_language(true)
+  eventbus_send("saveProfile", {})
+}
+
 function applyListToOptions() {
   let langList = ndbExists(NDB_ID) ? ndbRead(NDB_ID) : []
   foreach (l in langList)
@@ -68,6 +76,7 @@ function applyListToOptions() {
 }
 
 applySpeechUnitType()
+forceSpecialSpeechLanguage()
 applyListToOptions()
 eventbus_subscribe("onAcesInitComplete", @(_) language.set(getLocalLanguage()))
 eventbus_subscribe("localizationInfoUpdate", @(_) applyListToOptions())
@@ -86,6 +95,7 @@ isSettingsAvailable.subscribe(function(v) {
     return
   speechUnitCountryType.set(getSpeechType())
   applySpeechUnitType()
+  forceSpecialSpeechLanguage()
 })
 
 return {

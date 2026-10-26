@@ -10,6 +10,7 @@ from "%rGui/shop/goodsView/sharedParts.nut" import txt, mkPricePlate, mkGoodsCom
   mkGoodsLimitAndEndTime, goodsH, goodsSmallSize, goodsBgH, mkBgImg, mkBgParticles, borderBg, mkSquareIconBtn,
   skipPurchasedPlate, purchasedPlate, mkCanPurchase, goodsW, mkCanShowTimeProgress, mkCommonGoodsIcon
 from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 const fontIconPreview = "⌡"
@@ -37,24 +38,23 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
     onClick = canPurchase.get() ? onClick : null
     onElemState = @(v) stateFlags.set(v)
     xmbNode = XmbNode()
-    transform = {
-      scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.97, 0.97] : [1, 1]
-    }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     sound = { click = "choose" }
     flow = FLOW_VERTICAL
     children = [
       {
         size = [ FLEX, goodsBgH ]
         children = mkContent?(stateFlags.get(), canPurchase.get())
-      }.__update(childOvr)
+        ...childOvr
+      }
       canPurchase.get()
           ? pricePlate
         : canShowSkipPurchase.get()
           ? skipPurchasedPlate
         : purchasedPlate
     ]
-  }).__update(ovr)
+    ...mkPressTransitionScale(stateFlags.get(), 0.97)
+    ...ovr
+  })
 }
 
 function mkPricePlateWrap(goods, state, animParams) {

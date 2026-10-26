@@ -72,18 +72,18 @@ function applyButton() {
   let children = savedSlotName.get() == curSlotName.get()
       ? textButtonCommon(utf8ToUpper(loc("mainmenu/btnClose")),
         close,
-        { ovr = { key = "closeButton" }}) 
+        const { ovr = { key = "closeButton" }}) 
     : (status & BS_UNLOCKED) != 0
       ? textButtonPrimary(applyText,
           applyBullet,
-          { ovr = { key = "applyButton" }}) 
+          const { ovr = { key = "applyButton" }}) 
     : !isEnoughLevel
       ? textButtonInactive(applyText,
         @() openMsgBox({ text = loc("msg/reqUnitLevelToUse", { reqLevel = reqLevelFinal }) }),
-        { ovr = { key = "errorButton" }}) 
+        const { ovr = { key = "errorButton" }}) 
     : textButtonInactive(applyText,
         @() openMsgBox({ text = loc("respawn/need_to_buy_weapon") }),
-        { ovr = { key = "errorButton" }}) 
+        const { ovr = { key = "errorButton" }}) 
   return {
     watch = [savedSlotName, curSlotName, bulletsInfo, bulletsSecInfo, bulletsSpecInfo, isBulletSec, isBulletSpec, selSlot]
     valign = ALIGN_CENTER

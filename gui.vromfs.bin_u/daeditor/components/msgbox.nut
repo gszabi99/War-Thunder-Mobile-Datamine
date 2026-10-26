@@ -205,7 +205,7 @@ function showMsgbox(params) {
   }
 
   local btnsDesc = params?.buttons ?? defaultButtons
-  if (!(isObservable(btnsDesc)))
+  if (!isObservable(btnsDesc))
     btnsDesc = Watched(btnsDesc)
 
   local defCancel = null

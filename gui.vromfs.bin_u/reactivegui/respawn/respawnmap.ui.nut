@@ -24,53 +24,57 @@ let mapSizePx = Watched([0, 0])
 let mapRootKey = {}
 
 
-let mkRespBase = @(rb) @() {
-  watch = [curRespBase, localTeam, selSlot]
-  size = 0
-  translate = mapSizePx.get().map(@(v, axis) round(v * rb.mapPos[axis]))
-  rendObj = ROBJ_SOLID
-  color = curRespBase.get() == rb.id ? 0xFFFFFFFF : 0x80800000
-  behavior = Behaviors.RtPropUpdate
-  function update() {
-    let newPos = getRespawnBasePos(rb.id)
-    return {
-      transform = {
-          translate = mapSizePx.get().map(@(v, axis) round(v * newPos[axis]))
-          rotate = rb.rotate
+function mkRespBase(rb) {
+  let selectedCircle = {
+    size = circleSize
+    rendObj = ROBJ_IMAGE
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    image = Picture($"ui/gameuiskin#spawn_selected.svg:{circleSize}:{circleSize}:P")
+  }
+  let baseIconImage = Picture($"{rb.iconType < 0 ? rb.mapIcon : zoneIcons[rb.iconType]}:{baseSize * 2}:{baseSize * 2}:P")
+  return @() {
+    watch = [curRespBase, localTeam, selSlot]
+    size = 0
+    translate = mapSizePx.get().map(@(v, axis) round(v * rb.mapPos[axis]))
+    rendObj = ROBJ_SOLID
+    color = curRespBase.get() == rb.id ? 0xFFFFFFFF : 0x80800000
+    behavior = Behaviors.RtPropUpdate
+    function update() {
+      let newPos = getRespawnBasePos(rb.id)
+      return {
+        transform = {
+            translate = mapSizePx.get().map(@(v, axis) round(v * newPos[axis]))
+            rotate = rb.rotate
+        }
       }
     }
+    children = [
+      (curRespBase.get() != rb.id && curRespBase.get() >= 0) || (rb.team != localTeam.get()) || !is_respawnbase_selectable(rb.id) ? null
+        : selectedCircle
+      {
+        size = baseSize
+        rendObj = ROBJ_IMAGE
+        vplace = ALIGN_CENTER
+        hplace = ALIGN_CENTER
+        keepAspect = KEEP_ASPECT_FIT
+        
+        image = baseIconImage
+        color = rb.team == localTeam.get() ? teamBlueColor : teamRedColor
+      }.__update(rb.team != localTeam.get() ? {}
+        : {
+            behavior = Behaviors.Button
+            function onClick() {
+              sendPlayerActivityToServer()
+              if (curRespBase.get() == rb.id)
+                playerSelectedRespBase.set(-1)
+              else if (rb.id in availRespBases.get())
+                playerSelectedRespBase.set(rb.id)
+            }
+            clickableInfo = loc(curRespBase.get() != rb.id ? "mainmenu/btnSelect" : "mainmenu/btnCancel")
+          })
+    ]
   }
-  children = [
-    (curRespBase.get() != rb.id && curRespBase.get() >= 0) || (rb.team != localTeam.get()) || !is_respawnbase_selectable(rb.id) ? null
-      : {
-          size = [circleSize, circleSize]
-          rendObj = ROBJ_IMAGE
-          vplace = ALIGN_CENTER
-          hplace = ALIGN_CENTER
-          image = Picture($"ui/gameuiskin#spawn_selected.svg:{circleSize}:{circleSize}:P")
-        }
-    {
-      size = [baseSize, baseSize]
-      rendObj = ROBJ_IMAGE
-      vplace = ALIGN_CENTER
-      hplace = ALIGN_CENTER
-      keepAspect = KEEP_ASPECT_FIT
-      
-      image = Picture($"{rb.iconType < 0 ? rb.mapIcon : zoneIcons[rb.iconType]}:{baseSize * 2}:{baseSize * 2}:P")
-      color = rb.team == localTeam.get() ? teamBlueColor : teamRedColor
-    }.__update(rb.team != localTeam.get() ? {}
-      : {
-          behavior = Behaviors.Button
-          function onClick() {
-            sendPlayerActivityToServer()
-            if (curRespBase.get() == rb.id)
-              playerSelectedRespBase.set(-1)
-            else if (rb.id in availRespBases.get())
-              playerSelectedRespBase.set(rb.id)
-          }
-          clickableInfo = loc(curRespBase.get() != rb.id ? "mainmenu/btnSelect" : "mainmenu/btnCancel")
-        })
-  ]
 }
 
 let respawnBasesLayer = @() {

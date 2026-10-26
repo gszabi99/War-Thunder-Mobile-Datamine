@@ -14,7 +14,7 @@ const INDICATOR_FADE_TIME = 1.0
 
 let mkHudIndicatorIcon = @(id, icon, size, ovr) {
   key = $"HudIndicator{id}"
-  size = [size, size]
+  size = size
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#{icon}:{size}:{size}:P")
   keepAspect = true

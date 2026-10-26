@@ -16,6 +16,7 @@ from "%rGui/quests/rewardsComps.nut" import progressBarRewardSize
 from "%rGui/state/profilePremium.nut" import hasVip
 from "%rGui/style/gradients.nut" import gradTexSize, mkGradientCtorRadial
 from "%rGui/style/stdColors.nut" import selectColor, tabBgColor
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/textFormatByLang.nut" import decimalFormat
 from "%rGui/unlocks/unlocks.nut" import unlockProgress
 
@@ -38,45 +39,48 @@ const imageInProgress = "ui/unitskin#image_in_progress.avif"
 let btnGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(selectColor, 0, 35, 20, 30, -35))
 
-let mkSectionBtn = @(onClick, isSelected, hasUnseen, content) {
-  size = const [FLEX, sectionBtnHeight]
-  behavior = Behaviors.Button
-  onClick
-  sound = { click = "choose" }
-  clickableInfo = loc("mainmenu/btnSelect")
-  children = [
-    {
-      size = FLEX
-      rendObj = ROBJ_SOLID
-      color = tabBgColor
-    }
+function mkSectionBtn(onClick, isSelected, hasUnseen, content) {
+  let btnGradientImg = btnGradient()
+  return {
+    size = const [FLEX, sectionBtnHeight]
+    behavior = Behaviors.Button
+    onClick
+    sound = { click = "choose" }
+    clickableInfo = loc("mainmenu/btnSelect")
+    children = [
+      {
+        size = FLEX
+        rendObj = ROBJ_SOLID
+        color = tabBgColor
+      }
 
-    @() {
-      watch = isSelected
-      size = FLEX
-      rendObj = ROBJ_IMAGE
-      image = btnGradient()
-      flipY = true
-      keepAspect = KEEP_ASPECT_FILL
-      opacity = isSelected.get() ? 1 : 0
-      transitions = opacityTransition
-    }
+      @() {
+        watch = isSelected
+        size = FLEX
+        rendObj = ROBJ_IMAGE
+        image = btnGradientImg
+        flipY = true
+        keepAspect = KEEP_ASPECT_FILL
+        opacity = isSelected.get() ? 1 : 0
+        transitions = opacityTransition
+      }
 
-    {
-      size = FLEX
-      margin = const [0, sectionBtnGap / 2]
-      valign = ALIGN_CENTER
-      halign = ALIGN_CENTER
-      children = content
-    }
+      {
+        size = FLEX
+        margin = const [0, sectionBtnGap / 2]
+        valign = ALIGN_CENTER
+        halign = ALIGN_CENTER
+        children = content
+      }
 
-    @() {
-      watch = [hasUnseen, isSelected]
-      hplace = ALIGN_RIGHT
-      margin = sectionBtnGap / 2
-      children = !isSelected.get() && hasUnseen.get() ? priorityUnseenMark : null
-    }
-  ]
+      @() {
+        watch = [hasUnseen, isSelected]
+        hplace = ALIGN_RIGHT
+        margin = sectionBtnGap / 2
+        children = !isSelected.get() && hasUnseen.get() ? priorityUnseenMark : null
+      }
+    ]
+  }
 }
 
 let mkTimeUntil = @(time, locId = "quests/untilTheEnd", ovr = {}) {
@@ -94,6 +98,10 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeM
   let stateFlags = Watched(0)
   let headerIconH = (linkToEventIconSize * imageSizeMul).tointeger()
   let headerIconW = 2 * headerIconH
+  let headerText = {
+    rendObj = ROBJ_TEXT
+    text = utf8ToUpper(text)
+  }.__update(fontTinyAccented)
   return @() {
     watch = stateFlags
     size = [linkToEventWidth, progressBarRewardSize]
@@ -124,17 +132,13 @@ function mkQuestsHeaderBtn(text, iconWatch, onClick, addChild = null, imageSizeM
               keepAspect = KEEP_ASPECT_FIT
             }
           }
-          {
-            rendObj = ROBJ_TEXT
-            text = utf8ToUpper(text)
-          }.__update(fontTinyAccented)
+          headerText
         ]
       }
       mkGlare(linkToEventWidth)
       addChild
     ]
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 

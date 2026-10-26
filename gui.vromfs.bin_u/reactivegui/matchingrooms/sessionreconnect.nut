@@ -5,7 +5,7 @@ from "%sqstd/globalState.nut" import hardPersistWatched
 from "%appGlobals/clientState/clientState.nut" import isInMenu
 from "%appGlobals/gameModes/gameModes.nut" import allGameModes, gameModeQueueGroups, getGameModeQueueGroup
 from "%appGlobals/loginState.nut" import isLoggedIn, isMatchingOnline
-from "%rGui/matching/matchingApi.nut" import matchingRpcCall, matchingRpcRegisterHandler, matchingCallRpcHandler
+from "%rGui/matching/matchingApi.nut" import matchingRequest, matchingRegisterHandler, matchingCallHandler
 from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox, closeFMsgBox
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
@@ -120,7 +120,7 @@ isNeedReconnectMsg.subscribe(function(v) {
     closeFMsgBox(MSG_UID)
 })
 
-matchingRpcRegisterHandler("onCheckReconnect", function(resp, context) {
+matchingRegisterHandler("onCheckReconnect", function(resp, context) {
   let hasRoomToJoin = resp?.roomId
   logR($"onCheckReconnect resp?.roomId = {resp?.roomId}\n")
   if ("error" not in resp)
@@ -131,11 +131,11 @@ matchingRpcRegisterHandler("onCheckReconnect", function(resp, context) {
   }
   reconnectData.set(null)
   let { onFail = null } = context
-  matchingCallRpcHandler(onFail, resp)
+  matchingCallHandler(onFail, resp)
 })
 
 let checkReconnect = @(onFail = null)
-  matchingRpcCall("match.check_reconnect", null, { id = "onCheckReconnect", onFail })
+  matchingRequest("match.check_reconnect", null, { id = "onCheckReconnect", onFail })
 
 isMatchingOnline.subscribe(function(v) {
   if (!isLoggedIn.get())

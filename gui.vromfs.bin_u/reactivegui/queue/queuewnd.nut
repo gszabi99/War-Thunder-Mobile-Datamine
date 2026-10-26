@@ -76,7 +76,7 @@ curQueue.subscribe(function(v) {
 
 let campaignByMode = Computed(@() allGameModes.get().findvalue(@(gm) gm?.name == lastQueueMode.get())?.campaign)
 
-let eventsWithoutAimingHint = ["event_1_april_pirates"]
+let eventsWithoutAimingHint = ["ship_event_halloween_pirates"]
 let hasAimingHint = Computed(@() !eventsWithoutAimingHint.contains(lastQueueMode.get()))
 let airEventPrefixes = [ "air_event", "event_plane", "plane_" ]
 let missionCampaign = Computed(@() airEventPrefixes.findindex(@(v) lastQueueMode.get().startswith(v)) != null
@@ -207,17 +207,15 @@ let cancelQueueButton = {
   flow = FLOW_VERTICAL
   halign = ALIGN_RIGHT
   gap = hdpx(12)
-  children = [
-    mkSpinnerHideBlock(isCancelInProgress,
-      textButtonCommon(utf8ToUpper(loc("mainmenu/btnCancel")), leaveQueue, cancelOvr),
-      {
-        size = [SIZE_TO_CONTENT, defButtonHeight]
-        minWidth = defButtonMinWidth
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-      }
-    )
-  ]
+  children = mkSpinnerHideBlock(isCancelInProgress,
+    textButtonCommon(utf8ToUpper(loc("mainmenu/btnCancel")), leaveQueue, cancelOvr),
+    {
+      size = [SIZE_TO_CONTENT, defButtonHeight]
+      minWidth = defButtonMinWidth
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+    }
+  )
 }
 
 let allowCancelJoining = @() canCancelJoining.set(true)
@@ -285,7 +283,7 @@ let mkBgImagesByCampaign = {
 
 let mkBgImageByGameMode = {
   tank_event_ny_ctf_mode = @() helpEventChristmas2
-  event_1_april_pirates = @() helpEventPirates
+  ship_event_halloween_pirates = @() helpEventPirates
   tank_event_battle_royale = @() helpEventBattleRoyale
   plane_event_halloween_po2_race = @() helpEventHalloween
   event_1_april_mechas = @() helpEventWalkers

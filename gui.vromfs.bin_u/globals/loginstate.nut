@@ -14,7 +14,6 @@ let { getBuildMarket = @() "googleplay" } = require("android.platform")
 let LOGIN_STATE = { 
   
   AUTHORIZED                  = 0x00001 
-  GAME_UPDATED                = 0x00002
   ONLINE_BINARIES_INITED      = 0x00004
 
   PROFILE_RECEIVED            = 0x00010
@@ -37,13 +36,12 @@ let LOGIN_STATE = {
 
   
   NOT_LOGGED_IN               = 0x00000
-  AUTH_AND_UPDATED            = 0x00003
-  READY_TO_FULL_LOAD          = 0x00107
+  READY_TO_FULL_LOAD          = 0x00105
   READY_FOR_TCF_CONSENT       = 0x10700
   READY_FOR_OUR_CONSENT       = 0x00F00
   READY_FOR_IDFA              = 0x01F00
   READY_FOR_GOOGLE_CONSENT    = 0x03F00
-  LOGGED_IN                   = 0x07FF7 
+  LOGGED_IN                   = 0x07FF5 
 }
 
 const LOGIN_UPDATER_EVENT_ID = "loginUpdaterEvent"
@@ -158,10 +156,8 @@ return loginTypes.__merge(secondStepTypes, {
   isProfileConfigsReceived = Computed(@() (loginState.get() & LOGIN_STATE.CONFIGS_RECEIVED) != 0)
   isContactsLoggedIn = Computed(@() (loginState.get() & LOGIN_STATE.CONTACTS_LOGGED_IN) != 0)
   isOpenedLegalWnd = Computed(@() legalListForApprove.get().findvalue(@(v) v) != null)
-  isGameUpdatedOnLogin = Computed(@() (loginState.get() & LOGIN_STATE.GAME_UPDATED) != 0)
 
   isLoggedIn = Computed(@() (loginState.get() & LOGIN_STATE.LOGGED_IN) == LOGIN_STATE.LOGGED_IN)
-  isAuthAndUpdated = Computed(@() (loginState.get() & LOGIN_STATE.AUTH_AND_UPDATED) == LOGIN_STATE.AUTH_AND_UPDATED)
   isReadyToFullLoad = Computed(@() (loginState.get() & LOGIN_STATE.READY_TO_FULL_LOAD) == LOGIN_STATE.READY_TO_FULL_LOAD)
   isReadyForTcfConsent = Computed(@() (loginState.get() & LOGIN_STATE.READY_FOR_TCF_CONSENT) == LOGIN_STATE.READY_FOR_TCF_CONSENT)
   isReadyForGoogleConsent = Computed(@() (loginState.get() & LOGIN_STATE.READY_FOR_GOOGLE_CONSENT) == LOGIN_STATE.READY_FOR_GOOGLE_CONSENT)

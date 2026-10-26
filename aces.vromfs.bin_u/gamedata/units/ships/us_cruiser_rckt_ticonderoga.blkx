@@ -24,7 +24,7 @@
   "useSimpleDeathConditionsAndEffects": false,
   "hitCamOnSimpleUnitSubsystems": true,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 133260.0,
+  "multHpFromMetaparts": 129980.0,
   "type": "typeDestroyer",
   "expClass": "exp_cruiser",
   "timeToFire": 40.0,
@@ -271,7 +271,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 133260.0,
+      "hp": 129980.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "compartment_01_dm": {
@@ -297,7 +297,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 133260.0,
+      "hp": 129980.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "fireParamsPreset": "common_ship_fire",
@@ -307,7 +307,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 133260.0,
+      "hp": 129980.0,
       "fireParamsPreset": "ship_turrets",
       "genericDamageMult": 1.0,
       "main_caliber_turret_01_dm": {},
@@ -317,7 +317,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 133260.0,
+      "hp": 129980.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "auxiliary_caliber_turret_01_dm": {},
@@ -365,7 +365,7 @@
     "fire_control": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 133260.0,
+      "hp": 129980.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.05,
       "fireParamsPreset": "ship_aux_fire",
@@ -393,18 +393,16 @@
       "role": "sailor",
       "crew": 55
     },
-    "sailor4": [
-      {
-        "dmPart": "compartment_04_dm",
-        "role": "sailor",
-        "crew": 55
-      },
-      {
-        "dmPart": "compartment_05_dm",
-        "role": "sailor",
-        "crew": 55
-      }
-    ],
+    "sailor4": {
+      "dmPart": "compartment_04_dm",
+      "role": "sailor",
+      "crew": 55
+    },
+    "sailor5": {
+      "dmPart": "compartment_05_dm",
+      "role": "sailor",
+      "crew": 55
+    },
     "sailor6": {
       "dmPart": "compartment_06_dm",
       "role": "sailor",
@@ -578,7 +576,7 @@
   },
   "MetaParts": {
     "hull": {
-      "hp": 133260.0,
+      "hp": 129980.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",
@@ -917,7 +915,7 @@
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "reloadTime": 18.0,
+        "reloadTime": 20.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -973,7 +971,7 @@
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "reloadTime": 22.0,
+        "reloadTime": 23.0,
         "bulletsCartridge": 4,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
@@ -1011,7 +1009,6 @@
         "weaponType": "rockets",
         "emitter": "bone_rocket_65",
         "flash": "bone_rocket_65",
-        "ammoDpGenFmt": "bone_rocket_%02d_dm",
         "emitterGenRange": [
           65,
           128
@@ -1696,7 +1693,7 @@
               ],
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "reloadTime": 18.0,
+              "reloadTime": 20.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -1752,7 +1749,7 @@
               ],
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "reloadTime": 22.0,
+              "reloadTime": 23.0,
               "bulletsCartridge": 4,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -1790,7 +1787,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_65",
               "flash": "bone_rocket_65",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 65,
                 128
@@ -2459,7 +2455,7 @@
               ],
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "reloadTime": 18.0,
+              "reloadTime": 20.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -2515,7 +2511,7 @@
               ],
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
-              "reloadTime": 22.0,
+              "reloadTime": 23.0,
               "bulletsCartridge": 4,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
@@ -2553,7 +2549,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_65",
               "flash": "bone_rocket_65",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 65,
                 128

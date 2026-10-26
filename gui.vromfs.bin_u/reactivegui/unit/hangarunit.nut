@@ -49,16 +49,16 @@ let lastHangarUnitBattleData = mkWatched(persist, "hangarUnitBattleData", null)
 let isCustomHangarUnitData = Computed(@() hangarUnitData.get()?.custom != null)
 local wasLoadBgModelsAfterLoading = false
 
-let mainHangarUnit = Computed(function() {
+let hangarUnit = Computed(function() {
   let { name = loadedHangarUnitName.get(), custom = null } = hangarUnitData.get()
   return custom ?? campMyUnits.get()?[name] ?? campUnitsCfg.get()?[name]
 })
 
-let mainHangarUnitName = Computed(@() mainHangarUnit.get()?.name)
+let mainHangarUnitName = Computed(@() hangarUnit.get()?.name)
 let { weaponPreset } = mkWeaponPreset(mainHangarUnitName)
 
 let hangarUnitPreset = Computed(function() {
-  let { name = null, mods = null } = mainHangarUnit.get()
+  let { name = null, mods = null } = hangarUnit.get()
   if (name == null)
     return null
   let weaponSlots = loadUnitWeaponSlots(name)
@@ -67,14 +67,6 @@ let hangarUnitPreset = Computed(function() {
   let equippedWeaponsBySlots = weaponSlots
     .map(@(slot, idx) getEquippedWeapon(weaponPreset.get(), idx, slot?.wPresets ?? {}, mods))
   return getEqippedWithoutOverload(name, equippedWeaponsBySlots).map(@(a) a?.name ?? "")
-})
-
-let hangarUnit = Computed(function() {
-  let mainUnit = mainHangarUnit.get()
-  let { name = loadedHangarUnitName.get() } = hangarUnitData.get()
-  if (mainUnit == null || name == mainUnit.name)
-    return mainUnit
-  return mainUnit
 })
 
 let nameAndSkin = @(name, skin, currentSkins = null, defSkin = "") {
@@ -281,11 +273,11 @@ function setHangarUnitGroup(unitList, needRandomize, chosenIdx = null) {
 let setCustomHangarUnit = @(customUnit) hangarUnitData.set({ name = customUnit.name, custom = customUnit })
 
 let hangarBattleData = Computed(function(prev) {
-  if (mainHangarUnit.get() == null)
+  if (hangarUnit.get() == null)
     return null
   let { name, country = "", unitType = "", mods = null, modPreset = "",
     isUpgraded = false, isPremium = false
-  } = mainHangarUnit.get()
+  } = hangarUnit.get()
 
   let cfgMods = serverConfigs.get()?.unitModPresets[modPreset] ?? {}
   let modifications = mods != null
@@ -395,7 +387,6 @@ return {
   setCustomHangarUnit  
   isHangarUnitLoaded
 
-  mainHangarUnit
   mainHangarUnitName
   lastHangarUnitBattleData
   hangarBattleData

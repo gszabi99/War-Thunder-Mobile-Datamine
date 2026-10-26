@@ -21,7 +21,7 @@ let blinking = [{
 }]
 
 let getThreatImg = @(size = imgSize) {
-  size = [size, size]
+  size = size
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#hud_asroc.svg:{size}:{size}:P")
 }
@@ -54,7 +54,7 @@ let simpleThreatTorpedosIndicator = @(scale) @() {
 
 let threatTorpedosBlock = @() {
   size = FLEX_H
-  watch = [threatTorpedos]
+  watch = threatTorpedos
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   halign = ALIGN_LEFT

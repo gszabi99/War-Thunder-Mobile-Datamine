@@ -62,7 +62,7 @@ function mkRewardReceivedMark(rStyle) {
     rendObj = ROBJ_SOLID
     color = 0x80000000
     children = {
-      size = [iconSize, iconSize]
+      size = iconSize
       pos = const [hdpx(10), -hdpx(10)]
       rendObj = ROBJ_IMAGE
       hplace = ALIGN_CENTER
@@ -75,14 +75,19 @@ function mkRewardReceivedMark(rStyle) {
 
 function mkRewardPlate(r, rStyle, rewardCtors) {
   let isPurchased = Computed(@() isRewardEmpty([{ gType = r.rType }.__merge(r)], servProfile.get()))
+  let plateBg = mkRewardPlateBg(r, rStyle)
+  let plateCtor = rewardCtors?[r?.rType] ?? rewardCtors.unknown
+  let plateImage = plateCtor.image(r, rStyle)
+  let plateTexts = plateCtor.texts(r, rStyle)
+  let receivedMark = mkRewardReceivedMark(rStyle)
   return @() {
     watch = isPurchased
     transform = {}
     children = [
-      mkRewardPlateBg(r, rStyle),
-      (rewardCtors?[r?.rType] ?? rewardCtors.unknown).image(r, rStyle),
-      (rewardCtors?[r?.rType] ?? rewardCtors.unknown).texts(r, rStyle),
-      isPurchased.get() ? mkRewardReceivedMark(rStyle) : null,
+      plateBg,
+      plateImage,
+      plateTexts,
+      isPurchased.get() ? receivedMark : null,
     ]
   }
 }

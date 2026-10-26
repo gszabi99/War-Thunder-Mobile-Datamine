@@ -17,12 +17,13 @@ return {
   badTextColor2 = 0xFFE66464
 
   localPlayerColor = 0xFFDDA339
+  nameColor = 0xFF7FAEFF
   
   decorativeLineBgMW = 0xFFD4D4D4
   headerBgMW = 0x0A585858
   bgMW = 0xDC000000
 
-  onlineColor = 0xFFFFFFFF
+  onlineColor = 0xFF20E040
   offlineColor = 0xFFFF4020
   leaderColor = 0xFFFDCF17
   memberNotReadyColor = 0xFFFF4020
@@ -35,6 +36,12 @@ return {
   selectColor = 0xFF7FAEFF  
 
   tabBgColor = 0xB20C1113
+
+  blueprintBarColor = 0xFF3384C4
+  clanBlueprintBarColor = 0xFFFFC445
+
+  rowBgEvenColor = 0x33333333
+  rowBgOddColor = 0x66111111
 
   locColorTable = {
     mark = markTextColor

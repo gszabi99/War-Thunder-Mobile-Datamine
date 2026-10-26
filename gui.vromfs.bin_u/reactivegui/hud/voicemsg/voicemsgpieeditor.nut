@@ -8,7 +8,7 @@ from "%rGui/hud/voiceMsg/voiceMsgState.nut" import voiceMsgCfg, voiceMsgPieOrder
 from "%rGui/navState.nut" import registerScene
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/hudColors.nut" import hudWhiteColor
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import selectColor
 
 
@@ -19,6 +19,8 @@ const DISABLED_OPACITY = 0.5
 
 let isOpened = mkWatched(persist, "isOpened", false)
 let onClose = @() isOpened.set(false)
+let noPieSelection = WatchedRo(-1)
+let editorPieParams = defaultPieMenuParams.__merge(const { piePosOffset = [0, 0] })
 
 let selItemId = mkWatched(persist, "selItemId", null)
 
@@ -67,16 +69,19 @@ let header = {
 
 let itemHiddenMarkSize = (rowHeight * 0.67).tointeger()
 let itemHiddenMarkLMargin = (rowHeight - itemHiddenMarkSize) / 2
-let mkHiddenMark = @(isVisible) @() isVisible.get() ? { watch = isVisible } : {
-  watch = isVisible
-  size = [itemHiddenMarkSize, itemHiddenMarkSize]
-  margin = [0, itemHiddenMarkLMargin, 0, 0]
-  hplace = ALIGN_RIGHT
-  vplace = ALIGN_CENTER
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#btn_trash.svg:{itemHiddenMarkSize}:{itemHiddenMarkSize}:P")
-  keepAspect = true
-  opacity = DISABLED_OPACITY
+function mkHiddenMark(isVisible) {
+  let trashIcon = Picture($"ui/gameuiskin#btn_trash.svg:{itemHiddenMarkSize}:{itemHiddenMarkSize}:P")
+  return @() isVisible.get() ? { watch = isVisible } : {
+    watch = isVisible
+    size = itemHiddenMarkSize
+    margin = [0, itemHiddenMarkLMargin, 0, 0]
+    hplace = ALIGN_RIGHT
+    vplace = ALIGN_CENTER
+    rendObj = ROBJ_IMAGE
+    image = trashIcon
+    keepAspect = true
+    opacity = DISABLED_OPACITY
+  }
 }
 
 function mkItemRow(idx) {
@@ -85,6 +90,29 @@ function mkItemRow(idx) {
   let isVisible = Computed(@() !voiceMsgPieHidden.get().contains(item.get().id))
   let stateFlags = Watched(0)
   let isHovered = Computed(@() stateFlags.get() & S_HOVER)
+  let rowChildren = [
+    @() {
+      watch = [isSelected, isHovered]
+      size = FLEX
+      rendObj = ROBJ_SOLID
+      color = isSelected.get() || isHovered.get() ? selectColor : 0
+      opacity = isSelected.get() ? 0.9 : 0.5
+    }
+    @() {
+      watch = [isVisible, item]
+      size = FLEX
+      margin = hdpx(20)
+      valign = ALIGN_CENTER
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(30)
+      opacity = isVisible.get() ? 1 : DISABLED_OPACITY
+      children = [
+        mkPieMenuItemIcon(item.get(), pieRadius, pieIconSizeMul)
+        mkPieMenuItemText(item.get())
+      ]
+    }
+    mkHiddenMark(isVisible)
+  ]
   return @() {
     watch = stateFlags
     size = const [FLEX, rowHeight]
@@ -93,33 +121,9 @@ function mkItemRow(idx) {
     onClick = @() selectItem(idx)
     onElemState = @(v) stateFlags.set(v)
     clickableInfo = loc("mainmenu/btnSelect")
-    sound = { click  = "choose" }
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.98, 0.98] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
-
-    children = [
-      @() {
-        watch = [isSelected, isHovered]
-        size = FLEX
-        rendObj = ROBJ_SOLID
-        color = isSelected.get() || isHovered.get() ? selectColor : 0
-        opacity = isSelected.get() ? 0.9 : 0.5
-      }
-      @() {
-        watch = [isVisible, item]
-        size = FLEX
-        margin = hdpx(20)
-        valign = ALIGN_CENTER
-        flow = FLOW_HORIZONTAL
-        gap = hdpx(30)
-        opacity = isVisible.get() ? 1 : DISABLED_OPACITY
-        children = [
-          mkPieMenuItemIcon(item.get(), pieRadius, pieIconSizeMul)
-          mkPieMenuItemText(item.get())
-        ]
-      }
-      mkHiddenMark(isVisible)
-    ]
+    sound = const { click  = "choose" }
+    children = rowChildren
+    ...mkPressTransitionScale(stateFlags.get(), 0.98)
   }
 }
 
@@ -137,12 +141,14 @@ let icoBtnStyle = mergeStyles(COMMON, { ovr = { minWidth = defButtonHeight * 2 }
 let btnIconSize = (defButtonHeight * 0.6).tointeger()
 
 let mkIcoBtnContent = @(icon, needUpsideDown = false) {
-  size = [btnIconSize, btnIconSize]
+  size = btnIconSize
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#{icon}:{btnIconSize}:{btnIconSize}:P")
   keepAspect = true
   transform = needUpsideDown ? { rotate = 180 } : {}
 }
+
+let visibilityBtnStyle = icoBtnStyle.__merge({hotkeys = ["^J:Y"]})
 
 let footer = @() {
   watch = [voiceMsgPieHidden, selItemId]
@@ -152,11 +158,11 @@ let footer = @() {
   gap = buttonsHGap
   children = [
     textButtonCommon(utf8ToUpper(loc("msgbox/btn_reset")), resetVoiceMsgPieUserConfig, { hotkeys = ["^J:X"] })
-    { size = FLEX }
+    const { size = FLEX }
     mkCustomButton(
       mkIcoBtnContent(voiceMsgPieHidden.get().contains(selItemId.get()) ? "btn_trash_return.svg" : "btn_trash.svg"),
       onBtnVisibility,
-      icoBtnStyle.__merge({hotkeys = ["^J:Y"]})
+      visibilityBtnStyle
     )
     mkCustomButton(mkIcoBtnContent("roulette_pointer.svg", true), onBtnUp, icoBtnStyle.__merge({ hotkeys = ["^J:LT"] }))
     mkCustomButton(mkIcoBtnContent("roulette_pointer.svg"), onBtnDown, icoBtnStyle.__merge({ hotkeys = ["^J:RT"] }))
@@ -180,7 +186,7 @@ let voiceMsgPieEditorWnd = bgShaded.__merge({
       children = [
         @() {
           watch = voiceMsgCfg
-          children = mkPieMenu(voiceMsgCfg, Watched(-1), defaultPieMenuParams.__merge({ piePosOffset = [0, 0] }))
+          children = mkPieMenu(voiceMsgCfg, noPieSelection, editorPieParams)
         }
         itemsList
       ]

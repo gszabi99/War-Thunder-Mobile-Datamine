@@ -1,4 +1,4 @@
-let { activateShortcut } = require("controls")
+from "controls" import activateShortcut
 
 local toggleShortcut = @(shortcutName) activateShortcut(shortcutName, true, true)
 
@@ -6,8 +6,8 @@ local setShortcutOn = @(shortcutName) activateShortcut(shortcutName, true, false
 
 local setShortcutOff = @(shortcutName) activateShortcut(shortcutName, false, false)
 
-return {
+return freeze({
   toggleShortcut
   setShortcutOn
   setShortcutOff
-}
+})

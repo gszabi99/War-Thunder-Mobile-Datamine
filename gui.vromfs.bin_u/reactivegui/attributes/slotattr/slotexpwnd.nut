@@ -245,6 +245,13 @@ function mkSlider(idx) {
     chosenExp.set(chosenExp.get().__merge({ [idx] = newExp }))
     return true
   })
+  let incCostIcon = {
+    size = expIconSize
+    rendObj = ROBJ_IMAGE
+    keepAspect = KEEP_ASPECT_FIT
+    image = Picture($"ui/gameuiskin#experience_icon.svg:{expIconSize}:{expIconSize}:P")
+    color = 0xFF65BC82
+  }
 
   return {
     size = [FLEX, slotHeight]
@@ -284,13 +291,7 @@ function mkSlider(idx) {
         gap = hdpx(5)
         children = incCost.get() == 0 ? null
           : [
-              {
-                size = expIconSize
-                rendObj = ROBJ_IMAGE
-                keepAspect = KEEP_ASPECT_FIT
-                image = Picture($"ui/gameuiskin#experience_icon.svg:{expIconSize}:{expIconSize}:P")
-                color = 0xFF65BC82
-              }
+              incCostIcon
               textComp(decimalFormat(incCost.get()), fontTiny)
             ]
       }

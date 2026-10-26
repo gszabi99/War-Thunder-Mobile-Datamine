@@ -28,6 +28,7 @@ from "%rGui/shop/shopWndConst.nut" import goodsSmallSizeW, goodsH, goodsGap
 from "%rGui/state/profilePremium.nut" import hasVip, vipBonuses
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/gradients.nut" import mkColoredGradientY, mkFontGradient
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import tabBgColor
 from "%rGui/textFormatByLang.nut" import decimalFormat
 from "types" import Array
@@ -135,7 +136,7 @@ let mkGoodsImg = @(img, fallbackImg = null, ovr = {}) {
   imageValign = ALIGN_BOTTOM
 }.__update(ovr)
 
-let numberToTextForWtFont = @(str) str.tostring().replace("0", "O")
+let numberToTextForWtFont = @[pure, nodiscard](str) str.tostring().replace("0", "O")
 
 let oldAmountStrikeThrough = {
   size = FLEX
@@ -218,7 +219,7 @@ let mkCurrencyAmountTitleArea = @(amount, oldAmount, fontTex, slotName = null) {
 }
 
 let mkDiscountCorner = @(discountPrc) discountPrc <= 0 || discountPrc >= 100 ? null : {
-  size  = [ pricePlateH, pricePlateH ]
+  size  = pricePlateH
   hplace = ALIGN_LEFT
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#tag_corner_left_top.svg:{pricePlateH}:{pricePlateH}:P")
@@ -256,6 +257,8 @@ function mkGoodsNewPopularMark(goods, state) {
   let isPopular = goods?.isPopular
   let isNew = Computed(@() goods.id in shopUnseenGoods.get() || (personalGoodsUnseenIds.get()?[goods.id] ?? false) )
   let isPurchased = Computed(@() (state.get() & ALL_PURCHASED) != 0)
+  let popularMarkComp = isPopular ? popularMark(goods?.popularText) : null
+  let newMarkComp = priorityUnseenMark.__merge(const { margin = hdpx(30) })
 
   return function() {
     if (isPurchased.get())
@@ -263,9 +266,9 @@ function mkGoodsNewPopularMark(goods, state) {
 
     let children = []
     if (isPopular)
-      children.append(popularMark(goods?.popularText))
+      children.append(popularMarkComp)
     if (isNew.get())
-      children.append(priorityUnseenMark.__merge({ margin = hdpx(30) }))
+      children.append(newMarkComp)
     return { watch = [isNew, isPurchased], children }
   }
 }
@@ -303,55 +306,59 @@ vipBonusPurchLabel.fontSize = getFontSizeToFitWidth(vipBonusPurchLabel, purchBon
 
 function mkFirstPurchBonusMark(goods, state) {
   let { id = null, gType = null, count = 0 } = goods?.firstPurchaseRewards[0]
-  return gType == null ? null
-    : function() {
-        let res = { watch = state }
-        if (state.get() & HAS_PURCHASES)
-          return res
-        let bonusComp = gType != G_CURRENCY
-          ? purchBonusTxt({ text = "????????" })
-          : {
-              valign = ALIGN_CENTER
-              flow = FLOW_HORIZONTAL
-              gap = hdpx(10)
-              children = [
-                purchBonusTxt({ text = numberToTextForWtFont("".concat("+", count)) })
-                mkCurrencyImage(id, purchBonusCurrencyIcoSize)
-              ]
-            }
-        return res.__merge(purchBonusBg, {
-          children = [
-            bonusComp
-            firstPurchLabel
-          ]
-        })
+  if (gType == null)
+    return null
+  let bonusComp = gType != G_CURRENCY
+    ? purchBonusTxt(const { text = "????????" })
+    : {
+        valign = ALIGN_CENTER
+        flow = FLOW_HORIZONTAL
+        gap = hdpx(10)
+        children = [
+          purchBonusTxt({ text = numberToTextForWtFont("".concat("+", count)) })
+          mkCurrencyImage(id, purchBonusCurrencyIcoSize)
+        ]
       }
+  return function() {
+    let res = { watch = state }
+    if (state.get() & HAS_PURCHASES)
+      return res
+    return res.__merge(purchBonusBg, {
+      children = [
+        bonusComp
+        firstPurchLabel
+      ]
+    })
+  }
 }
 
-let mkVipPurchBonusMark = @(goods) (goods?.isFreeReward || goods?.isPopular || "priceText" not in goods?.priceExt)
-  ? null
-  : function() {
-      let res = { watch = vipBonuses }
-      let extPurchaseGold = vipBonuses.get()?.extPurchaseGold ?? 0
+function mkVipPurchBonusMark(goods) {
+  if (goods?.isFreeReward || goods?.isPopular || "priceText" not in goods?.priceExt)
+    return null
+  let goldImg = mkCurrencyImage(GOLD, purchBonusCurrencyIcoSize)
+  return function() {
+    let res = { watch = vipBonuses }
+    let extPurchaseGold = vipBonuses.get()?.extPurchaseGold ?? 0
 
-      if (extPurchaseGold == 0)
-        return res
+    if (extPurchaseGold == 0)
+      return res
 
-      return res.__merge(purchBonusBg, {
-        children = [
-          {
-            valign = ALIGN_CENTER
-            flow = FLOW_HORIZONTAL
-            gap = hdpx(10)
-            children = [
-              purchBonusTxt({ text = numberToTextForWtFont("".concat("+", extPurchaseGold)) })
-              mkCurrencyImage(GOLD, purchBonusCurrencyIcoSize)
-            ]
-          }
-          vipBonusPurchLabel
-        ]
-      })
-    }
+    return res.__merge(purchBonusBg, {
+      children = [
+        {
+          valign = ALIGN_CENTER
+          flow = FLOW_HORIZONTAL
+          gap = hdpx(10)
+          children = [
+            purchBonusTxt({ text = numberToTextForWtFont("".concat("+", extPurchaseGold)) })
+            goldImg
+          ]
+        }
+        vipBonusPurchLabel
+      ]
+    })
+  }
+}
 
 let mkPurchBonuses = @(goods, state) {
   flow = FLOW_VERTICAL
@@ -371,6 +378,9 @@ function mkCommonPricePlate(goods, state, needDiscountTag, todayPurchCount) {
   let basePrice = discountInPercent <= 0 ? undiscountedPrice : round(undiscountedPrice / (1.0 - (discountInPercent / 100.0)))
   let final = Computed(@() getAdjustedPriceInfo(goods, todayPurchCount, discountsToApply.get()))
   let currencyId = Computed(@() currencyToFullId.get()?[final.get().currencyId] ?? final.get().currencyId)
+  let discountPriceStyle = CS_COMMON.__merge({ fontStyle = fontMedium })
+  let discountCorner = needDiscountTag ? mkDiscountCorner(discountInPercent) : null
+  let picSaturateTransitions = [{ prop = AnimProp.picSaturate, duration = 1.0, easing = InQuad }]
   return @() {
     watch = [state, final, currencyId]
     size = FLEX
@@ -381,12 +391,12 @@ function mkCommonPricePlate(goods, state, needDiscountTag, todayPurchCount) {
     picSaturate = (state.get() & (DELAYED | NOT_READY)) ? 0 : 1.0
     children = [
       final.get().price > 0 && currencyId.get() != ""
-          ? mkDiscountPriceComp(basePrice, final.get().price, currencyId.get(), CS_COMMON.__merge({ fontStyle = fontMedium }))
+          ? mkDiscountPriceComp(basePrice, final.get().price, currencyId.get(), discountPriceStyle)
         : isRealCurrency ? txt({ text = priceExt.priceText }.__update(fontMedium))
         : null
-      needDiscountTag ? mkDiscountCorner(discountInPercent) : null
+      discountCorner
     ]
-    transitions = [{ prop = AnimProp.picSaturate, duration = 1.0, easing = InQuad }]
+    transitions = picSaturateTransitions
   }
 }
 
@@ -462,6 +472,7 @@ let subsUpgradePlate = {
 
 function mkFreePricePlate(goods, state) {
   let { isReady = false, needAdvert = false } = goods
+  let picSaturateTransitions = [{ prop = AnimProp.picSaturate, duration = 0.3, easing = InQuad }]
   return @() {
     watch = [state, isProviderInited, hasVip]
     size = FLEX
@@ -477,7 +488,7 @@ function mkFreePricePlate(goods, state) {
           advertMark
           txt({ text = utf8ToUpper(!hasVip.get() ? loc("shop/watchAdvert/short") : loc("shop/vip/get_rewards")) }.__update(fontSmall))
         ]
-    transitions = [{ prop = AnimProp.picSaturate, duration = 0.3, easing = InQuad }]
+    transitions = picSaturateTransitions
   }
 }
 
@@ -487,18 +498,16 @@ function mkPricePlate(goods, state, animParams = null, needDiscountTag = true, t
   return @() {
     watch = state
     size = FLEX
-    children = [
-      (state.get() & ALL_PURCHASED) != 0 ? purchasedPlate
-        : (state.get() & LIMIT_REACHED) != 0 ? limitReachedPlate
-        : animParams == null || !isReady || (state.get() & (PURCHASING | NOT_READY)) ? pricePlateComp
-        : withGlareEffect(
-            pricePlateComp,
-            goodsW,
-            { duration = goodsGlareAnimDuration, delay = animParams?.delay, repeatDelay = animParams?.repeatDelay },
-            { glareWidth },
-            { translateXMult = 1.5 }
-          ).__update({ size = FLEX })
-    ]
+    children = (state.get() & ALL_PURCHASED) != 0 ? purchasedPlate
+      : (state.get() & LIMIT_REACHED) != 0 ? limitReachedPlate
+      : animParams == null || !isReady || (state.get() & (PURCHASING | NOT_READY)) ? pricePlateComp
+      : withGlareEffect(
+          pricePlateComp,
+          goodsW,
+          { duration = goodsGlareAnimDuration, delay = animParams?.delay, repeatDelay = animParams?.repeatDelay },
+          { glareWidth },
+          const { translateXMult = 1.5 }
+        ).__update({ size = FLEX })
   }
 }
 
@@ -536,7 +545,7 @@ function mkSubsPricePlate(subs, state, animParams = null) {
           goodsW,
           { duration = goodsGlareAnimDuration, delay = animParams?.delay, repeatDelay = animParams?.repeatDelay },
           { glareWidth },
-          { translateXMult = 1.5 }
+          const { translateXMult = 1.5 }
         ).__update({ size = FLEX })
   }
 }
@@ -578,10 +587,6 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
     onClick = canPurchase.get() ? onClick : null
     onElemState = @(v) stateFlags.set(v)
     xmbNode = XmbNode()
-    transform = {
-      scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.97, 0.97] : [1, 1]
-    }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     sound = { click = "choose" }
     flow = FLOW_VERTICAL
     children = [
@@ -599,7 +604,10 @@ function mkGoodsWrap(goods, onClick, mkContent, pricePlate = null, ovr = {}, chi
       { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.03, 1.03], easing = DoubleBlink,
         duration = 0.8, delay = 0.4, trigger = $"attract_goods_{id}" }
     ]
-  }).__update(ovr, { watch })
+    ...mkPressTransitionScale(stateFlags.get(), 0.97)
+    ...ovr
+    ...{ watch }
+  })
 }
 
 function mkOfferWrap(onClick, mkContent) {
@@ -612,10 +620,6 @@ function mkOfferWrap(onClick, mkContent) {
     onClick
     onElemState = @(v) stateFlags.set(v)
     xmbNode = XmbNode()
-    transform = {
-      scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.97, 0.97] : [1, 1]
-    }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     sound = { click = "choose" }
     children = withGlareEffect(
       { size = FLEX, children = mkContent?(stateFlags.get()) },
@@ -623,7 +627,7 @@ function mkOfferWrap(onClick, mkContent) {
       null,
       { glareWidth }
     ).__update({ size = FLEX })
-  })
+  }.__update(mkPressTransitionScale(stateFlags.get(), 0.97)))
 }
 
 let disabledBg = {
@@ -647,23 +651,26 @@ let mkAvailableIn = @(endsAtW, ovr = {}) {
   ]
 }.__update(ovr)
 
-let mkGoodsTimeProgress = @(fValue, availableInW) disabledBg.__merge({
-  flow = FLOW_VERTICAL
-  gap = hdpx(20)
-  padding = const [hdpx(50), 0, 0, 0]
-  children = [
-    @() {
-      watch = fValue
-      size = const [timerSize, timerSize]
-      rendObj = ROBJ_PROGRESS_CIRCULAR
-      image = Picture($"ui/gameuiskin#circular_progress_1.svg:{timerSize}:{timerSize}:P")
-      fgColor = 0xFFFFFFFF
-      bgColor = 0x33555555
-      fValue = fValue.get()
-    }
-    mkAvailableIn(availableInW)
-  ]
-})
+function mkGoodsTimeProgress(fValue, availableInW) {
+  let progressImg = Picture($"ui/gameuiskin#circular_progress_1.svg:{timerSize}:{timerSize}:P")
+  return disabledBg.__merge({
+    flow = FLOW_VERTICAL
+    gap = hdpx(20)
+    padding = const [hdpx(50), 0, 0, 0]
+    children = [
+      @() {
+        watch = fValue
+        size = const [timerSize, timerSize]
+        rendObj = ROBJ_PROGRESS_CIRCULAR
+        image = progressImg
+        fgColor = 0xFFFFFFFF
+        bgColor = 0x33555555
+        fValue = fValue.get()
+      }
+      mkAvailableIn(availableInW)
+    ]
+  })
+}
 
 let disabledAdsGoodsPlate = disabledBg.__merge({
   children = textArea({
@@ -717,7 +724,7 @@ function mkSoonGoodsAvailableTime(goods, state) {
   return @() !needTimer.get() ? { watch = needTimer }
     : disabledBg.__merge({
         watch = needTimer
-        children = mkAvailableIn(nextTime, { valign = ALIGN_CENTER })
+        children = mkAvailableIn(nextTime, const { valign = ALIGN_CENTER })
       })
 }
 
@@ -807,20 +814,16 @@ function mkSquareIconBtn(text, onClick, ovr, font = fontBig) {
     behavior = Behaviors.Button
     onClick
     onElemState = @(v) stateFlags.set(v)
-    sound = { click  = "click" }
-    transform = {
-      scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.85, 0.85] : [1, 1]
-    }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
+    sound = const { click  = "click" }
     children = [
-      {
+      const {
         size = FLEX
         rendObj = ROBJ_SOLID
         color = 0x80000000
       }
       txt({ text }.__update(font))
     ]
-  }.__merge(ovr)
+  }.__merge(mkPressTransitionScale(stateFlags.get(), 0.85), ovr)
 }
 
 let mkLimitText = @(cur, total, locId = "shop/limit", fontGradient = limitFontGrad) mkGradGlowText(
@@ -845,7 +848,8 @@ function mkGoodsLimitText(goods, fontGrad, ovr = {}) {
     watch = limitExt
     children = limit <= 0 && limitExt.get() <= 0 ? null
       : mkLimitText(limitExt.get(), max(limit, dailyLimit), dailyLimit > 0 ? "shop/dailyLimit" : "shop/limit", fontGrad)
-  }.__update(ovr)
+    ...ovr
+  }
 }
 
 function mkEndTimeImpl(goods, ovr = {}) {
@@ -874,20 +878,10 @@ let mkGoodsLimitAndEndTime = @(goods) {
   ]
 }
 
-let mkGoodsLimitAndEndTimeExt = @(goods, state) @() (state.get() & LIMIT_REACHED) != 0 ? { watch = state }
-  : {
-      watch = state
-      size = FLEX_H
-      margin = bottomPad
-      pos = (goods?.firstPurchaseRewards.len() ?? 0) == 0 ? null : firstPuchaseBottomOffset
-      halign = ALIGN_RIGHT
-      vplace = ALIGN_BOTTOM
-      flow = FLOW_VERTICAL
-      children = [
-        mkEndTimeImpl(goods)
-        mkGoodsLimitText(goods, limitFontGrad)
-      ]
-    }
+function mkGoodsLimitAndEndTimeExt(goods, state) {
+  let content = mkGoodsLimitAndEndTime(goods).__merge({ watch = state })
+  return @() (state.get() & LIMIT_REACHED) != 0 ? { watch = state } : content
+}
 
 function mkCommonGoodsIcon(id) {
   let { icon, iconSizeMul, iconOffset } = getGoodsPresentation(id)
@@ -915,6 +909,7 @@ return {
   offerW
   offerH
   pricePlateH
+  defIconSize
 
   priceBgGradDefault
   priceBgGradPremium

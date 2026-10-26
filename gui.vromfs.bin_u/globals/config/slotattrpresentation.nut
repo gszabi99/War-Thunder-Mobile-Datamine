@@ -35,8 +35,8 @@ let slotAttrTabsPresetnation = {
   }
 }
 
-let getSlotAttrBg = @(campaign) customSlotAttrBackgrounds?[campaign] ?? "ui/images/air_crew_bg.avif"
-let getAttrTabPresentation = @(id) slotAttrTabsPresetnation?[id] ?? slotAttrDef.__merge({ locId = id })
+let getSlotAttrBg = @[pure, nodiscard](campaign) customSlotAttrBackgrounds?[campaign] ?? "ui/images/air_crew_bg.avif"
+let getAttrTabPresentation = @[pure, nodiscard](id) slotAttrTabsPresetnation?[id] ?? slotAttrDef.__merge({ locId = id })
 
 return {
   getSlotAttrBg

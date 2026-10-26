@@ -1,0 +1,6660 @@
+{
+  "entity": [
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_air_closed",
+      "transform": [
+        [
+          1.23642,
+          0.0,
+          -0.0821228
+        ],
+        [
+          0.0,
+          1.23914,
+          0.0
+        ],
+        [
+          0.0821214,
+          0.0,
+          1.23642
+        ],
+        [
+          5932.62,
+          41.55,
+          2435.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hg_port_building_hangar_b",
+      "transform": [
+        [
+          0.0676218,
+          0.0,
+          0.997711
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.868017,
+          0.0,
+          0.0588315
+        ],
+        [
+          5776.48,
+          42.133,
+          2314.23
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hg_port_building_hangar_b",
+      "transform": [
+        [
+          0.0676218,
+          0.0,
+          0.997711
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.868017,
+          0.0,
+          0.0588315
+        ],
+        [
+          5714.6,
+          42.133,
+          2314.23
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hg_port_building_hangar_b",
+      "transform": [
+        [
+          0.0676218,
+          0.0,
+          0.997711
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.868017,
+          0.0,
+          0.0588315
+        ],
+        [
+          5652.86,
+          42.133,
+          2313.03
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "oil_tank_c",
+      "transform": [
+        [
+          0.120977,
+          0.0,
+          1.38277
+        ],
+        [
+          0.0,
+          1.38805,
+          0.0
+        ],
+        [
+          -1.38277,
+          0.0,
+          0.120977
+        ],
+        [
+          5615.94,
+          41.6505,
+          2259.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "oil_tank_c",
+      "transform": [
+        [
+          0.120977,
+          0.0,
+          1.38277
+        ],
+        [
+          0.0,
+          1.38805,
+          0.0
+        ],
+        [
+          -1.38277,
+          0.0,
+          0.120977
+        ],
+        [
+          5586.7,
+          41.6506,
+          2261.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "silo_tower_a",
+      "transform": [
+        [
+          1.23062e-7,
+          0.0,
+          -1.12131
+        ],
+        [
+          0.0,
+          1.24293,
+          0.0
+        ],
+        [
+          1.12131,
+          0.0,
+          1.23062e-7
+        ],
+        [
+          5811.42,
+          41.9169,
+          2480.46
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "silo_tower_a",
+      "transform": [
+        [
+          -0.290217,
+          0.0,
+          -1.08311
+        ],
+        [
+          0.0,
+          1.24293,
+          0.0
+        ],
+        [
+          1.08311,
+          0.0,
+          -0.290217
+        ],
+        [
+          5811.18,
+          41.9169,
+          2494.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "silo_tower_a",
+      "transform": [
+        [
+          -0.602482,
+          0.0,
+          0.945704
+        ],
+        [
+          0.0,
+          1.24293,
+          0.0
+        ],
+        [
+          -0.945704,
+          0.0,
+          -0.602482
+        ],
+        [
+          5829.61,
+          41.9169,
+          2478.97
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "silo_tower_a",
+      "transform": [
+        [
+          1.11704,
+          0.0,
+          -0.0977287
+        ],
+        [
+          0.0,
+          1.24293,
+          0.0
+        ],
+        [
+          0.0977287,
+          0.0,
+          1.11704
+        ],
+        [
+          5829.16,
+          41.9169,
+          2492.58
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_watch_tower_a",
+      "transform": [
+        [
+          0.999048,
+          0.0,
+          -0.0436194
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0436194,
+          0.0,
+          0.999048
+        ],
+        [
+          6212.84,
+          39.825,
+          2448.62
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "oil_tank_c",
+      "transform": [
+        [
+          0.161922,
+          0.0,
+          1.85078
+        ],
+        [
+          0.0,
+          1.85784,
+          0.0
+        ],
+        [
+          -1.85078,
+          0.0,
+          0.161922
+        ],
+        [
+          6122.45,
+          41.9766,
+          2413.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "oil_tank_c",
+      "transform": [
+        [
+          0.161922,
+          0.0,
+          1.85078
+        ],
+        [
+          0.0,
+          1.85784,
+          0.0
+        ],
+        [
+          -1.85078,
+          0.0,
+          0.161922
+        ],
+        [
+          6085.05,
+          41.9766,
+          2417.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hg_port_building_hangar_b",
+      "transform": [
+        [
+          0.997711,
+          0.0,
+          -0.0676217
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0588314,
+          0.0,
+          0.868017
+        ],
+        [
+          6157.95,
+          42.133,
+          2286.68
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hg_port_building_hangar_b",
+      "transform": [
+        [
+          0.997711,
+          0.0,
+          -0.0676217
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0588314,
+          0.0,
+          0.868017
+        ],
+        [
+          6155.16,
+          42.133,
+          2244.36
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hg_port_building_hangar_b",
+      "transform": [
+        [
+          -0.0576784,
+          0.0,
+          -0.850045
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.997705,
+          0.0,
+          -0.0676976
+        ],
+        [
+          6392.54,
+          41.8403,
+          2061.3
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hg_port_building_hangar_b",
+      "transform": [
+        [
+          -0.0745798,
+          0.0,
+          -0.848729
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.996161,
+          0.0,
+          -0.0875349
+        ],
+        [
+          6319.9,
+          41.6451,
+          2066.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "factory_building_b",
+      "transform": [
+        [
+          -0.065567,
+          0.0,
+          -0.997849
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.997849,
+          0.0,
+          -0.065567
+        ],
+        [
+          6548.35,
+          41.75,
+          2204.61
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "silo_tower_a",
+      "transform": [
+        [
+          0.146361,
+          0.0,
+          1.11172
+        ],
+        [
+          0.0,
+          1.24293,
+          0.0
+        ],
+        [
+          -1.11172,
+          0.0,
+          0.146361
+        ],
+        [
+          6680.26,
+          44.1998,
+          2034.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "silo_tower_a",
+      "transform": [
+        [
+          1.11704,
+          0.0,
+          -0.0977287
+        ],
+        [
+          0.0,
+          1.24293,
+          0.0
+        ],
+        [
+          0.0977287,
+          0.0,
+          1.11704
+        ],
+        [
+          6680.44,
+          44.1998,
+          2020.92
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "silo_tower_a",
+      "transform": [
+        [
+          1.23062e-7,
+          0.0,
+          -1.12131
+        ],
+        [
+          0.0,
+          1.24293,
+          0.0
+        ],
+        [
+          1.12131,
+          0.0,
+          1.23062e-7
+        ],
+        [
+          6698.21,
+          44.1998,
+          2019.31
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "silo_tower_a",
+      "transform": [
+        [
+          1.11704,
+          0.0,
+          -0.0977287
+        ],
+        [
+          0.0,
+          1.24293,
+          0.0
+        ],
+        [
+          0.0977287,
+          0.0,
+          1.11704
+        ],
+        [
+          6715.95,
+          44.1998,
+          2031.43
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "silo_tower_a",
+      "transform": [
+        [
+          -0.290217,
+          0.0,
+          -1.08311
+        ],
+        [
+          0.0,
+          1.24293,
+          0.0
+        ],
+        [
+          1.08311,
+          0.0,
+          -0.290217
+        ],
+        [
+          6697.97,
+          44.1998,
+          2033.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "silo_tower_a",
+      "transform": [
+        [
+          -0.602482,
+          0.0,
+          0.945704
+        ],
+        [
+          0.0,
+          1.24293,
+          0.0
+        ],
+        [
+          -0.945704,
+          0.0,
+          -0.602482
+        ],
+        [
+          6716.4,
+          44.1998,
+          2017.82
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -0.0847105,
+          0.0,
+          -1.39743
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          1.39743,
+          0.0,
+          -0.0847105
+        ],
+        [
+          6756.55,
+          41.6225,
+          2061.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          1.39058,
+          0.0,
+          -0.162153
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          0.162153,
+          0.0,
+          1.39058
+        ],
+        [
+          6754.03,
+          41.6955,
+          2060.68
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          -0.0844178,
+          0.0,
+          -1.39745
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          1.39745,
+          0.0,
+          -0.0844178
+        ],
+        [
+          6754.35,
+          41.6955,
+          2063.62
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          1.39593,
+          0.0,
+          -0.106733
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          0.106733,
+          0.0,
+          1.39593
+        ],
+        [
+          6758.94,
+          41.6955,
+          2063.29
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "factory_building_b",
+      "transform": [
+        [
+          -0.065567,
+          0.0,
+          -0.997849
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.997849,
+          0.0,
+          -0.065567
+        ],
+        [
+          5772.55,
+          41.75,
+          2107.58
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "factory_building_b",
+      "transform": [
+        [
+          0.997849,
+          0.0,
+          -0.0655671
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0551568,
+          0.0,
+          0.839418
+        ],
+        [
+          5741.26,
+          41.75,
+          2122.16
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -1.54391,
+          0.0,
+          0.203259
+        ],
+        [
+          0.0,
+          1.24977,
+          0.0
+        ],
+        [
+          -0.203259,
+          0.0,
+          -1.54391
+        ],
+        [
+          5716.4,
+          41.6467,
+          2131.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -1.54391,
+          0.0,
+          0.203259
+        ],
+        [
+          0.0,
+          1.24977,
+          0.0
+        ],
+        [
+          -0.203259,
+          0.0,
+          -1.54391
+        ],
+        [
+          5560.6,
+          41.6469,
+          2148.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -1.54391,
+          0.0,
+          0.203259
+        ],
+        [
+          0.0,
+          1.24977,
+          0.0
+        ],
+        [
+          -0.203259,
+          0.0,
+          -1.54391
+        ],
+        [
+          5441.4,
+          41.647,
+          2154.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -1.54391,
+          0.0,
+          0.203259
+        ],
+        [
+          0.0,
+          1.24977,
+          0.0
+        ],
+        [
+          -0.203259,
+          0.0,
+          -1.54391
+        ],
+        [
+          5296.65,
+          41.647,
+          2164.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform_roof",
+      "transform": [
+        [
+          0.996194,
+          0.0,
+          -0.0871558
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0871558,
+          0.0,
+          0.996194
+        ],
+        [
+          6250.28,
+          40.05,
+          2399.39
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform_columns",
+      "transform": [
+        [
+          0.996194,
+          0.0,
+          -0.0871558
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0871558,
+          0.0,
+          0.996194
+        ],
+        [
+          6250.28,
+          40.05,
+          2399.39
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform",
+      "transform": [
+        [
+          0.996194,
+          0.0,
+          -0.0871558
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0871558,
+          0.0,
+          0.996194
+        ],
+        [
+          6250.28,
+          40.05,
+          2399.39
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform_roof",
+      "transform": [
+        [
+          0.996194,
+          0.0,
+          -0.0871558
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0871558,
+          0.0,
+          0.996194
+        ],
+        [
+          6175.0,
+          40.05,
+          2091.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform_columns",
+      "transform": [
+        [
+          0.996194,
+          0.0,
+          -0.0871558
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0871558,
+          0.0,
+          0.996194
+        ],
+        [
+          6175.0,
+          40.05,
+          2091.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform",
+      "transform": [
+        [
+          0.996194,
+          0.0,
+          -0.0871558
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0871558,
+          0.0,
+          0.996194
+        ],
+        [
+          6175.0,
+          40.05,
+          2091.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform_roof",
+      "transform": [
+        [
+          0.996194,
+          0.0,
+          -0.0871558
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0871558,
+          0.0,
+          0.996194
+        ],
+        [
+          6116.4,
+          39.85,
+          2096.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform_columns",
+      "transform": [
+        [
+          0.996194,
+          0.0,
+          -0.0871558
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0871558,
+          0.0,
+          0.996194
+        ],
+        [
+          6116.4,
+          39.85,
+          2096.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform",
+      "transform": [
+        [
+          0.996194,
+          0.0,
+          -0.0871558
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0871558,
+          0.0,
+          0.996194
+        ],
+        [
+          6116.4,
+          39.85,
+          2096.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform_roof",
+      "transform": [
+        [
+          -0.997483,
+          0.0,
+          0.0709098
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0709098,
+          0.0,
+          -0.997483
+        ],
+        [
+          5661.23,
+          39.9032,
+          2121.51
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform_columns",
+      "transform": [
+        [
+          -0.997483,
+          0.0,
+          0.0709098
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0709098,
+          0.0,
+          -0.997483
+        ],
+        [
+          5661.23,
+          39.9032,
+          2121.51
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform",
+      "transform": [
+        [
+          -0.997483,
+          0.0,
+          0.0709098
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0709098,
+          0.0,
+          -0.997483
+        ],
+        [
+          5661.23,
+          39.9032,
+          2121.51
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform_roof",
+      "transform": [
+        [
+          0.997483,
+          0.0,
+          -0.0709097
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0709097,
+          0.0,
+          0.997483
+        ],
+        [
+          5621.2,
+          39.9,
+          2124.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform_columns",
+      "transform": [
+        [
+          0.997483,
+          0.0,
+          -0.0709097
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0709097,
+          0.0,
+          0.997483
+        ],
+        [
+          5621.2,
+          39.9,
+          2124.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_loading_platform",
+      "transform": [
+        [
+          0.997483,
+          0.0,
+          -0.0709097
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0709097,
+          0.0,
+          0.997483
+        ],
+        [
+          5621.2,
+          39.9,
+          2124.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          1.38568,
+          0.0,
+          -0.121231
+        ],
+        [
+          0.0,
+          1.39097,
+          0.0
+        ],
+        [
+          0.169724,
+          0.0,
+          1.93995
+        ],
+        [
+          5882.66,
+          41.55,
+          2412.27
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          1.38568,
+          0.0,
+          -0.121231
+        ],
+        [
+          0.0,
+          1.39097,
+          0.0
+        ],
+        [
+          0.169724,
+          0.0,
+          1.93995
+        ],
+        [
+          5878.4,
+          41.55,
+          2412.63
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.0606738,
+          0.0,
+          1.38965
+        ],
+        [
+          0.0,
+          1.39097,
+          0.0
+        ],
+        [
+          -1.9455,
+          0.0,
+          0.0849433
+        ],
+        [
+          5879.73,
+          45.75,
+          2414.02
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.0606738,
+          0.0,
+          1.38965
+        ],
+        [
+          0.0,
+          1.39097,
+          0.0
+        ],
+        [
+          -1.9455,
+          0.0,
+          0.0849433
+        ],
+        [
+          5879.55,
+          45.75,
+          2409.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          1.98916,
+          0.0,
+          -0.207979
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          0.207979,
+          0.0,
+          1.98916
+        ],
+        [
+          5869.65,
+          41.6224,
+          2410.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_watch_tower_a",
+      "transform": [
+        [
+          -0.09623,
+          0.0,
+          -0.995359
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.995359,
+          0.0,
+          -0.09623
+        ],
+        [
+          5725.96,
+          41.6751,
+          2486.62
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -1.27372,
+          0.0,
+          0.895888
+        ],
+        [
+          0.0,
+          1.24977,
+          0.0
+        ],
+        [
+          -0.895888,
+          0.0,
+          -1.27372
+        ],
+        [
+          5841.95,
+          41.6664,
+          2333.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          1.182,
+          0.0,
+          -0.947193
+        ],
+        [
+          0.0,
+          1.5147,
+          0.0
+        ],
+        [
+          0.947193,
+          0.0,
+          1.182
+        ],
+        [
+          5844.05,
+          41.8504,
+          2329.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_aircraft_boarding_ladder",
+      "transform": [
+        [
+          0.976438,
+          0.0,
+          -0.567279
+        ],
+        [
+          0.0,
+          1.12926,
+          0.0
+        ],
+        [
+          0.567279,
+          0.0,
+          0.976438
+        ],
+        [
+          5869.95,
+          41.6919,
+          2316.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_light_generator",
+      "transform": [
+        [
+          1.1597,
+          0.0,
+          -0.153502
+        ],
+        [
+          0.0,
+          1.16981,
+          0.0
+        ],
+        [
+          0.153502,
+          0.0,
+          1.1597
+        ],
+        [
+          5890.35,
+          41.6582,
+          2301.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "debris_cable_d",
+      "transform": [
+        [
+          0.953717,
+          0.0,
+          -0.300706
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.300706,
+          0.0,
+          0.953717
+        ],
+        [
+          5897.65,
+          41.652,
+          2290.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.998163,
+          0.0,
+          -0.0605857
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0605857,
+          0.0,
+          0.998163
+        ],
+        [
+          5811.35,
+          41.471,
+          2299.69
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.0169895,
+          0.0,
+          0.999856
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.999856,
+          0.0,
+          0.0169895
+        ],
+        [
+          5809.98,
+          47.461,
+          2296.27
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.0605857,
+          0.0,
+          0.998163
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.998163,
+          0.0,
+          0.0605857
+        ],
+        [
+          5809.6,
+          41.462,
+          2292.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.0605857,
+          0.0,
+          0.998163
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.998163,
+          0.0,
+          0.0605857
+        ],
+        [
+          5806.93,
+          41.461,
+          2299.01
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.999856,
+          0.0,
+          -0.0169895
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0169895,
+          0.0,
+          0.999856
+        ],
+        [
+          5811.32,
+          44.449,
+          2297.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.999644,
+          0.0,
+          0.0266399
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0266399,
+          0.0,
+          0.999644
+        ],
+        [
+          5802.87,
+          41.461,
+          2295.59
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.99457,
+          0.0,
+          -0.104068
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.104068,
+          0.0,
+          0.99457
+        ],
+        [
+          5805.51,
+          41.461,
+          2294.64
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "volvo_f89",
+      "transform": [
+        [
+          -0.999048,
+          0.0,
+          0.0436195
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0436195,
+          0.0,
+          -0.999048
+        ],
+        [
+          5824.7,
+          41.6519,
+          2290.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_plane_covered_a",
+      "transform": [
+        [
+          0.00267186,
+          0.0,
+          0.959225
+        ],
+        [
+          0.0,
+          0.959225,
+          0.0
+        ],
+        [
+          -0.959225,
+          0.0,
+          0.00267186
+        ],
+        [
+          5827.25,
+          41.7,
+          2264.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_plane_covered_a",
+      "transform": [
+        [
+          1.16643,
+          0.0,
+          -0.00324893
+        ],
+        [
+          0.0,
+          1.16643,
+          0.0
+        ],
+        [
+          0.00324893,
+          0.0,
+          1.16643
+        ],
+        [
+          5726.4,
+          41.7,
+          2256.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "storage_gsm_fuel_tank_horizontal_a",
+      "transform": [
+        [
+          -1.04308e-7,
+          0.0,
+          -1.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          -1.04308e-7
+        ],
+        [
+          5797.3,
+          41.6505,
+          2245.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "storage_gsm_fuel_tank_horizontal_a",
+      "transform": [
+        [
+          -1.04308e-7,
+          0.0,
+          -1.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          -1.04308e-7
+        ],
+        [
+          5803.95,
+          41.6505,
+          2245.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          1.38473,
+          0.0,
+          -0.206183
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          0.206183,
+          0.0,
+          1.38473
+        ],
+        [
+          5709.2,
+          41.6224,
+          2236.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_plane_covered_a",
+      "transform": [
+        [
+          -1.16363,
+          0.0,
+          0.0808658
+        ],
+        [
+          0.0,
+          1.16643,
+          0.0
+        ],
+        [
+          -0.0808658,
+          0.0,
+          -1.16363
+        ],
+        [
+          5822.64,
+          41.7,
+          2108.32
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_plane_covered_a",
+      "transform": [
+        [
+          -0.0154946,
+          0.0,
+          0.945332
+        ],
+        [
+          0.0,
+          0.945455,
+          0.0
+        ],
+        [
+          -0.945332,
+          0.0,
+          -0.0154946
+        ],
+        [
+          5852.16,
+          41.7,
+          2102.67
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -1.55167,
+          0.0,
+          0.131452
+        ],
+        [
+          0.0,
+          1.24977,
+          0.0
+        ],
+        [
+          -0.131452,
+          0.0,
+          -1.55167
+        ],
+        [
+          5845.6,
+          41.6651,
+          2125.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_watch_tower_a",
+      "transform": [
+        [
+          -0.00911263,
+          0.0,
+          -0.999958
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.999958,
+          0.0,
+          -0.00911263
+        ],
+        [
+          5822.46,
+          29.1582,
+          1966.97
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_plane_covered_a",
+      "transform": [
+        [
+          -1.16518,
+          0.0,
+          0.054125
+        ],
+        [
+          0.0,
+          1.16643,
+          0.0
+        ],
+        [
+          -0.054125,
+          0.0,
+          -1.16518
+        ],
+        [
+          5919.2,
+          41.7,
+          2101.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.591196,
+          0.0,
+          -0.806528
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.806528,
+          0.0,
+          0.591196
+        ],
+        [
+          5946.61,
+          41.945,
+          2118.62
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.591196,
+          0.0,
+          -0.806528
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.806528,
+          0.0,
+          0.591196
+        ],
+        [
+          5947.64,
+          41.587,
+          2117.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.591196,
+          0.0,
+          -0.806528
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.806528,
+          0.0,
+          0.591196
+        ],
+        [
+          5946.65,
+          41.595,
+          2118.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          1.39058,
+          0.0,
+          -0.162153
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          0.162153,
+          0.0,
+          1.39058
+        ],
+        [
+          5988.76,
+          41.6955,
+          2113.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          -0.0844178,
+          0.0,
+          -1.39745
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          1.39745,
+          0.0,
+          -0.0844178
+        ],
+        [
+          5989.09,
+          41.6955,
+          2116.28
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -0.0847105,
+          0.0,
+          -1.39743
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          1.39743,
+          0.0,
+          -0.0847105
+        ],
+        [
+          5991.29,
+          41.6225,
+          2114.52
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          1.39593,
+          0.0,
+          -0.106733
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          0.106733,
+          0.0,
+          1.39593
+        ],
+        [
+          5993.68,
+          41.6955,
+          2115.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "storage_gsm_fuel_tank_horizontal_a",
+      "transform": [
+        [
+          0.994024,
+          0.0,
+          -0.109166
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.109166,
+          0.0,
+          0.994024
+        ],
+        [
+          6025.34,
+          41.5781,
+          2091.09
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "storage_gsm_fuel_tank_horizontal_a",
+      "transform": [
+        [
+          0.994024,
+          0.0,
+          -0.109166
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.109166,
+          0.0,
+          0.994024
+        ],
+        [
+          6024.62,
+          41.5771,
+          2084.48
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_light_generator",
+      "transform": [
+        [
+          -0.853764,
+          0.0,
+          -0.799715
+        ],
+        [
+          0.0,
+          1.16981,
+          0.0
+        ],
+        [
+          0.799715,
+          0.0,
+          -0.853764
+        ],
+        [
+          6068.74,
+          41.6464,
+          2103.92
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.0364108,
+          0.0,
+          1.17898
+        ],
+        [
+          0.0,
+          1.17954,
+          0.0
+        ],
+        [
+          -1.17898,
+          0.0,
+          0.0364108
+        ],
+        [
+          6078.07,
+          41.457,
+          2091.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          -1.17626,
+          0.0,
+          0.087803
+        ],
+        [
+          0.0,
+          1.17954,
+          0.0
+        ],
+        [
+          -0.087803,
+          0.0,
+          -1.17626
+        ],
+        [
+          6082.64,
+          41.7282,
+          2089.41
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.0568949,
+          0.0,
+          1.17817
+        ],
+        [
+          0.0,
+          1.17954,
+          0.0
+        ],
+        [
+          -1.17817,
+          0.0,
+          0.0568949
+        ],
+        [
+          6081.06,
+          41.7272,
+          2084.92
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          -1.17626,
+          0.0,
+          0.087803
+        ],
+        [
+          0.0,
+          1.17954,
+          0.0
+        ],
+        [
+          -0.087803,
+          0.0,
+          -1.17626
+        ],
+        [
+          6076.19,
+          41.7272,
+          2086.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.0779865,
+          0.0,
+          1.17696
+        ],
+        [
+          0.0,
+          1.17954,
+          0.0
+        ],
+        [
+          -1.17696,
+          0.0,
+          0.0779865
+        ],
+        [
+          6079.95,
+          41.7272,
+          2081.69
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tank_covered_a",
+      "transform": [
+        [
+          0.0330838,
+          0.0,
+          0.999453
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.999453,
+          0.0,
+          0.0330838
+        ],
+        [
+          6102.53,
+          41.8785,
+          2102.72
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tank_covered_b",
+      "transform": [
+        [
+          0.0445473,
+          0.0,
+          1.34576
+        ],
+        [
+          0.0,
+          1.3465,
+          0.0
+        ],
+        [
+          -1.34576,
+          0.0,
+          0.0445473
+        ],
+        [
+          6123.63,
+          41.8785,
+          2102.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -1.54391,
+          0.0,
+          0.203259
+        ],
+        [
+          0.0,
+          1.24977,
+          0.0
+        ],
+        [
+          -0.203259,
+          0.0,
+          -1.54391
+        ],
+        [
+          6142.0,
+          41.6464,
+          2101.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "desert_tent_b",
+      "transform": [
+        [
+          1.27022,
+          0.0,
+          -0.689354
+        ],
+        [
+          0.0,
+          1.44522,
+          0.0
+        ],
+        [
+          0.689354,
+          0.0,
+          1.27022
+        ],
+        [
+          5887.44,
+          38.9907,
+          2047.29
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "european_barrel_pile_b",
+      "transform": [
+        [
+          1.27022,
+          0.0,
+          -0.689354
+        ],
+        [
+          0.0,
+          1.44522,
+          0.0
+        ],
+        [
+          0.689354,
+          0.0,
+          1.27022
+        ],
+        [
+          5894.36,
+          39.5762,
+          2054.14
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "sandbags_a",
+      "transform": [
+        [
+          1.27022,
+          0.0,
+          -0.689354
+        ],
+        [
+          0.0,
+          1.44522,
+          0.0
+        ],
+        [
+          0.689354,
+          0.0,
+          1.27022
+        ],
+        [
+          5880.69,
+          38.7621,
+          2044.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "sandbags_a",
+      "transform": [
+        [
+          -1.27022,
+          0.0,
+          0.689354
+        ],
+        [
+          0.0,
+          1.44522,
+          0.0
+        ],
+        [
+          -0.689354,
+          0.0,
+          -1.27022
+        ],
+        [
+          5883.28,
+          39.1306,
+          2049.47
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "sandbags_a",
+      "transform": [
+        [
+          1.27022,
+          0.0,
+          -0.689354
+        ],
+        [
+          0.0,
+          1.44522,
+          0.0
+        ],
+        [
+          0.689354,
+          0.0,
+          1.27022
+        ],
+        [
+          5885.97,
+          39.55,
+          2054.42
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "sandbags_a",
+      "transform": [
+        [
+          1.27022,
+          0.0,
+          -0.689354
+        ],
+        [
+          0.0,
+          1.44522,
+          0.0
+        ],
+        [
+          0.689354,
+          0.0,
+          1.27022
+        ],
+        [
+          5894.29,
+          39.2221,
+          2049.91
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "sandbags_a",
+      "transform": [
+        [
+          -1.27022,
+          0.0,
+          0.689354
+        ],
+        [
+          0.0,
+          1.44522,
+          0.0
+        ],
+        [
+          -0.689354,
+          0.0,
+          -1.27022
+        ],
+        [
+          5891.6,
+          38.8388,
+          2044.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "sandbags_a",
+      "transform": [
+        [
+          1.27022,
+          0.0,
+          -0.689354
+        ],
+        [
+          0.0,
+          1.44522,
+          0.0
+        ],
+        [
+          0.689354,
+          0.0,
+          1.27022
+        ],
+        [
+          5889.01,
+          38.4704,
+          2040.19
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "semitrailer_platform_b",
+      "transform": [
+        [
+          0.34912,
+          0.0,
+          0.937078
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.937078,
+          0.0,
+          0.34912
+        ],
+        [
+          5944.56,
+          41.6465,
+          2112.01
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "pallet_cardboard_a",
+      "transform": [
+        [
+          -0.937078,
+          0.0,
+          0.34912
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.34912,
+          0.0,
+          -0.937078
+        ],
+        [
+          5949.84,
+          43.0865,
+          2109.56
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "pallet_cardboard_a",
+      "transform": [
+        [
+          -0.468446,
+          0.0,
+          -0.883492
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.883492,
+          0.0,
+          -0.468446
+        ],
+        [
+          5948.36,
+          43.0865,
+          2110.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "pallet_cardboard_a",
+      "transform": [
+        [
+          0.26612,
+          0.0,
+          0.96394
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.96394,
+          0.0,
+          0.26612
+        ],
+        [
+          5946.76,
+          43.0865,
+          2111.03
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "pallet_cardboard_a",
+      "transform": [
+        [
+          -0.726967,
+          0.0,
+          0.686673
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.686673,
+          0.0,
+          -0.726967
+        ],
+        [
+          5942.65,
+          43.0865,
+          2112.97
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_aircraft_boarding_ladder",
+      "transform": [
+        [
+          0.0815219,
+          -0.983583,
+          0.160991
+        ],
+        [
+          -0.312713,
+          -0.178614,
+          -0.932902
+        ],
+        [
+          0.946343,
+          0.0257079,
+          -0.322141
+        ],
+        [
+          5945.93,
+          43.5608,
+          2112.93
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_aircraft_boarding_ladder",
+      "transform": [
+        [
+          -0.183714,
+          -0.97931,
+          0.0848609
+        ],
+        [
+          0.734899,
+          -0.19417,
+          -0.649785
+        ],
+        [
+          0.652819,
+          -0.0570105,
+          0.755366
+        ],
+        [
+          5938.63,
+          43.5749,
+          2114.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_aircraft_boarding_ladder",
+      "transform": [
+        [
+          0.341371,
+          0.00254351,
+          0.939924
+        ],
+        [
+          -0.0274551,
+          0.999596,
+          0.00726645
+        ],
+        [
+          -0.939528,
+          -0.0282867,
+          0.341304
+        ],
+        [
+          5940.76,
+          41.7236,
+          2115.98
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_aircraft_boarding_ladder",
+      "transform": [
+        [
+          -0.942212,
+          -0.0282541,
+          0.333822
+        ],
+        [
+          -0.0288126,
+          0.999579,
+          0.00327882
+        ],
+        [
+          -0.333775,
+          -0.00652939,
+          -0.942631
+        ],
+        [
+          5944.29,
+          43.0577,
+          2111.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "volvo_f89",
+      "transform": [
+        [
+          0.90948,
+          0.0,
+          0.415749
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.415749,
+          0.0,
+          0.90948
+        ],
+        [
+          5937.52,
+          41.6465,
+          2116.02
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_barrel_pile_b",
+      "transform": [
+        [
+          0.587753,
+          0.0,
+          0.80904
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.80904,
+          0.0,
+          0.587753
+        ],
+        [
+          6246.78,
+          41.4214,
+          2043.02
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "coil_cable_a",
+      "transform": [
+        [
+          -0.230217,
+          0.0,
+          0.973139
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.973139,
+          0.0,
+          -0.230217
+        ],
+        [
+          6279.54,
+          40.75,
+          2042.31
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_barrel_pile_b",
+      "transform": [
+        [
+          -0.571831,
+          0.0,
+          -0.820372
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.820372,
+          0.0,
+          -0.571831
+        ],
+        [
+          6267.91,
+          41.3075,
+          2052.76
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_gas_cylinder_a",
+      "transform": [
+        [
+          -0.201579,
+          0.00563371,
+          -0.979458
+        ],
+        [
+          0.978269,
+          -0.0484152,
+          -0.201612
+        ],
+        [
+          -0.0485563,
+          -0.998811,
+          0.00424815
+        ],
+        [
+          6251.25,
+          41.1143,
+          2060.24
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_gas_cylinder_a",
+      "transform": [
+        [
+          0.107628,
+          0.94967,
+          0.294182
+        ],
+        [
+          0.978269,
+          -0.0484152,
+          -0.201612
+        ],
+        [
+          -0.177222,
+          0.309488,
+          -0.934242
+        ],
+        [
+          6251.19,
+          41.1158,
+          2059.96
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_gas_cylinder_a",
+      "transform": [
+        [
+          0.190111,
+          0.0124557,
+          0.981684
+        ],
+        [
+          0.98072,
+          -0.048482,
+          -0.18931
+        ],
+        [
+          0.0452361,
+          0.998747,
+          -0.0214327
+        ],
+        [
+          6251.05,
+          41.1182,
+          2059.74
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_barrel_pile_b",
+      "transform": [
+        [
+          0.904322,
+          0.0,
+          0.426849
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.426849,
+          0.0,
+          0.904322
+        ],
+        [
+          6255.75,
+          41.6864,
+          2059.42
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_gas_cylinder_a",
+      "transform": [
+        [
+          0.190303,
+          0.0107277,
+          0.981667
+        ],
+        [
+          0.97978,
+          -0.0649932,
+          -0.189228
+        ],
+        [
+          0.0617717,
+          0.997828,
+          -0.0228793
+        ],
+        [
+          6251.21,
+          41.2069,
+          2060.48
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_barrel_pile_b",
+      "transform": [
+        [
+          -0.232911,
+          0.0,
+          -0.972498
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.972498,
+          0.0,
+          -0.232911
+        ],
+        [
+          6228.36,
+          41.6161,
+          2076.99
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_barrel_pile_a",
+      "transform": [
+        [
+          0.944853,
+          0.00014627,
+          -0.327489
+        ],
+        [
+          -0.000128022,
+          1.0,
+          0.000077276
+        ],
+        [
+          0.327489,
+          -0.0000310886,
+          0.944853
+        ],
+        [
+          6236.12,
+          41.6452,
+          2072.66
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_engine",
+      "transform": [
+        [
+          0.272561,
+          0.0,
+          0.962139
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.962139,
+          0.0,
+          0.272561
+        ],
+        [
+          6237.49,
+          41.6447,
+          2064.51
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.0571514,
+          0.141308,
+          0.988315
+        ],
+        [
+          -0.0315106,
+          0.989696,
+          -0.139683
+        ],
+        [
+          -0.997869,
+          -0.0231601,
+          0.0610149
+        ],
+        [
+          6236.34,
+          41.6448,
+          2066.57
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          -0.925249,
+          -0.0749099,
+          0.371891
+        ],
+        [
+          0.259919,
+          0.588881,
+          0.765285
+        ],
+        [
+          -0.276328,
+          0.80474,
+          -0.525391
+        ],
+        [
+          6246.9,
+          41.8284,
+          2065.26
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.0871559,
+          -9.80119e-17,
+          0.996194
+        ],
+        [
+          -3.49947e-7,
+          1.0,
+          4.45352e-7
+        ],
+        [
+          -0.996195,
+          0.0,
+          0.087156
+        ],
+        [
+          6242.69,
+          41.6449,
+          2067.52
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_barrel_pile_b",
+      "transform": [
+        [
+          -0.162112,
+          0.0,
+          0.986772
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.986772,
+          0.0,
+          -0.162112
+        ],
+        [
+          6230.02,
+          41.6451,
+          2071.42
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_gas_cylinder_a",
+      "transform": [
+        [
+          0.497455,
+          0.0,
+          0.867489
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.867489,
+          0.0,
+          0.497455
+        ],
+        [
+          6252.87,
+          41.645,
+          2068.66
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_gas_cylinder_a",
+      "transform": [
+        [
+          -0.640346,
+          0.0,
+          -0.768086
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.768086,
+          0.0,
+          -0.640346
+        ],
+        [
+          6252.82,
+          41.645,
+          2068.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.0871559,
+          -9.80119e-17,
+          0.996194
+        ],
+        [
+          -3.49947e-7,
+          1.0,
+          4.45352e-7
+        ],
+        [
+          -0.996195,
+          0.0,
+          0.087156
+        ],
+        [
+          6243.89,
+          41.6449,
+          2067.13
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.0871559,
+          -9.80119e-17,
+          0.996194
+        ],
+        [
+          -3.49947e-7,
+          1.0,
+          4.45352e-7
+        ],
+        [
+          -0.996195,
+          0.0,
+          0.087156
+        ],
+        [
+          6243.17,
+          41.904,
+          2067.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          -0.861542,
+          -9.80119e-17,
+          0.507686
+        ],
+        [
+          -5.52644e-7,
+          1.0,
+          -1.24034e-7
+        ],
+        [
+          -0.507686,
+          0.0,
+          -0.861543
+        ],
+        [
+          6246.31,
+          41.4877,
+          2064.69
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.997283,
+          -9.80119e-17,
+          0.0736582
+        ],
+        [
+          3.83497e-7,
+          1.0,
+          4.1681e-7
+        ],
+        [
+          -0.0736581,
+          0.0,
+          0.997284
+        ],
+        [
+          6246.23,
+          41.8496,
+          2064.61
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          -0.0460292,
+          -9.80119e-17,
+          -0.99894
+        ],
+        [
+          3.68002e-7,
+          1.0,
+          -4.30552e-7
+        ],
+        [
+          0.998941,
+          0.0,
+          -0.0460292
+        ],
+        [
+          6247.62,
+          41.6447,
+          2064.48
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          -0.861542,
+          -9.80119e-17,
+          0.507686
+        ],
+        [
+          -5.52644e-7,
+          1.0,
+          -1.24034e-7
+        ],
+        [
+          -0.507686,
+          0.0,
+          -0.861543
+        ],
+        [
+          6232.86,
+          40.9225,
+          2066.19
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.997283,
+          -9.80119e-17,
+          0.0736582
+        ],
+        [
+          3.83497e-7,
+          1.0,
+          4.1681e-7
+        ],
+        [
+          -0.0736581,
+          0.0,
+          0.997284
+        ],
+        [
+          6232.86,
+          41.2487,
+          2066.24
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          -0.979858,
+          -9.80119e-17,
+          -0.199697
+        ],
+        [
+          -3.27466e-7,
+          1.0,
+          -4.62133e-7
+        ],
+        [
+          0.199697,
+          0.0,
+          -0.979858
+        ],
+        [
+          6232.98,
+          41.5683,
+          2066.23
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.0926182,
+          -9.80119e-17,
+          -0.995702
+        ],
+        [
+          4.24031e-7,
+          1.0,
+          -3.75498e-7
+        ],
+        [
+          0.995703,
+          0.0,
+          0.0926181
+        ],
+        [
+          6232.98,
+          41.8975,
+          2066.18
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.0871559,
+          -9.80119e-17,
+          0.996194
+        ],
+        [
+          -3.49947e-7,
+          1.0,
+          4.45352e-7
+        ],
+        [
+          -0.996195,
+          0.0,
+          0.087156
+        ],
+        [
+          6232.84,
+          42.2022,
+          2066.19
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          -0.999998,
+          -9.80119e-17,
+          -0.00195696
+        ],
+        [
+          -4.12398e-7,
+          1.0,
+          -3.88239e-7
+        ],
+        [
+          0.00195706,
+          0.0,
+          -0.999998
+        ],
+        [
+          6232.85,
+          42.528,
+          2066.36
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.747538,
+          -9.80119e-17,
+          -0.664218
+        ],
+        [
+          5.66189e-7,
+          1.0,
+          1.5193e-8
+        ],
+        [
+          0.664218,
+          0.0,
+          0.747539
+        ],
+        [
+          6232.93,
+          42.8307,
+          2066.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          -0.921378,
+          -9.80119e-17,
+          -0.388667
+        ],
+        [
+          -2.30092e-7,
+          1.0,
+          -5.17551e-7
+        ],
+        [
+          0.388667,
+          0.0,
+          -0.921379
+        ],
+        [
+          6234.18,
+          42.2022,
+          2065.96
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.836899,
+          -9.80119e-17,
+          0.547356
+        ],
+        [
+          1.33708e-7,
+          1.0,
+          5.50384e-7
+        ],
+        [
+          -0.547356,
+          0.0,
+          0.8369
+        ],
+        [
+          6234.13,
+          41.8975,
+          2066.09
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          0.634606,
+          -9.80119e-17,
+          -0.772835
+        ],
+        [
+          5.61612e-7,
+          1.0,
+          -7.34364e-8
+        ],
+        [
+          0.772836,
+          0.0,
+          0.634607
+        ],
+        [
+          6234.08,
+          41.5683,
+          2066.06
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          -0.531335,
+          -9.80119e-17,
+          0.847161
+        ],
+        [
+          -5.47741e-7,
+          1.0,
+          1.44155e-7
+        ],
+        [
+          -0.847162,
+          0.0,
+          -0.531336
+        ],
+        [
+          6234.13,
+          41.2487,
+          2065.96
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          -0.0460292,
+          -9.80119e-17,
+          -0.99894
+        ],
+        [
+          3.68002e-7,
+          1.0,
+          -4.30552e-7
+        ],
+        [
+          0.998941,
+          0.0,
+          -0.0460292
+        ],
+        [
+          6234.17,
+          40.9225,
+          2065.97
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "bobbin_cable_a",
+      "transform": [
+        [
+          0.08476,
+          -0.00246675,
+          0.996398
+        ],
+        [
+          -0.995925,
+          0.0307307,
+          0.0847958
+        ],
+        [
+          -0.0308292,
+          -0.999525,
+          0.000148033
+        ],
+        [
+          6265.34,
+          41.9505,
+          2076.94
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_barrel_pile_a",
+      "transform": [
+        [
+          0.248258,
+          -0.0367334,
+          -0.967999
+        ],
+        [
+          0.0511933,
+          0.998382,
+          -0.024757
+        ],
+        [
+          0.967341,
+          -0.0434088,
+          0.249737
+        ],
+        [
+          6266.89,
+          41.6454,
+          2074.48
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "bobbin_cable_a",
+      "transform": [
+        [
+          -0.955079,
+          0.0,
+          -0.296354
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.296354,
+          0.0,
+          -0.955079
+        ],
+        [
+          6261.67,
+          41.1937,
+          2083.82
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tank_covered_a",
+      "transform": [
+        [
+          0.980882,
+          0.0,
+          -0.194609
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.194609,
+          0.0,
+          0.980882
+        ],
+        [
+          6272.83,
+          41.646,
+          2082.71
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "storage_gsm_fuel_tank_horizontal_b",
+      "transform": [
+        [
+          0.29327,
+          0.0,
+          0.95603
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.95603,
+          0.0,
+          0.29327
+        ],
+        [
+          6288.15,
+          41.6451,
+          2068.68
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tank_covered_b",
+      "transform": [
+        [
+          0.28468,
+          0.0367664,
+          0.957918
+        ],
+        [
+          -0.00327056,
+          0.999296,
+          -0.0373826
+        ],
+        [
+          -0.958618,
+          0.00750913,
+          0.284599
+        ],
+        [
+          6289.04,
+          41.6454,
+          2073.96
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tank_covered_a",
+      "transform": [
+        [
+          0.328231,
+          -0.0111954,
+          0.94453
+        ],
+        [
+          0.0455375,
+          0.998955,
+          -0.00398402
+        ],
+        [
+          -0.943499,
+          0.0443191,
+          0.328397
+        ],
+        [
+          6302.27,
+          41.6451,
+          2068.16
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tank_covered_b",
+      "transform": [
+        [
+          -0.261444,
+          -0.0618859,
+          -0.963231
+        ],
+        [
+          0.0288198,
+          0.996997,
+          -0.0718778
+        ],
+        [
+          0.964787,
+          -0.0465522,
+          -0.258876
+        ],
+        [
+          6284.39,
+          41.6457,
+          2078.22
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tank_covered_a",
+      "transform": [
+        [
+          -0.997892,
+          0.0,
+          0.0649136
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0649136,
+          0.0,
+          -0.997892
+        ],
+        [
+          6285.38,
+          41.6464,
+          2094.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tank_covered_a",
+      "transform": [
+        [
+          -0.0594961,
+          0.0,
+          -0.99823
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.99823,
+          0.0,
+          -0.0594961
+        ],
+        [
+          6277.0,
+          41.6465,
+          2097.64
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tank_covered_a",
+      "transform": [
+        [
+          0.0674241,
+          -0.000575707,
+          0.997725
+        ],
+        [
+          0.00999821,
+          0.99995,
+          -0.0000986659
+        ],
+        [
+          -0.997675,
+          0.00998211,
+          0.0674265
+        ],
+        [
+          6271.84,
+          41.6465,
+          2097.98
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tank_covered_a",
+      "transform": [
+        [
+          -0.0594961,
+          0.0,
+          -0.99823
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.99823,
+          0.0,
+          -0.0594961
+        ],
+        [
+          6266.42,
+          41.6465,
+          2098.43
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tank_covered_b",
+      "transform": [
+        [
+          -0.165165,
+          0.0,
+          -0.986266
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.986266,
+          0.0,
+          -0.165165
+        ],
+        [
+          6260.88,
+          41.6465,
+          2099.38
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tank_covered_b",
+      "transform": [
+        [
+          -0.0250947,
+          0.0,
+          -0.999685
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.999685,
+          0.0,
+          -0.0250947
+        ],
+        [
+          6256.95,
+          41.6465,
+          2099.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tank_covered_b",
+      "transform": [
+        [
+          -0.0879391,
+          0.0,
+          -0.996127
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.996127,
+          0.0,
+          -0.0879391
+        ],
+        [
+          6253.05,
+          41.6465,
+          2099.97
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_barrel_pile_a",
+      "transform": [
+        [
+          -0.941884,
+          0.0,
+          0.335939
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.335939,
+          0.0,
+          -0.941884
+        ],
+        [
+          6237.61,
+          41.6461,
+          2086.01
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "cable_coil_tool_a",
+      "transform": [
+        [
+          -0.349578,
+          0.0,
+          -0.936908
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.936908,
+          0.0,
+          -0.349578
+        ],
+        [
+          6258.84,
+          41.3199,
+          2084.73
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "coil_cable_a",
+      "transform": [
+        [
+          -0.380156,
+          0.316091,
+          -0.869234
+        ],
+        [
+          -0.917178,
+          -0.0074598,
+          0.398411
+        ],
+        [
+          0.119449,
+          0.948699,
+          0.292747
+        ],
+        [
+          6258.0,
+          42.2325,
+          2084.82
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_gas_cylinder_a",
+      "transform": [
+        [
+          0.998325,
+          0.0,
+          -0.0578529
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0578529,
+          0.0,
+          0.998325
+        ],
+        [
+          6259.92,
+          41.646,
+          2084.27
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_gas_cylinder_a",
+      "transform": [
+        [
+          -0.993909,
+          0.0,
+          -0.110192
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.110192,
+          0.0,
+          -0.993909
+        ],
+        [
+          6259.86,
+          41.6461,
+          2084.66
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_gas_cylinder_a",
+      "transform": [
+        [
+          0.497455,
+          0.0,
+          0.867489
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.867489,
+          0.0,
+          0.497455
+        ],
+        [
+          6259.52,
+          41.6461,
+          2084.83
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_barrel_pile_b",
+      "transform": [
+        [
+          0.372413,
+          0.0,
+          0.928068
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.928068,
+          0.0,
+          0.372413
+        ],
+        [
+          6241.13,
+          41.6462,
+          2090.84
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          -0.204292,
+          -0.017867,
+          -0.978749
+        ],
+        [
+          -0.209051,
+          0.977565,
+          0.0257899
+        ],
+        [
+          0.956328,
+          0.209876,
+          -0.203443
+        ],
+        [
+          6247.37,
+          41.646,
+          2084.72
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "dangling_chain_c",
+      "transform": [
+        [
+          -0.94075,
+          0.0,
+          0.339101
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.339101,
+          0.0,
+          -0.94075
+        ],
+        [
+          6240.84,
+          48.1873,
+          2089.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "tools_brezent_a",
+      "transform": [
+        [
+          -0.947575,
+          0.0,
+          0.319537
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.319537,
+          0.0,
+          -0.947575
+        ],
+        [
+          6250.01,
+          41.6365,
+          2077.49
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "coil_cable_a",
+      "transform": [
+        [
+          -0.230217,
+          0.0,
+          0.973139
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.973139,
+          0.0,
+          -0.230217
+        ],
+        [
+          6224.81,
+          41.8337,
+          2055.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_barrel_pile_b",
+      "transform": [
+        [
+          -0.414232,
+          0.0,
+          0.910172
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.910172,
+          0.0,
+          -0.414232
+        ],
+        [
+          6219.99,
+          41.7787,
+          2057.81
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_barrel_pile_b",
+      "transform": [
+        [
+          0.705568,
+          0.0,
+          -0.708642
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.708642,
+          0.0,
+          0.705568
+        ],
+        [
+          6214.58,
+          41.7564,
+          2058.75
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "storage_gsm_fuel_tank_horizontal_b",
+      "transform": [
+        [
+          -0.982476,
+          0.0,
+          0.186391
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.186391,
+          0.0,
+          -0.982476
+        ],
+        [
+          6212.86,
+          42.0058,
+          2048.94
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "storage_gsm_fuel_tank_horizontal_b",
+      "transform": [
+        [
+          -0.982476,
+          0.0,
+          0.186391
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.186391,
+          0.0,
+          -0.982476
+        ],
+        [
+          6209.68,
+          41.9841,
+          2049.83
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "storage_gsm_fuel_tank_horizontal_b",
+      "transform": [
+        [
+          0.969777,
+          0.0,
+          -0.24399
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.24399,
+          0.0,
+          0.969777
+        ],
+        [
+          6206.42,
+          41.972,
+          2050.33
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "storage_gsm_fuel_tank_horizontal_b",
+      "transform": [
+        [
+          0.969777,
+          0.0,
+          -0.24399
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.24399,
+          0.0,
+          0.969777
+        ],
+        [
+          6216.18,
+          42.0238,
+          2048.19
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "debris_trash_metal_f",
+      "transform": [
+        [
+          3.26132,
+          0.0,
+          -0.195121
+        ],
+        [
+          0.0,
+          3.26715,
+          0.0
+        ],
+        [
+          0.195121,
+          0.0,
+          3.26132
+        ],
+        [
+          6220.53,
+          41.6466,
+          2102.64
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "debris_trash_metal_e",
+      "transform": [
+        [
+          3.25982,
+          0.0,
+          -0.218599
+        ],
+        [
+          0.0,
+          3.26715,
+          0.0
+        ],
+        [
+          0.218599,
+          0.0,
+          3.25982
+        ],
+        [
+          6220.63,
+          41.6465,
+          2100.08
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "storage_gsm_fuel_tank_horizontal_b",
+      "transform": [
+        [
+          -0.982476,
+          0.0,
+          0.186391
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.186391,
+          0.0,
+          -0.982476
+        ],
+        [
+          6200.18,
+          41.6462,
+          2091.97
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "dangling_chain_a",
+      "transform": [
+        [
+          0.087156,
+          0.0,
+          0.996195
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.996195,
+          0.0,
+          0.087156
+        ],
+        [
+          6201.84,
+          46.3148,
+          2080.79
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "dangling_chain_a",
+      "transform": [
+        [
+          -0.936948,
+          0.0,
+          -0.349469
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.349469,
+          0.0,
+          -0.936948
+        ],
+        [
+          6244.35,
+          45.7059,
+          2088.33
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.172579,
+          0.0,
+          1.16685
+        ],
+        [
+          0.0,
+          1.17954,
+          0.0
+        ],
+        [
+          -1.16685,
+          0.0,
+          0.172579
+        ],
+        [
+          6118.97,
+          41.649,
+          2261.94
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          -1.16536,
+          0.0,
+          0.182307
+        ],
+        [
+          0.0,
+          1.17954,
+          0.0
+        ],
+        [
+          -0.182307,
+          0.0,
+          -1.16536
+        ],
+        [
+          6115.63,
+          41.649,
+          2267.24
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.151653,
+          0.0,
+          1.16975
+        ],
+        [
+          0.0,
+          1.17954,
+          0.0
+        ],
+        [
+          -1.16975,
+          0.0,
+          0.151653
+        ],
+        [
+          6120.34,
+          41.649,
+          2265.07
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.182307,
+          0.0,
+          1.16536
+        ],
+        [
+          0.0,
+          1.17954,
+          0.0
+        ],
+        [
+          -1.16536,
+          0.0,
+          0.182307
+        ],
+        [
+          6120.17,
+          44.605,
+          2268.34
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.131301,
+          0.0,
+          1.17221
+        ],
+        [
+          0.0,
+          1.17954,
+          0.0
+        ],
+        [
+          -1.17221,
+          0.0,
+          0.131301
+        ],
+        [
+          6118.0,
+          44.7959,
+          2271.43
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          -1.17221,
+          0.0,
+          0.131301
+        ],
+        [
+          0.0,
+          1.17954,
+          0.0
+        ],
+        [
+          -0.131301,
+          0.0,
+          -1.17221
+        ],
+        [
+          6119.0,
+          48.1022,
+          2270.12
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.131301,
+          0.0,
+          1.17221
+        ],
+        [
+          0.0,
+          1.17954,
+          0.0
+        ],
+        [
+          -1.17221,
+          0.0,
+          0.131301
+        ],
+        [
+          6117.86,
+          41.3788,
+          2271.57
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          0.307768,
+          0.0,
+          2.00968
+        ],
+        [
+          0.0,
+          2.03311,
+          0.0
+        ],
+        [
+          -2.00968,
+          0.0,
+          0.307768
+        ],
+        [
+          6110.85,
+          41.8504,
+          2270.91
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          -0.360371,
+          0.0,
+          -1.71814
+        ],
+        [
+          0.0,
+          1.75553,
+          0.0
+        ],
+        [
+          1.71814,
+          0.0,
+          -0.360371
+        ],
+        [
+          6111.7,
+          41.8504,
+          2274.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_plane_covered_a",
+      "transform": [
+        [
+          -0.0381561,
+          0.0,
+          -0.829539
+        ],
+        [
+          0.0,
+          0.830413,
+          0.0
+        ],
+        [
+          0.829539,
+          0.0,
+          -0.0381561
+        ],
+        [
+          6140.85,
+          42.3,
+          2291.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          -1.16536,
+          0.0,
+          0.182307
+        ],
+        [
+          0.0,
+          1.17954,
+          0.0
+        ],
+        [
+          -0.182307,
+          0.0,
+          -1.16536
+        ],
+        [
+          6122.27,
+          41.65,
+          2269.42
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          0.718986,
+          0.0,
+          -1.38131
+        ],
+        [
+          0.0,
+          1.24977,
+          0.0
+        ],
+        [
+          1.38131,
+          0.0,
+          0.718986
+        ],
+        [
+          6129.8,
+          41.95,
+          2331.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          1.33213,
+          0.0,
+          -0.484855
+        ],
+        [
+          0.0,
+          1.41762,
+          0.0
+        ],
+        [
+          0.484855,
+          0.0,
+          1.33213
+        ],
+        [
+          6053.35,
+          41.6524,
+          2296.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          1.33213,
+          0.0,
+          -0.484855
+        ],
+        [
+          -0.185546,
+          1.30971,
+          -0.509782
+        ],
+        [
+          0.447947,
+          0.542499,
+          1.23072
+        ],
+        [
+          6052.72,
+          41.9733,
+          2295.33
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_aircraft_boarding_ladder",
+      "transform": [
+        [
+          -0.237827,
+          0.0,
+          -1.02271
+        ],
+        [
+          0.0,
+          1.05,
+          0.0
+        ],
+        [
+          1.02271,
+          0.0,
+          -0.237827
+        ],
+        [
+          6034.65,
+          41.6906,
+          2285.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "volvo_f89",
+      "transform": [
+        [
+          -0.996532,
+          0.0,
+          0.0832064
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0832064,
+          0.0,
+          -0.996532
+        ],
+        [
+          6172.17,
+          41.7362,
+          2399.43
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "volvo_f89",
+      "transform": [
+        [
+          -0.996532,
+          0.0,
+          0.0832064
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0832064,
+          0.0,
+          -0.996532
+        ],
+        [
+          6166.34,
+          41.7671,
+          2402.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.99457,
+          0.0,
+          -0.104068
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.104068,
+          0.0,
+          0.99457
+        ],
+        [
+          6151.98,
+          41.461,
+          2399.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.999644,
+          0.0,
+          0.0266399
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0266399,
+          0.0,
+          0.999644
+        ],
+        [
+          6149.34,
+          41.461,
+          2400.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.0605857,
+          0.0,
+          0.998163
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.998163,
+          0.0,
+          0.0605857
+        ],
+        [
+          6153.4,
+          41.461,
+          2404.02
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.999856,
+          0.0,
+          -0.0169895
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0169895,
+          0.0,
+          0.999856
+        ],
+        [
+          6157.79,
+          44.449,
+          2402.56
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.0169895,
+          0.0,
+          0.999856
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.999856,
+          0.0,
+          0.0169895
+        ],
+        [
+          6156.45,
+          47.461,
+          2401.28
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.998163,
+          0.0,
+          -0.0605857
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0605857,
+          0.0,
+          0.998163
+        ],
+        [
+          6154.8,
+          44.417,
+          2399.96
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.0605857,
+          0.0,
+          0.998163
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.998163,
+          0.0,
+          0.0605857
+        ],
+        [
+          6156.07,
+          41.462,
+          2397.96
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.0605857,
+          0.0,
+          0.998163
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.998163,
+          0.0,
+          0.0605857
+        ],
+        [
+          6156.21,
+          41.463,
+          2400.83
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.998163,
+          0.0,
+          -0.0605857
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0605857,
+          0.0,
+          0.998163
+        ],
+        [
+          6157.82,
+          41.471,
+          2404.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          0.207979,
+          0.0,
+          1.98916
+        ],
+        [
+          0.0,
+          2.0,
+          0.0
+        ],
+        [
+          -1.98916,
+          0.0,
+          0.207979
+        ],
+        [
+          6067.95,
+          41.6224,
+          2397.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          0.13834,
+          0.0,
+          2.53683
+        ],
+        [
+          0.0,
+          2.5406,
+          0.0
+        ],
+        [
+          -2.53683,
+          0.0,
+          0.13834
+        ],
+        [
+          5974.06,
+          41.8504,
+          2400.32
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "semitrailer_platform_b",
+      "transform": [
+        [
+          -0.575449,
+          0.0,
+          -0.817838
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.817838,
+          0.0,
+          -0.575449
+        ],
+        [
+          5937.0,
+          41.6538,
+          2343.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "pallet_cardboard_a",
+      "transform": [
+        [
+          0.866025,
+          0.0,
+          -0.5
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.5,
+          0.0,
+          0.866025
+        ],
+        [
+          5941.3,
+          43.1,
+          2339.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "pallet_cardboard_a",
+      "transform": [
+        [
+          0.906308,
+          0.0,
+          0.422618
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.422618,
+          0.0,
+          0.906308
+        ],
+        [
+          5939.4,
+          43.1,
+          2340.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_aircraft_boarding_ladder",
+      "transform": [
+        [
+          0.383355,
+          0.0,
+          -1.0622
+        ],
+        [
+          0.0,
+          1.12926,
+          0.0
+        ],
+        [
+          1.0622,
+          0.0,
+          0.383355
+        ],
+        [
+          5841.3,
+          41.6652,
+          2327.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.0605857,
+          0.0,
+          0.998163
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.998163,
+          0.0,
+          0.0605857
+        ],
+        [
+          5809.74,
+          41.463,
+          2295.82
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "conex_box_b",
+      "transform": [
+        [
+          0.998163,
+          0.0,
+          -0.0605857
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0605857,
+          0.0,
+          0.998163
+        ],
+        [
+          5808.33,
+          44.417,
+          2294.95
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -0.716126,
+          0.0,
+          1.3828
+        ],
+        [
+          0.0,
+          1.24977,
+          0.0
+        ],
+        [
+          -1.3828,
+          0.0,
+          -0.716126
+        ],
+        [
+          5832.35,
+          41.6505,
+          2245.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "semitrailer_platform_a",
+      "transform": [
+        [
+          0.380569,
+          0.0,
+          -0.924752
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.924752,
+          0.0,
+          0.380569
+        ],
+        [
+          5848.0,
+          41.6735,
+          2252.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_engine",
+      "transform": [
+        [
+          -1.88371,
+          0.0,
+          -0.841623
+        ],
+        [
+          0.0,
+          2.06318,
+          0.0
+        ],
+        [
+          0.841623,
+          0.0,
+          -1.88371
+        ],
+        [
+          5846.22,
+          43.061,
+          2251.49
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_engine",
+      "transform": [
+        [
+          -1.09992,
+          0.0,
+          1.74553
+        ],
+        [
+          0.0,
+          2.06318,
+          0.0
+        ],
+        [
+          -1.74553,
+          0.0,
+          -1.09992
+        ],
+        [
+          5849.77,
+          43.1673,
+          2253.34
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_aircraft_boarding_ladder",
+      "transform": [
+        [
+          0.976438,
+          0.0,
+          -0.567279
+        ],
+        [
+          0.0,
+          1.12926,
+          0.0
+        ],
+        [
+          0.567279,
+          0.0,
+          0.976438
+        ],
+        [
+          5855.75,
+          41.6865,
+          2259.5
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "debris_cable_h",
+      "transform": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          5930.56,
+          41.65,
+          2223.78
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "pallet_cardboard_a",
+      "transform": [
+        [
+          -0.94717,
+          0.0,
+          -0.726789
+        ],
+        [
+          0.0,
+          1.19388,
+          0.0
+        ],
+        [
+          0.726789,
+          0.0,
+          -0.94717
+        ],
+        [
+          5922.65,
+          41.65,
+          2224.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "pallet_cardboard_a",
+      "transform": [
+        [
+          -0.155833,
+          0.0,
+          -1.18367
+        ],
+        [
+          0.0,
+          1.19388,
+          0.0
+        ],
+        [
+          1.18367,
+          0.0,
+          -0.155833
+        ],
+        [
+          5920.5,
+          41.6499,
+          2223.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          0.858543,
+          0.0,
+          -1.24789
+        ],
+        [
+          0.0,
+          1.5147,
+          0.0
+        ],
+        [
+          1.24789,
+          0.0,
+          0.858543
+        ],
+        [
+          5927.19,
+          41.8504,
+          2226.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_gas_cylinder_a",
+      "transform": [
+        [
+          -0.0371976,
+          1.52384,
+          -0.0282983
+        ],
+        [
+          -1.21279,
+          -0.0467382,
+          -0.922633
+        ],
+        [
+          -0.923067,
+          0.0,
+          1.21336
+        ],
+        [
+          5930.99,
+          41.8473,
+          2227.07
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          0.988938,
+          0.0,
+          -0.843806
+        ],
+        [
+          0.0,
+          1.3,
+          0.0
+        ],
+        [
+          0.843806,
+          0.0,
+          0.988938
+        ],
+        [
+          6001.0,
+          41.6629,
+          2226.45
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_light_generator",
+      "transform": [
+        [
+          0.547387,
+          0.0,
+          -0.896028
+        ],
+        [
+          0.0,
+          1.05,
+          0.0
+        ],
+        [
+          0.896028,
+          0.0,
+          0.547387
+        ],
+        [
+          5996.75,
+          41.6502,
+          2227.0
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          1.36932,
+          0.0,
+          0.366907
+        ],
+        [
+          0.140409,
+          1.30971,
+          -0.524014
+        ],
+        [
+          -0.338978,
+          0.542499,
+          1.26508
+        ],
+        [
+          5995.77,
+          41.9733,
+          2223.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          1.36932,
+          0.0,
+          0.366907
+        ],
+        [
+          0.0,
+          1.41762,
+          0.0
+        ],
+        [
+          -0.366907,
+          0.0,
+          1.36932
+        ],
+        [
+          5995.9,
+          41.6501,
+          2224.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "debris_cable_d",
+      "transform": [
+        [
+          -0.880974,
+          0.0,
+          0.473164
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.473164,
+          0.0,
+          -0.880974
+        ],
+        [
+          5991.13,
+          41.6503,
+          2231.99
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_c",
+      "transform": [
+        [
+          1.24697,
+          0.0,
+          -1.81247
+        ],
+        [
+          0.0,
+          2.2,
+          0.0
+        ],
+        [
+          1.81247,
+          0.0,
+          1.24697
+        ],
+        [
+          5996.25,
+          41.6768,
+          2231.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "port_crane_c",
+      "transform": [
+        [
+          -0.996843,
+          0.0,
+          0.0793955
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.0793955,
+          0.0,
+          -0.996843
+        ],
+        [
+          6097.2,
+          41.651,
+          2248.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          1.19286,
+          0.0,
+          -1.00102
+        ],
+        [
+          0.0,
+          1.24977,
+          0.0
+        ],
+        [
+          1.00102,
+          0.0,
+          1.19286
+        ],
+        [
+          6082.5,
+          41.95,
+          2240.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          -0.0397294,
+          0.793353,
+          0.607463
+        ],
+        [
+          0.0517767,
+          0.608761,
+          -0.791663
+        ],
+        [
+          -0.997868,
+          0.0,
+          -0.0652633
+        ],
+        [
+          6080.34,
+          42.05,
+          2241.24
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          -0.0652633,
+          0.0,
+          0.997868
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.997868,
+          0.0,
+          -0.0652633
+        ],
+        [
+          6080.16,
+          42.0,
+          2242.21
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          -0.0652633,
+          0.0,
+          0.997868
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.997868,
+          0.0,
+          -0.0652633
+        ],
+        [
+          6080.16,
+          42.35,
+          2242.21
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_tyre_a",
+      "transform": [
+        [
+          -0.0652633,
+          0.0,
+          0.997868
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.997868,
+          0.0,
+          -0.0652633
+        ],
+        [
+          6080.05,
+          41.65,
+          2242.05
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "volvo_f89",
+      "transform": [
+        [
+          0.254988,
+          0.0,
+          0.966944
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.966944,
+          0.0,
+          0.254988
+        ],
+        [
+          6073.95,
+          41.651,
+          2248.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          1.39743,
+          0.0,
+          -0.0847106
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          0.0847106,
+          0.0,
+          1.39743
+        ],
+        [
+          6199.6,
+          41.6225,
+          2203.1
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          1.39743,
+          0.0,
+          -0.0847106
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          0.0847106,
+          0.0,
+          1.39743
+        ],
+        [
+          6331.35,
+          41.6225,
+          2194.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -0.145585,
+          0.0,
+          -1.39241
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          1.39241,
+          0.0,
+          -0.145585
+        ],
+        [
+          6496.2,
+          41.6225,
+          2184.7
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -0.145585,
+          0.0,
+          -1.39241
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          1.39241,
+          0.0,
+          -0.145585
+        ],
+        [
+          6594.95,
+          41.6225,
+          2179.6
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "af_central_building_stairs",
+      "transform": [
+        [
+          0.127893,
+          0.0,
+          1.46181
+        ],
+        [
+          0.0,
+          1.46739,
+          0.0
+        ],
+        [
+          -1.46181,
+          0.0,
+          0.127893
+        ],
+        [
+          6691.4,
+          46.7269,
+          2041.8
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          1.38994,
+          0.0,
+          -0.167521
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          0.167521,
+          0.0,
+          1.38994
+        ],
+        [
+          6582.65,
+          41.6955,
+          2075.63
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          1.38219,
+          0.0,
+          -0.222655
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          0.222655,
+          0.0,
+          1.38219
+        ],
+        [
+          6577.63,
+          41.6955,
+          2073.24
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -0.145585,
+          0.0,
+          -1.39241
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          1.39241,
+          0.0,
+          -0.145585
+        ],
+        [
+          6580.2,
+          41.6225,
+          2074.3
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          -0.145293,
+          0.0,
+          -1.39244
+        ],
+        [
+          0.0,
+          1.4,
+          0.0
+        ],
+        [
+          1.39244,
+          0.0,
+          -0.145293
+        ],
+        [
+          6578.08,
+          41.6955,
+          2076.16
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -1.54391,
+          0.0,
+          0.203259
+        ],
+        [
+          0.0,
+          1.24977,
+          0.0
+        ],
+        [
+          -0.203259,
+          0.0,
+          -1.54391
+        ],
+        [
+          6261.9,
+          41.6463,
+          2092.25
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "searchlight_tower_a",
+      "transform": [
+        [
+          -1.54391,
+          0.0,
+          0.203259
+        ],
+        [
+          0.0,
+          1.24977,
+          0.0
+        ],
+        [
+          -0.203259,
+          0.0,
+          -1.54391
+        ],
+        [
+          6440.15,
+          41.6463,
+          2081.55
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "volvo_f89",
+      "transform": [
+        [
+          -0.126595,
+          0.0,
+          -0.991954
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.991954,
+          0.0,
+          -0.126595
+        ],
+        [
+          6007.66,
+          41.654,
+          2347.87
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_aircraft_boarding_ladder",
+      "transform": [
+        [
+          -0.894038,
+          0.0,
+          0.689874
+        ],
+        [
+          0.0,
+          1.12926,
+          0.0
+        ],
+        [
+          -0.689874,
+          0.0,
+          -0.894038
+        ],
+        [
+          6006.15,
+          41.6536,
+          2333.35
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "hangar_field_box_pile_a",
+      "transform": [
+        [
+          -1.32743,
+          0.0,
+          -0.729555
+        ],
+        [
+          0.0,
+          1.5147,
+          0.0
+        ],
+        [
+          0.729555,
+          0.0,
+          -1.32743
+        ],
+        [
+          5998.95,
+          41.8504,
+          2331.1
+        ]
+      ]
+    }
+  ]
+}

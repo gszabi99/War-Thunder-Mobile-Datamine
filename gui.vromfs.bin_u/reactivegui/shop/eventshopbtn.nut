@@ -74,24 +74,24 @@ function mkBtn(sId, eventName) {
     }
   })
   let timeEndW = Computed(@() eventCfg.get().timeEnd)
+  let fallbackImg = Picture($"ui/gameuiskin/icon_event_event_black_friday_shop.avif:{eventShopBtnIconSize}:{eventShopBtnIconSize}:P")
+  let eventUnseenMark = priorityUnseenMark.__merge(const { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP})
   return @() {
     watch = [eventButtonSF, isEventShopHasUnseen, eventCfg, eventName]
     behavior = Behaviors.Button
     onClick = @() openEventShopWnd(eventName.get())
-    sound = { click = "click" }
+    sound = const { click = "click" }
     onElemState = @(v) eventButtonSF.set(v)
-    transform = {
-      scale = eventButtonSF.get() & S_ACTIVE ? [0.95, 0.95]
-        : eventButtonSF.get() & S_HOVER ? [1.05, 1.05]
-        : [1, 1]
-    }
+    transform = eventButtonSF.get() & S_ACTIVE ? const { scale = [0.95, 0.95] }
+      : eventButtonSF.get() & S_HOVER ? const { scale = [1.05, 1.05] }
+      : const { scale = [1, 1] }
     children = [
       @() {
         watch = eventCfg
         size = const [eventShopBtnIconSize, eventShopBtnIconSize]
         rendObj = ROBJ_IMAGE
         image = Picture($"{getEventPresentation(eventCfg.get().eventId).image }:{eventShopBtnIconSize}:{eventShopBtnIconSize}:P")
-        fallbackImage = Picture($"ui/gameuiskin/icon_event_event_black_friday_shop.avif:{eventShopBtnIconSize}:{eventShopBtnIconSize}:P")
+        fallbackImage = fallbackImg
         keepAspect = true
       }
       mkTimer(timeEndW,
@@ -99,7 +99,7 @@ function mkBtn(sId, eventName) {
         pos = const [0, eventShopBtnIconSize]
         halign = ALIGN_CENTER
       }, fontTinyAccentedShaded)
-      !isEventShopHasUnseen.get() ? null : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, vplace = ALIGN_TOP})
+      !isEventShopHasUnseen.get() ? null : eventUnseenMark
     ]
   }
 }

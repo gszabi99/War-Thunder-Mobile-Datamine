@@ -89,6 +89,7 @@ let optionCtors = {
   [OCT_CHECKBOX] = function(optCfg, value, setValue) {
     let { locId = "", icon = "check.svg" } = optCfg
     let stateFlags = Watched(0)
+    let checkIcon = Picture($"ui/gameuiskin#{icon}:{checkBoxIconSize}:{checkBoxIconSize}:P")
 
     return {
       behavior = Behaviors.Button
@@ -119,7 +120,7 @@ let optionCtors = {
             size = checkBoxIconSize
             rendObj = ROBJ_IMAGE
             image = value.get()
-              ? Picture($"ui/gameuiskin#{icon}:{checkBoxIconSize}:{checkBoxIconSize}:P")
+              ? checkIcon
               : null
             keepAspect = KEEP_ASPECT_FIT
             color = stateFlags.get() & S_HOVER ? 0xFF7FAEFF : 0xFFFFFFFF

@@ -55,8 +55,6 @@ const plateTextsSmallPad = hdpx(5)
 
 const plateTextColor = 0xFFFFFFFF
 const levelTextColor = 0xFF9C9EA0
-const equippedFrameColorPremium = 0xA0E9D3A7
-const equippedFrameColorCollectible = 0xA063319B
 const slotLockedTextColor = 0xFFC0C0C0
 const premiumHighlightColor = 0xE6F4E9D3
 const collectibleHighlightColor = 0x90CFC6D1
@@ -68,19 +66,12 @@ let highlightPrem = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
 let highlightCollect = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(collectibleHighlightColor, 0, 25, 22, 31, -22))
 
-function getFrameColor(unit) {
-  if(unit?.isCollectible)
-    return equippedFrameColorCollectible
-  if(unit?.isUpgraded || unit?.isPremium)
-    return equippedFrameColorPremium
-  return selectColor
-}
-
 let bgUnit = mkColoredGradientY(0xFF383B3E, 0xFF191616, 2)
 let bgUnitPremium = mkColoredGradientY(0xFFC89123, 0xFF644012, 2)
 let bgUnitLocked = mkColoredGradientY(0xFF303234, 0xFF000000, 2)
 let bgUnitCollectible = mkColoredGradientY(0xFF63319B, 0xFF290740, 2)
 let bgUnitCollectibleLocked = mkColoredGradientY(0xFF371162, 0xFF150421, 2)
+let bgUnitClan = mkColoredGradientY(0xFF5BAF79, 0xFF1B4624, 2)
 let bgUnitNotAvailable = mkColoredGradientY(0xFF552020, 0xFF201010, 2)
 
 let levelBg = mkLevelBg({
@@ -95,7 +86,9 @@ let mkIcon = @(icon, iconSize, override = {}) {
   keepAspect = KEEP_ASPECT_FIT
 }.__update(override)
 
-function getUnitBG(isCollectible, isPremium, isLocked, isAvailable){
+function getUnitBG(isCollectible, isClan, isPremium, isLocked, isAvailable){
+  if(isClan)
+    return bgUnitClan
   if(isCollectible)
     return isLocked ? bgUnitCollectibleLocked : bgUnitCollectible
   if(isPremium)
@@ -127,10 +120,11 @@ let mkUnitBgPremium = {
 function mkUnitBg(unit, isLocked = false, isAvailable = true) {
   let isPremium = unit.isPremium || unit?.isUpgraded
   let isCollectible = unit?.isCollectible
+  let isClan = unit?.isClan
   return {
     size = FLEX
     children = [
-      unitBgImageBase.__merge({ image = getUnitBG(isCollectible, isPremium, isLocked, isAvailable) })
+      unitBgImageBase.__merge({ image = getUnitBG(isCollectible, isClan, isPremium, isLocked, isAvailable) })
       !isPremium ? null : mkUnitBgPremium
     ]
   }
@@ -143,10 +137,6 @@ let defaultComponents = {
     keepAspect = KEEP_ASPECT_FILL
     imageValign = ALIGN_CENTER
   }
-  equippedIcons = @(unit) [
-    mkIcon("ui/gameuiskin#selected_icon_outline.svg", [hdpx(44), hdpx(51)], { color = getFrameColor(unit) })
-    mkIcon("ui/gameuiskin#selected_icon.svg", [hdpx(44), hdpx(51)], { color = 0xFF000000 })
-  ]
 }
 
 let componentsByUnitType = {
@@ -158,10 +148,6 @@ let componentsByUnitType = {
       keepAspect = KEEP_ASPECT_FIT
       imageHalign = ALIGN_CENTER
     }
-    equippedIcons = @(unit) [
-      mkIcon("ui/gameuiskin#selected_icon_tank_outline.svg", [hdpx(95), hdpx(41)], { color = getFrameColor(unit) })
-      mkIcon("ui/gameuiskin#selected_icon_tank.svg", [hdpx(95), hdpx(41)], { color = 0xFF000000 })
-    ]
   },
   [AIR] = {
     unitImage = {
@@ -194,7 +180,7 @@ let mkUnitBlueprintMark = @(unit, ovr = {}) function() {
             size = hdpx(30)
             rendObj = ROBJ_IMAGE
             image = Picture($"ui/unitskin#blueprint_default_small.avif:{hdpx(30)}:{hdpx(30)}:P")
-            transform = {
+            transform = const {
               rotate = -10
             }
           }
@@ -222,22 +208,25 @@ let mkPlateText = @(text, override = {}) {
   color = plateTextColor
 }.__update(fontVeryTinyAccentedShaded, override)
 
-let mkPlateTextTimer = @(endTime, override = {}) @() {
-  watch = serverTime
-  flow  = FLOW_HORIZONTAL
-  children = endTime - serverTime.get() > 0
-    ? [
-        {
-          size = hdpx(25)
-          margin = hdpx(4)
-          rendObj = ROBJ_IMAGE
-          image = Picture($"ui/gameuiskin#timer_icon.svg:{hdpx(25)}:{hdpx(25)}:P")
-          keepAspect = KEEP_ASPECT_FIT
-        }
-        mkPlateText(secondsToHoursLoc(endTime - serverTime.get()))
-      ]
-    : null
-}.__update(override)
+function mkPlateTextTimer(endTime, override = {}) {
+  let timerIcon = {
+    size = hdpx(25)
+    margin = hdpx(4)
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#timer_icon.svg:{hdpx(25)}:{hdpx(25)}:P")
+    keepAspect = KEEP_ASPECT_FIT
+  }
+  return @() {
+    watch = serverTime
+    flow  = FLOW_HORIZONTAL
+    children = endTime - serverTime.get() > 0
+      ? [
+          timerIcon
+          mkPlateText(secondsToHoursLoc(endTime - serverTime.get()))
+        ]
+      : null
+  }.__update(override)
+}
 
 let mkUnitLevel = @(level, masteryTier = 0, bgOvr = {}) {
   vplace = ALIGN_BOTTOM
@@ -491,15 +480,6 @@ let unitSlotLockedByQuests = {
   ]
 }
 
-let mkEquippedIcon = @(unit) {
-  pos = const [ 0, hdpx(10) ]
-  hplace = ALIGN_CENTER
-  vplace = ALIGN_BOTTOM
-  halign = ALIGN_CENTER
-  valign = ALIGN_CENTER
-  children = getComponentsByUnitType(unit.unitType).equippedIcons(unit)
-}
-
 let mkUnitPlateBorder = @(isSelected) @(){
   watch = isSelected
   size = FLEX
@@ -508,30 +488,26 @@ let mkUnitPlateBorder = @(isSelected) @(){
   borderColor = isSelected.get() ? 0xFFFFFFFF : 0xFFA0A0A0
 }
 
-let mkUnitEquippedIcon = @(unit, isEquipped) @() !isEquipped.get() ? { watch = isEquipped }
-  : {
-      watch = isEquipped
-      size = FLEX
-      children = mkEquippedIcon(unit)
-    }
-
 let mkUnitSelectedUnderline = @(unit, isSelected, ovr = {}) {
   size = FLEX_H
   children = selectedLineUnitsCustomSize([FLEX, unitSelUnderlineFullSize], isSelected,
     !!(unit?.isUpgraded || unit?.isPremium), unit?.isCollectible)
 }.__update(ovr)
 
-let mkUnitSelectedGlow = @(unit, isSelected) @() isSelected.get()
+function mkUnitSelectedGlow(unit, isSelected) {
+  let glowImage = unit?.isCollectible ? highlightCollect()
+    : unit?.isUpgraded || unit?.isPremium ? highlightPrem()
+    : highlightCommon()
+  return @() isSelected.get()
   ? {
       watch = isSelected
       size = FLEX
       rendObj = ROBJ_IMAGE
       vplace = ALIGN_TOP
-      image = unit?.isCollectible ? highlightCollect()
-        : unit?.isUpgraded || unit?.isPremium ? highlightPrem()
-        : highlightCommon()
+      image = glowImage
     }
   : { watch = isSelected }
+}
 
 function mkSingleUnitPlate(unit) {
   if (unit == null)
@@ -607,7 +583,6 @@ return {
   mkUnitSlotLockedLine
   unitSlotLockedByQuests
   mkUnitSelectedUnderline
-  mkUnitEquippedIcon
   mkSingleUnitPlate
   mkPlateTextTimer
   mkPlateText

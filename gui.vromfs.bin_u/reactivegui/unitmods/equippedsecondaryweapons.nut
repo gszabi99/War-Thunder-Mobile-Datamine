@@ -3,7 +3,7 @@ from "%sqstd/math.nut" import fabs
 from "%rGui/weaponry/loadUnitBullets.nut" import loadUnitSlotsParams
 
 
-function getEquippedWeapon(wPreset, slotIdx, weaponsList, unitMods = null) {
+function [pure, nodiscard] getEquippedWeapon(wPreset, slotIdx, weaponsList, unitMods = null) {
   let id = wPreset?[slotIdx]
   local res = weaponsList?[id]
   let { reqModification = "" } = res
@@ -34,7 +34,7 @@ function removeNotDisbalance(res, notUseForDisbalance) {
   return 0
 }
 
-let hasConflictWeapons = @(equipped, banPresets) banPresets.len() != 0
+let hasConflictWeapons = @[pure, nodiscard](equipped, banPresets) banPresets.len() != 0
   && null != equipped.findvalue(@(name, idx) banPresets?[idx][name] ?? false)
 
 function getEqippedWithoutOverload(unitName, eqWeaponsBySlots) {

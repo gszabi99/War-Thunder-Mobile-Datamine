@@ -14,7 +14,7 @@ let mkTitle = @(ovr = {}) @() chosenTitle.get()
   : { watch = chosenTitle }
 
 let choosenMark = @(size = defMarkSize, ovr = {}) {
-  size = [size, size]
+  size = size
   margin = const [hdpxi(10), hdpxi(15)]
   rendObj = ROBJ_IMAGE
   color = 0xFF78FA78

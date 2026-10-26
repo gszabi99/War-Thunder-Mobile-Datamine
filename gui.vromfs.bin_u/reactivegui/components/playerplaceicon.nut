@@ -11,7 +11,7 @@ let placeBadges = {
 }
 
 let mkPlaceIcon = @(place, size = playerPlaceIconSize, fontStyle = fontTiny) {
-  size = [size, size]
+  size = size
   rendObj = ROBJ_IMAGE
   image = Picture($"{placeBadges?[place] ?? defaultBadge}:{size}:{size}:P")
   halign = ALIGN_CENTER

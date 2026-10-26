@@ -25,7 +25,7 @@ from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
 from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall, scrollArrowImageSmallSize
 from "%rGui/components/selectedLineUnits.nut" import selectedLineHorUnits, selLineSize
 from "%rGui/gameModes/gameModeState.nut" import randomBattleMode
-from "%rGui/mainMenu/balanceComps.nut" import mkCurrencyBalance
+from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
 from "%rGui/mainMenu/toBattleButton.nut" import mkRentBattlesButton, queueCurRandomBattleMode
 from "%rGui/navState.nut" import registerScene
 import "%rGui/queue/queuePenaltyWnd.nut" as tryOpenQueuePenaltyWnd
@@ -173,59 +173,61 @@ function openDetailsWnd() {
 
 function mkBlueprintUnitPlate(unit){
   let deltaBlueprints = Computed(@() (serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1) - (servProfile.get()?.blueprints?[unit.name] ?? 0))
+  let unitBg = mkUnitBg(unit)
+  let blueprintImage = {
+    size = [unitPlateWidth, unitPlateHeight]
+    rendObj = ROBJ_IMAGE
+    fallbackImage = Picture($"ui/unitskin#blueprint_default.avif:{unitPlateWidth}:{unitPlateHeight}:P")
+    image = Picture($"{getUnitPresentation(unit).blueprintImage}:{unitPlateWidth}:{unitPlateHeight}:P")
+  }
+  let unitTexts = mkUnitTexts(unit, getUnitName(unit.name))
+  let unitMRank = mkGradRank(unit?.mRank)
   return @() {
     watch = deltaBlueprints
     flow = FLOW_VERTICAL
-    children = [
-      {
-        size = [unitPlateWidth, unitPlateHeight]
-        children = [
-          mkUnitBg(unit)
-          {
-            size = [unitPlateWidth, unitPlateHeight]
-            rendObj = ROBJ_IMAGE
-            fallbackImage = Picture($"ui/unitskin#blueprint_default.avif:{unitPlateWidth}:{unitPlateHeight}:P")
-            image = Picture($"{getUnitPresentation(unit).blueprintImage}:{unitPlateWidth}:{unitPlateHeight}:P")
-          }
-          mkUnitTexts(unit, getUnitName(unit.name))
-          {
-            size = FLEX
-            valign = ALIGN_BOTTOM
-            flow = FLOW_VERTICAL
-            children = [
-              {
-                size = FLEX_H
-                halign = ALIGN_RIGHT
-                padding = const [0, hdpx(5), 0 , 0]
-                children = [
-                  {
-                    size = const [pw(100), SIZE_TO_CONTENT]
-                    rendObj = ROBJ_TEXT
-                    text = "/".concat((servProfile.get()?.blueprints?[unit.name] ?? 0), (serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1) )
-                    halign = ALIGN_CENTER
-                    vplace = ALIGN_CENTER
-                  }.__update(fontTinyAccentedShaded)
-                  mkGradRank(unit?.mRank)
-                ]
-              }
-              animatedProgressBar(unit,
+    children = {
+      size = [unitPlateWidth, unitPlateHeight]
+      children = [
+        unitBg
+        blueprintImage
+        unitTexts
+        {
+          size = FLEX
+          valign = ALIGN_BOTTOM
+          flow = FLOW_VERTICAL
+          children = [
+            {
+              size = FLEX_H
+              halign = ALIGN_RIGHT
+              padding = const [0, hdpx(5), 0 , 0]
+              children = [
                 {
-                  width = unitPlateWidth,
-                  height = hdpx(30),
-                  gap = hdpx(-30),
-                  sectorSize = [hdpx(60), hdpx(30)]
-                },
-                {
+                  size = const [pw(100), SIZE_TO_CONTENT]
                   rendObj = ROBJ_TEXT
-                  text = "".concat("+", deltaBlueprints.get())
-                  hplace = ALIGN_RIGHT
+                  text = "/".concat((servProfile.get()?.blueprints?[unit.name] ?? 0), (serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1) )
+                  halign = ALIGN_CENTER
                   vplace = ALIGN_CENTER
-                }.__update(fontTinyAccentedShaded))
-            ]
-          }
-        ]
-      }
-    ]
+                }.__update(fontTinyAccentedShaded)
+                unitMRank
+              ]
+            }
+            animatedProgressBar(unit,
+              {
+                width = unitPlateWidth,
+                height = hdpx(30),
+                gap = hdpx(-30),
+                sectorSize = const [hdpx(60), hdpx(30)]
+              },
+              {
+                rendObj = ROBJ_TEXT
+                text = "".concat("+", deltaBlueprints.get())
+                hplace = ALIGN_RIGHT
+                vplace = ALIGN_CENTER
+              }.__update(fontTinyAccentedShaded))
+          ]
+        }
+      ]
+    }
   }
 }
 
@@ -263,17 +265,15 @@ function mkUnitPlate(idx, unit) {
   let p = getUnitPresentation(unit)
   return {
     sound = { click  = "choose" }
-    children = [
-      {
-        size = unitPlateSize
-        children = [
-          mkUnitBg(unit)
-          mkUnitImage(unit)
-          mkUnitTexts(unit, loc(p.locId))
-          mkUnitInfo(unit)
-        ]
-      }
-    ]
+    children = {
+      size = unitPlateSize
+      children = [
+        mkUnitBg(unit)
+        mkUnitImage(unit)
+        mkUnitTexts(unit, loc(p.locId))
+        mkUnitInfo(unit)
+      ]
+    }
     animations = opacityAnims(aTimePackUnitPlates, aTimePackUnitInfoStart + aTimePackUnitPlatesOffset * idx)
   }
 }
@@ -288,6 +288,8 @@ let singleUnitBlock = @() {
 let branchUnitsBlock = @(unit)
   mkAirBranchUnitPlate(unit, @() curSelectedUnitId.set(unit.name))
 
+let packInfoColorAnim = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
+
 let packInfo = @(isHintBottom) {
   flow = isHintBottom ? FLOW_VERTICAL : null
   children = [
@@ -298,7 +300,7 @@ let packInfo = @(isHintBottom) {
           .filter(@(r) (r.gType not in unitRewardTypes) && (r.gType != G_BATTLE_MOD || r.id != goodsBattleMode.get())),
         aTimePackInfoStart + aTimeFirstItemOfset,
         MAX_ITEMS_IN_ROW)
-      animations = colorAnims(aTimePackInfoHeader, aTimePackInfoStart)
+      animations = packInfoColorAnim
     }
     {
       padding = const [REWARD_STYLE_TINY.boxGap, 0]
@@ -314,13 +316,13 @@ let unitInfoButton = {
   size = [evenPx(70), evenPx(70)]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
-  children = [
-    infoEllipseButton(
-      openDetailsWnd,
-      { hotkeys = [["^J:Y", loc("msgbox/btn_more")]] }
-    )
-  ]
+  children = infoEllipseButton(
+    openDetailsWnd,
+    { hotkeys = [["^J:Y", loc("msgbox/btn_more")]] }
+  )
 }
+
+let balanceBlockAnim = opacityAnims(aTimeBackBtn, aTimePackNameBack)
 
 let balanceBlock = @() {
   watch = previewGoods
@@ -329,11 +331,12 @@ let balanceBlock = @() {
   valign = ALIGN_CENTER
   gap = horGap
   children = [
-    (previewGoods.get()?.price.price ?? 0) <= 0 ? null
-      : mkCurrencyBalance(previewGoods.get().price.currencyId)
+    mkCurrenciesBtns(
+      (previewGoods.get()?.price.price ?? 0) <= 0 ? []
+        : [ previewGoods.get().price.currencyId ])
     unitInfoButton
   ]
-  animations = opacityAnims(aTimeBackBtn, aTimePackNameBack)
+  animations = balanceBlockAnim
 }
 
 let headerChidren = [
@@ -416,6 +419,9 @@ let earlyAccessDescriptionBlock = @(locId, unitName = null) {
   ]
 }
 
+let earlyAccessPackInfo = packInfo(false)
+let branchPackInfo = packInfoWithHeader(false)
+
 let leftBlockSingleUnit = {
   size = FLEX
   flow = FLOW_VERTICAL
@@ -439,7 +445,7 @@ function leftBlockEarlyAccess() {
       earlyAccessDescriptionBlock(locId, getUnitName(previewGoodsUnit.get()))
       singleUnitBlock
       earlyAccessImageBlock(backgroundImg)
-      packInfo(false)
+      earlyAccessPackInfo
     ]
   }
 }
@@ -518,31 +524,35 @@ let scrollArrowsBlock = {
   ]
 }
 
-let leftBlockUnits = @() {
-  watch = [totalUnits, previewGoodsUnit, schRewards, goodsBattleMode]
-  size = totalUnits.get() > 1 ? [unitPlateSize[0] * 2 + gapForBranch, SIZE_TO_CONTENT] : FLEX
-  halign = ALIGN_LEFT
-  children = totalUnits.get() > 1
-    ? @() {
-        watch = sortedUnits
-        flow = FLOW_VERTICAL
-        gap = gapForBranch
-        children = arrayByRows(sortedUnits.get().map(branchUnitsBlock), 2)
-          .map(@(u)
-            {
-              flow = FLOW_HORIZONTAL
-              gap = gapForBranch
-              children = u
-            })
-          .append(packInfoWithHeader(false))
-      }
-    : getBattleModPresentationForOffer(goodsBattleMode.get()) != null ? leftBlockEarlyAccess
-    : leftBlockSingleUnit
+function leftBlockUnits() {
+  return {
+    watch = [totalUnits, previewGoodsUnit, schRewards, goodsBattleMode]
+    size = totalUnits.get() > 1 ? [unitPlateSize[0] * 2 + gapForBranch, SIZE_TO_CONTENT] : FLEX
+    halign = ALIGN_LEFT
+    children = totalUnits.get() > 1
+      ? @() {
+          watch = sortedUnits
+          flow = FLOW_VERTICAL
+          gap = gapForBranch
+          children = arrayByRows(sortedUnits.get().map(branchUnitsBlock), 2)
+            .map(@(u)
+              {
+                flow = FLOW_HORIZONTAL
+                gap = gapForBranch
+                children = u
+              })
+            .append(branchPackInfo)
+        }
+      : getBattleModPresentationForOffer(goodsBattleMode.get()) != null ? leftBlockEarlyAccess
+      : leftBlockSingleUnit
+  }
 }
 
 const cbId = "onResetPenaltyToRandomBattleInUnitPreview"
 
 registerHandler(cbId, @(res) res?.error == null ? showNoPremMessageIfNeed(@() queueCurRandomBattleMode()) : null)
+
+let leftBlockPannable = pannableArea(leftBlockUnits, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
 
 let leftBlock = {
   size = FLEX
@@ -556,7 +566,7 @@ let leftBlock = {
         : [unitPlateSize[0] * 2 + 2 * gapForBranch, SIZE_TO_CONTENT]
       children = [
         !needScroll.get() ? leftBlockUnits
-          : pannableArea(leftBlockUnits, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+          : leftBlockPannable
         !needScroll.get() ? null
           : scrollArrowsBlock
       ]
@@ -586,6 +596,17 @@ previewRentUnitId.subscribe(@(id) battleRentInfo.set(id == null ? null
   : isCampaignWithSlots.get() ? { isSlots = isCampaignWithSlots.get(), unitList = [id] }
   : { isSlots = isCampaignWithSlots.get(), unit = id }))
 
+let previewWndRevealedChildren = [
+  header
+  {
+    size = FLEX
+    children = [
+      leftBlock
+      rightBlock
+    ]
+  }
+]
+
 let previewWnd = @() {
   watch = needShowUi
   key = openCount
@@ -610,16 +631,7 @@ let previewWnd = @() {
   }
 
   children = !needShowUi.get() ? doubleClickListener(@() needShowUi.set(true))
-    : [
-        header
-        {
-          size = FLEX
-          children = [
-            leftBlock
-            rightBlock
-          ]
-        }
-      ]
+    : previewWndRevealedChildren
 }
 
 registerScene("goodsUnitPreviewWnd", previewWnd, closeGoodsPreview, openCount)

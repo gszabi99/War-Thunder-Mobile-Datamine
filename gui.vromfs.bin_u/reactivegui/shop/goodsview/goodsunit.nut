@@ -246,12 +246,13 @@ function mkGoodsUnitBundle(goods, _onClick, state, animParams, addChildren) {
     hplace = ALIGN_RIGHT
     text = getCustomGoodsNameById(id) ?? loc($"shop/{id}")
   }.__update(fontSmall))
+  let previewIconBtn = mkSquareIconBtn(fonticonPreview, @() openGoodsPreview(id), {})
   let previewBtn = @() {
     watch = isPurchased
     margin = hdpx(20)
     vplace = ALIGN_BOTTOM
     children = isPurchased.get() ? null
-      : mkSquareIconBtn(fonticonPreview, @() openGoodsPreview(id), {})
+      : previewIconBtn
   }
   return mkGoodsWrap(
     goods,

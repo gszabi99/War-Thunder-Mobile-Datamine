@@ -20,6 +20,7 @@ let customGoodsLocId = {
 let goodsLocIdByNamePart = {
   ["event_pass_vip_"] = "eventPassVIP",
   ["battle_pass_vip_"] = "battlePassVIP",
+  ["battle_pass_s"] = "battlePass",
   ["event_pass_collectors_"] = "collectorsPass",
 }
 
@@ -130,8 +131,8 @@ let getGoodsPresentation = memoize(function getGoodsPresentationImpl(id) {
   if (cfg == null)
     return defaultPresentation
   if (cfg instanceof String)
-    return defaultPresentation.__merge({ icon = cfg })
-  return defaultPresentation.__merge(cfg)
+    return { ...defaultPresentation, icon = cfg }
+  return { ...defaultPresentation, ...cfg }
 })
 
 return {

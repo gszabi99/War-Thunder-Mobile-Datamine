@@ -5,7 +5,7 @@ from "eventbus" import eventbus_send
 from "%appGlobals/clustersState.nut" import clustersRaw, selClusters
 from "%appGlobals/defaultClusters.nut" import getForbiddenClustersByCountry
 from "%appGlobals/loginState.nut" import isMatchingOnline, isMatchingConnected, isLoggedIn
-from "%rGui/matching/matchingApi.nut" import matching_subscribe, matchingRpcRegisterHandler
+from "%rGui/matching/matchingApi.nut" import matching_subscribe, matchingRegisterHandler
 import "%rGui/matching/matchingRequestWithRetries.nut" as matchingRequestWithRetries
 import "showMatchingError.nut" as showMatchingError
 from "types" import Array
@@ -31,7 +31,7 @@ function restartFetchClusters() {
   })
 }
 
-matchingRpcRegisterHandler("onClustersListFetched", function(result) {
+matchingRegisterHandler("onClustersListFetched", function(result) {
   if ("error" in result) {
     showMatchingError(result)
     deferOnce(requestLogout)

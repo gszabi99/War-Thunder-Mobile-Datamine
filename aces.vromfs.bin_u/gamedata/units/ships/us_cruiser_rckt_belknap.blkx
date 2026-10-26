@@ -840,7 +840,6 @@
           3
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -884,7 +883,6 @@
           6
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -977,7 +975,6 @@
         "weaponType": "rockets",
         "emitter": "rckt_head_09",
         "flash": "rckt_head_09",
-        "ammoDpGenFmt": "rckt_head_%02d_dm",
         "emitterGenRange": [
           9,
           10
@@ -997,7 +994,7 @@
         ],
         "defaultYaw": 0.0,
         "defaultPitch": 10.0,
-        "reloadTime": 14.0,
+        "reloadTime": 13.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -1441,7 +1438,6 @@
                 3
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -1485,7 +1481,6 @@
                 6
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -1578,7 +1573,6 @@
               "weaponType": "rockets",
               "emitter": "rckt_head_09",
               "flash": "rckt_head_09",
-              "ammoDpGenFmt": "rckt_head_%02d_dm",
               "emitterGenRange": [
                 9,
                 10
@@ -1598,7 +1592,7 @@
               ],
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
-              "reloadTime": 14.0,
+              "reloadTime": 13.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -2022,7 +2016,6 @@
                 3
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -2066,7 +2059,6 @@
                 6
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -2159,7 +2151,6 @@
               "weaponType": "rockets",
               "emitter": "rckt_head_09",
               "flash": "rckt_head_09",
-              "ammoDpGenFmt": "rckt_head_%02d_dm",
               "emitterGenRange": [
                 9,
                 10
@@ -2179,7 +2170,7 @@
               ],
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
-              "reloadTime": 14.0,
+              "reloadTime": 13.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,

@@ -205,7 +205,7 @@ let getAddonsSize = @(addons, addonSizesV)
   unique(addons).reduce(@(total, addon) total + (addonSizesV?[addon] ?? 0), 0)
 
 let mbToString = @(mb) "".concat(mb > 0 ? mb : "???", loc("measureUnits/MB"))
-let toMB = @(b) (b + (MB / 2)) / MB
+let toMB = @[pure, nodiscard](b) (b + (MB / 2)) / MB
 
 let getAddonsSizeInMb = @(addons, addonSizesV) toMB(getAddonsSize(addons, addonSizesV))
 let getAddonsSizeStr = @(addons, addonSizesV) mbToString(getAddonsSizeInMb(addons, addonSizesV))

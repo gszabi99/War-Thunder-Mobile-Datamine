@@ -105,10 +105,21 @@ function mkRhombSimpleActionBtn(actionItem, shortcutId, image, scale, addChild =
   let btnSize = scaleEven(touchButtonSize, scale)
   let btnTouchSize = scaleEven(touchSizeForRhombButton, scale)
   let imgSize = scaleEven(defImageSize, scale)
+  let btnImg = Picture($"{image}:{imgSize}:{imgSize}:P")
+  let glare = mkActionBtnGlare(actionItem, btnSize)
+  let gamepadShortcut = mkGamepadShortcutImage(shortcutId, rotatedShortcutImageOvr, scale)
+  let touchZone = {
+    size = btnTouchSize
+    behavior = Behaviors.Button
+    cameraControl = true
+    onElemState = @(v) stateFlags.set(v)
+    hotkeys = mkGamepadHotkey(shortcutId)
+    onClick = @() useShortcut(shortcutId)
+  }
   return @() {
     watch = [isDisabled, isHudPrimaryStyle, btnBgStyle]
     key = shortcutId
-    size = [btnSize, btnSize]
+    size = btnSize
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
@@ -116,23 +127,16 @@ function mkRhombSimpleActionBtn(actionItem, shortcutId, image, scale, addChild =
       mkRhombBtnBorder(stateFlags, !isDisabled.get(), scale)
       {
         rendObj = ROBJ_IMAGE
-        size = [imgSize, imgSize]
-        image = Picture($"{image}:{imgSize}:{imgSize}:P")
+        size = imgSize
+        image = btnImg
         keepAspect = true
         color = isDisabled.get() ? imageDisabledColor : imageColor
       }
-      mkActionBtnGlare(actionItem, btnSize)
+      glare
       mkAmmoCount(actionItem.count, scale, !isDisabled.get())
       isDisabled.get() ? null
-        : mkGamepadShortcutImage(shortcutId, rotatedShortcutImageOvr, scale)
-      {
-        size = [btnTouchSize, btnTouchSize]
-        behavior = Behaviors.Button
-        cameraControl = true
-        onElemState = @(v) stateFlags.set(v)
-        hotkeys = mkGamepadHotkey(shortcutId)
-        onClick = @() useShortcut(shortcutId)
-      }
+        : gamepadShortcut
+      touchZone
       addChild
     ]
   }
@@ -159,7 +163,7 @@ function mkDivingLockButton(scale) {
   return @() {
     watch = actionItem
     children = actionItem.get() == null ? null
-      : mkRhombSimpleActionBtn(actionItem.get().__merge({ count = -1 }), "ID_DIVING_LOCK",
+      : mkRhombSimpleActionBtn(actionItem.get().__merge(const { count = -1 }), "ID_DIVING_LOCK",
           (actionItem.get()?.active ?? true) ? "ui/gameuiskin#hud_submarine_diving.svg"
             : "ui/gameuiskin#hud_submarine_surfacing.svg"
           scale)
@@ -173,10 +177,36 @@ function mkRhombZoomButton(scale) {
   let btnSize = scaleEven(touchButtonSize, scale)
   let btnTouchSize = scaleEven(touchSizeForRhombButton, scale)
   let borderW = round(borderWidth * scale).tointeger()
+  let zoomInImg = Picture($"ui/gameuiskin#hud_binoculars_zoom.svg:{btnSize}:{btnSize}:P")
+  let zoomOutImg = Picture($"ui/gameuiskin#hud_binoculars.svg:{btnSize}:{btnSize}:P")
+  let gamepadShortcut = mkGamepadShortcutImage(shortcutId, rotatedShortcutImageOvr, scale)
+  let touchZone = {
+    size = btnTouchSize
+    behavior = Behaviors.Button
+    cameraControl = true
+    hotkeys = mkGamepadHotkey(shortcutId)
+    onElemState = @(v) stateFlags.set(v)
+    function onClick() {
+      if (isDisabled.get())
+        return
+      if (canZoom.get() && ((hasAimingModeForWeapon.get()) ||
+          (isInZoom.get() && !hasAimingModeForWeapon.get()))) {
+        toggleShortcut(shortcutId)
+        return
+      }
+
+      if (!canZoom.get()) {
+        addCommonHint(loc("hints/select_enemy_to_aim"))
+        return
+      }
+
+      addCommonHint(loc("hints/aiming_not_available_for_weapon"))
+    }
+  }
   return @() {
     watch = [canZoom, isDisabled, hasAimingModeForWeapon, isInZoom]
     key = "btn_zoom"
-    size = [btnSize, btnSize]
+    size = btnSize
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
@@ -189,43 +219,21 @@ function mkRhombZoomButton(scale) {
           : borderNoAmmoColor
         borderWidth = borderW
         fillColor = hudLightBlackColor
-        transform = { rotate = 45 }
+        transform = const { rotate = 45 }
       }
       {
         rendObj = ROBJ_IMAGE
-        size = [btnSize, btnSize]
-        image = isInZoom.get() ? Picture($"ui/gameuiskin#hud_binoculars_zoom.svg:{btnSize}:{btnSize}:P")
-          : Picture($"ui/gameuiskin#hud_binoculars.svg:{btnSize}:{btnSize}:P")
+        size = btnSize
+        image = isInZoom.get() ? zoomInImg
+          : zoomOutImg
         keepAspect = KEEP_ASPECT_FIT
         color = (canZoom.get() && !isDisabled.get() && (isInZoom.get() || hasAimingModeForWeapon.get()))
           ? imageColor
           : imageDisabledColor
       }
       isDisabled.get() ? null
-        : mkGamepadShortcutImage(shortcutId, rotatedShortcutImageOvr, scale)
-      {
-        size = [btnTouchSize, btnTouchSize]
-        behavior = Behaviors.Button
-        cameraControl = true
-        hotkeys = mkGamepadHotkey(shortcutId)
-        onElemState = @(v) stateFlags.set(v)
-        function onClick() {
-          if (isDisabled.get())
-            return
-          if (canZoom.get() && ((hasAimingModeForWeapon.get()) ||
-              (isInZoom.get() && !hasAimingModeForWeapon.get()))) {
-            toggleShortcut(shortcutId)
-            return
-          }
-
-          if (!canZoom.get()) {
-            addCommonHint(loc("hints/select_enemy_to_aim"))
-            return
-          }
-
-          addCommonHint(loc("hints/aiming_not_available_for_weapon"))
-        }
-      }
+        : gamepadShortcut
+      touchZone
     ]
   }
 }
@@ -243,6 +251,23 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
   let btnTouchSize = scaleEven(touchSizeForRhombButton, scale)
   let imgSize = scaleEven(defImageSize, scale)
   let groupImgSize = scaleEven(defImageSize * 1.15, scale)
+  let groupImg = Picture($"{imageSwitch}:{groupImgSize}:{groupImgSize}:P")
+  let singleImg = Picture($"{image}:{imgSize}:{imgSize}:P")
+  let gamepadShortcut = mkGamepadShortcutImage(shortcutId, rotatedShortcutImageOvr, scale)
+  let touchZone = {
+    size = btnTouchSize
+    behavior = Behaviors.Button
+    cameraControl = true
+    hotkeys = mkGamepadHotkey(shortcutId)
+    onClick = @() !isOnCd.get() ? toggleShortcut(shortcutId) : null
+    function onElemState(v) {
+      if ((v & S_ACTIVE) && actionItem.get() != null)
+        markWeapKeyHold(actionType, getUnitName(actionItem.get().weaponName), true)
+      else
+        unmarkWeapKeyHold(actionType)
+      stateFlags.set(v)
+    }
+  }
 
   return function() {
     let watch = [actionItem, isGroupInAir, isOnCd, isHudPrimaryStyle, btnBgStyle]
@@ -251,7 +276,7 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
     let isAvailable = isOnCd.get() || isAvailableActionItem(actionItem.get())
     return {
       watch
-      size = [btnSize, btnSize]
+      size = btnSize
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = [
@@ -261,37 +286,24 @@ function mkSupportPlaneBtn(actionType, supportCfg, scale) {
         isGroupInAir.get()
           ? {
               rendObj = ROBJ_IMAGE
-              size = [groupImgSize, groupImgSize]
+              size = groupImgSize
               pos = [hdpx(3 * scale), 0]
-              image = Picture($"{imageSwitch}:{groupImgSize}:{groupImgSize}:P")
+              image = groupImg
               keepAspect = KEEP_ASPECT_FIT
               color = !isAvailable ? imageDisabledColor : imageColor
             }
           : {
               rendObj = ROBJ_IMAGE
-              size = [imgSize, imgSize]
+              size = imgSize
               pos = [0, -hdpx(5 * scale)]
-              image = Picture($"{image}:{imgSize}:{imgSize}:P")
+              image = singleImg
               keepAspect = KEEP_ASPECT_FIT
               color = !isAvailable ? imageDisabledColor : imageColor
             }
         isGroupInAir.get() ? null : mkAmmoCount(actionItem.get().count, scale)
         mkActionBtnGlare(actionItem.get(), btnSize)
-        mkGamepadShortcutImage(shortcutId, rotatedShortcutImageOvr, scale)
-        {
-          size = [btnTouchSize, btnTouchSize]
-          behavior = Behaviors.Button
-          cameraControl = true
-          hotkeys = mkGamepadHotkey(shortcutId)
-          onClick = @() !isOnCd.get() ? toggleShortcut(shortcutId) : null
-          function onElemState(v) {
-            if ((v & S_ACTIVE) && actionItem.get() != null)
-              markWeapKeyHold(actionType, getUnitName(actionItem.get().weaponName), true)
-            else
-              unmarkWeapKeyHold(actionType)
-            stateFlags.set(v)
-          }
-        }
+        gamepadShortcut
+        touchZone
       ]
     }
   }

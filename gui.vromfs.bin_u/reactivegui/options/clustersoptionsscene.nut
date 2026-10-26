@@ -70,7 +70,9 @@ function mkClusterToggle(clusterId, valueW, isAvailable) {
         return openMsgBox({ text = loc("clusters/cantDisableFastestCluster") })
       if (!v && !canDisableClusters.get())
         return openMsgBox({ text = loc("clusters/cantDisableLastCluster") })
-      valueW.set(v)
+      userPreferredClusters.mutate(@(o) v == false
+        ? (o[clusterId] <- v)
+        : o.$rawdelete(clusterId))
     }
   })
 }
@@ -208,12 +210,9 @@ let mkHeaderRow = @() {
   })
 }
 
-function mkClusterRow(cluster, userPrefClustersW) {
+function mkClusterRow(cluster) {
   let { clusterId } = cluster
-  let valueW = Watched(userPrefClustersW.get()?[clusterId] != false)
-  valueW.subscribe(@(v) userPrefClustersW.mutate(@(o) v == false
-    ? (o[clusterId] <- v)
-    : o.$rawdelete(clusterId)))
+  let valueW = Computed(@() userPreferredClusters.get()?[clusterId] != false)
   return {
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
@@ -281,7 +280,7 @@ let clustersOptionsScene = bgShaded.__merge({
   children = [
     wndHeader
     @() {
-      watch = [clusterStatsFixedOrder, userPreferredClusters]
+      watch = clusterStatsFixedOrder
       size = FLEX
       flow = FLOW_VERTICAL
       children = [
@@ -292,7 +291,7 @@ let clustersOptionsScene = bgShaded.__merge({
           size = FLEX_H
           flow = FLOW_VERTICAL
           gap = bgPanelPadding
-          children = clusterStatsFixedOrder.get().map(@(v) mkClusterRow(v, userPreferredClusters))
+          children = clusterStatsFixedOrder.get().map(@(v) mkClusterRow(v))
         })
       ]
     }

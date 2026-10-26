@@ -39,11 +39,8 @@ let placeButton = @() {
 }
 
 let resetButton = @() {
-  watch = [isNotEqualPresets, isCurSkinAvailable, curSkinForEdit]
-  children = !isNotEqualPresets.get()
-      ? null
-    : !isCurSkinAvailable.get()
-      ? textButtonInactive(utf8ToUpper(loc("msgbox/btn_reset")), @() skinIsNotAvailableForEditMsg(curSkinForEdit.get()))
+  watch = isNotEqualPresets
+  children = !isNotEqualPresets.get() ? null
     : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_reset")), @() openMsgBox({
         text = loc("mainmenu/customization/decals/resetDecalsPreset"),
         buttons = [

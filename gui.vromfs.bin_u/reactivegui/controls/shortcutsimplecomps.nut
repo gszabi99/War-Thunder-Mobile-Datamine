@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/activeControls.nut" import isGamepad
 from "%globalsDarg/fontScale.nut" import getScaledFont
-from "%rGui/controls/shortcutsMap.nut" import gamepadShortcuts, allShortcutsUp, getGamepadKeys
+from "%rGui/controls/shortcutsMap.nut" import allShortcuts, gamepadShortcuts, allShortcutsUp, getGamepadKeys
 from "%rGui/controlsMenu/gamepadImgByKey.nut" import mkBtnImageComp
 
 
@@ -10,32 +10,39 @@ const defBtnHeight = hdpxi(50)
 const combinationButton = "J:LB"
 let combBtnInfo = resolve_button(combinationButton)
 let isCombinationModActive = Watched(false)
+let isLtPressed = Watched(false)
+let isRtPressed = Watched(false)
+let isLtModActive = Computed(@() isLtPressed.get() && !isCombinationModActive.get())
+let isRtModActive = Computed(@() isRtPressed.get() && !isCombinationModActive.get())
 
 if (combBtnInfo == null)
   logerr("Failed to resolve combinationButton")
 
-let mkGamepadShortcutImage = @(shortcutId, ovr = {}, scale = 1.0) function() {
+function mkGamepadShortcutImage(shortcutId, ovr = {}, scale = 1.0) {
   let gKeys = getGamepadKeys(shortcutId)
-  let children = !isGamepad.get() || shortcutId not in gamepadShortcuts ? null
-    : gKeys.map(@(k) mkBtnImageComp(
-        k,
-        min(1.0, scale) * (ovr?.size[1] ?? defBtnHeight)
-        k == combinationButton && isCombinationModActive.get()
-      ))
-  return {
-    watch = [isGamepad, isCombinationModActive]
-    valign = ALIGN_CENTER
-    halign = ALIGN_CENTER
-    flow = FLOW_HORIZONTAL
-    gap = -hdpx(5)
-    children = (children?.len() ?? 0) < 2 ? children : children?.insert(1,
-      {
-        rendObj = ROBJ_TEXT
-        text = "+"
-      }.__update(getScaledFont(fontTinyShaded, scale)))
-  }.__update(ovr)
+  let plusFont = getScaledFont(fontTinyShaded, scale)
+  return function() {
+    let children = !isGamepad.get() || shortcutId not in gamepadShortcuts ? null
+      : gKeys.map(@(k) mkBtnImageComp(
+          k,
+          min(1.0, scale) * (ovr?.size[1] ?? defBtnHeight)
+          k == combinationButton && isCombinationModActive.get()
+        ))
+    return {
+      watch = [isGamepad, isCombinationModActive]
+      valign = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      flow = FLOW_HORIZONTAL
+      gap = -hdpx(5)
+      children = (children?.len() ?? 0) < 2 ? children : children?.insert(1,
+        {
+          rendObj = ROBJ_TEXT
+          text = "+"
+        }.__update(plusFont))
+    }.__update(ovr)
+  }
 }
-let mkGamepadHotkey = @(shortcutId, action = null) shortcutId not in allShortcutsUp ? null
+let mkGamepadHotkey = @[nodiscard](shortcutId, action = null) shortcutId not in allShortcutsUp ? null
   : action == null ? [allShortcutsUp[shortcutId]]
   : [[allShortcutsUp[shortcutId], action]]
 
@@ -84,6 +91,21 @@ let mkLtButtonListener = combBtnInfo == null ? null
       onDetach = @() isCombinationModActive.set(false)
     }
 
+function mkShortcutHoldListener(shortcutId, isPressed) {
+  let buttons = (allShortcuts?[shortcutId] ?? "").split(" | ")
+    .filter(@(k) k.split(" ").len() == 1)
+    .map(resolve_button)
+    .filter(@(b) b != null)
+  let isOwnButton = @(evt) buttons.findindex(@(b) b.devId == evt.devId && b.btnId == evt.btnId) != null
+  return {
+    size = 0
+    behavior = Behaviors.ProcessKeyInput
+    onKeyPress = @(evt) isOwnButton(evt) ? isPressed.set(true) : null
+    onKeyRelease = @(evt) isOwnButton(evt) ? isPressed.set(false) : null
+    onDetach = @() isPressed.set(false)
+  }
+}
+
 return {
   mkGamepadShortcutImage
   mkGamepadHotkey
@@ -91,4 +113,9 @@ return {
 
   mkLtButtonListener
   isCombinationModActive
+  mkShortcutHoldListener
+  isLtPressed
+  isRtPressed
+  isLtModActive
+  isRtModActive
 }

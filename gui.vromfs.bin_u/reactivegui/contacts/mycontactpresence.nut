@@ -8,7 +8,7 @@ from "%appGlobals/gameIdentifiers.nut" import GAME_ID
 from "%appGlobals/loginState.nut" import isMatchingConnected
 from "%appGlobals/profileStates.nut" import myUserIdStr
 from "%rGui/contacts/contactPresence.nut" import presences
-from "%rGui/matching/matchingApi.nut" import matchingRpcCall
+from "%rGui/matching/matchingApi.nut" import matchingRequest
 
 
 let presenceDefault = {
@@ -34,7 +34,7 @@ let presenceDiff = keepref(Computed(function(prev) {
 
 function sendPresenceDiff() {
   if ((presenceDiff.get()?.len() ?? 0) != 0)
-    matchingRpcCall("mpresence.set_presence", presenceDiff.get())
+    matchingRequest("mpresence.set_presence", presenceDiff.get())
 }
 deferOnce(sendPresenceDiff)
 presenceDiff.subscribe(@(_) deferOnce(sendPresenceDiff))

@@ -9,9 +9,10 @@ from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/clientState/clientState.nut" import battleSessionId, isInBattle, isInDebriefing
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%rGui/components/modalWindows.nut" import removeModalWindow
-from "%rGui/contacts/contact.nut" import Contact
+from "%rGui/contacts/contact.nut" import Contact, allContacts
 from "%rGui/contacts/contactsClient.nut" import contactsRequest, contactsRegisterHandler
 from "%rGui/debriefing/debriefingState.nut" import debriefingData
+from "%rGui/mpStatistics/viewProfile.nut" import selectedPlayerForInfo
 
 
 let session = Computed(@() (isInBattle.get() || isInDebriefing.get()) ? battleSessionId.get() : -1)
@@ -36,7 +37,8 @@ const SUCCESS_WND_UID = "successReportWindow"
 const REPORT_WND_UID = "playerReportWindow"
 const REJECT_WND_UID = "rejectReportWindow"
 
-let categoryCfg = ["OTHER", "CHEAT", "TEAMKILL", "SKIN"]
+let chatLogCategories = ["INSULT_CHAT", "SPAM_CHAT"]
+let categoryCfg = ["OTHER", "CHEAT", "TEAMKILL", "SKIN"].extend(chatLogCategories)
 
 let selectedPlayerForReport = Watched(null)
 let isReportStatusSuccessed = Watched(false)
@@ -135,16 +137,34 @@ function applyShadowBan() {
   isReportStatusSuccessed.set(true)
 }
 
+let convertChatLog = @(chatLog) "\n".join(chatLog.map(function(m) {
+  let { sender = null, text = "" } = m
+  let userId = sender?.userId
+  if (userId == null)
+    return text
+  let userIdStr = userId.tostring()
+  let userName = allContacts.get()?[userIdStr].realnick ?? userIdStr
+  return $"{userName} ( {userIdStr} ): {text}"
+}))
+
 function mkRequest(requestData) {
   if (requestData == null)
     return null
 
   let { lang } = langCfg?[getLocalLanguage()] ?? langCfg.English
+  let category = utf8ToUpper(fieldCategory.get())
   let res = clone requestData
-  res.category <- utf8ToUpper(fieldCategory.get())
+  res.category <- category
   res.user_comment <- fieldMessage.get()
   res.date <- serverTime.get()
   res.lang <- lang
+
+  let sel = selectedPlayerForInfo.get()
+  if (chatLogCategories.contains(category)
+      && sel?.player.userId == requestData.offender_userid
+      && sel?.chatLog != null)
+    res.chat_log <- convertChatLog(sel.chatLog)
+
   return res
 }
 

@@ -119,6 +119,7 @@
     "enableApex": true,
     "skinsDecalsCacheSz": 1073741824,
     "disableAsserts": true,
+    "alwaysSendVromDiffs": true,
     "zendeskApiUploadsURL": "https://support.gaijin.net/api/v2/uploads.json?filename={0}",
     "zendeskApiRequestsURL": "https://support.gaijin.net/api/v2/requests",
     "giftsURL": "https://api-gotest.gaijinent.com/user_gift.php",
@@ -201,9 +202,6 @@
         "--http_peers http://seeder.gaijin.lan/content/",
         "--p2p_peers seeder.gaijin.lan:27032"
       ],
-      "addons": {
-        "enabled": true
-      },
       "background_addons": {
         "requireSameGameVersion": false
       }
@@ -276,9 +274,6 @@
     },
     "contentUpdater": {
       "shouldLogToCrashlytics": true,
-      "addons": {
-        "enabled": true
-      },
       "background_addons": {
         "requireSameGameVersion": false
       },

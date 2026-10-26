@@ -60,7 +60,7 @@ const aTimeInfoLight = 0.2
 let ANIM_SKIP = {}
 let ANIM_SKIP_DELAY = {}
 
-function opacityAnims(duration, delay, soundName = "", skipTrigger = ANIM_SKIP_DELAY) {
+function [nodiscard] opacityAnims(duration, delay, soundName = "", skipTrigger = ANIM_SKIP_DELAY) {
   let res = [
     { prop = AnimProp.opacity, from = 0.0, to = 1.0, easing = InQuad, play = true, duration, delay,
       trigger = skipTrigger }
@@ -73,7 +73,7 @@ function opacityAnims(duration, delay, soundName = "", skipTrigger = ANIM_SKIP_D
   return res
 }
 
-function colorAnims(duration, delay, skipTrigger = ANIM_SKIP_DELAY) {
+function [nodiscard] colorAnims(duration, delay, skipTrigger = ANIM_SKIP_DELAY) {
   let res = [
     { prop = AnimProp.color, from = 0, easing = InQuad, play = true, duration, delay, trigger = skipTrigger }
   ]
@@ -94,36 +94,37 @@ function oldPriceBlock(child, animStartTime) {
   local start = get_time_msec() + (1000 * (animStartTime + aTimePriceMove)).tointeger()
   local end = start + (1000 * aTimePriceStrike).tointeger()
   local isFinished = false
+  let children = [
+    child
+    {
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth = hdpx(5)
+      color = 0xFFE02A14
+      commands = []
+      behavior = Behaviors.RtPropUpdate
+      function update() {
+        if (isFinished)
+          return null
+        let time = get_time_msec()
+        if (time <= start)
+          return null
+        if (time >= end)
+          isFinished = true
+        return {
+          commands = [[VECTOR_LINE, -20, 65,
+            lerpClamped(start, end, -20, 120, time),
+            lerpClamped(start, end, 65, 35, time)
+          ]]
+        }
+      }
+    }
+  ]
   return @() {
     watch = needPriceBlockZOrder
     key = needPriceBlockZOrder
     zOrder = needPriceBlockZOrder.get() ? Layers.Upper : Layers.Default
-    children = [
-      child
-      {
-        size = FLEX
-        rendObj = ROBJ_VECTOR_CANVAS
-        lineWidth = hdpx(5)
-        color = 0xFFE02A14
-        commands = []
-        behavior = Behaviors.RtPropUpdate
-        function update() {
-          if (isFinished)
-            return null
-          let time = get_time_msec()
-          if (time <= start)
-            return null
-          if (time >= end)
-            isFinished = true
-          return {
-            commands = [[VECTOR_LINE, -20, 65,
-              lerpClamped(start, end, -20, 120, time),
-              lerpClamped(start, end, 65, 35, time)
-            ]]
-          }
-        }
-      }
-    ]
+    children
     transform = {}
     animations = opacityAnims(aTimeTime, animStartTime - aTimeTime)
       .append(
@@ -142,7 +143,7 @@ function oldPriceBlock(child, animStartTime) {
           duration = aTimePriceMove, delay = animStartTime, trigger = ANIM_SKIP
           onExit = @() needPriceBlockZOrder.set(false),
         }
-        { prop = AnimProp.translate, to = [0, hdpx(10)], easing = CosineFull, play = true,
+        { prop = AnimProp.translate, to = const [0, hdpx(10)], easing = CosineFull, play = true,
           duration = aTimePriceBounce, delay = animStartTime + aTimePriceMove, trigger = ANIM_SKIP_DELAY }
       )
   }
@@ -152,7 +153,7 @@ let mkHighlight = @(duration, start, appear) {
   size = FLEX
   rendObj = ROBJ_9RECT
   image = gradCircularSqCorners
-  texOffs = [gradCircCornerOffset, gradCircCornerOffset]
+  texOffs = gradCircCornerOffset
   screenOffs = hdpx(30)
   opacity = 0.0
   color = 0x00C0C0C0
@@ -304,12 +305,12 @@ let purchaseButtonBlock = @(animStartTime, count = 1, ovr = {}) function() {
     : oldPriceBlock(priceCtor(basePrice, currencyId, priceStyle), animStartTime)
   return res.__update({
     children = [
-      discountCtor(priceBlock, discountInPercent, { transform = { pivot = [1, 1] },
+      discountCtor(priceBlock, discountInPercent, { transform = const { pivot = 1 },
         animations = opacityAnims(aTimeFinalPriceShow, animStartTime + aTimePriceMove + aTimePriceStrike)
           .append(
             { prop = AnimProp.translate, from=[0, discountOfferTagH], duration = aTimeDiscountTagMove,
               delay = animStartTime + aTimePriceMove + aTimePriceStrike, play = true, easing = Linear, trigger = ANIM_SKIP }
-            { prop = AnimProp.scale, to = [1.2, 1.2], easing = CosineFull, play = true,
+            { prop = AnimProp.scale, to = const [1.2, 1.2], easing = CosineFull, play = true,
               duration = aTimeDiscountTagScale, delay = animStartTime + aTimePriceMove + aTimePriceStrike, trigger = ANIM_SKIP }
           )})
       mkPurchButton(
@@ -412,11 +413,11 @@ let mkPreviewHeader = @(textW, onBack, animStartTime, addChildren = [], rightChi
       behavior = Behaviors.Marquee
       delay = defMarqueeDelay
       clipChildren = true
-      transform = { pivot = [0, 0.5] }
+      transform = const { pivot = [0, 0.5] }
       animations = opacityAnims(0.5 * aTimePackNameFull, animStartTime).append(
-        { prop = AnimProp.translate, from = [-hdpx(100), 0.0], to = [0.0, 0.0], easing = InQuad, play = true,
+        { prop = AnimProp.translate, from = const [-hdpx(100), 0.0], to = const [0.0, 0.0], easing = InQuad, play = true,
           duration = 0.5 * aTimePackNameFull, delay = animStartTime, trigger = ANIM_SKIP }
-        { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.1, 1.1], easing = CosineFull, play = true,
+        { prop = AnimProp.scale, from = const [1.0, 1.0], to = const [1.1, 1.1], easing = CosineFull, play = true,
           duration = aTimePackNameFull, delay = animStartTime, trigger = ANIM_SKIP_DELAY }
       )
     }.__update(fontBig)
@@ -486,7 +487,7 @@ let mkItemBlink = @(start) {
   size = FLEX
   rendObj = ROBJ_9RECT
   image = gradCircularSqCorners
-  texOffs = [gradCircCornerOffset, gradCircCornerOffset]
+  texOffs = gradCircCornerOffset
   screenOffs = hdpx(30)
   opacity = 0.0
   transform = {}
@@ -502,6 +503,10 @@ let mkItemBlink = @(start) {
 function mkItemImpl(r, rStyle, start) {
   let stateFlags = Watched(0)
   let isRewardReceived = Computed(@() isRewardEmpty([{ gType = r.rType }.__merge(r)], servProfile.get()))
+  let plateImage = mkRewardPlateImage(r, rStyle)
+  let plateTexts = mkRewardPlateTexts(r, rStyle)
+  let receivedMark = mkRewardReceivedMark(rStyle)
+  let itemAppearAnim = opacityAnims(aTimeInfoItem, start + aTimeInfoLight)
   return @() {
     watch = [stateFlags, isRewardReceived]
     behavior = Behaviors.Button
@@ -520,11 +525,11 @@ function mkItemImpl(r, rStyle, start) {
           : stateFlags.get() & S_HOVER ? 1.5
           : 1
       })
-      mkRewardPlateImage(r, rStyle)
-      mkRewardPlateTexts(r, rStyle)
-      isRewardReceived.get() ? mkRewardReceivedMark(rStyle) : null
+      plateImage
+      plateTexts
+      isRewardReceived.get() ? receivedMark : null
     ]
-    animations = opacityAnims(aTimeInfoItem, start + aTimeInfoLight)
+    animations = itemAppearAnim
   }
 }
 

@@ -59,8 +59,7 @@ function mkPreviewPicture(image, size) {
 let mkBg = @(bg) {
   size = FLEX
   animations = bgAnims
-}.__update(
-  bg == null
+  ...(bg == null
     ? {
         rendObj = ROBJ_SOLID
         color = noBgColor
@@ -71,6 +70,7 @@ let mkBg = @(bg) {
         keepAspect = KEEP_ASPECT_FILL
         color = bgDarkColor
       })
+}
 
 function openImagePreview(image, aabb = null, bg = null) {
   if ((image ?? "") == "")

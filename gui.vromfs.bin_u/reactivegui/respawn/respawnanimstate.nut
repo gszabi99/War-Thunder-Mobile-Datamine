@@ -13,7 +13,7 @@ let bulletsScrolled = Watched(false)
 let bulletsScrollHandler = ScrollHandler()
 let bulletsScrollOffset = keepref(Computed(@() bulletsScrollHandler.elem?.getScrollOffsY() ?? 0.0))
 
-let moveAabbY = @(aabb, offs) { l = aabb.l, r = aabb.r, t = aabb.t + offs, b = aabb.b + offs }
+let moveAabbY = @[pure, nodiscard](aabb, offs) { l = aabb.l, r = aabb.r, t = aabb.t + offs, b = aabb.b + offs }
 
 slotAABB.subscribe(function(_) {
   bulletsAABB.set({})

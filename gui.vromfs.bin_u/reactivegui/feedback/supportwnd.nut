@@ -195,6 +195,8 @@ let header = {
   ]
 }
 
+let pannableFormBlock = mkVerticalPannableArea(formBlock, const { size = FLEX })
+
 let supportWnd = bgShaded.__merge({
   key = {}
   size = FLEX
@@ -208,7 +210,7 @@ let supportWnd = bgShaded.__merge({
       size = FLEX
       children = requestState.get()?.id != null ? mkFinishedMsg(requestState.get())
         : requestState.get().isProcessing ? waitBlock
-        : mkVerticalPannableArea(formBlock, { size = FLEX })
+        : pannableFormBlock
     }
   ]
   animations = wndSwitchAnim

@@ -24,27 +24,30 @@ let weaponTotalH = modH + selLineSize + eqIconSize[1] / 2
 let bgGradient = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(activeColor, 0, gradTexSize / 8, gradTexSize / 2.5, gradTexSize / 2, gradTexSize / 4))
 
-let mkContentBlock = @(content, isActive, isHover) {
-  size = [SIZE_TO_CONTENT, modH]
+function mkContentBlock(content, isActive, isHover) {
+  let bgImg = bgGradient()
+  return {
+    size = [SIZE_TO_CONTENT, modH]
 
-  children = [
-    @() {
-      size = FLEX
-      rendObj = ROBJ_SOLID
-      color = tabBgColor
-      transitions = opacityTransition
-    }
-    @() {
-      watch = [isActive, isHover]
-      size = FLEX
-      rendObj = ROBJ_IMAGE
-      image = bgGradient()
-      opacity = isActive.get() ? 1
-        : isHover.get() ? 0.5
-        : 0
-      transitions = opacityTransition
-    }
-  ].append(content)
+    children = [
+      @() {
+        size = FLEX
+        rendObj = ROBJ_SOLID
+        color = tabBgColor
+        transitions = opacityTransition
+      }
+      @() {
+        watch = [isActive, isHover]
+        size = FLEX
+        rendObj = ROBJ_IMAGE
+        image = bgImg
+        opacity = isActive.get() ? 1
+          : isHover.get() ? 0.5
+          : 0
+        transitions = opacityTransition
+      }
+    ].append(content)
+  }
 }
 
 let mkIcon = @(icon, size) {
@@ -54,18 +57,22 @@ let mkIcon = @(icon, size) {
   keepAspect = KEEP_ASPECT_FIT
 }
 
-let mkEquippedIcon = @(isEquipped) @() !isEquipped.get() ? { watch = isEquipped }
-  : {
-      watch = isEquipped
-      pos = [0, eqIconSize[1] / 2]
-      size = eqIconSize
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_BOTTOM
-      children = [
-        mkIcon("ui/gameuiskin#selected_icon_plane_outline.svg", eqIconSize)
-        mkIcon("ui/gameuiskin#selected_icon_plane.svg", eqIconSize).__update({ color = 0xFF000000 })
-      ]
-    }
+function mkEquippedIcon(isEquipped) {
+  let outlineIcon = mkIcon("ui/gameuiskin#selected_icon_plane_outline.svg", eqIconSize)
+  let planeIcon = mkIcon("ui/gameuiskin#selected_icon_plane.svg", eqIconSize).__update({ color = 0xFF000000 })
+  return @() !isEquipped.get() ? { watch = isEquipped }
+    : {
+        watch = isEquipped
+        pos = [0, eqIconSize[1] / 2]
+        size = eqIconSize
+        hplace = ALIGN_CENTER
+        vplace = ALIGN_BOTTOM
+        children = [
+          outlineIcon
+          planeIcon
+        ]
+      }
+}
 
 let mkSlotText = @(text, ovr = {}) {
   size = FLEX_H
@@ -80,32 +87,37 @@ let mkWeaponDesc = @(weapon) @() mkSlotText(
   "\n".join(getWeaponShortNamesList(weapon.get()?.weapons ?? [])),
   { watch = weapon })
 
-let mkWeaponImage = @(weapon) function() {
-  if (weapon.get() == null)
-    return { watch = weapon }
-  let { iconType = "" } = weapon.get()
-  let fallbackImage = Picture($"ui/gameuiskin#icon_primary_attention.svg:{modW}:{modH}:P")
-  return {
-    watch = weapon
-    size = [modW, modH]
-    rendObj = ROBJ_IMAGE
-    image = iconType == "" ? fallbackImage
-      : Picture($"ui/gameuiskin#{iconType}.avif:{modW}:{modH}:P")
-    fallbackImage
-    keepAspect = true
-    imageHalign = ALIGN_LEFT
-    imageValign = ALIGN_BOTTOM
+function mkWeaponImage(weapon) {
+  let fallbackImg = Picture($"ui/gameuiskin#icon_primary_attention.svg:{modW}:{modH}:P")
+  return function() {
+    if (weapon.get() == null)
+      return { watch = weapon }
+    let { iconType = "" } = weapon.get()
+    return {
+      watch = weapon
+      size = [modW, modH]
+      rendObj = ROBJ_IMAGE
+      image = iconType == "" ? fallbackImg
+        : Picture($"ui/gameuiskin#{iconType}.avif:{modW}:{modH}:P")
+      fallbackImage = fallbackImg
+      keepAspect = true
+      imageHalign = ALIGN_LEFT
+      imageValign = ALIGN_BOTTOM
+    }
   }
 }
 
-let mkEmptyText = @(weapon) function() {
-  if (weapon.get() == null)
-    return mkSlotText(loc("ui/empty"), {
-      watch = weapon
-      halign = ALIGN_CENTER
-      vplace = ALIGN_CENTER
-    })
-  return { watch = weapon}
+function mkEmptyText(weapon) {
+  let emptyText = mkSlotText(loc("ui/empty"), {
+    watch = weapon
+    halign = ALIGN_CENTER
+    vplace = ALIGN_CENTER
+  })
+  return function() {
+    if (weapon.get() == null)
+      return emptyText
+    return { watch = weapon}
+  }
 }
 
 let mkLevelLockInfo = @(isLocked, reqLevel) @() {
@@ -137,20 +149,29 @@ function mkSlotWeaponContent(idx, isActive) {
   let id = Computed(@() weapon.get()?.name)
   let { mod, reqLevel, isLocked, isPurchased } = mkWeaponStates(weapon, curMods, curUnit)
   let isEquipped = Computed(@() equippedWeaponId.get() == id.get())
+  let isUnseen = Computed(@() id.get() in curUnseenMods.get()?[curSlotIdx.get()])
+  let weaponImage = mkWeaponImage(weapon)
+  let weaponDesc = mkWeaponDesc(weapon)
+  let notPurchasedShadeIcon = mkNotPurchasedShade(isPurchased)
+  let equippedIcon = mkEquippedIcon(isEquipped)
+  let levelLockInfo = mkLevelLockInfo(isLocked, reqLevel)
+  let modCost = mkModCost(isPurchased, isLocked, mod, curSlotUnitModCostCfg)
+  let unseenIndicator = mkUnseenModIndicator(isUnseen)
+  let conflictsBorder = mkConflictsBorder(mkHasConflicts(weapon, equippedWeaponsBySlots))
   return @() {
     watch = unitUpgOrPremNotInMyHangar
     key = slotWeaponKey(idx)
     size = [modW, modH]
     children = [
-      mkWeaponImage(weapon)
-      mkWeaponDesc(weapon)
-      unitUpgOrPremNotInMyHangar.get() ? null : mkNotPurchasedShade(isPurchased)
+      weaponImage
+      weaponDesc
+      unitUpgOrPremNotInMyHangar.get() ? null : notPurchasedShadeIcon
       mkEquippedFrame(isEquipped, isActive)
-      mkEquippedIcon(isEquipped)
-      unitUpgOrPremNotInMyHangar.get() ? null : mkLevelLockInfo(isLocked, reqLevel)
-      mkModCost(isPurchased, isLocked, mod, curSlotUnitModCostCfg)
-      mkUnseenModIndicator(Computed(@() id.get() in curUnseenMods.get()?[curSlotIdx.get()]))
-      mkConflictsBorder(mkHasConflicts(weapon, equippedWeaponsBySlots))
+      equippedIcon
+      unitUpgOrPremNotInMyHangar.get() ? null : levelLockInfo
+      modCost
+      unseenIndicator
+      conflictsBorder
     ]
   }
 }
@@ -185,12 +206,12 @@ function mkBeltImage(bullets) {
   let list = array(TOTAL_VIEW_BULLETS).map(@(_, i) bullets[i % bullets.len()])
 
   let bulletBeltImage = [{
-    size = [modH, modH]
+    size = modH
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#shadow.avif:{modH}:{modH}:P")
     keepAspect = true
   }].extend(list.map(@(name, idx) {
-    size = [modH, modH]
+    size = modH
     rendObj = ROBJ_IMAGE
     image = Picture($"{getBulletBeltImage(name, idx)}:{modH}:{modH}:P")
     keepAspect = true
@@ -199,7 +220,7 @@ function mkBeltImage(bullets) {
     size = FLEX
     valign = ALIGN_BOTTOM
     children = {
-      size = [modH, modH]
+      size = modH
       children = bulletBeltImage
     }
   }
@@ -212,6 +233,11 @@ function mkSlotBeltContent(idx, isActive) {
   let isEquipped = Computed(@() equippedBeltId.get() == id.get())
 
   let isUnseen = Computed(@() id.get() in curUnseenMods.get()?[curBeltsWeaponIdx.get()])
+  let notPurchasedShadeIcon = mkNotPurchasedShade(isPurchased)
+  let equippedIcon = mkEquippedIcon(isEquipped)
+  let levelLockInfo = mkLevelLockInfo(isLocked, reqLevel)
+  let modCost = mkModCost(isPurchased, isLocked, mod, curSlotUnitModCostCfg)
+  let unseenIndicator = mkUnseenModIndicator(isUnseen)
   return @() {
     watch = [belt, unitUpgOrPremNotInMyHangar]
     key = slotBeltKey(idx)
@@ -220,12 +246,12 @@ function mkSlotBeltContent(idx, isActive) {
       : [
           mkBeltImage(belt.get().bullets)
           mkSlotText(getBulletBeltShortName(belt.get().id))
-          unitUpgOrPremNotInMyHangar.get() ? null : mkNotPurchasedShade(isPurchased)
+          unitUpgOrPremNotInMyHangar.get() ? null : notPurchasedShadeIcon
           mkEquippedFrame(isEquipped, isActive)
-          mkEquippedIcon(isEquipped)
-          unitUpgOrPremNotInMyHangar.get() ? null : mkLevelLockInfo(isLocked, reqLevel)
-          mkModCost(isPurchased, isLocked, mod, curSlotUnitModCostCfg)
-          mkUnseenModIndicator(isUnseen)
+          equippedIcon
+          unitUpgOrPremNotInMyHangar.get() ? null : levelLockInfo
+          modCost
+          unseenIndicator
         ]
   }
 }

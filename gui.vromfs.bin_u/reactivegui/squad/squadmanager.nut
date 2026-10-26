@@ -6,7 +6,6 @@ from "%sqstd/timers.nut" import debounce
 from "%sqstd/underscore.nut" import isEqual
 from "%appGlobals/clientState/clientState.nut" import isInBattle
 from "%appGlobals/loginState.nut" import isMatchingOnline, isContactsLoggedIn
-from "%rGui/matching/matchingApi.nut" import matching_subscribe
 from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
 from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%appGlobals/profileStates.nut" import myUserId, myUserRealName
@@ -17,14 +16,17 @@ from "%rGui/contacts/contactPresence.nut" import onlineStatus, isContactOnline, 
 from "%rGui/contacts/contactPublicInfo.nut" import deactualizePublicInfos
 from "%rGui/gameModes/gameModeState.nut" import maxSquadSize
 from "%rGui/invitations/invitationsState.nut" import pushNotification, removeNotifyById, subscribeGroup
-from "%rGui/matching/matchingApi.nut" import matchingRpcCall, matchingRpcRegisterHandler, matchingCallRpcHandler,
-  matchingCallRpcHandlerDeffered
+from "%rGui/matching/matchingApi.nut" import matchingRequest, matchingRegisterHandler, matchingCallHandler,
+  matchingCallHandlerDeffered, matching_subscribe
 import "%rGui/notifications/negativeBalanceWarning.nut" as showNegativeBalanceWarning
+from "%rGui/style/stdColors.nut" import highlightTextColor
 
 
 let logS = log_with_prefix("[SQUAD] ")
 let { squadId, isReady, isInSquad, isSquadLeader, isInvitedToSquad, squadMembers, squadMyState,
-  squadLeaderCampaign, squadMembersOrder, squadOnline, squadLeaderQueueDataCheckTime
+  squadLeaderCampaign, squadMembersOrder, squadOnline, squadLeaderQueueDataCheckTime, squadDataRemote,
+  squadApplications, myMembershipRequests, myMembershipRequestsRemote, myMembershipRequestsInProgress,
+  squadApplicationsInProgress, squadData
 } = squadState
 
 
@@ -44,7 +46,13 @@ let myDataLocal = Watched({})
 let canFetchSquad = keepref(Computed(@() isMatchingOnline.get() && isContactsLoggedIn.get()))
 
 
-squadId.subscribe(@(_) isSquadDataInited.set(false))
+squadId.subscribe(function(v) {
+  isSquadDataInited.set(false)
+  myMembershipRequestsInProgress.set({})
+  squadApplicationsInProgress.set({})
+  if (v == null)
+    squadApplications.set([])
+})
 isInSquad.subscribe(@(v) v ? squadJoinTime.set(get_time_msec()) : null)
 squadMembers.subscribe(@(list) validateNickNames(list.keys()))
 isInvitedToSquad.subscribe(@(list) validateNickNames(list.keys()))
@@ -84,9 +92,9 @@ function logSquadError(resp) {
   return true
 }
 
-matchingRpcRegisterHandler(LOG_ERROR, logSquadError)
-matchingRpcRegisterHandler(LOG, @(result) logS(result))
-matchingRpcRegisterHandler(SHOW_ERROR, function(result) {
+matchingRegisterHandler(LOG_ERROR, logSquadError)
+matchingRegisterHandler(LOG, @(result) logS(result))
+matchingRegisterHandler(SHOW_ERROR, function(result) {
   if (logSquadError(result))
     openFMsgBox({ text = loc($"error/{result?.error_id ?? result.error}") })
 })
@@ -109,7 +117,7 @@ let updateMyData = debounce(function updateMyDataImpl() {
   let needSend = myDataLocal.get().findindex(@(value, key) !isEqualWithFloat(myDataRemote.get()?[key], value)) != null
   if (needSend) {
     logS("update my data: ", myDataLocal.get())
-    matchingRpcCall("msquad.set_member_data", myDataLocal.get(), LOG_ERROR)
+    matchingRequest("msquad.set_member_data", myDataLocal.get(), LOG_ERROR)
   }
 }, 0.1)
 
@@ -120,7 +128,7 @@ squadLeaderQueueDataCheckTime.subscribe(function(_) {
   if (!isInSquad.get() || isSquadLeader.get() || squadJoinTime.get() + 1000 > get_time_msec())
     return
   logS("update my data by squad leader queueData request: ", myDataLocal.get())
-  matchingRpcCall("msquad.set_member_data", myDataLocal.get(), LOG_ERROR)
+  matchingRequest("msquad.set_member_data", myDataLocal.get(), LOG_ERROR)
 })
 
 function linkVarToMsquad(name, var) {
@@ -157,6 +165,7 @@ function reset() {
 
   isReady.set(false)
   myDataRemote.set({})
+  squadDataRemote.set({})
 }
 
 function removeInvitedSquadmate(userId) {
@@ -174,14 +183,14 @@ function addInvited(userId) {
 }
 
 function checkDisbandEmptySquad() {
-  if (squadMembers.get().len() == 1 && !isInvitedToSquad.get().len())
-    matchingRpcCall("msquad.disband_squad", null, LOG_ERROR)
+  if (squadMembers.get().len() == 1 && !isInvitedToSquad.get().len() && squadData.get()?.squadType == null)
+    matchingRequest("msquad.disband_squad", null, LOG_ERROR)
 }
 
 function revokeSquadInvite(userId) {
   if (!removeInvitedSquadmate(userId))
     return
-  matchingRpcCall("msquad.revoke_invite", { userId }, LOG_ERROR)
+  matchingRequest("msquad.revoke_invite", { userId }, LOG_ERROR)
   checkDisbandEmptySquad()
 }
 
@@ -190,21 +199,21 @@ function revokeAllSquadInvites() {
     revokeSquadInvite(uid)
 }
 
-matchingRpcRegisterHandler("squad.onLeaveSquad", function(result, context) {
+matchingRegisterHandler("squad.onLeaveSquad", function(result, context) {
   reset()
-  matchingCallRpcHandler(context.cbExt, result)
+  matchingCallHandler(context.cbExt, result)
 })
 
 function leaveSquad(cbExt = null) {
   if (!isInSquad.get()) {
-    matchingCallRpcHandlerDeffered(cbExt, {})
+    matchingCallHandlerDeffered(cbExt, {})
     return
   }
 
   if (isSquadLeader.get() && squadMembers.get().len() == 1)
     revokeAllSquadInvites()
 
-  matchingRpcCall("msquad.leave_squad", null, { id = "squad.onLeaveSquad", cbExt })
+  matchingRequest("msquad.leave_squad", null, { id = "squad.onLeaveSquad", cbExt })
 }
 
 function applyRemoteDataToSquadMember(uid, msquad_data) {
@@ -230,19 +239,19 @@ function applyRemoteDataToSquadMember(uid, msquad_data) {
     setSelfRemoteData(data)
 }
 
-matchingRpcRegisterHandler("squad.onGetMemberData", function(result, context) {
+matchingRegisterHandler("squad.onGetMemberData", function(result, context) {
   if (!logSquadError(result))
     applyRemoteDataToSquadMember(context.userId, result)
 })
 
 let requestMemberData = @(userId)
-  matchingRpcCall("msquad.get_member_data", { userId }, { id = "squad.onGetMemberData", userId })
+  matchingRequest("msquad.get_member_data", { userId }, { id = "squad.onGetMemberData", userId })
 
 function updateSquadInfo(squad_info) {
   if (squadId.get() != squad_info.id)
     return
 
-  let { members, invites = [] } = squad_info
+  let { members, invites = [], data = null, applications = [] } = squad_info
 
   foreach (uid in members) {
     if (uid not in squadMembers.get()) {
@@ -255,6 +264,13 @@ function updateSquadInfo(squad_info) {
   foreach (uid in invites)
     addInvited(uid)
 
+  if (data != null)
+    squadDataRemote.set(data)
+
+  squadApplications.set(applications)
+  if (applications.len() > 0)
+    validateNickNames(applications)
+
   isSquadDataInited.set(true)
 }
 
@@ -264,7 +280,7 @@ function addInvite(inviterUid) {
 
   if (inviterUid.tostring() in myBlacklistUids.get()) {
     logS("got squad invite from blacklisted user ", inviterUid)
-    matchingRpcCall("msquad.reject_invite", { squadId = inviterUid }, LOG_ERROR)
+    matchingRequest("msquad.reject_invite", { squadId = inviterUid }, LOG_ERROR)
     return
   }
 
@@ -314,23 +330,23 @@ function onInviteNotify(invite_info) {
 }
 
 let inviteToSquadImpl = @(userId)
-  matchingRpcCall("msquad.invite_player", { userId }, SHOW_ERROR)
+  matchingRequest("msquad.invite_player", { userId }, SHOW_ERROR)
 
-matchingRpcRegisterHandler("squads.onInviteListReady", function(_, context) {
+matchingRegisterHandler("squads.onInviteListReady", function(_, context) {
   foreach(sender in context.invites)
     addInvite(sender)
 })
 
-matchingRpcRegisterHandler("squad.onGetInfo", function(result, context) {
+matchingRegisterHandler("squad.onGetInfo", function(result, context) {
   if (logSquadError(result)) {
     if (result?.error_id == "NOT_SQUAD_MEMBER")
       squadId.set(null)
     delayedInvites.set({})
-    matchingCallRpcHandler(context.cbExt, result)
+    matchingCallHandler(context.cbExt, result)
     return
   }
 
-  let { squad = null, invites = [] } = result
+  let { squad = null, invites = [], applications = [] } = result
   if (squad != null) {
     squadId.set(squad.id)
     updateSquadInfo(squad)
@@ -339,17 +355,20 @@ matchingRpcRegisterHandler("squad.onGetInfo", function(result, context) {
   if (invites.len() > 0)
     validateNickNames(invites, { id = "squads.onInviteListReady", invites })
 
+  myMembershipRequestsRemote.set(applications.reduce(@(res, id) res.$rawset(id, true), {}))
+  myMembershipRequestsInProgress.set({})
+
   foreach(userId, _ in delayedInvites.get())
     inviteToSquadImpl(userId)
   delayedInvites.set({})
 
-  matchingCallRpcHandler(context.cbExt, result)
+  matchingCallHandler(context.cbExt, result)
 })
 
 let fetchSquadInfo = @(cbExt = null)
-  matchingRpcCall("msquad.get_info", null, { id = "squad.onGetInfo", cbExt })
+  matchingRequest("msquad.get_info", null, { id = "squad.onGetInfo", cbExt })
 
-matchingRpcRegisterHandler("squad.onAcceptInvite", function(result, context) {
+matchingRegisterHandler("squad.onAcceptInvite", function(result, context) {
   if (logSquadError(result)) {
     let errId = result?.error_id ?? result.error
     openFMsgBox({
@@ -363,9 +382,9 @@ matchingRpcRegisterHandler("squad.onAcceptInvite", function(result, context) {
 })
 
 let acceptInviteImpl = @(sqId)
-  matchingRpcCall("msquad.accept_invite", { squadId = sqId }, { id = "squad.onAcceptInvite", squadId = sqId })
+  matchingRequest("msquad.accept_invite", { squadId = sqId }, { id = "squad.onAcceptInvite", squadId = sqId })
 
-matchingRpcRegisterHandler("squad.acceptInviteAfterLeave", function(_, context) {
+matchingRegisterHandler("squad.acceptInviteAfterLeave", function(_, context) {
   let { notify } = context
   logS("Accept invite after leave previous squad ", notify.playerUid)
   acceptInviteImpl(notify.playerUid)
@@ -376,7 +395,7 @@ subscribeFMsgBtns({
   function squadInviteNotifyReject(notify) {
     logS("Reject invite ", notify.playerUid)
     removeNotifyById(notify.id)
-    matchingRpcCall("msquad.reject_invite", { squadId = notify.playerUid }, LOG_ERROR)
+    matchingRequest("msquad.reject_invite", { squadId = notify.playerUid }, LOG_ERROR)
   }
 })
 
@@ -400,7 +419,7 @@ subscribeGroup(INVITE_ACTION_ID, {
     })
   }
 
-  onRemove = @(notify) matchingRpcCall("msquad.reject_invite", { squadId = notify.playerUid }, LOG_ERROR)
+  onRemove = @(notify) matchingRequest("msquad.reject_invite", { squadId = notify.playerUid }, LOG_ERROR)
 })
 
 function addMember(member) {
@@ -427,7 +446,7 @@ function removeMember(member) {
   else if (userId in squadMembers.get()) {
     if (isSquadLeader.get())
       openFMsgBox({ text = loc("squad/msgbox_left",
-        { name = name ?? getContactNick(allContacts.get()?[member.userId.tostring()]) }) })
+        { name = colorize(highlightTextColor, name ?? getContactNick(allContacts.get()?[member.userId.tostring()])) }) })
     squadMembers.mutate(@(v) v.$rawdelete(userId))
     setOnlineBySquad(userId, null)
     checkDisbandEmptySquad()
@@ -436,7 +455,7 @@ function removeMember(member) {
 
 subscribeFMsgBtns({
   leaveSquad = @(p) leaveSquad(p.cb)
-  dismissSquadMember = @(p) matchingRpcCall("msquad.dismiss_member", p, LOG_ERROR)
+  dismissSquadMember = @(p) matchingRequest("msquad.dismiss_member", p, LOG_ERROR)
 })
 
 let leaveSquadMessage = @(cb = null) openFMsgBox({
@@ -451,7 +470,8 @@ function dismissSquadMember(userId) {
   if (userId not in squadMembers.get())
     return
   openFMsgBox({
-    text = loc("squad/ask/remove", { name = getContactNick(allContacts.get()?[userId.tostring()]) })
+    text = loc("squad/ask/remove",
+      { name = colorize(highlightTextColor, getContactNick(allContacts.get()?[userId.tostring()])) })
     buttons = [
       { id = "cancel", isCancel = true }
       { id = "removeSquadMember", eventId = "dismissSquadMember", context = { userId }}
@@ -464,27 +484,31 @@ function dismissAllOfflineSquadmates() {
     return
   foreach (userId, _ in squadMembers.get())
     if (!isContactOnline(userId.tostring(), onlineStatus.get()))
-      matchingRpcCall("msquad.dismiss_member", { userId }, LOG_ERROR)
+      matchingRequest("msquad.dismiss_member", { userId }, LOG_ERROR)
 }
 
-matchingRpcRegisterHandler("squad.onTransferSquad", function(result, context) {
+matchingRegisterHandler("squad.onTransferSquad", function(result, context) {
   if (!logSquadError(result))
     squadId.set(context.userId)
 })
 
 let transferSquad = @(userId)
-  matchingRpcCall("msquad.transfer_squad", { userId }, { id = "squad.onTransferSquad", userId })
+  matchingRequest("msquad.transfer_squad", { userId }, { id = "squad.onTransferSquad", userId })
 
-matchingRpcRegisterHandler("squad.onCreate", function(result) {
-  if (logSquadError(result))
+matchingRegisterHandler("squad.onCreate", function(result, context) {
+  if (logSquadError(result)) {
     delayedInvites.set({})
+    matchingCallHandler(context.cbExt, result)
+  }
   else
-    fetchSquadInfo()
+    fetchSquadInfo(context.cbExt)
 })
 
-function createSquad() {
+function createSquad(cbExt = null) {
   if (!isInSquad.get())
-    matchingRpcCall("msquad.create_squad", null, "squad.onCreate")
+    matchingRequest("msquad.create_squad", null, { id = "squad.onCreate", cbExt })
+  else
+    matchingCallHandler(cbExt, { error = "Already in squad" })
 }
 
 function inviteToSquad(userId) {
@@ -525,6 +549,52 @@ function inviteToSquad(userId) {
 isInvitedToSquad.subscribe(@(invited) invited.each(
   @(_, userId) userInProgress.mutate(@(v) v.$rawdelete(userId))))
 
+matchingRegisterHandler("squad.onRequestMembership", function(result, context) {
+  if (logSquadError(result) && context.squadId in myMembershipRequestsInProgress.get())
+    myMembershipRequestsInProgress.mutate(@(v) v.$rawdelete(context.squadId))
+})
+
+function requestSquadMembership(sId) {
+  if (sId in myMembershipRequests.get())
+    return
+  myMembershipRequestsInProgress.mutate(@(v) v.$rawset(sId, true))
+  matchingRequest("msquad.request_membership", { squadId = sId }, { id = "squad.onRequestMembership", squadId = sId })
+}
+
+matchingRegisterHandler("squad.onRevokeMembershipRequest", function(result, context) {
+  if (logSquadError(result) && context.squadId in myMembershipRequestsInProgress.get())
+    myMembershipRequestsInProgress.mutate(@(v) v.$rawdelete(context.squadId))
+})
+
+function revokeSquadMembershipRequest(sId) {
+  if (myMembershipRequests.get()?[sId] != true)
+    return
+  myMembershipRequestsInProgress.mutate(@(v) v.$rawset(sId, false))
+  matchingRequest("msquad.revoke_membership_request", { squadId = sId }, { id = "squad.onRevokeMembershipRequest", squadId = sId })
+}
+
+matchingRegisterHandler("squad.onSquadMembershipDecision", function(result, context) {
+  let { userId } = context
+  squadApplicationsInProgress.mutate(@(v) v.$rawdelete(userId))
+  if (!logSquadError(result) && squadApplications.get().contains(userId))
+    squadApplications.modify(@(v) v.filter(@(id) id != userId))
+  matchingCallHandler(context.cbExt, result)
+})
+
+function acceptSquadMembership(userId, cbExt = null) {
+  if (!squadApplications.get().contains(userId) || userId in squadApplicationsInProgress.get())
+    return
+  squadApplicationsInProgress.mutate(@(v) v.$rawset(userId, false))
+  matchingRequest("msquad.accept_membership", { userId }, { id = "squad.onSquadMembershipDecision", userId, cbExt })
+}
+
+function denySquadMembership(userId, cbExt = null) {
+  if (!squadApplications.get().contains(userId) || userId in squadApplicationsInProgress.get())
+    return
+  squadApplicationsInProgress.mutate(@(v) v.$rawset(userId, false))
+  matchingRequest("msquad.deny_membership", { userId }, { id = "squad.onSquadMembershipDecision", userId, cbExt })
+}
+
 function recalcSquadOrder(_) {
   let prev = squadMembersOrder.get()
   if (squadId.get() == null) {
@@ -561,6 +631,13 @@ squadMembers.subscribe(recalcSquadOrder)
 isInvitedToSquad.subscribe(recalcSquadOrder)
 squadId.subscribe(recalcSquadOrder)
 
+function removeMyMembershipRequest(id) {
+  if (id in myMembershipRequestsRemote.get())
+    myMembershipRequestsRemote.mutate(@(v) v.$rawdelete(id))
+  if (id in myMembershipRequestsInProgress.get())
+    myMembershipRequestsInProgress.mutate(@(v) v.$rawdelete(id))
+}
+
 let msubscribes = {
   ["msquad.notify_invite"] = onInviteNotify,
   ["msquad.notify_invite_revoked"] = function(p) {
@@ -578,8 +655,13 @@ let msubscribes = {
     if (!isSquadLeader.get())
       openFMsgBox({ text = loc("squad/msgbox_disbanded") })
     else if (member != null )
-      openFMsgBox({ text = loc("squad/msgbox_left",
-        { name = member?.name ?? getContactNick(allContacts.get()?[member.userId.tostring()]) })})
+      openFMsgBox({
+        text = loc("squad/msgbox_left",
+          {
+            name = colorize(highlightTextColor,
+              member?.name ?? getContactNick(allContacts.get()?[member.userId.tostring()]))
+          })
+      })
     reset()
   },
   ["msquad.notify_member_joined"] = addMember,
@@ -604,7 +686,61 @@ let msubscribes = {
       return
     logS($"member {userId} going to online")
     setOnlineBySquad(userId, true)
-  }
+  },
+
+  ["msquad.notify_application"] = function(p) {
+    let { squad = null, replaces = null, applicant = null } = p
+
+    if (applicant == null || applicant.id == myUserId.get()) {
+      myMembershipRequestsRemote.mutate(function(v) {
+        if (replaces in v)
+          v.$rawdelete(replaces)
+        if (squad != null)
+          v[squad.id] <- true
+      })
+      if (replaces in myMembershipRequestsInProgress.get() || squad?.id in myMembershipRequestsInProgress.get())
+        myMembershipRequestsInProgress.mutate(function(v) {
+          v.$rawdelete(replaces)
+          v.$rawdelete(squad?.id)
+        })
+    }
+    else if (squad?.id == squadId.get() && !squadApplications.get().contains(applicant.id)) {
+      squadApplications.mutate(@(v) v.append(applicant.id))
+      validateNickNames([applicant.id])
+    }
+  },
+
+  ["msquad.notify_application_denied"] = function(p) {
+    let { applicant = null, squad = null } = p
+    if (applicant == null || applicant.id == myUserId.get()) {
+      if (squad == null)
+        return
+      let { id } = squad
+      if (id in myMembershipRequests.get())
+        openFMsgBox({
+          text = loc("msg/squad/application/denied",
+            { name = colorize(highlightTextColor, getContactNick(allContacts.get()?[id.tostring()])) })
+        })
+      removeMyMembershipRequest(id)
+    }
+    else if (squadApplications.get().contains(applicant.id))
+      squadApplications.modify(@(v) v.filter(@(id) id != applicant.id))
+  },
+
+  ["msquad.notify_application_revoked"] = function(p) {
+    let { id = null } = p?.applicant
+    if (squadApplications.get().contains(id))
+      squadApplications.modify(@(v) v.filter(@(i) i != id))
+    removeMyMembershipRequest(p?.squad.id)
+  },
+
+  ["msquad.notify_applications_denied"] = function(p) {
+    let { applications = [] } = p
+    if (applications.len() != 0 && squadApplications.get().len() != 0)
+      squadApplications.modify(@(v) v.filter(@(id) !applications.contains(id)))
+  },
+
+  ["msquad.notify_application_accepted"] = @(_) fetchSquadInfo(),
 }
 
 foreach (ev, handler in msubscribes)
@@ -626,9 +762,15 @@ return squadState.__merge({
   leaveSquad
   transferSquad
   dismissSquadMember
+  createSquad
 
   removeInvitedSquadmate
   revokeSquadInvite
+
+  requestSquadMembership
+  revokeSquadMembershipRequest
+  acceptSquadMembership
+  denySquadMembership
 
   userInProgress
 })

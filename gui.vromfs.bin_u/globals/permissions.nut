@@ -52,9 +52,13 @@ let defaults = {
   allow_hdr_on_ios = isDevBuild
   allow_event_gift_on_ios = isDevBuild
   can_use_freecam_in_replay = isDevBuild
+  allow_clans = isDevBuild
+  allow_clans_chat = isDevBuild
   allow_clusters_selection = isDevBuild
   can_send_hosts_reachability_to_matching = false
   external_gp_build_released = false
+  has_squad_chat = isDevBuild
+  show_daily_login_freeze = isDevBuild
 }
 
 let dbgPermissions = hardPersistWatched("dbgPermissions", {})

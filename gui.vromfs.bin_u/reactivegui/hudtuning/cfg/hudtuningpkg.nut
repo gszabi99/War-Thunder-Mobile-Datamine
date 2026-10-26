@@ -88,32 +88,32 @@ let weaponryButtonDynamicCtor = @(idx, cfg) {
   priority = Z_ORDER.BUTTON
 }, cfg)
 
-let mkRBPos = @(pos) {
+let mkRBPos = @[pure, nodiscard](pos) {
   pos
   align = ALIGN_RB
 }
 
-let mkLBPos = @(pos) {
+let mkLBPos = @[pure, nodiscard](pos) {
   pos
   align = ALIGN_LB
 }
 
-let mkRTPos = @(pos) {
+let mkRTPos = @[pure, nodiscard](pos) {
   pos
   align = ALIGN_RT
 }
 
-let mkLTPos = @(pos) {
+let mkLTPos = @[pure, nodiscard](pos) {
   pos
   align = ALIGN_LT
 }
 
-let mkCTPos = @(pos) {
+let mkCTPos = @[pure, nodiscard](pos) {
   pos
   align = ALIGN_CT
 }
 
-let mkCBPos = @(pos) {
+let mkCBPos = @[pure, nodiscard](pos) {
   pos
   align = ALIGN_CB
 }

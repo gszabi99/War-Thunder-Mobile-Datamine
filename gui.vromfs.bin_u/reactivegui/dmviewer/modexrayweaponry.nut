@@ -9,7 +9,7 @@ from "%rGui/dmViewer/modeXrayAttr.nut" import getUnitAttrValRaw
 
 
 const CANNON_CALIBER_MIN = 15
-let isCaliberCannon = @(v) v >= CANNON_CALIBER_MIN
+let isCaliberCannon = @[pure, nodiscard](v) v >= CANNON_CALIBER_MIN
 
 local torpedoSpeedMult = null
 function getTorpedoSpeedMult() {
@@ -79,7 +79,7 @@ function getWeaponLocNameCustom(weaponName, commonData) {
   return loc(shortLocId)
 }
 
-function shouldShowAmmoAndShotFreq(weaponInfoBlk, commonData) {
+function [pure, nodiscard] shouldShowAmmoAndShotFreq(weaponInfoBlk, commonData) {
   let { simUnitType } = commonData
   let isNaval = [S_SHIP, S_BOAT, S_SUBMARINE].contains(simUnitType)
   return !isNaval || weaponInfoBlk?.weaponType != "rockets"

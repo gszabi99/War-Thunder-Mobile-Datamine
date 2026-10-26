@@ -161,13 +161,14 @@ function onApply(presets, presetIdx, campaign, isCurrent) {
 
 function mkCustomIconButton(iconPath, onClick, isDisabled, hotkeys = null) {
   let mkButton = isDisabled ? iconButtonCommon : iconButtonPrimary
+  let iconOvrV = { size = iconSize }
   return @() {
     watch = isGamepad
     children = mkButton(
       iconPath,
       onClick
       {
-        iconOvr = { size = iconSize },
+        iconOvr = iconOvrV,
         ovr = {
           size = isGamepad.get() ? [btnIconSize*2, btnIconSize] : [btnIconSize, btnIconSize],
           minWidth = btnIconSize
@@ -184,11 +185,21 @@ function mkPresetButtons(presets, presetIdx) {
   let isNotSavedPreset = Computed(@() presets.get().len() != savedSlotPresets.get().len() && presetIdx.get() == -1)
   let isMaxSavedPresetAmountReached = Computed(@() presets.get().len() > maxPresetsCount.get())
   let canEdit = Computed(@() maxPresetsCount.get() <= (selectedPreset.get()?.idx ?? -1))
+  let activateBtn = textButtonPurchase(utf8ToUpper(loc("subscription/activate")),
+    @() openSubsPreview("vip", "slot_presets"),
+    {
+      ovr = {
+        size = const [FLEX, btnIconSize]
+      },
+      hotkeys = ["^J:X"]
+    }
+  )
+  let applyBtnOvr = {size = const [FLEX, btnIconSize], padding = 0, minWidth = btnMinWidth}
   let iconBtnsRow = @() {
     watch = [canEdit, isNotSavedPreset, isMaxSavedPresetAmountReached, isGamepad]
     size = isGamepad.get() ? FLEX_H : SIZE_TO_CONTENT
     flow = FLOW_HORIZONTAL
-    gap = isGamepad.get() ? {size = FLEX} : btnGap
+    gap = isGamepad.get() ? const {size = FLEX} : btnGap
     children = [
       mkCustomIconButton(
         "ui/gameuiskin#btn_trash.svg",
@@ -217,22 +228,14 @@ function mkPresetButtons(presets, presetIdx) {
     watch = [canEdit, isCurrentPreset]
     size = FLEX_H
     children = canEdit.get()
-      ? textButtonPurchase(utf8ToUpper(loc("subscription/activate")),
-          @() openSubsPreview("vip", "slot_presets"),
-          {
-            ovr = {
-              size = const [FLEX, btnIconSize]
-            },
-            hotkeys = ["^J:X"]
-          }
-        )
+      ? activateBtn
       : (isCurrentPreset.get() ? textButtonCommon : textButtonPrimary)(
           utf8ToUpper(loc("mainmenu/btnApply")),
           @() onApply(presets.get(), presetIdx.get(), curCampaign.get(), isCurrentPreset.get()),
           {
-            ovr = {size = const [FLEX, btnIconSize], padding = 0, minWidth = btnMinWidth},
+            ovr = applyBtnOvr,
             childOvr = fontTinyAccentedShaded,
-            hotkeyBlockOvr = {padding = 0}
+            hotkeyBlockOvr = const {padding = 0}
             hotkeys = ["^J:X"]
           },
         )
@@ -264,7 +267,11 @@ let header = headerGradientBg([
 
 function mkPresetUnitSlot(unit, slotIdx, presetIdx, onClick, isSelected) {
   let stateFlags = Watched(0)
-  if (unit == null)
+  if (unit == null) {
+    let emptySlotChildren = [
+      emptySlotText
+      mkUnitPlateBorder(isSelected)
+    ]
     return @() {
       watch = [isSelected, stateFlags]
       size = unitPlateSize
@@ -272,14 +279,25 @@ function mkPresetUnitSlot(unit, slotIdx, presetIdx, onClick, isSelected) {
       onClick
       rendObj = ROBJ_IMAGE
       image = bgUnit
-      sound = { click = "choose" }
-      children = [
-        emptySlotText
-        mkUnitPlateBorder(isSelected)
-      ]
+      sound = const { click = "choose" }
+      children = emptySlotChildren
     }
+  }
   let trigger = getSlotAnimTrigger(slotIdx, unit.name, presetIdx)
   let isGlowing = Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER))
+  let slotChildren = [
+    mkUnitBg(unit)
+    mkUnitSelectedGlow(unit, isGlowing)
+    mkUnitImage(unit)
+    mkUnitTexts(unit, getUnitName(unit.name))
+    mkUnitLock(unit, false)
+    mkUnitPlateBorder(isSelected)
+  ]
+  let slotAnimations = [
+    { prop = AnimProp.scale, from = const [0.8, 0.8], duration = 0.2, easing = InQuad, trigger }
+    { prop = AnimProp.scale, to = const [1.1, 1.1], duration = 0.3, delay = 0.2, easing = Blink, trigger}
+    { prop = AnimProp.opacity, from = 0.0, duration = 0.2, easing = OutQuad, trigger }
+  ]
 
   return @() {
     watch = [isSelected, stateFlags]
@@ -288,34 +306,24 @@ function mkPresetUnitSlot(unit, slotIdx, presetIdx, onClick, isSelected) {
     behavior = Behaviors.Button
     onClick
     onElemState = @(s) stateFlags.set(s)
-    clickableInfo = isSelected.get() ? { skipDescription = true } : loc("mainmenu/btnSelect")
-    sound = { click = "choose" }
-    children = [
-      mkUnitBg(unit)
-      mkUnitSelectedGlow(unit, isGlowing)
-      mkUnitImage(unit)
-      mkUnitTexts(unit, getUnitName(unit.name))
-      mkUnitLock(unit, false)
-      mkUnitPlateBorder(isSelected)
-    ]
-    transform = { pivot = [0.5, 0.5] }
-    animations = [
-      { prop = AnimProp.scale, from = [0.8, 0.8], duration = 0.2, easing = InQuad, trigger }
-      { prop = AnimProp.scale, to = [1.1, 1.1], duration = 0.3, delay = 0.2, easing = Blink, trigger}
-      { prop = AnimProp.opacity, from = 0.0, duration = 0.2, easing = OutQuad, trigger }
-    ]
+    clickableInfo = isSelected.get() ? const { skipDescription = true } : loc("mainmenu/btnSelect")
+    sound = const { click = "choose" }
+    children = slotChildren
+    transform = const { pivot = 0.5 }
+    animations = slotAnimations
   }
 }
 
 function mkPresetSlot(slot, slotIdx, presetIdx, isSelected, onClick) {
   let { name = "" } = slot
   let unit = Computed(@() campMyUnits.get()?[name])
+  let headerComp = mkSlotHeader(slot, slotIdx, isSelected)
   return @() {
     watch = unit
     flow = FLOW_VERTICAL
     valign = ALIGN_BOTTOM
     children = [
-      mkSlotHeader(slot, slotIdx, isSelected)
+      headerComp
       mkPresetUnitSlot(unit.get(), slotIdx, presetIdx, onClick, isSelected)
     ]
   }
@@ -345,82 +353,86 @@ let mkPresetSlots = @(preset, presetIdx, aPresetIdx, aSlotIdx) @() {
 }
 
 
-let mkBlockContent = @(preset, activePresetIdx, activeSlotIdx) @() {
-  watch = currentPresetUnits
-  rendObj = ROBJ_BOX
-  children = [
-    {
-      size = [presetBlockWidth, SIZE_TO_CONTENT]
-      flow = FLOW_VERTICAL
-      gap = hdpx(4)
-      padding = const [hdpx(10), hdpx(2), hdpx(2)]
-      children = [
-        {
-          flow = FLOW_HORIZONTAL
-          halign = ALIGN_CENTER
-          children = [
-            {
-              rendObj = ROBJ_TEXT
-              behavior = Behaviors.Marquee
-              delay = defMarqueeDelay
-              speed = hdpx(30)
-              maxWidth = pw(100)
-              margin = const [0, 0, 0, hdpx(4)]
-              text = $"{preset.name}{!(isEqual(preset.presetUnits, currentPresetUnits.get())) ? "" : $" ({loc("presets/current")})"}"
-            }.__update(fontTinyShaded)
-            @() {
-              watch = [maxPreset, maxPresetsPrem, maxPresetsVip]
-              size = subIconSize
-              rendObj = ROBJ_IMAGE
-              image = preset.idx >= maxPreset.get() && preset.idx < maxPresetsPrem.get()
-                  ? Picture($"ui/gameuiskin/gamercard_subs_prem.avif:{subIconSize[0]}:{subIconSize[1]}:P")
-                : preset.idx >= maxPresetsPrem.get() && preset.idx < maxPresetsVip.get()
-                  ? Picture($"ui/gameuiskin/gamercard_subs_vip.avif:{subIconSize[0]}:{subIconSize[1]}:P")
-                : null
-              keepAspect = true
-            }.__update(fontTinyShaded)
-          ]
-        }
-        mkPresetSlots(preset, preset.idx, activePresetIdx, activeSlotIdx)
-      ]
-    }
-    @() {
-      watch = maxPresetsCount
-      size = FLEX
-      children = maxPresetsCount.get() > preset.idx ? null
-        : {
-            size = FLEX
-            rendObj = ROBJ_SOLID
-            color = 0xDD000000
-            valign = ALIGN_CENTER
+function mkBlockContent(preset, activePresetIdx, activeSlotIdx) {
+  let presetSlotsRow = mkPresetSlots(preset, preset.idx, activePresetIdx, activeSlotIdx)
+  return @() {
+    watch = currentPresetUnits
+    rendObj = ROBJ_BOX
+    children = [
+      {
+        size = [presetBlockWidth, SIZE_TO_CONTENT]
+        flow = FLOW_VERTICAL
+        gap = hdpx(4)
+        padding = const [hdpx(10), hdpx(2), hdpx(2)]
+        children = [
+          {
+            flow = FLOW_HORIZONTAL
             halign = ALIGN_CENTER
-            children = {
-              rendObj = ROBJ_TEXT
-              text = utf8ToUpper(loc("subscription/available"))
-            }.__update(fontSmall)
+            children = [
+              {
+                rendObj = ROBJ_TEXT
+                behavior = Behaviors.Marquee
+                delay = defMarqueeDelay
+                speed = hdpx(30)
+                maxWidth = pw(100)
+                margin = const [0, 0, 0, hdpx(4)]
+                text = $"{preset.name}{!(isEqual(preset.presetUnits, currentPresetUnits.get())) ? "" : $" ({loc("presets/current")})"}"
+              }.__update(fontTinyShaded)
+              @() {
+                watch = [maxPreset, maxPresetsPrem, maxPresetsVip]
+                size = subIconSize
+                rendObj = ROBJ_IMAGE
+                image = preset.idx >= maxPreset.get() && preset.idx < maxPresetsPrem.get()
+                    ? Picture($"ui/gameuiskin/gamercard_subs_prem.avif:{subIconSize[0]}:{subIconSize[1]}:P")
+                  : preset.idx >= maxPresetsPrem.get() && preset.idx < maxPresetsVip.get()
+                    ? Picture($"ui/gameuiskin/gamercard_subs_vip.avif:{subIconSize[0]}:{subIconSize[1]}:P")
+                  : null
+                keepAspect = true
+              }.__update(fontTinyShaded)
+            ]
           }
-    }
-  ]
+          presetSlotsRow
+        ]
+      }
+      @() {
+        watch = maxPresetsCount
+        size = FLEX
+        children = maxPresetsCount.get() > preset.idx ? null
+          : {
+              size = FLEX
+              rendObj = ROBJ_SOLID
+              color = 0xDD000000
+              valign = ALIGN_CENTER
+              halign = ALIGN_CENTER
+              children = {
+                rendObj = ROBJ_TEXT
+                text = utf8ToUpper(loc("subscription/available"))
+              }.__update(fontSmall)
+            }
+      }
+    ]
+  }
 }
 
 
-let mkMainContent = @(presets, presetIdx, slotIdx) @() {
-  watch = presetIdx
-  size = FLEX
-  children = [
-    mkBlocksContainer(
-      presets,
-      presetIdx,
-      @(p, _) mkBlockContent(p, presetIdx, slotIdx),
-      function(idx) {
-        playerSelectedPresetIdx.set(idx)
-        playerSelectedSlotIdx.set(null)
-      },
-      presetBlockWidth,
-      hdpx(190),
-      presetBlockHeight
-    )
-  ]
+function mkMainContent(presets, presetIdx, slotIdx) {
+  let blocksContainer = mkBlocksContainer(
+    presets,
+    presetIdx,
+    @(p, _) mkBlockContent(p, presetIdx, slotIdx),
+    function(idx) {
+      playerSelectedPresetIdx.set(idx)
+      playerSelectedSlotIdx.set(null)
+    },
+    presetBlockWidth,
+    hdpx(190),
+    presetBlockHeight
+  )
+  return @() {
+    watch = presetIdx
+    size = FLEX
+    children = blocksContainer
+  }
 }
 
 function mkSlotPresetWnd() {

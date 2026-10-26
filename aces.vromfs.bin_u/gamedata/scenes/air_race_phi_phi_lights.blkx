@@ -9025,6 +9025,1462 @@
         255
       ],
       "omni_light__shadows": true
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          -5.04004,
+          0.0,
+          -1.98711
+        ],
+        [
+          0.0,
+          5.41762,
+          0.0
+        ],
+        [
+          1.98711,
+          0.0,
+          -5.04004
+        ],
+        [
+          146.297,
+          94.7266,
+          2689.34
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          2.17773,
+          0.0,
+          4.96066
+        ],
+        [
+          0.0,
+          5.41762,
+          0.0
+        ],
+        [
+          -4.96066,
+          0.0,
+          2.17773
+        ],
+        [
+          803.486,
+          125.715,
+          2662.09
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          2.17773,
+          0.0,
+          4.96066
+        ],
+        [
+          0.0,
+          5.41762,
+          0.0
+        ],
+        [
+          -4.96066,
+          0.0,
+          2.17773
+        ],
+        [
+          681.939,
+          76.3007,
+          2522.85
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          4.71387,
+          0.0,
+          -2.67022
+        ],
+        [
+          0.0,
+          5.41762,
+          0.0
+        ],
+        [
+          2.67022,
+          0.0,
+          4.71387
+        ],
+        [
+          609.454,
+          122.018,
+          2088.93
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          4.71387,
+          0.0,
+          -2.67022
+        ],
+        [
+          0.0,
+          5.41762,
+          0.0
+        ],
+        [
+          2.67022,
+          0.0,
+          4.71387
+        ],
+        [
+          1020.3,
+          150.443,
+          1786.04
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          -6.54098,
+          0.0,
+          2.33191
+        ],
+        [
+          0.0,
+          6.94422,
+          0.0
+        ],
+        [
+          -2.33191,
+          0.0,
+          -6.54098
+        ],
+        [
+          833.05,
+          111.377,
+          1503.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          3.09321,
+          0.0,
+          6.21726
+        ],
+        [
+          0.0,
+          6.94422,
+          0.0
+        ],
+        [
+          -6.21726,
+          0.0,
+          3.09321
+        ],
+        [
+          690.285,
+          37.5792,
+          1803.04
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          2.10453,
+          0.0,
+          -6.34418
+        ],
+        [
+          0.0,
+          6.68413,
+          0.0
+        ],
+        [
+          6.34418,
+          0.0,
+          2.10453
+        ],
+        [
+          1345.08,
+          108.039,
+          1691.87
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          3.03225,
+          0.0,
+          5.95677
+        ],
+        [
+          0.0,
+          6.68413,
+          0.0
+        ],
+        [
+          -5.95677,
+          0.0,
+          3.03225
+        ],
+        [
+          1786.64,
+          111.387,
+          1901.38
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          -4.92326,
+          0.0,
+          -4.52097
+        ],
+        [
+          0.0,
+          6.68413,
+          0.0
+        ],
+        [
+          4.52097,
+          0.0,
+          -4.92326
+        ],
+        [
+          1534.43,
+          95.3906,
+          1604.19
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          -3.70535,
+          0.0,
+          -3.40258
+        ],
+        [
+          0.0,
+          5.03062,
+          0.0
+        ],
+        [
+          3.40258,
+          0.0,
+          -3.70535
+        ],
+        [
+          1246.06,
+          119.321,
+          1045.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          -4.49614,
+          0.0,
+          -4.12876
+        ],
+        [
+          0.0,
+          6.10425,
+          0.0
+        ],
+        [
+          4.12876,
+          0.0,
+          -4.49614
+        ],
+        [
+          346.392,
+          42.3294,
+          719.468
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          5.04404,
+          0.0,
+          -3.43797
+        ],
+        [
+          0.0,
+          6.10425,
+          0.0
+        ],
+        [
+          3.43797,
+          0.0,
+          5.04404
+        ],
+        [
+          534.12,
+          64.1579,
+          1474.33
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          -6.11328,
+          0.0,
+          -5.61376
+        ],
+        [
+          0.0,
+          8.29979,
+          0.0
+        ],
+        [
+          5.61376,
+          0.0,
+          -6.11328
+        ],
+        [
+          1534.16,
+          57.0123,
+          1301.33
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_round_tower",
+      "transform": [
+        [
+          2.57364,
+          0.0,
+          -2.98033
+        ],
+        [
+          0.0,
+          3.93776,
+          0.0
+        ],
+        [
+          2.98033,
+          0.0,
+          2.57364
+        ],
+        [
+          839.824,
+          48.7301,
+          1126.78
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_round_tower",
+      "transform": [
+        [
+          -3.38713,
+          0.0,
+          2.00832
+        ],
+        [
+          0.0,
+          3.93776,
+          0.0
+        ],
+        [
+          -2.00832,
+          0.0,
+          -3.38713
+        ],
+        [
+          817.187,
+          48.7301,
+          810.683
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          0.501073,
+          0.0,
+          9.51549
+        ],
+        [
+          0.0,
+          9.52867,
+          0.0
+        ],
+        [
+          -9.51549,
+          0.0,
+          0.501073
+        ],
+        [
+          824.21,
+          51.222,
+          844.094
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          0.501073,
+          0.0,
+          9.51549
+        ],
+        [
+          0.0,
+          9.52867,
+          0.0
+        ],
+        [
+          -9.51549,
+          0.0,
+          0.501073
+        ],
+        [
+          826.766,
+          51.222,
+          885.825
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          0.501073,
+          0.0,
+          9.51549
+        ],
+        [
+          0.0,
+          9.52867,
+          0.0
+        ],
+        [
+          -9.51549,
+          0.0,
+          0.501073
+        ],
+        [
+          829.543,
+          51.222,
+          927.83
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          0.501073,
+          0.0,
+          9.51549
+        ],
+        [
+          0.0,
+          9.52867,
+          0.0
+        ],
+        [
+          -9.51549,
+          0.0,
+          0.501073
+        ],
+        [
+          832.052,
+          51.222,
+          969.797
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          0.501073,
+          0.0,
+          9.51549
+        ],
+        [
+          0.0,
+          9.52867,
+          0.0
+        ],
+        [
+          -9.51549,
+          0.0,
+          0.501073
+        ],
+        [
+          834.306,
+          51.222,
+          1009.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          0.501073,
+          0.0,
+          9.51549
+        ],
+        [
+          0.0,
+          9.52867,
+          0.0
+        ],
+        [
+          -9.51549,
+          0.0,
+          0.501073
+        ],
+        [
+          837.28,
+          51.222,
+          1050.88
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          0.501073,
+          0.0,
+          9.51549
+        ],
+        [
+          0.0,
+          9.52867,
+          0.0
+        ],
+        [
+          -9.51549,
+          0.0,
+          0.501073
+        ],
+        [
+          839.643,
+          51.222,
+          1092.12
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          -4.53399,
+          0.0,
+          8.38084
+        ],
+        [
+          0.0,
+          9.52867,
+          0.0
+        ],
+        [
+          -8.38084,
+          0.0,
+          -4.53399
+        ],
+        [
+          823.858,
+          44.9427,
+          1160.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          -4.53399,
+          0.0,
+          8.38084
+        ],
+        [
+          0.0,
+          9.52867,
+          0.0
+        ],
+        [
+          -8.38084,
+          0.0,
+          -4.53399
+        ],
+        [
+          803.637,
+          44.9427,
+          1197.07
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          -4.53399,
+          0.0,
+          8.38084
+        ],
+        [
+          0.0,
+          9.52867,
+          0.0
+        ],
+        [
+          -8.38084,
+          0.0,
+          -4.53399
+        ],
+        [
+          783.788,
+          44.9427,
+          1234.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          -5.40081,
+          -5.33197,
+          5.76168
+        ],
+        [
+          1.94198,
+          5.86872,
+          7.25138
+        ],
+        [
+          -7.60628,
+          5.2843,
+          -2.23969
+        ],
+        [
+          746.438,
+          35.5542,
+          1293.27
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          3.67736,
+          -4.98225,
+          7.24222
+        ],
+        [
+          -8.18118,
+          0.932029,
+          4.79533
+        ],
+        [
+          -3.21571,
+          -8.06871,
+          -3.918
+        ],
+        [
+          772.954,
+          35.5542,
+          1309.71
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          0.501073,
+          0.0,
+          9.51549
+        ],
+        [
+          0.0,
+          9.52867,
+          0.0
+        ],
+        [
+          -9.51549,
+          0.0,
+          0.501073
+        ],
+        [
+          815.621,
+          51.222,
+          774.467
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          0.501073,
+          0.0,
+          9.51549
+        ],
+        [
+          0.0,
+          9.52867,
+          0.0
+        ],
+        [
+          -9.51549,
+          0.0,
+          0.501073
+        ],
+        [
+          813.032,
+          51.222,
+          734.138
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          0.501073,
+          0.0,
+          9.51549
+        ],
+        [
+          0.0,
+          9.52867,
+          0.0
+        ],
+        [
+          -9.51549,
+          0.0,
+          0.501073
+        ],
+        [
+          810.548,
+          51.222,
+          693.268
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          -8.00959,
+          0.0,
+          -2.31563
+        ],
+        [
+          0.0,
+          8.3376,
+          0.0
+        ],
+        [
+          2.31563,
+          0.0,
+          -8.00959
+        ],
+        [
+          -36.3601,
+          54.5415,
+          1312.47
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          -0.465796,
+          0.0,
+          8.32458
+        ],
+        [
+          0.0,
+          8.3376,
+          0.0
+        ],
+        [
+          -8.32458,
+          0.0,
+          -0.465796
+        ],
+        [
+          242.553,
+          82.1565,
+          1725.02
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          -10.1262,
+          0.0,
+          -1.29872
+        ],
+        [
+          0.0,
+          10.2091,
+          0.0
+        ],
+        [
+          1.29872,
+          0.0,
+          -10.1262
+        ],
+        [
+          -101.48,
+          75.0997,
+          2320.48
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          -8.40481,
+          0.0,
+          -1.07795
+        ],
+        [
+          0.0,
+          8.47365,
+          0.0
+        ],
+        [
+          1.07795,
+          0.0,
+          -8.40481
+        ],
+        [
+          -339.02,
+          93.2974,
+          1813.13
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          -6.3525,
+          0.0,
+          2.13183
+        ],
+        [
+          0.0,
+          6.70066,
+          0.0
+        ],
+        [
+          -2.13183,
+          0.0,
+          -6.3525
+        ],
+        [
+          -196.312,
+          72.434,
+          1503.37
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_quad_tower",
+      "transform": [
+        [
+          -0.719416,
+          0.0,
+          -3.87149
+        ],
+        [
+          0.0,
+          3.93776,
+          0.0
+        ],
+        [
+          3.87149,
+          0.0,
+          -0.719416
+        ],
+        [
+          -199.768,
+          98.6763,
+          1391.4
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          8.07641,
+          0.0,
+          -0.602095
+        ],
+        [
+          0.0,
+          8.09882,
+          0.0
+        ],
+        [
+          0.602095,
+          0.0,
+          8.07641
+        ],
+        [
+          -175.276,
+          89.1475,
+          1396.62
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          8.07641,
+          0.0,
+          -0.602095
+        ],
+        [
+          0.0,
+          8.09882,
+          0.0
+        ],
+        [
+          0.602095,
+          0.0,
+          8.07641
+        ],
+        [
+          -140.504,
+          89.1475,
+          1393.61
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          8.07641,
+          0.0,
+          -0.602095
+        ],
+        [
+          0.0,
+          8.09882,
+          0.0
+        ],
+        [
+          0.602095,
+          0.0,
+          8.07641
+        ],
+        [
+          -106.149,
+          89.1475,
+          1390.97
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "stronghold_ruins_pillar",
+      "transform": [
+        [
+          4.38894,
+          -1.81904,
+          6.5589
+        ],
+        [
+          3.10086,
+          7.48168,
+          0.0
+        ],
+        [
+          -6.05911,
+          2.51126,
+          4.75097
+        ],
+        [
+          -87.2491,
+          88.9589,
+          1428.62
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          5.02376,
+          0.0,
+          7.29266
+        ],
+        [
+          0.0,
+          8.85556,
+          0.0
+        ],
+        [
+          -7.29266,
+          0.0,
+          5.02376
+        ],
+        [
+          448.648,
+          78.4604,
+          417.15
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          1.48387,
+          0.0,
+          -6.02702
+        ],
+        [
+          0.0,
+          6.20699,
+          0.0
+        ],
+        [
+          6.02702,
+          0.0,
+          1.48387
+        ],
+        [
+          -769.552,
+          79.5475,
+          1423.2
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          2.03787,
+          0.0,
+          -8.27721
+        ],
+        [
+          0.0,
+          8.52437,
+          0.0
+        ],
+        [
+          8.27721,
+          0.0,
+          2.03787
+        ],
+        [
+          -1180.93,
+          35.1389,
+          1508.48
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_chain_a",
+      "transform": [
+        [
+          2.79192,
+          0.0,
+          -11.3399
+        ],
+        [
+          0.0,
+          11.6786,
+          0.0
+        ],
+        [
+          11.3399,
+          0.0,
+          2.79192
+        ],
+        [
+          -777.8,
+          98.4104,
+          1521.49
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_chain_a",
+      "transform": [
+        [
+          2.79192,
+          0.0,
+          -11.3399
+        ],
+        [
+          0.0,
+          11.6786,
+          0.0
+        ],
+        [
+          11.3399,
+          0.0,
+          2.79192
+        ],
+        [
+          -744.799,
+          95.6452,
+          1612.84
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_chain_a",
+      "transform": [
+        [
+          2.79192,
+          0.0,
+          -11.3399
+        ],
+        [
+          0.0,
+          11.6786,
+          0.0
+        ],
+        [
+          11.3399,
+          0.0,
+          2.79192
+        ],
+        [
+          -786.332,
+          111.879,
+          1598.65
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          -0.0595744,
+          -0.00727696,
+          4.52896
+        ],
+        [
+          -0.549174,
+          4.49594,
+          0.0
+        ],
+        [
+          -4.49555,
+          -0.549127,
+          -0.0600172
+        ],
+        [
+          -780.674,
+          74.6913,
+          1488.9
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_pumpkin_single",
+      "transform": [
+        [
+          -1.57454,
+          -0.517194,
+          3.0744
+        ],
+        [
+          -0.615068,
+          3.42809,
+          0.261689
+        ],
+        [
+          -3.05633,
+          -0.42344,
+          -1.63652
+        ],
+        [
+          -779.329,
+          74.8344,
+          1494.72
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          1.15108,
+          0.0,
+          -4.67536
+        ],
+        [
+          0.0,
+          4.81497,
+          0.0
+        ],
+        [
+          4.67536,
+          0.0,
+          1.15108
+        ],
+        [
+          -1945.92,
+          123.376,
+          1620.02
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          4.25181,
+          0.0,
+          2.25965
+        ],
+        [
+          0.0,
+          4.81497,
+          0.0
+        ],
+        [
+          -2.25965,
+          0.0,
+          4.25181
+        ],
+        [
+          -2273.8,
+          136.997,
+          1804.53
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          -5.89237,
+          0.0,
+          1.84927
+        ],
+        [
+          0.0,
+          6.17573,
+          0.0
+        ],
+        [
+          -1.84927,
+          0.0,
+          -5.89237
+        ],
+        [
+          -3027.8,
+          71.4798,
+          954.745
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          -5.89237,
+          0.0,
+          1.84927
+        ],
+        [
+          0.0,
+          6.17573,
+          0.0
+        ],
+        [
+          -1.84927,
+          0.0,
+          -5.89237
+        ],
+        [
+          -3458.13,
+          74.4599,
+          587.043
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          1.78131,
+          0.0,
+          5.91327
+        ],
+        [
+          0.0,
+          6.17573,
+          0.0
+        ],
+        [
+          -5.91327,
+          0.0,
+          1.78131
+        ],
+        [
+          -3413.78,
+          58.5639,
+          852.781
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          1.78131,
+          0.0,
+          5.91327
+        ],
+        [
+          0.0,
+          6.17573,
+          0.0
+        ],
+        [
+          -5.91327,
+          0.0,
+          1.78131
+        ],
+        [
+          -3816.63,
+          58.5639,
+          1094.07
+        ]
+      ]
+    },
+    {
+      "_template": "rendinst_replicated",
+      "ri_extra__name": "halloween_tree_b",
+      "transform": [
+        [
+          5.80638,
+          0.0,
+          -4.6156
+        ],
+        [
+          0.0,
+          7.41738,
+          0.0
+        ],
+        [
+          4.6156,
+          0.0,
+          5.80638
+        ],
+        [
+          -2389.73,
+          86.511,
+          -1541.75
+        ]
+      ]
     }
   ]
 }

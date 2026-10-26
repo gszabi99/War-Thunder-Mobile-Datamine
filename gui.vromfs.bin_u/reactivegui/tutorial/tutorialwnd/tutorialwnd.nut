@@ -205,9 +205,6 @@ function tutorialWnd() {
     text = text.get()
   }
 
-  if (nextStepAfter instanceof Watched)
-    nextStepAfter.subscribe(nextStepSubscription)
-
   let boxes = []
   local shouldBeBoxes = false
   local hasValidBoxes = false
@@ -260,8 +257,12 @@ function tutorialWnd() {
       nextStepAfter == null ? null
         : {
             size = SIZE_TO_CONTENT
-            key = $"nextStepAfter{stepIdx}"
-            onAttach = @() nextStepAfter.get() ? nextStep() : null
+            key = stepData
+            function onAttach() {
+              nextStepAfter.subscribe(nextStepSubscription)
+              if (nextStepAfter.get())
+                nextStep()
+            }
             onDetach = @() nextStepAfter.unsubscribe(nextStepSubscription)
           }
     ]

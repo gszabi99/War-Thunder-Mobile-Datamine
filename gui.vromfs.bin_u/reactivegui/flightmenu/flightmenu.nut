@@ -84,7 +84,10 @@ function battleResume() {
   removeModalWindow(LEAVE_BATTLE_MSG_UID)
   eventbus_send("FlightMenu_doButtonAction", { buttonName = "Resume" })
 }
-let quitMission = @() eventbus_send("quitMission", {})
+function quitMission() {
+  removeModalWindow(LEAVE_BATTLE_MSG_UID)
+  eventbus_send("quitMission", {})
+}
 let leaveVehicle = @() eventbus_send("FlightMenu_doButtonAction", { buttonName = "LeaveTheTank" })
 
 let backBtn = backButton(battleResume,
@@ -188,21 +191,9 @@ let flightMenuControlsMask = CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
                            | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
                            | CtrlsInGui.CTRL_IN_FLIGHT_MENU
 
-let flightMenu = @() bgShaded.__merge({
-  watch = [canDeserter, battleCampaign]
-  key = needShowDevMenu
-  function onAttach() {
-    refreshSpawnInfo()
-    setInterval(1.0, refreshSpawnInfo)
-    addControlsMask("flightmenu", flightMenuControlsMask)
-  }
-  function onDetach() {
-    clearTimer(refreshSpawnInfo)
-    removeControlsMask("flightmenu")
-  }
-  size = FLEX
-  padding = saBordersRv
-  children = modalWndBg.__merge({
+function flightMenuContent() {
+  let devMenuToggleBtn = openDevMenuButton(menuBtnWidth)
+  return modalWndBg.__merge({
     size = const [flightMenuWidth, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     children = [
@@ -226,13 +217,14 @@ let flightMenu = @() bgShaded.__merge({
         ]
       })
       @() {
-        watch = [isUnitAlive, isUnitDelayed, respawnSlots, canBailoutFromFlightMenu, canUseSpare, needShowDevMenu, isPlayingReplay]
+        watch = [isUnitAlive, isUnitDelayed, respawnSlots, canBailoutFromFlightMenu, canUseSpare, needShowDevMenu,
+          isPlayingReplay]
         flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
         hplace = ALIGN_CENTER
         padding = buttonsPadding
         gap = buttonsVGap
-        children = needShowDevMenu.get() ? [devMenuContent(menuBtnWidth), openDevMenuButton(menuBtnWidth)]
+        children = needShowDevMenu.get() ? [devMenuContent(menuBtnWidth), devMenuToggleBtn]
           : [
               isUnitAlive.get() && !isUnitDelayed.get()
                   && canBailoutFromFlightMenu.get()
@@ -244,11 +236,27 @@ let flightMenu = @() bgShaded.__merge({
               gyroButtons
               !isPlayingReplay.get() ? null : restartReplayButton
               !isPlayingReplay.get() ? leaveBattleButton : leaveReplayButton
-              openDevMenuButton(menuBtnWidth)
+              devMenuToggleBtn
             ]
       }
     ]
   })
+}
+
+let flightMenu = bgShaded.__merge({
+  key = needShowDevMenu
+  size = FLEX
+  padding = saBordersRv
+  function onAttach() {
+    refreshSpawnInfo()
+    setInterval(1.0, refreshSpawnInfo)
+    addControlsMask("flightmenu", flightMenuControlsMask)
+  }
+  function onDetach() {
+    clearTimer(refreshSpawnInfo)
+    removeControlsMask("flightmenu")
+  }
+  children = flightMenuContent
   animations = wndSwitchAnim
 })
 

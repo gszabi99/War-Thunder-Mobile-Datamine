@@ -87,6 +87,8 @@
       "lapTimeFast": 330.0,
       "lapTimeFaster": 300.0,
       "lapTimeFastest": 255.0,
+      "panoramaForced": true,
+      "missileWarning": true,
       "locName": "phiphi_race_two_circles/name;missions/_v1_race_straight",
       "locDesc": "phiphi_race_two_circles/desc;missions/_v1_race_straight/desc",
       "gt_ffa": true,
@@ -98,7 +100,7 @@
       "country_allies": "ussr",
       "raceLaps": 1,
       "raceWinners": 1,
-      "raceForceCannotShoot": true,
+      "raceForceCannotShoot": false,
       "restoreType": "attempts",
       "difficulty": "",
       "optionalTakeOff": false,
@@ -132,8 +134,55 @@
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
-    "boosters_all_init": {
+    "boosters_init_check": {
       "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "is_wp_boosters_delayed",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": [
+            "boosters_all_init",
+            "boosters_01_init",
+            "boosters_03_init",
+            "boosters_04_init",
+            "boosters_05_init",
+            "boosters_06_init",
+            "boosters_07_init",
+            "boosters_08_init",
+            "boosters_09_init",
+            "boosters_10_init",
+            "boosters_11_init",
+            "boosters_12_init"
+          ]
+        }
+      },
+      "else_actions": {
+        "triggerEnable": {
+          "target": "defined_boosters_init"
+        },
+        "triggerDisable": {
+          "target": "boosters_init_check"
+        }
+      }
+    },
+    "boosters_all_init": {
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -148,7 +197,7 @@
       "conditions": {},
       "actions": {
         "missionCreatePickUps": {
-          "preset": "airSpeedBoost",
+          "preset": "airRaceRandom",
           "count": 119,
           "minDistanceFromBattleAreaEdge": 1.0,
           "target": "booster_all_squad",
@@ -158,7 +207,7 @@
       "else_actions": {}
     },
     "boosters_01_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -181,7 +230,7 @@
           "time": 1.6
         },
         "missionCreatePickUps": {
-          "preset": "airSpeedBoost",
+          "preset": "airRaceRandom",
           "count": 12,
           "minDistanceFromBattleAreaEdge": 1.0,
           "target": [
@@ -204,7 +253,7 @@
       "else_actions": {}
     },
     "boosters_03_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -227,7 +276,7 @@
           "time": 1.0
         },
         "missionCreatePickUps": {
-          "preset": "airSpeedBoost",
+          "preset": "airRaceRandom",
           "count": 6,
           "minDistanceFromBattleAreaEdge": 1.0,
           "target": [
@@ -244,7 +293,7 @@
       "else_actions": {}
     },
     "boosters_04_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -267,7 +316,7 @@
           "time": 1.6
         },
         "missionCreatePickUps": {
-          "preset": "airSpeedBoost",
+          "preset": "airRaceRandom",
           "count": 7,
           "minDistanceFromBattleAreaEdge": 1.0,
           "target": [
@@ -285,7 +334,7 @@
       "else_actions": {}
     },
     "boosters_05_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -308,7 +357,7 @@
           "time": 1.6
         },
         "missionCreatePickUps": {
-          "preset": "airSpeedBoost",
+          "preset": "airRaceRandom",
           "count": 5,
           "minDistanceFromBattleAreaEdge": 1.0,
           "target": [
@@ -324,7 +373,7 @@
       "else_actions": {}
     },
     "boosters_06_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -347,7 +396,7 @@
           "time": 1.6
         },
         "missionCreatePickUps": {
-          "preset": "airSpeedBoost",
+          "preset": "airRaceRandom",
           "count": 7,
           "minDistanceFromBattleAreaEdge": 1.0,
           "target": [
@@ -365,7 +414,7 @@
       "else_actions": {}
     },
     "boosters_07_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -379,7 +428,7 @@
       },
       "conditions": {
         "racePointGetNumPlayersPassed": {
-          "areaName": "race_wp_v1_049.13",
+          "areaName": "race_wp_v1_058",
           "numPlayers": 1
         }
       },
@@ -388,7 +437,7 @@
           "time": 1.6
         },
         "missionCreatePickUps": {
-          "preset": "airSpeedBoost",
+          "preset": "airRaceRandom",
           "count": 5,
           "minDistanceFromBattleAreaEdge": 1.0,
           "target": [
@@ -404,7 +453,7 @@
       "else_actions": {}
     },
     "boosters_08_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -418,7 +467,7 @@
       },
       "conditions": {
         "racePointGetNumPlayersPassed": {
-          "areaName": "race_wp_v1_049.06",
+          "areaName": "race_wp_v1_051",
           "numPlayers": 1
         }
       },
@@ -427,7 +476,7 @@
           "time": 2.0
         },
         "missionCreatePickUps": {
-          "preset": "airSpeedBoost",
+          "preset": "airRaceRandom",
           "count": 6,
           "minDistanceFromBattleAreaEdge": 1.0,
           "target": [
@@ -444,7 +493,7 @@
       "else_actions": {}
     },
     "boosters_09_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -458,7 +507,7 @@
       },
       "conditions": {
         "racePointGetNumPlayersPassed": {
-          "areaName": "race_wp_v1_052",
+          "areaName": "race_wp_v1_065",
           "numPlayers": 1
         }
       },
@@ -467,7 +516,7 @@
           "time": 2.0
         },
         "missionCreatePickUps": {
-          "preset": "airSpeedBoost",
+          "preset": "airRaceRandom",
           "count": 4,
           "minDistanceFromBattleAreaEdge": 1.0,
           "target": [
@@ -482,7 +531,7 @@
       "else_actions": {}
     },
     "boosters_10_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -496,7 +545,7 @@
       },
       "conditions": {
         "racePointGetNumPlayersPassed": {
-          "areaName": "race_wp_v1_056",
+          "areaName": "race_wp_v1_069",
           "numPlayers": 1
         }
       },
@@ -505,7 +554,7 @@
           "time": 2.0
         },
         "missionCreatePickUps": {
-          "preset": "airSpeedBoost",
+          "preset": "airRaceRandom",
           "count": 6,
           "minDistanceFromBattleAreaEdge": 1.0,
           "target": [
@@ -522,7 +571,7 @@
       "else_actions": {}
     },
     "boosters_11_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -536,7 +585,7 @@
       },
       "conditions": {
         "racePointGetNumPlayersPassed": {
-          "areaName": "race_wp_v1_063",
+          "areaName": "race_wp_v1_076",
           "numPlayers": 1
         }
       },
@@ -545,7 +594,7 @@
           "time": 2.0
         },
         "missionCreatePickUps": {
-          "preset": "airSpeedBoost",
+          "preset": "airRaceRandom",
           "count": 7,
           "minDistanceFromBattleAreaEdge": 1.0,
           "target": [
@@ -563,7 +612,7 @@
       "else_actions": {}
     },
     "boosters_12_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -577,7 +626,7 @@
       },
       "conditions": {
         "racePointGetNumPlayersPassed": {
-          "areaName": "race_wp_v1_071",
+          "areaName": "race_wp_v1_086",
           "numPlayers": 1
         }
       },
@@ -586,7 +635,7 @@
           "time": 2.0
         },
         "missionCreatePickUps": {
-          "preset": "airSpeedBoost",
+          "preset": "airRaceRandom",
           "count": 7,
           "minDistanceFromBattleAreaEdge": 1.0,
           "target": [
@@ -604,7 +653,7 @@
       "else_actions": {}
     },
     "boosters_13_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -618,7 +667,7 @@
       },
       "conditions": {
         "racePointGetNumPlayersPassed": {
-          "areaName": "race_wp_v1_074",
+          "areaName": "race_wp_v1_089",
           "numPlayers": 1
         }
       },
@@ -627,7 +676,7 @@
           "time": 2.0
         },
         "missionCreatePickUps": {
-          "preset": "airSpeedBoost",
+          "preset": "airRaceRandom",
           "count": 3,
           "minDistanceFromBattleAreaEdge": 1.0,
           "target": [
@@ -642,7 +691,7 @@
       "else_actions": {}
     },
     "boosters_14_init": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -656,7 +705,7 @@
       },
       "conditions": {
         "racePointGetNumPlayersPassed": {
-          "areaName": "race_wp_v1_082",
+          "areaName": "race_wp_v1_097",
           "numPlayers": 1
         }
       },
@@ -665,7 +714,7 @@
           "time": 2.0
         },
         "missionCreatePickUps": {
-          "preset": "airSpeedBoost",
+          "preset": "airRaceRandom",
           "count": 6,
           "minDistanceFromBattleAreaEdge": 1.0,
           "target": [
@@ -696,167 +745,328 @@
       },
       "conditions": {
         "racePointGetNumPlayersPassed": {
-          "areaName": "race_wp_v1_91",
+          "areaName": "race_wp_v1_106",
           "numPlayers": 1
         }
       },
       "actions": {},
       "else_actions": {}
+    },
+    "defined_boosters": {
+      "isCategory": true,
+      "is_enabled": true,
+      "defined_boosters_init": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 10.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "comment": {
+            "value": "119 and 87"
+          },
+          "missionCreatePickUps": [
+            {
+              "preset": "airRaceRandom",
+              "count": 119,
+              "minDistanceFromBattleAreaEdge": 1.0,
+              "target": "booster_all_squad",
+              "ignoreBattleArea": true
+            },
+            {
+              "preset": "airRaceRandom",
+              "count": 87,
+              "minDistanceFromBattleAreaEdge": 1.0,
+              "target": "booster_wp_squad",
+              "ignoreBattleArea": true
+            }
+          ]
+        },
+        "else_actions": {}
+      }
     }
   },
   "mission_objectives": {
     "isCategory": true,
     "is_enabled": true
   },
-  "variables": {},
+  "variables": {
+    "is_wp_boosters_delayed": false
+  },
   "dialogs": {},
   "airfields": {},
   "effects": {},
   "units": {
-    "area_squad": {
-      "name": "booster_all_squad",
-      "tm": [
-        [
-          1.0,
-          0.0,
-          0.0
+    "area_squad": [
+      {
+        "name": "booster_all_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            499.45,
+            0.0,
+            2972.0
+          ]
         ],
-        [
-          0.0,
-          1.0,
-          0.0
+        "props": {
+          "squad_members": [
+            "speed_boost_all_01",
+            "speed_boost_all_02",
+            "speed_boost_all_03",
+            "speed_boost_all_04",
+            "speed_boost_all_05",
+            "speed_boost_all_06",
+            "speed_boost_all_07",
+            "speed_boost_all_08",
+            "speed_boost_all_09",
+            "speed_boost_all_10",
+            "speed_boost_all_11",
+            "speed_boost_all_12",
+            "speed_boost_all_13",
+            "speed_boost_all_14",
+            "speed_boost_all_15",
+            "speed_boost_all_16",
+            "speed_boost_all_17",
+            "speed_boost_all_18",
+            "speed_boost_all_19",
+            "speed_boost_all_20",
+            "speed_boost_all_21",
+            "speed_boost_all_22",
+            "speed_boost_all_23",
+            "speed_boost_all_24",
+            "speed_boost_all_25",
+            "speed_boost_all_26",
+            "speed_boost_all_27",
+            "speed_boost_all_28",
+            "speed_boost_all_29",
+            "speed_boost_all_30",
+            "speed_boost_all_31",
+            "speed_boost_all_32",
+            "speed_boost_all_33",
+            "speed_boost_all_34",
+            "speed_boost_all_35",
+            "speed_boost_all_36",
+            "speed_boost_all_37",
+            "speed_boost_all_38",
+            "speed_boost_all_43",
+            "speed_boost_all_44",
+            "speed_boost_all_45",
+            "speed_boost_all_46",
+            "speed_boost_all_47",
+            "speed_boost_all_48",
+            "speed_boost_all_49",
+            "speed_boost_all_50",
+            "speed_boost_all_51",
+            "speed_boost_all_52",
+            "speed_boost_all_53",
+            "speed_boost_all_54",
+            "speed_boost_all_55",
+            "speed_boost_all_56",
+            "speed_boost_all_57",
+            "speed_boost_all_58",
+            "speed_boost_all_59",
+            "speed_boost_all_60",
+            "speed_boost_all_61",
+            "speed_boost_all_62",
+            "speed_boost_all_63",
+            "speed_boost_all_64",
+            "speed_boost_all_65",
+            "speed_boost_all_66",
+            "speed_boost_all_67",
+            "speed_boost_all_68",
+            "speed_boost_all_69",
+            "speed_boost_all_70",
+            "speed_boost_all_71",
+            "speed_boost_all_72",
+            "speed_boost_all_73",
+            "speed_boost_all_74",
+            "speed_boost_all_75",
+            "speed_boost_all_76",
+            "speed_boost_all_77",
+            "speed_boost_all_78",
+            "speed_boost_all_79",
+            "speed_boost_all_80",
+            "speed_boost_all_81",
+            "speed_boost_all_82",
+            "speed_boost_all_83",
+            "speed_boost_all_84",
+            "speed_boost_all_85",
+            "speed_boost_all_86",
+            "speed_boost_all_87",
+            "speed_boost_all_88",
+            "speed_boost_all_89",
+            "speed_boost_all_90",
+            "speed_boost_all_91",
+            "speed_boost_all_92",
+            "speed_boost_all_93",
+            "speed_boost_all_94",
+            "speed_boost_all_95",
+            "speed_boost_all_96",
+            "speed_boost_all_97",
+            "speed_boost_all_98",
+            "speed_boost_all_99",
+            "speed_boost_all_100",
+            "speed_boost_all_101",
+            "speed_boost_all_102",
+            "speed_boost_all_103",
+            "speed_boost_all_104",
+            "speed_boost_all_105",
+            "speed_boost_all_106",
+            "speed_boost_all_107",
+            "speed_boost_all_108",
+            "speed_boost_all_109",
+            "speed_boost_all_110",
+            "speed_boost_all_111",
+            "speed_boost_all_112",
+            "speed_boost_all_113",
+            "speed_boost_all_114",
+            "speed_boost_all_115",
+            "speed_boost_all_116",
+            "speed_boost_all_117",
+            "speed_boost_all_118",
+            "speed_boost_all_119"
+          ]
+        }
+      },
+      {
+        "name": "booster_wp_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            619.55,
+            0.0,
+            2991.15
+          ]
         ],
-        [
-          0.0,
-          0.0,
-          1.0
-        ],
-        [
-          499.45,
-          0.0,
-          2972.0
-        ]
-      ],
-      "props": {
-        "squad_members": [
-          "speed_boost_all_01",
-          "speed_boost_all_02",
-          "speed_boost_all_03",
-          "speed_boost_all_04",
-          "speed_boost_all_05",
-          "speed_boost_all_06",
-          "speed_boost_all_07",
-          "speed_boost_all_08",
-          "speed_boost_all_09",
-          "speed_boost_all_10",
-          "speed_boost_all_11",
-          "speed_boost_all_12",
-          "speed_boost_all_13",
-          "speed_boost_all_14",
-          "speed_boost_all_15",
-          "speed_boost_all_16",
-          "speed_boost_all_17",
-          "speed_boost_all_18",
-          "speed_boost_all_19",
-          "speed_boost_all_20",
-          "speed_boost_all_21",
-          "speed_boost_all_22",
-          "speed_boost_all_23",
-          "speed_boost_all_24",
-          "speed_boost_all_25",
-          "speed_boost_all_26",
-          "speed_boost_all_27",
-          "speed_boost_all_28",
-          "speed_boost_all_29",
-          "speed_boost_all_30",
-          "speed_boost_all_31",
-          "speed_boost_all_32",
-          "speed_boost_all_33",
-          "speed_boost_all_34",
-          "speed_boost_all_35",
-          "speed_boost_all_36",
-          "speed_boost_all_37",
-          "speed_boost_all_38",
-          "speed_boost_all_43",
-          "speed_boost_all_44",
-          "speed_boost_all_45",
-          "speed_boost_all_46",
-          "speed_boost_all_47",
-          "speed_boost_all_48",
-          "speed_boost_all_49",
-          "speed_boost_all_50",
-          "speed_boost_all_51",
-          "speed_boost_all_52",
-          "speed_boost_all_53",
-          "speed_boost_all_54",
-          "speed_boost_all_55",
-          "speed_boost_all_56",
-          "speed_boost_all_57",
-          "speed_boost_all_58",
-          "speed_boost_all_59",
-          "speed_boost_all_60",
-          "speed_boost_all_61",
-          "speed_boost_all_62",
-          "speed_boost_all_63",
-          "speed_boost_all_64",
-          "speed_boost_all_65",
-          "speed_boost_all_66",
-          "speed_boost_all_67",
-          "speed_boost_all_68",
-          "speed_boost_all_69",
-          "speed_boost_all_70",
-          "speed_boost_all_71",
-          "speed_boost_all_72",
-          "speed_boost_all_73",
-          "speed_boost_all_74",
-          "speed_boost_all_75",
-          "speed_boost_all_76",
-          "speed_boost_all_77",
-          "speed_boost_all_78",
-          "speed_boost_all_79",
-          "speed_boost_all_80",
-          "speed_boost_all_81",
-          "speed_boost_all_82",
-          "speed_boost_all_83",
-          "speed_boost_all_84",
-          "speed_boost_all_85",
-          "speed_boost_all_86",
-          "speed_boost_all_87",
-          "speed_boost_all_88",
-          "speed_boost_all_89",
-          "speed_boost_all_90",
-          "speed_boost_all_91",
-          "speed_boost_all_92",
-          "speed_boost_all_93",
-          "speed_boost_all_94",
-          "speed_boost_all_95",
-          "speed_boost_all_96",
-          "speed_boost_all_97",
-          "speed_boost_all_98",
-          "speed_boost_all_99",
-          "speed_boost_all_100",
-          "speed_boost_all_101",
-          "speed_boost_all_102",
-          "speed_boost_all_103",
-          "speed_boost_all_104",
-          "speed_boost_all_105",
-          "speed_boost_all_106",
-          "speed_boost_all_107",
-          "speed_boost_all_108",
-          "speed_boost_all_109",
-          "speed_boost_all_110",
-          "speed_boost_all_111",
-          "speed_boost_all_112",
-          "speed_boost_all_113",
-          "speed_boost_all_114",
-          "speed_boost_all_115",
-          "speed_boost_all_116",
-          "speed_boost_all_117",
-          "speed_boost_all_118",
-          "speed_boost_all_119"
-        ]
+        "props": {
+          "squad_members": [
+            "speed_boost_01_01",
+            "speed_boost_01_02",
+            "speed_boost_01_03",
+            "speed_boost_01_04",
+            "speed_boost_09_04",
+            "speed_boost_09_03",
+            "speed_boost_09_02",
+            "speed_boost_09_01",
+            "speed_boost_10_02",
+            "speed_boost_10_03",
+            "speed_boost_10_04",
+            "speed_boost_10_01",
+            "speed_boost_11_04",
+            "speed_boost_11_01",
+            "speed_boost_11_02",
+            "speed_boost_11_03",
+            "speed_boost_13_04",
+            "speed_boost_13_02",
+            "speed_boost_13_03",
+            "speed_boost_13_01",
+            "speed_boost_14_02",
+            "speed_boost_14_03",
+            "speed_boost_14_01",
+            "speed_boost_14_04",
+            "speed_boost_15_02",
+            "speed_boost_15_03",
+            "speed_boost_15_01",
+            "speed_boost_15_04",
+            "speed_boost_all_110",
+            "speed_boost_03_01",
+            "speed_boost_03_04",
+            "speed_boost_03_02",
+            "speed_boost_03_03",
+            "speed_boost_04_01",
+            "speed_boost_04_02",
+            "speed_boost_04_04",
+            "speed_boost_04_03",
+            "speed_boost_05_04",
+            "speed_boost_05_03",
+            "speed_boost_05_01",
+            "speed_boost_05_02",
+            "speed_boost_06_01",
+            "speed_boost_06_02",
+            "speed_boost_06_03",
+            "speed_boost_06_04",
+            "speed_boost_07_01",
+            "speed_boost_07_02",
+            "speed_boost_07_04",
+            "speed_boost_07_03",
+            "speed_boost_08_04",
+            "speed_boost_08_03",
+            "speed_boost_08_02",
+            "speed_boost_08_01",
+            "speed_boost_01_05",
+            "speed_boost_01_06",
+            "speed_boost_01_07",
+            "speed_boost_01_08",
+            "speed_boost_01_12",
+            "speed_boost_01_11",
+            "speed_boost_01_10",
+            "speed_boost_01_09",
+            "speed_boost_03_05",
+            "speed_boost_03_06",
+            "speed_boost_04_05",
+            "speed_boost_04_06",
+            "speed_boost_05_05",
+            "speed_boost_06_05",
+            "speed_boost_06_06",
+            "speed_boost_06_07",
+            "speed_boost_08_05",
+            "speed_boost_08_06",
+            "speed_boost_07_05",
+            "speed_boost_10_05",
+            "speed_boost_10_06",
+            "speed_boost_11_05",
+            "speed_boost_11_06",
+            "speed_boost_11_07",
+            "speed_boost_12_03",
+            "speed_boost_12_06",
+            "speed_boost_12_05",
+            "speed_boost_12_04",
+            "speed_boost_12_07",
+            "speed_boost_12_01",
+            "speed_boost_12_02",
+            "speed_boost_14_05",
+            "speed_boost_14_06",
+            "speed_boost_04_07"
+          ]
+        }
       }
-    }
+    ]
   },
   "areas": {
     "speed_boost_01_01": {
@@ -4400,9 +4610,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -5.93615,
+          -7.82238,
           0.0,
-          -5.36304
+          -1.67645
         ],
         [
           0.0,
@@ -4410,14 +4620,14 @@
           0.0
         ],
         [
-          5.36304,
+          1.67645,
           0.0,
-          -5.93615
+          -7.82238
         ],
         [
-          -3342.0,
-          20.0,
-          147.074
+          -3009.95,
+          89.05,
+          -235.45
         ]
       ],
       "objLayer": 0,
@@ -4427,9 +4637,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -5.93615,
+          -7.82238,
           0.0,
-          -5.36304
+          -1.67645
         ],
         [
           0.0,
@@ -4437,14 +4647,14 @@
           0.0
         ],
         [
-          5.36304,
+          1.67645,
           0.0,
-          -5.93615
+          -7.82238
         ],
         [
-          -3327.26,
-          20.0,
-          150.354
+          -2995.54,
+          89.05,
+          -239.979
         ]
       ],
       "objLayer": 0,
@@ -4454,9 +4664,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -5.93615,
+          -7.82238,
           0.0,
-          -5.36304
+          -1.67645
         ],
         [
           0.0,
@@ -4464,14 +4674,14 @@
           0.0
         ],
         [
-          5.36304,
+          1.67645,
           0.0,
-          -5.93615
+          -7.82238
         ],
         [
-          -3312.52,
-          20.0,
-          153.635
+          -2981.14,
+          89.05,
+          -244.508
         ]
       ],
       "objLayer": 0,
@@ -4481,9 +4691,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -5.93615,
+          -7.82238,
           0.0,
-          -5.36304
+          -1.67645
         ],
         [
           0.0,
@@ -4491,14 +4701,14 @@
           0.0
         ],
         [
-          5.36304,
+          1.67645,
           0.0,
-          -5.93615
+          -7.82238
         ],
         [
-          -3297.79,
-          20.0,
-          156.915
+          -2966.74,
+          89.05,
+          -249.032
         ]
       ],
       "objLayer": 0,
@@ -4508,9 +4718,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -5.93615,
+          -7.82238,
           0.0,
-          -5.36304
+          -1.67645
         ],
         [
           0.0,
@@ -4518,14 +4728,14 @@
           0.0
         ],
         [
-          5.36304,
+          1.67645,
           0.0,
-          -5.93615
+          -7.82238
         ],
         [
-          -3283.05,
-          20.0,
-          160.196
+          -2952.34,
+          89.05,
+          -253.561
         ]
       ],
       "objLayer": 0,
@@ -4535,9 +4745,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -5.93615,
+          -7.82238,
           0.0,
-          -5.36304
+          -1.67645
         ],
         [
           0.0,
@@ -4545,14 +4755,14 @@
           0.0
         ],
         [
-          5.36304,
+          1.67645,
           0.0,
-          -5.93615
+          -7.82238
         ],
         [
-          -3268.31,
-          20.0,
-          163.476
+          -2937.93,
+          89.05,
+          -258.09
         ]
       ],
       "objLayer": 0,
@@ -4562,9 +4772,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -5.93615,
+          -7.82238,
           0.0,
-          -5.36304
+          -1.67645
         ],
         [
           0.0,
@@ -4572,14 +4782,14 @@
           0.0
         ],
         [
-          5.36304,
+          1.67645,
           0.0,
-          -5.93615
+          -7.82238
         ],
         [
-          -3253.58,
-          20.0,
-          166.757
+          -2923.53,
+          89.05,
+          -262.614
         ]
       ],
       "objLayer": 0,
@@ -4589,9 +4799,9 @@
       "type": "Sphere",
       "tm": [
         [
-          -5.93615,
+          -7.82238,
           0.0,
-          -5.36304
+          -1.67645
         ],
         [
           0.0,
@@ -4599,14 +4809,14 @@
           0.0
         ],
         [
-          5.36304,
+          1.67645,
           0.0,
-          -5.93615
+          -7.82238
         ],
         [
-          -3238.84,
-          20.0,
-          170.037
+          -2909.13,
+          89.05,
+          -267.143
         ]
       ],
       "objLayer": 0,
@@ -6299,7 +6509,7 @@
         "enabled": true
       },
       {
-        "enabled": true
+        "enabled": false
       }
     ]
   },

@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 import "android.ads" as ads
+from "consent.googleump" import CONSENT_REQUEST_NOT_REQUIRED, CONSENT_REQUEST_OBTAINED, CONSENT_REQUEST_REQUIRED, CONSENT_REQUEST_UNKNOWN
 from "console" import register_command
 from "dagor.workcycle" import setTimeout
 from "eventbus" import eventbus_send
@@ -9,10 +10,9 @@ from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
 from "%rGui/ads/adsInternalState.nut" import debugAdsWndParams
 
 
-let ump = require_optional("consent.googleump")
-let { CONSENT_REQUEST_NOT_REQUIRED, CONSENT_REQUEST_OBTAINED, CONSENT_REQUEST_REQUIRED, CONSENT_REQUEST_UNKNOWN } = ump ?? ads
 let { ADS_STATUS_LOADED, ADS_STATUS_SHOWN, ADS_STATUS_NOT_INITED, ADS_STATUS_DISMISS, ADS_STATUS_OK
 } = ads
+
 
 let debugAdsInited = persist("debugAdsInited", @() {})
 let debugConsentRequired = hardPersistWatched("adsAndroid.debugConsentRequired", false)

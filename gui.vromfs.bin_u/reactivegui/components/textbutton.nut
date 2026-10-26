@@ -5,6 +5,7 @@ from "%rGui/components/glare.nut" import commonGlare
 from "%rGui/controlsMenu/dargHotkeys.nut" import getGamepadHotkey
 from "%rGui/controlsMenu/gamepadImgByKey.nut" import mkBtnImageComp
 from "%rGui/controlsMenu/gpActBtn.nut" import btnA
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/tooltip.nut" import mkButtonHoldTooltip, REPAY_TIME
 from "types" import Float, Table, Integer
 
@@ -14,7 +15,7 @@ let { cursorOverClickable } = gui_scene
 
 const ICON_SIZE = hdpx(70)
 const buttonsHGap = hdpx(64)
-const buttonsVGap = hdpx(20)
+const buttonsVGap = evenPx(20)
 const paddingX = hdpx(38)
 let hotkeySize = evenPx(50)
 let hotkeyGap = evenPx(10)
@@ -65,22 +66,30 @@ function mkButtonText(text, style, ovr = {}) {
     rendObj = ROBJ_TEXT
     text
   }.__update(fontBoldSmallShaded, ovr)
-  let paddingSizeX = (style?.ovr.padding[1] ?? style?.ovr.padding ?? paddingX) * 2
-  let btnWidth = style?.ovr.size[0] instanceof Float ? style.ovr.size[0]
+  let paddingSizeX = (ovr?.padding[1] ?? ovr?.padding
+      ?? style?.ovr.padding[1] ?? style?.ovr.padding
+      ?? paddingX) * 2
+  let btnWidth = ovr?.size[0] instanceof Float ? ovr.size[0]
+    : (ovr?.minWidth ?? 0) > 0 ? ovr.minWidth
+    : style?.ovr.size[0] instanceof Float ? style.ovr.size[0]
     : (style?.ovr.minWidth ?? 0) > 0 ? style.ovr.minWidth
     : defButtonMinWidth
   let txtWidth = btnWidth - paddingSizeX
 
   if (useFlexText || calc_content_size(res)[0] <= txtWidth)
     return res
-  let multTxtComp = mkButtonTextMultiline(text, {}.__update(ovr, {size = [txtWidth, SIZE_TO_CONTENT]}))
-  let contentSize = calc_content_size(multTxtComp)
-  let txtHeigth = (style?.ovr.size[1] instanceof Float ? style.ovr.size[1] : defButtonHeight) - (style?.ovr.padding[0] ?? 0) * 2
 
-  if (contentSize[0] <= txtWidth && contentSize[1] <= txtHeigth)
-    return multTxtComp
+  if (text.indexof(" ") != null) {
+    let multTxtComp = mkButtonTextMultiline(text, {}.__update(ovr, {size = [txtWidth, SIZE_TO_CONTENT]}))
+    let contentSize = calc_content_size(multTxtComp)
+    let ovrHeight = style?.ovr.size[1]
+    let txtHeight = ((ovrHeight instanceof Float || ovrHeight instanceof Integer) ? ovrHeight : defButtonHeight) 
+      - (style?.ovr.padding[0] ?? 0) * 2
+    if (contentSize[0] <= txtWidth && contentSize[1] <= txtHeight)
+      return multTxtComp
+  }
 
-  return mkButtonTextMultiline(text, ovr.__merge(fontBoldVeryTinyShaded, {size = [txtWidth, SIZE_TO_CONTENT]}))
+  return mkButtonTextMultiline(text, { ...ovr, ...fontBoldVeryTinyAccentedShaded, size = [txtWidth, SIZE_TO_CONTENT] })
 }
 
 let mkPriceTextsComp = @(text, priceComp, style = {}, flow = FLOW_VERTICAL) {
@@ -120,7 +129,7 @@ let mkFrameImg = @(text, frameId, iconSize) {
 let mergeParam = @(key, s1, s2) s1?[key] == null ? (s2?[key] ?? {})
   : s2?[key] == null ? (s1?[key] ?? {})
   : s1[key].__merge(s2[key])
-let mergeStyles = @(s1, s2) (s2?.len() ?? 0) == 0 ? s1
+let mergeStyles = @[pure, nodiscard](s1, s2) (s2?.len() ?? 0) == 0 ? s1
   : {
       ovr = mergeParam("ovr", s1, s2)
       childOvr = mergeParam("childOvr", s1, s2)
@@ -249,6 +258,8 @@ function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
     ovrExt = ovrExt.__merge({ minWidth = contentW })
 
   let key = ovrExt?.key ?? {}
+  let clickHandlers = tooltipCtor == null ? { onElemState = @(v) stateFlags.set(v), onClick }
+    : mkButtonHoldTooltip(onClick, stateFlags, key, tooltipCtor, repayTime)
   return @() {
     watch = stateFlags
     key
@@ -259,13 +270,9 @@ function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
     behavior = Behaviors.Button
     xmbNode = {}
     hotkeys
-    sound = { click = "click" }
-    clickableInfo = { skipDescription = true }
+    sound = const { click = "click" }
+    clickableInfo = const { skipDescription = true }
     brightness = stateFlags.get() & S_HOVER ? 1.25 : 1
-    transform = {
-      scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
-    }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
     children = {
       size = FLEX
       halign = ALIGN_CENTER
@@ -281,14 +288,14 @@ function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
           hasGradient ? mkGradient(gradientOvr) : null
           hasGlare ? commonGlare : null
         ].append(contentExt, addChild)
-      }.__update(gradientContainerOvr)
-    }.__update(hasBorderGradient ? borderGradientOvr : {})
-  }.__update(ovrExt, tooltipCtor == null
-      ? {
-          onElemState = @(v) stateFlags.set(v)
-          onClick
-        }
-      : mkButtonHoldTooltip(onClick, stateFlags, key, tooltipCtor, repayTime))
+        ...gradientContainerOvr
+      }
+      ...(hasBorderGradient ? borderGradientOvr : {})
+    }
+    ...mkPressTransitionScale(stateFlags.get())
+    ...ovrExt
+    ...clickHandlers
+  }
 }
 
 let textButton = @(text, onClick, style = buttonStyles.PRIMARY)

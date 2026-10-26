@@ -3,14 +3,12 @@ from "console" import register_command
 from "dagor.workcycle" import setTimeout
 from "eventbus" import eventbus_send
 import "ios.ads" as ads
+from "consent.googleump" import CONSENT_REQUEST_NOT_REQUIRED, CONSENT_REQUEST_OBTAINED, CONSENT_REQUEST_REQUIRED, CONSENT_REQUEST_UNKNOWN
 from "json" import object_to_json_string
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
 from "%rGui/ads/adsInternalState.nut" import debugAdsWndParams
 
-
-let ump = require_optional("consent.googleump")
-let { CONSENT_REQUEST_NOT_REQUIRED, CONSENT_REQUEST_OBTAINED, CONSENT_REQUEST_REQUIRED, CONSENT_REQUEST_UNKNOWN } = ump ?? ads
 
 let { ADS_STATUS_LOADED = 6, ADS_STATUS_SHOWN = 5, ADS_STATUS_NOT_INITED = 1, ADS_STATUS_DISMISS = 4, ADS_STATUS_OK = 8
 } = ads

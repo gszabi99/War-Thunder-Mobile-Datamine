@@ -3,8 +3,9 @@ from "hangar" import DM_VIEWER_NONE, DM_VIEWER_ARMOR, DM_VIEWER_XRAY
 from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_ARMOR_VIEW, BQ_X_RAY_VIEW
 from "%appGlobals/permissions.nut" import allow_dm_viewer, allow_dm_viewer_ships_armor
 from "%appGlobals/unitConst.nut" import SHIP, BOAT, SUBMARINE
-from "%rGui/dmViewer/dmViewerState.nut" import dmViewerMode
+from "%rGui/dmViewer/dmViewerState.nut" import dmViewerMode, setDmViewerMode
 from "%rGui/style/gradients.nut" import mkColoredGradientY
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/unit/hangarUnit.nut" import hasHangarUnitResources
 
 let forAnyUnit = @(_unitW) Watched(true)
@@ -45,7 +46,7 @@ function mkModeBtn(btnCfg, unitW) {
     if (bqEvent)
       sendUnitBqEventOnce(bqEvent, unitW.get()?.name)
 
-    dmViewerMode.set(mode)
+    setDmViewerMode(mode, "mode_switcher")
   }
   return @() !isVisible.get() ? { watch = isVisible } : {
     watch = [stateFlags, isSelected, isVisible]
@@ -54,10 +55,7 @@ function mkModeBtn(btnCfg, unitW) {
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
     onClick
-    sound = { click  = "click" }
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
-
+    sound = const { click  = "click" }
     children = [
       isSelected.get() ? btnBgSelected
         : (stateFlags.get() & S_HOVER) ? btnBgHovered
@@ -70,25 +68,31 @@ function mkModeBtn(btnCfg, unitW) {
         color = isSelected.get() ? darkColor
           : (stateFlags.get() & S_HOVER) ? 0xFFFFFFFF
           : lightColor
-      }.__update(fontTinyAccented)
+        ...fontTinyAccented
+      }
     ]
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
   }
 }
 
 let mkModeBtnsSet = @(unitW) {
   size = const [FLEX, plateH]
   padding = platePad
-  onDetach = @() dmViewerMode.set(DM_VIEWER_NONE)
   rendObj = ROBJ_SOLID
   color = darkColor
   flow = FLOW_HORIZONTAL
   children = btnsCfg.map(@(cfg) mkModeBtn(cfg, unitW))
 }
 
-let mkDmViewerSwitchComp = @(unitW) @() {
+function mkDmViewerSwitchComp(unitW) {
+  let modeBtnsSet = mkModeBtnsSet(unitW)
+  return @() {
     watch = [allow_dm_viewer, hasHangarUnitResources, unitW]
+    key = dmViewerMode
+    onDetach = @() setDmViewerMode(DM_VIEWER_NONE, "mode_switcher")
   }.__update(!allow_dm_viewer.get() || !hasHangarUnitResources.get() || unitW.get() == null
     ? {}
-    : mkModeBtnsSet(unitW))
+    : modeBtnsSet)
+}
 
 return mkDmViewerSwitchComp

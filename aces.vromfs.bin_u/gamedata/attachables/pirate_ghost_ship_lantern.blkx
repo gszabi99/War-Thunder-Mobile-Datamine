@@ -1,0 +1,14 @@
+{
+  "model": "jack_o_lantern",
+  "light": {
+    "type": "omni",
+    "color": [
+      139,
+      255,
+      51,
+      255
+    ],
+    "radius": 24.0,
+    "brightness": 700.0
+  }
+}

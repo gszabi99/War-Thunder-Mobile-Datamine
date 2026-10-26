@@ -72,6 +72,7 @@ let isActive = @(sf) (sf & S_ACTIVE) != 0
 
 function mkTargetButton(isNext = false) {
   let stateFlags = Watched(0)
+  let iconRotate = { rotate = isNext ? 90 : -90 }
   return @() {
     behavior = Behaviors.Button
     cameraControl = true
@@ -85,12 +86,12 @@ function mkTargetButton(isNext = false) {
     onElemState = @(v) stateFlags.set(v)
     onClick = @() switchSpectatorTarget(isNext)
     children = {
-      size = [buttonImageSize, buttonImageSize]
+      size = buttonImageSize
       rendObj = ROBJ_IMAGE
       image = switchTargetImage
       color = isActive(stateFlags.get()) ? textColorPushed
         : hudWhiteColor
-      transform = { rotate = isNext ? 90 : -90 }
+      transform = iconRotate
     }
   }
 }
@@ -152,6 +153,16 @@ let spectatorControlsBlock = {
   ]
 }
 
+let myScoresBlock = {
+  pos = [playerPlaceIconSize * 2, 0]
+  hplace = ALIGN_RIGHT
+  flow = FLOW_HORIZONTAL
+  children = [
+    mkMyPlaceUi(1)
+    mkMyScoresUi(1)
+  ]
+}
+let capZonesRow = capZonesList(1)
 let hudTopCenter = @() {
   watch = [needScoreBoard, hasTapHint, scoreBoardType]
   hplace = ALIGN_CENTER
@@ -163,15 +174,7 @@ let hudTopCenter = @() {
       children = [
         needScoreBoard.get() ? scoreBoardCfgByType?[scoreBoardType.get()].comp : null
         !scoreBoardCfgByType?[scoreBoardType.get()].addMyScores ? null
-          : {
-              pos = [playerPlaceIconSize * 2, 0]
-              hplace = ALIGN_RIGHT
-              flow = FLOW_HORIZONTAL
-              children = [
-                mkMyPlaceUi(1)
-                mkMyScoresUi(1)
-              ]
-            }
+          : myScoresBlock
       ]
     }
     !hasTapHint.get() ? null
@@ -182,15 +185,15 @@ let hudTopCenter = @() {
           maxWidth = hdpx(200)
           halign = ALIGN_CENTER
           onClick = @() isHudAttached.get() ? toggleShortcut("ID_MPSTATSCREEN") : eventbus_send("toggleMpstatscreen", {})
-          sound = { click  = "click" }
+          sound = const { click  = "click" }
           text = loc("hints/tap_for_stats")
           transform = {}
-          animations = [{
+          animations = const [{
             prop = AnimProp.scale, from = [1.0, 1.0], to = [1.1, 1.1], easing = InOutCubic
             duration = 2, play = true, loop = true
           }]
         }
-    capZonesList(1)
+    capZonesRow
   ]
 }
 

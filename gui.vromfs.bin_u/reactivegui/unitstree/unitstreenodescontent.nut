@@ -18,7 +18,7 @@ from "%rGui/style/gamercardStyle.nut" import gamercardHeight
 from "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" import mkCutBg
 from "%rGui/unit/components/unitInfoPanel.nut" import statsWidth
 from "%rGui/unit/components/unitPlateComp.nut" import unitPlateTiny
-from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
+from "%rGui/unit/unitAccess.nut" import byBlockedUnits
 from "%rGui/unit/unitsWndState.nut" import curSelectedUnit, curUnitName, visibleUnitsList
 from "%rGui/unit/unseenUnits.nut" import unseenUnits, markUnitSeen, markUnitsSeen
 from "%rGui/unitsTree/animState.nut" import animUnitWithLink, animNewUnitsAfterResearch, isBuyUnitWndOpened,
@@ -55,7 +55,7 @@ let lineWidth = evenPx(4)
 let nodePlatesSize = unitPlateTiny
 let nodePlatesGap = [(hdpx(84) / 6 + 0.5).tointeger() * 6, evenPx(56)]
 let nodeBlockSize = [nodePlatesSize[0] + nodePlatesGap[0], nodePlatesSize[1] + nodePlatesGap[1]]
-let calcAreaSize = @(hasSlotbar) [
+let calcAreaSize = @[pure, nodiscard](hasSlotbar) [
   sw(100) - 2 * saBorders[0] - flagsWidth - flagTreeOffset,
   sh(100) - 2 * saBorders[1] - gamercardHeight + gamercardOverlap - (hasSlotbar ? slotBarTreeHeight : 0)
 ]
@@ -251,107 +251,111 @@ function scrollToRank(rank, ranksCfg) {
   scrollHandler.scrollToX(scrollPosX)
 }
 
-let mkLinks = @(linksCfg) function() {
-  let { linesFrom, linesTo } = linksCfg
-  let own = campMyUnits.get()
-  let animUnlockUnit = animUnitWithLink.get()
-  let animLockUnit = animBuyRequirementsUnitId.get() ?? animResearchRequirementsUnitId.get()
-  let isAnimBuy = animBuyRequirementsInfo.get().res.len() > 0
-  let animLockReq = isAnimBuy ? animBuyRequirementsInfo.get().res : animResearchRequirements.get()
-  let animLockAncs = isAnimBuy ? animBuyRequirementsInfo.get().ancestors : animResearchRequirementsAncestors.get()
-  let canPlayAnim = canPlayAnimUnitWithLink.get()
-  let commands = []
-  let animUnlockCommands = []
-  let animLockCommands = []
+function mkLinks(linksCfg) {
+  let unlockLinkAnim = [
+    {
+      prop = AnimProp.color, duration = aTimeAppearLink, easing = @(x) sin(2 * PI * x),
+      from = linkColorLocked, to = linkColorGrey, play = true
+    }
+    {
+      prop = AnimProp.color, duration = aTimeChangeLink, delay = aTimeAppearLink, easing = OutQuad,
+      from = linkColorLocked, to = linkColor, play = true,
+      function onFinish() {
+        animUnitWithLink.set(null)
+        canPlayAnimUnitWithLink.set(false)
+        hasAnimDarkScreen.set(true)
+      }
+    }
+  ]
+  let lockLinkAnim = [{
+    prop = AnimProp.color, duration = aTimeShowRequirements, easing = CosineFull,
+    to = attractColor, play = true, loop = true
+  }]
+  return function() {
+    let { linesFrom, linesTo } = linksCfg
+    let own = campMyUnits.get()
+    let animUnlockUnit = animUnitWithLink.get()
+    let animLockUnit = animBuyRequirementsUnitId.get() ?? animResearchRequirementsUnitId.get()
+    let isAnimBuy = animBuyRequirementsInfo.get().res.len() > 0
+    let animLockReq = isAnimBuy ? animBuyRequirementsInfo.get().res : animResearchRequirements.get()
+    let animLockAncs = isAnimBuy ? animBuyRequirementsInfo.get().ancestors : animResearchRequirementsAncestors.get()
+    let canPlayAnim = canPlayAnimUnitWithLink.get()
+    let commands = []
+    let animUnlockCommands = []
+    let animLockCommands = []
 
-  foreach(reqNames, cmds in linesFrom) {
-    let isStr = reqNames instanceof String
-    let hasAccess = isStr ? reqNames in own : null != reqNames.findvalue(@(name) name in own)
-    if (hasAccess && (isStr ? animUnlockUnit == reqNames : reqNames.contains(animUnlockUnit))) {
-      if (canPlayAnim)
-        animUnlockCommands.extend(cmds)
+    foreach(reqNames, cmds in linesFrom) {
+      let isStr = reqNames instanceof String
+      let hasAccess = isStr ? reqNames in own : null != reqNames.findvalue(@(name) name in own)
+      if (hasAccess && (isStr ? animUnlockUnit == reqNames : reqNames.contains(animUnlockUnit))) {
+        if (canPlayAnim)
+          animUnlockCommands.extend(cmds)
+        else {
+          commands.append([VECTOR_COLOR, linkColorLocked])
+          commands.extend(cmds)
+        }
+      }
+      else if (!hasAccess && (isStr ? reqNames in animLockReq : null != reqNames.findvalue(@(n) n in animLockReq)))
+        animLockCommands.extend(cmds)
       else {
-        commands.append([VECTOR_COLOR, linkColorLocked])
+        commands.append([VECTOR_COLOR, hasAccess ? linkColor : linkColorLocked])
         commands.extend(cmds)
       }
     }
-    else if (!hasAccess && (isStr ? reqNames in animLockReq : null != reqNames.findvalue(@(n) n in animLockReq)))
-      animLockCommands.extend(cmds)
-    else {
-      commands.append([VECTOR_COLOR, hasAccess ? linkColor : linkColorLocked])
-      commands.extend(cmds)
-    }
-  }
 
-  foreach(cfg in linesTo) {
-    let { name, reqUnits, cmd } = cfg
-    let isList = name instanceof Array
-    let hasAccess = null != reqUnits.findvalue(@(n) n in own)
+    foreach(cfg in linesTo) {
+      let { name, reqUnits, cmd } = cfg
+      let isList = name instanceof Array
+      let hasAccess = null != reqUnits.findvalue(@(n) n in own)
 
-    if (hasAccess && reqUnits.contains(animUnlockUnit)) {
-      if (canPlayAnim)
-        animUnlockCommands.append(cmd)
+      if (hasAccess && reqUnits.contains(animUnlockUnit)) {
+        if (canPlayAnim)
+          animUnlockCommands.append(cmd)
+        else
+          commands.append([VECTOR_COLOR, linkColorLocked], cmd)
+      }
+      else if (!hasAccess
+          && (name == animLockUnit
+            || (!animLockAncs?[name] && name in animLockReq)
+            || (isList && name.contains(animLockUnit))
+            || (isList && null != name.findvalue(@(n) n in animLockReq)
+              && null != reqUnits.findvalue(@(n) n in animLockReq))))
+        animLockCommands.append(cmd)
       else
-        commands.append([VECTOR_COLOR, linkColorLocked], cmd)
+        commands.append([VECTOR_COLOR, hasAccess ? linkColor : linkColorLocked], cmd)
     }
-    else if (!hasAccess
-        && (name == animLockUnit
-          || (!animLockAncs?[name] && name in animLockReq)
-          || (isList && name.contains(animLockUnit))
-          || (isList && null != name.findvalue(@(n) n in animLockReq)
-            && null != reqUnits.findvalue(@(n) n in animLockReq))))
-      animLockCommands.append(cmd)
-    else
-      commands.append([VECTOR_COLOR, hasAccess ? linkColor : linkColorLocked], cmd)
-  }
 
-  return {
-    watch = [unitsResearchStatus, campMyUnits, animUnitWithLink, canPlayAnimUnitWithLink,
-      animBuyRequirementsUnitId, animBuyRequirementsInfo, animResearchRequirements, animResearchRequirementsUnitId,
-      animResearchRequirementsAncestors
-    ]
-    size = FLEX
-    rendObj = ROBJ_VECTOR_CANVAS
-    lineWidth
-    commands
-    children = animUnlockCommands.len() != 0
-        ? {
-          key = animUnitWithLink
-          size = FLEX
-          rendObj = ROBJ_VECTOR_CANVAS
-          lineWidth
-          commands = animUnlockCommands
-          color = linkColor
-          animations = [
-            {
-              prop = AnimProp.color, duration = aTimeAppearLink, easing = @(x) sin(2 * PI * x),
-              from = linkColorLocked, to = linkColorGrey, play = true
-            }
-            {
-              prop = AnimProp.color, duration = aTimeChangeLink, delay = aTimeAppearLink, easing = OutQuad,
-              from = linkColorLocked, to = linkColor, play = true,
-              function onFinish() {
-                animUnitWithLink.set(null)
-                canPlayAnimUnitWithLink.set(false)
-                hasAnimDarkScreen.set(true)
-              }
-            }
-          ]
-        }
-      : animLockCommands.len() != 0
-        ? {
-          key = animBuyRequirementsUnitId
-          size = FLEX
-          rendObj = ROBJ_VECTOR_CANVAS
-          lineWidth
-          commands = animLockCommands
-          color = linkColorLocked
-          animations = [{
-            prop = AnimProp.color, duration = aTimeShowRequirements, easing = CosineFull,
-            to = attractColor, play = true, loop = true
-          }]
-        }
-      : null
+    return {
+      watch = [unitsResearchStatus, campMyUnits, animUnitWithLink, canPlayAnimUnitWithLink,
+        animBuyRequirementsUnitId, animBuyRequirementsInfo, animResearchRequirements, animResearchRequirementsUnitId,
+        animResearchRequirementsAncestors
+      ]
+      size = FLEX
+      rendObj = ROBJ_VECTOR_CANVAS
+      lineWidth
+      commands
+      children = animUnlockCommands.len() != 0
+          ? {
+            key = animUnitWithLink
+            size = FLEX
+            rendObj = ROBJ_VECTOR_CANVAS
+            lineWidth
+            commands = animUnlockCommands
+            color = linkColor
+            animations = unlockLinkAnim
+          }
+        : animLockCommands.len() != 0
+          ? {
+            key = animBuyRequirementsUnitId
+            size = FLEX
+            rendObj = ROBJ_VECTOR_CANVAS
+            lineWidth
+            commands = animLockCommands
+            color = linkColorLocked
+            animations = lockLinkAnim
+          }
+        : null
+    }
   }
 }
 
@@ -809,14 +813,14 @@ function mkHasDarkScreen() {
     || isBuyUnitWndOpened.get())
   return Computed(@() !currentResearch.get() && !isSlotsAnimActive.get() && !isPlayingAnyAnim.get()
     && null != unitsResearchStatus.get().findvalue(@(val) val.canResearch == true
-      && (!(val?.hasAccessLock ?? true) || val.name not in unitsBlockedByBattleMode.get())))
+      && (!(val?.hasAccessLock ?? true) || val.name not in byBlockedUnits.get())))
 }
 
 let mkDarkScreen = @(size, positions) function() {
   let boxes = []
   foreach (name, pos in positions) {
     let { canResearch = false, hasAccessLock = true } = unitsResearchStatus.get()?[name]
-    if (canResearch && (!hasAccessLock || name not in unitsBlockedByBattleMode.get()))
+    if (canResearch && (!hasAccessLock || name not in byBlockedUnits.get()))
       boxes.append({
         l = pos[0], r = pos[0] + nodePlatesSize[0],
         t = pos[1], b = pos[1] + nodePlatesSize[1]
@@ -824,7 +828,7 @@ let mkDarkScreen = @(size, positions) function() {
   }
   return {
     size = FLEX
-    watch = [unitsResearchStatus, unitsBlockedByBattleMode]
+    watch = [unitsResearchStatus, byBlockedUnits]
     children = {
       size = FLEX
       children = mkCutBg(boxes, { l = -sw(50), r = size[0] + sw(50), t = -sh(50), b = size[1] + sh(50) })

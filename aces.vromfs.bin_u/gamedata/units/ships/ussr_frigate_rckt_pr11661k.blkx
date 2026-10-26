@@ -801,7 +801,6 @@
         "weaponType": "rockets",
         "emitter": "bone_rocket_09",
         "flash": "bone_rocket_09",
-        "ammoDpGenFmt": "bone_rocket_%02d_dm",
         "emitterGenRange": [
           9,
           10
@@ -1414,7 +1413,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_09",
               "flash": "bone_rocket_09",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 9,
                 10
@@ -2015,7 +2013,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_09",
               "flash": "bone_rocket_09",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 9,
                 10

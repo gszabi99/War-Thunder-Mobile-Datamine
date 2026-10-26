@@ -4,7 +4,7 @@ from "math" import sqrt
 
 let sqr = @(v) v * v
 
-function getDistToSegment(x1, y1, x2, y2, px, py) {
+function [pure, nodiscard] getDistToSegment(x1, y1, x2, y2, px, py) {
   if (x1 == x2 && y1 == y2)
     return sqrt(sqr(px - x1) + sqr(py - y1))
 
@@ -21,7 +21,7 @@ function getDistToSegment(x1, y1, x2, y2, px, py) {
   return sqrt(sqr(px - cx) + sqr(py - cy))
 }
 
-function getClosestSegment(points, x, y) {
+function [pure, nodiscard] getClosestSegment(points, x, y) {
   local dist = 0
   local idx = -1
   let last = points.len() - 1
@@ -35,7 +35,7 @@ function getClosestSegment(points, x, y) {
   return { dist, idx }
 }
 
-function getLineEndPoints(line, allPoints) {
+function [pure, nodiscard] getLineEndPoints(line, allPoints) {
   let { from, to, fromPos = null, toPos = null } = line
   return {
     from = fromPos ?? allPoints?[from].pos
@@ -43,7 +43,7 @@ function getLineEndPoints(line, allPoints) {
   }
 }
 
-function mkLineSplinePoints(line, allPoints) {
+function [pure, nodiscard] mkLineSplinePoints(line, allPoints) {
   let { midpoints = [] } = line
   let ends = getLineEndPoints(line, allPoints)
   let res = clone midpoints

@@ -2624,6 +2624,25 @@
           }
         }
       }
+    },
+    "tank_additional_armor": {
+      "tier": 4,
+      "modClass": "protection",
+      "invertEnableLogic": true,
+      "turn_it_off": false,
+      "effects": {
+        "rcostAddParam": 1.0405,
+        "changeMass": -450.0,
+        "hideNodes": {
+          "node": [
+            "ex_armor_body_05",
+            "ex_armor_body_l_05",
+            "ex_armor_body_l_06",
+            "ex_armor_body_l_07",
+            "ex_armor_body_r_05"
+          ]
+        }
+      }
     }
   },
   "enabled_modifications": {

@@ -14,7 +14,7 @@ from "%rGui/shop/goodsView/sharedParts.nut" import pricePlateH, mkBgParticles, m
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/gradients.nut" import mkFontGradient
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import selectColor, textColor, userlogTextColor
 
 
@@ -41,7 +41,7 @@ let mkResetSlotInfo = @(text) {
   children = [
     mkSlotBgImg()
     {
-      size = [imgSize, imgSize]
+      size = imgSize
       rendObj = ROBJ_IMAGE
       hplace = ALIGN_CENTER
       pos = [0, ph(30)]
@@ -62,15 +62,18 @@ let mkResetSlotInfo = @(text) {
   ]
 }
 
-let mkResetSlotPrice = @(content, stateFlags) @() {
-  watch = slotInProgress
-  size = const [FLEX, pricePlateH]
-  valign = ALIGN_CENTER
-  halign = ALIGN_CENTER
-  children = slotInProgress.get() != null ? spinner
-    : mkCustomButton(content,
-        @() null,
-        mergeStyles(buttonStyles.PURCHASE, { stateFlags, ovr = { size = FLEX, minWidth = 0, behavior = null } }))
+function mkResetSlotPrice(content, stateFlags) {
+  let priceBtn = mkCustomButton(content,
+    @() null,
+    mergeStyles(buttonStyles.PURCHASE, { stateFlags, ovr = const { size = FLEX, minWidth = 0, behavior = null } }))
+  return @() {
+    watch = slotInProgress
+    size = const [FLEX, pricePlateH]
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
+    children = slotInProgress.get() != null ? spinner
+      : priceBtn
+  }
 }
 
 function mkResetBlock(priceCfg, locId, pServerAction) {
@@ -91,25 +94,25 @@ function mkResetBlock(priceCfg, locId, pServerAction) {
   }
   let content = mkResetSlotInfo(loc(locId))
   let priceBlock = mkResetSlotPrice(mkCurrencyComp(price, currencyId, CS_COMMON), stateFlags)
+  let children = [
+    {
+      size = FLEX
+      children = bgParticles
+    }
+    content
+    priceBlock
+  ]
   return @() {
     watch = stateFlags
     size = [blockSize[0], SIZE_TO_CONTENT]
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
     onClick
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     flow = FLOW_VERTICAL
     gap = -hdpx(2)
-    children = [
-      {
-        size = FLEX
-        children = bgParticles
-      }
-      content
-      priceBlock
-    ]
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.98, 0.98] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+    children,
+    ...mkPressTransitionScale(stateFlags.get(), 0.98)
   }
 }
 

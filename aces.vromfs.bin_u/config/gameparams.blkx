@@ -116,9 +116,13 @@
   "warningMessageForLWS": true,
   "warningSoundForLWS": true,
   "preciseForestall": false,
+  "forestallTrackExtrapolationTicks": 2,
   "bombDropDownOnRendInstCollision": false,
   "criticalHillAngle": 25.0,
   "hillClimbingDeclineFricKoef": 25.0,
+  "criticalHillclimbResistAngle": 35.0,
+  "hillclimbResistPower": 22.0,
+  "hillclimbResistMaxSpeed": 6.0,
   "helicopterDefaultTpsOffset": [
     -2.0,
     0.0,
@@ -308,6 +312,7 @@
   "canReloadMines": false,
   "enableNoFirstMoveCooldown": true,
   "shipAiTargetMaxDist": 25000.0,
+  "timeStayInSessionForNotSpawned": 60.0,
   "timeStayOnInGameForDisconnected": 300.0,
   "useFullSectionsOnShips": false,
   "tankEngineHeatingSpd": [
@@ -382,6 +387,7 @@
   "repairByMetapartsRegen": true,
   "noRespawnSreen": true,
   "calcDamageByCrewCountInShip": false,
+  "shipWeaponsDieUnderWater": false,
   "shipTorpedoAutoDepthTraceDist": 100.0,
   "additionalAllowableDeltaForServer": 0.5,
   "useYawDeadzone": true,
@@ -411,6 +417,7 @@
   "isAdaptiveCamAngle": true,
   "adaptiveCamAngleMult": 1.0,
   "shiftUpSteerThreshold": 0.35,
+  "needDownshiftOnDDBrake": false,
   "rtsModeForAircraftCarrier": true,
   "allowSpectatingEnemiesInLastManStanding": false,
   "drawHudProgressInReplay": true,
@@ -18686,6 +18693,20 @@
     "normalY": 0.07,
     "sharpness": 3.5
   },
+  "tankAimNodesNames": {
+    "node": [
+      "cannon_breech",
+      "drive_turret_h",
+      "drive_turret_v",
+      "engine",
+      "gunner",
+      "driver",
+      "loader",
+      "machine_gunner",
+      "commander",
+      "autoloader"
+    ]
+  },
   "tankEnviCover": {
     "enabled": true,
     "snowEmitterIntensity": 0.0,
@@ -19396,6 +19417,17 @@
     "scale": 1.0,
     "volumetric_splash_tex": "water_surface_foam_tex",
     "sprite_splash_tex": "droplet_splash"
+  },
+  "rocketMotorParams": {
+    "rocketYZVelocityMultiplier": 1.0
+  },
+  "shellBallisticsParams": {
+    "useCxiMach": true,
+    "applyWingAreaMultToCxAoA": false,
+    "maxAcceleration": 6000.0,
+    "props": {
+      "CxAoA": 9.0
+    }
   },
   "default_micro_details": {
     "micro_detail": [

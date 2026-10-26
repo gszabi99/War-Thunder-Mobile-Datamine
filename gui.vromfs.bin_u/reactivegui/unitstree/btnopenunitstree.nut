@@ -3,6 +3,7 @@ from "math" import round
 from "%sqstd/string.nut" import utf8ToUpper
 from "%rGui/components/translucentButton.nut" import translucentButton
 from "%rGui/components/unseenMark.nut" import mkPriorityUnseenMarkWatch, priorityUnseenMarkFeature
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/unit/unitsDiscountState.nut" import unitDiscounts
 from "%rGui/unit/unseenUnits.nut" import unseenUnits
 from "%rGui/unitsTree/unitsTreeNodesState.nut" import unseenResearchedUnits, currentResearch
@@ -27,17 +28,19 @@ function discountTagUnitTree(dis) {
     screenOffs = markTexOffs
     texOffs = markTexOffs
     color = 0xFFD22A19
-    transform = {
-      scale = sf & S_ACTIVE ? [0.95, 0.95] : [1, 1]
-    }
     children = {
       rendObj = ROBJ_TEXT
       text = $"-{round(discountPrc)}%"
       margin = const [0, hdpx(15), 0, hdpx(5)]
       pos = const [0, hdpx(3)]
-    }.__update(fontTiny)
+      ...fontTiny
+    }
+    ...mkPressTransitionScale(sf)
   }
 }
+
+let unseenBranchMark = priorityUnseenMarkFeature.__merge(unseenMarkOvr)
+let unseenUnitsMark = mkPriorityUnseenMarkWatch(hasUnseen, unseenMarkOvr)
 
 return @() {
   watch = [hasUnseen, discount, curCampaignUnseenBranches, currentResearch]
@@ -48,10 +51,10 @@ return @() {
       },
       utf8ToUpper(loc("mainmenu/btnUnits")),
       discountTagUnitTree(discount.get()),
-      { contentOvr = { gap = hdpx(-10)} }
+      const { contentOvr = { gap = hdpx(-10)} }
     )
     curCampaignUnseenBranches.get().findvalue(@(v) v) && currentResearch.get() != null
-      ? priorityUnseenMarkFeature.__merge(unseenMarkOvr)
-      : mkPriorityUnseenMarkWatch(hasUnseen, unseenMarkOvr)
+      ? unseenBranchMark
+      : unseenUnitsMark
   ]
 }

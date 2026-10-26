@@ -17,10 +17,11 @@ const MAX_TIME = 0x7FFFFFFFFFFFFFFF
 let activeCollectionsCfg = Watched({})
 let openedPuzzleId = mkWatched(persist, "openedPuzzleId")
 let seenPiecesExt = hardPersistWatched("collections.seenPiecesExt", {})
-
+let shouldOpenCollectionsHelpWnd = mkWatched(persist, "shouldOpenCollectionsHelpWnd", false)
 let curCollectionId = Computed(@() curEvent.get() == null ? null
   : activeCollectionsCfg.get().findindex(@(c) c.meta?.event_id == curEvent.get()))
 let isPuzzleWndOpened = Computed(@() curCollectionId.get() != null && openedPuzzleId.get() != null)
+let isCollectionsHelpWndOpened = Computed(@() shouldOpenCollectionsHelpWnd.get() && curCollectionId.get() != null)
 
 function getNextTime(curTime, nextTime, start, end) {
   if (start > curTime)
@@ -155,6 +156,10 @@ return {
   curCollection = Computed(@() servProfile.get()?.collections[curCollectionId.get()])
   loadCollectionPresetOnce
   openPuzzle = @(id) openedPuzzleId.set(id)
+
+  isCollectionsHelpWndOpened
+  openCollectionsHelpWnd = @() shouldOpenCollectionsHelpWnd.set(true)
+  closeCollectionsHelpWnd = @() shouldOpenCollectionsHelpWnd.set(false)
 
   isAllCollectionPiecesReceived
 

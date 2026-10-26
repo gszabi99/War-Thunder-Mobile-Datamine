@@ -27,7 +27,9 @@ let { platformGoods, platformOffer, platformSubs, platformGoodsDebugInfo, buyPla
   : is_ios ? require("%rGui/shop/byPlatform/goodsIos.nut")
   : is_nswitch ? require("%rGui/shop/byPlatform/goodsNSwitch.nut")
   : require("%rGui/shop/byPlatform/goodsGaijin.nut")
-let { platformGoodsFromRussia = Watched(null) } = is_android && isDownloadedFromGooglePlay() ? require("%rGui/shop/byPlatform/goodsGaijin.nut") : null
+let { platformGoodsFromRussia = Watched(null), platformOfferFromRussia = Watched(null) } = isDownloadedFromGooglePlay()
+  ? require("%rGui/shop/byPlatform/goodsGaijin.nut")
+  : null
 
 let listSpecialWndCountry = ["US"]
 
@@ -49,8 +51,10 @@ function buyFromRussia(goods){
   if(needShowMsgBoxInAppPurchasesRussia.get())
     openMsgBoxInAppPurchasesFromRussia(goods)
   else{
-    local goodsRuss = platformGoodsFromRussia.get()?[goods.id] ??
-      platformGoodsFromRussia.get()?[goods.relatedGaijinId]
+    let { id, relatedGaijinId = "" } = goods
+    let offerRuss = platformOfferFromRussia.get()
+    let goodsRuss = offerRuss?.id == id ? offerRuss
+      : (platformGoodsFromRussia.get()?[id] ?? platformGoodsFromRussia.get()?[relatedGaijinId])
     local baseUrl = goodsRuss?.purchaseUrl
     if (baseUrl == null)
       return
@@ -110,7 +114,7 @@ function buyPlatformGoodsExt(goodsOrId) {
   buyGoods(goodsOrId)
 }
 
-let isGoodsOnlyInternalPurchase = @(goods) (goods?.purchaseGuids.len() ?? 0) == 0
+let isGoodsOnlyInternalPurchase = @[pure, nodiscard](goods) (goods?.purchaseGuids.len() ?? 0) == 0
 let changeSubscriptionExt = changeSubscription ?? @(subsTo, _subsFrom) activatePlatfromSubscription(subsTo)
 
 register_command(@() checkSubscriptionsDebug(), "goods.validate_subs")

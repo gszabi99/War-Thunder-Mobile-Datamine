@@ -27,6 +27,7 @@ const imgLockSize = hdpxi(60)
 const btnIconSize = hdpxi(80)
 const smallGap = hdpx(12)
 const smallPadding = hdpx(40)
+let notSelected = Watched(false)
 
 let mkDefQuestData = @(quest) {
   required = quest?.amount ?? 0
@@ -128,6 +129,8 @@ function openUnitMastery(unit) {
     return level >= maxLvl ? maxLevelStarChar
       : level
   })
+  let plateBorder = mkUnitPlateBorder(notSelected)
+  let plateLevelIconOvr = { size = evenPx(32) }
   addModalWindowWithHeader(MASTERY_WND, loc("header/masteryWnd"), {
     size = FLEX_H
     minWidth = hdpx(1100)
@@ -145,8 +148,8 @@ function openUnitMastery(unit) {
               mkUnitImage(unit.get())
               mkUnitTexts(unit.get(), getUnitName(unit.get().name))
               mkUnitInfo(unit.get())
-              mkUnitPlateBorder(Watched(false))
-              mkUnitLevel(unitLvl.get(), unit.get()?.rewardedMasteryTier ?? 0, { size = evenPx(32) })
+              plateBorder
+              mkUnitLevel(unitLvl.get(), unit.get()?.rewardedMasteryTier ?? 0, plateLevelIconOvr)
             ]
       }
       @() {
@@ -181,20 +184,21 @@ function mkBtnOpenUnitMastery(unit, styleOvr) {
     return cfg.len() > 0
   })
   let hasUnseenMark = mkHasUnseenMastery(unit)
+  let buttonChildren = [
+    mkCustomButton(btnContent,
+      @() openUnitMastery(unit),
+      mergeStyles(buttonStyles.COMMON, styleOvr))
+    @() {
+      watch = hasUnseenMark
+      margin = hdpx(10)
+      hplace = ALIGN_RIGHT
+      children = hasUnseenMark.get() ? priorityUnseenMark : null
+    }
+  ]
   return @() {
     watch = hasButton
     children = !hasButton.get() ? null
-      : [
-          mkCustomButton(btnContent,
-            @() openUnitMastery(unit),
-            mergeStyles(buttonStyles.COMMON, styleOvr))
-          @() {
-            watch = hasUnseenMark
-            margin = hdpx(10)
-            hplace = ALIGN_RIGHT
-            children = hasUnseenMark.get() ? priorityUnseenMark : null
-          }
-        ]
+      : buttonChildren
   }
 }
 

@@ -9,10 +9,13 @@ let openUnitOvr = mkWatched(persist, "openUnitOvr", null)
 let unitDetailsOpenCount = Watched(openUnitOvr.get() == null ? 0 : 1)
 let isWindowAttached = Watched(false)
 let isCustomizationWndAttached = Watched(false)
+let isUnitModAttached = mkWatched(persist, "isUnitModAttached", false)
+let isUnitModSlotsAttached = mkWatched(persist, "isUnitModSlotsAttached", false)
 let isOwnUnit = Computed(@() (openUnitOvr.get()?.canShowOwnUnit ?? true) && openUnitOvr.get()?.name in campMyUnits.get())
 
 let baseUnit = mkBaseUnit(openUnitOvr)
-let unitToShow = Computed(@() !isWindowAttached.get() && !isCustomizationWndAttached.get() ? null
+let unitToShow = Computed(@() !isWindowAttached.get() && !isCustomizationWndAttached.get()
+    && !isUnitModAttached.get() && !isUnitModSlotsAttached.get() ? null
   : baseUnit.get() == null || curSelectedUnitSkin.get() == null ? baseUnit.get()
   : baseUnit.get().__merge({ skin = curSelectedUnitSkin.get() }))
 
@@ -38,5 +41,7 @@ return {
   unitToShow
   isWindowAttached
   isCustomizationWndAttached
+  isUnitModAttached
+  isUnitModSlotsAttached
   isOwnUnit
 }

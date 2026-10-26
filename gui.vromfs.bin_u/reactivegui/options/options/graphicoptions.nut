@@ -1,19 +1,22 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/options/optCtrlType.nut" import *
+from "%rGui/options/guiOptions.nut" import OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING,
+  OPT_GRAPHICS_SCENE_RESOLUTION, OPT_AA, OPT_HDR, mkOptionValue
+import "%rGui/options/mkOptionDescFromValsList.nut" as mkOptionDescFromValsList
 import "DataBlock" as DataBlock
 from "android.platform" import hasHdrScreen
 from "blkGetters" import get_settings_blk
-from "eventbus" import eventbus_subscribe
+from "dagor.workcycle" import defer
+from "eventbus" import eventbus_subscribe, eventbus_send
 from "graphicsOptions" import get_maximum_frames_per_second, should_notify_about_restart, get_default_graphics_preset,
-  is_metalfx_upscale_supported, is_arm_asr_supported, is_fxaa_high_broken, supports_deferred_msaa, hdr_available
+  is_metalfx_upscale_supported, is_arm_asr_supported, is_fxaa_high_broken, supports_deferred_msaa, hdr_available,
+  getPaperWhiteNits, setPaperWhiteNits
 from "sysinfo" import inline_raytracing_available, get_user_system_info
 from "%sqstd/datablock.nut" import isDataBlock
 from "%sqstd/platform.nut" import is_pc, is_android, is_ios
 from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
 from "%appGlobals/permissions.nut" import allow_hdr_on_ios
-from "%rGui/options/guiOptions.nut" import OPT_GRAPHICS_QUALITY, OPT_FPS, OPT_RAYTRACING,
-  OPT_GRAPHICS_SCENE_RESOLUTION, OPT_AA, OPT_HDR, mkOptionValue
-import "%rGui/options/mkOptionDescFromValsList.nut" as mkOptionDescFromValsList
+from "%appGlobals/loginState.nut" import isSettingsAvailable
 
 
 let qualitiesListDev = ["movie"]
@@ -146,6 +149,7 @@ let optRayTracing = {
     : $"options/quality_high")
 }
 
+
 let needShowRestartNotifyList = mkWatched(persist, "needShowRestartNotifyList",
   { onLoad = should_notify_about_restart() })
 let needShowRestartNotify = Computed(@() null != needShowRestartNotifyList.get().findvalue(@(v) v))
@@ -175,9 +179,36 @@ let optHDR = {
   value = hdrValue
   list = Computed(@() !is_ios || allow_hdr_on_ios.get() ? [false, true] : [])
   valToString = @(v) loc(v ? "options/on" : "options/off")
-  function setValue(v) {
-    hdrValue.set(v)
-    needShowRestartNotifyList.mutate(@(list) list.$rawset("hdr", v != hdrStateOnStart))
+}
+
+let paperWhiteNits = Watched(getPaperWhiteNits())
+
+function pullStoredPaperWhite() {
+  let stored = getPaperWhiteNits()
+  paperWhiteNits.set(stored)
+  setPaperWhiteNits(stored, false)
+}
+if (isSettingsAvailable.get())
+  defer(pullStoredPaperWhite)
+isSettingsAvailable.subscribe(@(v) v ? defer(pullStoredPaperWhite) : null)
+
+function applyPaperWhite(v) {
+  paperWhiteNits.set(v)
+  setPaperWhiteNits(v, true)
+}
+
+let optPaperWhiteNits = {
+  locId = "options/hdr_paper_white_nits"
+  value = paperWhiteNits
+  ctrlType = OCT_SLIDER
+  visible = hdrValue
+  setValue = applyPaperWhite
+  onChangeValue = @(_) eventbus_send("saveProfile", {})
+  valToString = @(v) $"{v.tointeger()}"
+  ctrlOverride = {
+    min = 50
+    max = 1000
+    unit = 10
   }
 }
 
@@ -189,6 +220,7 @@ return {
     optFpsLimit
     inline_raytracing_available() ? optRayTracing : null
     hdrSupported ? optHDR : null
+    hdrSupported ? optPaperWhiteNits : null
     optAntiAliasing
   ]
   graphicsQuality = Computed(@() graphicsQuality.get())

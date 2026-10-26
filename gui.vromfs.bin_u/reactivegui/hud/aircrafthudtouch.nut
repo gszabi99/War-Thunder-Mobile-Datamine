@@ -109,7 +109,7 @@ let rightReloadProgress = @() {
 let airCircularIndicators = {
   behavior = Behaviors.RtPropUpdate
   update = pointCrosshairScreenPositionUpdate
-  size = [circularIndSize, circularIndSize]
+  size = circularIndSize
   pos = [ - circularIndSize * 0.5, - circularIndSize * 0.5]
   children = [
     leftOverheatProgress
@@ -132,6 +132,8 @@ let resetHitIndicatorState = function() {
   hitIndicatorStateCrit.set(false)
 }
 
+let hitBlinkAnim = [{ prop = AnimProp.opacity, to = 0.3, duration = hitIndicatorBlinkFreq, easing = CosineFull, loop = true, play = true, globalTimer = true }]
+
 let hitIndicator = @() hitIndicatorStateCount.get() != 0 ? {
   watch = [hitIndicatorStateCount, hitIndicatorStateCrit]
   size = const [hitIndicatorSize, hitIndicatorSize]
@@ -143,25 +145,25 @@ let hitIndicator = @() hitIndicatorStateCount.get() != 0 ? {
       size = FLEX
       rendObj = hitIndicatorStateCount.get() > 0 ? ROBJ_IMAGE : null
       image =  hitIndicatorStateCrit.get() ? hitIndicatorCritImage : hitIndicatorImage
-      animations = [{ prop = AnimProp.opacity, to = 0.3, duration = hitIndicatorBlinkFreq, easing = CosineFull, loop = true, play = true, globalTimer = true }]
+      animations = hitBlinkAnim
     }
     {
       size = FLEX
       rendObj = hitIndicatorStateCount.get() > 1 ? ROBJ_IMAGE : null
       image = hitIndicatorStateCrit.get() ? hitIndicatorCritImage : hitIndicatorImage
-      transform = {
+      transform = const {
         rotate = 10
       }
-      animations = [{ prop = AnimProp.opacity, to = 0.3, duration = hitIndicatorBlinkFreq, easing = CosineFull, loop = true, play = true, globalTimer = true }]
+      animations = hitBlinkAnim
     }
     {
       size = FLEX
       rendObj = hitIndicatorStateCount.get() > 2 ? ROBJ_IMAGE : null
       image =  hitIndicatorStateCrit.get() ? hitIndicatorCritImage : hitIndicatorImage
-      transform = {
+      transform = const {
         rotate = 20
       }
-      animations = [{ prop = AnimProp.opacity, to = 0.3, duration = hitIndicatorBlinkFreq, easing = CosineFull, loop = true, play = true, globalTimer = true }]
+      animations = hitBlinkAnim
     }
   ]
 } : { watch = hitIndicatorStateCount }

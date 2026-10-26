@@ -48,6 +48,7 @@ let allShortcuts = isReplayShortcuts ? {
   ID_ACTION_BAR_ITEM_11 = "J:D.Left | 5" 
   ID_ACTION_BAR_ITEM_40 = "J:D.Left | 5" 
   ID_ACTION_BAR_ITEM_6 = "J:D.Up | 7" 
+  ID_ACTION_BAR_ITEM_12 = "J:LB J:X"  
   ID_ACTION_BAR_ITEM_10 = "J:LB J:D.Right | Q" 
 
   ID_NEXT_BULLET_TYPE = "J:Y | E"
@@ -74,6 +75,10 @@ let allShortcuts = isReplayShortcuts ? {
   ID_SHIP_WEAPON_MORTAR = "J:B | C"
   ID_SHIP_WEAPON_ROCKETS = "J:Y | V"
   ID_SHIP_WEAPON_ROCKETS_SECONDARY = "J:LB J:A | B"
+  ID_SAILBOAT_GUNS_RANGE_INC = "J:D.Up | PageUp"
+  ID_SAILBOAT_GUNS_RANGE_DEC = "J:D.Down | PageDown"
+  ID_SAILBOAT_HELD_GUN_RANGE_INC = "Home"
+  ID_SAILBOAT_HELD_GUN_RANGE_DEC = "End"
 
   ID_SHIP_ACTION_BAR_ITEM_40 = "J:D.Left | 1" 
   ID_SHIP_ACTION_BAR_ITEM_14 = "J:D.Right | 2" 
@@ -112,6 +117,15 @@ let allShortcuts = isReplayShortcuts ? {
   ID_WTM_AIRCRAFT_TORPEDOES = "J:Y | C"
   ID_COUNTERMEASURES_FLARES = "J:LB J:A | Q"
 
+
+
+
+
+
+
+
+
+
   
   walker_steering_rangeMax = "A | Left"
   walker_steering_rangeMin = "D | Right"
@@ -129,6 +143,7 @@ let allShortcuts = isReplayShortcuts ? {
   ID_WALKER_ACTION_BAR_ITEM_11 = "J:D.Left | 5" 
   ID_WALKER_ACTION_BAR_ITEM_40 = "J:D.Left | 5" 
   ID_WALKER_ACTION_BAR_ITEM_6 = "J:D.Up | 7" 
+  ID_WALKER_ACTION_BAR_ITEM_12 = "J:LB J:X" 
   ID_WALKER_ACTION_BAR_ITEM_10 = "J:LB J:D.Right | Q" 
 }
 

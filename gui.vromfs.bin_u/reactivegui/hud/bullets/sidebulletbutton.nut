@@ -75,22 +75,25 @@ function mkSideBulletButton(bulletInfo, bulletCount, curIdxW, nextIdxW, bulletsI
   let isBulletBelt = Computed(@() bulletInfo.get()?.isBulletBelt)
   let btnSize = scaleEven(touchButtonSize, scale)
   let imgSize = scaleEven(imgSizeBase, scale)
+  let countFont = getScaledFont(fontVeryTinyShaded, scale)
+  let nextArrow = mkNextBulletArrow(imgSize, 180, { hplace = ALIGN_CENTER, vplace = ALIGN_TOP, pos = [0, -imgSize] })
+  let sideIcon = bulletSideIconComp(id, isCurrent, isBulletBelt, imgSize, bulletsInfoW, @() selectFn(idx))
 
   return @() bulletCount.get() == 0 ? { watch = bulletCount }
     : {
         watch = [name, bulletCount, isNext]
         size = btnSize
         children = [
-          bulletSideIconComp(id, isCurrent, isBulletBelt, imgSize, bulletsInfoW, @() selectFn(idx))
+          sideIcon
           mkBulletSideName(name.get(), scale)
           bulletCount.get() < 0 ? null
             : {
                 padding = const [0, 0, 0, hdpx(4)]
                 rendObj = ROBJ_TEXT
                 text = bulletCount.get()
-              }.__update(getScaledFont(fontVeryTinyShaded, scale))
+              }.__update(countFont)
           isNext.get()
-            ? mkNextBulletArrow(imgSize, 180, { hplace = ALIGN_CENTER, vplace = ALIGN_TOP, pos = [0, -imgSize] })
+            ? nextArrow
             : null
         ]
       }

@@ -51,7 +51,7 @@ let deviceState = Watched(null)
 let batteryCharge = Watched(getBattery())
 let isCharging = Watched(is_charging())
 
-let fps = Computed(@() min(maxFpsVal, deviceState.get()?.fps.tointeger() ?? -1))
+let fps = Computed(@() min(maxFpsVal, round(deviceState.get()?.fps ?? -1).tointeger()))
 let ping = Computed(@() min(maxPingVal, deviceState.get()?.ping.tointeger() ?? -1))
 let pl = Computed(@() min(maxPlVal, deviceState.get()?.pl.tointeger() ?? -1))
 

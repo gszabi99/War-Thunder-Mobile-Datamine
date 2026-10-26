@@ -7,12 +7,13 @@ from "%sqstd/math.nut" import lerp
 from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/activeControls.nut" import isGamepad
 from "%appGlobals/loginState.nut" import isAuthorized
+from "%appGlobals/permissions.nut" import show_daily_login_freeze
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/rewardType.nut" import G_LOOTBOX
 from "%rGui/ads/adsState.nut" import adsButtonCounter, isProviderInited
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/gradientDefComps.nut" import headerGradientBg
-from "%rGui/components/infoButton.nut" import infoEllipseButton
+from "%rGui/components/infoButton.nut" import infoEllipseButton, infoTooltipButton
 from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
 from "%rGui/components/textButton.nut" import textButtonBattle, textButtonPrimary, textButtonInactive
@@ -23,8 +24,8 @@ from "%rGui/shop/lootboxPreviewState.nut" import openLootboxPreview
 from "%rGui/shop/unseenPurchasesState.nut" import isShowUnseenDelayed
 from "%rGui/state/profilePremium.nut" import hasVip
 from "%rGui/style/backgrounds.nut" import bgShaded
-from "%rGui/style/gradients.nut" import gradRadialSq
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/gradients.nut" import gradRadialSq, mkColoredGradientY
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/unlocks/loginAwardState.nut" import loginAwardUnlock, isLoginAwardOpened, receiveLoginAward,
   isLoginAwardInProgress, hasLoginAwardByAds, showLoginAwardAds
 from "%rGui/unlocks/rewardsView/rewardsPresentation.nut" import mkRewardImage, getRewardName
@@ -32,7 +33,7 @@ from "%rGui/unlocks/unlocks.nut" import getRelativeStageData
 from "%rGui/unlocks/userstat.nut" import userstatStats, registerUnlocksSceneToUpdate
 
 
-let itemBlockSize = [ (itemWidth + itemGap) * 4 + itemBigWidth + backItemOffset, itemBigHeight ]
+let itemBlockSize = [ (itemWidth + itemGap) * 4 + itemBigWidth, itemBigHeight ]
 const imageSize = hdpxi(210)
 const bigImageSize = hdpxi(330)
 const highlightSize = hdpxi(550)
@@ -40,6 +41,7 @@ let buttonHeight = evenPx(60)
 const checkSize = hdpxi(120)
 const dayTextHeight = hdpx(50)
 const borderWidth = hdpx(4)
+const itemBgBorder = hdpx(2)
 let debugAnimState = mkWatched(persist, "debugAnimState", null)
 
 local lastPeriodStartStage = null
@@ -60,6 +62,20 @@ const receiveAnimFadeTime = 0.3
 const receiveAnimCheckTime = 0.5
 const receiveAnimCheckStartShowTime = receiveAnimItemTime - 0.1
 
+const DAYS_TO_EARN_FREEZE_POINT = 12
+const FREEZE_POINTS_EARN = 1
+const FREEZE_POINTS_SPEND = 1
+const FREEZE_POINTS_MAX = 30
+const freezePointsColor = 0xFF088BCA
+const freezeProgressColor = 0xFF00BBFF
+let freezePointsIcon = colorize(freezePointsColor, "\u2685")
+const freezeInfoPad = hdpx(10)
+let freezePointsAdded = keepref(Computed(@() !show_daily_login_freeze.get() ? 0
+  : (userstatStats.get()?.stats.daily.meta_common.daily_login_guard_added ?? 0)))
+let freezePointsSpent = keepref(Computed(@() !show_daily_login_freeze.get() ? 0
+  : (userstatStats.get()?.stats.daily.meta_common.daily_login_guard_spent ?? 0)))
+let freezePointsChangeMsgboxSeen = mkWatched(persist, "freezePointsChangeMsgboxSeen", {})
+
 local lastAnimState = -1
 local animStateStartTime = 0
 let close = @() isLoginAwardOpened.set(false)
@@ -70,6 +86,13 @@ let activePlateHotkeys = ["^J:X | Enter"]
 let mkText = @(text, style) {
   text
   rendObj = ROBJ_TEXT
+  color = activeTextColor
+}.__update(style)
+
+let mkTextarea = @(text, style) {
+  text
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
   color = activeTextColor
 }.__update(style)
 
@@ -198,11 +221,12 @@ let mkWatchAdsBtn = @(isProviderInitedV, hasVipV) (isProviderInitedV ? textButto
 )
 
 function activePlateButtonBlock() {
+  let receiveBtnBg = mkBtnBackground(receiveBtn)
   let targetButtonComponent = @() {
     watch = [loginAwardUnlock, hasLoginAwardByAds, isShowUnseenDelayed, isProviderInited, hasVip]
     size = FLEX
     children = isShowUnseenDelayed.get() ? null 
-      : loginAwardUnlock.get()?.hasReward ? mkBtnBackground(receiveBtn)
+      : loginAwardUnlock.get()?.hasReward ? receiveBtnBg
       : !hasLoginAwardByAds.get() ? null
       : mkBtnBackground(mkWatchAdsBtn(isProviderInited.get(), hasVip.get()))
   }
@@ -236,16 +260,14 @@ function previewBtnBlock() {
   return (isShowUnseenDelayed.get() || loginAwardUnlock.get()?.hasReward) ? res : res.__update({
     hplace = ALIGN_LEFT
     margin = const [dayTextHeight + smallBtnMargin, 0, 0, smallBtnMargin]
-    children = [
-      infoEllipseButton(
-        null,
-        {
-          size = smallBtnHeight
-          eventPassThrough = true
-        },
-        fontSmallAccented
-      )
-    ]
+    children = infoEllipseButton(
+      null,
+      {
+        size = smallBtnHeight
+        eventPassThrough = true
+      },
+      fontSmallAccented
+    )
   })
 }
 
@@ -328,7 +350,7 @@ function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, a
       children = mkRewardImage(reward.get(), slotType == SLOT_HUGE ? bigImageSize : imageSize)
       transform = {}
       animations = !needReceiveAnim ? null
-        : [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.25, 1.25], duration = receiveAnimItemTime,
+        : const [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.25, 1.25], duration = receiveAnimItemTime,
              play = true, easing = CosineFull }]
     }
     !isReceived ? null
@@ -369,30 +391,34 @@ function mkReward(periodIdx, stageData, stageIdx, curStage, lastRewardedStage, a
     size
     rendObj = ROBJ_SOLID
     color = 0xFF000000
-    padding = hdpx(2)
+    padding = itemBgBorder
     children = bg.__merge({ children })
   }
   let isNonInteractive = !isCurrentActivePlate && !isPreviewable
   let stateFlags = Watched(0)
   let plateComp = isNonInteractive ? plateBase
     : @() (isShowUnseenDelayed.get() || (isPreviewable && loginAwardUnlock.get()?.hasReward))
-      ? plateBase.__update({ watch = [ isShowUnseenDelayed, loginAwardUnlock ] })
-      : plateBase.__update({
+      ? {
+          ...plateBase
+          watch = [ isShowUnseenDelayed, loginAwardUnlock ]
+        }
+      : {
+          ...plateBase
           watch = [ isShowUnseenDelayed, loginAwardUnlock, stateFlags ]
           behavior = Behaviors.Button
           onElemState = @(sf) stateFlags.set(sf)
           onClick = isCurrentActivePlate
             ? onActivePlateClick
             : @() openPreview(reward.get())
-          transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
-          transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
-          sound = { click  = "click" }
+          sound = const { click  = "click" }
           hotkeys = isCurrentActivePlate ? activePlateHotkeys : null
-        })
+          ...mkPressTransitionScale(stateFlags.get())
+        }
   return {
     key = stageIdx
     children = plateComp
-  }.__update(animData)
+    ...animData
+  }
 }
 
 function itemsBlock() {
@@ -451,13 +477,15 @@ function itemsBlock() {
 }
 
 function rewardText() {
+  if (show_daily_login_freeze.get())
+    return { watch = show_daily_login_freeze }
   let { wtm_skip_days_streak = 0, wt_skip_days_streak = 0 } = userstatStats.get()?.stats.daily.meta_common
   let skipDays = min(wtm_skip_days_streak, wt_skip_days_streak)
   return mkText(loc(skipDays == 1 ? "EveryDayLoginAward/resetPeriod1"
                   : skipDays == 2 ? "EveryDayLoginAward/resetPeriod2"
                   : skipDays >= 3 ? "EveryDayLoginAward/resetPeriod3"
                   : "dailyRewards/desc")
-    { watch = userstatStats
+    { watch = [ userstatStats, show_daily_login_freeze ]
       vplace = ALIGN_BOTTOM
       hplace = ALIGN_CENTER
       color = commonTextColor
@@ -465,10 +493,12 @@ function rewardText() {
 }
 
 function dayInRowInfo() {
+  if (show_daily_login_freeze.get())
+    return { watch = show_daily_login_freeze }
   let daysInRow = userstatStats.get()?.stats.daily.meta_common.login_streak ?? 0
   return daysInRow < 1 ? { watch = userstatStats }
     : mkText(loc("dailyRewards/daysInRow", { days = daysInRow })
-      { watch = userstatStats
+      { watch = [ userstatStats, show_daily_login_freeze ]
         size = FLEX_H
         valign = ALIGN_BOTTOM
         halign = ALIGN_CENTER
@@ -476,16 +506,78 @@ function dayInRowInfo() {
       }.__update(fontSmallShaded))
 }
 
-let content = {
+let freezePointsInfoBgImg = mkColoredGradientY(0xFF002E5B, 0xFF003B78)
+let freezePointsTextProps = {
+  vplace = ALIGN_CENTER
+  color = freezePointsColor
+  ...fontTinyAccented
+}
+let mkFpValStr = @(count) $"{count}{freezePointsIcon}"
+let freezePointsTooltipCtor = @() loc("dailyRewards/freeze/desc",
+  { freezePointsSpend = mkFpValStr(FREEZE_POINTS_SPEND), freezePointsEarn = mkFpValStr(FREEZE_POINTS_EARN),
+  daysTotal = DAYS_TO_EARN_FREEZE_POINT, freezePointsLimit = mkFpValStr(FREEZE_POINTS_MAX) })
+
+function freezePointsBlock() {
+  if (!show_daily_login_freeze.get())
+    return { watch = show_daily_login_freeze }
+  let { daily_login_streak = 0, daily_login_guard = 0 } = userstatStats.get()?.stats.daily.meta_common
+  return {
+    watch = [ userstatStats, show_daily_login_freeze ]
+    size = [max(itemBlockSize[0], saSize[0]), SIZE_TO_CONTENT]
+    flow = FLOW_VERTICAL
+    children = [
+      {
+        size = FLEX_H
+        rendObj = ROBJ_BOX
+        image = freezePointsInfoBgImg
+        fillColor = 0xFFFFFFFF
+        padding = [freezeInfoPad, max(freezeInfoPad, (itemBlockSize[0] - saSize[0]) / 2)]
+        children = [
+          mkTextarea(loc("dailyRewards/freeze/daysInRow", { freezePoints = mkFpValStr(FREEZE_POINTS_EARN),
+            days = daily_login_streak, daysTotal = DAYS_TO_EARN_FREEZE_POINT }),
+            freezePointsTextProps)
+          {
+            flow = FLOW_HORIZONTAL
+            hplace = ALIGN_RIGHT
+            vplace = ALIGN_CENTER
+            gap = hdpx(20)
+            children = [
+              mkTextarea(loc("item/balance", { count = "/".concat(daily_login_guard, mkFpValStr(FREEZE_POINTS_MAX)) }),
+                freezePointsTextProps)
+              infoTooltipButton(freezePointsTooltipCtor, { flow = FLOW_VERTICAL, valign = ALIGN_TOP })
+            ]
+          }
+        ]
+      }
+      {
+        size = const [FLEX, hdpx(14)]
+        rendObj = ROBJ_BOX
+        fillColor = 0x80000000
+        borderColor = 0xFF000000
+        borderWidth = itemBgBorder
+        padding = itemBgBorder
+        children = {
+          size = [pw(100.0 / DAYS_TO_EARN_FREEZE_POINT * daily_login_streak), FLEX]
+          rendObj = ROBJ_SOLID
+          color = freezeProgressColor
+        }
+      }
+    ]
+  }
+}
+
+let content = @() {
+  watch = show_daily_login_freeze
   size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   flow = FLOW_VERTICAL
-  gap = hdpx(40)
+  gap = show_daily_login_freeze.get() ? itemGap : hdpx(40)
   children = [
     dayInRowInfo
     itemsBlock
     rewardText
+    freezePointsBlock
   ]
 }
 
@@ -504,6 +596,23 @@ let awardScene = bgShaded.__merge({
 const sceneId = "loginAwardWnd"
 registerScene(sceneId, awardScene, close, isLoginAwardOpened)
 registerUnlocksSceneToUpdate(sceneId)
+
+freezePointsAdded.subscribe(function(v) {
+  let flag = "added"
+  if (v <= 0 || (freezePointsChangeMsgboxSeen.get()?[flag] ?? false))
+    return
+  openMsgBox({ text = loc("dailyRewards/freeze/earned", { freezePoints = mkFpValStr(v),
+    daysTotal = DAYS_TO_EARN_FREEZE_POINT }) })
+  freezePointsChangeMsgboxSeen.mutate(@(cfg) cfg[flag] <- true)
+})
+freezePointsSpent.subscribe(function(v) {
+  let flag = "spent"
+  if (v <= 0 || (freezePointsChangeMsgboxSeen.get()?[flag] ?? false))
+    return
+  openMsgBox({ text = loc("dailyRewards/freeze/spent", { freezePoints = mkFpValStr(v) }) })
+  freezePointsChangeMsgboxSeen.mutate(@(cfg) cfg[flag] <- true)
+})
+isAuthorized.subscribe(@(v) v ? null : freezePointsChangeMsgboxSeen.set({}))
 
 register_command(
   function() {

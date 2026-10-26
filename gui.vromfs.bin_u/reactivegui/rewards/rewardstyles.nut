@@ -26,7 +26,7 @@ let mkRewardStyleSmallGap = @(boxSize, style, styleSmall) mkRewardStyle(boxSize,
   boxGap = evenPx(6)
 })
 
-function getRewardPlateSize(slots, rStyle) {
+function [pure, nodiscard] getRewardPlateSize(slots, rStyle) {
   let { boxSize, boxGap } = rStyle
   return [ (slots * boxSize) + ((slots - 1) * boxGap), boxSize ]
 }
@@ -42,6 +42,9 @@ return {
   REWARD_STYLE_MEDIUM = mkRewardStyle(evenPx(160), fontTiny, fontVeryTiny)
   REWARD_STYLE_BIG = mkRewardStyle(evenPx(240), fontTinyAccented, fontVeryTinyAccented)
   REWARD_STYLE_LARGE = mkRewardStyle(evenPx(300), fontSmall, fontTiny)
+
+  REWARD_STYLE_BP_PAGE = mkRewardStyleSmallGap(evenPx(124), fontTiny, fontVeryTiny)
+  REWARD_STYLE_BP_DESC = mkRewardStyle(evenPx(360), fontSmall, fontTiny)
 
   getRewardPlateSize
 }

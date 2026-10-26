@@ -10,7 +10,7 @@ from "%appGlobals/clustersState.nut" import REACHABILITY_CHECK_TIMEOUT_SEC
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
 from "%appGlobals/gameModes/gameModes.nut" import allGameModes
 from "%appGlobals/loginState.nut" import isMatchingConnected
-from "%rGui/matching/matchingApi.nut" import matchingRpcCall, matchingRpcRegisterHandler, matching_subscribe
+from "%rGui/matching/matchingApi.nut" import matchingRequest, matchingRegisterHandler, matching_subscribe
 from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
 from "%appGlobals/pServer/pServerApi.nut" import registerHandler
 from "%appGlobals/pServer/pServerJwt.nut" import decodeJwtAndHandleErrors
@@ -213,7 +213,7 @@ let queueSteps = {
     }
   },
 
-  [QS_JOINING] = @() matchingRpcCall("match.enqueue",
+  [QS_JOINING] = @() matchingRequest("match.enqueue",
     curQueue.get().params,
     { id = "onJoinQueue", params = curQueue.get().params }),
 
@@ -222,10 +222,10 @@ let queueSteps = {
     curQueue.mutate(@(q) q.activateTime <- get_time_msec())
   },
 
-  [QS_LEAVING] = @() matchingRpcCall("match.leave_queue", {}, "onLeaveQueue"),
+  [QS_LEAVING] = @() matchingRequest("match.leave_queue", {}, "onLeaveQueue"),
 }
 
-matchingRpcRegisterHandler("onJoinQueue", function(response, context) {
+matchingRegisterHandler("onJoinQueue", function(response, context) {
   if (!isInQueue.get() || !isEqual(curQueue.get()?.params, context.params))
     return
   if (showMatchingError(response))
@@ -234,7 +234,7 @@ matchingRpcRegisterHandler("onJoinQueue", function(response, context) {
     setQueueState(QS_IN_QUEUE)
 })
 
-matchingRpcRegisterHandler("onLeaveQueue", function(response) {
+matchingRegisterHandler("onLeaveQueue", function(response) {
   if (!isInQueue.get())
     return
   let errorId = response?.error

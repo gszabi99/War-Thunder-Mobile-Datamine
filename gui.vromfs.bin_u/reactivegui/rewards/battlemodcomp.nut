@@ -43,6 +43,8 @@ let mkBattleModCommonImage = @(battleMod, styles, slots = 1) {
 function mkBattleModEventUnitText(battleMod, styles = REWARD_STYLE_TINY, slots = 1) {
   let eventEndsAt = Computed(@() allSpecialEvents.get().findvalue(@(event) event.eventName == battleMod.eventId)?.endsAt ?? -1)
   let unit = battleMod.unitCtor()
+  let unitName = getUnitName(unit.name)
+  let maxWidth = calcMaxTextWidth(slots, styles)
 
   return @() {
     watch = eventEndsAt
@@ -51,8 +53,8 @@ function mkBattleModEventUnitText(battleMod, styles = REWARD_STYLE_TINY, slots =
     clipChildren = true
     halign = ALIGN_RIGHT
     children = [
-      mkNameText(getUnitName(unit.name)).__update({ maxWidth = calcMaxTextWidth(slots, styles) })
-      mkPlateTextTimer(eventEndsAt.get(),{ vplace = ALIGN_BOTTOM })
+      mkNameText(unitName).__update({ maxWidth })
+      mkPlateTextTimer(eventEndsAt.get(),const { vplace = ALIGN_BOTTOM })
     ]
   }
 }

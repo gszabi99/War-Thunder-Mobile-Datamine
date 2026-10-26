@@ -23,7 +23,7 @@ from "%appGlobals/updater/campaignAddons.nut" import localizeUnitsResources
 from "%appGlobals/updater/gameModeAddons.nut" import getModeAddonsInfo, getModeAddonsDbgString, allBattleUnits,
   missingUnitResourcesByRank, allUnitsRanks, maxReleasedUnitRanks
 from "%rGui/matchingRooms/sessionReconnect.nut" import checkReconnect, needCheckReconnectOnGoToBattle
-from "%rGui/matching/matchingApi.nut" import matchingRpcRegisterHandler
+from "%rGui/matching/matchingApi.nut" import matchingRegisterHandler
 from "matchingOnline.nut" import showMatchingConnectProgress
 from "queuesClient.nut" import isInQueue, joinQueue
 
@@ -57,7 +57,7 @@ function isSquadReadyWithMsgbox(mode, allReqAddons) {
     if (maxSquadSize == 1)
       openFMsgBox({ text = loc("squad/modeNotAvailableForSquad") })
     else
-      openFMsgBox({ text = loc("squad/minimumSquadSizeWarning", { count = minSquadSize }) })
+      openFMsgBox({ text = loc("squad/maximumSquadSizeWarning", { count = maxSquadSize }) })
     return false
   }
 
@@ -279,7 +279,7 @@ function queueToGameMode(modeId) {
   tryQueueToGameMode(modeId)
 }
 
-matchingRpcRegisterHandler("queueOnFailReconnect", @(_, context) tryQueueToGameMode(context.modeId))
+matchingRegisterHandler("queueOnFailReconnect", @(_, context) tryQueueToGameMode(context.modeId))
 
 function queueToGameModeAfterAddons(modeId) {
   let mode = allGameModes.get()?[modeId]

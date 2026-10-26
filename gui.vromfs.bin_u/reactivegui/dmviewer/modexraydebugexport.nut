@@ -14,7 +14,7 @@ from "%globalScripts/modeXrayLib.nut" import getPartType
 from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/pServer/unitCfgByTagName.nut" import getUnitCfgByTagName
-from "%rGui/dmViewer/dmViewerState.nut" import dmViewerMode, isDebugBatchExportProcess
+from "%rGui/dmViewer/dmViewerState.nut" import isDebugBatchExportProcess, setDmViewerMode
 from "%rGui/dmViewer/modeXray.nut" import mkUnitDataForXray, mkPartTooltipInfo
 
 
@@ -115,7 +115,7 @@ function loadAllItemsAndDo(params, onFinishCb) {
 
 function exportXrayPartsDescs(nullOrPartIdWhitelist = null, nullOrUnitIdWhitelist = null, nullOrUnitIdBlacklist = null) {
   isDebugBatchExportProcess.set(true)
-  dmViewerMode.set(DM_VIEWER_XRAY)
+  setDmViewerMode(DM_VIEWER_XRAY, "export")
   let params = {
     partsWhitelist = nullOrPartIdWhitelist
     unitsWhitelist = nullOrUnitIdWhitelist
@@ -125,7 +125,7 @@ function exportXrayPartsDescs(nullOrPartIdWhitelist = null, nullOrUnitIdWhitelis
 
   loadAllItemsAndDo(params, function(res) {
     isDebugBatchExportProcess.set(false)
-    dmViewerMode.set(DM_VIEWER_NONE)
+    setDmViewerMode(DM_VIEWER_NONE, "export")
 
     const filePath = "export/unitsXray.json"
     mkpath(filePath)

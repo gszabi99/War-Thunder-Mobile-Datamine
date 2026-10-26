@@ -58,6 +58,15 @@ let onStageRewardClickByType = {
   }
 }
 
+let mkIsUnlockInProgress = @(name) Computed(@() name in unlockInProgress.get())
+
+function receiveUnlockStage(unlock, idx, rewards, tabId, sectionId) {
+  batchReceiveRewards([{ unlock = unlock.name, up_to_stage = idx + 1 }])
+  let unlockExt = unlock.__merge({ tabId, sectionId })
+  let { count = null, id = null } = rewards[0]
+  sendBqQuestsStage(unlockExt, getStarsTotalNonUpdatable(unlockExt), count, id)
+}
+
 let initProgress = @(name) name in visibleProgress.get() ? null
   : visibleProgress.mutate(@(v) v[name] <- unlockProgress.get()?[name].current)
 
@@ -181,7 +190,7 @@ function getCurStageIdx(unlock) {
     { idx = null, progress = 0 }).idx
 }
 
-function calcStageCompletion(stages, idx, current) {
+function [pure, nodiscard] calcStageCompletion(stages, idx, current) {
   let prevProgress = stages?[idx - 1].progress ?? 0
   return clamp((current.tofloat() - prevProgress) / (stages[idx].progress - prevProgress), 0.0, 1.0)
 }
@@ -212,22 +221,26 @@ let mkChangeView = @(name, change) {
   sound = { attach = "meta_coins_income" }
 }
 
-let questBarProgressValue = @(name, required, visProgress, nextChange) @() {
-  watch = visProgress
-  rendObj = ROBJ_TEXT
-  vplace = ALIGN_CENTER
-  hplace = ALIGN_CENTER
-  text = $"{visProgress.get()}/{required}"
-  children = @() {
-    watch = nextChange
-    size = 0 
-    hplace = ALIGN_RIGHT
-    vplace = ALIGN_BOTTOM
-    children = nextChange.get() == null ? null : mkChangeView(name, nextChange.get())
-  }
-  transform = {}
-  animations = animHighlight(name)
-}.__update(fontVeryTinyShaded, isWidescreen ? {} : { fontSize = fontVeryTinyShaded.fontSize * 0.85 })
+function questBarProgressValue(name, required, visProgress, nextChange) {
+  let highlightAnims = animHighlight(name)
+  let fontOvr = isWidescreen ? {} : { fontSize = fontVeryTinyShaded.fontSize * 0.85 }
+  return @() {
+    watch = visProgress
+    rendObj = ROBJ_TEXT
+    vplace = ALIGN_CENTER
+    hplace = ALIGN_CENTER
+    text = $"{visProgress.get()}/{required}"
+    children = @() {
+      watch = nextChange
+      size = 0 
+      hplace = ALIGN_RIGHT
+      vplace = ALIGN_BOTTOM
+      children = nextChange.get() == null ? null : mkChangeView(name, nextChange.get())
+    }
+    transform = {}
+    animations = highlightAnims
+  }.__update(fontVeryTinyShaded, fontOvr)
+}
 
 let multiRewardProgressBarCtor = @(rewards, isUnlocked, onRewardClick, canClaimReward, isRewardInProgress) {
   flow = FLOW_HORIZONTAL
@@ -237,105 +250,109 @@ let multiRewardProgressBarCtor = @(rewards, isUnlocked, onRewardClick, canClaimR
   })
 }
 
-function mkStages(progressUnlock, progressWidth, tabId, curSectionId) {
-  let curStageIdx = getCurStageIdx(progressUnlock)
-  let { hasReward = false, stage, stages, name } = progressUnlock
-  let required = stages?[curStageIdx].progress
-  let isRewardInProgress = Computed(@() name in unlockInProgress.get())
-  let visProgress = Computed(@() visibleProgress.get()?[name] ?? unlockProgress.get()?[name].current ?? 0)
-  let nextChange = Computed(@() isAdsVisible.get() ? null : changeOrders.get()?[name][0])
-  return {
-    key = name
-    size = [SIZE_TO_CONTENT, progressBarRewardSize]
-    onAttach = @() initProgress(name)
-    vplace = ALIGN_CENTER
-    flow = FLOW_HORIZONTAL
-    children = array(stages.len()).map(function(_, idx) {
-      let stageCompletion = Computed(@() calcStageCompletion(stages, idx, visProgress.get()))
-      let isUnlocked = Computed(@() stageCompletion.get() >= 1.0)
-      let canClaimReward = Computed(@() isUnlocked.get() && hasReward && (idx + 1) >= stage)
+let mkStagesCtor = @(mkIsInProgress, getRewards, receive, onLockedStageClick = null)
+  function(progressUnlock, progressWidth) {
+    let curStageIdx = getCurStageIdx(progressUnlock)
+    let { hasReward = false, stage, stages, name, current = 0, isLocked = false } = progressUnlock
+    let required = stages?[curStageIdx].progress
+    let isRewardInProgress = mkIsInProgress(name)
+    let visProgress = Computed(@() visibleProgress.get()?[name] ?? unlockProgress.get()?[name].current ?? current)
+    let nextChange = Computed(@() isAdsVisible.get() ? null : changeOrders.get()?[name][0])
+    return {
+      key = name
+      size = [SIZE_TO_CONTENT, progressBarRewardSize]
+      onAttach = @() initProgress(name)
+      vplace = ALIGN_CENTER
+      flow = FLOW_HORIZONTAL
+      children = array(stages.len()).map(function(_, idx) {
+        let stageCompletion = Computed(@() calcStageCompletion(stages, idx, visProgress.get()))
+        let isUnlocked = Computed(@() stageCompletion.get() >= 1.0 && (!isLocked || (idx + 1) < stage))
+        let canClaimReward = Computed(@() isUnlocked.get() && hasReward && (idx + 1) >= stage)
 
-      let rewardPreview = Computed(@()
-        getUnlockRewardsViewInfo(stages[idx], serverConfigs.get())
-          .filter(@(reward) !isDisabledGoods(reward, allShopGoods.get(), serverConfigs.get()))
-          .sort(sortRewardsViewInfo))
-
-      function onRewardClick() {
-        if (isRewardInProgress.get())
-          return
-        if (canClaimReward.get()) {
-          batchReceiveRewards([{ unlock = name, up_to_stage = idx + 1 }])
-          let unlock = progressUnlock.__merge({ tabId, sectionId = curSectionId.get() })
-          let { count = null, id = null } = rewardPreview.get()[0]
-          sendBqQuestsStage(unlock, getStarsTotalNonUpdatable(unlock), count, id)
-          return
+        let rewardPreview = Computed(@()
+          getRewards(stages[idx], serverConfigs.get())
+            .filter(@(reward) !isDisabledGoods(reward, allShopGoods.get(), serverConfigs.get()))
+            .sort(sortRewardsViewInfo))
+        let barBg = {
+          rendObj = ROBJ_BOX
+          size = FLEX
+          fillColor = bgColor
+          borderWidth = const [borderWidth, 0]
+          borderColor = barBorderColor
         }
-        let reward = rewardPreview.get()?[0]
-        if (reward?.rType in onStageRewardClickByType)
-          return onStageRewardClickByType[reward.rType](reward)
-        if (stageCompletion.get() < 1.0)
-          return anim_start("eventProgressStats")
-      }
+        let lightBarTransitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+        let barTransitions = [{ prop = AnimProp.scale, duration = 1.0, easing = InOutQuad }]
 
-      return {
-        size = FLEX_V
-        flow = FLOW_HORIZONTAL
-        children = [
-          {
-            size = [progressWidth + (idx == 0 ? firstProgressWider : 0), FLEX]
-            valign = ALIGN_CENTER
-            children = [
-              @() {
-                watch = stageCompletion
-                size = const [FLEX, progressBarHeight]
-                children = [
-                  {
-                    rendObj = ROBJ_BOX
-                    size = FLEX
-                    fillColor = bgColor
-                    borderWidth = const [borderWidth, 0]
-                    borderColor = barBorderColor
-                  }
-                  {
-                    key = name
-                    rendObj = ROBJ_SOLID
-                    size = FLEX
-                    color = progressBarColorLight
-                    transform = {
-                      scale = [stageCompletion.get(), 1.0]
-                      pivot = [0, 0]
+        function onRewardClick(evt) {
+          if (isRewardInProgress.get())
+            return
+          if (canClaimReward.get())
+            return receive(progressUnlock, idx, rewardPreview.get())
+          let reward = rewardPreview.get()?[0]
+          if (reward?.rType in onStageRewardClickByType)
+            return onStageRewardClickByType[reward.rType](reward)
+          if (stageCompletion.get() < 1.0)
+            return anim_start("eventProgressStats")
+          if (!isUnlocked.get())
+            onLockedStageClick?(evt)
+        }
+
+        return {
+          size = FLEX_V
+          flow = FLOW_HORIZONTAL
+          children = [
+            {
+              size = [progressWidth + (idx == 0 ? firstProgressWider : 0), FLEX]
+              valign = ALIGN_CENTER
+              children = [
+                @() {
+                  watch = stageCompletion
+                  size = const [FLEX, progressBarHeight]
+                  children = [
+                    barBg
+                    {
+                      key = name
+                      rendObj = ROBJ_SOLID
+                      size = FLEX
+                      color = progressBarColorLight
+                      transform = {
+                        scale = [stageCompletion.get(), 1.0]
+                        pivot = 0
+                      }
+                      transitions = lightBarTransitions
                     }
-                    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
-                  }
-                  {
-                    key = name
-                    rendObj = ROBJ_SOLID
-                    size = FLEX
-                    color = progressBarColor
-                    transform = {
-                      scale = [stageCompletion.get(), 1.0]
-                      pivot = [0, 0]
+                    {
+                      key = name
+                      rendObj = ROBJ_SOLID
+                      size = FLEX
+                      color = progressBarColor
+                      transform = {
+                        scale = [stageCompletion.get(), 1.0]
+                        pivot = 0
+                      }
+                      transitions = barTransitions
+                      children = bgGradient
                     }
-                    transitions = [{ prop = AnimProp.scale, duration = 1.0, easing = InOutQuad }]
-                    children = bgGradient
-                  }
-                ]
-              }
-              idx != curStageIdx ? null : questBarProgressValue(name, required, visProgress, nextChange)
-            ]
-          }
-          @() {
-            watch = [rewardPreview, isRewardInProgress, isUnlocked, canClaimReward]
-            key = $"quest_bar_stage_{idx}" 
-            children = (rewardPreview.get()?.len() ?? 0) == 0 ? null
-              : multiRewardProgressBarCtor(rewardPreview.get(), isUnlocked.get(), onRewardClick,
-                  canClaimReward.get(), isRewardInProgress.get())
-          }
-        ]
-      }
-    })
+                  ]
+                }
+                idx != curStageIdx ? null : questBarProgressValue(name, required, visProgress, nextChange)
+              ]
+            }
+            @() {
+              watch = [rewardPreview, isRewardInProgress, isUnlocked, canClaimReward]
+              key = $"quest_bar_stage_{idx}" 
+              children = (rewardPreview.get()?.len() ?? 0) == 0 ? null
+                : multiRewardProgressBarCtor(rewardPreview.get(), isUnlocked.get(), onRewardClick,
+                    canClaimReward.get(), isRewardInProgress.get())
+            }
+          ]
+        }
+      })
+    }
   }
-}
+
+let mkUnlockStagesCtor = @(tabId, curSectionId) mkStagesCtor(mkIsUnlockInProgress, getUnlockRewardsViewInfo,
+  @(unlock, idx, rewards) receiveUnlockStage(unlock, idx, rewards, tabId, curSectionId.get()))
 
 function rewardWidth(r, allGoods, servConfigs) {
   let { slots = 1 } = r
@@ -348,15 +365,17 @@ function stageRewardsWidth(rewardsArray, allGoods, servConfigs) {
     + (rewardsArray.len() > 0 ? (rewardsArray.len() - 1) * questItemsGap : 0)
 }
 
-function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, isFullScreenWidth) {
+function mkQuestListProgressBar(progressUnlock, isFullScreenWidth, mkStages, getRewards) {
   let barWidthFull = Computed(@() isFullScreenWidth.get() ? progressBarWidthNoTabs : progressBarWidthFull)
   let progressBarWidth = Computed(@() barWidthFull.get() - starIconOffset)
   let stageRewards = Computed(@() (progressUnlock.get()?.stages ?? [])
-    .map(@(s) getUnlockRewardsViewInfo(s, serverConfigs.get()).sort(sortRewardsViewInfo)))
+    .map(@(s) getRewards(s, serverConfigs.get()).sort(sortRewardsViewInfo)))
   let rewardsFullWidth = Computed(@() stageRewards.get()
     .reduce(@(res, r) res + stageRewardsWidth(r, allShopGoods.get(), serverConfigs.get()), 0))
   let minWidth = Computed(@() rewardsFullWidth.get() + stageRewards.get().len() * minStageProgressWidth + firstProgressWider)
   let hasScroll = Computed(@() progressBarWidth.get() < minWidth.get())
+  let questStarIcon = Picture("ui/gameuiskin#quest_experience_icon.avif:0:P")
+  let scrollArrowBtn = mkScrollArrow(scrollHandler, MR_R, scrollArrowImageSmall)
   return @() progressUnlock.get() == null ? { watch = progressUnlock }
     : {
         watch = [progressUnlock, hasScroll, progressBarWidth, minWidth, rewardsFullWidth, isFullScreenWidth]
@@ -364,7 +383,7 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, isFullScree
         padding = const [0, 0, 0, starIconOffset]
         children = [
           !hasScroll.get()
-            ? mkStages(progressUnlock.get(), minStageProgressWidth, tabId, curSectionId)
+            ? mkStages(progressUnlock.get(), minStageProgressWidth)
             : {
                 key = hasScroll
                 size = [progressBarWidth.get() + fadeWidth * 2, progressBarRewardSize]
@@ -381,7 +400,7 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, isFullScree
                 }
                 children = [
                   (isFullScreenWidth.get() ? pannableAreaNoTabs : pannableArea)(
-                    mkStages(progressUnlock.get(), minStageProgressWidth, tabId, curSectionId),
+                    mkStages(progressUnlock.get(), minStageProgressWidth),
                     { pos = const [0, 0], size = FLEX_H, vplace = ALIGN_CENTER },
                     {
                       size = FLEX_H
@@ -392,7 +411,7 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, isFullScree
                     size = [progressBarWidth.get() + hdpx(80), SIZE_TO_CONTENT]
                     hplace = ALIGN_LEFT
                     vplace = ALIGN_CENTER
-                    children = mkScrollArrow(scrollHandler, MR_R, scrollArrowImageSmall)
+                    children = scrollArrowBtn
                   }
                 ]
               }
@@ -402,7 +421,7 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, isFullScree
             vplace = ALIGN_CENTER
             pos = const [-starIconOffset, hdpx(-7)]
             rendObj = ROBJ_IMAGE
-            image = Picture("ui/gameuiskin#quest_experience_icon.avif:0:P")
+            image = questStarIcon
             transform = {}
             animations = animHighlight(progressUnlock.get().name).append(statsAnimation)
           }
@@ -413,6 +432,8 @@ function mkQuestListProgressBar(progressUnlock, tabId, curSectionId, isFullScree
 return {
   mkQuestBar
   mkQuestListProgressBar
+  mkStagesCtor
+  mkUnlockStagesCtor
 
   calcStageCompletion
 }

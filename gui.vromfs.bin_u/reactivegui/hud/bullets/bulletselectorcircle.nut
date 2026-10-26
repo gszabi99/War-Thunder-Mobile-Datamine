@@ -38,6 +38,8 @@ function mkSectorButton(isActive, onClick, size, icon, count, rotateDeg, ovr = {
 
   let stateFlags = Watched(0)
   let imgSize = scaleArr(size, 0.7)
+  let bgImg = Picture($"ui/gameuiskin#hud_ammo_sector_bg.svg:{size[0]}:{size[1]}:P")
+  let bgTransform = { pivot = 0.5, rotate = rotateDeg }
 
   return {
     size
@@ -56,9 +58,9 @@ function mkSectorButton(isActive, onClick, size, icon, count, rotateDeg, ovr = {
         watch = stateFlags
         size
         rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#hud_ammo_sector_bg.svg:{size[0]}:{size[1]}:P")
+        image = bgImg
         color = ((stateFlags.get() & S_ACTIVE) || isActive) ? colorActive : colorInactive
-        transform = { pivot = [0.5, 0.5], rotate = rotateDeg }
+        transform = bgTransform
       }
       {
         size = imgSize
@@ -179,7 +181,7 @@ let mkStaticSector = @(rotateDeg, sectorSize, sectorPos) {
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#hud_ammo_sector_bg.svg:{sectorSize[0]}:{sectorSize[1]}:P")
     color = colorInactive
-    transform = { pivot = [0.5, 0.5], rotate = rotateDeg }
+    transform = { pivot = 0.5, rotate = rotateDeg }
   }
 }
 

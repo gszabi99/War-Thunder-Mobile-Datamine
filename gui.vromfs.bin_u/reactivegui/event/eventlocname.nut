@@ -35,7 +35,8 @@ let getMainEventLoc = @(eSeason) eSeason == "" ? loc("events/name/default")
   : loc($"events/name/{eSeason}")
 
 let getEventLocFull = @(eventId, eventSeasonV, allSpecialEventsV, progressUnlockByTabV, serverConfigsV, allShopGoodsV, opName)
-  eventId == MAIN_EVENT_ID ? getMainEventLoc(eventSeasonV)
+  eventId == null ? ""
+    : eventId == MAIN_EVENT_ID ? getMainEventLoc(eventSeasonV)
     : eventId == OP_EVENT_ID ? opName
     : eventId == "" ? loc("quests/achievements")
     : eventId not in allSpecialEventsV ? loc(getEventPresentation(eventId).locId)

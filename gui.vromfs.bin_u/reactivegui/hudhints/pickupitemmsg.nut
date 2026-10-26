@@ -29,6 +29,13 @@ let eventByReward = {
     ttl = MSG_SHOW_TIME
     locId = "hints/race/pickup/boost"
   }
+  fuel_percent = {
+    id = "pickupFuel"
+    key = "pickupFuel"
+    hType = "mission"
+    ttl = MSG_SHOW_TIME
+    locId = "hints/race/pickup/fuel"
+  }
   artillery = {
     id = "battleRoyaleArtillery"
     key = "battleRoyaleArtillery"
@@ -55,7 +62,7 @@ registerHintCreator(CREW_HINT_TYPE, @(_, __) @() {
   }, null)
 })
 
-subscribeHudEvent("onPickupItem", function(data) {
+function addRewardEvents(data) {
   let rewardKeys = data.filter(@(_, k) eventByReward?[k] != null)
   if (rewardKeys.len() == 0 && data?.reconRadius == null) {
     addEvent(defaultEvent)
@@ -63,6 +70,20 @@ subscribeHudEvent("onPickupItem", function(data) {
   }
   foreach (rewardKey, _ in rewardKeys)
     addEvent(eventByReward[rewardKey])
+}
+
+subscribeHudEvent("onPickupItem", function(data) {
+  let hintLocId = data?.hintLocId
+  if (hintLocId != null)
+    addEvent({
+      id = "pickupHint"
+      key = "pickupHint"
+      hType = "mission"
+      ttl = MSG_SHOW_TIME
+      locId = hintLocId
+    })
+  else
+    addRewardEvents(data)
 
   let reconRadius = data?.reconRadius
   let reconDuration = data?.reconDuration

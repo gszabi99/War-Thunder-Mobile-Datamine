@@ -105,6 +105,10 @@
         "mobile_event": {
           "async": true,
           "preload": false
+        },
+        "mobile_caribean": {
+          "async": true,
+          "preload": false
         }
       },
       "pkg_sound_common": {
@@ -127,6 +131,12 @@
       },
       "pkg_sound_event": {
         "mobile_event.assets": {
+          "async": true,
+          "preload": false
+        }
+      },
+      "pkg_sound_caribean": {
+        "mobile_caribean.assets": {
           "async": true,
           "preload": false
         }
@@ -442,6 +452,7 @@
       "TChinese": "zhtw",
       "HChinese": "zhhx",
       "USA": "en_us",
+      "Ghost": "gh",
       "SmElsa": "sm_de",
       "SmKate": "sm_us",
       "SmLing": "sm_zh"
@@ -693,6 +704,7 @@
     "eventShipDropBomb": "bomb_drop",
     "eventShipBulletFall": "buzzer",
     "eventShipBulletHit": "main_caliber_hit",
+    "eventKrakenAttack": "event/caribean/effects/kraken_attack",
     "windAcelerateSpeed": 0.1,
     "windTransitionSpeed": 0.1,
     "windBackSpeed": 0.3,
@@ -2354,10 +2366,10 @@
   },
   "engine_ship_wood_ai": {
     "effects": {
-      "path": "event/engines/ai_ship"
+      "path": "event/caribean/engines/ai_ship"
     },
     "outside": {
-      "path": "event/engines/ai_ship",
+      "path": "event/caribean/engines/ai_ship",
       "eventBack": "engine",
       "rpmSmooth": 0.02,
       "loadScale": 6.0,
@@ -8474,10 +8486,10 @@
   },
   "engine_ship_wood": {
     "effects": {
-      "path": "event/engines/ship"
+      "path": "event/caribean/engines/ship"
     },
     "outside": {
-      "path": "event/engines/ship",
+      "path": "event/caribean/engines/ship",
       "eventFront": "",
       "eventBack": "engine",
       "eventSurround": "",
@@ -8587,6 +8599,11 @@
     "naval_gun_reload": {
       "path": "naval/effects",
       "event": "reload_gun",
+      "time": 2.5
+    },
+    "naval_cannon_reload_muzzle": {
+      "path": "event/caribean/effects",
+      "event": "reload_cannon_muzzle",
       "time": 2.5
     }
   },
@@ -11142,6 +11159,13 @@
         },
         "missionFailed": {
           "event": "11_battle_end_loose/voice_message_commander_we_lost",
+          "playerRole": "commander",
+          "player": -1,
+          "minSpeechInterval": 0.0,
+          "isUrgent": true
+        },
+        "kraken": {
+          "event": "11_battle_end_loose/voice_message_commander_kraken",
           "playerRole": "commander",
           "player": -1,
           "minSpeechInterval": 0.0,

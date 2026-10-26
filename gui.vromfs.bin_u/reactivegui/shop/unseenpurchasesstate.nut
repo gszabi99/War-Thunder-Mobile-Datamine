@@ -4,7 +4,7 @@ from "dagor.workcycle" import resetTimeout
 from "%appGlobals/loginState.nut" import isLoggedIn
 from "%appGlobals/pServer/campaign.nut" import unseenPurchases, lootboxes
 from "%appGlobals/pServer/pServerApi.nut" import clear_unseen_purchases
-from "%appGlobals/rewardType.nut" import G_STAT_SET, G_STAT_ADD, G_MEDAL
+from "%appGlobals/rewardType.nut" import G_STAT_SET, G_STAT_ADD, G_MEDAL, G_CLAN_PROGRESS, G_BP_GRADE
 from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
 import "%rGui/shop/unseenPurchasesDebug.nut" as unseenPurchasesDebug
 from "types" import Function
@@ -12,7 +12,8 @@ from "types" import Function
 
 let logR = log_with_prefix("[UNSEEN_REWARDS] ")
 
-let invisibleGoodsTypes = [G_STAT_SET, G_STAT_ADD, G_MEDAL] 
+
+let invisibleGoodsTypes = [G_STAT_SET, G_STAT_ADD, G_MEDAL, G_CLAN_PROGRESS, G_BP_GRADE] 
   .reduce(@(res, v) res.$rawset(v, true), {})
 
 let ignoreUnseen = Watched({}) 
@@ -120,7 +121,7 @@ function addCustomUnseenPurchHandler(isUnseenFit, showUnseen) {
   incCustomVersion()
 }
 
-let unseenPurchaseUnitPlateKey = @(name) name == null ? null : $"unseenPurchaseUnitPlate:{name}"
+let unseenPurchaseUnitPlateKey = @[pure, nodiscard](name) name == null ? null : $"unseenPurchaseUnitPlate:{name}"
 
 function undelayShow() {
   logR("undelayShow unseen")

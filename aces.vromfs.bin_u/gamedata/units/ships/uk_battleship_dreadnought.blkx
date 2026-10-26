@@ -30,6 +30,7 @@
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_battleship",
+  "addTorpedoesCountPack": 1,
   "explosionFx": "explosion_ship_large",
   "smokeScreenActivateTime": 2.0,
   "smokeScreenEffectTime": 30.0,
@@ -342,6 +343,15 @@
       "auxiliary_caliber_turret_19_dm": {},
       "auxiliary_caliber_turret_20_dm": {}
     },
+    "torpedo_tubes": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 15.0,
+      "hp": 84730.0,
+      "tt_01_dm": {},
+      "tt_02_dm": {},
+      "tt_03_dm": {},
+      "tt_04_dm": {}
+    },
     "elevators": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
@@ -520,6 +530,33 @@
                 "main_caliber_turret_04_dm",
                 "main_caliber_turret_05_dm"
               ]
+            }
+          }
+        }
+      },
+      {
+        "name": [
+          "tt_01_dm",
+          "tt_02_dm",
+          "tt_03_dm",
+          "tt_04_dm"
+        ],
+        "onHit": {
+          "damage": 900.0,
+          "damageType": "explosion",
+          "isSingleAction": false,
+          "moduleStatusEffect": {
+            "name": "shotFreqMult",
+            "prob": 1.0
+          },
+          "action": {
+            "type": "forcedExplosion",
+            "probability": 0.01,
+            "damage": 2000.0,
+            "damageType": "explosion",
+            "fxEvent": "ammo_expl",
+            "parts": {
+              "part": "compartment_05_dm"
             }
           }
         }
@@ -2660,6 +2697,173 @@
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 100.0
         }
+      },
+      {
+        "trigger": "gunner25",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
+        "emitter": "bone_torpedo_01",
+        "bullets": 20,
+        "useEmitter": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 25.2,
+        "startDir": [
+          20.0,
+          1.0,
+          0.0
+        ],
+        "useStartSpeed": true,
+        "allowableDelta": 30.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.05,
+        "turret": {
+          "head": "tt_head_01",
+          "gun": "bone_torpedo_01"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner26",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
+        "emitter": "bone_torpedo_02",
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "useEmitter": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 25.2,
+        "startDir": [
+          20.0,
+          1.0,
+          0.0
+        ],
+        "useStartSpeed": true,
+        "allowableDelta": 30.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.05,
+        "turret": {
+          "head": "tt_head_02",
+          "gun": "bone_torpedo_02"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner27",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
+        "emitter": "bone_torpedo_03",
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "useEmitter": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 25.2,
+        "startDir": [
+          20.0,
+          1.0,
+          0.0
+        ],
+        "useStartSpeed": true,
+        "allowableDelta": 30.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.05,
+        "turret": {
+          "head": "tt_head_03",
+          "gun": "bone_torpedo_03"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner28",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
+        "emitter": "bone_torpedo_04",
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "useEmitter": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 25.2,
+        "startDir": [
+          20.0,
+          1.0,
+          0.0
+        ],
+        "useStartSpeed": true,
+        "allowableDelta": 30.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.05,
+        "turret": {
+          "head": "tt_head_04",
+          "gun": "bone_torpedo_04"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
       }
     ]
   },
@@ -2668,6 +2872,11 @@
       "name": "uk_battleship_dreadnought_default",
       "blk": "gameData/units/ships/weaponPresets/uk_battleship_dreadnought_default.blk"
     }
+  },
+  "torpedoSeries": {
+    "delay": 0.1,
+    "count": 1,
+    "isDeadzoneCheck": true
   },
   "modifications": {
     "ship_tool_kit": {},
@@ -4430,6 +4639,173 @@
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 100.0
+              }
+            },
+            {
+              "trigger": "gunner25",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
+              "emitter": "bone_torpedo_01",
+              "bullets": 20,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 30.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_01",
+                "gun": "bone_torpedo_01"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner26",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
+              "emitter": "bone_torpedo_02",
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 30.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_02",
+                "gun": "bone_torpedo_02"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner27",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
+              "emitter": "bone_torpedo_03",
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 30.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_03",
+                "gun": "bone_torpedo_03"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner28",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
+              "emitter": "bone_torpedo_04",
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 30.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_04",
+                "gun": "bone_torpedo_04"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
               }
             },
             {
@@ -6205,7 +6581,174 @@
               }
             },
             {
-              "trigger": "gunner29",
+              "trigger": "gunner25",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
+              "emitter": "bone_torpedo_01",
+              "bullets": 20,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 30.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_01",
+                "gun": "bone_torpedo_01"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner26",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
+              "emitter": "bone_torpedo_02",
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 30.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_02",
+                "gun": "bone_torpedo_02"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner27",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
+              "emitter": "bone_torpedo_03",
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 30.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_03",
+                "gun": "bone_torpedo_03"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner28",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/uk_450mm_18in_rgf_mark6_hbh_torpedo.blk",
+              "emitter": "bone_torpedo_04",
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 30.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_04",
+                "gun": "bone_torpedo_04"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner70",
               "triggerGroup": "mortar",
               "weaponType": "bombs",
               "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -6231,7 +6774,7 @@
               }
             },
             {
-              "trigger": "gunner30",
+              "trigger": "gunner71",
               "triggerGroup": "mortar",
               "weaponType": "bombs",
               "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -6303,9 +6846,25 @@
             "auxiliary_caliber_turret_19_dm": {},
             "auxiliary_caliber_turret_20_dm": {},
             "engine_room_01_dm": {},
-            "engine_room_02_dm": {}
+            "engine_room_02_dm": {},
+            "tt_01_dm": {},
+            "tt_02_dm": {},
+            "tt_03_dm": {},
+            "tt_04_dm": {}
           }
         }
+      }
+    },
+    "weapons_torpedo_movement_mode": {
+      "effects": {
+        "splashDamageMul": 0.7,
+        "maxSpeedInWater": 4.62
+      }
+    },
+    "weapons_torpedo_damage_mode": {
+      "effects": {
+        "splashDamageMul": 1.3,
+        "maxSpeedInWater": -4.62
       }
     },
     "maintanance_new_propellers": {},

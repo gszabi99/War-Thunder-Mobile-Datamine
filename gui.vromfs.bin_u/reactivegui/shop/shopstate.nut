@@ -17,7 +17,7 @@ from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
 from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign, todayPurchasesCount
 from "%appGlobals/pServer/seasonCurrencies.nut" import sortByCurrencyId
 from "%appGlobals/permissions.nut" import can_debug_shop, allow_subscriptions
-from "%appGlobals/rewardType.nut" import G_PREMIUM, G_ITEM, G_CURRENCY
+from "%appGlobals/rewardType.nut" import G_PREMIUM, G_ITEM, G_CURRENCY, G_BP_POINTS
 from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
 from "%appGlobals/userstats/serverTime.nut" import getServerTime, isServerTimeValid
 from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay
@@ -458,7 +458,7 @@ if (shopSeenGoods.get().len() == 0)
 
 isSettingsAvailable.subscribe(@(_) loadSeenGoods())
 
-let isUnseenGoods = @(id, seenGoods, actSchRewards) (id not in seenGoods
+let isUnseenGoods = @[pure, nodiscard](id, seenGoods, actSchRewards) (id not in seenGoods
   && (id not in actSchRewards || actSchRewards?[id]?.isReady == true))
 
 let shopUnseenGoods = Computed(function() {
@@ -581,6 +581,7 @@ function findGoodsByShop(goodsByShopV, isFit) {
 let mkShopCurrenciesAndItemsList = @(shopId, catId) Computed(function() {
   let currencies = {}
   let items = {}
+  let bpIds = {}
 
   function addFromGoods(goods) {
     currencies[goods.price.currencyId] <- true
@@ -592,6 +593,8 @@ let mkShopCurrenciesAndItemsList = @(shopId, catId) Computed(function() {
       items[id] <- true
     else if (gType == G_CURRENCY)
       currencies[id] <- true
+    else if (gType == G_BP_POINTS)
+      bpIds[id] <- true
   }
   foreach (goodsId in goodsIdsByShop.get()?[shopId.get()][catId.get()] ?? {}) {
     let goods = activePersonalGoods.get()?[goodsId] ?? shopGoods.get()?[goodsId]
@@ -609,6 +612,7 @@ let mkShopCurrenciesAndItemsList = @(shopId, catId) Computed(function() {
   return {
     currencies = currencies.keys().sort(sortByCurrencyId)
     items = items.keys().sort(@(a, b) (orderByItems?[a] ?? 0) <=> (orderByItems?[b] ?? 0))
+    bpIds = bpIds.keys().sort()
   }
 })
 

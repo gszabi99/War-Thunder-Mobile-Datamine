@@ -34,6 +34,7 @@ let getLocNameSkin = @(goods) comma.join(
 function mkImgs(skinName, unitName, hasUnit, unitImg) {
   let { image } = getSkinPresentation(unitName, skinName)
   let size = [goodsSmallSize[0], goodsBgH]
+  let skinImg = Picture($"ui/gameuiskin#{image}:{skinSize}:{skinSize}:P")
   return {
     size
     rendObj = ROBJ_IMAGE
@@ -59,7 +60,7 @@ function mkImgs(skinName, unitName, hasUnit, unitImg) {
         rendObj = ROBJ_BOX
         fillColor = 0xFFFFFFFF
         borderRadius = skinBorderRadius
-        image = Picture($"ui/gameuiskin#{image}:{skinSize}:{skinSize}:P")
+        image = skinImg
         children = hasUnit.get() ? null
           : {
               size = lockIconSize

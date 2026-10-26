@@ -36,7 +36,7 @@ let timeHoldByGeature = {
 }
 
 let animCompBase = {
-  size = [animSize, animSize]
+  size = animSize
   rendObj = ROBJ_BOX
   clipChildren = true
 }
@@ -56,7 +56,7 @@ function buildAnimSteps(name, comps, buildAnimStepFunc, steps) {
   let restartTrigger = $"trigger{name}"
   foreach (comp in comps)
     comp.__update({
-      transform = { pivot = [0.5, 0.5] }
+      transform = { pivot = 0.5 }
       animations = []
     })
   foreach (data in steps)

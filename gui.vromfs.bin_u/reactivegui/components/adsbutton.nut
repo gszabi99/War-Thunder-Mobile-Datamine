@@ -78,6 +78,9 @@ function mkAdsButton(debrData) {
   if (totalWp == 0 || debrData?.adsBonuses || predefinedReward != null || sessionId == null)
     return null
   let hasAdBudget = Computed(@() adBudget.get() > 0)
+  let progressChildren = { size = adsBonusBtnSize, valign = ALIGN_CENTER, halign = ALIGN_CENTER, children = spinner }
+  let adBtnSizeOvr = { size = adsBonusBtnSize }
+  let adBtnTextSizeOvr = { size = [hdpx(280), defButtonHeight] }
   return @() !isAdsAvailable.get() ? { watch = isAdsAvailable }
     : {
         watch = [hasVip, isAdsAvailable, hasAdBudget, isProviderInited, adBudgetInProgress]
@@ -96,12 +99,7 @@ function mkAdsButton(debrData) {
               children = mkBonusesText(debrData, adsBonuses.get())
             }
             adBudgetInProgress.get()
-              ? {
-                  size = adsBonusBtnSize
-                  valign = ALIGN_CENTER
-                  halign = ALIGN_CENTER
-                  children = spinner
-                }
+              ? progressChildren
               : iconTextButton(
                   hasVip.get() ? "ui/gameuiskin#gamercard_subs_vip.avif" : "ui/gameuiskin#watch_ads.svg",
                   utf8ToUpper(hasAdBudget.get() ? loc("debriefing/improveReward") : loc("btn/adsLimitReached")),
@@ -115,7 +113,7 @@ function mkAdsButton(debrData) {
                         sessionId,
                       }),
                   mergeStyles(hasAdBudget.get() && isProviderInited.get() ? SECONDARY : COMMON,
-                    { ovr = { size = adsBonusBtnSize } }))
+                    { ovr = adBtnSizeOvr, textOvr = adBtnTextSizeOvr }))
           ]
         }
   }

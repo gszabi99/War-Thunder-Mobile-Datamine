@@ -2774,5 +2774,45 @@
     "lod0": "e2fnpr7ymj2ha5bug4iwjgwskxwkcjyk-g7jy",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "7frg4atadyssri3dnf5ggxrinsq353ei-b5ei"
+  },
+  "ussr_text_silny": {
+    "category": "ussr",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "du2bieozf5zuctbpjmuclsxg2vb2rhsi-bgqi",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "uownmpucrfrichd2seexvxnlf4fxe7ld-ngq"
+  },
+  "wtm_zombiehand_decal": {
+    "category": "holidays",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "uykdesaixkmdfpec6z36psifr5bwanyn-egdy",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "vyzqeyghw3najnnrneuzrgfqiywdilkc-bguy"
+  },
+  "battle_allies_decal": {
+    "category": "common",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "s3eob6hibvqyvzm6xonvy7vgl3dtufww-erjq",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "apoasj3jcj2zfnabfxnkawyucxkye2zx-bidy"
+  },
+  "s39_armedbomb_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "43x542sq73x2c2ob4qmvqbrioybm27p2-e6hy",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "hlml7yfeew32ta3xmphudhvjobqvbexp-bm3i"
+  },
+  "s39_bulldog_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "kgkujvzon6h4xztmnp6abmifq474ufnd-g2bi",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "d4wuuf2w7pjsjjrzdn2zrdeuceye33qh-b5li"
   }
 }

@@ -13,7 +13,7 @@ let mkCrosshairDrawCommands = @(color, width) [
 ]
 
 let crosshairComp = {
-  size = [CROSSHAIR_SIZE, CROSSHAIR_SIZE]
+  size = CROSSHAIR_SIZE
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_VECTOR_CANVAS

@@ -114,11 +114,7 @@ function mkShopContent(contentW, pannableAreaCtor, shopIdW = null, close = close
     return res
   })
 
-  distances.subscribe(@(v) v.len() == 0 ? close(shopIdW.get()) : null)
-  if (distances.get().len() == 0) {
-    let curId = shopIdW.get()
-    deferOnce(@() close(curId))
-  }
+  let closeIfEmpty = @(v) v.len() == 0 ? close(shopIdW.get()) : null
 
   function tryDoActionForCurrentScroll(action) {
     let currentY = pageScrollHandler?.elem.getScrollOffsY()
@@ -156,12 +152,15 @@ function mkShopContent(contentW, pannableAreaCtor, shopIdW = null, close = close
       pageScrollHandler.subscribe(onPageScroll)
       categoryIdW.subscribe(onChangeCategory)
       shopIdW.subscribe(scrollToCurCategoryDelayed)
+      distances.subscribe(closeIfEmpty)
       scrollToCurCategory()
+      closeIfEmpty(distances.get())
     }
     function onDetach() {
       pageScrollHandler.unsubscribe(onPageScroll)
       categoryIdW.unsubscribe(onChangeCategory)
       shopIdW.unsubscribe(scrollToCurCategoryDelayed)
+      distances.unsubscribe(closeIfEmpty)
     }
     children = [
       {

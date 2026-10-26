@@ -10,11 +10,12 @@ from "%rGui/components/gradientDefComps.nut" import doubleSideGradient, doubleSi
 from "%rGui/components/infoButton.nut" import infoCommonButton
 from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
 from "%rGui/components/textButton.nut" import textButtonBattle
+from "%rGui/components/currencyComp.nut" import mkCurrencyImage
 from "%rGui/decorators/decoratorState.nut" import allDecorators
 from "%rGui/rewards/components/lootboxView.nut" import getLootboxPicture, lootboxFallbackPicture
 from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlateImage
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM, REWARD_STYLE_BIG, REWARD_STYLE_SMALL,
-  REWARD_STYLE_LARGE
+  REWARD_STYLE_LARGE, REWARD_STYLE_BP_DESC
 from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, sortRewardsViewInfo
 from "%rGui/shop/goodsView/sharedParts.nut" import mkSquareIconBtn
 from "%rGui/shop/lootboxPreviewState.nut" import openLootboxPreview
@@ -28,37 +29,40 @@ const unitPlateWidth = 2 * REWARD_STYLE_MEDIUM.boxSize + REWARD_STYLE_MEDIUM.box
 const unitPlateHeight = REWARD_STYLE_MEDIUM.boxSize
 const unitInfoBtnSize = evenPx(50)
 
-let mkUnitPlate = @(unitId, isUpgraded = false) function() {
-  let res = { watch = serverConfigs }
-  let unit = serverConfigs.get()?.allUnits[unitId].__merge({ isUpgraded })
-  function onClick() {
-    sendUnitBqEventOnce(BQ_DETAILS_BP, unitId)
-    openUnitDetailsWnd({ name = unitId, isUpgraded })
-  }
-  if (unit == null)
-    return res
-  return res.__update({
-    padding = const [hdpx(50), 0, hdpx(30),0]
-    flow = FLOW_HORIZONTAL
-    children = {
-      size = [ unitPlateWidth, unitPlateHeight ]
-      children = [
-        mkUnitBg(unit)
-        mkUnitImage(unit)
-        mkUnitTexts(unit, getUnitName(unit))
-        mkUnitInfo(unit)
-        {
-          hplace = ALIGN_LEFT
-          vplace = ALIGN_BOTTOM
-          padding = hdpx(10)
-          children = infoCommonButton(
-            onClick,
-            { size = unitInfoBtnSize, hotkeys = [["^J:Y", loc("msgbox/btn_more")]] }
-          )
-        }
-      ]
+function mkUnitPlate(unitId, isUpgraded = false) {
+  let moreInfoHotkeys = [["^J:Y", loc("msgbox/btn_more")]]
+  return function() {
+    let res = { watch = serverConfigs }
+    let unit = serverConfigs.get()?.allUnits[unitId].__merge({ isUpgraded })
+    function onClick() {
+      sendUnitBqEventOnce(BQ_DETAILS_BP, unitId)
+      openUnitDetailsWnd({ name = unitId, isUpgraded })
     }
-  })
+    if (unit == null)
+      return res
+    return res.__update({
+      padding = const [hdpx(50), 0, hdpx(30),0]
+      flow = FLOW_HORIZONTAL
+      children = {
+        size = const [ unitPlateWidth, unitPlateHeight ]
+        children = [
+          mkUnitBg(unit)
+          mkUnitImage(unit)
+          mkUnitTexts(unit, getUnitName(unit))
+          mkUnitInfo(unit)
+          {
+            hplace = ALIGN_LEFT
+            vplace = ALIGN_BOTTOM
+            padding = hdpx(10)
+            children = infoCommonButton(
+              onClick,
+              { size = unitInfoBtnSize, hotkeys = moreInfoHotkeys }
+            )
+          }
+        ]
+      }
+    })
+  }
 }
 
 
@@ -76,21 +80,23 @@ let locByTypesReward = {
   booster = @(_) loc($"debriefing/booster")
 }
 
-let mkDecoratorHeader = @(viewInfo) @() {
+let getLocByRType = @(rType, id) locByTypesReward?[rType](id) ?? rType
+
+let mkDecoratorHeader = @(viewInfo, ovr = {}) @() {
   watch = allDecorators
   rendObj = ROBJ_TEXT
   vplace = ALIGN_TOP
   halign = ALIGN_CENTER
   text = loc($"decorator/{allDecorators.get()?[viewInfo.id].dType}")
-}.__update(fontSmallAccented)
+}.__update(fontSmallAccented, ovr)
 
-let mkDefaultRewardHeader = @(viewInfo) {
+let mkDefaultRewardHeader = @(viewInfo, ovr = {}) {
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   vplace = ALIGN_TOP
   halign = ALIGN_CENTER
-  text = locByTypesReward?[viewInfo.rType](viewInfo.id) ?? viewInfo.rType
-}.__update(fontSmallAccented)
+  text = getLocByRType(viewInfo.rType, viewInfo.id)
+}.__update(fontSmallAccented, ovr)
 
 let specialHeadCtors = {
   decorator = mkDecoratorHeader
@@ -115,26 +121,31 @@ let rewardDesc = @(reward, curStage, lockText, paidText) @() {
     : loc(paidText)
 }.__update(fontTinyAccented)
 
-let defImageCtor = @(viewInfo, _) mkRewardPlateImage(viewInfo, REWARD_STYLE_BIG)
+let defImageCtor = @(viewInfo, _, style = null) mkRewardPlateImage(viewInfo, style ?? REWARD_STYLE_BIG)
 
 let infoImageCtors = {
-  unit = @(vi, _) mkUnitPlate(vi.id)
-  unitUpgrade = @(vi, _) mkUnitPlate(vi.id, true)
-  decorator = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_SMALL : REWARD_STYLE_MEDIUM)
-  currency = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG)
-  booster = @(viewInfo, canReceive) mkRewardPlateImage(viewInfo, canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG)
-  function lootbox(viewInfo, _) {
+  unit = @(vi, _, __ = null) mkUnitPlate(vi.id)
+  unitUpgrade = @(vi, _, __ = null) mkUnitPlate(vi.id, true)
+  decorator = @(viewInfo, canReceive, style = null)
+    mkRewardPlateImage(viewInfo, style ?? (canReceive ? REWARD_STYLE_SMALL : REWARD_STYLE_MEDIUM))
+  currency = @(viewInfo, canReceive, style = null)
+    mkRewardPlateImage(viewInfo, style ?? (canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG))
+  booster = @(viewInfo, canReceive, style = null)
+    mkRewardPlateImage(viewInfo, style ?? (canReceive ? REWARD_STYLE_MEDIUM : REWARD_STYLE_BIG))
+  function lootbox(viewInfo, _, style = null) {
     let sizeMul = getEventLootboxSizeMul(viewInfo.id, null, null)
+    let { boxSize } = style ?? REWARD_STYLE_LARGE
     return {
-      size = (REWARD_STYLE_LARGE.boxSize * sizeMul + 0.5).tointeger()
+      size = (boxSize * sizeMul + 0.5).tointeger()
       rendObj = ROBJ_IMAGE
       image = getLootboxPicture(viewInfo.id, null)
       fallbackImage = lootboxFallbackPicture
       keepAspect = true
       children = mkSquareIconBtn("⌡", @() openLootboxPreview(viewInfo.id), { pos = const [0, ph(60)] })
   }}
-  function decal(viewInfo, _) {
-    let size = [1.5 * REWARD_STYLE_MEDIUM.boxSize, REWARD_STYLE_MEDIUM.boxSize]
+  function decal(viewInfo, _, style = null) {
+    let { boxSize } = style ?? REWARD_STYLE_MEDIUM
+    let size = [1.5 * boxSize, boxSize]
     return {
       size
       rendObj = ROBJ_IMAGE
@@ -143,12 +154,12 @@ let infoImageCtors = {
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = mkDecalIcon(viewInfo.id,
-        round(REWARD_STYLE_MEDIUM.boxSize * getDecalDescPresentation(viewInfo.id).scale).tointeger())
+        round(boxSize * getDecalDescPresentation(viewInfo.id).scale).tointeger())
     }
   }
 }
 
-let bpRewardDesc = @(reward, texts, curStage, receive, isInProgress) function() {
+let bpObsoleteRewardDesc = @(reward, texts, curStage, receive, isInProgress) function() {
   let { lockText = "", paidText = "" } = texts
   local viewInfo = reward?.viewInfo
   if (viewInfo == null && "rewards" in reward) {
@@ -184,4 +195,65 @@ let bpRewardDesc = @(reward, texts, curStage, receive, isInProgress) function() 
   })
 }
 
-return bpRewardDesc
+function bpRewardDesc(slot, bpId) {
+  let viewInfo = getRewardsViewInfo(slot.rewards).sort(sortRewardsViewInfo)?[0]
+  let mkText = specialHeadCtors?[viewInfo?.rType] ?? mkDefaultRewardHeader
+  let bpPointsIcon = mkCurrencyImage(bpId,
+    get_font_metrics(fontTinyAccented.font, fontTinyAccented.fontSize).ascent * 0.75,
+    { imageValign = ALIGN_BOTTOM })
+  return {
+    size = FLEX
+    hplace = ALIGN_CENTER
+    flow = FLOW_VERTICAL
+    valign = ALIGN_BOTTOM
+    children = viewInfo == null ? null
+      : [
+          {
+            size = FLEX
+            halign = ALIGN_CENTER
+            valign = ALIGN_CENTER
+            children = (infoImageCtors?[viewInfo.rType] ?? defImageCtor)(viewInfo, slot?.canReceive,
+              viewInfo.slots > 1 ? REWARD_STYLE_BIG : REWARD_STYLE_BP_DESC)
+          }
+          {
+            size = FLEX_H
+            flow = FLOW_VERTICAL
+            children = [
+              {
+                size = [ FLEX, evenPx(60) ]
+                halign = ALIGN_CENTER
+                valign = ALIGN_BOTTOM
+
+                rendObj = ROBJ_SOLID
+                color = 0x80304453
+                children = mkText(viewInfo, { ...fontTinyAccented, vplace = ALIGN_CENTER })
+              }
+              {
+                size = [ FLEX, evenPx(200) ]
+                halign = ALIGN_CENTER
+                padding = hdpx(16)
+
+                rendObj = ROBJ_SOLID
+                color = 0x80000000
+                children = {
+                  size = FLEX
+                  rendObj = ROBJ_TEXTAREA
+                  behavior = Behaviors.TextArea
+                  vplace = ALIGN_TOP
+                  halign = ALIGN_CENTER
+
+                  embed = { icon = bpPointsIcon }
+                  text = slot.descLoc
+                }.__update(fontTinyAccented)
+              }
+            ]
+          }
+        ]
+  }
+}
+
+return {
+  bpRewardDesc
+  bpObsoleteRewardDesc
+  getLocByRType
+}

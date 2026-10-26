@@ -19,7 +19,7 @@ from "%rGui/feedback/supportWnd.nut" import openSupportTicketWndOrUrl
 import "%rGui/options/mkOption.nut" as mkOption
 from "%rGui/options/options/langOptions.nut" import optLang
 from "%rGui/options/optionsStyle.nut" import contentWidth
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import textColor
 
 
@@ -33,7 +33,7 @@ let twoStepAuthCode = mkWatched(persist, "twoStepAuthCode", "")
 let check2StepAuthCode = mkWatched(persist, "check2StepAuthCode", false)
 let hasEmail2step = mkWatched(persist, "hasEmail2step", false)
 let secStepType = mkWatched(persist, "secStepType", SST_UNKNOWN)
-let isVkAllowed = mkWatched(persist, "isVkAllowed", false)
+let isVkAllowed = mkWatched(persist, "isVkAllowed", getCurCircuitOverride("isVkLoginAllowed", false))
 
 let showPasswordIconSize = [hdpxi(50), hdpxi(40)]
 
@@ -126,10 +126,8 @@ function transparentButton(text, icon, onClick, override = {}) {
     flow = FLOW_HORIZONTAL
     gap = hdpx(30)
     onElemState = @(v) stateFlags.set(v)
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     onClick
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = Linear }]
     children = [
       {
         rendObj = ROBJ_TEXT
@@ -137,10 +135,11 @@ function transparentButton(text, icon, onClick, override = {}) {
       }.__update(fontSmall, override?.textOverride ?? {})
       {
         rendObj = ROBJ_IMAGE
-        size = [ transparentButtonIconWidth, transparentButtonIconWidth ]
+        size = transparentButtonIconWidth
         image = Picture($"{icon}:{transparentButtonIconWidth}:{transparentButtonIconWidth}")
       }
     ]
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 
@@ -222,7 +221,7 @@ function doResendCode() {
 let resendCodeBlock = @() {
   size = const [FLEX, hdpx(55)]
   flow = FLOW_HORIZONTAL
-  watch = [resendTimer]
+  watch = resendTimer
   valign = ALIGN_CENTER
   children = resendTimer.get() > 0
     ? {
@@ -231,9 +230,9 @@ let resendCodeBlock = @() {
         color = Color(192, 192, 192)
       }.__update(fontSmallShaded)
     : [
-        urlLikeButton(loc("msgbox/btn_resend_code"), doResendCode, { ovr = { hplace = ALIGN_RIGHT } })
+        urlLikeButton(loc("msgbox/btn_resend_code"), doResendCode, const { ovr = { hplace = ALIGN_RIGHT } })
         {
-          size = [ refrIconSize, refrIconSize ]
+          size = refrIconSize
           rendObj = ROBJ_IMAGE
           image = Picture($"ui/gameuiskin#refresh.svg:{refrIconSize}:{refrIconSize}:P")
           keepAspect = KEEP_ASPECT_FIT
@@ -254,10 +253,10 @@ let gaijinAuthorization = @() {
         sighUp
       ]
     }
-    mkTextInputField(loginName, loc("mainmenu/login"), { inputType = "mail" })
+    mkTextInputField(loginName, loc("mainmenu/login"), const { inputType = "mail" })
     mkPasswordInputField
     check2StepAuthCode.get()
-      ? mkTextInputField(twoStepAuthCode, loc($"mainmenu/2step/code{secStepType.get()}"), { inputType = "num" })
+      ? mkTextInputField(twoStepAuthCode, loc($"mainmenu/2step/code{secStepType.get()}"), const { inputType = "num" })
       : null
     hasEmail2step.get() ? resendCodeBlock : recoveryPassword
     {
@@ -295,13 +294,11 @@ let nswitchLoginButtonContent = {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = hdpx(15)
-  children = [
-    {
-      rendObj = ROBJ_TEXT
-      text = loc("mainmenu/nswitch")
-      color = btnTxtColor
-    }.__update(fontSmallAccented)
-  ]
+  children = {
+    rendObj = ROBJ_TEXT
+    text = loc("mainmenu/nswitch")
+    color = btnTxtColor
+  }.__update(fontSmallAccented)
 }
 
 let googleLoginButtonContent = {
@@ -425,12 +422,15 @@ let loginButtonCtors = {
   [LT_FIREBASE] = @() mkCustomButton(firebaseLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_FIREBASE }),
     loginButtonStyle),
-  [LT_VKID] = @() @() {
-    watch = isVkAllowed
-    children = !isVkAllowed.get() ? null
-      : mkCustomButton(vkLoginButtonContent,
-          @() eventbus_send("doLogin", { loginType = LT_VKID }),
-          loginButtonStyle)
+  [LT_VKID] = function() {
+    let vkButton = mkCustomButton(vkLoginButtonContent,
+      @() eventbus_send("doLogin", { loginType = LT_VKID }),
+      loginButtonStyle)
+    return @() {
+      watch = isVkAllowed
+      children = !isVkAllowed.get() ? null
+        : vkButton
+    }
   },
   [LT_GUEST] = @() mkCustomButton(guestLoginButtonContent,
     @() eventbus_send("doLogin", { loginType = LT_GUEST }),

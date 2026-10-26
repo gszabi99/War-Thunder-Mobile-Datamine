@@ -2613,8 +2613,7 @@
     "machinegun_belt_stealth": {},
     "art_support_smoke": {},
     "art_support_mortars": {},
-    "art_support_highcaliber": {},
-    "tank_additional_armor": {}
+    "art_support_highcaliber": {}
   },
   "ammoStowages": {
     "ammo1": {

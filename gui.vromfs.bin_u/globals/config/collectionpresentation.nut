@@ -2,7 +2,7 @@ from "dagor.localize" import loc
 from "types" import Function
 
 
-let unknownImage = "ui/gameuiskin#icon_primary_attention.svg"
+const unknownImage = "ui/gameuiskin#icon_primary_attention.svg"
 
 let presentationCtors = { 
   getPuzzleName = @(name) @(idx) loc($"puzzle/{name}/{idx + 1}/name")
@@ -21,6 +21,14 @@ let presentationCtors = {
   paginatorOffsetY = 40
   dupesInfoPiece = [0, 4] 
   puzzles = []
+  helpWndConfig = {
+    pId = 0
+    pieces = [
+      "", "", "",
+      "", "", "uncommon",
+      "rare", "rare", "classified"
+    ]
+  }
 }
 
 let presentations = {
@@ -41,7 +49,7 @@ let presentations = {
 
 let cache = {}
 function mkPresentation(name) {
-  let res = { name }.__update(presentations?[name] ?? {})
+  let res = { name, ...presentations?[name] }
   foreach (k, v in presentationCtors)
     if (k not in res)
       res[k] <- v instanceof Function ? v(name) : v

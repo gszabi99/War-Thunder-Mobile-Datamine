@@ -32,6 +32,15 @@ function getBulletIcon(id, isBulletBelt) {
 function bulletIcon(id, isNext, isCurrent, isBulletBelt, imgSize) {
   let stateFlags = Watched(0)
   let icon = getBulletIcon(id, isBulletBelt)
+  let hotkeys = mkGamepadHotkey("ID_NEXT_BULLET_TYPE")
+  let iconImg = {
+    size = imgSize
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#{icon}:{imgSize}:{imgSize}")
+    keepAspect = KEEP_ASPECT_FIT
+    margin = hdpx(2)
+    color = isCurrent ? colorActive : colorInactive
+  }
   return @() {
     watch = stateFlags
     size = FLEX
@@ -45,15 +54,8 @@ function bulletIcon(id, isNext, isCurrent, isBulletBelt, imgSize) {
     cameraControl = true
     onClick = @() onToggleBullet(isNext, isCurrent)
     onElemState = @(v) stateFlags.set(v)
-    hotkeys = mkGamepadHotkey("ID_NEXT_BULLET_TYPE")
-    children = {
-      size = [imgSize, imgSize]
-      rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#{icon}:{imgSize}:{imgSize}")
-      keepAspect = KEEP_ASPECT_FIT
-      margin = hdpx(2)
-      color = isCurrent ? colorActive : colorInactive
-    }
+    hotkeys
+    children = iconImg
   }
 }
 
@@ -91,22 +93,24 @@ function bulletButton(bulletInfo, bulletCount, scale, idx) {
   let isBulletBelt = Computed(@() bulletInfo.get()?.isBulletBelt)
   let btnSize = scaleEven(touchButtonSize, scale)
   let imgSize = scaleEven(imgSizeBase, scale)
+  let shortcutImg = mkGamepadShortcutImage("ID_NEXT_BULLET_TYPE",
+    { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(50), ph(50)] },
+    scale)
+  let countFont = getScaledFont(fontVeryTinyShaded, scale)
   return @() bulletCount.get() == 0 ? { watch = bulletCount } : {
     watch = [name, id, isNext, isCurrent, isBulletBelt, bulletCount]
-    size = [btnSize, btnSize]
+    size = btnSize
     children = [
       bulletIcon(id.get(), isNext.get(), isCurrent.get(), isBulletBelt.get(), imgSize)
       bulletName(name.get(), scale)
       bulletStatus(isNext.get(), isCurrent.get(), scale)
-      mkGamepadShortcutImage("ID_NEXT_BULLET_TYPE",
-        { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(50), ph(50)] },
-        scale)
+      shortcutImg
       @() bulletCount.get() < 0 ? { watch = bulletCount } : {
         watch = bulletCount
         padding = const [0, 0, 0, hdpx(4)]
         rendObj = ROBJ_TEXT
         text = bulletCount.get()
-      }.__update(getScaledFont(fontVeryTinyShaded, scale))
+      }.__update(countFont)
     ]
   }
 }

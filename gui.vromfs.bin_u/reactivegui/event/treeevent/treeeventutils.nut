@@ -22,14 +22,14 @@ const VIEW_DEFAULT = "default"
 let loadPresetOnce = mkLoadPreset(SAVED_PRESETS_PATH)
 
 let mkDefaultPoint = @(pos) { pos }
-let mkDefaultLine = @(from, to) { from, to }
+let mkDefaultLine = @[nodiscard](from, to) { from, to }
 
-let findLineIdx = @(point1, point2, lines)
+let findLineIdx = @[pure, nodiscard](point1, point2, lines)
   lines.findindex(@(l)
     (l.from == point1 && l.to == point2)
     || (l.from == point2 && l.to == point1))
 
-let getEventMapNodes = @(configs, id) id == null ? {} : (configs?.eventMapTree[id].nodes ?? {})
+let getEventMapNodes = @[pure, nodiscard](configs, id) id == null ? {} : (configs?.eventMapTree[id].nodes ?? {})
 
 let isTimeInRange = @(timeRange, time) time >= (timeRange?.start ?? 0) && time <= (timeRange?.end ?? 0)
 
@@ -55,7 +55,7 @@ function resolveTreeEventId(configs, eventId, mainEventId, time) {
   return best
 }
 
-function nextTreeBoundary(trees, time) {
+function [pure, nodiscard] nextTreeBoundary(trees, time) {
   local next = null
   foreach (_, tree in (trees ?? {})) {
     let tr = tree?.timeRange

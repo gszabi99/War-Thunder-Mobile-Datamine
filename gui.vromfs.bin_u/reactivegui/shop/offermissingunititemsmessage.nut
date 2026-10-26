@@ -16,7 +16,6 @@ from "%appGlobals/rewardType.nut" import G_ITEM
 from "%appGlobals/squadState.nut" import isInSquad, isReady, isSquadLeader
 from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/userstats/serverTime.nut" import serverTime
-from "%rGui/attributes/unitAttr/unitAttrState.nut" import unitAttributes
 from "%rGui/components/buttonStyles.nut" import defButtonHeight, PURCHASE
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp, CS_INCREASED_ICON
 from "%rGui/components/currencyStyles.nut" import CS_COMMON, CS_NO_BALANCE
@@ -139,10 +138,10 @@ function getItemGoodsInfo(name, neededCount) {
   return { goods, price, currencyId, neededCountOfGoods, totalPrice }
 }
 
-function spareCalc(units, itemCfg, spawnCfg, hasItems, timeWndShowing) {
+function spareCalc(units, itemCfg, spawnCfg, hasItems, timeWndShowing, battleLimit) {
   if (spawnCfg.maxSpawns == 1)
     return null
-  let {name, battleLimit} = itemCfg
+  let {name} = itemCfg
   let spawnsBySpare = min(units.len(), (spawnCfg.maxSpawns / spawnCfg.maxSpawnsBySlot).tointeger())
   if (spawnsBySpare <= hasItems || battleLimit <= hasItems)
     return null
@@ -170,15 +169,18 @@ let missingItemByType = {
   spare = spareCalc
 }
 
-
 let mkMissingItemsComp = @(units, spawnCfg, timeWndShowing) Computed(function() {
   let res = []
   foreach (cfg in itemsCfgOrdered.get()) {
-    let { battleLimit = 0, itemsPerUse = 0, name = "" } = cfg
-    let hasItems = items.get()?[name].count ?? 0
+    let { itemsPerUse = 0, name = "", recommendUses = null, isOptional = false } = cfg
+    let { isDisabled = false, count = 0 } = items.get()?[name]
+    if (isOptional && isDisabled)
+      continue
+    let battleLimit = recommendUses ?? cfg?.battleLimit ?? 0 
+    let hasItems = count
 
     if (name in missingItemByType) {
-      let item = missingItemByType[name](units, cfg, spawnCfg, hasItems, timeWndShowing)
+      let item = missingItemByType[name](units, cfg, spawnCfg, hasItems, timeWndShowing, battleLimit)
       if (item)
         res.append(item)
       continue
@@ -195,8 +197,7 @@ let mkMissingItemsComp = @(units, spawnCfg, timeWndShowing) Computed(function() 
       let attributes = itemsByAttributes.filter(@(item) item.item == name)
       let attrByModifications = itemsByModifications.filter(@(item) item.item == name)
       foreach(attr in attributes) {
-        let curLevel = unitAttributes.get()?[attr?.category][attr?.attribute]
-          ?? curSlots.get().findvalue(@(s) s.name == unit.name)?.attrLevels[attr?.category][attr?.attribute]
+        let curLevel = curSlots.get().findvalue(@(s) s.name == unit.name)?.attrLevels[attr?.category][attr?.attribute]
           ?? 0
         limitItems += attr?.battleLimitAdd?[curLevel - 1] ?? 0
       }
@@ -299,6 +300,7 @@ let mkMsButtons = @(item, toBattle)
     mkPurchaseBtn(item, toBattle),
     {
       size = [SIZE_TO_CONTENT, defButtonHeight]
+      margin = const [hdpx(20), 0, 0, 0]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       flow = FLOW_HORIZONTAL

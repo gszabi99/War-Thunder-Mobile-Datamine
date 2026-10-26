@@ -61,7 +61,7 @@
       "force1": 68900.0,
       "timeLife": 180.0,
       "useStartSpeed": true,
-      "startSpeed": 100.0,
+      "startSpeed": 135.0,
       "orientationTorque": 62000.0,
       "machMax": 2.0,
       "endSpeed": 1000.0,

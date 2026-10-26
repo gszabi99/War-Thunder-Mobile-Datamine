@@ -4,6 +4,7 @@ from "%appGlobals/pServer/bqClient.nut" import sendUiBqEvent
 from "%rGui/components/currencyComp.nut" import mkCurrencyImage
 from "%rGui/components/currencyStyles.nut" import CS_GAMERCARD
 from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import hoverColor
 from "%rGui/unit/hangarUnit.nut" import hangarUnit
 from "%rGui/unit/unitItemAccess.nut" import isItemAllowedForUnit
@@ -50,7 +51,7 @@ let battleItemsBtn = @() {
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       gap = hdpx(-30)
-      sound = { click  = "click" }
+      sound = const { click  = "click" }
       children = itemsOrder.get()
         .filter(@(v) hangarUnit.get()?.name == null || isItemAllowedForUnit(v, hangarUnit.get().name))
         .map(@(id) {
@@ -62,7 +63,7 @@ let battleItemsBtn = @() {
           children = mkCurrencyImage(id, CS_GAMERCARD.iconSize)
         })
         .append(plus)
-      transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
+      ...mkPressTransitionScale(stateFlags.get())
     }
   ]
 }

@@ -13,9 +13,9 @@ let ammoReductionFactorDefExt = Computed(@() abTests.get()?.ammoReductionFactorD
 let ammoReductionFactorsByIdxExt = Computed(@() ammoReductionFactorsByIdx
   .map(@(v, i) abTests.get()?[$"ammoReductionFactorsByIdx{i}"].tofloat() ?? v))
 
-let calcBulletStep = @(bInfo) max((bInfo?.catridge ?? 1) * (bInfo?.guns ?? 1), 1)
-let calcLeftSteps = @(bStep, bTotalSteps, bullets) bullets.reduce(@(res, bData) res - bData.count / bStep, bTotalSteps)
-let calcBulletsStatus = @(bInfo, level, mods, modsCfg) (bInfo?.bulletSets ?? {})
+let calcBulletStep = @[pure, nodiscard](bInfo) max((bInfo?.catridge ?? 1) * (bInfo?.guns ?? 1), 1)
+let calcLeftSteps = @[pure, nodiscard](bStep, bTotalSteps, bullets) bullets.reduce(@(res, bData) res - bData.count / bStep, bTotalSteps)
+let calcBulletsStatus = @[pure, nodiscard](bInfo, level, mods, modsCfg) (bInfo?.bulletSets ?? {})
   .map(function(_, name) {
     let { reqModification = "", isHidden = false, reqLevel = 0, isExternalAmmo = false, BR_pickup = false } = bInfo?.fromUnitTags[name]
     let hasMod = reqModification == "" || (mods?[reqModification] ?? false)
@@ -117,10 +117,11 @@ function calcChosenBullets(bInfo, stepSize, bulletsStatus, maxBullets,
       if (bData.count < 0) {
         bData.count = 0
         if (leftSteps > 0) {
-          let steps = hasExtra ? min(leftSteps, fromUnitTags?[bData.name].maxCount ?? leftSteps)
-            : (bulletSlotsCount == 1 && leftSteps > 1) ? min(ceil(bTotalSteps * ammoReductionFactor), leftSteps)
-            : (bulletSlotsCount > 1) ? min(ceil(bTotalSteps * (ammoReductionFactorsBySlot?[bData.idx] ?? 1)), leftSteps)
-            : min(leftSteps, fromUnitTags?[bData.name].maxCount ?? leftSteps)
+          let maxSteps = min(leftSteps, fromUnitTags?[bData.name].maxCount ?? leftSteps)
+          let steps = hasExtra ? maxSteps
+            : (bulletSlotsCount == 1 && leftSteps > 1) ? min(ceil(bTotalSteps * ammoReductionFactor), maxSteps)
+            : (bulletSlotsCount > 1) ? min(ceil(bTotalSteps * (ammoReductionFactorsBySlot?[bData.idx] ?? 1)), maxSteps)
+            : maxSteps
           let defCount = differentBulletSlots == 0 ? steps * stepSize : (steps * stepSize / differentBulletSlots)
           bData.count = hasExtra ? min(defCount, (maxBullets?[bData.idx] ?? 0)) : defCount
           leftSteps -= steps

@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 
 function mkStarLevelCtor(starSize) {
   let star = {
-    size = [starSize, starSize]
+    size = starSize
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#icon_party_leader.svg:{starSize}:{starSize}:P")
     color = 0xFFFFE224

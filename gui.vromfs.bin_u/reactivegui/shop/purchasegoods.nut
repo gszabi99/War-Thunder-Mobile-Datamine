@@ -125,20 +125,24 @@ function purchaseOfferImpl(offer, currencyId, price) {
   return ""
 }
 
-let mkCurrencyWithIcon = @(goods) function() {
+function mkCurrencyWithIcon(goods) {
   let { id = null, count = null } = goods?.rewards.findvalue(@(r) r.gType == G_CURRENCY)
-  return {
-    watch = currencyToFullId
-    flow = FLOW_VERTICAL
-    size = FLEX_H
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    gap = hdpx(30)
-    children = [
-      msgBoxText(loc("shop/orderQuestion"), { size = SIZE_TO_CONTENT })
-      mkCurrencyComp(count, currencyToFullId.get()?[id] ?? id, CS_INCREASED_ICON)
-      msgBoxText(loc("shop/cost"), { size = SIZE_TO_CONTENT })
-    ]
+  let orderQuestionText = msgBoxText(loc("shop/orderQuestion"), const { size = SIZE_TO_CONTENT })
+  let costText = msgBoxText(loc("shop/cost"), const { size = SIZE_TO_CONTENT })
+  return function() {
+    return {
+      watch = currencyToFullId
+      flow = FLOW_VERTICAL
+      size = FLEX_H
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      gap = hdpx(30)
+      children = [
+        orderQuestionText
+        mkCurrencyComp(count, currencyToFullId.get()?[id] ?? id, CS_INCREASED_ICON)
+        costText
+      ]
+    }
   }
 }
 

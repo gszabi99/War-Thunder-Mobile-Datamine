@@ -127,11 +127,11 @@ let cursorTips = @() {
   gap
   valign = ALIGN_CENTER
   children = [
-    manualHint(["J:L.Thumb.hv", "dirpad"], loc("ui/cursor.navigation"))
+    manualHint(const ["J:L.Thumb.hv", "dirpad"], loc("ui/cursor.navigation"))
     cursorOverClickable.get() && joyAHint.get() ? manualHint(clickImageIds, joyAHint.get(), { minWidth = minClickHintSize[0] })
       : { size = minClickHintSize, key = {} }
     !cursorOverStickScroll.get() ? null
-      : manualHint(["J:R.Thumb.hv"], loc("ui/cursor.scroll"))
+      : manualHint(const ["J:R.Thumb.hv"], loc("ui/cursor.scroll"))
   ]
 }
 

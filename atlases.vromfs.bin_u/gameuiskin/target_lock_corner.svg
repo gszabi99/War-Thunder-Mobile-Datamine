@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13.9 13.9">
+<svg viewBox="0 0 13.9 13.9" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <style>.cls-1{fill:#fff;}</style>
 </defs>
-<polygon class="cls-1" points="12.9,9.3 12.9,1 9.3,1 9.3,9.3 1,9.3 1,12.9 9.3,12.9 12.9,12.9 "/>
-<path d="M12.9,12.9H1V9.3h8.3V1h3.6V12.9 M13.9,13.9V0H8.3v8.3H0v5.6H13.9L13.9,13.9z"/>
+<polygon class="cls-1" points="12.9 9.3 12.9 1 9.3 1 9.3 9.3 1 9.3 1 12.9 9.3 12.9 12.9 12.9"/>
+<path d="m12.9 12.9h-11.9v-3.6h8.3v-8.3h3.6v11.9m1 1v-13.9h-5.6v8.3h-8.3v5.6h13.9z"/>
+</svg>
+M13.9,13.9V0H8.3v8.3H0v5.6H13.9L13.9,13.9z"/>
 </svg>

@@ -1,3 +1,4 @@
+from "math" import max
 from "dagor.workcycle" import resetTimeout
 from "frp" import Computed
 from "%sqstd/globalState.nut" import hardPersistWatched
@@ -170,6 +171,7 @@ return exportProfile.__update({
   isProfileReceived = Computed(@() servProfile.get().len() > 0)
   firstLoginTime = Computed(@() servProfile.get()?.sharedStats.firstLoginTime ?? 0)
   campaignsLevelInfo
+  bestCampLevel = Computed(@() campaignsLevelInfo.get()?.reduce(@(res, li) max(res, li?.level ?? 0), 0) ?? 1)
   curCampaign
   defaultCampaign
   setCampaign

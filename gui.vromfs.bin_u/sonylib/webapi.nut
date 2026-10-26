@@ -305,8 +305,9 @@ function send(action, onResponse=null) {
     let httpErr = (!isHttpSuccess(r?.httpStatus ?? 0)) ? (r?.httpStatus ?? 0) : null
     if (httpErr != null && err == null)
       err = { }
-    if (err && err?.code == null)
-      err.code <- httpErr ? httpErr : "undefined";
+    if (err && err?.code == null) {
+      err = err.__merge({code = httpErr ? httpErr : "undefined"})
+    }
 
     onResponse?(r?.response, err)
   })

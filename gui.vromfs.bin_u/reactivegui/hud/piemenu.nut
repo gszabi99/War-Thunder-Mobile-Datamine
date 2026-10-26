@@ -25,7 +25,7 @@ let defaultPieMenuParams = freeze({
 
 
 
-function getPieMenuSelectedIdx(menuItemsCount, stickDeltaV) {
+function [pure, nodiscard] getPieMenuSelectedIdx(menuItemsCount, stickDeltaV) {
   if (menuItemsCount == 0)
     return -1
   let { x, y } = stickDeltaV
@@ -46,11 +46,11 @@ function mkPieMenuItemIcon(c, pieRadius, pieIconSizeMul) {
   let iconSize = (pieRadius * pieIconSizeMul + 0.5).tointeger()
   let iconTexSize = (iconSize * iconScale + 0.5).tointeger()
   return {
-    size = [iconSize, iconSize]
+    size = iconSize
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = {
-      size = [iconTexSize, iconTexSize]
+      size = iconTexSize
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#{icon}:{iconTexSize}:{iconTexSize}:P")
       keepAspect = true
@@ -98,7 +98,7 @@ function mkPieMenu(menuCfg, selIdx, params = defaultPieMenuParams) {
         color = hudWhiteColor
         commands = [[VECTOR_SECTOR, 50, 50, 50, 50, -90 - (degPerItem.get() * 0.5), -90 + (degPerItem.get() * 0.5)]]
         transform = {
-          pivot = [0.5, 0.5]
+          pivot = 0.5
           rotate = degPerItem.get() * selIdx.get()
         }
       }
@@ -129,14 +129,15 @@ function mkPieMenu(menuCfg, selIdx, params = defaultPieMenuParams) {
         children = mkPieMenuItemText(menuCfg.get()?[selIdx.get()])
       }
 
+  let shortcutImgScaleTransition = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
   let mkShortcutImg = @() {
     watch = [selIdx, isGamepad]
     size = FLEX
     children = !isGamepad.get() ? null : mkBtnImageComp(
       pieActiveStick == STICK.LEFT ? "J:L.Thumb.hv" : "J:R.Thumb.hv", hdpxi(50)
     ).__update({vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [pw(0), ph(14)]})
-    transform = { scale = selIdx.get() > -1 ? [0.8, 0.8] : [1.0, 1.0] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+    transform = { scale = selIdx.get() > -1 ? 0.8 : 1.0 }
+    transitions = shortcutImgScaleTransition
   }
   return {
     size = pieSize

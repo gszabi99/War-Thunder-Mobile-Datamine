@@ -14,26 +14,29 @@ from "%rGui/unitMods/unseenBullets.nut" import mkUnseenUnitBullets, markShellsSe
 from "%rGui/weaponry/weaponsVisual.nut" import getAmmoNameShortText, getAmmoTypeShortText
 
 
-let mkBulletContent = @(content, isActive, isHover) {
-  size = [SIZE_TO_CONTENT, modH]
-  children = [
-    @() {
-      size = FLEX
-      rendObj = ROBJ_SOLID
-      color = bgColor
-      transitions = opacityTransition
-    }
-    @() {
-      watch = [isActive, isHover]
-      size = FLEX
-      rendObj = ROBJ_IMAGE
-      image = bgGradient()
-      opacity = isActive.get() ? 1
-        : isHover.get() ? 0.5
-        : 0
-      transitions = opacityTransition
-    }
-  ].append(content)
+function mkBulletContent(content, isActive, isHover) {
+  let bgImg = bgGradient()
+  return {
+    size = [SIZE_TO_CONTENT, modH]
+    children = [
+      @() {
+        size = FLEX
+        rendObj = ROBJ_SOLID
+        color = bgColor
+        transitions = opacityTransition
+      }
+      @() {
+        watch = [isActive, isHover]
+        size = FLEX
+        rendObj = ROBJ_IMAGE
+        image = bgImg
+        opacity = isActive.get() ? 1
+          : isHover.get() ? 0.5
+          : 0
+        transitions = opacityTransition
+      }
+    ].append(content)
+  }
 }
 
 function bulletData(bullet, mods, modCostCfg) {

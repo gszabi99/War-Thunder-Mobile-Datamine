@@ -63,13 +63,13 @@
     71,
     255
   ],
-  "helicopterWarningOverheatTimeToDie": 120.0,
+  "helicopterWarningOverheatTimeToDie": 180.0,
   "helicopterWarningOverheatFrequency0": [
     60.0,
     4.0
   ],
   "helicopterWarningOverheatFrequency1": [
-    120.0,
+    180.0,
     2.0
   ],
   "helicopterWarningOverheatFrequency2": [
@@ -464,13 +464,13 @@
     ],
     "useZoneHatchMask": true,
     "useZoneHatchOutline": true,
-    "colorBattleAreaOutline": [
-      0,
-      0,
-      0,
+    "colorBattleAreaOutlineMul": [
+      155,
+      155,
+      155,
       127
     ],
-    "zoneOutlineWidth": 2.0,
+    "zoneOutlineWidth": 1.5,
     "unitIconAlpha": 255,
     "iconScale": 1.0,
     "briefingIconScale": 0.75,
@@ -500,7 +500,7 @@
     "helicopter": "objective_helicopter.svg:36:36:K",
     "helicopter_outline": "objective_helicopter_outline.svg:36:36:K",
     "april_event_unit": "mech_or_tank.svg:48:48:K",
-    "exoskeleton": "icon_hud_gift.svg:30:30:K",
+    "exoskeleton": "objective_galleon.svg:30:30:K",
     "truck": "objective_truck",
     "mark": "objective_mark.svg:21:21:K",
     "sunk_carrier": "objective_sunk_carrier",
@@ -2087,7 +2087,6 @@
     }
   },
   "indicators": {
-    "shouldReportStuckIndicators": true,
     "hpProgressSize": [
       60.0,
       5.0
@@ -2505,6 +2504,12 @@
       70,
       70,
       255,
+      255
+    ],
+    "colorDiveBombFriend": [
+      255,
+      70,
+      70,
       255
     ],
     "iconMine": "naval_mine_mark.svg:38:38:K",
@@ -3354,7 +3359,13 @@
       1.0,
       0.0
     ],
-    "length": 300.0
+    "length": 500.0,
+    "isBallistic": true,
+    "zTest": true,
+    "segments": 100,
+    "waterLengthOffset": 5.0,
+    "waterHeightOffset": 0.5,
+    "waterFadeLength": 15.0
   },
   "avia_hor": {
     "targetOffset": [
@@ -3818,7 +3829,7 @@
     "isArtilleryTimerBesideMap": true,
     "artilleryTimerBesideMapGap": 12.0,
     "overheatMessageTimeToWork": 120.0,
-    "overheatTimeToDieMax": 120.0,
+    "overheatTimeToDieMax": 180.0,
     "color": [
       255,
       255,
@@ -3873,11 +3884,11 @@
       "temperatureBlinkFrequency": 1.0
     },
     "overheat1": {
-      "timeToOverheat": 120.0,
+      "timeToOverheat": 180.0,
       "temperatureColor": [
-        6,
-        22,
-        238,
+        0,
+        128,
+        255,
         255
       ],
       "temperatureBlinkFrequency": 0.0
@@ -3885,9 +3896,9 @@
     "overheat2": {
       "timeToOverheat": 300.0,
       "temperatureColor": [
-        24,
-        169,
-        237,
+        255,
+        255,
+        255,
         255
       ],
       "temperatureBlinkFrequency": 0.0
@@ -3895,9 +3906,9 @@
     "overheat3": {
       "timeToOverheat": 900.0,
       "temperatureColor": [
-        159,
-        230,
-        246,
+        255,
+        255,
+        255,
         255
       ],
       "temperatureBlinkFrequency": 0.0

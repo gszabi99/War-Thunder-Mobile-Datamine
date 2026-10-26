@@ -20,7 +20,7 @@ from "%appGlobals/rewardType.nut" import G_CURRENCY, G_UNIT, G_UNIT_UPGRADE
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText
 from "%rGui/components/scrollbar.nut" import makeSideScroll
-from "%rGui/unit/hangarUnit.nut" import mainHangarUnitName, mainHangarUnit
+from "%rGui/unit/hangarUnit.nut" import mainHangarUnitName, hangarUnit
 from "%rGui/unlocks/unlocks.nut" import resetUserstatAppData
 
 
@@ -229,12 +229,12 @@ register_command(@() upgrade_unit(mainHangarUnitName.get(), "consolePrintResult"
 register_command(@() downgrade_unit(mainHangarUnitName.get(), "consolePrintResult"), "meta.downgrade_hangar_unit")
 register_command(@()
   add_all_skins_for_unit(mainHangarUnitName.get(),
-    mainHangarUnit.get()?.isUpgraded || mainHangarUnit.get()?.isPremium ? "consolePrintResult"
+    hangarUnit.get()?.isUpgraded || hangarUnit.get()?.isPremium ? "consolePrintResult"
       : { id = "upgradeUnit", name = mainHangarUnitName.get() })
   "meta.add_all_skins_for_hangar_unit")
 register_command(@()
   remove_all_skins_for_unit(mainHangarUnitName.get(),
-    !mainHangarUnit.get()?.isUpgraded ? "consolePrintResult"
+    !hangarUnit.get()?.isUpgraded ? "consolePrintResult"
       : { id = "downgradeUnit", name = mainHangarUnitName.get() })
   "meta.remove_all_skins_for_hangar_unit")
 register_command(@(skinName) add_unit_skin(mainHangarUnitName.get(), skinName, "consolePrintResult"),

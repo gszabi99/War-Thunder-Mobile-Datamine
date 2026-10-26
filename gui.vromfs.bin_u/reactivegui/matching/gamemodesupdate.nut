@@ -6,7 +6,7 @@ from "eventbus" import eventbus_send
 from "%appGlobals/clientState/clientState.nut" import isInBattle
 from "%appGlobals/gameModes/gameModes.nut" import gameModesRaw
 from "%appGlobals/loginState.nut" import isMatchingConnected, isLoggedIn
-from "%rGui/matching/matchingApi.nut" import matching_subscribe, matchingRpcRegisterHandler
+from "%rGui/matching/matchingApi.nut" import matching_subscribe, matchingRegisterHandler
 from "online" import is_online_available
 import "%rGui/matching/matchingRequestWithRetries.nut" as matchingRequestWithRetries
 import "showMatchingError.nut" as showMatchingError
@@ -26,7 +26,7 @@ let fetchGameModesInfo = @(gm_list) gm_list.len() == 0 ? null
       onFinish = "onGameModesFetched"
     })
 
-matchingRpcRegisterHandler("onGameModesFetched", function(result) {
+matchingRegisterHandler("onGameModesFetched", function(result) {
   if ("error" in result) {
     showMatchingError(result)
     deferOnce(requestLogout)
@@ -47,7 +47,7 @@ let fetchGameModesDigest = @() matchingRequestWithRetries({
   onFinish = "onGameModesDigest"
 })
 
-matchingRpcRegisterHandler("onGameModesDigest", function(result) {
+matchingRegisterHandler("onGameModesDigest", function(result) {
   if ("error" in result) {
     showMatchingError(result)
     deferOnce(requestLogout)

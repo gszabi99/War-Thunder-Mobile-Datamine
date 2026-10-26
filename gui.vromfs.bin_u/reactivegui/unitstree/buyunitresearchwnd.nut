@@ -15,7 +15,7 @@ from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_UNIT_RESEARCH, PURCH_TYPE_
 from "%rGui/shop/msgBoxPurchase.nut" import showNoBalanceMsgIfNeed
 from "%rGui/shop/msgQuestDesc.nut" import mkQuestDesc
 from "%rGui/style/backgrounds.nut" import bgShaded
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/tutorial/tutorialConst.nut" import TUTORIAL_UNITS_RESEARCH_ID
 from "%rGui/tutorial/tutorialWnd/tutorialWndState.nut" import activeTutorialId
 from "%rGui/unit/components/unitPlateComp.nut" import unitPlateWidth, unitPlateHeight
@@ -131,8 +131,7 @@ function mkContent() {
         children = mkQuestDesc(unitCurrencyId.get(), spendingUnlocks.get(), country.get())
       }
     ]
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.98, 0.98] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+    ...mkPressTransitionScale(stateFlags.get(), 0.98)
   }
 }
 

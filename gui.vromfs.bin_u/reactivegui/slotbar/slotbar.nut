@@ -48,6 +48,7 @@ const marginVert = hdpx(5)
 const buyIconSize = hdpxi(40)
 let actionBtnSize = slotBtnSize
 let actionBtnsBlockSize = [unitPlateSize[0], actionBtnSize[1] + unseenSize[0]]
+let arsenalIconSize = evenPx(60)
 let slotBarSize = [saSize[0] - defButtonMinWidth, unitPlateSize[1] + actionBtnsBlockSize[1] + unitPlateHeader + marginVert]
 const mainMenuTopPadding = hdpx(10)
 let slotBarMainMenuSize = [slotBarSize[0], slotBarSize[1] + mainMenuTopPadding]
@@ -59,6 +60,7 @@ const aTimeSlotAddAppear = 0.2
 const aTimeSlotAddBlink = 0.3
 
 let removeUnitTrigger = {}
+let notSelected = Watched(false)
 
 let playSlotRemove = @() playSound("meta_unit_remove")
 let playSlotRemoveDelayed = @() resetTimeout(0.01, playSlotRemove)
@@ -95,6 +97,13 @@ let dropBorderMarker = {
 
 function mkEmptySlot(idx, isSelected, stateFlags, onClick) {
   let isGlowing = Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER))
+  let emptySlotChildren = [
+    emptySlotText
+    mkUnitSelectedGlow(null, isGlowing)
+    mkUnitPlateBorder(isSelected)
+  ]
+  let fadeOutAnim = [{ prop = AnimProp.opacity, to = 0.0, duration = aTimeSlotAddAppear,
+    easing = OutQuad, playFadeOut = true }]
   return @() {
     watch = [isSelected, stateFlags]
     key = $"empty_{idx}"
@@ -108,16 +117,11 @@ function mkEmptySlot(idx, isSelected, stateFlags, onClick) {
         dropZoneSlotIdx.set(sf & S_ACTIVE ? idx : null)
     }
     clickableInfo = loc("mainmenu/btnSelect")
-    sound = { click = "choose" }
+    sound = const { click = "choose" }
     rendObj = ROBJ_IMAGE
     image = bgUnit
-    children = [
-      emptySlotText
-      mkUnitSelectedGlow(null, isGlowing)
-      mkUnitPlateBorder(isSelected)
-    ]
-    animations = [{ prop = AnimProp.opacity, to = 0.0, duration = aTimeSlotAddAppear,
-      easing = OutQuad, playFadeOut = true }]
+    children = emptySlotChildren
+    animations = fadeOutAnim
   }
 }
 
@@ -275,18 +279,16 @@ function mkSlotHeader(slot, idx, isSelected) {
         hplace = ALIGN_LEFT
         children = mkSlotHeaderTitle(loc("gamercard/slot/title", { idx = idx + 1 }), isSelected.get())
       }
-      {
+      const {
         size = FLEX
       }
       {
         hplace = ALIGN_RIGHT
         pos = const [hdpx(5), hdpx(1)]
-        children = [
-          mkSlotLevel(level,
-            hdpx(26),
-            { size = [hdpx(110), unitPlateHeader] },
-            { fillColor = 0xFF383B3E, color = isSelected.get() ? 0xFFFFFFFF : 0xFFA0A0A0})
-        ]
+        children = mkSlotLevel(level,
+          hdpx(26),
+          { size = [hdpx(110), unitPlateHeader] },
+          { fillColor = 0xFF383B3E, color = isSelected.get() ? 0xFFFFFFFF : 0xFFA0A0A0})
       }
     ]
   }
@@ -298,13 +300,38 @@ function mkUnitSlot(unit, idx, onClick, isSelected, needUseDragAndDrop = true) {
   let needPlayOnAttach = needUseDragAndDrop && slotsNeedAddAnim.get()?[idx] == unit.name
   let needShowSpinner = Computed(@() unit.name in notActualSlotsByUnit.get())
   let isGlowing = Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER))
+  let dropDataV = { unitName = unit.name, fromIdx = idx, canRemove = true }
+  let slotChildren = [
+    mkUnitBg(unit)
+    mkUnitSelectedGlow(unit, isGlowing)
+    mkUnitImage(unit)
+    mkUnitTexts(unit, getUnitName(unit.name))
+    mkUnitLock(unit, false)
+    mkUnitPlateBorder(isSelected)
+    mkUnitSpinner(needShowSpinner)
+  ]
+  let slotAnimations = !needUseDragAndDrop ? null : [
+    { prop = AnimProp.translate, to = unitPlateSize.map(@(v) v / 4), duration = aTimeSlotRemove,
+      easing = InOutQuad, playFadeOut = true, trigger = removeUnitTrigger, onStart = playSlotRemoveDelayed }
+    { prop = AnimProp.scale, to = const [0.5, 0.5], duration = aTimeSlotRemove,
+      easing = InOutQuad, playFadeOut = true, trigger = removeUnitTrigger }
+    { prop = AnimProp.opacity, to = 0.0, duration = aTimeSlotRemove,
+      easing = InOutQuad, playFadeOut = true, trigger = removeUnitTrigger }
+
+    { prop = AnimProp.scale, from = const [0.8, 0.8], duration = aTimeSlotAddAppear,
+      easing = InQuad, trigger, play = needPlayOnAttach, sound = const { start = "meta_unit_place" } }
+    { prop = AnimProp.scale, to = const [1.1, 1.1], duration = aTimeSlotAddBlink, delay = aTimeSlotAddAppear,
+      easing = Blink, trigger, play = needPlayOnAttach, onFinish = @() onFinishSlotAnim(idx) }
+    { prop = AnimProp.opacity, from = 0.0, duration = aTimeSlotAddAppear,
+      easing = OutQuad, trigger, play = needPlayOnAttach }
+  ]
   return @() {
     watch = [isSelected, stateFlags, selectedUnitToSlot]
     key = $"slot_{idx}_{unit.name}"
     size = unitPlateSize
     behavior = needUseDragAndDrop ? Behaviors.DragAndDrop : null
     onClick
-    dropData = selectedUnitToSlot.get() != null ? null : { unitName = unit.name, fromIdx = idx, canRemove = true }
+    dropData = selectedUnitToSlot.get() != null ? null : dropDataV
     onDragMode = @(on, data) draggedData.set(on ? data : null)
     onDrop = @(data) dropUnitToSlot(idx, data)
     onElemState = function(sf) {
@@ -315,33 +342,11 @@ function mkUnitSlot(unit, idx, onClick, isSelected, needUseDragAndDrop = true) {
       if (draggedData.get() != null && (sf & S_ACTIVE) && draggedData.get().unitName != unit.name)
         dropZoneSlotIdx.set(idx)
     }
-    clickableInfo = isSelected.get() ? { skipDescription = true } : loc("mainmenu/btnSelect")
-    sound = { click  = "choose" }
-    children = [
-      mkUnitBg(unit)
-      mkUnitSelectedGlow(unit, isGlowing)
-      mkUnitImage(unit)
-      mkUnitTexts(unit, getUnitName(unit.name))
-      mkUnitLock(unit, false)
-      mkUnitPlateBorder(isSelected)
-      mkUnitSpinner(needShowSpinner)
-    ]
-    transform = { pivot = [0.5, 0.5] }
-    animations = !needUseDragAndDrop ? null : [
-      { prop = AnimProp.translate, to = unitPlateSize.map(@(v) v / 4), duration = aTimeSlotRemove,
-        easing = InOutQuad, playFadeOut = true, trigger = removeUnitTrigger, onStart = playSlotRemoveDelayed }
-      { prop = AnimProp.scale, to = [0.5, 0.5], duration = aTimeSlotRemove,
-        easing = InOutQuad, playFadeOut = true, trigger = removeUnitTrigger }
-      { prop = AnimProp.opacity, to = 0.0, duration = aTimeSlotRemove,
-        easing = InOutQuad, playFadeOut = true, trigger = removeUnitTrigger }
-
-      { prop = AnimProp.scale, from = [0.8, 0.8], duration = aTimeSlotAddAppear,
-        easing = InQuad, trigger, play = needPlayOnAttach, sound = { start = "meta_unit_place" } }
-      { prop = AnimProp.scale, to = [1.1, 1.1], duration = aTimeSlotAddBlink, delay = aTimeSlotAddAppear,
-        easing = Blink, trigger, play = needPlayOnAttach, onFinish = @() onFinishSlotAnim(idx) }
-      { prop = AnimProp.opacity, from = 0.0, duration = aTimeSlotAddAppear,
-        easing = OutQuad, trigger, play = needPlayOnAttach }
-    ]
+    clickableInfo = isSelected.get() ? const { skipDescription = true } : loc("mainmenu/btnSelect")
+    sound = const { click  = "choose" }
+    children = slotChildren
+    transform = const { pivot = 0.5 }
+    animations = slotAnimations
   }
 }
 
@@ -392,7 +397,7 @@ function actionBtns(unit, hasUnseenArsenal, hasUnseenAttributes, hasUnitWeaponSl
             })
       unit.get() == null
         ? translucentImgSlotButton("ui/gameuiskin#arsenal.svg", @() null, null,
-            { opacity = 0.5, watch = null, iconSize = evenPx(60) })
+            { opacity = 0.5, watch = null, iconSize = arsenalIconSize })
         : translucentImgSlotButton("ui/gameuiskin#arsenal.svg",
             hasUnitWeaponSlots.get() ? openUnitModsSlotsWnd : openUnitModsWnd,
             statusUnseenMark(hasUnseenArsenal),
@@ -400,7 +405,7 @@ function actionBtns(unit, hasUnseenArsenal, hasUnseenAttributes, hasUnitWeaponSl
               key = slotBarArsenalKey
               onAttach = @() attachedSlotBarArsenalIdx.set(idx)
               onDetach = @() attachedSlotBarArsenalIdx.set(null)
-              iconSize = evenPx(60)
+              iconSize = arsenalIconSize
             })
       translucentImgSlotButton("ui/gameuiskin#slot_crew.svg",
         openSlotAttrWnd,
@@ -459,6 +464,16 @@ function mkSlotWithButtons(slot, idx) {
   let unseenAttr = mkUnseenSlotAttrByIdx(idx)
   let hasUnseenAttributes = Computed(@() unseenAttr.get().isUnseen)
   let hasUnseenMarker = Computed(@() hasUnseenArsenal.get() || hasUnseenAttributes.get())
+  let headerRow = {
+    children = [
+      mkSlotHeader(slot, idx, isSelected)
+      {
+        pos = [-levelHolderSize[0] / 2 - levelProgressBorderWidth * 2, 0]
+        hplace = ALIGN_RIGHT
+        children = mkSlotHeaderIndicator(unit, hasUnseenModsForTutorial, hasUnseenMarker, idx, isSelected)
+      }
+    ]
+  }
   return @() {
     watch = needTargetMarker
     flow = FLOW_VERTICAL
@@ -471,16 +486,7 @@ function mkSlotWithButtons(slot, idx) {
             key = slotBarSlotKey(idx) 
             flow = FLOW_VERTICAL
             children = [
-              {
-                children = [
-                  mkSlotHeader(slot, idx, isSelected)
-                  {
-                    pos = [-levelHolderSize[0] / 2 - levelProgressBorderWidth * 2, 0]
-                    hplace = ALIGN_RIGHT
-                    children = mkSlotHeaderIndicator(unit, hasUnseenModsForTutorial, hasUnseenMarker, idx, isSelected)
-                  }
-                ]
-              }
+              headerRow
               needShowDefEmptySlot.get() ? mkDefaultEmptySlot(idx) : null
               unit.get() == null || needClearDropZone.get()
                 ? emptySelectSlot(idx)
@@ -510,6 +516,21 @@ function fakeSlotMainMenu() {
     : unit.get()?.name in unseenCampUnitMods.get())
   let hasUnseenArsenal = Computed(@() hasUnseenMods.get() || hasUnseenBullets.get())
   let hasUnseenInfo = mkHasUnseenUnitDetails(unit, hasUnseenArsenal)
+  let infoBtn = translucentTextSlotButton("i",
+    @() onOpenUnitDetailsWnd(unit),
+    statusUnseenMark(hasUnseenInfo),
+    { bitMask = COMMADN_STATE.LEFT, animations = changeBtnAnimation })
+  let arsenalUnseenMark = statusUnseenMark(hasUnseenArsenal)
+  let modifyBtn = translucentImgSlotButton("ui/gameuiskin#modify.svg",
+    openUnitAttrWnd,
+    @() {
+      watch = statusUnitAttr
+      pos = const [0, -hdpx(16)]
+      vplace = ALIGN_TOP
+      hplace = ALIGN_CENTER
+      children = mkAvailAttrMark(statusUnitAttr.get(), hdpx(32))
+    },
+    { bitMask = COMMADN_STATE.RIGHT, key = "attr_btn" }) 
 
   return @() {
     watch = [unit, hasUnitWeaponSlots]
@@ -524,27 +545,15 @@ function fakeSlotMainMenu() {
         flow = FLOW_HORIZONTAL
         gap = lineWidth
         children = [
-          translucentTextSlotButton("i",
-            @() onOpenUnitDetailsWnd(unit),
-            statusUnseenMark(hasUnseenInfo),
-            { bitMask = COMMADN_STATE.LEFT, animations = changeBtnAnimation })
+          infoBtn
           translucentImgSlotButton("ui/gameuiskin#arsenal.svg",
             hasUnitWeaponSlots.get() ? openUnitModsSlotsWnd : openUnitModsWnd,
-            statusUnseenMark(hasUnseenArsenal),
-            { iconSize = evenPx(60) })
-          translucentImgSlotButton("ui/gameuiskin#modify.svg",
-            openUnitAttrWnd,
-            @() {
-              watch = statusUnitAttr
-              pos = const [0, -hdpx(16)]
-              vplace = ALIGN_TOP
-              hplace = ALIGN_CENTER
-              children = mkAvailAttrMark(statusUnitAttr.get(), hdpx(32))
-            },
-            { bitMask = COMMADN_STATE.RIGHT, key = "attr_btn" }) 
+            arsenalUnseenMark,
+            { iconSize = arsenalIconSize })
+          modifyBtn
         ]
       }
-      mkUnitSlot(unit.get(), 0, @() null, Watched(false), false)
+      mkUnitSlot(unit.get(), 0, @() null, notSelected, false)
     ]
   }
 }
@@ -568,6 +577,7 @@ function mkSlotCommon(slot, idx) {
   let isSelected = Computed(@() selectedTreeSlotIdx.get() == idx)
   let needTargetMarker = Computed(@() draggedData.get() != null && needClearDropZone.get())
   let needShowDefEmptySlot = Computed(@() needHideDraggableUnit.get() || isDraggedUnit.get())
+  let headerComp = mkSlotHeader(slot, idx, isSelected)
 
   return @() {
     watch = [unit, needShowDefEmptySlot, needClearDropZone, needTargetMarker]
@@ -576,7 +586,7 @@ function mkSlotCommon(slot, idx) {
         flow = FLOW_VERTICAL
         valign = ALIGN_BOTTOM
         children = [
-          mkSlotHeader(slot, idx, Computed(@() selectedTreeSlotIdx.get() == idx))
+          headerComp
           needShowDefEmptySlot.get() ? mkDefaultEmptySlot(idx) : null
           unit.get() == null || needClearDropZone.get()
             ? emptySlotTree(idx)
@@ -627,6 +637,18 @@ function mkSlotSelect(slot, idx) {
   let needClearDropZone = Computed(@() dropZoneSlotIdx.get() == idx)
   let isSelected = Computed(@() selectedTreeSlotIdx.get() == idx)
   let needTargetMarker = Computed(@() draggedData.get() != null && needClearDropZone.get())
+  let headerComp = mkSlotHeader(slot, idx, isSelected)
+  let emptyHighlight = {
+    key = idx
+    size = const [FLEX, ph(70)]
+    rendObj = ROBJ_IMAGE
+    vplace = ALIGN_TOP
+    image = highlightEmptySearch
+    transform = {}
+    opacity = 0
+    animations = [{ prop = AnimProp.opacity, from = 0.0, to = 0.3, duration = 1,
+      play = true, easing = CosineFull, loop = true, loopPause = 1 }]
+  }
 
   return @() {
     watch = [unit, needClearDropZone, needTargetMarker]
@@ -634,24 +656,14 @@ function mkSlotSelect(slot, idx) {
     valign = ALIGN_BOTTOM
     flow = FLOW_VERTICAL
     children = [
-      mkSlotHeader(slot, idx, Computed(@() selectedTreeSlotIdx.get() == idx))
+      headerComp
       {
         children = [
           unit.get() == null || needClearDropZone.get()
             ? emptySelectSlotTree(idx)
             : mkUnitSlot(unit.get(), idx, @() setUnitToSlot(idx), isSelected)
           unit.get() ? null
-            : {
-                key = idx
-                size = const [FLEX, ph(70)]
-                rendObj = ROBJ_IMAGE
-                vplace = ALIGN_TOP
-                image = highlightEmptySearch
-                transform = {}
-                opacity = 0
-                animations = [{ prop = AnimProp.opacity, from = 0.0, to = 0.3, duration = 1,
-                  play = true, easing = CosineFull, loop = true, loopPause = 1 }]
-              }
+            : emptyHighlight
           needTargetMarker.get() ? dropBorderMarker : null
         ]
       }

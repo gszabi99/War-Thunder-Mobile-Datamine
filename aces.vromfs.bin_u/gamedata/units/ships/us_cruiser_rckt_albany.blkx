@@ -915,7 +915,6 @@
           3
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -959,7 +958,6 @@
           6
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -1112,7 +1110,6 @@
         "weaponType": "rockets",
         "emitter": "bone_rocket_07",
         "flash": "bone_rocket_07",
-        "ammoDpGenFmt": "bone_rocket_%02d_dm",
         "emitterGenRange": [
           7,
           8
@@ -1171,7 +1168,6 @@
         "weaponType": "rockets",
         "emitter": "bone_rocket_05",
         "flash": "bone_rocket_05",
-        "ammoDpGenFmt": "bone_rocket_%02d_dm",
         "emitterGenRange": [
           5,
           6
@@ -1230,7 +1226,6 @@
         "weaponType": "rockets",
         "emitter": "rckt_rocket_01",
         "flash": "rckt_rocket_01",
-        "ammoDpGenFmt": "rckt_rocket_%02d_dm",
         "emitterGenRange": [
           1,
           8
@@ -1644,7 +1639,6 @@
                 3
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -1688,7 +1682,6 @@
                 6
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -1841,7 +1834,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_07",
               "flash": "bone_rocket_07",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 7,
                 8
@@ -1900,7 +1892,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_05",
               "flash": "bone_rocket_05",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 5,
                 6
@@ -1959,7 +1950,6 @@
               "weaponType": "rockets",
               "emitter": "rckt_rocket_01",
               "flash": "rckt_rocket_01",
-              "ammoDpGenFmt": "rckt_rocket_%02d_dm",
               "emitterGenRange": [
                 1,
                 8
@@ -2357,7 +2347,6 @@
                 3
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -2401,7 +2390,6 @@
                 6
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -2554,7 +2542,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_07",
               "flash": "bone_rocket_07",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 7,
                 8
@@ -2613,7 +2600,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_05",
               "flash": "bone_rocket_05",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 5,
                 6
@@ -2672,7 +2658,6 @@
               "weaponType": "rockets",
               "emitter": "rckt_rocket_01",
               "flash": "rckt_rocket_01",
-              "ammoDpGenFmt": "rckt_rocket_%02d_dm",
               "emitterGenRange": [
                 1,
                 8

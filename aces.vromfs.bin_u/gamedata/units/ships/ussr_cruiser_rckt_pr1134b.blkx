@@ -394,30 +394,26 @@
       "role": "sailor",
       "crew": 72
     },
-    "sailor3": [
-      {
-        "dmPart": "compartment_03_dm",
-        "role": "sailor",
-        "crew": 72
-      },
-      {
-        "dmPart": "compartment_03_dm",
-        "role": "sailor",
-        "crew": 72
-      }
-    ],
-    "sailor4": [
-      {
-        "dmPart": "compartment_04_dm",
-        "role": "sailor",
-        "crew": 72
-      },
-      {
-        "dmPart": "compartment_04_dm",
-        "role": "sailor",
-        "crew": 72
-      }
-    ]
+    "sailor3": {
+      "dmPart": "compartment_03_dm",
+      "role": "sailor",
+      "crew": 72
+    },
+    "sailor4": {
+      "dmPart": "compartment_04_dm",
+      "role": "sailor",
+      "crew": 72
+    },
+    "sailor5": {
+      "dmPart": "compartment_05_dm",
+      "role": "sailor",
+      "crew": 72
+    },
+    "sailor6": {
+      "dmPart": "compartment_06_dm",
+      "role": "sailor",
+      "crew": 72
+    }
   },
   "DamageEffects": {
     "part": [
@@ -954,7 +950,6 @@
           5
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -999,7 +994,6 @@
           10
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -1094,7 +1088,6 @@
         "weaponType": "rockets",
         "emitter": "bone_rocket_05",
         "flash": "bone_rocket_05",
-        "ammoDpGenFmt": "bone_rocket_%02d_dm",
         "emitterGenRange": [
           5,
           8
@@ -1174,7 +1167,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 10.0,
         "speedYaw": 60.0,
-        "reloadTime": 22.0,
+        "reloadTime": 20.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -1242,7 +1235,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 10.0,
         "speedYaw": 60.0,
-        "reloadTime": 22.0,
+        "reloadTime": 20.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -1314,7 +1307,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 10.0,
         "speedYaw": 100.0,
-        "reloadTime": 22.0,
+        "reloadTime": 20.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -1371,7 +1364,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 10.0,
         "speedYaw": 100.0,
-        "reloadTime": 22.0,
+        "reloadTime": 20.0,
         "ChainfireTime": 2.0,
         "DelayAfterShoot": 0.0,
         "aimMinDist": 10.0,
@@ -2097,7 +2090,6 @@
                 5
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -2142,7 +2134,6 @@
                 10
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -2237,7 +2228,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_05",
               "flash": "bone_rocket_05",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 5,
                 8
@@ -2317,7 +2307,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 60.0,
-              "reloadTime": 22.0,
+              "reloadTime": 20.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -2385,7 +2375,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 60.0,
-              "reloadTime": 22.0,
+              "reloadTime": 20.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -2457,7 +2447,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 100.0,
-              "reloadTime": 22.0,
+              "reloadTime": 20.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -2514,7 +2504,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 100.0,
-              "reloadTime": 22.0,
+              "reloadTime": 20.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -3214,7 +3204,6 @@
                 5
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -3259,7 +3248,6 @@
                 10
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -3354,7 +3342,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_05",
               "flash": "bone_rocket_05",
-              "ammoDpGenFmt": "bone_rocket_%02d_dm",
               "emitterGenRange": [
                 5,
                 8
@@ -3434,7 +3421,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 60.0,
-              "reloadTime": 22.0,
+              "reloadTime": 20.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -3502,7 +3489,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 60.0,
-              "reloadTime": 22.0,
+              "reloadTime": 20.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -3574,7 +3561,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 100.0,
-              "reloadTime": 22.0,
+              "reloadTime": 20.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,
@@ -3631,7 +3618,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 10.0,
               "speedYaw": 100.0,
-              "reloadTime": 22.0,
+              "reloadTime": 20.0,
               "ChainfireTime": 2.0,
               "DelayAfterShoot": 0.0,
               "aimMinDist": 10.0,

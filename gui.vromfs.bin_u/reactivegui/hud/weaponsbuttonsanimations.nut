@@ -15,7 +15,7 @@ function mkBtnGlare(trigger, btnSize = touchButtonSize) {
   let btnGlareSize = (1.62 * btnSize).tointeger()
   return {
     key = trigger
-    size = [btnGlareSize, btnGlareSize]
+    size = btnGlareSize
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     rendObj = ROBJ_MASK
@@ -28,14 +28,14 @@ function mkBtnGlare(trigger, btnSize = touchButtonSize) {
       rendObj = ROBJ_IMAGE
       image = gradTranspDoubleSideX
       color = 0x00A0A0A0
-      transform = { rotate = 25, translate = [-btnGlareSize, -btnGlareSize] }
+      transform = { rotate = 25, translate = -btnGlareSize }
       animations = [{
         prop = AnimProp.translate, duration = 0.4, delay = 0.05, trigger
         from = [-btnGlareSize, -btnGlareSize], to = [0.5 * btnGlareSize, 0.5 * btnGlareSize]
       }]
     }
 
-    transform = { scale = [0.0, 0.0] } 
+    transform = { scale = 0.0 } 
     animations = [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.0, 1.0], duration = 0.5, trigger }]
   }
 }
@@ -44,7 +44,7 @@ function mkActionGlare(actionItem, buttonSize = touchButtonSize) {
   let trigger = $"action_cd_finish_{actionItem?.id}"
   let actionGlareSize = (1.15 * buttonSize).tointeger()
   return {
-    size = [actionGlareSize, actionGlareSize]
+    size = actionGlareSize
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     rendObj = ROBJ_MASK
@@ -57,14 +57,14 @@ function mkActionGlare(actionItem, buttonSize = touchButtonSize) {
       rendObj = ROBJ_IMAGE
       image = gradTranspDoubleSideX
       color = 0x00A0A0A0
-      transform = { rotate = 25, translate = [-actionGlareSize, -actionGlareSize] }
+      transform = { rotate = 25, translate = -actionGlareSize }
       animations = [{
         prop = AnimProp.translate, duration = 0.4, delay = 0.05, trigger
         from = [-actionGlareSize, -actionGlareSize], to = [0.5 * actionGlareSize, 0.5 * actionGlareSize]
       }]
     }
 
-    transform = { scale = [0.0, 0.0] } 
+    transform = { scale = 0.0 } 
     animations = [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.0, 1.0], duration = 0.5, trigger }]
   }
 }

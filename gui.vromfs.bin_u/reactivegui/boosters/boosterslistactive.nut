@@ -5,6 +5,7 @@ from "%appGlobals/pServer/campaign.nut" import campConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%rGui/boosters/boostersState.nut" import isOpenedBoosterWnd
 from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import hoverColor
 
 
@@ -73,17 +74,15 @@ let boostersListActive = @(from) function() {
       sendUiBqEvent("open_boosters_window", { id = "open", from })
     }
     behavior = Behaviors.Button
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     onElemState = @(v) stateFlags.set(v)
 
-    transform = {
-      scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
-    }
     children = [
       stateFlags.get() & S_HOVER ? hoverBg : null
       content
       plus
     ]
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 return {

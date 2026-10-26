@@ -12,7 +12,7 @@ from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/rewardType.nut" import G_SKIN, G_LOOTBOX
 from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, dayOffset
-from "%rGui/battlePass/battlePassState.nut" import bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock,
+from "%rGui/battlePass/battlePassObsoleteState.nut" import bpFreeRewardsUnlock, bpPaidRewardsUnlock, bpPurchasedUnlock,
   battlePassGoods
 from "%rGui/battlePass/passState.nut" import BATTLE_PASS
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
@@ -30,7 +30,7 @@ import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
 from "%rGui/notifications/logEvents.nut" import sendTelemetrySavedEvent
 from "%rGui/rewards/lootboxesRewards.nut" import findLootboxWithReward
 from "%rGui/rewards/unlockRewards.nut" import findUnlockWithReward
-from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, openMainSeasonScene, PASS_SCENE, LOOTBOX_TAB,
+from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, openMainSeasonScene, PASS_OBSOLETE_SCENE, LOOTBOX_TAB,
   openShopByGoods
 from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_SKINS, PURCH_TYPE_SKIN, mkBqPurchaseInfo
 from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
@@ -38,6 +38,7 @@ from "%rGui/shop/goodsUtils.nut" import chooseBetterGoods, canPurchaseGoods
 from "%rGui/shop/lootboxPreviewState.nut" import openEventWndLootbox
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
 from "%rGui/shop/shopState.nut" import shopGoods
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import userlogTextColor, markTextColor, selectColor, hoverColor
 from "%rGui/unit/unitSettings.nut" import mkIsAutoSkin, mkSkinCustomTags
 from "%rGui/unitCustom/unitCustomComps.nut" import mkGradText, mkIcon, iconSize
@@ -59,6 +60,7 @@ const skinsRowPadding = hdpx(20)
 let skinsRowWidth = skinSize * SKINS_IN_ROW + skinGap * (SKINS_IN_ROW - 1)
 let rowHeight = skinSize + skinGap
 const aTimeSelected = 0.2
+const colorTransition = [{ prop = AnimProp.color, duration = aTimeSelected }]
 const rowBgEvenColor = 0xB3000000
 const rowBgOddColor = 0x70000000
 
@@ -125,6 +127,11 @@ function skinBtn(skinPresentation) {
     return currencyToFullId.get()?[baseId] ?? baseId
   })
   let canChangeTags = Computed(@() hasTagsChoice.get() && isSelected.get() && !isLocked.get())
+  let skinImg = Picture($"ui/gameuiskin#{image}:{skinSize}:{skinSize}:P")
+  let slotBorderImg = Picture($"ui/gameuiskin#slot_border.svg:{skinSize}:{skinSize}:P")
+  let hoverGlowImg = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
+  let checkIcon = mkIcon("ui/gameuiskin#check.svg", const { color = 0xFF78FA78 })
+  let editIcon = Picture($"ui/gameuiskin#menu_edit.svg:{iconSize}:{iconSize}:P")
 
   return @() {
     watch = [stateFlags, isLocked]
@@ -132,7 +139,7 @@ function skinBtn(skinPresentation) {
     rendObj = ROBJ_BOX
     fillColor = isLocked.get() ? 0xFF909090 : 0xFFFFFFFF
     borderRadius = skinBorderRadius
-    image = Picture($"ui/gameuiskin#{image}:{skinSize}:{skinSize}:P")
+    image = skinImg
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
     function onClick() {
@@ -142,25 +149,24 @@ function skinBtn(skinPresentation) {
       else if (canChangeTags.get() && "name" in baseUnit.get())
         changeSkinTagWnd(baseUnit.get().name, name)
     }
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     children = [
       @() {
         watch = isSelected
         size = FLEX
         rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#slot_border.svg:{skinSize}:{skinSize}:P")
+        image = slotBorderImg
         color = isSelected.get() ? selectColor : 0
-        transitions = [{ prop = AnimProp.color, duration = aTimeSelected }]
+        transitions = colorTransition
       }
       @() {
         watch = stateFlags
         size = FLEX
         rendObj = ROBJ_BOX
-        image = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
+        image = hoverGlowImg
         fillColor = stateFlags.get() & S_HOVER ? hoverColor : 0
         borderRadius = skinBorderRadius
-        transitions = [{ prop = AnimProp.color, duration = aTimeSelected }]
-        transform = { rotate = 180 }
+        transitions = colorTransition
+        transform = const { rotate = 180 }
       }
       @() {
         watch = [isLocked, currencyId]
@@ -170,7 +176,7 @@ function skinBtn(skinPresentation) {
         flow = FLOW_HORIZONTAL
         children = !isLocked.get() ? null
           : !currencyId.get() ? mkIcon("ui/gameuiskin#lock_icon.svg")
-          : mkCurrencyImage(currencyId.get(), iconSize, { vplace = ALIGN_BOTTOM, margin = hdpx(8) })
+          : mkCurrencyImage(currencyId.get(), iconSize, const { vplace = ALIGN_BOTTOM, margin = hdpx(8) })
       }
       @() {
         watch = currentSkin
@@ -178,7 +184,7 @@ function skinBtn(skinPresentation) {
         halign = ALIGN_LEFT
         valign = ALIGN_BOTTOM
         children = currentSkin.get() == name
-          ? mkIcon("ui/gameuiskin#check.svg", { color = 0xFF78FA78 })
+          ? checkIcon
           : null
       }
       @() !canChangeTags.get() ? { watch = canChangeTags }
@@ -188,10 +194,11 @@ function skinBtn(skinPresentation) {
             margin = hdpx(10)
             hplace = ALIGN_RIGHT
             rendObj = ROBJ_IMAGE
-            image = Picture($"ui/gameuiskin#menu_edit.svg:{iconSize}:{iconSize}:P")
+            image = editIcon
             keepAspect = true
           }
     ]
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 
@@ -313,6 +320,7 @@ let canChangeSkin = @(unit, myUnits) unit.isUpgraded == myUnits?[unit.name].isUp
 function selectBtns(unit, vehicleName, skinName, cSkin) {
   if ("skin" not in unit && "currentSkins" not in unit) 
     return null
+  let appliedText = mkGradText(loc("skins/applied"))
   return @() {
     watch = campMyUnits
     size = FLEX
@@ -320,7 +328,7 @@ function selectBtns(unit, vehicleName, skinName, cSkin) {
     flow = FLOW_HORIZONTAL
     gap = hdpx(20)
     children = cSkin == skinName
-      ? mkGradText(loc("skins/applied"))
+      ? appliedText
       : !canChangeSkin(unit, campMyUnits.get()) ? null
       : textButtonPrimary(utf8ToUpper(loc("mainmenu/btnApply")),
           function() {
@@ -351,8 +359,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
       children = textButtonPricePurchase(
         utf8ToUpper(loc("mainmenu/btnBuy")),
         mkCurrencyComp(skinGoods?.price.price, currencyId),
-        @() openShopByGoods(skinGoods),
-        { hplace = ALIGN_CENTER })
+        @() openShopByGoods(skinGoods))
     })
   }
 
@@ -384,7 +391,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
     return res.__update({
       children = [
         @() mkInfoTextarea(loc("canReceive/inShopLootbox", { name = colorize(markTextColor, getLootboxName(lootboxTbl.name)) }))
-        textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")), @() openGoodsPreview(goods.id), { hplace = ALIGN_CENTER })
+        textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")), @() openGoodsPreview(goods.id))
       ]
     })
   }
@@ -397,7 +404,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
         @() mkInfoTextarea(
           loc("canReceive/inEvent", { eventName = colorize(markTextColor, eventLocName.get()) }),
           { watch = eventLocName })
-        textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")), @() openLootboxForEvent(lootbox), { hplace = ALIGN_CENTER })
+        textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")), @() openLootboxForEvent(lootbox))
       ]
     })
   }
@@ -413,7 +420,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
     return res.__update({
         children = [
         mkInfoTextarea(loc("canReceive/inBattlePass"))
-        textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")), @() openMainSeasonScene(PASS_SCENE, BATTLE_PASS), { hplace = ALIGN_CENTER })
+        textButtonPrimary(utf8ToUpper(loc("msgbox/btn_browse")), @() openMainSeasonScene(PASS_OBSOLETE_SCENE, BATTLE_PASS))
       ]
     })
 
@@ -437,8 +444,7 @@ let skinActionBtn = @() {
       ? textButtonPricePurchase(
           utf8ToUpper(loc("mainmenu/btnBuy")),
           mkCurrencyComp(selectedSkinCfg.get()?.price, selectedSkinCfg.get()?.currencyId),
-          onPurchase,
-          { hplace = ALIGN_CENTER })
+          onPurchase)
     : receiveSkinInfo(baseUnit.get().name, selectedSkin.get())
 }
 

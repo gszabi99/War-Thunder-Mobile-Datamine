@@ -8,6 +8,10 @@ from "%rGui/controls/shortcutSimpleComps.nut" import mkLtButtonListener
 from "%rGui/globalState.nut" import isInFlight
 from "%rGui/hud/aircraftHudTouch.nut" import aircraftHud, aircraftHudElemsOverShade, aircraftOnTouchBegin,
   aircraftOnTouchEnd
+
+
+
+
 import "%rGui/hud/battleResultsShort.ui.nut" as battleResultsShort
 import "%rGui/hud/capZones/captureZoneIndicators.nut" as captureZoneIndicators
 import "%rGui/hud/cutsceneHud.nut" as cutsceneHud
@@ -32,6 +36,9 @@ import "%rGui/tutorial/hudTutorElems.nut" as hudTutorElems
 
 let hudByUnitType = {
   [AIR] = aircraftHud,
+
+
+
   [SHIP] = shipHudTouch,
   [SUBMARINE] = submarineHudTouch,
   [TANK] = tankHudTouch,
@@ -40,15 +47,24 @@ let hudByUnitType = {
 }
 
 let onTouchBeginByUnitType = {
-  [AIR] = aircraftOnTouchBegin
+  [AIR] = aircraftOnTouchBegin,
+
+
+
 }
 
 let onTouchEndByUnitType = {
-  [AIR] = aircraftOnTouchEnd
+  [AIR] = aircraftOnTouchEnd,
+
+
+
 }
 
 let hudOverShade = {
   [AIR] = aircraftHudElemsOverShade,
+
+
+
 }
 
 let emptySceneWithMenuButton = {

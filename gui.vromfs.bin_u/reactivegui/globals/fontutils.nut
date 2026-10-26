@@ -59,7 +59,7 @@ function getFontToFitWidth(textOrTextareaComp, maxWidthPx, orderedFontsList) {
 
 
 
-function getFontToFitHeight(maxHeightPx, orderedFontsList) {
+function [pure, nodiscard] getFontToFitHeight(maxHeightPx, orderedFontsList) {
   let listLen = orderedFontsList.len()
   local res = orderedFontsList[listLen - 1]
   for (local i = 0; i < listLen; i++)

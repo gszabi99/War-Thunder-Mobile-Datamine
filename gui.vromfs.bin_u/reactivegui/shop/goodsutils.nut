@@ -13,7 +13,7 @@ function tryApplyUnitSkinFromGoods(unit, goods) {
     : unit
 }
 
-function getBestUnitByGoods(goods, sConfigs) {
+function [pure, nodiscard] getBestUnitByGoods(goods, sConfigs) {
   if (goods?.meta.previewUnit)
     return tryApplyUnitSkinFromGoods(sConfigs?.allUnits[goods?.meta.previewUnit], goods)
   if (goods == null)
@@ -27,14 +27,14 @@ function getBestUnitByGoods(goods, sConfigs) {
   return tryApplyUnitSkinFromGoods(unitUpg, goods)
 }
 
-function canPurchaseGoods(id, limit, dailyLimit, limitReset, dayOffset, serverTimeDay, purchCount, todayPurchCount) {
+function [pure, nodiscard] canPurchaseGoods(id, limit, dailyLimit, limitReset, dayOffset, serverTimeDay, purchCount, todayPurchCount) {
   let { time = 0, count = 0 } = limitReset?[id]
   let limitInc = getDay(time, dayOffset) == serverTimeDay ? count : 0
   return (limit <= 0 || (purchCount?[id].count ?? 0) < limit + limitInc)
     && (dailyLimit <= 0 || (todayPurchCount?[id].count ?? 0) < dailyLimit + limitInc)
 }
 
-function getAdjustedPriceInfo(goods, todayPurchasesCount, discountsToApplyV) {
+function [pure, nodiscard] getAdjustedPriceInfo(goods, todayPurchasesCount, discountsToApplyV) {
   if (goods?.dailyPriceInc == null || goods.dailyPriceInc.len() == 0) {
     let newPrice = discountsToApplyV?[goods.id]
     return newPrice == null ? goods.price : goods.price.__merge({ price = newPrice })
@@ -50,7 +50,7 @@ function getAdjustedPriceInfo(goods, todayPurchasesCount, discountsToApplyV) {
   }
 }
 
-function chooseBetterGoods(g1, g2) {
+function [pure, nodiscard] chooseBetterGoods(g1, g2) {
   if ((g1.price.price > 0) != (g2.price.price > 0))
     return g1.price.price > 0 ? g1 : g2
 

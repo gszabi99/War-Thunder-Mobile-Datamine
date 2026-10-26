@@ -70,7 +70,7 @@ const circleOutlineWidth = hdpx(1.5)
 const circleOutlineActiveWidth = hdpx(3)
 
 let mkOutline = @(size, color, lineWidth) {
-  size = [size, size]
+  size = size
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_VECTOR_CANVAS
@@ -81,7 +81,7 @@ let mkOutline = @(size, color, lineWidth) {
 }
 
 let mkCircledIcon = @(size, outlineColor, outlineWidth, imgSize, icon, icoOvr = {}, ovr = {}) {
-  size = [size, size]
+  size = size
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_PROGRESS_CIRCULAR

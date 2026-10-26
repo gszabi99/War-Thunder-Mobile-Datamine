@@ -19,11 +19,12 @@ let mkText = @(text) {
   text
 }.__update(fontTiny)
 
+let hintIcon = mkGamepadShortcutImage("ID_CONTINUE", defShortcutOvr)
+
 let hintForSkip = function() {
   if (!showSkipHint.get())
     return { watch = [showSkipHint, isGamepad] }
   else{
-    let hintIcon = mkGamepadShortcutImage("ID_CONTINUE", defShortcutOvr)
     let hintText = isGamepad.get() ? loc("hints/skip") : loc("hints/skip_doubletap")
     return {
       watch = [showSkipHint, isGamepad]

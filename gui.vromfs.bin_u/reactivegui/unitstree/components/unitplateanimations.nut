@@ -102,6 +102,8 @@ function mkAnimatedCountText(needStart, startV, endV, key, ovr = {}) {
 
 function mkUnitResearchPriceAnim(researchStatus, ovr = {}) {
   let { exp = 0, reqExp = 0, isResearched = false } = researchStatus
+  let expIcon = mkIcon("ui/gameuiskin#experience_icon.svg", const [hdpxi(28), hdpxi(28)],
+    { margin = const [0, hdpx(10), 0, 0], color = currencyIconsColor["researchUnitExp"] })
   return @() {
     watch = animUnitAfterResearch
     padding = plateTextsSmallPad
@@ -110,8 +112,7 @@ function mkUnitResearchPriceAnim(researchStatus, ovr = {}) {
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     children = [
-      mkIcon("ui/gameuiskin#experience_icon.svg", [hdpxi(28), hdpxi(28)],
-        { margin = const [0, hdpx(10), 0, 0], color = currencyIconsColor["researchUnitExp"] })
+      expIcon
       mkAnimatedCountText(animUnitAfterResearch.get(), isResearched ? reqExp : exp, reqExp, isResearched ? reqExp : exp)
       {
         rendObj = ROBJ_TEXT
@@ -137,10 +138,10 @@ let mkBlueprintUnitResearchPriceAnim = @(unit, researchStatus, ovr = {}) functio
         flow = FLOW_HORIZONTAL
         gap = hdpx(5)
         children = [
-          mkIcon("ui/unitskin#blueprint_default_small.avif", [hdpxi(28), hdpxi(28)],
-            { margin = const [0, hdpx(10), 0, 0], transform = { rotate = -10 } })
+          mkIcon("ui/unitskin#blueprint_default_small.avif", const [hdpxi(28), hdpxi(28)],
+            const { margin = [0, hdpx(10), 0, 0], transform = { rotate = -10 } })
           mkAnimatedCountText(animUnitAfterResearch.get(), isResearched ? reqExp : exp, reqExp, isResearched ? reqExp : exp,
-            { color = 0xFFFFFFFF })
+            const { color = 0xFFFFFFFF })
           {
             rendObj = ROBJ_TEXT
             color = 0xFFFFFFFF

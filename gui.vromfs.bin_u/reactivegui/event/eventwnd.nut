@@ -4,7 +4,7 @@ from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentatio
 from "%appGlobals/gameModes/gameModes.nut" import allGameModes
 from "%appGlobals/itemsState.nut" import itemsCfgByCampaignOrdered, orderByItems, SPARE
 from "%appGlobals/pServer/bqClient.nut" import sendNewbieBqEvent
-from "%appGlobals/pServer/campaign.nut" import curCampaign, setCampaign
+from "%appGlobals/pServer/campaign.nut" import curCampaign, setCampaign, bestCampLevel
 from "%appGlobals/pServer/pServerApi.nut" import buy_lootbox, lootboxInProgress
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
@@ -18,8 +18,8 @@ from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
 from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
 from "%rGui/event/eventPkg.nut" import lootboxInfo, mkLootboxImageWithTimer, mkPurchaseBtns
-from "%rGui/event/eventState.nut" import unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen, bestCampLevel,
-  curEventLootboxes, curEvent, isCurEventActive, isEventSceneAttached, specialEventGamercardItems,
+from "%rGui/event/eventState.nut" import unseenLootboxes, unseenLootboxesShowOnce, markCurLootboxSeen,
+  curEventLootboxes, curEvent, isCurEventActive, specialEventGamercardItems,
   campToBack, closeEventShellCleanup, curEventEndsAt
 from "%rGui/mainMenu/balanceComps.nut" import mkItemsBalance
 from "%rGui/mainMenu/chooseCampaignWnd.nut" import onCampaignChange
@@ -35,7 +35,7 @@ from "%rGui/shop/lootboxPreviewState.nut" import isEventWndLootboxOpen, openEven
 from "%rGui/shop/msgBoxPurchase.nut" import showNoBalanceMsgIfNeed
 from "%rGui/shop/shopCommon.nut" import SC_CONSUMABLES
 from "%rGui/shop/shopState.nut" import openShopWnd
-import "%rGui/squad/squadPanel.nut" as squadPanel
+from "%rGui/squad/squadPanel.nut" import squadPanelFull
 from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/tutorial/tutorialMissions.nut" import needFirstBattleTutorForCampaign
@@ -50,6 +50,9 @@ const contentGap = hdpx(30)
 let rewardsBlockWidth = saSize[0] - 2 * defButtonMinWidth - 2 * contentGap
 
 const wndHeaderHeight = hdpx(110)
+
+let battleInfo = Computed(@() allGameModes.get().findvalue(@(v) v?.eventId == curEvent.get()))
+let hasEventWndSquadPanel = Computed(@() !isEventWndLootboxOpen.get() && battleInfo.get() != null)
 
 function onPurchase(lootbox, price, currencyId, count = 1) {
   if (lootboxInProgress.get())
@@ -79,27 +82,30 @@ let mkRow = @(children) {
 }
 
 const progressHeight = hdpx(80)
-let mkProgress = @(stepsToFixed) @() {
-  size = const [SIZE_TO_CONTENT, progressHeight]
-  watch = stepsToFixed
-  flow = FLOW_VERTICAL
-  halign = ALIGN_CENTER
-  children = stepsToFixed.get()[1] - stepsToFixed.get()[0] <= 0 ? null
-    : [
-        mkRow([
-          smallChestIcon
-          { size = const [hdpx(10), 0] }
-          {
-            rendObj = ROBJ_TEXT
-            text = loc("events/fixedReward")
-          }.__update(fontTinyShaded)
-          {
-            rendObj = ROBJ_TEXT
-            text = stepsToFixed.get()[1] - stepsToFixed.get()[0]
-          }.__update(fontTinyShaded)
-        ])
-        mkJackpotProgressBar(stepsToFixed.get()[0], stepsToFixed.get()[1], { margin = const [hdpx(20), 0, hdpx(10), 0] })
-      ]
+function mkProgress(stepsToFixed) {
+  let spacer = { size = const [hdpx(10), 0] }
+  return @() {
+    size = const [SIZE_TO_CONTENT, progressHeight]
+    watch = stepsToFixed
+    flow = FLOW_VERTICAL
+    halign = ALIGN_CENTER
+    children = stepsToFixed.get()[1] - stepsToFixed.get()[0] <= 0 ? null
+      : [
+          mkRow([
+            smallChestIcon
+            spacer
+            {
+              rendObj = ROBJ_TEXT
+              text = loc("events/fixedReward")
+            }.__update(fontTinyShaded)
+            {
+              rendObj = ROBJ_TEXT
+              text = stepsToFixed.get()[1] - stepsToFixed.get()[0]
+            }.__update(fontTinyShaded)
+          ])
+          mkJackpotProgressBar(stepsToFixed.get()[0], stepsToFixed.get()[1], { margin = const [hdpx(20), 0, hdpx(10), 0] })
+        ]
+  }
 }
 
 function mkLootboxBlock(lootbox, blockSize) {
@@ -119,6 +125,17 @@ function mkLootboxBlock(lootbox, blockSize) {
 
   let stepsToFixed = Computed(@() getStepsToNextFixed(lootbox, serverConfigs.get(), servProfile.get()))
   let info = lootboxInfo(lootbox, stateFlags)
+  let scaleTransitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
+  let infoBlock = {
+    vplace = ALIGN_CENTER
+    pos = const [0, -hdpx(200)]
+    children = info
+  }
+  let progressBlock = {
+    vplace = ALIGN_CENTER
+    pos = const [0, hdpx(270)]
+    children = mkProgress(stepsToFixed)
+  }
 
   return @() {
     key = $"lootbox_{name}" 
@@ -131,26 +148,18 @@ function mkLootboxBlock(lootbox, blockSize) {
       openEventWndLootbox(name)
       markCurLootboxSeen(name)
     }
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     clickableInfo = loc("mainmenu/btnSelect")
     children = [
       {
         vplace = ALIGN_CENTER
         pos = const [0, hdpx(40)]
-        transform = { scale = (stateFlags.get() & S_HOVER) != 0 ? [0.9, 0.9] : [1, 1] }
-        transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = Linear }]
+        transform = (stateFlags.get() & S_HOVER) != 0 ? const { scale = [0.9, 0.9] } : const { scale = [1, 1] }
+        transitions = scaleTransitions
         children = [lootboxImage, unseenMark]
       }
-      {
-        vplace = ALIGN_CENTER
-        pos = const [0, -hdpx(200)]
-        children = info
-      }
-      {
-        vplace = ALIGN_CENTER
-        pos = const [0, hdpx(270)]
-        children = mkProgress(stepsToFixed)
-      }
+      infoBlock
+      progressBlock
     ]
   }
 }
@@ -244,6 +253,11 @@ let scrollArrowsBlock = {
 function mkLootboxPreviewContent() {
   let progressInfo = mkJackpotProgress(
     Computed(@() getStepsToNextFixed(eventWndLootbox.get(), serverConfigs.get(), servProfile.get())))
+  let progressInfoBlock = {
+    vplace = ALIGN_BOTTOM
+    pos = [0, -(defButtonHeight + hdpx(50))]
+    children = progressInfo
+  }
   return {
     size = FLEX
     flow = FLOW_HORIZONTAL
@@ -269,11 +283,7 @@ function mkLootboxPreviewContent() {
                 children = lootboxImageWithTimer(eventWndLootbox.get())
               }
               lootboxHeader(eventWndLootbox.get())
-              {
-                vplace = ALIGN_BOTTOM
-                pos = [0, -(defButtonHeight + hdpx(50))]
-                children = progressInfo
-              }
+              progressInfoBlock
               @() {
                 vplace = ALIGN_BOTTOM
                 watch = [eventWndLootbox, lootboxInProgress]
@@ -289,11 +299,31 @@ function mkLootboxPreviewContent() {
 
 function eventWndContent() {
   let blockSize = Computed(@() min(saSize[0] / clamp(curEventLootboxes.get().len(), 1, MAX_LOOTBOXES_AMOUNT), hdpx(700)))
-  let battleInfo = Computed(@() allGameModes.get().findvalue(@(v) v?.eventId == curEvent.get()))
   let battleCampaign = Computed(@() battleInfo.get()?.campaign ?? curCampaign.get())
   let itemsByGameMode = Computed(@() {
     [SPARE] = battleInfo.get()?.mission_decl.allowSpare ?? true
   })
+  let lootboxesBlock = {
+    size = FLEX
+    children = @() {
+      watch = [curEventLootboxes, blockSize]
+      size = FLEX
+      margin = const [0, 0, hdpx(120), 0]
+      flow = FLOW_HORIZONTAL
+      hplace = ALIGN_CENTER
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      children = curEventLootboxes.get().map(@(v) mkLootboxBlock(v, blockSize.get()))
+      animations = wndSwitchAnim
+    }
+  }
+  let squadBlock = {
+    hplace = ALIGN_CENTER
+    vplace = ALIGN_BOTTOM
+    halign = ALIGN_CENTER
+    valign = ALIGN_BOTTOM
+    children = squadPanelFull
+  }
   return @() {
     watch = [isEventWndLootboxOpen, battleInfo, battleCampaign, itemsByGameMode]
     size = FLEX
@@ -305,33 +335,14 @@ function eventWndContent() {
           {
             size = FLEX
             children = [
-              {
-                size = FLEX
-                children = @() {
-                  watch = [curEventLootboxes, blockSize]
-                  size = FLEX
-                  margin = const [0, 0, hdpx(120), 0]
-                  flow = FLOW_HORIZONTAL
-                  hplace = ALIGN_CENTER
-                  halign = ALIGN_CENTER
-                  valign = ALIGN_CENTER
-                  children = curEventLootboxes.get().map(@(v) mkLootboxBlock(v, blockSize.get()))
-                  animations = wndSwitchAnim
-                }
-              }
+              lootboxesBlock
               {
                 key = {}
                 size = FLEX_H
                 vplace = ALIGN_BOTTOM
                 children = [
                   
-                  !battleInfo.get() ? null : {
-                    hplace = ALIGN_CENTER
-                    vplace = ALIGN_BOTTOM
-                    halign = ALIGN_CENTER
-                    valign = ALIGN_BOTTOM
-                    children = squadPanel
-                  }
+                  !battleInfo.get() ? null : squadBlock
                   
                   !battleInfo.get() ? null : @() {
                     watch = curEvent
@@ -358,20 +369,21 @@ function eventWndContent() {
 
 let wndKey = {}
 
-let mkEventWnd = @() {
+let eventWnd = @() {
   watch = [curCampaign, campToBack]
   key = wndKey
   size = [FLEX, contentH]
   function onAttach() {
-    isEventSceneAttached.set(true)
     if(campToBack.get() != curCampaign.get() && campToBack.get() != null) {
       setCampaign(campToBack.get())
       campToBack.set(null)
     }
   }
-  onDetach = @() isEventSceneAttached.set(false)
   children = eventWndContent()
   animations = wndSwitchAnim
 }
 
-return mkEventWnd
+return {
+  eventWnd
+  hasEventWndSquadPanel
+}

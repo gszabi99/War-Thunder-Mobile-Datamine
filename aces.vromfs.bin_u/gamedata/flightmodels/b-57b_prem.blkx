@@ -2734,7 +2734,6 @@
             "iconType": "gun_12mm",
             "name": "browning_50m",
             "hasMirrored": false,
-            "isDefault": true,
             "ShowNodes": {
               "node": [
                 "m3_cannon_r",

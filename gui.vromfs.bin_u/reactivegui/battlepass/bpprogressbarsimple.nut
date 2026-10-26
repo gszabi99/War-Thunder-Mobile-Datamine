@@ -19,27 +19,30 @@ let bpBorderProgressIcon = {
   ]
 }
 
-let bpProgressIcon = @(progress, curStage) @() {
-  watch = curStage
-  children = [
-    {
-      size = progressIconSize
-      rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#bp_progress_icon.svg:{progressIconSize[0]}:{progressIconSize[1]}:P")
-      color = curStage.get() == progress ? 0xFFFFFFFF
-        : curStage.get() > progress ? 0xFF36C574
-        : 0xFF000000
-      halign = ALIGN_CENTER
-      children = {
-        rendObj = ROBJ_TEXT
-        text = progress
-        color = curStage.get() >= progress
-          ? 0xFF000000
-          : 0xFFFFFFFF
-      }.__update(fontSmall)
-    }
-    curStage.get() < progress ? bpBorderProgressIcon : null
-  ]
+function bpProgressIcon(progress, curStage) {
+  let progressIconImage = Picture($"ui/gameuiskin#bp_progress_icon.svg:{progressIconSize[0]}:{progressIconSize[1]}:P")
+  return @() {
+    watch = curStage
+    children = [
+      {
+        size = progressIconSize
+        rendObj = ROBJ_IMAGE
+        image = progressIconImage
+        color = curStage.get() == progress ? 0xFFFFFFFF
+          : curStage.get() > progress ? 0xFF36C574
+          : 0xFF000000
+        halign = ALIGN_CENTER
+        children = {
+          rendObj = ROBJ_TEXT
+          text = progress
+          color = curStage.get() >= progress
+            ? 0xFF000000
+            : 0xFFFFFFFF
+        }.__update(fontSmall)
+      }
+      curStage.get() < progress ? bpBorderProgressIcon : null
+    ]
+  }
 }
 
 let emptyStage = {

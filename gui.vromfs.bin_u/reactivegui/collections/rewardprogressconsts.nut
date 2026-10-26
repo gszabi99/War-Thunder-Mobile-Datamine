@@ -10,17 +10,17 @@ let rewardSizes = {
   smallRight = {
     fullSize = [REWARD_STYLE_TINY.boxSize + smallProgressWidth - progressBorder, REWARD_STYLE_TINY.boxSize]
     progressWidth = smallProgressWidth
-    cardStyle = REWARD_STYLE_TINY.__merge({ needShowPreview = false })
+    cardStyle = { ...REWARD_STYLE_TINY, needShowPreview = false }
   }
 
   tinyRight = {
     fullSize = [REWARD_STYLE_VERY_TINY.boxSize + smallProgressWidth - progressBorder, REWARD_STYLE_VERY_TINY.boxSize]
     progressWidth = smallProgressWidth
-    cardStyle = REWARD_STYLE_VERY_TINY.__merge({ needShowPreview = false })
+    cardStyle = { ...REWARD_STYLE_VERY_TINY, needShowPreview = false }
   }
 }
 
-let defRewardProgress = "smallRight"
+const defRewardProgress = "smallRight"
 let defSize = rewardSizes[defRewardProgress].fullSize
 
 let getRewardSize = @(id) rewardSizes?[id].fullSize ?? defSize

@@ -76,6 +76,8 @@ let getDescText = @(id, isRecommended) id == "" ? "" : "".concat(
   loc("option_can_be_changed_later")
 )
 
+let noApplyBtnPlaceholder = { size = [0, buttonStyles.defButtonHeight] }
+
 let mkChooseMoveControlsWnd = bgShaded.__merge({
   key = {}
   size = FLEX
@@ -109,7 +111,7 @@ let mkChooseMoveControlsWnd = bgShaded.__merge({
                 watch = selectedValue
                 padding = const [hdpx(10), 0]
                 children = selectedValue.get() == ""
-                  ? { size = [0, buttonStyles.defButtonHeight] }
+                  ? noApplyBtnPlaceholder
                   : textButtonPrimary(utf8ToUpper(loc("msgbox/btn_apply")), @() applyCtrlType(selectedValue.get()), { hotkeys = ["^J:X | Enter"] })
               }
             ]

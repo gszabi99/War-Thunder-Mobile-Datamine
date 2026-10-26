@@ -93,7 +93,7 @@ function mkImageWithCount(value, image, scale = 1, key = null) {
     halign = ALIGN_CENTER
     children = [
       {
-        size = [imgSize, imgSize]
+        size = imgSize
         rendObj = ROBJ_IMAGE
         image = Picture($"{image}:{imgSize}:{imgSize}:P")
         keepAspect = true
@@ -138,7 +138,7 @@ function mkMyPlaceUi(scale) {
           .__update({
             key = myPlaceDelayed.get()
             transform = {}
-            animations = [{
+            animations = const [{
               prop = AnimProp.scale, from = [1.0, 1.0], to = [2, 2], easing = Blink
               duration = blinkTime, play = true
             }]
@@ -146,32 +146,44 @@ function mkMyPlaceUi(scale) {
   }
 }
 
-let mkMyScoresUi = @(scale) function() {
-  let res = { watch = [viewScoreKey, isScoreVisible] }
-  if (!isScoreVisible.get())
-    return res
-
+let startScoreAnim = @(_) anim_start(scoreTrigger)
+let score = Computed(function() {
   let key = viewScoreKey.get()
-  local score = Computed(@() (localPlayerDamageStats.get() == null ? null
+  return (localPlayerDamageStats.get() == null ? null
       : getValueByKey?[key](localPlayerDamageStats.get()))
     ?? localPlayerDamageStats.get()?[key]
     ?? localMPlayer.get()?[key]
-    ?? 0)
-  score.subscribe(@(_) anim_start(scoreTrigger))
+    ?? 0
+})
 
-  return res.__update({
-    children = mkImageWithCount(score, icons?[key] ?? icons.score, scale, key)
-      .__update({
-        key = viewScoreKey
-        onAttach = @() addMPlayerUpdater("myScores", needLocalMPlayerForScore)
-        onDetach = @() removeMPlayerUpdater("myScores")
-        transform = {}
-        animations = [{
-          prop = AnimProp.scale, from = [1.0, 1.0], to = [2, 2], easing = Blink
-          duration = blinkTime, trigger = scoreTrigger
-        }]
-      })
-  })
+function mkMyScoresUi(scale) {
+  let scoreAnimations = [{
+    prop = AnimProp.scale, from = const [1.0, 1.0], to = const [2, 2], easing = Blink
+    duration = blinkTime, trigger = scoreTrigger
+  }]
+  return function() {
+    let res = { watch = [viewScoreKey, isScoreVisible] }
+    if (!isScoreVisible.get())
+      return res
+
+    let key = viewScoreKey.get()
+    return res.__update({
+      children = mkImageWithCount(score, icons?[key] ?? icons.score, scale, key)
+        .__update({
+          key = score
+          function onAttach() {
+            addMPlayerUpdater("myScores", needLocalMPlayerForScore)
+            score.subscribe(startScoreAnim)
+          }
+          function onDetach() {
+            removeMPlayerUpdater("myScores")
+            score.unsubscribe(startScoreAnim)
+          }
+          transform = {}
+          animations = scoreAnimations
+        })
+    })
+  }
 }
 
 return {

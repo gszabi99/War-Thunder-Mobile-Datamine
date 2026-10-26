@@ -65,7 +65,7 @@ let toggleActiveBg = @(value) {
 }
 
 let toggleKnob = @(value, sf) {
-  size  = [knobSize, knobSize]
+  size  = knobSize
   rendObj = ROBJ_BOX
   borderRadius = knobSize / 2
   fillColor = textColor
@@ -173,7 +173,7 @@ let toggleWithLabel = @(stateFlags, valueW, childrenCtor, ovr = {}) @() {
   watch = stateFlags
   behavior = Behaviors.Button
   onElemState = @(v) stateFlags.set(v)
-  sound = { click  = "click" }
+  sound = const { click  = "click" }
   onClick = @() valueW.set(!valueW.get())
   valign = ALIGN_CENTER
   gap = hdpx(30)

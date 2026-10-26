@@ -34,6 +34,7 @@ function resultText(scale) {
   let font = getScaledFont(fontVeryTiny, scale)
   let height = scaleEven(resultBgHeight, scale)
   let padding = scaleArr([hdpx(4), hdpx(10)], scale)
+  let screenOffsArr = array(2, height / 2)
   return function() {
     let res = { watch = hcResult }
     let { locId = "", styleId = ""  } = hcResult.get()
@@ -46,8 +47,8 @@ function resultText(scale) {
         hplace = ALIGN_RIGHT
         rendObj = ROBJ_9RECT
         image = gradCircularSqCorners
-        texOffs = [gradCircCornerOffset, gradCircCornerOffset]
-        screenOffs = array(2, height / 2)
+        texOffs = gradCircCornerOffset
+        screenOffs = screenOffsArr
         color = hudTransparentBlackColor
         padding
 
@@ -95,31 +96,34 @@ function imageBlock(needResultText, size, scale) {
     hitCameraDebuffs(scale)
   ]
   let dmgPanel = hitCameraDmgPanel(scale)
+  let children = [
+    healthHiglight
+    {
+      size = FLEX
+      flow = FLOW_VERTICAL
+      children = [
+        {
+          size = FLEX
+          rendObj = ROBJ_HIT_CAMERA
+          children = overCamera
+        }
+        dmgPanel
+      ]
+    }
+  ]
   return @() {
     watch = hcUnitType
     size
     rendObj = ROBJ_SOLID
     color = hitCamBgColor?[hcUnitType.get()] ?? hitCamBgColor.ship
-    children = [
-      healthHiglight
-      {
-        size = FLEX
-        flow = FLOW_VERTICAL
-        children = [
-          {
-            size = FLEX
-            rendObj = ROBJ_HIT_CAMERA
-            children = overCamera
-          }
-          dmgPanel
-        ]
-      }
-    ]
+    children
   }
 }
 
 function hitCameraBlock(scale) {
   let size = scaleArr(hitCameraRenderSize, scale)
+  let sizeOnlyBlock = { size }
+  let resultPlate = hitCameraResultPlate(scale)
   return @() {
     watch = [ needShow, needShowImage, useHitResultPlate ]
     key = "hit_camera"
@@ -127,8 +131,8 @@ function hitCameraBlock(scale) {
     children = {
       flow = FLOW_VERTICAL
       children = [
-        needShowImage.get() ? imageBlock(!useHitResultPlate.get(), size, scale) : { size }
-        useHitResultPlate.get() ? hitCameraResultPlate(scale) : null
+        needShowImage.get() ? imageBlock(!useHitResultPlate.get(), size, scale) : sizeOnlyBlock
+        useHitResultPlate.get() ? resultPlate : null
       ]
     }
 
@@ -137,9 +141,12 @@ function hitCameraBlock(scale) {
   }
 }
 
-let hitCamera = @(scale) @() {
-  watch = isHcRender
-  children = isHcRender.get() ? hitCameraBlock(scale) : null
+function hitCamera(scale) {
+  let block = hitCameraBlock(scale)
+  return @() {
+    watch = isHcRender
+    children = isHcRender.get() ? block : null
+  }
 }
 
 let hitCameraEditView = {

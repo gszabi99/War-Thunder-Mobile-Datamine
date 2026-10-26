@@ -3,6 +3,7 @@ from "%appGlobals/rewardType.nut" import *
 from "%appGlobals/config/countryPresentation.nut" import sortCountries
 from "%appGlobals/config/rewardStatsPresentation.nut" import hasStatsImage
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/style/stdColors.nut" import blueprintBarColor, clanBlueprintBarColor
 
 
 const NO_DROP_LIMIT = 1000000
@@ -64,7 +65,7 @@ let dropLimitByType = [G_UNIT, G_UNIT_UPGRADE, G_DECORATOR, G_SKIN]
 let ignoreSubIdRTypes = [G_CURRENCY, G_LOOTBOX, G_BLUEPRINT].reduce(@(res, t) res.$rawset(t, true), {})
 
 
-let getDecoratorType = memoize(@(id) serverConfigs.get()?.allDecorators[id].dType)
+let getDecoratorType = @(id) serverConfigs.get()?.allDecorators[id].dType
 
 
 function unitsSort(a, b) {
@@ -104,7 +105,8 @@ let mkViewInfo = @(id, rType, count = 0, subId = "")
 let getRewardsViewInfo = @(rewards, multiply = 1)
   (rewards ?? []).map(@(g) mkViewInfo(g.id, g.gType, g.count * multiply, g.subId))
 
-let filterHiddenViewInfo = @(viewInfo) viewInfo.filter(@(r) r.rType not in statRewardTypes || hasStatsImage(r.id, r.subId))
+let filterHiddenViewInfo = @(viewInfo) viewInfo.filter(@(r) r.rType not in hiddenRewardTypes
+  && (r.rType not in statRewardTypes || hasStatsImage(r.id, r.subId)))
 
 let shopGoodsToRewardsViewInfo = @(data, multiply = 1)
   filterHiddenViewInfo(getRewardsViewInfo(data.rewards, multiply))
@@ -326,13 +328,25 @@ let getLootboxOpenRewardViewInfo = @(lootbox, servConfigs, multiply = 1)
 let receivedGoodsToViewInfo = @(rGoods)
   mkViewInfo(rGoods?.id ?? "", rGoods?.gType ?? "", rGoods.count ?? 0, rGoods?.subId ?? "")
 
+function [pure, nodiscard] getBlueprintMax(id, profile, configs) {
+  let target = configs?.allBlueprints[id].targetCount ?? 0
+  if (!(configs?.allBlueprints[id].hasUpgrade ?? false))
+    return id in profile?.units ? 0 : target
+  if (profile?.units[id].isUpgraded ?? false)
+    return 0
+  return id in profile?.units ? target : 2 * target
+}
+
+let getBlueprintBarColor = @[pure, nodiscard](id, configs)
+  (configs?.allBlueprints?[id].isClan ?? false) ? clanBlueprintBarColor : blueprintBarColor
+
 let isEmptyByRType = {
   [G_DECORATOR] = @(value, _, profile, __) value in profile?.decorators,
   [G_UNIT] = @(value, _, profile, __) value in profile?.units,
   [G_UNIT_UPGRADE] = @(value, _, profile, __) profile?.units[value].isUpgraded,
   [G_SKIN] = @(unitName, skinName, profile, _) skinName in profile?.skins[unitName],
-  [G_BLUEPRINT] = @(value, _, profile, configs) value in profile?.units
-    || (profile?.blueprints?[value] ?? 0) >= (configs?.allBlueprints[value].targetCount ?? 0),
+  [G_BLUEPRINT] = @(value, _, profile, configs)
+    (profile?.blueprints?[value] ?? 0) >= getBlueprintMax(value, profile, configs),
   [G_DECAL] = @(id, _, profile, _) id in profile?.decals,
 }
 
@@ -427,6 +441,8 @@ return {
   NO_DROP_LIMIT
   ignoreSubIdRTypes
   isEmptyByRType
+  getBlueprintMax
+  getBlueprintBarColor
 
   getRewardsViewInfo
   shopGoodsToRewardsViewInfo

@@ -26,7 +26,7 @@ foreach(t, _ in cfgByUnitTypeOrdered)
     logerr($"Missing unitType {t} in allTuningUnitTypes (but exists in cfgByUnitType)")
 
 let point = {
-  size = [lineWidth, lineWidth]
+  size = lineWidth
   children = {
     size = [3 * lineWidth, 3 * lineWidth]
     rendObj = ROBJ_SOLID

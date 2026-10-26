@@ -4,6 +4,7 @@ import "%rGui/components/listButton.nut" as listButton
 
 
 let isForCampaign = mkWatched(persist, "isForCampaign", true)
+let isForAll = Computed(@() !isForCampaign.get())
 
 let dbgCampaignSelector = @() {
   watch = curCampaign
@@ -11,7 +12,7 @@ let dbgCampaignSelector = @() {
   gap = hdpx(20)
   children = [
     listButton($"For campaign {curCampaign.get()}", isForCampaign, @() isForCampaign.set(true), { size = const [hdpx(500), SIZE_TO_CONTENT] })
-    listButton("For all", Computed(@() !isForCampaign.get()), @() isForCampaign.set(false), { size = const [hdpx(200), SIZE_TO_CONTENT] })
+    listButton("For all", isForAll, @() isForCampaign.set(false), { size = const [hdpx(200), SIZE_TO_CONTENT] })
   ]
 }
 

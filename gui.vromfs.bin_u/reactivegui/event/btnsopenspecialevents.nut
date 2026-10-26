@@ -19,6 +19,8 @@ function mkUnseenWithSf(eventId) {
   return @(_) mark
 }
 
+let opEventUnseenMark = mkUnseenWithSf(OP_EVENT_ID)
+
 function btnsOpenSpecialEvents() {
   let children = []
   let usedEvents = {}
@@ -28,7 +30,7 @@ function btnsOpenSpecialEvents() {
       children.append(translucentButton(getOPPresentation(curCampaign.get()).iconTab,
         @() openSeasonScene(OP_EVENT_ID),
         null,
-        mkUnseenWithSf(OP_EVENT_ID)))
+        opEventUnseenMark))
     }
 
     foreach (evt in specialEventsOrdered.get()) {
@@ -70,7 +72,7 @@ function btnsOpenSpecialEvents() {
     let soonGoodsByShopV = soonGoodsByShop.get()
     let soonPersonalGoodsByShopV = soonPersonalGoodsByShop.get()
     let personalGoodsByShopV = personalGoodsByShop.get()
-    foreach (shopId in ["events", "events2"]) {
+    foreach (shopId in const ["events", "events2"]) {
       let eventName = getShopEventName(shopId, goodsByShopV, soonGoodsByShopV, soonPersonalGoodsByShopV, personalGoodsByShopV)
       if (eventName != "" && eventName != MAIN_EVENT_ID && eventName not in usedEvents) {
         usedEvents[eventName] <- true

@@ -29,7 +29,7 @@ let moveIndicatorEditView = @(image) {
   valign = ALIGN_CENTER
   children = [
     {
-      size = [iconSize, iconSize]
+      size = iconSize
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#{image}:{iconSize}:{iconSize}")
       keepAspect = true

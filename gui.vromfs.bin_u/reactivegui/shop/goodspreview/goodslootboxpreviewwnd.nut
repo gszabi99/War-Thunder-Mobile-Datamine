@@ -51,6 +51,9 @@ let lootbox = Computed(@(prev) prevIfEqual(prev,
   ]))
 let lootboxAmount = Computed(@() previewGoods.get()?.rewards.findvalue(@(r) r.gType == G_LOOTBOX).count)
 let bgImage = keepref(Computed(@() getLootboxPreviewBg(lootbox.get()?.name)))
+let stepsToNextFixed = Computed(@() getStepsToNextFixed(lootbox.get(), serverConfigs.get(), servProfile.get()))
+
+let balanceButtonsAnim = opacityAnims(1, aTimePriceStart + 0.5)
 
 function balanceButtons() {
   let { currencyId = "" } = previewGoods.get()?.price
@@ -71,8 +74,8 @@ function balanceButtons() {
     color = 0x70000000
     hplace = ALIGN_RIGHT
     children = currencyIds.len() == 0 ? null
-      : mkCurrenciesBtns(currencyIds.keys(), null, {size = SIZE_TO_CONTENT})
-    animations = opacityAnims(1, aTimePriceStart + 0.5)
+      : mkCurrenciesBtns(currencyIds.keys(), null, const {size = SIZE_TO_CONTENT})
+    animations = balanceButtonsAnim
   }
 }
 
@@ -133,10 +136,10 @@ let content = @() {
       halign = ALIGN_CENTER
       children = lootbox.get() == null ? null
         : [
-            { size = FLEX }
+            const { size = FLEX }
             lootboxImageWithTimer(lootbox.get(), lootboxAmount.get())
-            { size = flex(3) }
-            mkJackpotProgress(Computed(@() getStepsToNextFixed(lootbox.get(), serverConfigs.get(), servProfile.get())))
+            const { size = flex(3) }
+            mkJackpotProgress(stepsToNextFixed)
             { size = const [0, hdpx(10)] }
             mkTimeBlockCentered(aTimePriceStart)
             { size = const [0, hdpx(10)] }

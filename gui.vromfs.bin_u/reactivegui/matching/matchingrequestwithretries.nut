@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import resetTimeout
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%appGlobals/loginState.nut" import isMatchingConnected
-from "%rGui/matching/matchingApi.nut" import matchingRpcCall, matchingRpcRegisterHandler, matchingCallRpcHandler
+from "%rGui/matching/matchingApi.nut" import matchingRequest, matchingRegisterHandler, matchingCallHandler
 
 
 let logMR = log_with_prefix("[MATCHING_RR] ")
@@ -24,23 +24,23 @@ let matchingRequestWithRetries = kwarg(
 
     logMR($"{cmd} (try {failedFetches})")
     curFetchingCmds.mutate(@(v) v[cmd] <- true)
-    matchingRpcCall(cmd, params,
+    matchingRequest(cmd, params,
       { id = "onRequestWithRetries", params = { cmd, params, onFinish, failedFetches } })
   })
 
-matchingRpcRegisterHandler("onRequestWithRetries", function(result, context) {
+matchingRegisterHandler("onRequestWithRetries", function(result, context) {
   let { params } = context
   let { cmd, onFinish } = params
   curFetchingCmds.mutate(@(v) v.$rawdelete(cmd))
 
   if ("error" not in result) {
-    matchingCallRpcHandler(onFinish, result)
+    matchingCallHandler(onFinish, result)
     return
   }
 
   let failedFetches = params.failedFetches + 1
   if (failedFetches >= MAX_FETCH_RETRIES)
-    matchingCallRpcHandler(onFinish, result)
+    matchingCallHandler(onFinish, result)
   else
     
     resetTimeout(0.1, @() matchingRequestWithRetries(params.__merge({ failedFetches })))

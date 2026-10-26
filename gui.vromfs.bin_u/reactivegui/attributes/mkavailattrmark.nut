@@ -46,14 +46,14 @@ function mkAvailAttrMark(status, size = hdpx(60), sf = 0) {
   let icoSize = (0.4 * size).tointeger()
   let bgSize = 0.71 * size
   return {
-    size  = [size, size] 
+    size  = size 
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
 
     children = [
       {
         key = cfg
-        size = [bgSize, bgSize]
+        size = bgSize
         rendObj = ROBJ_BOX
         borderWidth = hdpx(2)
         fillColor = bgColor
@@ -63,7 +63,7 @@ function mkAvailAttrMark(status, size = hdpx(60), sf = 0) {
       }
       {
         key = cfg
-        size = [icoSize, icoSize]
+        size = icoSize
         rendObj = ROBJ_IMAGE
         image = Picture($"{icon}:{icoSize}:{icoSize}:K")
         color = iconColor

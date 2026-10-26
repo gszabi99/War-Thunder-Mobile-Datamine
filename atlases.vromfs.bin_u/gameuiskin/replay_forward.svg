@@ -1,4 +1,6 @@
-<svg width="30" height="28" viewBox="0 0 30 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M23.1426 13.8721L0 27.7285V0.015625L23.1426 13.8721Z" fill="white"/>
-<rect x="23" width="7" height="28" fill="white"/>
+<svg width="30" height="28" viewBox="0 0 30 28" xmlns="http://www.w3.org/2000/svg">
+<path d="m23.143 13.872-23.143 13.856v-27.713l23.143 13.856z" fill="#fff"/>
+<rect x="23" width="7" height="28" fill="#fff"/>
+</svg>
+te"/>
 </svg>

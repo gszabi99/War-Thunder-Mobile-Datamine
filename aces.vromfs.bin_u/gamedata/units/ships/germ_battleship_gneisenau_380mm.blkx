@@ -466,13 +466,13 @@
           "auxiliary_caliber_turret_08_dm"
         ],
         "onHit": {
-          "damageType": "explosion",
-          "damage": 500.0,
+          "damageType": "generic",
+          "damage": 100.0,
           "fire": 0.05,
           "action": {
             "type": "fxEvent",
             "probability": 0.6,
-            "fxEventName": "fire_after_hit_huge"
+            "fxEventName": "fire_after_hit_big"
           },
           "moduleStatusEffect": {
             "name": "shotFreqMult",
@@ -487,10 +487,10 @@
         ],
         "onHit": {
           "damageType": "generic",
-          "damage": 500.0,
+          "damage": 100.0,
           "moduleStatusEffect": {
             "name": "shotFreqMult2",
-            "prob": 0.33,
+            "prob": 1.0,
             "parts": {
               "part": [
                 "main_caliber_turret_01_dm",
@@ -504,10 +504,10 @@
         "name": "elevator_03_dm",
         "onHit": {
           "damageType": "generic",
-          "damage": 500.0,
+          "damage": 100.0,
           "moduleStatusEffect": {
             "name": "shotFreqMult2",
-            "prob": 0.33,
+            "prob": 1.0,
             "parts": {
               "part": "main_caliber_turret_03_dm"
             }
@@ -5133,7 +5133,6 @@
           3
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -5187,7 +5186,6 @@
           6
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -9511,7 +9509,6 @@
                 3
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -9565,7 +9562,6 @@
                 6
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -13887,7 +13883,6 @@
                 3
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -13941,7 +13936,6 @@
                 6
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -14518,6 +14512,30 @@
         "from": "camo_threegray_spots*",
         "to": "camo_hellgrau_50*"
       }
+    },
+    "hw_26": {
+      "replace_tex": [
+        {
+          "from": "camo_threegray_spots*",
+          "to": "camo_hw_26*"
+        },
+        {
+          "from": "camo_dark_wood*",
+          "to": "camo_hw_26*"
+        },
+        {
+          "from": "camo_rot_5*",
+          "to": "camo_hw_26*"
+        },
+        {
+          "from": "camo_deckbasaltgrau*",
+          "to": "camo_hw_26*"
+        },
+        {
+          "from": "camo_deepdark_wood*",
+          "to": "camo_hw_26*"
+        }
+      ]
     }
   }
 }

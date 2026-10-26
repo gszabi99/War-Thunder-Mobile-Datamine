@@ -3,13 +3,13 @@ from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/config/passPresentation.nut" import getEpPresentation
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%rGui/battlePass/bpProgressBar.nut" as bpProgressBar
-import "%rGui/battlePass/bpRewardDesc.nut" as bpRewardDesc
+from "%rGui/battlePass/bpRewardDesc.nut" import bpObsoleteRewardDesc
 import "%rGui/battlePass/buyEPLevelMsg.nut" as buyEPLevelMsg
 import "%rGui/battlePass/eventPassRewardsList.nut" as eventPassRewardsList
 from "%rGui/battlePass/eventPassState.nut" import isEpActive, openEPPurchaseWnd, selectedStage, curStage, getEpIcon,
   EP_VIP, EP_COMMON, EP_NONE, purchasedEp, pointsCurStage, pointsPerStage, curEventId, isEpRewardsInProgress,
   receiveEpRewards, epSeasonEndTime, eventLevelPrice, isEPLevelPurchaseInProgress
-from "%rGui/battlePass/passPkg.nut" import bpCurProgressbar, bpProgressText, progressIconSize, contentH,
+from "%rGui/battlePass/passPkg.nut" import mkLevelProgressBlock, progressIconSize, contentH,
   mkRewardsPannable, mkPassIcon
 from "%rGui/components/buttonStyles.nut" import PURCHASE, defButtonHeight, defButtonMinWidth
 from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
@@ -37,16 +37,19 @@ let scrollArrowsBlock = {
   ]
 }
 
-let rewardsList = @(stages, recommendInfo) @() {
-  watch = serverConfigs
-  flow = FLOW_VERTICAL
-  gap = hdpx(20)
-  onAttach = @() scrollToCardEP(recommendInfo.get().scrollX, recommendInfo.get().selProgress)
-  children = [
+function rewardsList(stages, recommendInfo) {
+  let barAndCards = [
     bpProgressBar(stages, curStage, pointsCurStage, pointsPerStage,
       eventLevelPrice, isEPLevelPurchaseInProgress, buyEPLevelMsg)
     eventPassRewardsList(stages)
   ]
+  return @() {
+    watch = serverConfigs
+    flow = FLOW_VERTICAL
+    gap = hdpx(20)
+    onAttach = @() scrollToCardEP(recommendInfo.get().scrollX, recommendInfo.get().selProgress)
+    children = barAndCards
+  }
 }
 
 let taskDesc = @() {
@@ -59,6 +62,8 @@ let taskDesc = @() {
 
 let epLevelLabel = @(text) { rendObj = ROBJ_TEXT, text }.__update(fontSmallShaded)
 
+let levelProgressBlock = mkLevelProgressBlock(pointsCurStage, pointsPerStage)
+
 let levelBlock = @() {
   watch = curStage
   rendObj = ROBJ_IMAGE
@@ -70,15 +75,7 @@ let levelBlock = @() {
   gap = hdpx(15)
   children = [
     epLevelLabel($"{loc("mainmenu/rank")} {curStage.get()}")
-    {
-      size = const [hdpx(300), SIZE_TO_CONTENT]
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
-      children = [
-        bpCurProgressbar(pointsCurStage, pointsPerStage)
-        bpProgressText(pointsCurStage, pointsPerStage)
-      ]
-    }
+    levelProgressBlock
     taskDesc
   ]
 }
@@ -95,6 +92,8 @@ let leftMiddle = {
 
 let openPurchBpButton = @(text) textButtonMultiline(utf8ToUpper(text), openEPPurchaseWnd,
   PURCHASE.__merge({ hotkeys = ["^J:Y"] }))
+
+let noEpButton = { size = [FLEX, defButtonHeight] }
 
 let rightMiddle = @() {
   watch = [purchasedEp, curEventId, isEpActive]
@@ -123,7 +122,7 @@ let rightMiddle = @() {
             behavior = Behaviors.TextArea
             text = utf8ToUpper(loc("eventpass/active"))
           }.__update(fontTinyAccented)
-      : { size = [FLEX, defButtonHeight] }
+      : noEpButton
   ].filter(@(v) v != null)
 }
 
@@ -137,8 +136,8 @@ let middlePart = @(stagesList) function() {
       {
         size = FLEX
         children = stageData == null ? null
-          : bpRewardDesc(stageData,
-              { lockText = "eventpass/lock", paidText = "eventpass/paid" },
+          : bpObsoleteRewardDesc(stageData,
+              const { lockText = "eventpass/lock", paidText = "eventpass/paid" },
               curStage,
               @() receiveEpRewards(stageData.progress),
               isEpRewardsInProgress)
@@ -148,30 +147,33 @@ let middlePart = @(stagesList) function() {
   }
 }
 
-let contentEP = @(stagesList, recommendInfo, isFullScreenWidth) @() {
-  watch = stagesList
-  size = FLEX
-  children = {
-    size = [FLEX, contentH]
-    flow = FLOW_VERTICAL
-    gap = hdpx(15)
-    children = [
-      middlePart(stagesList.get())
-      {
-        size = FLEX_H
-        margin = [0, 0, hdpx(30), 0]
-        children = [
-          {
-            size = [FLEX, progressIconSize[1]]
-          }
-          mkRewardsPannable(rewardsList(stagesList.get(), recommendInfo),
-            scrollHandler, isFullScreenWidth)
-          scrollArrowsBlock
-        ]
-      }
-    ]
+function contentEP(stagesList, recommendInfo, isFullScreenWidth) {
+  let progressIconSpacer = {
+    size = [FLEX, progressIconSize[1]]
   }
-  animations = wndSwitchAnim
+  return @() {
+    watch = stagesList
+    size = FLEX
+    children = {
+      size = [FLEX, contentH]
+      flow = FLOW_VERTICAL
+      gap = hdpx(15)
+      children = [
+        middlePart(stagesList.get())
+        {
+          size = FLEX_H
+          margin = const [0, 0, hdpx(30), 0]
+          children = [
+            progressIconSpacer
+            mkRewardsPannable(rewardsList(stagesList.get(), recommendInfo),
+              scrollHandler, isFullScreenWidth)
+            scrollArrowsBlock
+          ]
+        }
+      ]
+    }
+    animations = wndSwitchAnim
+  }
 }
 
 return {

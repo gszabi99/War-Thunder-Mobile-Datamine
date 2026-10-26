@@ -14,15 +14,17 @@ from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, sortRewardsVi
 from "%rGui/style/gradients.nut" import mkColoredGradientY
 
 
-let progressBgColor = 0xFF303030
-let progressBorderColor = 0xFFBBBBBB
-let progressFgColor = 0xFF5AA0E9
+const progressBgColor = 0xFF303030
+const progressBorderColor = 0xFFBBBBBB
+const progressFgColor = 0xFF5AA0E9
 const pieceBorder = hdpx(3)
 
 const infoGap = hdpx(40)
 const infoDupeWidth = hdpxi(250)
 const infoDupeOffset = pieceBorder * 2
 const infoDupesCount = 3
+const dupesBlockAddSize = (infoDupesCount - 1) * infoDupeOffset
+const dupesBlockWidth = infoDupeWidth + dupesBlockAddSize
 
 let infoCardStyle = REWARD_STYLE_SMALL
 
@@ -46,10 +48,11 @@ let puzzleStyles = {
   }
 }
 
-let rewardUnseenMark = priorityUnseenMark.__merge({
+let rewardUnseenMark = {
+  ...priorityUnseenMark
   hplace = ALIGN_RIGHT
   pos = const [hdpx(6), hdpx(-6)]
-})
+}
 
 let getPuzzleStyle = @(styleId) puzzleStyles?[styleId] ?? defPuzzleStyle
 
@@ -116,7 +119,8 @@ function mkPuzzlePiece(size, styleId, ovr = {}) {
         borderColor
         borderWidth = pieceBorder
         children = unknownPieceMark(size instanceof Array ? size[1] : size)
-      }.__update(cleanOvr)
+        ...cleanOvr
+      }
     ]
   }
 }
@@ -135,9 +139,9 @@ function mkPuzzleImagePiece(image, pieceIdx, grid, texSize, ovr = {}) {
     size = FLEX
     rendObj = ROBJ_9RECT
     image = Picture(image)
-    texOffs
-    screenOffs = [0, 0, 0, 0]
-  }.__update(ovr)
+    texOffs,
+    ...ovr
+  }
 }
 
 function mkPuzzleBgExtensions(presentation) {
@@ -173,7 +177,7 @@ function mkViewCollectionPiece(cId, cfg) {
 
   let grid = getPuzzleGrid(pieces.len())
   let partSizeBase = puzzleScreenSize.map(@(v, a) v.tofloat() / grid[a])
-  let imgWidth = infoDupeWidth - 2 * pieceBorder
+  const imgWidth = infoDupeWidth - 2 * pieceBorder
   let imgHeight = (partSizeBase[1] / partSizeBase[0] * imgWidth + 0.5).tointeger()
   let image = getPuzzleImage(cId, dupesInfoPiece[0])
   res.children <- mkPuzzleImagePiece(image, dupesInfoPiece[1], grid, puzzleTexSize,
@@ -181,18 +185,24 @@ function mkViewCollectionPiece(cId, cfg) {
   return res
 }
 
+function mkPieceDupes(cId, cfg) {
+  let piece = mkViewCollectionPiece(cId, cfg)
+  return {
+    size = const [dupesBlockWidth, SIZE_TO_CONTENT]
+    padding = const [dupesBlockAddSize, 0, 0, dupesBlockAddSize]
+    children = array(infoDupesCount).map(@(_, i) { ...piece, pos = [-infoDupeOffset * i, -infoDupeOffset * i] })
+  }
+}
+
 function mkConvertionInfoBlock(cId, cfg, curDblProgress, ovr = {}) {
   let { dblRewardProgress = 0, dblRewards = [] } = cfg
   if (dblRewardProgress == 0 || dblRewards.len() == 0)
     return ovr
 
-  let piece = mkViewCollectionPiece(cId, cfg)
-  let dupesBlockAddSize = (infoDupesCount - 1) * infoDupeOffset
-  let dupesBlockWidth = infoDupeWidth + dupesBlockAddSize
   let rewardMul = curDblProgress / dblRewardProgress
   local vInfo = getRewardsViewInfo(dblRewards).sort(sortRewardsViewInfo)
   if (rewardMul > 1)
-    vInfo = vInfo.map(@(g) g.__merge({ count = g.count * rewardMul }))
+    vInfo = vInfo.map(@(g) { ...g, count = g.count * rewardMul })
 
   return {
     flow = FLOW_HORIZONTAL
@@ -203,11 +213,7 @@ function mkConvertionInfoBlock(cId, cfg, curDblProgress, ovr = {}) {
         flow = FLOW_VERTICAL
         gap = infoCardStyle.boxGap
         children = [
-          {
-            size = [dupesBlockWidth, SIZE_TO_CONTENT]
-            padding = [dupesBlockAddSize, 0, 0, dupesBlockAddSize]
-            children = array(infoDupesCount).map(@(_, i) piece.__merge({ pos = [-infoDupeOffset * i, -infoDupeOffset * i] }))
-          }
+          mkPieceDupes(cId, cfg)
           mkProgress(curDblProgress, dblRewardProgress, dupesBlockWidth)
         ]
       }
@@ -223,7 +229,8 @@ function mkConvertionInfoBlock(cId, cfg, curDblProgress, ovr = {}) {
         children = vInfo.map(@(vi) mkRewardPlate(vi, infoCardStyle))
       }
     ]
-  }.__update(ovr)
+    ...ovr
+  }
 }
 
 let mkGetRewardButton = @(isInProgress, onClick) mkSpinnerHideBlock(isInProgress,
@@ -251,4 +258,6 @@ return {
   mkPuzzleBgExtensions
   mkConvertionInfoBlock
   mkGetRewardButton
+
+  mkPieceDupes
 }

@@ -27,7 +27,7 @@ let blinking = [{
 }]
 
 let getThreatImg = @(threatType, size = imgSize) {
-  size = [size, size]
+  size = size
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#{imageType?[threatType] ?? imageType[0]}.svg:{size}:{size}:P")
 }

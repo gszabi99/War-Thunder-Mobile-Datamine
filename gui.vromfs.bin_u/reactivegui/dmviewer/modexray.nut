@@ -142,31 +142,33 @@ function getPartTooltipInfoCached(partParams, unit) {
 let mkDebugInfo = @(isDebug, partType, partName) !isDebug ? ""
   : "".concat("\n", colorize(0xFFFF4B38, partName), colorize(0xFF808080, $" // {partType}"))
 
+let hintTitleW = Computed(@() getPartTooltipInfoCached(partParamsW.get(), curUnitW.get())?.title ?? "")
+let hintDescW = Computed(@() getPartTooltipInfoCached(partParamsW.get(), curUnitW.get())?.desc ?? "")
+let hintDebugW = Computed(@() mkDebugInfo(isDebugMode.get(),
+  getPartTooltipInfoCached(partParamsW.get(), curUnitW.get())?.partType ?? "", partParamsW.get()?.name ?? ""))
+
+let isHintVisible = Computed(@() isModeActive.get() && dmViewerUnitReady.get()
+  && (scrPosX.get() != 0 || scrPosY.get() != 0 || hintTitleW.get() != ""))
+
+let hintContent = {
+  flow = FLOW_VERTICAL
+  children = [
+    mkHintTitle(hintTitleW)
+    mkHintDescText(hintDescW)
+    mkHintDescText(hintDebugW)
+  ]
+}
+
+let hint = mkDmViewerHint(isHintVisible, scrPosX, scrPosY, hintContent)
+
 function hintComp() {
   if (!isModeActive.get())
     return { watch = isModeActive }
 
-  let hintTitleW = Computed(@() getPartTooltipInfoCached(partParamsW.get(), curUnitW.get())?.title ?? "")
-  let hintDescW = Computed(@() getPartTooltipInfoCached(partParamsW.get(), curUnitW.get())?.desc ?? "")
-  let hintDebugW = Computed(@() mkDebugInfo(isDebugMode.get(),
-    getPartTooltipInfoCached(partParamsW.get(), curUnitW.get())?.partType ?? "", partParamsW.get()?.name ?? ""))
-
-  let isHintVisible = Computed(@() isModeActive.get() && dmViewerUnitReady.get()
-    && (scrPosX.get() != 0 || scrPosY.get() != 0 || hintTitleW.get() != ""))
-
-  let hintContent = {
-    flow = FLOW_VERTICAL
-    children = [
-      mkHintTitle(hintTitleW)
-      mkHintDescText(hintDescW)
-      mkHintDescText(hintDebugW)
-    ]
-  }
-
   return {
     watch = isModeActive
     size= FLEX
-    children = mkDmViewerHint(isHintVisible, scrPosX, scrPosY, hintContent)
+    children = hint
   }
 }
 

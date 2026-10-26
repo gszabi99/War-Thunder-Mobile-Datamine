@@ -20,7 +20,7 @@ const fadeOutTime = 0.3
 let fontByWidth = @(text, width) calc_str_box(text, fontSmall)[0] > width
   ? fontTinyShaded : fontSmallShaded
 
-let mkGradientBlock = @(color, children, width = hintWidth, padding = hdpx(10)) {
+let mkGradientBlock = @[nodiscard](color, children, width = hintWidth, padding = hdpx(10)) {
   size = [width, SIZE_TO_CONTENT]
   children = [
     {

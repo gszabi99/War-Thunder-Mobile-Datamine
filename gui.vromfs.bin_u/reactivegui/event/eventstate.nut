@@ -26,10 +26,9 @@ let logE = log_with_prefix("[EVENTS] ")
 const SEEN_LOOTBOXES = "seenLootboxes"
 const LOOTBOXES_AVAILABILITY = "lootboxesAvailability"
 let getSeasonPrefix = @(n) $"season_{n}"
-let getSpecialEventName = @(n) $"special_event_{n}"
+let getSpecialEventName = @[pure, nodiscard](n) $"special_event_{n}"
 
 let openEventInfo = mkWatched(persist, "openEventInfo")
-let isEventSceneAttached = mkWatched(persist, "isEventSceneAttached", false)
 let curEvent = Computed(@() openEventInfo.get()?.eventName)
 let eventWndOpenCounter = Computed(@() openEventInfo.get()?.counter ?? 0)
 
@@ -60,8 +59,6 @@ let unseenLootboxes = Computed(function() {
 let unseenLootboxesShowOnce = mkWatched(persist, "unseenLootboxesShowOnce", {})
 
 let campToBack = mkWatched(persist, "campToBack", null)
-
-let bestCampLevel = Computed(@() campaignsLevelInfo.get()?.reduce(@(res, li) max(res, li?.level ?? 0), 0) ?? 1)
 
 let eventsLists = Computed(function() {
   let events = {}
@@ -152,7 +149,7 @@ let specialEventsLootboxesState = Computed(function() {
   return res
 })
 
-let getEventPresentationId = @(eventId, eSeason, sEvents) eventId == MAIN_EVENT_ID ? eSeason : sEvents?[eventId].eventName
+let getEventPresentationId = @[pure, nodiscard](eventId, eSeason, sEvents) eventId == MAIN_EVENT_ID ? eSeason : sEvents?[eventId].eventName
 
 let curEventSeason = Computed(@() curEvent.get() == MAIN_EVENT_ID
     ? (userstatStatsTables.get()?.stats.season["$index"] ?? 0)
@@ -162,7 +159,7 @@ let curEventEndsAt = Computed(@() curEvent.get() == MAIN_EVENT_ID
     ? eventEndsAt.get()
   : (specialEvents.get()?[curEvent.get()].endsAt ?? 0))
 
-let getIsEventActive = @(eventId, isEActive, isOActive, specEvents) eventId == MAIN_EVENT_ID ? isEActive
+let getIsEventActive = @[pure, nodiscard](eventId, isEActive, isOActive, specEvents) eventId == MAIN_EVENT_ID ? isEActive
   : eventId == OP_EVENT_ID ? isOActive
   : eventId == "" ? true
   : eventId in specEvents
@@ -170,7 +167,7 @@ let getIsEventActive = @(eventId, isEActive, isOActive, specEvents) eventId == M
 let isCurEventActive = Computed(@()
   getIsEventActive(curEvent.get(), isEventActive.get(), isOPSeasonActive.get(), specialEvents.get()))
 
-let getEventLootboxes = @(eventId, lootboxesRaw)
+let getEventLootboxes = @[pure, nodiscard](eventId, lootboxesRaw)
   orderLootboxesBySlot(lootboxesRaw.filter(@(v) (v?.meta.event_id ?? MAIN_EVENT_ID) == eventId))
 
 let curEventLootboxes = Computed(@() getEventLootboxes(curEvent.get(), eventLootboxesRaw.get()))
@@ -357,7 +354,6 @@ return {
   isCurEventActive
 
   eventWndOpenCounter
-  isEventSceneAttached
   openEventInfo
   closeEventWnd = @() openEventInfo.set(null)
   markCurLootboxSeen
@@ -371,8 +367,6 @@ return {
   unseenLootboxesShowOnce
   campToBack
   closeEventShellCleanup
-
-  bestCampLevel
 
   MAIN_EVENT_ID
   specialEvents

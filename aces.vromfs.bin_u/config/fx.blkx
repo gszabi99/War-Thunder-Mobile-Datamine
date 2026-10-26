@@ -1253,6 +1253,11 @@
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
+  "rocket_fire_gold": {
+    "fx": "rocket_tail_sparkle_gold_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
   "misc_simple_smoke_grenade": {
     "fx": "misc_simple_smoke_grenade_cmps_fx"
   },
@@ -3878,6 +3883,29 @@
   },
   "trail_inversion_rainbow": {
     "fx": "trail_inversion_rainbow_cmps_fx"
+  },
+  "explosion_rocket_sparkle_gold": {
+    "fx": "explosion_rocket_sparkle_gold_cmps_fx",
+    "sfxPathStudio": "event/race_event",
+    "sfxEvent": "rocket_explosion"
+  },
+  "rocket_tail_sparkle_gold": {
+    "fx": "rocket_tail_sparkle_gold_cmps_fx"
+  },
+  "fires_flare_tail_gold": {
+    "fx": "fires_flare_tail_gold_cmps_fx"
+  },
+  "misc_markers_booster_question": {
+    "fx": "misc_markers_booster_question_cmps_fx"
+  },
+  "misc_markers_booster_rocket": {
+    "fx": "misc_markers_booster_rocket_cmps_fx"
+  },
+  "misc_markers_booster_engine": {
+    "fx": "misc_markers_booster_engine_cmps_fx"
+  },
+  "misc_markers_booster_smoke": {
+    "fx": "misc_markers_booster_smoke_cmps_fx"
   },
   "explosion_air_selfexplosion_med_pony": {
     "fx": "explosion_air_selfexplosion_med_cmps_fx",

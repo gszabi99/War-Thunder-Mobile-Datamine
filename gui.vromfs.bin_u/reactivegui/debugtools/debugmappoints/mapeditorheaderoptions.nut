@@ -296,6 +296,7 @@ let editBgElemContent = modalBg.__merge({
   ]
 })
 
+let toggleRotateTransitions = [{ prop = AnimProp.rotate, duration = 0.2, easing = InOutQuad }]
 let toggleBtn = @() {
   watch = isHeaderOptionsOpen
   hplace = ALIGN_LEFT
@@ -305,8 +306,8 @@ let toggleBtn = @() {
     isHeaderOptionsOpen.get() ? "hudTuning/toggle/desc/hide" : "hudTuning/toggle/desc/show",
     {
       color = btnBgColorDefault
-      transform = isHeaderOptionsOpen.get() ? {} : { rotate = 180 }
-      transitions = [{ prop = AnimProp.rotate, duration = 0.2, easing = InOutQuad }]
+      transform = isHeaderOptionsOpen.get() ? const {} : const { rotate = 180 }
+      transitions = toggleRotateTransitions
     })
 }
 
@@ -393,23 +394,27 @@ function onAddReward(id, view) {
 function openAddRewardWnd() {
   let id = Watched("")
   let view = Watched(defRewardProgress)
+  let rewardIdLabel = mkText("Reward ID:")
+  let rewardIdInput = mkTextInputField(id, "Set reward ID",
+    { onReturn = @() onAddReward(id.get(), view.get()) })
+  let rewardViewLabel = mkText("Reward View:")
+  let addBtn = mkTextOptionBtn("ADD",
+    @() onAddReward(id.get(), view.get()))
 
   addModalWindowWithHeader("add_reward", "Create reward",
-    @() modalBg.__merge({
+    @() { ...modalBg
       watch = view
       size = const [hdpx(600), SIZE_TO_CONTENT]
       onAttach = @() set_kb_focus(id)
       children = [
-        mkText("Reward ID:")
-        mkTextInputField(id, "Set reward ID",
-          { onReturn = @() onAddReward(id.get(), view.get()) })
-        mkText("Reward View:")
+        rewardIdLabel
+        rewardIdInput
+        rewardViewLabel
         mkTextOptionBtnNoUpper(view.get(), @() openRewardViewChoice(@(v) view.set(v)),
           { size = [FLEX, optionBtnSize] })
-        mkTextOptionBtn("ADD",
-          @() onAddReward(id.get(), view.get()))
+        addBtn
       ]
-    }))
+    })
 }
 
 let addRewardBtn = mkOptionBtn("ui/gameuiskin#quest_events_icon.svg", openAddRewardWnd, "Add reward")
@@ -423,17 +428,19 @@ function onEditReward(id, view) {
 function openEditRewardWnd() {
   let id = selectedRewardId.get()
   let view = Watched(tuningRewards.get()?[id].view ?? defRewardProgress)
+  let rewardViewLabel = mkText("Reward View:")
+  let applyBtn = mkTextOptionBtn("APPLY", @() onEditReward(id, view.get()))
   addModalWindowWithHeader("edit_reward", $"Edit reward {id}",
-    @() modalBg.__merge({
+    @() { ...modalBg
       watch = view
       size = const [hdpx(600), SIZE_TO_CONTENT]
       children = [
-        mkText("Reward View:")
+        rewardViewLabel
         mkTextOptionBtnNoUpper(view.get(), @() openRewardViewChoice(@(v) view.set(v)),
           { size = [FLEX, optionBtnSize] })
-        mkTextOptionBtn("APPLY", @() onEditReward(id, view.get()))
+        applyBtn
       ]
-    }))
+    })
 }
 
 let editElemBtn = @() {
@@ -601,7 +608,7 @@ let content = @() {
     historyFwdBtn
     autoSaveBtn
     snapBtn
-    { size = FLEX }
+    const { size = FLEX }
     deleteElemBtn
     copyElemBtn
     editElemBtn
@@ -611,6 +618,7 @@ let content = @() {
   ]
 }
 
+let headerSlideTransitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
 let mapEditorHeaderOptions = {
   size = FLEX_H
   children = !isEditAllowed
@@ -624,7 +632,7 @@ let mapEditorHeaderOptions = {
         color = 0xC0000000
         children = content
         transform = { translate = [0, isHeaderOptionsOpen.get() ? 0 : hdpx(-500)] }
-        transitions = [{ prop = AnimProp.translate, duration = 0.2, easing = InOutQuad }]
+        transitions = headerSlideTransitions
       }
       toggleBtn
     ]

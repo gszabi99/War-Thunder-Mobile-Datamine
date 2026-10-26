@@ -1,4 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
+from "types" import String
 from "%rGui/components/closeWndBtn.nut" import closeWndBtn, closeWndBtnSize
 from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset, mkColoredGradientY
 
@@ -37,12 +38,13 @@ let modalWndHeader = @(text, ovr = {}) modalWndHeaderBg.__merge({
 let modalWndHeaderWithClose = @(text, close, ovr = {}) modalWndHeaderBg.__merge({
   children = [
     {
-      rendObj = ROBJ_TEXT
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       padding = [0, wndHeaderHeight]
-      text
-    }.__update(fontSmall)
+      ...(text instanceof String
+        ? { rendObj = ROBJ_TEXT, text ...fontSmall }
+        : { children = text })
+    }
     closeWndBtn(close, { margin = closeMargin })
   ]
 }, ovr)

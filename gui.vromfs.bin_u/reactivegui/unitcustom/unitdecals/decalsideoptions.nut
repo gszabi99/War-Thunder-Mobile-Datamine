@@ -4,6 +4,7 @@ from "unitCustomization" import mirror_current_decal, get_mirror_current_decal, 
   set_hangar_opposite_mirrored, get_hangar_opposite_mirrored
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/style/stdColors.nut" import textColor, selectColor
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/tooltip.nut" import mkButtonHoldTooltip
 from "%rGui/unitCustom/unitDecals/unitDecalsState.nut" import isEditingDecal
 
@@ -46,6 +47,7 @@ function mkOptBtn(opt, onClick) {
   let isActive = Computed(@() id == selectedOptId.get() || isOptActive.get())
   let stateFlags = Watched(0)
   let key = {}
+  let holdTooltip = mkButtonHoldTooltip(onClick, stateFlags, key, @() { content = loc(locId) })
 
   return @() {
     watch = [stateFlags, isActive]
@@ -65,10 +67,10 @@ function mkOptBtn(opt, onClick) {
       color = isActive.get() ? selectColor : textColor
     }
     onElemState = @(sf) stateFlags.set(sf)
-    sound = { click  = "click" }
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.98, 0.98] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
-  }.__update(mkButtonHoldTooltip(onClick, stateFlags, key, @() { content = loc(locId) }))
+    sound = const { click  = "click" }
+    ...mkPressTransitionScale(stateFlags.get(), 0.98)
+    ...holdTooltip
+  }
 }
 
 function onFlip() {

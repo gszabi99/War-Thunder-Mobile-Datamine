@@ -30,7 +30,7 @@ function getCampaignPkgsForOnlineBattle(campaign, mRank) {
   return res
 }
 
-let getCampaignPkgsForNewbieSingle = @(campaign)
+let getCampaignPkgsForNewbieSingle = @[nodiscard](campaign)
   clone (soloNewbieByCampaign?[campaign] ?? [])
 
 function getCampaignPkgsForNewbieCoop(campaign, mRank) {

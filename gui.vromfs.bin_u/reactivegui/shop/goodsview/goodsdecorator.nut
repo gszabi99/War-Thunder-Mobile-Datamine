@@ -17,7 +17,7 @@ let avatarSize = avatarFrameSize - avatarBorderWidth * 2
 let emptyIconSize = [goodsSmallSize[0] - hdpxi(40), (goodsBgH * 0.9 + 0.5).tointeger()]
 
 let mkAvatarImg = @(decoratorId) {
-  size = [avatarFrameSize, avatarFrameSize]
+  size = avatarFrameSize
   vplace = ALIGN_CENTER
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
@@ -26,7 +26,7 @@ let mkAvatarImg = @(decoratorId) {
   borderColor = 0xFFA0A0A0
   borderWidth = avatarBorderWidth
   children = {
-    size = [avatarSize, avatarSize]
+    size = avatarSize
     rendObj = ROBJ_IMAGE
     image = Picture($"{getAvatarImage(decoratorId)}:{avatarSize}:{avatarSize}:P")
     keepAspect = true

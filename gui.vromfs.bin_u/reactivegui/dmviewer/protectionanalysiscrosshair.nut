@@ -11,17 +11,21 @@ let mkCrosshairDrawCommands = @(color, width) [
   [VECTOR_LINE, 0, 50, 100, 50],
 ]
 
+let crosshairOuterGlow = mkCrosshairDrawCommands(0x40000000, CROSSHAIR_LINE_WIDTH + hdpx(6))
+let crosshairMidGlow = mkCrosshairDrawCommands(0x40000000, CROSSHAIR_LINE_WIDTH + hdpx(4))
+let crosshairOutline = mkCrosshairDrawCommands(0xFF000000, CROSSHAIR_LINE_WIDTH + hdpx(2))
+
 let crosshairComp = @() {
   watch = probabilityColor
-  size = [CROSSHAIR_SIZE, CROSSHAIR_SIZE]
+  size = CROSSHAIR_SIZE
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_VECTOR_CANVAS
   fillColor = 0
   commands = [].extend(
-    mkCrosshairDrawCommands(0x40000000, CROSSHAIR_LINE_WIDTH + hdpx(6)),
-    mkCrosshairDrawCommands(0x40000000, CROSSHAIR_LINE_WIDTH + hdpx(4)),
-    mkCrosshairDrawCommands(0xFF000000, CROSSHAIR_LINE_WIDTH + hdpx(2)),
+    crosshairOuterGlow,
+    crosshairMidGlow,
+    crosshairOutline,
     mkCrosshairDrawCommands(probabilityColor.get(), CROSSHAIR_LINE_WIDTH))
 }
 

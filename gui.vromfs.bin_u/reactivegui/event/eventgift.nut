@@ -6,6 +6,7 @@ from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%appGlobals/permissions.nut" import allow_event_gift_on_ios
 from "%rGui/event/eventState.nut" import specialEvents
 from "%rGui/shop/goodsView/sharedParts.nut" import offerH
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 const eventGiftGap = hdpx(25)
@@ -20,41 +21,42 @@ let campaignGiftImg = {
 function mkGiftBtn(eventId) {
   let stateFlags = Watched(0)
   let gift = getGiftPresentation(eventId)
+  let giftChildren = [
+    {
+      size = FLEX
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#{gift?.icon}:{boxSize[0]}:{boxSize[1]}:P")
+      keepAspect = KEEP_ASPECT_FIT
+      vplace = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+    }
+    @() {
+      watch = curCampaign
+      size = tagSize
+      pos = const [-hdpx(10), hdpx(25)]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#{campaignGiftImg[curCampaign.get()]}.avif:{tagSize[0]}:{tagSize[1]}:P")
+      keepAspect = KEEP_ASPECT_FIT
+    }
+    {
+      size = [boxSize[0] + 2 * eventGiftGap, SIZE_TO_CONTENT]
+      behavior = Behaviors.TextArea
+      halign = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_BOTTOM
+      rendObj = ROBJ_TEXTAREA
+      text = loc(gift?.locId ?? "")
+      ...fontTinyAccentedShaded
+    }
+  ]
   return @() {
     watch = stateFlags
     size = boxSize
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
     onClick = @() eventbus_send("openUrl", { baseUrl = gift?.link ?? "" })
-    children = [
-      {
-        size = FLEX
-        rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#{gift?.icon}:{boxSize[0]}:{boxSize[1]}:P")
-        keepAspect = KEEP_ASPECT_FIT
-        vplace = ALIGN_CENTER
-        hplace = ALIGN_CENTER
-      }
-      @() {
-        watch = curCampaign
-        size = tagSize
-        pos = const [-hdpx(10), hdpx(25)]
-        rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#{campaignGiftImg[curCampaign.get()]}.avif:{tagSize[0]}:{tagSize[1]}:P")
-        keepAspect = KEEP_ASPECT_FIT
-      }
-      {
-        size = [boxSize[0] + 2 * eventGiftGap, SIZE_TO_CONTENT]
-        behavior = Behaviors.TextArea
-        halign = ALIGN_CENTER
-        hplace = ALIGN_CENTER
-        vplace = ALIGN_BOTTOM
-        rendObj = ROBJ_TEXTAREA
-        text = loc(gift?.locId ?? "")
-      }.__update(fontTinyAccentedShaded)
-    ]
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
+    children = giftChildren
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
   }
 }
 

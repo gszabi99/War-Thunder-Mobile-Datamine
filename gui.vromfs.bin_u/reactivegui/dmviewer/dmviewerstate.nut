@@ -12,7 +12,9 @@ from "%rGui/dmViewer/unitDataCollection.nut" import getDmViewerUnitData, dmViewe
 from "%rGui/unit/hangarUnit.nut" import isHangarUnitLoaded, hasHangarUnitResources
 
 
-let dmViewerMode = mkWatched(persist, "dmViewerMode", DM_VIEWER_NONE)
+let dmViewerModeByWnd = mkWatched(persist, "dmViewerModeByWnd", {})
+let dmViewerMode = Computed(@(prev) prev != DM_VIEWER_NONE && dmViewerModeByWnd.get().findvalue(@(v) v == prev) != null ? prev
+  : dmViewerModeByWnd.get().findvalue(@(v) v != DM_VIEWER_NONE) ?? DM_VIEWER_NONE)
 let dmViewerUnitReady = mkWatched(persist, "dmViewerUnitReady", false)
 
 let needDmViewerPointerControl = Computed(@() [ DM_VIEWER_ARMOR, DM_VIEWER_XRAY ].contains(dmViewerMode.get()))
@@ -24,6 +26,11 @@ let needDmViewerCrosshair = Computed(
 
 let isDebugMode = mkWatched(persist, "isDebugMode", false)
 let isDebugBatchExportProcess = Watched(false)
+
+function setDmViewerMode(mode, wndId) {
+  if ((dmViewerModeByWnd.get()?[wndId] ?? DM_VIEWER_NONE) != mode)
+    dmViewerModeByWnd.mutate(@(v) mode == DM_VIEWER_NONE ? v.$rawdelete(wndId) : v.$rawset(wndId, mode))
+}
 
 function onDmViewerModeChanged(mode) {
   if (!allow_dm_viewer.get())
@@ -80,6 +87,7 @@ register_command(@() isDebugMode.set(!isDebugMode.get()), "ui.debug.dm_viewer")
 
 return {
   dmViewerMode
+  setDmViewerMode
   dmViewerUnitReady
   getDmViewerUnitData
   dmViewerUnitDataVer

@@ -8,7 +8,7 @@ from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%rGui/bullets/bulletsConst.nut" import BULLETS_PRIM_SLOTS
 from "%rGui/unit/hangarUnit.nut" import hangarUnit
-from "%rGui/unitDetails/unitDetailsState.nut" import baseUnit
+from "%rGui/unitDetails/unitDetailsState.nut" import baseUnit, isUnitModAttached
 from "%rGui/unitMods/unitModsConst.nut" import iconsCfg
 from "%rGui/unitMods/unseenBullets.nut" import getUnseenUnitBulletsNonUpdatable, markShellsSeen
 from "%rGui/unitMods/unseenMods.nut" import unseenCampUnitMods, markUnitModsSeen
@@ -18,10 +18,9 @@ require("%rGui/onlyAfterLogin.nut")
 
 
 const MOD_NOT_AVAILABLE = -1
-let slotModKey = @(idx) $"unit_mods_slot_mod_{idx}"
+let slotModKey = @[pure, nodiscard](idx) $"unit_mods_slot_mod_{idx}"
 
 let isUnitModsOpen = mkWatched(persist, "isUnitModsOpen", false)
-let isUnitModAttached = mkWatched(persist, "isUnitModAttached", false)
 let curModCategoryId = mkWatched(persist, "curModCategoryId", null)
 let curModId = mkWatched(persist, "curModId", null)
 let curBulletId = mkWatched(persist, "curBulletId", null)
@@ -57,7 +56,7 @@ let modsByCategory = Computed(function() {
   return result
 })
 
-let modsSort = @(a, b) a.reqLevel <=> b.reqLevel || a.name <=> b.name
+let modsSort = @[pure, nodiscard](a, b) a.reqLevel <=> b.reqLevel || a.name <=> b.name
 
 let modsCategories = Computed(@() modsByCategory.get().keys().sort(@(a, b) a <=> b) ?? [])
 let modsSorted = Computed(@() modsByCategory.get()?[curModCategoryId.get()]?.values().sort(modsSort) ?? [])

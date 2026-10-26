@@ -40,22 +40,24 @@ let getSubsPresentation = @(id) allPresentations?[id] ?? defCfg
 
 let getSubsIconSize = @(id, size) (size * (iconScale?[id] ?? 1) + 0.5).tointeger()
 
-let getPremIcon = @(allowSub, id) (allowSub ? iconImgDeprecated?[id] : null)
+let getPremIcon = @[pure, nodiscard](allowSub, id) (allowSub ? iconImgDeprecated?[id] : null)
   ?? iconImg?[id]
   ?? "premium_inactive.svg"
 
-let mkSubsIcon = @(id, sizeH, ovr = {}) function() {
+function mkSubsIcon(id, sizeH, ovr = {}) {
   let iconW = getSubsIconSize(id, sizeH * 1.3)
   let iconH = getSubsIconSize(id, sizeH)
-  let image = getPremIcon(allow_subscriptions.get(), id)
-  return {
-    key = {}
-    watch = allow_subscriptions
-    size = [iconW, iconH]
-    rendObj = ROBJ_IMAGE
-    keepAspect = true
-    image = Picture($"ui/gameuiskin#{image}:{iconW}:{iconH}:P")
-  }.__update(ovr)
+  return function() {
+    let image = getPremIcon(allow_subscriptions.get(), id)
+    return {
+      key = {}
+      watch = allow_subscriptions
+      size = [iconW, iconH]
+      rendObj = ROBJ_IMAGE
+      keepAspect = true
+      image = Picture($"ui/gameuiskin#{image}:{iconW}:{iconH}:P")
+    }.__update(ovr)
+  }
 }
 
 return {

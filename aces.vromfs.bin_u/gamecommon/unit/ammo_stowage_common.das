@@ -278,12 +278,13 @@ def ammo_cluster_balance_slots(var unit : Unit?; cluster_id : int; update_dm : b
                                  ammo_stowage__ammoTypeToMask : UInt32List;
                                  ammo_clusters__slotsRange : IPoint2List;
                                  ammo_clusters__state : UInt32List;
+                                 ammo_clusters__typeAndStage : UInt16List;
                                  ammo_slots__state : UInt32List -const;
                                  ammo_slots__numAmmo : IPoint2List -const;
                                  ammo_slots__ammoMaskAndType : UInt32List -const;
                                  ammo_slots__partId : PartIdList
                                  >) : bool
-  if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState.DISABLE_BALANCING)
+  if get_ammo_cluster_stage(cluster_id, v) == int(AmmoClusterStage.LOADED_IN_GUN)
     return false
   var dm_changed = false
   let slots_range = v.ammo_clusters__slotsRange[cluster_id]

@@ -667,11 +667,16 @@ def ammo_stowage_do_launch(var unit : Unit?; eid : EntityId; remap : PartRemap; 
                              ammo_stowages__weaponAmmoRange : IPoint2List;
                              ammo_stowage__weaponAmmoIds : IntList;
                              ammo_stowage__weaponAmmoCount : IntList -const;
+                             ammo_clusters__typeAndStage : UInt16List;
                              ammo_slots__state : UInt32List;
                              ammo_slots__ammoMaskAndType : UInt32List;
                              ammo_slots__numAmmo : IPoint2List
                              >) : void
   if !remap.partId.valid || unit.weap == null || !unit.isAuthority
+    return
+
+  if get_ammo_cluster_stage(remap.clusterId, v) != int(AmmoClusterStage.LOADED_IN_GUN)
+    logerr("{unit.props.fileName}: launch damage effect on cluster {remap.clusterId}, part {get_part_name(unit.dmData, int(remap.partId.id))}, which is not ammoLoadedInGun")
     return
 
   let slot_state = v.ammo_slots__state[remap.slotId]

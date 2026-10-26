@@ -7,6 +7,7 @@ from "%rGui/hud/raceLeadership.nut" import raceLeadershipEditView, raceLeadershi
 from "%rGui/hud/scoreBoard.nut" import scoreBoardEditView, needScoreBoard, scoreBoardCfgByType, scoreBoardType
 from "%rGui/hud/zoomSlider.nut" import mkZoomSlider, zoomSliderEditView
 from "%rGui/hudHints/hintBlocks.nut" import chatLogAndKillLogPlace, chatLogAndKillLogEditView
+from "%rGui/hudHints/killerInfo.nut" import isKillerInfoVisible
 from "%rGui/hudState.nut" import isPlayingReplay
 from "%rGui/hudTuning/cfg/cfgOptions.nut" import optFontSize, optTextWidth
 from "%rGui/hudTuning/cfg/hudTuningPkg.nut" import Z_ORDER, mkRBPos, mkCTPos, mkLTPos, mkRTPos
@@ -82,7 +83,7 @@ return initHudTuningCfg({
     defTransform = mkRTPos([0, 0])
     editView = raceLeadershipEditView
     options = [ optFontSize ]
-    isVisibleInBattle = isGtRace
+    isVisibleInBattle = Computed(@() isGtRace.get() && !isKillerInfoVisible.get())
     isVisibleInEditor = isGtRace
   }
 })

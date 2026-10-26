@@ -185,29 +185,27 @@ function mkSelfNode(nodePos) {
     valign = valign
     padding = padding
     opacity = opacity
-    children = [
-      {
-        size = [size, size]
-        children = [
-          {
-            size = [size, size]
-            rendObj = ROBJ_BOX
-            borderWidth = border ? borderWidth : 0
-            borderColor = color
-            transform = { rotate }
-          }
-          {
-            hplace = ALIGN_CENTER
-            vplace = ALIGN_CENTER
-            rendObj = ROBJ_IMAGE
-            size = [iconSize, iconSize]
-            image = Picture($"{icon}:{iconSize}:{iconSize}:P")
-            color = color
-            keepAspect = KEEP_ASPECT_FIT
-          }
-        ]
-      }
-    ]
+    children = {
+      size = size
+      children = [
+        {
+          size = size
+          rendObj = ROBJ_BOX
+          borderWidth = border ? borderWidth : 0
+          borderColor = color
+          transform = { rotate }
+        }
+        {
+          hplace = ALIGN_CENTER
+          vplace = ALIGN_CENTER
+          rendObj = ROBJ_IMAGE
+          size = iconSize
+          image = Picture($"{icon}:{iconSize}:{iconSize}:P")
+          color = color
+          keepAspect = KEEP_ASPECT_FIT
+        }
+      ]
+    }
   }
 }
 
@@ -222,7 +220,7 @@ function mkWarningNode(nodeId, nodePos, nodeSize, hintStr) {
     vplace = ALIGN_BOTTOM
     behavior = Behaviors.Button
     rendObj = ROBJ_IMAGE
-    size = [nodeSize, nodeSize]
+    size = nodeSize
     image = Picture($"{debugIconWarning}:{nodeSize}:{nodeSize}:P")
     onClick = @(evt) showHint(evt.targetRect, hintStr, 3)
     onAttach = @() (nodeId == selectedNodeId.get()) ? showHint([nodePos.x, nodePos.y], hintStr, 3) : null
@@ -235,6 +233,8 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
   let warningSize = (size * 0.45).tointeger()
   let isMoving = Computed(@() nodeId != -1 && nodeId == movingNodeId.get())
   let isSelected = Computed(@() nodeId != -1 && nodeId == selectedNodeId.get() && !isMoving.get())
+  let rotateTransform = { rotate }
+  let warningNode = warningStr ? mkWarningNode(nodeId, nodePos, warningSize, warningStr) : null
 
   return @() {
     watch = [isSelected, isMoving, btnBgStyle]
@@ -246,7 +246,7 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
     opacity = isSelected.get() ? 1 : opacity
     children = [
       {
-        size = [size, size]
+        size = size
         behavior = Behaviors.MoveResize
         moveResizeModes = MR_AREA
 
@@ -300,14 +300,14 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
             fillColor = isSelected.get() ? btnBgStyle.get().ready : 0
             borderWidth = (isSelected.get() || border) ? borderWidth : 0
             borderColor = borderColor
-            transform = { rotate }
+            transform = rotateTransform
           }
           !isMoving.get()
             ? {
               hplace = ALIGN_CENTER
               vplace = ALIGN_CENTER
               rendObj = ROBJ_IMAGE
-              size = [iconSize, iconSize]
+              size = iconSize
               image = Picture($"{icon}:{iconSize}:{iconSize}:P")
               color = color
               keepAspect = true
@@ -316,20 +316,20 @@ function mkPathNode(nodeType, nodeId, nodePos, warningStr) {
               rendObj = ROBJ_IMAGE
               hplace = ALIGN_CENTER
               vplace = valign
-              size = [iconSize, iconSize]
+              size = iconSize
               image = Picture($"{icon}:{iconSize}:{iconSize}:P")
               color = imageColor
               keepAspect = true
               opacity = 0.75
-              transform = { translate = [0, hdpx(-25)], scale = [1.5, 1.5] }
-              animations = [
+              transform = const { translate = [0, hdpx(-25)], scale = 1.5 }
+              animations = const [
                 { prop = AnimProp.scale, from = [0.5, 0.5], to = [1.5, 1.5], duration = 0.3, easing = OutQuad, play = true }
                 { prop = AnimProp.translate, from = [0, 0], to = [0, hdpx(-25)], duration = 0.3, easing = OutQuad, play = true }
               ]
             }
         ]
       }
-      warningStr ? mkWarningNode(nodeId, nodePos, warningSize, warningStr) : null
+      warningNode
     ]
   }
 }
@@ -339,6 +339,20 @@ function mkPathEdgeButton(edgePos, edgeId, edgeColor) {
   let imgSizeOuter = (btnSize * 0.95).tointeger()
   let imgSizeInner = (btnSize * 0.65).tointeger()
   let isSelected = Computed(@() edgeId != -1 && selectedEdgeId.get() == edgeId)
+  let outerEdgeIcon = {
+    rendObj = ROBJ_IMAGE
+    size = imgSizeOuter
+    image = Picture($"{iconEdge}:{imgSizeOuter}:{imgSizeOuter}:P")
+    color = edgeColor
+    keepAspect = KEEP_ASPECT_FIT
+  }
+  let innerEdgeIcon = {
+    rendObj = ROBJ_IMAGE
+    size = imgSizeInner
+    image = Picture($"{iconEdge}:{imgSizeInner}:{imgSizeInner}:P")
+    color = edgeButtonColor
+    keepAspect = KEEP_ASPECT_FIT
+  }
   return @() {
     watch = [isSelected, btnBgStyle]
     halign = ALIGN_CENTER
@@ -355,20 +369,8 @@ function mkPathEdgeButton(edgePos, edgeId, edgeColor) {
         behavior = Behaviors.Button
         onClick = @() onNodeClick(NODE_INVALID, -1, edgeId, edgePos)
       }
-      {
-        rendObj = ROBJ_IMAGE
-        size = [imgSizeOuter, imgSizeOuter]
-        image = Picture($"{iconEdge}:{imgSizeOuter}:{imgSizeOuter}:P")
-        color = edgeColor
-        keepAspect = KEEP_ASPECT_FIT
-      }
-      {
-        rendObj = ROBJ_IMAGE
-        size = [imgSizeInner, imgSizeInner]
-        image = Picture($"{iconEdge}:{imgSizeInner}:{imgSizeInner}:P")
-        color = edgeButtonColor
-        keepAspect = KEEP_ASPECT_FIT
-      }
+      outerEdgeIcon
+      innerEdgeIcon
     ]
   }
 }
@@ -479,10 +481,12 @@ function mkCommandButton(text, img, isEnabled, isAllowed, onClick) {
   let stateFlags = Watched(0)
   let isActive = Computed(@() isAllowed.get() && (stateFlags.get() & S_ACTIVE))
   let iconSize = (touchButtonSize * 0.55).tointeger()
+  let btnIcon = Picture($"{img}:{iconSize}:{iconSize}:P")
+  let scaleTransitions = [{ prop = AnimProp.scale, duration = 0.15, easing = OutQuad }]
   return @() {
     watch = [stateFlags, isActive, isAllowed, isEnabled, btnBgStyle]
     rendObj = ROBJ_BOX
-    size = [touchButtonSize, touchButtonSize]
+    size = touchButtonSize
     flow = FLOW_VERTICAL
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
@@ -496,13 +500,13 @@ function mkCommandButton(text, img, isEnabled, isAllowed, onClick) {
     behavior = Behaviors.Button
     onElemState = @(v) stateFlags.set(v)
     onClick = (isEnabled.get() && isAllowed.get()) ? onClick : null
-    transform = { scale = isActive.get() ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = OutQuad }]
+    transform = { scale = isActive.get() ? 0.95 : 1 }
+    transitions = scaleTransitions
     children = [
       {
         rendObj = ROBJ_IMAGE
-        size = [iconSize, iconSize]
-        image = Picture($"{img}:{iconSize}:{iconSize}:P")
+        size = iconSize
+        image = btnIcon
         keepAspect = KEEP_ASPECT_FIT
         color = isEnabled.get() ? imageColor : imageDisabledColor
       }

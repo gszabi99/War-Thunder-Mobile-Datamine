@@ -4,6 +4,7 @@ from "dagor.workcycle" import setInterval, clearTimer
 from "sound_wt" import playSound
 from "%sqstd/math.nut" import lerpClamped
 from "%rGui/style/stdColors.nut" import selectColor
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 const textColor = 0xFFFFFFFF
@@ -28,28 +29,31 @@ let maxValueWidth = calc_str_box("288% ", fontSmall)[0]
 const transTime = 0.05
 let transEasing = InOutQuad
 
-let mkSliderKnob = @(relValue, stateFlags, fullW, ovr = {}) @() {
-  watch = [relValue, stateFlags]
-  size  = [knobSize, knobSize]
-  hplace = ALIGN_CENTER
-
-  rendObj = ROBJ_VECTOR_CANVAS
-  commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
-  color = textColor
-  fillColor = textColor
-
-  transform = {
-    scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1]
-    translate = [(relValue.get() - 0.5) * fullW, 0]
-  }
-  transitions = [
+function mkSliderKnob(relValue, stateFlags, fullW, ovr = {}) {
+  let transitions = [
     { prop = AnimProp.translate, duration = transTime, easing = transEasing }
     { prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }
   ]
-}.__update(ovr)
+  return @() {
+    watch = [relValue, stateFlags]
+    size  = knobSize
+    hplace = ALIGN_CENTER
+
+    rendObj = ROBJ_VECTOR_CANVAS
+    commands = const [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
+    color = textColor
+    fillColor = textColor
+
+    transform = {
+      scale = stateFlags.get() & S_ACTIVE ? 0.9 : 1
+      translate = [(relValue.get() - 0.5) * fullW, 0]
+    }
+    transitions
+  }.__update(ovr)
+}
 
 let btnBg = freeze({
-  size  = [sliderBtnSize, sliderBtnSize]
+  size  = sliderBtnSize
   rendObj = ROBJ_VECTOR_CANVAS
   commands = [[VECTOR_POLY, 0, 50, 50, 0, 100, 50, 50, 100]]
   color = borderColor
@@ -74,6 +78,7 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
   let size = override?.size ?? [sliderW, sliderH]
   let knob = knobCtor(relValue, stateFlags, size[0])
   let color = override?.color ?? selectColor
+  let fillTransitions = [{ prop = AnimProp.scale, duration = transTime, easing = transEasing }]
 
   return {
     size
@@ -105,10 +110,10 @@ function slider(valueWatch, override = {}, knobCtor = mkSliderKnob) {
         color
 
         transform = {
-          pivot = [0, 0]
+          pivot = 0
           scale = [relValue.get(), 1]
         }
-        transitions = [{ prop = AnimProp.scale, duration = transTime, easing = transEasing }]
+        transitions = fillTransitions
       }
       knob
     ]
@@ -146,7 +151,7 @@ let mkBtnText = @(override) {
 }.__update(fontBig, override)
 
 let getIcon = @(iconName) mkBtnText({
-  size = [iconSize, iconSize]
+  size = iconSize
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#icon_{iconName}.svg:{iconSize}:{iconSize}:P")
   keepAspect = KEEP_ASPECT_FIT
@@ -155,7 +160,7 @@ let getIcon = @(iconName) mkBtnText({
 let btnTextDec = getIcon("minus")
 let btnTextInc = getIcon("plus")
 
-let mkIconBtn = @(children) {
+let mkIconBtn = @[pure, nodiscard](children) {
   size = FLEX
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
@@ -204,7 +209,7 @@ function sliderBtn(childrenCtor, onChangeValue, bgOvrW = Watched({})) {
       onClick = @() get_time_msec() - lastTime < firstTick * 1000 ? onChangeValue() : null
       onDetach = resetTimer
       children = childrenCtor(stateFlags.get())
-      transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+      ...mkPressTransitionScale(stateFlags.get(), 0.9)
     },
     bgOvrW.get())
 }

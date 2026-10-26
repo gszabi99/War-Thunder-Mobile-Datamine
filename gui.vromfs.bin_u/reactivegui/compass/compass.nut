@@ -141,6 +141,7 @@ function mkAzimuthMark(size, is_selected, is_detected, is_enemy, color) {
 }
 
 function mkAircraftMark(markData, size, color) {
+  let mark = mkAzimuthMark([size[1] * 0.7, size[1]], markData.isSelected, markData.isDetected, markData.isEnemy, color)
   return function() {
     let compassAngle = (CompassValue.get() > 0 ? 360 : 0) - CompassValue.get()
     local delta = markData.azimuthWorldDeg - compassAngle
@@ -154,7 +155,7 @@ function mkAircraftMark(markData, size, color) {
       watch = CompassValue
       color = color
       pos = [posX, 0]
-      children = mkAzimuthMark([size[1] * 0.7, size[1]], markData.isSelected, markData.isDetected, markData.isEnemy, color)
+      children = mark
     }
   }
 }

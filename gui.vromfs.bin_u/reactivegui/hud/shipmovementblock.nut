@@ -64,6 +64,11 @@ let fillColor = Computed(@()
   : hasDebuffEngines.get() || currentMaxThrottle.get() < 1.0 ? btnBgStyle.get().broken
   : fillMoveColorDef)
 
+let fwdDirections = { forward = true, forward2 = true }
+let backCornerColor = Computed(@() averageSpeedDirection.get() == "back" ? hudWhiteColor : outlineColorDef.get())
+let fwdCornerColor = Computed(@() averageSpeedDirection.get() in fwdDirections ? hudWhiteColor : outlineColorDef.get())
+let fwd2StepColor = Computed(@() averageSpeedDirection.get() == "forward2" ? fillColor.get() : hudTransparentColor)
+
 let mkSteerParams = @(id, disableId, scale) {
   scale
   ovr = { key = id }
@@ -85,34 +90,34 @@ function calcBackSpeedPart() {
   let maxSpeed = maxSpeedBySteps.get()?[ - 1] ?? 0
   return maxSpeed < 0 ? clamp(speed.get() / maxSpeed, 0.0, 1.0) : 0
 }
-let mkBackwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
-  function onTouchBegin() {
-    if (isControlsBlocked.get() || (isGamepad.get() && isPieMenuActive.get()))
-      return
-    setShortcutOn(id)
-    playHapticPattern(HAPT_BACKWARD)
-    showCtrlHint()
-  },
-  @() setShortcutOff(id),
-  id,
-  {
-    key = id
-    size = verSize
-    flipY = true
-    children = @() {
-      watch = isEngineDisabled
-      size = FLEX
-      children = isEngineDisabled.get() ? null
-        : [
-            mkMoveVertBtnAnimBg(true, calcBackSpeedPart, verSize, fillColor)
-            mkMoveVertBtnOutline(true, verSize, outlineColor)
-            mkMoveVertBtnCorner(true,
-              Computed(@() averageSpeedDirection.get() == "back" ? hudWhiteColor : outlineColorDef.get()),
-              verSize)
-            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(50)] }, scale)
-          ]
-    }
-  })
+function mkBackwardArrow(id, isEngineDisabled, verSize, scale) {
+  let arrowChildren = [
+    mkMoveVertBtnAnimBg(true, calcBackSpeedPart, verSize, fillColor)
+    mkMoveVertBtnOutline(true, verSize, outlineColor)
+    mkMoveVertBtnCorner(true, backCornerColor, verSize)
+    mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(50)] }, scale)
+  ]
+  return mkMoveVertBtn(
+    function onTouchBegin() {
+      if (isControlsBlocked.get() || (isGamepad.get() && isPieMenuActive.get()))
+        return
+      setShortcutOn(id)
+      playHapticPattern(HAPT_BACKWARD)
+      showCtrlHint()
+    },
+    @() setShortcutOff(id),
+    id,
+    {
+      key = id
+      size = verSize
+      flipY = true
+      children = @() {
+        watch = isEngineDisabled
+        size = FLEX
+        children = isEngineDisabled.get() ? null : arrowChildren
+      }
+    })
+}
 
 function calcForwSpeedPart() {
   if (speed.get() <= 0)
@@ -128,65 +133,65 @@ function calcForwSpeedPart2() {
   return lerpClamped(minSpeed, maxSpeedBySteps.get()?[2] ?? 0, 0.0, 1.0, speed.get())
 }
 
-let fwdDirections = { forward = true, forward2 = true }
-let mkForwardArrow = @(id, isEngineDisabled, verSize, scale) mkMoveVertBtn(
-  function onTouchBegin() {
-    if (isControlsBlocked.get() || (isGamepad.get() && isPieMenuActive.get()))
-      return
-    setShortcutOn(id)
-    playHapticPattern(HAPT_FORWARD)
-    showCtrlHint()
-  },
-  @() setShortcutOff(id),
-  id,
-  {
-    key = id
-    size = verSize
-    children = @() {
-      watch = isEngineDisabled
-      size = FLEX
-      children = isEngineDisabled.get() ? null
-        : [
-            mkMoveVertBtnAnimBg(false, calcForwSpeedPart, verSize, fillColor)
-            mkMoveVertBtnOutline(false, verSize, outlineColor)
-            mkMoveVertBtnCorner(false,
-              Computed(@() averageSpeedDirection.get() in fwdDirections ? hudWhiteColor : outlineColorDef.get()),
-              verSize)
-            mkMoveVertBtn2step(calcForwSpeedPart2,
-              Computed(@() averageSpeedDirection.get() == "forward2" ? fillColor.get() : hudTransparentColor),
-              verSize,
-              fillColor)
-            mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(-50)] }, scale)
-          ]
-    }
-  })
+function mkForwardArrow(id, isEngineDisabled, verSize, scale) {
+  let arrowChildren = [
+    mkMoveVertBtnAnimBg(false, calcForwSpeedPart, verSize, fillColor)
+    mkMoveVertBtnOutline(false, verSize, outlineColor)
+    mkMoveVertBtnCorner(false, fwdCornerColor, verSize)
+    mkMoveVertBtn2step(calcForwSpeedPart2, fwd2StepColor, verSize, fillColor)
+    mkGamepadShortcutImage(id, { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = const [0, ph(-50)] }, scale)
+  ]
+  return mkMoveVertBtn(
+    function onTouchBegin() {
+      if (isControlsBlocked.get() || (isGamepad.get() && isPieMenuActive.get()))
+        return
+      setShortcutOn(id)
+      playHapticPattern(HAPT_FORWARD)
+      showCtrlHint()
+    },
+    @() setShortcutOff(id),
+    id,
+    {
+      key = id
+      size = verSize
+      children = @() {
+        watch = isEngineDisabled
+        size = FLEX
+        children = isEngineDisabled.get() ? null : arrowChildren
+      }
+    })
+}
 
 function mkStopImage(scale, ovr = {}) {
   let size = scaleArr([speedImageWidth, speedImageHeight], scale)
+  let stopImage = Picture($"!ui/gameuiskin#hud_movement_stop_selection_left.svg:{size[0]}:{size[1]}")
   return @() !isStoppedSpeedStep.get() ? { watch = isStoppedSpeedStep }
     : {
         watch = isStoppedSpeedStep
         size
         rendObj = ROBJ_IMAGE
         hplace = ALIGN_LEFT
-        image = Picture($"!ui/gameuiskin#hud_movement_stop_selection_left.svg:{size[0]}:{size[1]}")
+        image = stopImage
       }.__update(ovr)
 }
 
-let machineSpeed = @(scale) {
-  size = [FLEX, speedHeight]
-  padding = [0, round(speedImagePadding * scale)]
-  valign = ALIGN_CENTER
-  children = [
-    mkStopImage(scale)
-    @() {
-      watch = [averageSpeed]
-      rendObj = ROBJ_TEXT
-      hplace = ALIGN_CENTER
-      text = machineSpeedLoc[averageSpeed.get()]
-    }.__update(getScaledFont(fontTinyShaded, scale))
-    mkStopImage(scale, { flipX = true, hplace = ALIGN_RIGHT })
-  ]
+function machineSpeed(scale) {
+  let speedFont = getScaledFont(fontTinyShaded, scale)
+  return {
+    size = [FLEX, speedHeight]
+    padding = [0, round(speedImagePadding * scale)]
+    valign = ALIGN_CENTER
+    children = [
+      mkStopImage(scale)
+      @() {
+        watch = averageSpeed
+        rendObj = ROBJ_TEXT
+        hplace = ALIGN_CENTER
+        text = machineSpeedLoc[averageSpeed.get()]
+      }.__update(speedFont)
+      mkStopImage(scale, { flipX = true, hplace = ALIGN_RIGHT })
+    ]
+  }
 }
 
 let speedComp = @(scale) {
@@ -233,6 +238,18 @@ function movementBlock(unitType, scale) {
     machineSpeed(scale)
     mkBackwardArrow(engine_min, isEngineDisabled, verSize, scale)
   ]
+  let middleColumn = {
+    flow = FLOW_VERTICAL
+    halign = ALIGN_CENTER
+    children = middle
+  }
+  let rightColumn = {
+    size = FLEX_V
+    children = [
+      rightArrow
+      speedComp(scale)
+    ]
+  }
 
   return @() {
     watch = [isUnitDelayed, isGamepad, isPieMenuActive]
@@ -240,18 +257,8 @@ function movementBlock(unitType, scale) {
     children = isUnitDelayed.get() ? null
       : [
           leftArrow
-          {
-            flow = FLOW_VERTICAL
-            halign = ALIGN_CENTER
-            children = middle
-          }
-          {
-            size = FLEX_V
-            children = [
-              rightArrow
-              speedComp(scale)
-            ]
-          }
+          middleColumn
+          rightColumn
           isGamepad.get() && !isPieMenuActive.get() ? gamepadShipAxisListener : null
         ]
     transform = {}

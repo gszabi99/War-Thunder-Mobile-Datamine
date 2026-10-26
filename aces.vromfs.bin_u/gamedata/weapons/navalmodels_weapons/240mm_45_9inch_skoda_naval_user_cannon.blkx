@@ -6,7 +6,7 @@
   "aimMinDist": 500.0,
   "aimMaxDist": 15000.0,
   "attackMaxDist": 15000.0,
-  "shotFreq": 0.105,
+  "shotFreq": 0.143,
   "bullets": 1,
   "recoilOffset": 1.2,
   "recoilTimes": [

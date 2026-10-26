@@ -2930,6 +2930,8 @@
         "changeMass": -150.0,
         "hideNodes": {
           "node": [
+            "ex_armor_body_01",
+            "ex_armor_body_02",
             "ex_armor_body_r_04",
             "ex_armor_body_r_05",
             "ex_armor_body_l_03"

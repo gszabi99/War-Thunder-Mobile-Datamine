@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "app" import get_game_version_str, get_base_game_version_str
+from "%appGlobals/clientState/clientState.nut" import isInBattle
 from "%appGlobals/unitConst.nut" import AIR, HELICOPTER, TANK, SHIP, BOAT, SUBMARINE, SAILBOAT, WALKER
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
@@ -16,6 +17,7 @@ from "%rGui/options/options/soundOptions.nut" import soundOptions
 from "%rGui/options/options/systemOptions.nut" import systemOptions
 from "%rGui/options/options/tankControlsOptions.nut" import tankControlsOptions
 from "%rGui/options/options/walkerControlsOptions.nut" import walkerControlsOptions
+from "%rGui/squad/squadChatBtn.nut" import squadChatBtn
 
 
 const SCENE_ID = "optionsScene"
@@ -104,16 +106,24 @@ let header = headerGradientWithRightBlock(
       text = loc("mainmenu/btnOptions")
     }.__update(fontBigShaded)
   ]
-  {
-    size = FLEX_H
+  @() {
+    watch = isInBattle
     halign = ALIGN_RIGHT
-    flow = FLOW_VERTICAL
-    children = [get_base_game_version_str(), get_game_version_str()]
-      .map(@(text) {
-        rendObj = ROBJ_TEXT
-        text
-        color = 0xFFC0C0C0
-      }.__update(fontVeryVeryTinyShaded))
+    children = [
+      isInBattle.get() ? null : squadChatBtn
+      {
+        size = [SIZE_TO_CONTENT, 0]
+        vplace = ALIGN_BOTTOM
+        flow = FLOW_VERTICAL
+        halign = ALIGN_RIGHT
+        children = [get_base_game_version_str(), get_game_version_str()]
+          .map(@(text) {
+            rendObj = ROBJ_TEXT
+            text
+            color = 0xFFC0C0C0
+          }.__update(fontVeryVeryTinyShaded))
+      }
+    ]
   })
 
 return mkOptionsScene(SCENE_ID, tabs, isOpened, curTabId, header)

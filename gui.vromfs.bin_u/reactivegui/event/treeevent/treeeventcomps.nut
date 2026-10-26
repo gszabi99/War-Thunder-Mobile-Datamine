@@ -74,7 +74,7 @@ let rewardPlateBase = getRewardPlateSize(1, REWARD_STYLE_VERY_TINY)
 
 let sqr = @(v) v * v
 let onNodeClick = @(id, node) node != null ? selectedPointId.set(id) : null
-let resolveNodeView = @(id, view, nodesV) view != ""
+let resolveNodeView = @[pure, nodiscard](id, view, nodesV) view != ""
   ? view
   : (nodesV?[id] ?? defaultPointView)
 
@@ -135,7 +135,7 @@ function mkNodeMarkerLayers(node, sizePx, marker, isCompleted, imgOffset) {
             size = rewardPlateBase
             hplace = ALIGN_CENTER
             vplace = ALIGN_CENTER
-            transform = { scale = [plateScale, plateScale], pivot = [0.5, 0.5] }
+            transform = { scale = plateScale, pivot = 0.5 }
             children = mkRewardPlate(reward, REWARD_STYLE_VERY_TINY)
           }
         }
@@ -168,7 +168,7 @@ let mkNodePulse = @(id, marker, sizePx, imgOffset) {
   image = Picture($"{marker.image}:{sizePx}")
   color = marker.color
   keepAspect = true
-  transform = { pivot = [0.5, 0.5] }
+  transform = { pivot = 0.5 }
   animations = nodePulseAnimations
 }
 
@@ -212,7 +212,7 @@ function mkPoint(state) {
       touchMarginPriority = 1
       behavior = Behaviors.Button
       onClick = isNodeInProgress.get() ? @() null : @() onNodeClick(id, node.get())
-      sound = { click = "click" }
+      sound = const { click = "click" }
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = mkNodeMarkerLayers(node.get(), sizePx, marker, isCompleted, imgOffset).append(
@@ -345,7 +345,7 @@ function mkLineCmdsFromSpline(spline, size, sectionLen = lineSectionLen, rounded
   return res
 }
 
-function mkSolidLineCmds(line, points, size) {
+function [pure, nodiscard] mkSolidLineCmds(line, points, size) {
   let pts = mkLineSplinePoints(line, points)
   if (pts.len() < 2)
     return []

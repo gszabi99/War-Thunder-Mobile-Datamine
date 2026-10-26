@@ -12,7 +12,6 @@ from "%rGui/hud/buttons/cameraButtons.nut" import mkFreeCameraButton
 from "%rGui/hud/buttons/circleTouchHudButtons.nut" import mkCircleWalkerPrimaryGun, mkCircleGroundSecondaryGun,
   mkCircleGroundMachineGun, mkCircleZoomCtor, mkCircleBtnEditView, mkBigCircleBtnEditView, mkCountTextRight,
   mkCircleFireworkBtn
-from "%rGui/hud/buttons/repairButton.nut" import tankRrepairButtonCtor
 from "%rGui/hud/components/moveIndicator.nut" import NEED_SHOW_POSE_INDICATOR, mkMoveIndicator,
   moveIndicatorTankEditView
 from "%rGui/hud/components/tacticalMap.nut" import mkTacticalMapForHud, tacticalMapEditView, tacticalMapSize
@@ -33,11 +32,10 @@ from "%rGui/hud/weaponsButtonsView.nut" import mkRepairActionItem
 from "%rGui/hudState.nut" import isUnitAlive
 import "%rGui/hudTuning/cfg/cfgHudCommon.nut" as cfgHudCommon
 from "%rGui/hudTuning/cfg/cfgOptions.nut" import optWalkerMoveControlType, gearDownOnStopButtonTouch,
-  optDoublePrimaryGuns, optDoubleRepairBtn
+  optDoublePrimaryGuns
 from "%rGui/hudTuning/cfg/hudTuningPkg.nut" import withActionBarButtonCtor, withAnyActionBarButtonCtor,
   withActionButtonScaleCtor, Z_ORDER, mkRBPos, mkLBPos, mkRTPos, mkLTPos, mkCBPos, mkCTPos
 import "%rGui/hudTuning/cfg/initHudTuningCfg.nut" as initHudTuningCfg
-from "%rGui/hudTuning/hudTuningBattleState.nut" import curUnitHudTuningOptions
 import "%rGui/hudTuning/squareBtnEditView.nut" as mkSquareBtnEditView
 from "%rGui/options/chooseMovementControls/groundMoveControlType.nut" import currentWalkerMoveCtrlType
 from "%rGui/radar/radar.nut" import radarHudCtor, radarHudEditView
@@ -117,37 +115,23 @@ return cfgHudCommon.__merge(initHudTuningCfg({
     })
 
   abToolkit = {
-    ctor = @(scale) function() {
-      let needSplitRepairBtn = Computed(@() optDoubleRepairBtn.has(curUnitHudTuningOptions.get()))
+    function ctor(scale) {
       let actionItem = Computed(@() actionBarItems.get()?[AB_TOOLKIT])
-      return {
-        watch = needSplitRepairBtn
-        children = needSplitRepairBtn.get()
-          ? @() {
-            watch = actionItem
-            children = mkRepairActionItem(EII_TOOLKIT_SPLIT, actionItem.get(), scale)
-          }
-          : tankRrepairButtonCtor(scale)
+      return @() {
+        watch = actionItem
+        children = mkRepairActionItem(EII_TOOLKIT_SPLIT, actionItem.get(), scale)
       }
     }
     defTransform = actionBarTransform(1)
-    editView = @(opt) function() {
-      let image = optDoubleRepairBtn.has(opt)
-        ? "ui/gameuiskin#hud_consumable_toolkit.svg"
-        : "ui/gameuiskin#hud_consumable_repair.svg"
-      return mkActionItemEditView(image)
-    }
+    editView = mkActionItemEditView("ui/gameuiskin#hud_consumable_toolkit.svg")
     priority = Z_ORDER.STICK
     isVisibleInBattle = isUnitAlive
-    options = [ optDoubleRepairBtn ]
   }
 
   medical = withActionBarButtonCtor(EII_MEDICALKIT, WALKER, {
     defTransform = mkRBPos([hdpx(-300), hdpx(-130)])
     priority = Z_ORDER.STICK
-    isVisible = @(options) optDoubleRepairBtn.has(options)
     isVisibleInBattle = isUnitAlive
-    options = [ optDoubleRepairBtn ]
   })
 
   abSmokeGrenade = withAnyActionBarButtonCtor([ EII_SMOKE_GRENADE, EII_SMOKE_SCREEN ], WALKER,

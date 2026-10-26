@@ -32,8 +32,6 @@ function tabData(tab, campaign, hasUnseenGoodsByCategory, curTabId) {
         @() {
           watch = [hasUnseenGoodsByCategory, curTabId]
           margin = hdpx(6)
-          hplace = ALIGN_RIGHT
-          vplace = ALIGN_TOP
           children = id == curTabId.get() || !hasUnseenGoodsByCategory.get()?[id] ? null
             : priorityUnseenMark
         }

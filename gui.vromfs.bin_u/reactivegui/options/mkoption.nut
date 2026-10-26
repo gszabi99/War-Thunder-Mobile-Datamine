@@ -71,24 +71,23 @@ let optionCtors = {
     }
     let sendChangeValue = @() onChangeValue?(value.get())
     let isVisibleW = visible instanceof Watched ? visible : Watched(true)
+    let sliderCtrlOverride = setValue == null && onChangeValue == null ? ctrlOverride
+      : ctrlOverride.__merge({
+          function onChange(v) {
+            sliderValueSound()
+            if (setValue != null)
+              setValue(v)
+            else
+              value.set(v)
+            resetTimeout(1, sendChangeValue)
+          }
+        })
     return @() !isVisibleW.get()
       ? { watch = isVisibleW }
       : {
           watch = isVisibleW
           padding = const [0, 0, hdpx(20)]
-          children = sliderWithButtons(value, loc(locId),
-            setValue == null && onChangeValue == null ? ctrlOverride
-              : ctrlOverride.__merge({
-                function onChange(v) {
-                  sliderValueSound()
-                  if (setValue != null)
-                    setValue(v)
-                  else
-                    value.set(v)
-                  resetTimeout(1, sendChangeValue)
-               }
-             }),
-            valToString).__update({minHeight = 0})
+          children = sliderWithButtons(value, loc(locId), sliderCtrlOverride, valToString).__update({minHeight = 0})
         }
   },
 
@@ -129,14 +128,15 @@ let optionCtors = {
     }
     let isVisibleW = visible instanceof Watched ? visible : Watched(true)
     let watch = isVisibleW
+    let button = textButtonCommon(utf8ToUpper(loc(locId)), onClick,
+      { childOvr = { size = const [hdpx(430), SIZE_TO_CONTENT], halign = ALIGN_CENTER } })
     return @() !isVisibleW.get()
       ? { watch }
       : {
           watch
           hplace = ALIGN_LEFT
           margin = const [hdpx(30), 0]
-          children = textButtonCommon(utf8ToUpper(loc(locId)), onClick,
-            { childOvr = { size = const [hdpx(430), SIZE_TO_CONTENT], halign = ALIGN_CENTER } })
+          children = button
         }
   }
 }

@@ -121,7 +121,7 @@ function progressCircle(timer) {
     startValue = 1.0 - startValue
 
   return {
-    size = [timerSize, timerSize]
+    size = timerSize
     rendObj = ROBJ_PROGRESS_CIRCULAR
     image = Picture($"ui/gameuiskin#circular_progress_1.svg:{timerSize}:{timerSize}")
     fgColor = 0xFFFFFFFF
@@ -140,7 +140,7 @@ let timerIcon = @(timerCfg, timer) function() {
   let { winkPeriod = 0 } = timer
   return res.__update({
     key = winkPeriod
-    size = [icoSize, icoSize]
+    size = icoSize
     rendObj = ROBJ_IMAGE
     image = Picture($"{icon}:{icoSize}:{icoSize}")
     color = timerCfg.color
@@ -172,7 +172,7 @@ function timerText(id, timer) {
 
 let timerVisual = @(timerCfg, timer) {
   key = timer
-  size = [timerSize, timerSize]
+  size = timerSize
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   children = [
@@ -184,18 +184,21 @@ let timerVisual = @(timerCfg, timer) {
 
 function timerPlace(timerCfg, idx, total) {
   let timer = Computed(@() activeTimers.get()?[timerCfg.id])
+  let transform = { translate = [lerp(-1.0, 1.0, -timerSize, timerSize, -0.5 * total + idx), 0] }
+  let transitions = [{ prop = AnimProp.translate, duration = 0.3, easing = OutQuad }]
+  let animations = [
+    { prop = AnimProp.opacity, from = 0, to = 1.0, duration = 0.3, easing = OutQuad, play = true }
+    { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.15, easing = OutQuad, playFadeOut = true }
+  ]
   return @() {
     watch = timer
-    size = [timerSize, timerSize]
+    size = timerSize
     key = timerCfg
     children = timer.get() == null ? null : timerVisual(timerCfg, timer.get())
 
-    transform = { translate = [lerp(-1.0, 1.0, -timerSize, timerSize, -0.5 * total + idx), 0] }
-    transitions = [{ prop = AnimProp.translate, duration = 0.3, easing = OutQuad }]
-    animations = [
-      { prop = AnimProp.opacity, from = 0, to = 1.0, duration = 0.3, easing = OutQuad, play = true }
-      { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.15, easing = OutQuad, playFadeOut = true }
-    ]
+    transform
+    transitions
+    animations
   }
 }
 

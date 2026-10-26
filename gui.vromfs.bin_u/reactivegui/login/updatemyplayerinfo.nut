@@ -3,7 +3,7 @@ from "auth_wt" import getNickOrig, get_user_info
 from "dagor.system" import get_arg_value_by_name
 from "matching.errors" import INVALID_USER_ID
 from "%appGlobals/clientState/initialState.nut" import shouldDisableMenu
-from "%appGlobals/loginState.nut" import isAuthorized, isAuthAndUpdated
+from "%appGlobals/loginState.nut" import isAuthorized, isMatchingConnected
 from "%appGlobals/profileStates.nut" import myInfo
 from "%appGlobals/user/nickTools.nut" import removePlatformPostfix
 from "guiScriptUtils" import get_cur_rank_info, get_player_user_id
@@ -14,7 +14,7 @@ isAuthorized.subscribe(@(v) myInfo.mutate(@(p) p.__update({
   operatorUserId = v ? (get_user_info()?.userId ?? INVALID_USER_ID) : INVALID_USER_ID
 })))
 
-isAuthAndUpdated.subscribe(function(v) {
+isMatchingConnected.subscribe(function(v) {
   let info = v ? get_cur_rank_info() : null 
   let realName = info?.name ?? ""
   let nickOrig = getNickOrig() 

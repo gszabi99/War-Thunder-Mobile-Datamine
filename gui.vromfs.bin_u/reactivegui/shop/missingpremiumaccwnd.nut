@@ -87,10 +87,12 @@ let mkBonusRows = function(rowsCfg, cfgWatch) {
         { ovr = { color = textColor }.__update(fontSmall) }))
   }}
 
+let premBonusRows = mkBonusRows(premiumRowsCfg, premiumBonusesCfg)
+
 let premDesc = @() {
   watch = [infoText, allow_subscriptions]
   margin = const [hdpx(20), 0, hdpx(50), 0]
-  children = allow_subscriptions.get() ? mkBonusRows(premiumRowsCfg, premiumBonusesCfg)
+  children = allow_subscriptions.get() ? premBonusRows
     : infoText.get() != null ? mkInfoText(infoText.get())
     : null
 }
@@ -113,23 +115,26 @@ let modalHeader = @() {
   children = modalWndHeader(loc(allow_subscriptions.get() ? "subscription/desc/inactive" : "premBuyWnd/header"))
 }
 
-let buttons = @(toBattle) @() {
-  watch = allow_subscriptions
-  size = FLEX_H
-  flow = FLOW_HORIZONTAL
-  gap = { size = FLEX }
-  children = [
-    textButtonPurchase(
-      utf8ToUpper(allow_subscriptions.get() ? loc("subscription/viewSubsPlans") : loc("premBuyWnd/activeBtn")),
-      openSubsWnd,
-      { hotkeys = ["^J:Y"] })
-    textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
+function buttons(toBattle) {
+  let battleBtn = textButtonBattle(utf8ToUpper(loc("mainmenu/toBattle/short")),
       function() {
         close()
         toBattle()
       },
       { hotkeys = ["^J:X"] })
-  ]
+  return @() {
+    watch = allow_subscriptions
+    size = FLEX_H
+    flow = FLOW_HORIZONTAL
+    gap = const { size = FLEX }
+    children = [
+      textButtonPurchase(
+        utf8ToUpper(allow_subscriptions.get() ? loc("subscription/viewSubsPlans") : loc("premBuyWnd/activeBtn")),
+        openSubsWnd,
+        { hotkeys = ["^J:Y"] })
+      battleBtn
+    ]
+  }
 }
 
 let window = @(toBattle) {

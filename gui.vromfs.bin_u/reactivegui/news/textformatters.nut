@@ -299,6 +299,17 @@ let image = @(obj, _, style = {}) {
 function spoiler(obj, formatTextFunc, style) {
   let isExpanded = Watched(false)
   let isHover = Watched(false)
+  let buttonChildren = [
+    @() {
+      watch = isExpanded
+      rendObj = ROBJ_TEXTAREA
+      size = FLEX_H
+      behavior = Behaviors.TextArea
+      text = obj.summary
+      color = isExpanded.get() ? activeTextColor : commonTextColor
+    }.__update(style?.font ?? fontSmall)
+    expandArrow(isExpanded, defaultExpandAnimationDuration)
+  ]
 
   let button = @() {
     watch = [isExpanded, isHover]
@@ -315,17 +326,7 @@ function spoiler(obj, formatTextFunc, style) {
     behavior = Behaviors.Button
     onClick = @() isExpanded.set(!isExpanded.get())
     onHover = @(sf) isHover.set(sf)
-    children = [
-      @() {
-        watch = isExpanded
-        rendObj = ROBJ_TEXTAREA
-        size = FLEX_H
-        behavior = Behaviors.TextArea
-        text = obj.summary
-        color = isExpanded.get() ? activeTextColor : commonTextColor
-      }.__update(style?.font ?? fontSmall)
-      expandArrow(isExpanded, defaultExpandAnimationDuration)
-    ]
+    children = buttonChildren
   }
 
   let mkContent = @(isVisible) {
@@ -355,7 +356,7 @@ function spoiler(obj, formatTextFunc, style) {
     children = [
       button
       {
-        size = isExpanded.get() ? FLEX_H : [FLEX, 0]
+        size = isExpanded.get() ? FLEX_H : const [FLEX, 0]
         children = mkContent(isExpanded.get())
       }
     ]
@@ -379,7 +380,7 @@ function tabs(obj, formatTextFunc, style) {
           : currentTab.get()?.header == tab?.header && isHovered ? btnHovActive
           : currentTab.get()?.header != tab?.header && isHovered ? btnHovDef : btnDef
         behavior = Behaviors.Button
-        margin = obj.v?[obj.v.len() - 1] != tab ? [0, hdpx(10), 0, 0] : 0
+        margin = obj.v?[obj.v.len() - 1] != tab ? const [0, hdpx(10), 0, 0] : 0
         onElemState = @(x) stateFlags.set(x)
         onClick = @() currentTab.set(tab)
         children = {
@@ -455,7 +456,7 @@ let formatters = {
   tabs
 }
 
-let filterFormat = @(o) o?.platform != null
+let filterFormat = @[pure, nodiscard](o) o?.platform != null
   && o.platform.findvalue(@(p) aliases?[p] ?? (p == platformId)) == null
 
 return {

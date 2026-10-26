@@ -6,7 +6,7 @@ from "eventbus" import eventbus_subscribe
 from "nestdb" import ndbWrite
 from "%sqstd/datablock.nut" import eachBlock
 from "%sqstd/underscore.nut" import isEqual
-from "%appGlobals/loginState.nut" import isGameUpdatedOnLogin, isReadyToFullLoad
+from "%appGlobals/loginState.nut" import isAuthorized, isReadyToFullLoad
 from "%appGlobals/updater/addonsState.nut" import addonsSizes, isAddonsSizesActual, unitSizes, isUnitSizesActual,
   yupAddons, allAddons, UNIT_SIZES_NDB, UNIT_SIZES_ACTUAL_NDB, UNIT_SIZES_EVENT_ID
 
@@ -146,7 +146,7 @@ needRequestUnitSizes.subscribe(function(v) {
 
 isUnitSizesActual.subscribe(@(v) ndbWrite(UNIT_SIZES_ACTUAL_NDB, v))
 
-isGameUpdatedOnLogin.subscribe(function(v) {
+isAuthorized.subscribe(function(v) {
   if (!v)
     return
   isAddonsSizesActual.set(false)

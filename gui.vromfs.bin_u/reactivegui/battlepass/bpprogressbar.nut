@@ -23,27 +23,30 @@ let bpBorderProgressIcon = {
   ]
 }
 
-let bpProgressIcon = @(progress, loopMultiply, curStage) @() {
-  watch = curStage
-  children = [
-    {
-      size = progressIconSize
-      rendObj = ROBJ_IMAGE
-      image = Picture($"ui/gameuiskin#bp_progress_icon.svg:{progressIconSize[0]}:{progressIconSize[1]}:P")
-      color = curStage.get() == progress ? 0xFFFFFFFF
-        : curStage.get() > progress ? 0xFF36C574
-        : 0xFF000000
-      halign = ALIGN_CENTER
-      children = {
-        rendObj = ROBJ_TEXT
-        text = loopMultiply > 0 ? loc("icon/infinity") : progress
-        color = curStage.get() >= progress
-          ? 0xFF000000
-          : 0xFFFFFFFF
-      }.__update(fontSmall)
-    }
-    curStage.get() < progress ? bpBorderProgressIcon : null
-  ]
+function bpProgressIcon(progress, loopMultiply, curStage) {
+  let progressIconImage = Picture($"ui/gameuiskin#bp_progress_icon.svg:{progressIconSize[0]}:{progressIconSize[1]}:P")
+  return @() {
+    watch = curStage
+    children = [
+      {
+        size = progressIconSize
+        rendObj = ROBJ_IMAGE
+        image = progressIconImage
+        color = curStage.get() == progress ? 0xFFFFFFFF
+          : curStage.get() > progress ? 0xFF36C574
+          : 0xFF000000
+        halign = ALIGN_CENTER
+        children = {
+          rendObj = ROBJ_TEXT
+          text = loopMultiply > 0 ? loc("icon/infinity") : progress
+          color = curStage.get() >= progress
+            ? 0xFF000000
+            : 0xFFFFFFFF
+        }.__update(fontSmall)
+      }
+      curStage.get() < progress ? bpBorderProgressIcon : null
+    ]
+  }
 }
 
 let emptyStage = {
@@ -90,12 +93,13 @@ function bpLineBetweenLevelIcons(stage, curStage, pointsCurStage, pointsPerStage
   let curSlotWidth = getRewardPlateSize(stage?.viewInfo.slots ?? 1, bpCardStyle)[0]
   let nextSlotWidth = getRewardPlateSize(stage.nextSlots, bpCardStyle)[0]
   let widthLine = (curSlotWidth + nextSlotWidth) / 2 + 2 * bpCardPadding[1] - progressIconSize[0] + bpCardMargin
+  let curProgressBar = bpCurProgressbar(pointsCurStage, pointsPerStage, {size = const [FLEX, hdpx(15)]})
   return @() {
     watch = curStage
     size = [widthLine, hdpx(15)]
     pos = const [0, hdpx(16)]
     children = stage?.isVip ? null
-      : stage.progress == curStage.get() ? bpCurProgressbar(pointsCurStage, pointsPerStage, {size = const [FLEX, hdpx(15)]})
+      : stage.progress == curStage.get() ? curProgressBar
       : stage.progress < curStage.get() ? bpProgressbarFull
       : bpProgressbarEmpty
   }

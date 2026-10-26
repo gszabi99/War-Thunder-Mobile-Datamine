@@ -1,6 +1,7 @@
-from "%globalScripts/logs.nut" import *
 import "%globalScripts/ecs.nut" as ecs
-let { register_command } = require("console")
+from "console" import register_command
+from "%globalScripts/logs.nut" import *
+
 let { EventDedicLogerr, mkCmdEnableDedicatedLogger } = require("dedicLogerrSqEvents.nut")
 
 let subscriptions = []
@@ -26,8 +27,8 @@ ecs.register_es("dedic_logerr_listener_es",
 register_command(@() onLogerr("Some test dedicated logerr happen.\nIt even multiline logerr if you really want to see many lines\nAnd even more lines of the logerr."),
   "debug.dedicLogerrView")
 
-return {
+return freeze({
   enableDedicLogerr
   subscribeDedicLogerr
   unsubscribeDedicLogerr
-}
+})

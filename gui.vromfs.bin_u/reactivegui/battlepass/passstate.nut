@@ -5,7 +5,7 @@ from "eventbus" import eventbus_send
 from "%sqstd/datablock.nut" import isDataBlock, blk2SquirrelObjNoArrays
 from "%appGlobals/loginState.nut" import isSettingsAvailable
 from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
-from "%rGui/battlePass/battlePassState.nut" import mkBpStagesList, isBpVipActive, isBpCommonActive,
+from "%rGui/battlePass/battlePassObsoleteState.nut" import mkBpStagesList, isBpVipActive, isBpCommonActive,
   hasBpRewardsToReceive, battlePassGoods, lastStageBpProgress, bpProgressUnlock
 from "%rGui/battlePass/eventPassState.nut" import mkEpStagesList, isEpVipActive, isEpCommonActive,
   mkHasEpRewardsToReceive, mkEventPassGoods, lastStageEpProgress, curEventId, getEventPassName, EVENT_PASS,
@@ -23,7 +23,6 @@ const OPERATION_PASS = "operation_pass"
 let seenPasses = mkWatched(persist, SEEN_PASSES, {})
 let playerSelectedScene = mkWatched(persist, "playerSelectedScene", null)
 let passOpenCounter = mkWatched(persist, "passOpenCounter", 0)
-let isPassSceneAttached = mkWatched(persist, "isPassSceneAttached", false)
 
 let tabsState = {
   [BATTLE_PASS] = {
@@ -111,7 +110,7 @@ function markPassesSeen(idsExt) {
   eventbus_send("saveProfile", {})
 }
 
-function isPassGoodsUnseen(passes, sPasses) {
+function [pure, nodiscard] isPassGoodsUnseen(passes, sPasses) {
   foreach (p in passes)
     if (p?.id != null && p.id not in sPasses)
       return true
@@ -157,7 +156,6 @@ return {
   OPERATION_PASS
 
   passOpenCounter
-  isPassSceneAttached
   openPassScene
   closePassScene
 

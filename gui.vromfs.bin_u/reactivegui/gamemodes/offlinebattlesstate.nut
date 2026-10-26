@@ -11,7 +11,7 @@ from "%appGlobals/pServer/profile.nut" import campUnitsCfg
 from "%appGlobals/permissions.nut" import can_debug_configs, can_debug_missions
 from "%appGlobals/unitTags.nut" import getUnitTagsCfg
 from "%rGui/gameModes/startOfflineMode.nut" import startLocalMPBattleWithoutGamemode
-from "%rGui/globals/missionUtils.nut" import getMissionLocName
+from "%rGui/globals/missionUtils.nut" import getMissionLocationName
 from "%rGui/unit/unitNameSearch.nut" import isUnitNameMatchSearchStr
 
 
@@ -82,9 +82,9 @@ function refreshOfflineMissionsList() {
       let campaign = campaignByChapter?[misChapter] ?? ""
       let globalCampaign = getCampaignPresentation(curCampaign.get()).campaign
       if (misChapter.startswith("debug_") && (campaignByChapter?[misChapter.split("_").slice(-1)[0]]) == globalCampaign)
-        acc.debugMissions[mission.getStr("name", "")] <- getMissionLocName(mission, "locName")
+        acc.debugMissions[mission.getStr("name", "")] <- getMissionLocationName(mission)
       else if (campaign == globalCampaign)
-        acc.missions[mission.getStr("name", "")] <- getMissionLocName(mission, "locName")
+        acc.missions[mission.getStr("name", "")] <- getMissionLocationName(mission)
     }
     return acc
   }, { missions = {}, debugMissions = {} })
@@ -104,7 +104,7 @@ isOfflineBattlesActive.subscribe(function(v) {
     resetSavedParams()
 })
 
-let getOfflineBattleGameMode = @(campaign, allGameModesV)
+let getOfflineBattleGameMode = @[pure, nodiscard](campaign, allGameModesV)
   allGameModesV.findvalue(@(m) m?.displayType == "random_battle" && m?.campaign == campaign)
 
 function runOfflineBattle(missionName = null, unitName = null) {

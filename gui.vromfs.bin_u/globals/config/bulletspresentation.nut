@@ -116,16 +116,16 @@ let bulletsLocIdByCaliber = [
   "turret_apt", "turret_he", "turret_het", "universal", "heit"
 ]
 
-let getBulletImage = @(imageFromUnitTags, bullets) imageFromUnitTags != null ? $"ui/gameuiskin#{imageFromUnitTags}.avif"
+let getBulletImage = @[pure, nodiscard](imageFromUnitTags, bullets) imageFromUnitTags != null ? $"ui/gameuiskin#{imageFromUnitTags}.avif"
   : bullets.len() > 1 ? "ui/gameuiskin#shell_bullet_belt_tank.avif"
   : bulletsImages?[bullets?[0]] ? $"ui/gameuiskin#{bulletsImages[bullets[0]]}.avif"
   : "ui/unitskin#image_in_progress.avif"
 
-let getBulletTypeIcon = @(iconFromUnitTags, bSet) iconFromUnitTags != null ? $"ui/gameuiskin#{iconFromUnitTags}.svg"
+let getBulletTypeIcon = @[pure, nodiscard](iconFromUnitTags, bSet) iconFromUnitTags != null ? $"ui/gameuiskin#{iconFromUnitTags}.svg"
   : (bSet?.isBulletBelt ?? false) ? "ui/gameuiskin#hud_ammo_bullet_ap.svg"
   : "ui/gameuiskin#hud_ammo_ap1_he0.svg"
 
-function getLocIdPrefixByCaliber(name) {
+function [pure, nodiscard] getLocIdPrefixByCaliber(name) {
   foreach(id in bulletsLocIdByCaliber)
     if (name.endswith(id))
       return id

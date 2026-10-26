@@ -358,11 +358,13 @@ let inspectorPanel = @() {
 
 
 function highlightRect() {
-  let res = { watch = highlight }
+  let watch = highlight
   let hv = highlight.get()
   if (hv == null)
-    return res
-  return res.__update({
+    return { watch }
+
+  return {
+    watch
     rendObj = ROBJ_SOLID
     color = Color(50, 50, 0, 50)
     pos = [hv[0].x, hv[0].y]
@@ -373,7 +375,7 @@ function highlightRect() {
       color = Color(200, 0, 0, 180)
       size = [hv[0].w, hv[0].h]
     }
-  })
+  }
 }
 
 function animHighlightRect() {

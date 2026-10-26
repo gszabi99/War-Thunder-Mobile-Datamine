@@ -8,11 +8,11 @@ const MOVE_UP = 0.4
 const FULL = MOVE_DOWN + STAY_DOWN + MOVE_UP
 const SHOW = FULL - APPEAR
 
-let downOffset = [0, hdpx(60)]
-let topScale = [0.5, 0.5]
-let bottomScale = [1.0, 1.0]
+const downOffset = [0, hdpx(60)]
+const topScale = [0.5, 0.5]
+const bottomScale = [1.0, 1.0]
 
-let mkBalanceDiffAnims = @(onFinish) [
+let mkBalanceDiffAnims = @[pure, nodiscard](onFinish) [
   
   { prop = AnimProp.opacity, from = 0.2, to = 1, duration = APPEAR,
     play = true, easing = InOutCubic }
@@ -40,7 +40,7 @@ let mkBalanceDiffAnims = @(onFinish) [
     duration = 1000, delay = FULL }
 ]
 
-let mkBalanceHiglightAnims = @(trigger)
+let mkBalanceHiglightAnims = @[pure, nodiscard](trigger)
   [{ prop = AnimProp.scale, from = [1.0, 1.0], to = [1.2, 1.2], duration = 0.3, easing = CosineFull,
     trigger }]
 

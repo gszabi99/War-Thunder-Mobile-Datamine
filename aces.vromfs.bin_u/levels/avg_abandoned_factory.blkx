@@ -121,7 +121,8 @@
   },
   "clustered_lights": {
     "enabled": false,
-    "maxClusteredDist": 3000.0
+    "maxClusteredDist": 3000.0,
+    "waterReflectionLights": true
   },
   "stars": {
     "latitude": 52.0,

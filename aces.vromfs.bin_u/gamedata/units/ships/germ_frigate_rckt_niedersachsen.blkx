@@ -833,7 +833,6 @@
         "weaponType": "rockets",
         "emitter": "bone_rocket_22",
         "flash": "bone_rocket_22",
-        "ammoDpGenFmt": "rckt_head_%02d_dm",
         "emitterGenRange": [
           22,
           37
@@ -1347,7 +1346,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_22",
               "flash": "bone_rocket_22",
-              "ammoDpGenFmt": "rckt_head_%02d_dm",
               "emitterGenRange": [
                 22,
                 37
@@ -1845,7 +1843,6 @@
               "weaponType": "rockets",
               "emitter": "bone_rocket_22",
               "flash": "bone_rocket_22",
-              "ammoDpGenFmt": "rckt_head_%02d_dm",
               "emitterGenRange": [
                 22,
                 37

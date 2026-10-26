@@ -198,30 +198,35 @@ function movementBlock(scale) {
   let leftArrow = mkMoveLeftBtn(mkSteerParams($"{steeringAxis}_rangeMax", steeringAxis, scale))
   let rightArrow = mkMoveRightBtn(mkSteerParams($"{steeringAxis}_rangeMin", steeringAxis, scale))
   let verSize = scaleArr(arrowsVerSize, scale)
+  let vertGap = shHud(2)
+  let stopBtn = mkStopBtn(mkStopParams(verSize))
+  let forwardBtn = forwardArrow(verSize)
+  let backwardBtn = backwardArrow(verSize)
+  let rightColumn = {
+    size = FLEX_V
+    children = rightArrow
+  }
+  let arrows = [
+    leftArrow
+    {
+      flow = FLOW_VERTICAL
+      halign = ALIGN_CENTER
+      gap = vertGap
+      children = [
+        forwardBtn
+        @() {
+          watch = isStopButtonVisible
+          children = isStopButtonVisible.get() ? stopBtn : backwardBtn
+        }
+      ]
+    }
+    rightColumn
+  ]
 
   return @() {
-    watch = [isUnitDelayed]
+    watch = isUnitDelayed
     flow = FLOW_HORIZONTAL
-    children = isUnitDelayed.get() ? null
-      : [
-          leftArrow
-          {
-            flow = FLOW_VERTICAL
-            halign = ALIGN_CENTER
-            gap = shHud(2)
-            children = [
-              forwardArrow(verSize)
-              @() {
-                watch = isStopButtonVisible
-                children = isStopButtonVisible.get() ? mkStopBtn(mkStopParams(verSize)) : backwardArrow(verSize)
-              }
-            ]
-          }
-          {
-            size = FLEX_V
-            children = rightArrow
-          }
-        ]
+    children = isUnitDelayed.get() ? null : arrows
     transform = {}
     animations = dfAnimBottomLeft
   }

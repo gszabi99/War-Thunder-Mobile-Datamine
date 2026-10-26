@@ -43,6 +43,10 @@ let customLootboxImages = {
   april_event_2026_ships      = "ui/gameuiskin/event_special_april_event_2026.avif"
   april_event_2026_air        = "ui/gameuiskin/event_special_april_event_2026.avif"
 
+  halloween_event_2026_tanks = "ui/gameuiskin/halloween_2026_lootbox.avif"
+  halloween_event_2026_ships = "ui/gameuiskin/halloween_2026_lootbox.avif"
+  halloween_event_2026_air = "ui/gameuiskin/halloween_2026_lootbox.avif"
+
   anniversary_event_2026_tanks      = "ui/gameuiskin/anniversary_2026_lootbox.avif"
   anniversary_event_2026_ships      = "ui/gameuiskin/anniversary_2026_lootbox.avif"
   anniversary_event_2026_air        = "ui/gameuiskin/anniversary_2026_lootbox.avif"
@@ -137,8 +141,11 @@ let customLootboxImages = {
   past_events_box_ships_seasons_1_to_34 = "ui/gameuiskin/past_events_box_seasons_1_to_34.avif"
   past_events_box_air_seasons_1_to_34 = "ui/gameuiskin/past_events_box_seasons_1_to_34.avif"
   past_events_box_tanks_seasons_1_to_35 = "ui/gameuiskin/past_events_box_seasons_1_to_35.avif"
+  past_events_box_tanks_seasons_1_to_36 = "ui/gameuiskin/past_events_box_seasons_1_to_36.avif"
   past_events_box_ships_seasons_1_to_35 = "ui/gameuiskin/past_events_box_seasons_1_to_35.avif"
+  past_events_box_ships_seasons_1_to_36 = "ui/gameuiskin/past_events_box_seasons_1_to_36.avif"
   past_events_box_air_seasons_1_to_35 = "ui/gameuiskin/past_events_box_seasons_1_to_35.avif"
+  past_events_box_air_seasons_1_to_36 = "ui/gameuiskin/past_events_box_seasons_1_to_36.avif"
 
   main_s38_piece                             = "ui/images/collections/main_s38_piece.avif"
   main_s38_piece_uniq                        = "ui/images/collections/main_s38_piece_uniq.avif"
@@ -160,6 +167,10 @@ let customRouletteImages = {
   april_event_2026_tanks = "ui/images/event_bg_event_april_2026.avif"
   april_event_2026_ships = "ui/images/event_bg_event_april_2026.avif"
   april_event_2026_air   = "ui/images/event_bg_event_april_2026.avif"
+
+  halloween_event_2026_tanks = "ui/images/event_bg_halloween_2026.avif"
+  halloween_event_2026_ships = "ui/images/event_bg_halloween_2026.avif"
+  halloween_event_2026_air = "ui/images/event_bg_halloween_2026.avif"
 
   anniversary_event_2026_tanks = "ui/bkg/login_bkg_anniversary_2026.avif"
   anniversary_event_2026_ships = "ui/bkg/login_bkg_anniversary_2026.avif"
@@ -219,8 +230,11 @@ let lootboxPreviewBg = {
   past_events_box_ships_seasons_1_to_34             = { bg = "ui/images/event_bg_season_37.avif" }
   past_events_box_air_seasons_1_to_34               = { bg = "ui/images/event_bg_season_37.avif" }
   past_events_box_tanks_seasons_1_to_35             = { bg = "ui/images/event_bg_season_38.avif" }
+  past_events_box_tanks_seasons_1_to_36             = { bg = "ui/images/event_bg_season_39.avif" }
   past_events_box_ships_seasons_1_to_35             = { bg = "ui/images/event_bg_season_38.avif" }
+  past_events_box_ships_seasons_1_to_36             = { bg = "ui/images/event_bg_season_39.avif" }
   past_events_box_air_seasons_1_to_35               = { bg = "ui/images/event_bg_season_38.avif" }
+  past_events_box_air_seasons_1_to_36               = { bg = "ui/images/event_bg_season_39.avif" }
 
   event_special_china_tanks_spending_event         = { bg = "ui/images/event_bg_lunar.avif" }
   japan_tanks_spending_event_box                   = { bg = "ui/images/event_bg_japan_tanks_early_access.avif", bgColor = 0xFF999999 }
@@ -232,6 +246,10 @@ let lootboxPreviewBg = {
   april_event_2026_tanks = { bg = "ui/images/event_bg_event_april_2026.avif" }
   april_event_2026_ships = { bg = "ui/images/event_bg_event_april_2026.avif" }
   april_event_2026_air   = { bg = "ui/images/event_bg_event_april_2026.avif" }
+
+  halloween_event_2026_tanks = { bg = "ui/images/event_bg_halloween_2026.avif", bgColor = 0xFF999999 }
+  halloween_event_2026_ships = { bg = "ui/images/event_bg_halloween_2026.avif", bgColor = 0xFF999999 }
+  halloween_event_2026_air = { bg = "ui/images/event_bg_halloween_2026.avif", bgColor = 0xFF999999 }
 
   anniversary_event_2026_tanks = { bg = "ui/bkg/login_bkg_anniversary_2026.avif", bgColor = 0xFF999999 }
   anniversary_event_2026_ships = { bg = "ui/bkg/login_bkg_anniversary_2026.avif", bgColor = 0xFF999999 }
@@ -327,7 +345,7 @@ function getLootboxImage(id, season) {
   return customLootboxImages?[finalId] ?? getDefaultImgFilename(finalId)
 }
 
-let getRouletteImage = @(id) customRouletteImages?[id] ?? defaultBgImage
+let getRouletteImage = @[pure, nodiscard](id) customRouletteImages?[id] ?? defaultBgImage
 
 let mkTagLayers = @(image) [{
   image

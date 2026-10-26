@@ -2822,7 +2822,6 @@
       },
       "shot5": {
         "focus": true,
-        "showFx": true,
         "points": {
           "p1": [
             {

@@ -1,17 +1,17 @@
+import "regexp2" as regexp2
+import "DataBlock" as DataBlock
+from "%sqstd/math.nut" import round_by_value
+from "%sqstd/string.nut" import utf8Capitalize, utf8ToLower, toIntegerSafe
+from "%sqstd/datablock.nut" import blkOptFromPath
+from "%sqstd/path.nut" import fileName
+from "math" import min, max, abs, round, sin, PI
+from "string" import format
+from "blkGetters" import get_unittags_blk, get_game_params_blk
+from "dagor.localize" import loc, doesLocTextExist
 from "%globalScripts/logs.nut" import *
 from "dagor.math" import Point2, IPoint2
 from "%sqstd/underscore.nut" import isEqual, tablesCombine, unique
 from "types" import Float
-let { min, max, abs, round, sin, PI } = require("math")
-let { format } = require("string")
-let regexp2 = require("regexp2")
-let DataBlock = require("DataBlock")
-let { get_unittags_blk, get_game_params_blk } = require("blkGetters")
-let { loc, doesLocTextExist } = require("dagor.localize")
-let { round_by_value } = require("%sqstd/math.nut")
-let { utf8Capitalize, utf8ToLower, toIntegerSafe } = require("%sqstd/string.nut")
-let { blkOptFromPath } = require("%sqstd/datablock.nut")
-let { fileName } = require("%sqstd/path.nut")
 
 
 
@@ -527,7 +527,7 @@ function mkEngineDesc(_partType, params, commonData) {
 }
 
 function mkTransmissionDesc(_partType, _params, commonData) {
-  let { unitBlk, getProp_maxSpeed, toStr_speed, getShopDevMode } = commonData
+  let { unitBlk, getProp_maxSpeed, toStr_speed, getXrayDevMode } = commonData
   let desc = []
   let info = unitBlk?.VehiclePhys.mechanics
   if (info != null) {
@@ -538,7 +538,7 @@ function mkTransmissionDesc(_partType, _params, commonData) {
 
     let maxSpeed = getProp_maxSpeed(commonData)
     if (maxSpeed != 0 && info?.gearRatios) {
-      let devMode = !!getShopDevMode()
+      let devMode = !!getXrayDevMode()
       let gearRatios = info.gearRatios % "ratio"
       gearRatios.sort(@(a, b) abs(b) <=> abs(a))
 
@@ -710,8 +710,8 @@ function getWeaponStatus(weaponPartName, weaponInfoBlk, commonData) {
 
 function getLowBatteryGuidanceSpeedDesc(weaponInfoBlk, axisParam, commonData) {
   let desc = []
-  let { simUnitType, getShopDevMode } = commonData
-  if (!getShopDevMode())
+  let { simUnitType, getXrayDevMode } = commonData
+  if (!getXrayDevMode())
     return desc
 
   if (simUnitType == S_TANK) {
@@ -728,7 +728,7 @@ function getLowBatteryGuidanceSpeedDesc(weaponInfoBlk, axisParam, commonData) {
 }
 
 function getWeaponDriveTurretTexts(commonData, weaponPartName, weaponInfoBlk, needAxisX, needAxisY) {
-  let { simUnitType, getUnitWeaponsList, getShopDevMode
+  let { simUnitType, getUnitWeaponsList, getXrayDevMode
     getProp_tankMainTurretSpeedYaw, getProp_tankMainTurretSpeedYawTop,
     getProp_tankMainTurretSpeedPitch, getProp_tankMainTurretSpeedPitchTop,
     getMul_shipTurretMainSpeedYaw, getMul_shipTurretAuxSpeedYaw, getMul_shipTurretAaSpeedYaw,
@@ -737,7 +737,7 @@ function getWeaponDriveTurretTexts(commonData, weaponPartName, weaponInfoBlk, ne
   let desc = []
   let needSingleAxis = !needAxisX || !needAxisY
   let status = getWeaponStatus(weaponPartName, weaponInfoBlk, commonData)
-  let showTurretInfoForMachinegun = (status.isMachinegun || status.isCoaxial) && !!getShopDevMode()
+  let showTurretInfoForMachinegun = (status.isMachinegun || status.isCoaxial) && !!getXrayDevMode()
   if (!needSingleAxis && simUnitType == S_TANK && !status.isPrimary && !status.isSecondary
     && !showTurretInfoForMachinegun)
       return desc
@@ -990,7 +990,7 @@ let haveFirstStageShells = @(unitBlk, trigger)
 function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, commonData) {
   let { unitBlk, crewId, simUnitType, getUnitWeaponsList, getProp_tankReloadTime,
     getProp_tankReloadTimeTop, getProp_shipReloadTimeMainDef, getProp_shipReloadTimeAuxDef,
-    getProp_shipReloadTimeAaDef, getShopDevMode
+    getProp_shipReloadTimeAaDef, getXrayDevMode
   } = commonData
 
   local shotFreqRPM = 0.0 
@@ -1034,7 +1034,7 @@ function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, c
           topValue = getProp_tankReloadTimeTop(commonData)
       }
     }
-    else if (status.isMachinegun && !!getShopDevMode())
+    else if (status.isMachinegun && !!getXrayDevMode())
       reloadTimeS = getGunReloadTimeMax(weaponInfoBlk) ?? 0
   }
   else if (simUnitType == S_BOAT || simUnitType == S_SHIP) {
@@ -1148,10 +1148,10 @@ let toStr_secTrimmed = @(v) (v % 1) ? format("%.1f", v) : format("%d", v)
 
 
 function getWeaponAmmoReserveReplenishDesc(weaponInfoBlk, commonData) {
-  let { unitBlk, simUnitType, getProp_tankReloadTime, getProp_tankReloadTimeTop, getShopDevMode }
+  let { unitBlk, simUnitType, getProp_tankReloadTime, getProp_tankReloadTimeTop, getXrayDevMode }
     = commonData
   let desc = []
-  if (!getShopDevMode())
+  if (!getXrayDevMode())
     return desc
 
   if (simUnitType == S_TANK) {
@@ -1187,6 +1187,45 @@ function getWeaponAmmoReserveReplenishDesc(weaponInfoBlk, commonData) {
     }
   }
 
+  return desc
+}
+
+let xraySimUnitTypesWithCompartments = [S_TANK, S_SHIP, S_BOAT]
+
+let isPressureEffect = @(effectBlk) effectBlk?.pressure || effectBlk?.pressureOpen
+
+function findCompartmentLabels(unitBlk, partName) {
+  let compLabels = []
+
+  let metaPartsBlk = unitBlk?.MetaParts
+  for (local i = 0; i < (metaPartsBlk?.blockCount() ?? 0); i++) {
+    let mpBlk = metaPartsBlk.getBlock(i)
+    let pressureEffectBlk = (mpBlk % "effect").findvalue(isPressureEffect)
+    if (pressureEffectBlk == null)
+      continue
+    if (!(mpBlk % "part").contains(partName))
+      continue
+
+    let blockName = mpBlk.getBlockName()
+    let pressureOpen = pressureEffectBlk?.pressureOpen
+    compLabels.append(pressureOpen != null ? $"{blockName} (pressureOpen={pressureOpen})" : blockName)
+  }
+
+  return compLabels
+}
+
+
+function getPartPressureCompartmentDesc(partName, commonData) {
+  let { unitBlk, simUnitType, getXrayDevMode } = commonData
+  let desc = []
+  if (!getXrayDevMode() || !xraySimUnitTypesWithCompartments.contains(simUnitType))
+    return desc
+
+  let names = findCompartmentLabels(unitBlk, partName)
+  desc.append({
+    value = "".concat("Compartments: ", names.len() ? "\n".join(names) : "N/A")
+    isDevParam = true
+  })
   return desc
 }
 
@@ -1650,12 +1689,31 @@ function mkCoalBunkerDesc(_partType, _params, commonData) {
 
 
 
+
+
+function isWeaponPresetModsAvailable(unitName, slotPresetBlk, isModAvailableOrFree) {
+  let reqMods = slotPresetBlk % "reqModification"
+  if (reqMods.len() == 0)
+    foreach (weaponBlk in slotPresetBlk % "Weapon")
+      reqMods.extend(weaponBlk % "reqModification")
+
+  foreach (req in reqMods)
+    if (!isModAvailableOrFree(unitName, req))
+      return false
+  return true
+}
+
+
+let isHumanPlayerSensor = @(sensorBlk) sensorBlk?.human ?? true
+
 function getUnitSensorsList(commonData) {
   let { unitDataCache } = commonData
   if ("sensorBlkList" not in unitDataCache) {
     let { unitBlk, unitName, findAnyModEffectValueBlk, isModAvailableOrFree,
-      isDebugBatchExportProcess
+      isDebugBatchExportProcess, getInstalledSlotPresets = null
     } = commonData
+    let installedSlotPresets = isDebugBatchExportProcess || getInstalledSlotPresets == null ? null
+      : getInstalledSlotPresets(commonData)
     let sensorBlkList = []
     if (unitBlk != null) {
       local sensorsBlk = findAnyModEffectValueBlk(commonData, "sensors")
@@ -1673,13 +1731,16 @@ function getUnitSensorsList(commonData) {
         foreach (slotBlk in unitBlk.WeaponSlots % "WeaponSlot")
           foreach (slotPresetBlk in (slotBlk % "WeaponPreset"))
             if (slotPresetBlk?.sensors != null) {
-              if (isDebugBatchExportProcess || slotPresetBlk?.reqModification == null
-                  || isModAvailableOrFree(unitName, slotPresetBlk.reqModification))
-                for (local b = 0; b < slotPresetBlk.sensors.blockCount(); b++)
-                  appendEqualOnce(sensorBlkList, slotPresetBlk.sensors.getBlock(b))
+              if (installedSlotPresets != null && slotBlk?.tier != null
+                  && !(installedSlotPresets?[slotBlk.index][slotPresetBlk.name] ?? false))
+                continue
+              if (isDebugBatchExportProcess ||
+                isWeaponPresetModsAvailable(unitName, slotPresetBlk, isModAvailableOrFree))
+                  for (local b = 0; b < slotPresetBlk.sensors.blockCount(); b++)
+                    appendEqualOnce(sensorBlkList, slotPresetBlk.sensors.getBlock(b))
             }
     }
-    unitDataCache.sensorBlkList <- sensorBlkList
+    unitDataCache.sensorBlkList <- sensorBlkList.filter(isHumanPlayerSensor)
   }
   return unitDataCache.sensorBlkList
 }
@@ -2754,7 +2815,7 @@ function mkSupportPlaneDesc(partType, _params, commonData) {
 
 
 
-return {
+return freeze({
   
   S_UNDEFINED
   S_AIRCRAFT
@@ -2812,6 +2873,8 @@ return {
   findBlockByNameWithParamValue
   findParamValue
   getUnitSensorsList
+  isHumanPlayerSensor
   mkRwrTexts
   mkMlwsTexts
-}
+  getPartPressureCompartmentDesc
+})

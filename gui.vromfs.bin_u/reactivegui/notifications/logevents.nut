@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "adjust" import logAdjustEvent
+from "mobile.facebook" import logEventFB
 from "app" import get_cur_circuit_name
 from "blkGetters" import get_common_local_settings_blk, get_local_custom_settings_blk
 from "console" import register_command
@@ -13,11 +14,11 @@ from "%sqstd/platform.nut" import is_ios, is_android
 from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
 from "%appGlobals/profileStates.nut" import myUserId
 from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
+from "tikTok" import logTikTokEvent
 
+let logT = log_with_prefix("[TELEMETRY] ")
 
 let { logEvent, setAppsFlyerCUID, setUserEmail = @(_) null } = require("appsFlyer")
-
-let { logEventFB = @(_) null } = require_optional("mobile.facebook") ?? (is_ios ? require("ios.account.facebook") : require("android.account.fb"))
 let { setBillingUUID = @(_) null } = is_ios ? require("ios.billing.appstore") : {}
 let { getLogin = @() "" } = require("auth_wt")
 let { sha256 = @(_) "" } =  require("hash")
@@ -88,10 +89,13 @@ let adjustEventsMap = {
 }
 
 
-function logAdjust(eventType, eventValue) {
+function logAdjust(eventType, eventValue, needLocalLog = true) {
   let eventId = adjustEventsMap?[eventType]
-  if (eventId)
-    logAdjustEvent(eventId, eventValue)
+  if (eventId == null)
+    return
+  if (needLocalLog)
+    logT($"Send Adjust event {eventType}")
+  logAdjustEvent(eventId, eventValue)
 }
 
 eventbus_subscribe("adjust.onGetAdjustAdId", function(p) {
@@ -105,11 +109,22 @@ eventbus_subscribe("adjust.onGetAdjustAdId", function(p) {
   })
 })
 
-function sendEvent(id) {
-  log($"[telemetry] send event {id}")
+let tikTokEvents = [ "first_login", "bplevel_23", "battleNum_01", "get_units_8" ]
+
+function logTikTok(id, jsonStrValues = "", needLocalLog = true) {
+  if (!tikTokEvents.contains(id))
+    return
+  if (needLocalLog)
+    logT($"Send TikTok event {id}")
+  logTikTokEvent(id, jsonStrValues)
+}
+
+function sendTelemetryEvent(id) {
+  logT($"Send common event {id}")
   logEvent($"af_{id}", "")
   logEventFB($"fb_{id}")
-  logAdjust(id, "")
+  logAdjust(id, "", false)
+  logTikTok(id, "", false)
   
   
   logFirebaseEvent(id)
@@ -126,10 +141,11 @@ myUserId.subscribe(function(v) {
     let blk = get_common_local_settings_blk()
     let wasLoginedBefore = blk?[FIRST_LOGIN_EVENT] ?? false
     if (!wasLoginedBefore) {
+      logT("Send first login events")
       let id_json = object_to_json_string({cuid = uid}, false)
       logEvent("af_first_login", id_json)
       logEventFB("fb_first_login")
-      logAdjust("first_login", id_json)
+      logTikTok("first_login", id_json, false)
       logFirebaseEventWithJson("first_login", id_json)
       blk[FIRST_LOGIN_EVENT] = true
       eventbus_send("saveProfile", {})
@@ -142,7 +158,7 @@ function sendTelemetrySavedEvent(eventId, saveId) {
   if (!blk?[saveId]) {
     blk[saveId] = true
     eventbus_send("saveProfile", {})
-    sendEvent(eventId)
+    sendTelemetryEvent(eventId)
   }
 }
 
@@ -155,8 +171,9 @@ subscribeResetProfile(resetStatsSentEvents)
 register_command(resetStatsSentEvents, "debug.reset_stats_sent_events")
 
 return {
-  sendTelemetryEvent = sendEvent
+  sendTelemetryEvent
   sendTelemetrySavedEvent
   logFirebaseEventWithJson
   logAdjust
+  logTikTok
 }

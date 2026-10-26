@@ -81,7 +81,7 @@ let legalWnd = bgShaded.__merge({
     flow = FLOW_VERTICAL
     size = const [ wndWidthDefault, wndHeight ]
     children = [
-      modalWndHeader(loc("terms_wnd/header"), { minWidth = SIZE_TO_CONTENT, padding = [ 0, wndPadding ] })
+      modalWndHeader(loc("terms_wnd/header"), { minWidth = SIZE_TO_CONTENT, padding = const [ 0, wndPadding ] })
       wndContent
     ]
   })

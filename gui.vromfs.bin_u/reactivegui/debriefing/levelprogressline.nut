@@ -137,7 +137,7 @@ let mkExpText = @(exp, color) {
       color
     }.__update(fontTiny)
     {
-      size = [expTextStarSize, expTextStarSize]
+      size = expTextStarSize
       rendObj = ROBJ_IMAGE
       image = Picture($"!ui/gameuiskin#experience_icon.svg:{expTextStarSize}:{expTextStarSize}")
       color
@@ -180,16 +180,16 @@ let mkLevelLineProgress = @(curLevelIdxWatch, isLevelupMomentWatch, levelUpsArra
             size = [receivedExpWidth, FLEX]
             rendObj = ROBJ_SOLID
             color = receivedExpProgressColor
-            transform = { pivot = [0, 0] }
+            transform = const { pivot = 0 }
             animations = [
               {
-                prop = AnimProp.scale, from = [0.0, 0.0],
-                to = [0.0, 0.0], duration = levelProgressDelay,
+                prop = AnimProp.scale, from = const [0.0, 0.0],
+                to = const [0.0, 0.0], duration = levelProgressDelay,
                 play = true
               }
               {
                 prop = AnimProp.scale, from = [curExpWidth.tofloat() / max(receivedExpWidth, 1), 1.0],
-                to = [1.0, 1.0], duration = levelProgressAnimTime, delay = levelProgressDelay,
+                to = const [1.0, 1.0], duration = levelProgressAnimTime, delay = levelProgressDelay,
                 easing = InOutQuart, play = true,
                 onStart = function() {
                   levelLineSound(levelProgressAnimTime)
@@ -279,7 +279,7 @@ function mkLevelUnlocksText(locId) {
     }.__update(fontSmall)
     const textWidthMax = levelUnlocksBarW - levelUnlocksBarH - hdpx(10)
     let textScale = getTextScaleToFitWidth(comp, textWidthMax)
-    comp.__update({ transform = { pivot = [0.5, 0.5], scale = [textScale, textScale] } })
+    comp.__update({ transform = { pivot = 0.5, scale = textScale } })
     levelUnlocksTexts[locId] <- comp
   }
   return levelUnlocksTexts[locId]
@@ -301,7 +301,7 @@ let mkLevelUnlocksBar = @(locId, lineColor, isLevelUp) {
       color = receivedExpProgressColor
 
       key = $"level_unlocks_bar_{lineColor}"
-      transform = { pivot = [0, 0] }
+      transform = { pivot = 0 }
       animations = [
         { prop = AnimProp.scale, from = [0, 1], to = [0, 1], duration = 0.5, play = true }
         { prop = AnimProp.scale, from = [0, 1], to = [1, 1], delay = 0.5, duration = 0.25, easing = Linear, play = true }
@@ -412,7 +412,7 @@ function mkLevelProgressLine(curLevelConfig, reward, title, desc, animStartTime,
         ]
         children = isLevelUp ? mkTextUnderLevelLine(utf8ToUpper(loc("debriefing/newLevel")), lineColor,
             {
-              transform = { pivot = [1.0, 1.0] }
+              transform = { pivot = 1.0 }
               animations = [
                 { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.3, 1.3], duration = rewardAnimTime,
                   delay = fullLevelDelayAnimTime, easing = CosineFull, play = true, onStart = @() playSound("unit_level_up") }
@@ -482,7 +482,7 @@ function mkResearchProgressLine(debrData, unitResearchInfo, title, desc, animSta
         ]
         children = isUnlocked ? mkTextUnderLevelLine(utf8ToUpper(loc("debriefing/newUnitResearched")), lineColor,
             {
-              transform = { pivot = [1.0, 1.0] }
+              transform = { pivot = 1.0 }
               animations = [
                 { prop = AnimProp.scale, from = [1.0, 1.0], to = [1.3, 1.3], duration = rewardAnimTime,
                   delay = fullLevelDelayAnimTime, easing = CosineFull, play = true, onStart = @() playSound("unit_level_up") }

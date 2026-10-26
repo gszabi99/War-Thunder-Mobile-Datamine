@@ -22,7 +22,7 @@ const xrayDollSize = hdpx(150)
 function xrayDoll(stateFlags, scale) {
   let size = round(xrayDollSize * scale)
   return {
-    size = [size, size]
+    size = size
     children = [
       damagePanelBacklight(stateFlags, [size, size])
       {
@@ -47,37 +47,41 @@ let abShortcutImageOvr = { vplace = ALIGN_CENTER, hplace = ALIGN_CENTER, pos = c
 let shortcutId = "ID_SHOW_HERO_MODULES"
 let stateFlags = Watched(0)
 let isActive = @(sf) (sf & S_ACTIVE) != 0
-let xrayModel = @(scale) @() {
-  watch = isInZoom
-  key = "aircraft_state_button"
-  behavior = TouchAreaOutButton
-  cameraControl = true
-  touchMarginPriority = TOUCH_BACKGROUND
-  function onElemState(sf) {
-    let prevSf = stateFlags.get()
-    stateFlags.set(sf)
-    let active = isActive(sf) && !isInZoom.get()
+function xrayModel(scale) {
+  let hotkeys = mkGamepadHotkey(shortcutId)
+  let shortcutImage = mkGamepadShortcutImage(shortcutId, abShortcutImageOvr, scale)
+  return @() {
+    watch = isInZoom
+    key = "aircraft_state_button"
+    behavior = TouchAreaOutButton
+    cameraControl = true
+    touchMarginPriority = TOUCH_BACKGROUND
+    function onElemState(sf) {
+      let prevSf = stateFlags.get()
+      stateFlags.set(sf)
+      let active = isActive(sf) && !isInZoom.get()
 
-    if (active != isActive(prevSf))
-      if (active)
-        useShortcutOn(shortcutId)
-      else
-        setShortcutOff(shortcutId)
+      if (active != isActive(prevSf))
+        if (active)
+          useShortcutOn(shortcutId)
+        else
+          setShortcutOff(shortcutId)
+    }
+    function onDetach() {
+      stateFlags.set(0)
+      setShortcutOff(shortcutId)
+    }
+    hotkeys
+    children = [
+      xrayDoll(isInZoom.get() ? null : stateFlags, scale)
+      shortcutImage
+    ]
   }
-  function onDetach() {
-    stateFlags.set(0)
-    setShortcutOff(shortcutId)
-  }
-  hotkeys = mkGamepadHotkey(shortcutId)
-  children = [
-    xrayDoll(isInZoom.get() ? null : stateFlags, scale)
-    mkGamepadShortcutImage(shortcutId, abShortcutImageOvr, scale)
-  ]
 }
 
 let mkIcon = @(iconCfg, size = iconSize) {
   rendObj = ROBJ_IMAGE
-  size = [size, size]
+  size = size
   image = Picture($"ui/gameuiskin#{iconCfg.icon}:{size}:{size}")
   color = iconCfg?.color
 }

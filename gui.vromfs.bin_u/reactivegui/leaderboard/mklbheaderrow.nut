@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/stdColors.nut" import hoverColor
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
 
 
@@ -12,13 +13,16 @@ function headerIconButton(icon, contentCtor, hasHint) {
 
   let stateFlags = Watched(0)
   let key = {}
+  let onElemState = withTooltip(stateFlags, key, contentCtor)
+  let onDetach = tooltipDetach(stateFlags)
+  let iconImage = icon == null ? null : Picture($"{icon}:{headerIconWidth}:{headerIconHeight}:P")
   return @() {
     key
     watch = stateFlags
     behavior = Behaviors.Button
     xmbNode = {}
-    onElemState = withTooltip(stateFlags, key, contentCtor)
-    onDetach = tooltipDetach(stateFlags)
+    onElemState
+    onDetach
 
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
@@ -27,7 +31,7 @@ function headerIconButton(icon, contentCtor, hasHint) {
         : {
             size = [headerIconWidth, headerIconHeight]
             rendObj = ROBJ_IMAGE
-            image = Picture($"{icon}:{headerIconWidth}:{headerIconHeight}:P")
+            image = iconImage
             color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
             keepAspect = true
           }
@@ -38,18 +42,18 @@ function headerIconButton(icon, contentCtor, hasHint) {
             lineWidth = hdpx(2)
             fillColor = 0
             color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
-            commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
+            commands = const [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
             children = {
               rendObj = ROBJ_TEXT
               text = "?"
               color = stateFlags.get() & S_HOVER ? hoverColor : 0xFFFFFFFF
-            }.__update(fontTinyAccented)
+              ...fontTinyAccented
+            }
           }
     ]
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
   }
 }
 

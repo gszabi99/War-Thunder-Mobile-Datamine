@@ -47,13 +47,13 @@ function scaleFontWithTransform(font, scale, pivot = [0, 0.5]) {
   if (scale == 1)
     return font
   if (scale < 1)
-    return font.__merge({ transform = { pivot, scale = [scale, scale] }})
+    return font.__merge({ transform = { pivot, scale }})
   let inc = getIncreaseInfo(font)
-  return inc == null ? font.__merge({ transform = { pivot, scale = [scale, scale] }})
+  return inc == null ? font.__merge({ transform = { pivot, scale }})
     : inc.font.__merge({ transform = { pivot, scale = array(2, scale / inc.scale) }})
 }
 
-let prettyScaleForSmallNumberCharVariants = @(font, scale)
+let prettyScaleForSmallNumberCharVariants = @[pure, nodiscard](font, scale)
   font.__merge({ fontSize = round(font.fontSize * scale).tointeger() })
 
 return {

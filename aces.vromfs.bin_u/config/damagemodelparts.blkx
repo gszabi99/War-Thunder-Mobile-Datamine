@@ -15,7 +15,8 @@
     "ignoreDeadWithSplash": false,
     "splashPenetrationToArmorThreshold": 0.33,
     "pressureDamageMult": 0.0,
-    "explosionTorpedoDamageMult": 0.0
+    "explosionTorpedoDamageMult": 0.0,
+    "harmlessDamageMult": 0.0
   },
   "default_v1": {
     "slopeMinCaliber": 29.0,
@@ -59,13 +60,16 @@
       "externalArmorForHitDecals": false
     },
     "composite_armor_hull_NN": {
-      "template": "composite_armor_hull_#30#"
+      "template": "composite_armor_hull_#32#"
     },
     "composite_armor_turret_NN": {
-      "template": "composite_armor_turret_#15#"
+      "template": "composite_armor_turret_#30#"
     },
     "ex_composite_armor_NN": {
       "template": "ex_composite_armor_#20#"
+    },
+    "ex_skirt_composite_armor_NN": {
+      "template": "ex_skirt_composite_armor_#40#"
     },
     "ex_aps_launcher_NN": {
       "template": "ex_aps_launcher_#10#"
@@ -826,10 +830,10 @@
     "template": "ex_armor_turret_#70#"
   },
   "ex_armor_turret_r_NN": {
-    "template": "ex_armor_turret_r_#30#"
+    "template": "ex_armor_turret_r_#40#"
   },
   "ex_armor_turret_l_NN": {
-    "template": "ex_armor_turret_l_#30#"
+    "template": "ex_armor_turret_l_#40#"
   },
   "ex_decor_turret_NN": {
     "template": "ex_decor_turret_#15#"
@@ -1152,6 +1156,33 @@
   },
   "rotor01_N": {
     "template": "rotor01_#6#",
+    "hitTestType": "inner"
+  },
+  "optic_blockN": {
+    "template": "optic_block#1:16#",
+    "hitTestType": "inner"
+  },
+  "cockpit_countrolN": {
+    "template": "cockpit_countrol#1:16#",
+    "hitTestType": "inner"
+  },
+  "cockpit_controlN": {
+    "template": "cockpit_control#1:16#",
+    "hitTestType": "inner"
+  },
+  "electronic_blockN": {
+    "template": "electronic_block#1:16#",
+    "hitTestType": "inner"
+  },
+  "ircmN": {
+    "template": "ircm#1:16#",
+    "hitTestType": "inner"
+  },
+  "apuN": {
+    "template": "apu#1:16#",
+    "hitTestType": "inner"
+  },
+  "sweep_wing": {
     "hitTestType": "inner"
   },
   "passive_propeller": {

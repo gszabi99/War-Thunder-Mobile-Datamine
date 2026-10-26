@@ -13,7 +13,7 @@ from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%appGlobals/pServer/pServerApi.nut" import reset_profile, reset_profile_with_stats, unlock_all_units,
   add_currency_no_popup, add_premium, reset_scheduled_reward_timers, upgrade_unit, downgrade_unit, registerHandler,
   royal_beta_units_unlock, add_all_skins_for_unit, shift_all_personal_goods_time, check_purchases_debug,
-  add_subscription_time, unlock_all_unreleased_units, debug_skip_event_delay, reset_collection_progress
+  add_subscription_time, unlock_all_unreleased_units, debug_skip_event_delay, reset_collection_progress, get_configs_set
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/debugWnd.nut" import closeButton
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
@@ -33,7 +33,7 @@ import "%rGui/squad/notAvailableForSquadMsg.nut" as notAvailableForSquadMsg
 from "%rGui/tutorial/tutorialMissions.nut" import isTutorialMissionsDebug
 from "%rGui/unit/hangarUnit.nut" import mainHangarUnitName
 from "%rGui/unlocks/unlocks.nut" import resetUserstatAppData, allowOpenUnlock
-from "%rGui/updater/updaterState.nut" import removeAddonsForCampaign
+from "%rGui/unit/debugUnits.nut" import toggleShowHiddenUnits
 
 
 const wndWidth = hdpx(1500)
@@ -153,13 +153,14 @@ let commandsList = [].extend(
     { label = "check_purchases_debug", func = withClose(@() check_purchases_debug("onDebugCheckPurchases")) }
     { label = "balance_full", func = @() showSortedTable(balance.get()) }
     { label = "balance_not_empty", func = @() showSortedTable(balance.get().filter(@(v) v != 0)) }
-    { label = "updater.removeAddons", func = @() removeAddonsForCampaign(["tanks","air","ships"]) }
     { label = "allowOpenUnlock",
       func = withClose(function() {
         allowOpenUnlock.set(!allowOpenUnlock.get())
         dlog($"allowOpenUnlock: {allowOpenUnlock.get()}") 
       })
     }
+    { label = "ui.showHiddenUnits", func = withClose(toggleShowHiddenUnits) }
+    { label = "meta.get_all_configs_set_full", func = withClose(@() get_configs_set(2, "consolePrintResult")) }
   ])
 
 function mkCommandsList() {

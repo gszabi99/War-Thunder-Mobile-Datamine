@@ -52,7 +52,8 @@
       "weather": "good",
       "missionProgressType": "airGS",
       "showAIKilllog": true,
-      "locName": "missions/_GS/medium_tank;location/air_tropical_cliffs",
+      "locMode": "missions/_GS/medium_tank",
+      "locName": "location/air_tropical_cliffs",
       "locDesc": "missions/_GS/desc",
       "scoreLimit": 3800,
       "timeLimit": 15,
@@ -61,17 +62,17 @@
       "country_allies": "ussr",
       "restoreType": "attempts",
       "optionalTakeOff": false,
-      "allowedUnitTypes": {
-        "isAirplanesAllowed": true,
-        "isTanksAllowed": false,
-        "isShipsAllowed": false,
-        "isHelicoptersAllowed": false
-      },
       "customScoreParams": {
         "overallMul": 1.0,
         "unitClassMul": {
           "bomber": 2.0
         }
+      },
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
       }
     },
     "spectator_points": {
@@ -380,29 +381,25 @@
         "unitSetIndication": [
           {
             "set": true,
-            "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "t1_quest_units_squad",
+            "target_marking": 0,
             "team": "B"
           },
           {
             "set": true,
-            "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "t2_quest_units_squad",
+            "target_marking": 0,
             "team": "A"
           }
         ],
         "unitSetProperties": [
           {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "t1_tanks_squad",
               "t2_tanks_squad",
@@ -411,20 +408,24 @@
               "t1_artillery_squad",
               "t2_artillery_squad"
             ],
-            "accuracy": 0.0,
-            "effShootingRate": 0.0
-          },
-          {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "accuracy": 0.0,
+            "effShootingRate": 0.0
+          },
+          {
             "object": [
               "t1_truck_aaa_squad",
               "t2_truck_aaa_squad",
               "t1_aaa_squad",
               "t2_aaa_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "accuracy": 0.1,
             "effShootingRate": 0.0,
             "airEffShootingRate": 0.1,
@@ -12279,7 +12280,7 @@
             ],
             [
               -1423.55,
-              197.51,
+              97.3145,
               329.25
             ]
           ],
@@ -12308,7 +12309,7 @@
             ],
             [
               -923.9,
-              189.601,
+              58.2451,
               430.75
             ]
           ],
@@ -12337,7 +12338,7 @@
             ],
             [
               -584.55,
-              226.428,
+              67.9717,
               556.3
             ]
           ],
@@ -12366,7 +12367,7 @@
             ],
             [
               -246.75,
-              255.185,
+              83.9824,
               760.65
             ]
           ],
@@ -12395,7 +12396,7 @@
             ],
             [
               -101.65,
-              193.766,
+              81.9043,
               779.7
             ]
           ],
@@ -12424,7 +12425,7 @@
             ],
             [
               -14.65,
-              183.19,
+              84.248,
               660.55
             ]
           ],
@@ -12460,7 +12461,7 @@
             ],
             [
               -1945.55,
-              281.96,
+              77.7207,
               -334.8
             ]
           ],
@@ -12489,7 +12490,7 @@
             ],
             [
               -1673.5,
-              277.522,
+              78.4844,
               -89.45
             ]
           ],
@@ -12518,7 +12519,7 @@
             ],
             [
               -1276.7,
-              156.473,
+              47.1338,
               -10.0
             ]
           ],
@@ -12547,7 +12548,7 @@
             ],
             [
               -1125.5,
-              114.018,
+              43.7793,
               72.6
             ]
           ],
@@ -12576,7 +12577,7 @@
             ],
             [
               -971.95,
-              111.088,
+              48.5947,
               116.85
             ]
           ],
@@ -12605,7 +12606,7 @@
             ],
             [
               -741.1,
-              68.0656,
+              45.9053,
               229.95
             ]
           ],
@@ -12634,7 +12635,7 @@
             ],
             [
               -179.65,
-              98.95,
+              91.3164,
               428.15
             ]
           ],
@@ -12669,9 +12670,9 @@
               1.0
             ],
             [
-              -904.2,
-              256.3,
-              -873.75
+              -1094.25,
+              120.688,
+              -647.6
             ]
           ],
           "props": {
@@ -12698,9 +12699,9 @@
               1.0
             ],
             [
-              -938.75,
-              231.65,
-              -723.2
+              -1201.45,
+              108.9,
+              -593.65
             ]
           ],
           "props": {
@@ -12727,9 +12728,9 @@
               1.0
             ],
             [
-              -921.95,
-              203.8,
-              -544.85
+              -1249.35,
+              72.9,
+              -391.45
             ]
           ],
           "props": {
@@ -12756,9 +12757,9 @@
               1.0
             ],
             [
-              -839.05,
-              259.65,
-              -356.6
+              -1249.3,
+              53.6592,
+              -207.4
             ]
           ],
           "props": {
@@ -12785,9 +12786,9 @@
               1.0
             ],
             [
-              -326.8,
-              179.45,
-              -117.85
+              -1162.15,
+              59.25,
+              -198.95
             ]
           ],
           "props": {
@@ -12814,13 +12815,158 @@
               1.0
             ],
             [
-              23.65,
-              160.3,
-              3.1
+              -1026.3,
+              79.5801,
+              -224.45
             ]
           ],
           "props": {
             "speed": 150.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        },
+        "way_points_08_wp_07": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -696.8,
+              73.8,
+              -9.45
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        },
+        "way_points_08_wp_08": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -406.75,
+              76.8,
+              128.9
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        },
+        "way_points_08_wp_09": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -297.6,
+              96.7051,
+              129.1
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        },
+        "way_points_08_wp_10": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -188.85,
+              115.999,
+              119.1
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
+            "moveType": "MOVETO_STRAIGHT"
+          }
+        },
+        "way_points_08_wp_11": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -88.6,
+              125.65,
+              30.25
+            ]
+          ],
+          "props": {
+            "speed": 300.0,
             "moveType": "MOVETO_STRAIGHT"
           }
         }

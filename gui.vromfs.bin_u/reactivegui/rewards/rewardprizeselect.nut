@@ -285,21 +285,24 @@ function mkSlot(slotIdx, reward, rStyle) {
     (selIndexes.get().len() == currentTicketCounts.get().availableVariants && !isSelected.get()) || isPurchased.get())
 
   let key = {}
+  let onSlotElemState = withTooltip(stateFlags, key, @() !isSelected.get() && unit.get() ? null
+    : {
+        content = mkPlateTooltipByType[reward.rType](unit),
+        flow = FLOW_HORIZONTAL
+      })
+  let onSlotDetach = tooltipDetach(stateFlags)
+  let plate = mkRewardPlate(reward, rStyle)
   return @() {
     watch = [isSelected, stateFlags, unit, isDisabled, isPurchased]
     key
     size
     behavior = Behaviors.Button
-    onElemState = withTooltip(stateFlags, key, @() !isSelected.get() && unit.get() ? null
-      : {
-          content = mkPlateTooltipByType[reward.rType](unit),
-          flow = FLOW_HORIZONTAL
-        })
-    onDetach = tooltipDetach(stateFlags)
+    onElemState = onSlotElemState
+    onDetach = onSlotDetach
     onClick = @() !isPurchased.get() ? selectSlot(slotIdx) : null
-    sound = { click  = "click" }
+    sound = const { click  = "click" }
     children = [
-      mkRewardPlate(reward, rStyle)
+      plate
       unit.get() ? mkRewardUnitFlag(unit.get(), rStyle) : null
       isPurchased.get() || (!isSelected.get() && !(stateFlags.get() & S_HOVER)) ? null
         : mkHightlightPlate(isSelected.get())
@@ -308,39 +311,44 @@ function mkSlot(slotIdx, reward, rStyle) {
   }
 }
 
-let mkContentChoose = @(rewards, lReward) @() {
-  watch = [rewards, lReward, currentTicketCounts]
-  flow = FLOW_VERTICAL
-  valign = ALIGN_TOP
-  halign = ALIGN_CENTER
-  padding = hdpx(30)
-  gap = hdpx(30)
-  children = [
-    {
-      flow = FLOW_HORIZONTAL
-      gap = hdpx(20)
-      children = getRewardsViewInfo(rewards.get()).map(@(reward, idx) mkSlot(idx, reward, REWARD_STYLE_MEDIUM))
-    }
-    !lReward.get() ? null
-      : {
+function mkContentChoose(rewards, lReward) {
+  let chooseLabel = utf8ToUpper(loc("msgbox/btn_choose"))
+  let chooseReadyBtn = mkSpinnerHideBlock(rewardInProgress, textButtonPrimary(chooseLabel, applyPrizeTickets))
+  let chooseBlockedBtn = textButtonCommon(chooseLabel, @() openMsgBox({
+    text = loc("events/warningSelectPrize")
+    buttons = [{ id = "ok", isCancel = true }]
+  }))
+  return @() {
+    watch = [rewards, lReward, currentTicketCounts]
+    flow = FLOW_VERTICAL
+    valign = ALIGN_TOP
+    halign = ALIGN_CENTER
+    padding = hdpx(30)
+    gap = hdpx(30)
+    children = [
+      {
         flow = FLOW_HORIZONTAL
-        halign = ALIGN_CENTER
-        padding = hdpx(30)
         gap = hdpx(20)
-        children = getRewardsViewInfo(lReward.get(), currentTicketCounts.get().lastReward)
-          .map(@(reward) mkRewardPlate(reward, REWARD_STYLE_MEDIUM))
+        children = getRewardsViewInfo(rewards.get()).map(@(reward, idx) mkSlot(idx, reward, REWARD_STYLE_MEDIUM))
       }
-    @() {
-      watch = [selIndexes, currentTicketCounts]
-      children = ((currentTicketCounts.get().availableVariants > 0 && selIndexes.get().len() == currentTicketCounts.get().availableVariants)
-        || (currentTicketCounts.get().availableVariants == 0 && currentTicketCounts.get().lastReward > 0))
-          ? mkSpinnerHideBlock(rewardInProgress, textButtonPrimary(utf8ToUpper(loc("msgbox/btn_choose")), applyPrizeTickets))
-          : textButtonCommon(utf8ToUpper(loc("msgbox/btn_choose")), @() openMsgBox({
-              text = loc("events/warningSelectPrize")
-              buttons = [{ id = "ok", isCancel = true }]
-            }))
-    }
-  ]
+      !lReward.get() ? null
+        : {
+          flow = FLOW_HORIZONTAL
+          halign = ALIGN_CENTER
+          padding = hdpx(30)
+          gap = hdpx(20)
+          children = getRewardsViewInfo(lReward.get(), currentTicketCounts.get().lastReward)
+            .map(@(reward) mkRewardPlate(reward, REWARD_STYLE_MEDIUM))
+        }
+      @() {
+        watch = [selIndexes, currentTicketCounts]
+        children = ((currentTicketCounts.get().availableVariants > 0 && selIndexes.get().len() == currentTicketCounts.get().availableVariants)
+          || (currentTicketCounts.get().availableVariants == 0 && currentTicketCounts.get().lastReward > 0))
+            ? chooseReadyBtn
+            : chooseBlockedBtn
+      }
+    ]
+  }
 }
 
 function openRewardPrizeSelect() {

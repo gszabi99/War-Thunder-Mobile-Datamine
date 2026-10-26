@@ -1,6 +1,6 @@
-let { min, max } = require("math")
-let { Point2 } = require("dagor.math")
-let { format } = require("string")
+from "math" import min, max
+from "dagor.math" import Point2
+from "string" import format
 
 
 
@@ -126,7 +126,7 @@ function cutBoxesAroundTargets(rootBox, targetBoxes, sizeIncAdd = 0, sizeIncMul 
   return darkBoxes
 }
 
-return {
+return freeze({
   GuiBox
   cutBoxesAroundTargets
-}
+})

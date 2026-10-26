@@ -19,19 +19,21 @@ let defFilterText = mkWatched(persist, "filterText", "")
 let closeButtonHeight = calc_str_box("A", fontVeryTiny)[1] + 2 * hdpx(5) 
 let closeButton = function(close) {
   let stateFlags = Watched(0)
+  let hotkeys = [[btnBEscUp, loc("mainmenu/btnClose")]]
+  let closeIcon = {
+    size = closeButtonHeight
+    rendObj = ROBJ_IMAGE
+    image = Picture($"!ui/gameuiskin#btn_close.svg:{closeButtonHeight}:{closeButtonHeight}")
+  }
   return @() {
     watch = stateFlags
     behavior = Behaviors.Button
     rendObj = ROBJ_SOLID
     onClick = close
     onElemState = @(s) stateFlags.set(s)
-    hotkeys = [[btnBEscUp, loc("mainmenu/btnClose")]]
+    hotkeys
     color = (stateFlags.get() & S_ACTIVE) != 0 ? Color(106, 34, 17, 153) : Color(0, 0, 0, 0)
-    children = {
-      size = [closeButtonHeight, closeButtonHeight]
-      rendObj = ROBJ_IMAGE
-      image = Picture($"!ui/gameuiskin#btn_close.svg:{closeButtonHeight}:{closeButtonHeight}")
-    }
+    children = closeIcon
   }
 }
 
@@ -54,20 +56,23 @@ function tabButton(text, idx, curTab) {
       rendObj = ROBJ_BOX
       fillColor = sf & S_HOVER ? Color(200, 200, 200) : isSelected ? Color(0, 0, 0, 0) : Color(0, 0, 0)
       borderColor = Color(200, 200, 200)
-      borderWidth = isSelected ? [hdpx(1), hdpx(1), 0, hdpx(1)] : [0, 0, hdpx(1), 0]
+      borderWidth = isSelected ? const [hdpx(1), hdpx(1), 0, hdpx(1)] : const [0, 0, hdpx(1), 0]
     }
   }
 }
 let hGap = freeze({ rendObj = ROBJ_SOLID size = const [hdpx(1), hdpx(10)] vplace = ALIGN_CENTER color = Color(40, 40, 40, 40) })
-let mkTabs = @(tabs, curTab) @() {
-  watch = curTab
-  children = wrap(
+function mkTabs(tabs, curTab) {
+  let children = wrap(
     tabs.map(@(_, idx) tabButton(tabs[idx].id, idx, curTab)),
     {
       width = wndWidth
       vGap = gap
       hGap
     })
+  return @() {
+    watch = curTab
+    children
+  }
 }
 
 let textArea = @(text) {
@@ -82,7 +87,7 @@ let textArea = @(text) {
 let dataToTextDef = @(data) tostring_r(data, { maxdeeplevel = 10, compact = false })
 let dataToTextJson = @(data) object_to_json_string(data, true)
 
-function defaultRowFilter(rowData, rowKey, txt) {
+function [pure, nodiscard] defaultRowFilter(rowData, rowKey, txt) {
   if (txt == "")
     return true
   if (startswith(txt, "\"") && endswith(txt, "\""))
@@ -175,8 +180,6 @@ function mkInfoBlock(curTabIdx, tabs, filterText, textWatch, dataToText) {
     gui_scene.clearTimer(recalcText)
     gui_scene.setTimeout(0.8, recalcText)
   }
-  filterText.subscribe(timerRestart)
-  dataWatch.subscribe(timerRestart)
 
   mkInfoBlockKey++
   return @() {
@@ -184,7 +187,11 @@ function mkInfoBlock(curTabIdx, tabs, filterText, textWatch, dataToText) {
     key = mkInfoBlockKey
     size = FLEX_H
     children = textArea(textWatch.get())
-    onAttach = recalcText
+    function onAttach() {
+      filterText.subscribe(timerRestart)
+      dataWatch.subscribe(timerRestart)
+      recalcText()
+    }
     function onDetach() {
       gui_scene.clearTimer(recalcText)
       filterText.unsubscribe(timerRestart)

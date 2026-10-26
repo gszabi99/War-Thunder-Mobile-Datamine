@@ -99,7 +99,7 @@ def center_on_selection(var tm : float3x4&; dist : float)
     if animchar != null
       var box : bbox3f
       assume tree = *animchar.nodeTree
-      geomtree_calcWorldBox(tree, box)
+      geomtree_calcWorldBoxFromImportantNodes(tree, box)
       pos += (box.bmin.xyz + box.bmax.xyz) * 0.5 + geomtree_getWtmOfs(tree)
       posCount += 1
     elif transform != null

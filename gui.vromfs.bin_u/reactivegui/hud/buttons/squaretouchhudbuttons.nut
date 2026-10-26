@@ -11,7 +11,7 @@ from "%rGui/hud/hudTouchButtonStyle.nut" import touchButtonSize, btnBgStyle, bor
 let defImageSize = (0.75 * touchButtonSize).tointeger()
 
 let mkSquareButtonEditView = @(img){
-  size = [touchButtonSize, touchButtonSize]
+  size = touchButtonSize
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = [
@@ -23,7 +23,7 @@ let mkSquareButtonEditView = @(img){
     }
     {
       rendObj = ROBJ_IMAGE
-      size = [defImageSize, defImageSize]
+      size = defImageSize
       image = Picture($"{img}:{defImageSize}:{defImageSize}:P")
       keepAspect = KEEP_ASPECT_FIT
     }
@@ -38,7 +38,7 @@ function mkSimpleSquareButton(shortcutId, img, scale) {
   return @() {
       behavior = Behaviors.Button
       cameraControl = true
-      size = [bgSize, bgSize]
+      size = bgSize
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       onClick = @() toggleShortcut(shortcutId)
@@ -55,7 +55,7 @@ function mkSimpleSquareButton(shortcutId, img, scale) {
         }
         {
           rendObj = ROBJ_IMAGE
-          size = [imgSize, imgSize]
+          size = imgSize
           image = Picture($"{img}:{imgSize}:{imgSize}:P")
           keepAspect = true
         }
@@ -73,7 +73,7 @@ function mkSquareButtonBg(actionItem, isPrimaryStyle, btnStyle, buttonBgSize = t
   let { empty, ready, broken, noAmmo } = btnStyle
   let trigger = $"action_cd_finish_{id}"
   let item = {
-    size = [buttonBgSize, buttonBgSize]
+    size = buttonBgSize
     rendObj = ROBJ_PROGRESS_CIRCULAR
     image = isPrimaryStyle
       ? Picture($"ui/gameuiskin#hud_movement_stop2_bg_loading.svg:{buttonBgSize}:{buttonBgSize}:P")

@@ -97,12 +97,7 @@ function showMsgForSite(isActive) {
     closeFMsgBox(SUGGEST_UPDATE)
 }
 
-needStartBackgroundUpdate.subscribe(function(v) {
-  if (!v)
-    return
-  this_subscriber_call_may_take_up_to_usec(10 * get_slow_subscriber_threshold_usec())
-  updateBySite()
-})
+needStartBackgroundUpdate.subscribe(@(v) v ? updateBySite() : null)
 if (needStartBackgroundUpdate.get())
   updateBySite()
 

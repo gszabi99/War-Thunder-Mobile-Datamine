@@ -50,7 +50,7 @@ function calcSizes(scale) {
 }
 
 let mkRepeatImg = @(imgRepeatSize, btnSize) {
-  size = [imgRepeatSize, imgRepeatSize]
+  size = imgRepeatSize
   pos = [0.2, -0.45].map(@(v) v * (btnSize - imgRepeatSize))
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
@@ -75,7 +75,7 @@ let mkBlackBg = @(bgRadius, c1, c2) {
 }
 
 let mkPeriodicFlareBtn = @(btnSize, center, imgSize, imgRepeat, stateFlags, scale) {
-  size = [btnSize, btnSize]
+  size = btnSize
   pos = [center[0] - btnSize / 2, center[1] - btnSize / 2]
   children = [
     mkBtnBg(btnSize, hudLightBlackColor)
@@ -147,29 +147,35 @@ function flaresButtonCtor(scale) {
   }
 
   let imgRepeat = mkRepeatImg(imgRepeatSize, btnSize)
+  let hotkey = mkGamepadHotkey(shortcutId, @() onActionClick(shortcutId))
+  let periodicExpandedContent = [
+    mkBlackBg(bgRadius, btnCenter, btnCenter2)
+    mkPeriodicFlareBtn(btnSize, btnCenter2, imgSize, imgRepeat, stateFlagsPeriodic, scale)
+  ]
+  let btnBg = mkBtnBg(btnSize, hudLightBlackColor)
+  let glare = mkCircleGlare(btnSize, shortcutId)
+  let gamepadShortcut = mkGamepadShortcutImage(shortcutId, defShortcutOvr, scale)
 
   return @() {
     watch = [isDisabled, isAvailable, IsPeriodicFlaresEnabled]
-    size = [btnSize, btnSize]
+    size = btnSize
 
     behavior = TouchScreenButton
     onElemState = @(v) stateFlags.set(v)
     onTouchBegin
     onTouchEnd
+    onTouchInterrupt = onTouchEnd
     onChange = @(p) point.set(p)
-    hotkeys = mkGamepadHotkey(shortcutId, @() onActionClick(shortcutId))
+    hotkeys = hotkey
 
     children = [
       @() !isExpanded.get() ? { watch = isExpanded }
         : {
             watch = isExpanded
-            size = [btnSize, btnSize]
-            children = [
-              mkBlackBg(bgRadius, btnCenter, btnCenter2)
-              mkPeriodicFlareBtn(btnSize, btnCenter2, imgSize, imgRepeat, stateFlagsPeriodic, scale)
-            ]
+            size = btnSize
+            children = periodicExpandedContent
           }
-      mkBtnBg(btnSize, hudLightBlackColor)
+      btnBg
       @() {
         watch = FlaresState
         size = FLEX
@@ -181,8 +187,8 @@ function flaresButtonCtor(scale) {
         watch = [FlaresState, isAvailable]
       }.__update(FlaresState.get().count < 0 ? {}
         : mkCountTextLeft(FlaresState.get().count, isAvailable.get() ? hudWhiteColor : disabledColor, scale))
-      mkCircleGlare(btnSize, shortcutId)
-      mkGamepadShortcutImage(shortcutId, defShortcutOvr, scale)
+      glare
+      gamepadShortcut
       IsPeriodicFlaresEnabled.get() ? imgRepeat : null
     ]
   }

@@ -10,8 +10,8 @@ let debugState = @(shouldShowNotSetBits = false)
   shouldShowNotSetBits ? $"not set loginState = {getLoginStateDebugStr(LOGIN_STATE.LOGGED_IN & ~loginState.get())}"
     : $"loginState = {getLoginStateDebugStr()}"
 
-register_command(@() debugState(false),  "login.debugCurState")
-register_command(@() debugState(true), "login.debugNotSetState")
+register_command(@() log(debugState(false)),  "login.debugCurState")
+register_command(@() log(debugState(true)), "login.debugNotSetState")
 
 function logChanges(state, prev) {
   if (state == LOGIN_STATE.NOT_LOGGED_IN) {

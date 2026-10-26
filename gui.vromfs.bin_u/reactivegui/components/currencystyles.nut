@@ -28,17 +28,27 @@ let CS_INACTIVE_ICON = CS_COMMON.__merge({
   fontFxFactor = 0
 })
 
-let gamercardGap = sw(100) >= hdpx(2200) ? hdpx(45)
-  : sw(100) >= hdpx(2000) ? hdpx(30)
-  : hdpx(25)
-
 let CS_GAMERCARD = CS_COMMON.__merge({
   fontStyle = fontTinyAccented
   iconSize = hdpxi(40)
 })
 
+let gamercardGap = sw(100) >= hdpx(2200) ? hdpx(45)
+  : sw(100) >= hdpx(2000) ? hdpx(30)
+  : hdpx(25)
+
+let gcSeparator = {
+  size = const [hdpxi(2), FLEX]
+  rendObj = ROBJ_SOLID
+  color = 0xA0A0A0A0
+}
+
+let gcSeparatorWithGap = gcSeparator.__merge({ margin = [0, gamercardGap] })
+
 return freeze({
   gamercardGap
+  gcSeparator
+  gcSeparatorWithGap
   CS_TINY = CS_COMMON.__merge({ fontStyle = fontVeryVeryTinyAccented, iconSize = hdpxi(22), iconGap = hdpx(4) })
   CS_SMALL = CS_COMMON.__merge({ fontStyle = fontTiny, iconSize = hdpxi(30) })
   CS_SMALL_INCREASED_ICON

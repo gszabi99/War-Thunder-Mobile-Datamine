@@ -6,6 +6,7 @@ let selectedPlayerForInfo = Watched(null)
 let SECTION_PROFILE_IDS = {
   PROFILE = "profile"
   SCORE = "score"
+  MANAGE = "manage"
 }
 
 return {

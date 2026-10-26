@@ -15,7 +15,7 @@ function loc_checked(key, ...) {
   return loc.acall([null, key].extend(vargv))
 }
 
-return {
+return freeze({
   loc_checked
-}
+})
 

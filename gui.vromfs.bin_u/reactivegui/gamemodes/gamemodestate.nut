@@ -74,6 +74,11 @@ let debugModes = Computed(@() allGameModes.get().filter(@(m, id) m?.displayType 
 
 let maxSquadSize = Computed(@() allGameModes.get().reduce(@(res, m) max(res, m?.maxSquadSize ?? m?.minSquadSize ?? 1), 1))
 
+let maxSquadSizeByCampaign = Computed(@() allGameModes.get()
+  .reduce(@(res, m) m?.displayType != "random_battle" ? res
+      : res.$rawset(m?.campaign ?? "", max(res?[m?.campaign ?? ""] ?? 1, m?.maxSquadSize ?? m?.minSquadSize ?? 1)),
+    {}))
+
 register_command(
   @() log("curRandomBattleModeName = ", randomBattleMode.get()?.name)
   "debug.getCurRandomBattleModeName")
@@ -116,5 +121,6 @@ return {
   separateEventModes
   forceNewbieModeIdx
   maxSquadSize
+  maxSquadSizeByCampaign
   isGameModesReceived = Computed(@() allGameModes.get().len() != 0)
 }

@@ -58,7 +58,7 @@ function lensScaleCircles(size1, size2, x1, xFinal) {
     let size = size1 * sizeMul
     let pos2 = [lerp(size1, 0, x1, xFinal, size2 * sizeMul), 0]
     res.append({
-      size = [size, size]
+      size = size
       rendObj = ROBJ_IMAGE
       color = mul_color(scaleFlareColor, colorMul)
       image = gradRing()
@@ -87,7 +87,7 @@ let mkLensLine = @(width, color = lensStarReflColor) {
 }
 
 let mkLensGlow = @(size, color = lensStarGlow) {
-  size = [size, size]
+  size = size
   vplace = ALIGN_CENTER
   hplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE

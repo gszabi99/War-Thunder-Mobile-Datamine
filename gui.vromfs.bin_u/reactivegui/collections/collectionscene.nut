@@ -100,7 +100,8 @@ let openDuplicatesInfo = @() addModalWindowWithHeader("duplicates_info",
         color = commonTextColor
         text = loc("collection/duplicatesInfo/description")
         halign = ALIGN_CENTER
-      }.__update(fontSmallShaded)
+        ...fontSmallShaded
+      }
     ]
   })
 
@@ -170,7 +171,7 @@ function mkBgElementImg(img, size, ovr = {}) {
   return {
     size
     rendObj = ROBJ_IMAGE
-    image = Picture(isComplexView ? $"{img}:{size[0]}:{size[1]}:P" : $"{img}:0:P", { sampler = getconsttable()?.SAMPLER_LINEAR_CLAMP })
+    image = Picture(isComplexView ? $"{img}:{size[0]}:{size[1]}:P" : $"{img}:0:P", { sampler = SAMPLER_LINEAR_CLAMP })
     keepAspect = true
   }.__update(ovr)
 }
@@ -195,9 +196,10 @@ function mkBgElement(bgElem, stateFlagsByIdx) {
     transform = { rotate }
   }
   if (idx == null)
-    return root.__merge({
+    return {
+      ...root
       children = mkBgElementImg(img, sizePx, { flipX, flipY })
-    })
+    }
 
   let isCompleted = Computed(function() {
     let { piecesMask = 0 } = curCollectionCfg.get()?.puzzles[idx]
@@ -206,7 +208,8 @@ function mkBgElement(bgElem, stateFlagsByIdx) {
   let hasUnseen = Computed(@() idx in curUnseenPiecesMasks.get() || idx in (curRewardsToReceive.get()?.puzzles ?? {}))
   let unseenMark = mkPriorityUnseenMarkWatch(hasUnseen, { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP })
   let stateFlags = getPuzzleStateFlags(stateFlagsByIdx, idx)
-  return @() root.__merge({
+  return @() {
+    ...root
     watch = [isCompleted, stateFlags]
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
@@ -230,8 +233,8 @@ function mkBgElement(bgElem, stateFlagsByIdx) {
     transform = stateFlags.get() & S_ACTIVE ? const { scale = [0.98, 0.98] }
       : stateFlags.get() & S_HOVER ? const { scale = [1.02, 1.02] }
       : const { scale = [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
-  })
+    transitions = scaleTransitions
+  }
 }
 
 let mkBgElements = @(bgElements, stateFlagsByIdx) {

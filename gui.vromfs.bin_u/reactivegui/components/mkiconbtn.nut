@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/stdColors.nut" import hoverColor, textColor
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 let mkIconBtn = @(path, size, stateFlags = Watched(0), color = textColor) @() {
@@ -8,8 +9,7 @@ let mkIconBtn = @(path, size, stateFlags = Watched(0), color = textColor) @() {
   rendObj = ROBJ_IMAGE
   image = Picture($"{path}:{size}:{size}:P")
   color = stateFlags.get() & S_HOVER ? hoverColor : color
-  transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-  transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
+  ...mkPressTransitionScale(stateFlags.get(), 0.9)
 }
 
 return mkIconBtn

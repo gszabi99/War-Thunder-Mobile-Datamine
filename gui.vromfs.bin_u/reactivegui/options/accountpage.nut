@@ -6,10 +6,12 @@ from "%sqstd/underscore.nut" import arrayByRows
 from "%appGlobals/clientState/clientState.nut" import isInMenu
 from "%appGlobals/commonUrl.nut" import ACTIVATE_PROMO_CODE_URL, LINK_TO_GAIJIN_ACCOUNT_URL
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
+from "%appGlobals/config/clanPresentation.nut" import mkClanBadge
 from "%appGlobals/config/subsPresentation.nut" import getSubsPresentation, getPremIcon
 from "%appGlobals/curCircuitOverride.nut" import isExternalOperator, getCurCircuitOverride
 from "%appGlobals/loginState.nut" import curLoginType, LT_GAIJIN, LT_GOOGLE, LT_APPLE, LT_FACEBOOK, LT_HUAWEI
 from "%appGlobals/pServer/campaign.nut" import curCampaign
+from "%appGlobals/pServer/pServerApi.nut" import clansInProgress
 from "%appGlobals/pServer/profile.nut" import playerLevelInfo
 from "%appGlobals/permissions.nut" import can_link_to_gaijin_account, allow_subscriptions
 from "%appGlobals/profileStates.nut" import myUserName, myUserId, myUserIdStr, myOperatorUserId, myOperatorUserIdStr
@@ -17,27 +19,32 @@ from "%appGlobals/timeToText.nut" import secondsToHoursLoc
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%rGui/account/emailRegistrationState.nut" import canUpgradeGuestAccountToGaijinID, openGuestEmailRegistration
 from "%rGui/account/linkEmailForGaijinLogin.nut" import canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin
+from "%rGui/clans/clanPermissions.nut" import CLAN_REMOVE, clanGrades, hasClanPermission
+from "%rGui/clans/clanState.nut" import leaveClan, removeClan, getClanDisplayName
+from "%rGui/clans/components/clanBadge.nut" import mkClanBadgePreview
+from "%rGui/clans/currentClanState.nut" import currentClan, currentClanId, myClanGrade
 from "%rGui/components/buttonStyles.nut" import defButtonHeight, PRIMARY, COMMON, INACTIVE
 from "%rGui/components/clipboard.nut" import copyToClipboard
 from "%rGui/components/levelBlockPkg.nut" import mkLevelBg
 import "%rGui/components/mkIconBtn.nut" as mkIconBtn
 from "%rGui/components/msgBox.nut" import openMsgBox
-from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/spinner.nut" import mkSpinnerHideBlock, spinner
 from "%rGui/components/starLevel.nut" import starLevelTiny
 from "%rGui/components/textButton.nut" import buttonsVGap, mkCustomButton, mkButtonTextMultiline, textButtonPurchase,
-  mergeStyles
+  mergeStyles, iconTextButton
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
 from "%rGui/controlsMenu/gpActBtn.nut" import btnAUp
 from "%rGui/decorators/decoratorState.nut" import myNameWithFrame, openDecoratorsScene, myAvatarImage,
   hasUnseenDecorators
 from "%rGui/decorators/decoratorsPkg.nut" import mkTitle
 from "%rGui/feedback/supportWnd.nut" import openSupportTicketWndOrUrl
+from "%rGui/globals/fontUtils.nut" import getFontToFitWidth
 from "%rGui/shop/goodsPreviewState.nut" import openSubsPreview
 from "%rGui/shop/platformGoods.nut" import hasRestorePurchases, restorePurchases, platformPurchaseInProgress
 from "%rGui/shop/shopState.nut" import subsByCategory
 from "%rGui/state/profilePremium.nut" import havePremium, premiumEndsAt, hasPremiumSubs, hasVip
 from "%rGui/style/stdColors.nut" import premiumTextColor
-
+from "%rGui/style/gradients.nut" import simpleVerGrad
 
 
 
@@ -49,6 +56,7 @@ let needShowCrossPromoWithWT = Computed(@() can_link_to_gaijin_account.get() && 
 
 let canChangeAccount = Computed(@() isInMenu.get() && !is_nswitch)
 
+let canRemoveClan = Computed(@() hasClanPermission(CLAN_REMOVE, clanGrades.get(), myClanGrade.get()))
 let canUsePromoCodes = !is_ios && !is_nswitch
 
 const avatarSize = hdpx(200)
@@ -57,7 +65,11 @@ const borderColor = 0xFF000000
 const borderWidth = hdpx(1)
 const gap = hdpx(20)
 const lvlInfoWidth = sw(45)
-let premIconSize = [avatarSize, (avatarSize / 1.4).tointeger()]
+const infoRowHeight = hdpxi(100)
+const infoRowSize = [SIZE_TO_CONTENT, infoRowHeight]
+const premIconSize = infoRowHeight
+const clanBadgeSize = infoRowHeight
+const clanNameWidth = hdpx(440)
 
 let unitsResearchInfo = @() {
   watch = curCampaign
@@ -70,20 +82,23 @@ let unitsResearchInfo = @() {
 }.__update(fontVeryTiny)
 
 let starLevelOvr = { pos = const [0, ph(40)] }
+let levelMarkSize = array(2, levelBlockSize)
+let levelMarkPos = array(2, (0.5 * levelBlockSize + 0.5).tointeger())
+let levelMarkBg = mkLevelBg()
 let levelMark = @() {
   watch = playerLevelInfo
-  size = array(2, levelBlockSize)
-  pos = array(2, (0.5 * levelBlockSize + 0.5).tointeger())
+  size = levelMarkSize
+  pos = levelMarkPos
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_RIGHT
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = [
-    mkLevelBg()
+    levelMarkBg
     {
       rendObj = ROBJ_TEXT
       text = playerLevelInfo.get().level - playerLevelInfo.get().starLevel
-      pos = [0, -hdpx(2)]
+      pos = const [0, -hdpx(2)]
     }.__update(fontSmall)
     starLevelTiny(playerLevelInfo.get().starLevel, starLevelOvr)
     unitsResearchInfo
@@ -93,6 +108,15 @@ let levelMark = @() {
 function mkAvatar() {
   const avatarBtnSize = hdpxi(40)
   let iconStateFlags = Watched(0)
+  let unseenMarkBlock = {
+    padding = hdpx(10)
+    hplace = ALIGN_LEFT
+    children = priorityUnseenMark
+  }
+  let editIconBlock = {
+    hplace = ALIGN_RIGHT
+    children = mkIconBtn("ui/gameuiskin#menu_edit.svg", avatarBtnSize, iconStateFlags)
+  }
   return {
     behavior = Behaviors.Button
     onClick = openDecoratorsScene
@@ -112,15 +136,8 @@ function mkAvatar() {
         padding = hdpx(10)
         valign = ALIGN_TOP
         children = [
-          !hasUnseenDecorators.get() ? null : {
-            padding = hdpx(10)
-            hplace = ALIGN_LEFT
-            children = priorityUnseenMark
-          }
-          {
-            hplace = ALIGN_RIGHT
-            children = mkIconBtn("ui/gameuiskin#menu_edit.svg", avatarBtnSize, iconStateFlags)
-          }
+          !hasUnseenDecorators.get() ? null : unseenMarkBlock
+          editIconBlock
         ]
       }
       levelMark
@@ -131,6 +148,7 @@ function mkAvatar() {
 function mkUserName() {
   const userNameBtnSize = hdpxi(40)
   let iconStateFlags = Watched(0)
+  let copyIconBtn = mkIconBtn("ui/gameuiskin#icon_copy.svg", userNameBtnSize, iconStateFlags)
   return @() {
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
@@ -140,7 +158,7 @@ function mkUserName() {
         watch = myNameWithFrame
         behavior = Behaviors.Button
         onClick = openDecoratorsScene
-        sound = { click = "meta_profile_edit" }
+        sound = const { click = "meta_profile_edit" }
         rendObj = ROBJ_TEXT
         text = myNameWithFrame.get() ?? ""
       }.__update(fontMedium)
@@ -149,7 +167,7 @@ function mkUserName() {
         behavior = Behaviors.Button
         onElemState = @(s) iconStateFlags.set(s)
         onClick = @(evt) copyToClipboard(evt, myUserName.get())
-        children = mkIconBtn("ui/gameuiskin#icon_copy.svg", userNameBtnSize, iconStateFlags)
+        children = copyIconBtn
       }
     ]
   }
@@ -214,18 +232,91 @@ let mkSubsIcon = @(status) @() {
   size = premIconSize
   rendObj = ROBJ_IMAGE
   image = status in premIconByStatus
-    ? Picture($"ui/gameuiskin#{premIconByStatus[status](allow_subscriptions.get())}:{premIconSize[0]}:{premIconSize[1]}:P")
+    ? Picture($"ui/gameuiskin#{premIconByStatus[status](allow_subscriptions.get())}:{premIconSize}:P")
     : Picture($"{getSubsPresentation(status).image}:0:P")
   color = 0xFFFFFFFF
   keepAspect = true
 }
+
+let clanBadge = mkClanBadgePreview(Computed(@() mkClanBadge(currentClan.get()?.textFields)), clanBadgeSize)
+
+function clanName() {
+  let text = getClanDisplayName(currentClan.get()?.textFields.name ?? "")
+  let comp = {
+    watch = currentClan
+    rendObj = ROBJ_TEXT
+    maxWidth = clanNameWidth
+    text
+    ...fontMedium
+  }
+  let font = getFontToFitWidth(comp, clanNameWidth, [fontTiny, fontSmall, fontMedium])
+
+  return comp.__update(font)
+}
+
+let cardRoot = {
+  size = FLEX_H
+  rendObj = ROBJ_IMAGE
+  image = simpleVerGrad
+  padding = const hdpx(20)
+  color = 0x70000000
+  valign = ALIGN_CENTER
+  halign = ALIGN_CENTER
+}
+
+let defSubCard = @(children) {
+  ...cardRoot
+  flow = FLOW_HORIZONTAL
+  gap = const {size = FLEX}
+  children = children
+}
+
+let mkConfirmBtn = @(btnText, confirmText, cb) iconTextButton("ui/gameuiskin#icon_exit.svg",
+  utf8ToUpper(btnText),
+  @() openMsgBox({
+    text = confirmText
+    buttons = [
+      { id = "cancel", isCancel = true, styleId = "PRIMARY" }
+      { text = btnText, cb }
+    ]
+  }),
+  mergeStyles(COMMON, {
+    iconOvr = {
+      size = hdpx(50)
+      keepAspect = true
+      transform = { rotate = 180 }
+    }
+    textOvr = fontBoldTinyAccentedShaded
+    childOvr = { gap = hdpx(20) }
+    useFlexText = true
+  }))
+
+let leaveClanBtn = mkConfirmBtn(loc("clans/leaveBtn"), loc("clans/leaveRequest/confirm"),
+  @() leaveClan(currentClanId.get()))
+let disbandClanBtn = mkConfirmBtn(loc("clans/disbandBtn"), loc("clans/disbandRequest/confirm"),
+  @() removeClan(currentClanId.get()))
+
+let mkInfoCard = @(children) {
+  ...cardRoot
+  flow = FLOW_VERTICAL
+  gap = hdpx(50)
+  children = children
+}
+
+let mkInfoRow = @(children, ovr = {}) {
+  size = infoRowSize
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  hplace = ALIGN_CENTER
+  children
+}.__update(ovr)
 
 let mkPremAction = @(status) textButtonPurchase(
   utf8ToUpper(loc($"subscription/{status == "prem_inactive" ? "activate" : "upgrade"}")),
   @() openSubsPreview("vip", "account_page"),
   { hotkeys = [btnAUp], childOvr = fontBoldTinyAccentedShaded })
 
-function mkPremiumDescription() {
+function mkDescription() {
   let premStatus = Computed(@() !havePremium.get() ? "prem_inactive"
     : !hasPremiumSubs.get() ? "prem_deprecated"
     : hasVip.get() ? "vip"
@@ -235,24 +326,34 @@ function mkPremiumDescription() {
     && null != subsByCategory.get().findvalue(@(v) v.len() > 0))
 
   return @() {
-    watch = [allow_subscriptions, premStatus, hasAction]
+    watch = [allow_subscriptions, premStatus, hasAction, currentClan, canRemoveClan, clansInProgress]
     size = FLEX_H
-    children = !allow_subscriptions.get() ? null
-      : {
-          size = FLEX_H
-          rendObj = ROBJ_SOLID
-          padding = const [hdpx(10), hdpx(20)]
-          color = 0x70000000
-          margin = const [hdpx(70), 0, 0, 0]
-          flow = FLOW_HORIZONTAL
-          valign = ALIGN_CENTER
-          gap = {size = FLEX}
-          children = [
+    padding = const [hdpx(70), 0, 0, 0]
+    flow = FLOW_HORIZONTAL
+    gap = hdpx(10)
+    children = [
+      !allow_subscriptions.get() ? null
+        : currentClan.get() != null
+          ? mkInfoCard([
+              mkInfoRow([
+                mkSubsIcon(premStatus.get())
+                mkPremDescText(premStatus.get())
+              ], { gap })
+              hasAction.get() ? mkPremAction(premStatus.get()) : null
+            ])
+        : defSubCard([
             mkSubsIcon(premStatus.get())
             mkPremDescText(premStatus.get())
             hasAction.get() ? mkPremAction(premStatus.get()) : null
-          ]
-        }
+          ])
+      currentClan.get() == null ? null
+        : mkInfoCard([
+            mkInfoRow([clanBadge, clanName], { gap })
+            clansInProgress.get() ? spinner
+              : canRemoveClan.get() ? disbandClanBtn
+              : leaveClanBtn
+          ])
+    ]
   }
 }
 
@@ -274,9 +375,9 @@ let userInfoBlock = {
 }
 
 let buttonsWidthStyle = {
-  ovr = { minWidth = hdpx(550) }
+  ovr = { minWidth = hdpx(370) }
 }
-let multilineButtonOvrStyle = { size = const [hdpx(450), SIZE_TO_CONTENT], lineSpacing = hdpx(-4) }.__update(fontBoldTinyAccentedShaded)
+let multilineButtonOvrStyle = { size = const [hdpx(300), SIZE_TO_CONTENT], lineSpacing = hdpx(-4) }.__update(fontBoldTinyAccentedShaded)
 
 let mkButton = @(locId, cb, style = PRIMARY) mkCustomButton(
   mkButtonTextMultiline(utf8ToUpper(loc(locId)), multilineButtonOvrStyle),
@@ -311,6 +412,8 @@ let mkButtonRow = @(children) !children.findvalue(@(v) v != null) ? null
       children
     }
 
+let isRestoringPurchases = Computed(@() platformPurchaseInProgress.get() != null)
+
 function buttons() {
   let watch = [ canChangeAccount, canLinkEmailForGaijinLogin, canUpgradeGuestAccountToGaijinID,
     needShowCrossPromoWithWT, canLinkAccountForWtCrossPromo ]
@@ -330,7 +433,7 @@ function buttons() {
       !canUsePromoCodes ? null
         : mkButton(loc("mainmenu/btnActivateCode"), @() eventbus_send("openUrl", { baseUrl = ACTIVATE_PROMO_CODE_URL }))
       !hasRestorePurchases ? null
-        : mkSpinnerHideBlock(Computed(@() platformPurchaseInProgress.get() != null),
+        : mkSpinnerHideBlock(isRestoringPurchases,
             mkButton(loc("restorePurchases"), restorePurchases),
             {
               size = [ buttonsWidthStyle.ovr.minWidth, defButtonHeight ]
@@ -338,7 +441,7 @@ function buttons() {
               valign = ALIGN_CENTER
             })
     ].filter(@(v) v != null),
-    2)
+    3)
 
   return {
     watch
@@ -354,7 +457,7 @@ return {
   flow = FLOW_VERTICAL
   children = [
     userInfoBlock
-    mkPremiumDescription()
+    mkDescription()
     { size = FLEX }
     buttons
   ]

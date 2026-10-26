@@ -53,6 +53,8 @@ let info = Computed(function() {
   })
 })
 
+let isKillerInfoVisible = Computed(@() !isUnitAlive.get() && info.get() != null)
+
 subscribeHudEvent("HudMessage", function(data) {
   if (data.type != HUD_MSG_MULTIPLAYER_DMG)
     return
@@ -136,4 +138,4 @@ let hudKillerInfo = @() {
   children = isUnitAlive.get() ? null : killerInfo
 }
 
-return { killerInfo, hudKillerInfo }
+return { killerInfo, hudKillerInfo, isKillerInfoVisible }

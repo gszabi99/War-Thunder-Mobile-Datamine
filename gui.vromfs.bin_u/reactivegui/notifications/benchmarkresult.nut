@@ -23,6 +23,11 @@ let statsCfg = [
     getValue = @(s) round_by_value(s.benchMinFPS, 0.1)
   }
   {
+    locId = "benchmark/avgGpuFreq"
+    getValue = @(s) round_by_value(s.benchAvgGpuFreqMhz, 1)
+    isAvailable = @(s) ("benchAvgGpuFreqMhz" in s) && s.benchAvgGpuFreqMhz > 0
+  }
+  {
     locId = "benchmark/total"
     getValue = @(s) s.benchTotalFrames
   }
@@ -53,7 +58,9 @@ let benchmark = @(stats) {
   size = FLEX
   flow = FLOW_VERTICAL
   valign = ALIGN_CENTER
-  children = statsCfg.map(@(cfg) mkStatRow(cfg, stats))
+  children = statsCfg
+    .filter(@(cfg) !("isAvailable" in cfg) || cfg.isAvailable(stats))
+    .map(@(cfg) mkStatRow(cfg, stats))
 }
 
 let buttons = mkMsgBoxBtnsSet(wndUid, [ { id = "ok", styleId = "PRIMARY", cb = close } ])

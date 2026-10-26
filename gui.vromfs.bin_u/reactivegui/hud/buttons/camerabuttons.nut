@@ -27,7 +27,7 @@ let mkCameraButton = @(shortcutId, image) function(scale) {
 
   return @() mkContinuousButtonParams(onTouchBegin, onTouchEnd, shortcutId, stateFlags).__update({
     watch = stateFlags
-    size = [bgSize, bgSize]
+    size = bgSize
     rendObj = ROBJ_BOX
     borderColor = isActive(stateFlags.get()) ? null : colorInactive
     fillColor = hudLightBlackColor
@@ -40,7 +40,7 @@ let mkCameraButton = @(shortcutId, image) function(scale) {
     children = [
       {
         rendObj = ROBJ_IMAGE
-        size = [imgSize, imgSize]
+        size = imgSize
         image = picture
         keepAspect = KEEP_ASPECT_FIT
         color = isActive(stateFlags.get()) ? colorActive : colorInactive
@@ -52,18 +52,24 @@ let mkCameraButton = @(shortcutId, image) function(scale) {
   })
 }
 
-let mkFreeCameraButton = @(scale) @() {
-  watch = [curFreeCamByTouchOption, unitType, currentAircraftCtrlType, isFreeCameraAvailable]
-  children = !isFreeCameraAvailable.get() || (unitType.get() == AIR && curFreeCamByTouchOption.get() && (currentAircraftCtrlType.get() == "stick" || currentAircraftCtrlType.get() == "stick_static"))
-    ? null
-    : mkCameraButton("ID_CAMERA_NEUTRAL", "ui/gameuiskin#hud_free_camera.svg")(scale)
+function mkFreeCameraButton(scale) {
+  let camBtn = mkCameraButton("ID_CAMERA_NEUTRAL", "ui/gameuiskin#hud_free_camera.svg")(scale)
+  return @() {
+    watch = [curFreeCamByTouchOption, unitType, currentAircraftCtrlType, isFreeCameraAvailable]
+    children = !isFreeCameraAvailable.get() || (unitType.get() == AIR && curFreeCamByTouchOption.get() && (currentAircraftCtrlType.get() == "stick" || currentAircraftCtrlType.get() == "stick_static"))
+      ? null
+      : camBtn
+  }
 }
 
-let mkViewBackButton = @(scale) @() {
-  watch = isFreeCameraAvailable
-  children = isFreeCameraAvailable.get()
-    ? mkCameraButton("ID_CAMERA_VIEW_BACK", "ui/gameuiskin#hud_look_back.svg")(scale)
-    : null
+function mkViewBackButton(scale) {
+  let camBtn = mkCameraButton("ID_CAMERA_VIEW_BACK", "ui/gameuiskin#hud_look_back.svg")(scale)
+  return @() {
+    watch = isFreeCameraAvailable
+    children = isFreeCameraAvailable.get()
+      ? camBtn
+      : null
+  }
 }
 
 return {

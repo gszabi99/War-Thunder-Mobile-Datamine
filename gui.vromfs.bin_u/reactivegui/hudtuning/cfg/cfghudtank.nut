@@ -19,7 +19,6 @@ from "%rGui/hud/buttons/cameraButtons.nut" import mkFreeCameraButton
 from "%rGui/hud/buttons/circleTouchHudButtons.nut" import mkCircleTankPrimaryGun, mkCircleGroundMachineGun,
   mkCircleFireworkBtn, mkCircleTargetTrackingBtn, mkCircleZoomCtor, mkCircleBtnEditView, mkBigCircleBtnEditView,
   mkCountTextRight
-from "%rGui/hud/buttons/repairButton.nut" import tankRrepairButtonCtor
 import "%rGui/hud/buttons/winchButton.nut" as winchButton
 from "%rGui/hud/components/moveIndicator.nut" import NEED_SHOW_POSE_INDICATOR, mkMoveIndicator,
   moveIndicatorTankEditView
@@ -35,14 +34,14 @@ from "%rGui/hud/scoreBoard.nut" import scoreBoardType, scoreBoardCfgByType
 import "%rGui/hud/tankArrowsMovementBlock.nut" as tankArrowsMovementBlock
 from "%rGui/hud/tankStateModule.nut" import mkDoll, dollEditView, mkSpeedText, speedTextEditView, mkCrewDebuffs,
   crewDebuffsEditView, mkTechDebuffs, techDebuffsEditView
-from "%rGui/hud/voiceMsg/voiceMsgStick.nut" import voiceMsgStickBlock, voiceMsgStickView, isVoiceMsgStickVisibleInBattle
+from "%rGui/hud/voiceMsg/voiceMsgStick.nut" import voiceMsgStickBlock, mkVoiceMsgStickView, isVoiceMsgStickVisibleInBattle
 from "%rGui/hud/weaponsButtonsConfig.nut" import EII_EXTINGUISHER, EII_SMOKE_GRENADE, EII_SMOKE_SCREEN,
   EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT_2, EII_SPECIAL_UNIT, EII_TOOLKIT_SPLIT, EII_MEDICALKIT
 from "%rGui/hud/weaponsButtonsView.nut" import mkBulletEditView, mkRepairActionItem
 from "%rGui/hudState.nut" import isUnitAlive, isPlayingReplay
 import "%rGui/hudTuning/cfg/cfgHudCommon.nut" as cfgHudCommon
 from "%rGui/hudTuning/cfg/cfgOptions.nut" import optTankMoveControlType, gearDownOnStopButtonTouch,
-  optDoublePrimaryGuns, optDoubleRepairBtn, optSplitSideGunBullets, isBulletsRight, optBulletsRight
+  optDoublePrimaryGuns, optSplitSideGunBullets, isBulletsRight, optBulletsRight
 from "%rGui/hudTuning/cfg/hudTuningPkg.nut" import withActionBarButtonCtor, withAnyActionBarButtonCtor,
   withActionsButtonScaleCtor, withActionButtonScaleCtor, Z_ORDER, mkRBPos, mkLBPos, mkRTPos, mkLTPos, mkCBPos, mkCTPos
 import "%rGui/hudTuning/cfg/initHudTuningCfg.nut" as initHudTuningCfg
@@ -67,6 +66,7 @@ let actionBarInterval = isWidescreen ? 150 : 130
 let actionBarTransform = @(idx, isBullet = false)
   mkRBPos([hdpx(-actionBarInterval * idx), isBullet ? 0 : hdpx(43)])
 const tacticalMapPos = hdpx(155)
+const smallBtnScale = 0.9
 
 let hasDoubleChoiceSec = Computed(@() !isFakeSecondary.get() && hasOnlyOneSideGroup.get())
 let hasDoubleChoiceSpec = Computed(@() !isFakeSpecial.get() && hasOnlyOneSideGroup.get())
@@ -83,7 +83,7 @@ return cfgHudCommon.__merge(initHudTuningCfg({
     @(a, aType, scale) mkCircleTankPrimaryGun(a, aType, scale, "btn_weapon_primary_alt", mkCountTextRight),
     {
       canHide = false
-      defTransform = mkLBPos([0, hdpx(-420)])
+      defTransform = mkLBPos([0, hdpx(-395)])
       editView = mkBigCircleBtnEditView("ui/gameuiskin#hud_main_weapon_fire.svg")
       priority = Z_ORDER.BUTTON_PRIMARY
       options = [ optDoublePrimaryGuns ]
@@ -145,17 +145,17 @@ return cfgHudCommon.__merge(initHudTuningCfg({
   }
 
   winch = {
-    ctor = winchButton
+    ctor = @(scale) winchButton(scale * smallBtnScale)
     defTransform = mkLTPos([0, hdpx(100)])
-    editView = mkSquareBtnEditView("ui/gameuiskin#hud_winch.svg")
+    editView = mkSquareBtnEditView("ui/gameuiskin#hud_winch.svg", smallBtnScale)
     isVisibleInBattle = notInReplay
     priority = Z_ORDER.BUTTON
   }
 
   freeCameraButton = {
-    ctor = mkFreeCameraButton
-    defTransform = mkLTPos([hdpx(0), hdpx(240)])
-    editView = mkSquareBtnEditView("ui/gameuiskin#hud_free_camera.svg")
+    ctor = @(scale) mkFreeCameraButton(scale * smallBtnScale)
+    defTransform = mkLTPos([hdpx(0), hdpx(210)])
+    editView = mkSquareBtnEditView("ui/gameuiskin#hud_free_camera.svg", smallBtnScale)
     isVisibleInBattle = notInReplay
     priority = Z_ORDER.BUTTON
   }
@@ -177,41 +177,27 @@ return cfgHudCommon.__merge(initHudTuningCfg({
     })
 
   abToolkit = {
-    ctor = @(scale) function() {
-      let needSplitRepairBtn = Computed(@() optDoubleRepairBtn.has(curUnitHudTuningOptions.get()))
+    function ctor(scale) {
       let actionItem = Computed(@() actionBarItems.get()?[AB_TOOLKIT])
-      return {
-        watch = needSplitRepairBtn
-        children = needSplitRepairBtn.get()
-          ? @() {
-            watch = actionItem
-            children = mkRepairActionItem(EII_TOOLKIT_SPLIT, actionItem.get(), scale)
-          }
-          : tankRrepairButtonCtor(scale)
+      return @() {
+        watch = actionItem
+        children = mkRepairActionItem(EII_TOOLKIT_SPLIT, actionItem.get(), scale)
       }
     }
-    defTransform = actionBarTransform(1)
-    editView = @(opt) function() {
-      let image = optDoubleRepairBtn.has(opt)
-        ? "ui/gameuiskin#hud_consumable_toolkit.svg"
-        : "ui/gameuiskin#hud_consumable_repair.svg"
-      return mkActionItemEditView(image)
-    }
+    defTransform = actionBarTransform(2)
+    editView = mkActionItemEditView("ui/gameuiskin#hud_consumable_toolkit.svg")
     priority = Z_ORDER.STICK
     isVisibleInBattle = isUnitAlive
-    options = [ optDoubleRepairBtn ]
   }
 
   medical = withActionBarButtonCtor(EII_MEDICALKIT, TANK, {
-    defTransform = mkRBPos([hdpx(-300), hdpx(-130)])
+    defTransform = actionBarTransform(1)
     priority = Z_ORDER.STICK
-    isVisible = @(options) optDoubleRepairBtn.has(options)
     isVisibleInBattle = isUnitAlive
-    options = [ optDoubleRepairBtn ]
   })
 
   abSmokeGrenade = withAnyActionBarButtonCtor([ EII_SMOKE_GRENADE, EII_SMOKE_SCREEN ], TANK,
-    { defTransform = actionBarTransform(2) })
+    { defTransform = mkRBPos([hdpx(0), hdpx(-100)]) })
   abArtilleryTarget = withActionBarButtonCtor(EII_ARTILLERY_TARGET, TANK,
     { defTransform = actionBarTransform(3) })
   abSpecialUnit2 = withActionBarButtonCtor(EII_SPECIAL_UNIT_2, TANK,
@@ -262,9 +248,9 @@ return cfgHudCommon.__merge(initHudTuningCfg({
   }
 
   voiceCmdStick = {
-    ctor = voiceMsgStickBlock
-    defTransform = mkRBPos([hdpx(5), hdpx(-130)])
-    editView = voiceMsgStickView
+    ctor = @(scale) voiceMsgStickBlock(scale * smallBtnScale)
+    defTransform = mkLTPos([hdpx(0), hdpx(310)])
+    editView = mkVoiceMsgStickView(smallBtnScale)
     isVisibleInBattle = isVoiceMsgStickVisibleInBattle
     priority = Z_ORDER.STICK
   }

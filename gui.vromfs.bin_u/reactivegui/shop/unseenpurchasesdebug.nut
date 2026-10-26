@@ -46,6 +46,7 @@ let fakeUnseenPurchases = {
       { id = "april_fools_unit_2", gType = "battleMod", count = 36000 },
       { id = "april_fools_unit_3", gType = "battleMod", count = 36000 },
       { id = "april_fools_unit_4", gType = "battleMod", count = 36000 },
+      { id = "main_s39", gType = "bpPoints", count = 75 },
     ]
   }
 }

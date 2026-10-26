@@ -10,6 +10,8 @@ let defShortcutOvr = { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = const
 function mkBtnZone(key, zoneRadiusX, zoneRadiusY) {
   let isVisible = Computed(@() !isGamepad.get() && (userHoldWeapKeys.get()?[key].isHold ?? false))
   let isInside = Computed(@() userHoldWeapInside.get()?[key] ?? true)
+  let zoneFillAnim = [{ prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.5,
+    easing = OutQuad, play = true }]
   return @() !isVisible.get() ? { watch = isVisible }
     : {
         watch = isVisible
@@ -23,24 +25,27 @@ function mkBtnZone(key, zoneRadiusX, zoneRadiusY) {
           color = isInside.get() ? 0x20404040 : 0x20602020
           fillColor = 0
           lineWidth = hdpx(3)
-          commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
-          animations = [{ prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.5,
-            easing = OutQuad, play = true }]
+          commands = const [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
+          animations = zoneFillAnim
         }
       }
 }
 
 let canLock = Computed(@() ((hasTargetCandidate.get() && !hasTarget.get()) || hasTarget.get() ))
 
-let lockButtonIcon = @(targetTrackingImgSize, targetTrackingOffImgSize) @(){
-  watch = [hasTarget, canLock]
-  rendObj = ROBJ_IMAGE
-  size = hasTarget.get() ? [targetTrackingImgSize, targetTrackingImgSize] : [targetTrackingOffImgSize, targetTrackingOffImgSize]
-  image = hasTarget.get()
-    ? Picture($"ui/gameuiskin#hud_target_tracking.svg:{targetTrackingImgSize}:{targetTrackingImgSize}")
-    : Picture($"ui/gameuiskin#hud_target_tracking_off.svg:{targetTrackingOffImgSize}:{targetTrackingOffImgSize}")
-  keepAspect = true
-  color = canLock.get() ? imageColor : textDisabledColor
+function lockButtonIcon(targetTrackingImgSize, targetTrackingOffImgSize) {
+  let onImg = Picture($"ui/gameuiskin#hud_target_tracking.svg:{targetTrackingImgSize}:{targetTrackingImgSize}")
+  let offImg = Picture($"ui/gameuiskin#hud_target_tracking_off.svg:{targetTrackingOffImgSize}:{targetTrackingOffImgSize}")
+  return @(){
+    watch = [hasTarget, canLock]
+    rendObj = ROBJ_IMAGE
+    size = hasTarget.get() ? [targetTrackingImgSize, targetTrackingImgSize] : [targetTrackingOffImgSize, targetTrackingOffImgSize]
+    image = hasTarget.get()
+      ? onImg
+      : offImg
+    keepAspect = true
+    color = canLock.get() ? imageColor : textDisabledColor
+  }
 }
 
 

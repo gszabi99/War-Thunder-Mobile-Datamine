@@ -56,13 +56,13 @@ function mkStreakIcon(unlockId, mSize, numParam = null) {
   }
   return @() {
     vplace = ALIGN_CENTER
-    size = [mSize, mSize]
+    size = mSize
     children
   }
 }
 
 let mkStreakWithMultiplier = @(unlockId, mult, mSize, numParam = null) {
-  size = [mSize, mSize]
+  size = mSize
   children = [
     mkStreakIcon(unlockId, mSize, numParam)
     mult <= 1 ? null

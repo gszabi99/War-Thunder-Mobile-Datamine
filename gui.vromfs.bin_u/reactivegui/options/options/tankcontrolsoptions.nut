@@ -229,6 +229,7 @@ let enableCrewAutoHealingType = {
   onChangeValue = @(v) sendChange("enable_auto_healing", v)
   list = enableCrewAutoHealingList
   valToString = @(v) loc(v ? "options/enable" : "options/disable")
+  description = loc("options/desc/enable_auto_healing")
 }
 
 function applyForceChangeValue() {

@@ -416,11 +416,11 @@ function addOrEditReward(id, view) {
   let updatedRewards = clone mes.rewards
 
   if (id in updatedRewards)
-    updatedRewards[id] = updatedRewards[id].__merge({ view })
+    updatedRewards[id] = { ...updatedRewards[id], view }
   else
     updatedRewards[id] <- { pos = getMiddleScreenMapPos([0, 0]), view }
 
-  setMapElementsState(mes.__merge({ rewards = updatedRewards }), id)
+  setMapElementsState({ ...mes, rewards = updatedRewards }, id)
 }
 
 function deleteElement(id, eType, subId) {
@@ -589,7 +589,7 @@ function applyTransformProgress() {
     if (id not in rewards)
       return
     rewards[id] = rewards[id].__merge({ pos = posExt })
-    setMapElementsState(loadedPage.get().__merge({ rewards }))
+    setMapElementsState({ ...loadedPage.get(), rewards })
     return
   }
 
@@ -685,7 +685,7 @@ function updateCollectionPage(puzzlesCount, savedPreset) {
   let rewards = clone preset?.rewards ?? {}
   preset.rewards <- rewards
 
-  let posStep = 70
+  const posStep = 70
   let columns = max(2, preset.mapSize[0] / posStep)
 
   for (local i = 0; i < puzzlesCount; i++) {
@@ -695,7 +695,7 @@ function updateCollectionPage(puzzlesCount, savedPreset) {
         id,
         pos = [posStep / 2 + posStep * (i % columns), posStep / 2 + posStep * (i / columns)]
         img = "ui/gameuiskin#icon_primary_attention.svg",
-        size = [60, 60],
+        size = const [60, 60],
         rotate = 0
       })
 

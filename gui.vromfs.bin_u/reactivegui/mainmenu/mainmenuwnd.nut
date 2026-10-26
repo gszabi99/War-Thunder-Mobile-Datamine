@@ -10,22 +10,28 @@ from "%appGlobals/loginState.nut" import isReadyToFullLoad
 from "%appGlobals/pServer/campaign.nut" import curCampaign, campaignsList, campConfigs, isAnyCampaignSelected
 from "%appGlobals/pServer/profile.nut" import curUnit, campUnitsCfg
 from "%appGlobals/pServer/slots.nut" import curSlots
-from "%appGlobals/permissions.nut" import allow_subscriptions
+from "%appGlobals/permissions.nut" import allow_subscriptions, allow_clans
 from "%appGlobals/updater/addonsState.nut" import unitSizes
 from "%rGui/globals/fontUtils.nut" import getFontToFitWidth
-from "%rGui/battlePass/battlePassState.nut" import isBpSeasonActive
+from "%rGui/battlePass/battlePassObsoleteState.nut" import isBpSeasonActive
+from "%rGui/battlePass/battlePassState.nut" import isMainBpActive
 import "%rGui/battlePass/bpBanner.nut" as bpBanner
-from "%rGui/battlePass/eventPassState.nut" import isEpSeasonActive
 from "%rGui/battlePass/newPlayerBpState.nut" import openNPWnd, isNPSeasonActive, hasUnseenNpPass,
   hasNpBpRewardsToReceive
-from "%rGui/battlePass/operationPassState.nut" import isOPSeasonActive
 from "%rGui/boosters/boostersListActive.nut" import boostersListActive, boostersHeight
+from "%rGui/clans/clanChatState.nut" import hasClanChatUnseen
+from "%rGui/clans/clanOptionsScene.nut" import clanOptionsScene
+from "%rGui/clans/clanQuestsState.nut" import hasClanQuestsUnseen
+from "%rGui/clans/clanState.nut" import openClanSearch, hasRequiredLvl, isClanBtnClicked, setClanBtnClicked,
+  clanMinCampaignLevel
+from "%rGui/clans/clanSubmissionsState.nut" import hasClanSubmissions
+from "%rGui/clans/currentClanState.nut" import currentClan
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/imageButton.nut" import framedGradientImageBtn
 from "%rGui/components/mkDropDownMenu.nut" import mkDropMenuBtn
-from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
 from "%rGui/components/translucentButton.nut" import translucentButtonsVGap, translucentButtonsWidth,
-  translucentButton, translucentBtnStyles
+  translucentButton, translucentBtnStyles, COMMADN_STATE
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
 from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 import "%rGui/event/btnsOpenSpecialEvents.nut" as btnsOpenSpecialEvents
@@ -51,7 +57,7 @@ from "%rGui/slotBar/slotBar.nut" import slotBarMainMenu, slotBarMainMenuSize, fa
 from "%rGui/slotBar/slotBarConsts.nut" import unitPlateSize, slotsGap
 from "%rGui/slotBar/slotPresetsState.nut" import openSlotPresetWnd
 import "%rGui/shop/subscribitionCalendarWnd.nut" as subscribitionCalendarWnd
-import "%rGui/squad/squadPanel.nut" as squadPanel
+from "%rGui/squad/squadPanel.nut" import squadPanelFull
 from "%rGui/state/profilePremium.nut" import hasPremiumSubs
 from "%rGui/style/gamercardStyle.nut" import gamercardHeight
 from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset, mkColoredGradientY
@@ -69,6 +75,8 @@ from "%rGui/updater/updaterState.nut" import registerAutoDownloadUnits, DLP_MEDI
 import "battleItemsBtn.nut" as battleItemsBtn
 
 
+const lockIconSize = [hdpxi(25),hdpxi(32)]
+const CLAN_LEVEL_REQUIRED = "CLAN_LEVEL_REQUIRED"
 const battleInfoBlockMinHeight = hdpx(120)
 const centerBlockGap = hdpx(20)
 let centerBlockWidth = saSize[0] - 2 * statsWidth
@@ -80,6 +88,8 @@ let { PRIMARY } = translucentBtnStyles
 let campBtnSize = [translucentButtonsVGap * 2 + translucentButtonsWidth * 3, PRIMARY.size[1]]
 let campBtnImageSize = [hdpx(60), hdpx(60)]
 const campBtnGap = hdpx(10)
+
+let isClanBtnLocked = Computed(@() !hasRequiredLvl.get() && currentClan.get() == null)
 
 let mainMenuUnit = Computed(function() {
   if (curUnit.get() != null)
@@ -115,6 +125,8 @@ registerAutoDownloadUnits(
   }),
   DLP_MEDIUM)
 
+let campaignsBtnUnseenMark = priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = const [hdpx(10), hdpx(-10)] })
+
 function campaignsBtn() {
   let maxTxtWidth = campBtnSize[0] - campBtnImageSize[0] - campBtnGap
   let btnTxt = {
@@ -136,14 +148,14 @@ function campaignsBtn() {
               padding = hdpx(10)
               size = campBtnSize
               color = 0xFF000000
-              sound = { click = "click" }
+              sound = const { click = "click" }
               imageSize = campBtnImageSize
               flow = FLOW_HORIZONTAL
               gap = campBtnGap
             },
             btnTxt.__update(getFontToFitWidth(btnTxt, maxTxtWidth, [fontBoldVeryTinyAccentedShaded, fontBoldTinyAccentedShaded])))
           unseenCampaigns.get().len() == 0 ? null
-            : priorityUnseenMark.__merge({ hplace = ALIGN_RIGHT, pos = const [hdpx(10), hdpx(-10)] })
+            : campaignsBtnUnseenMark
         ].filter(@(v) v != null)
   }
 }
@@ -201,6 +213,54 @@ let btnShop = @() translucentButton("ui/gameuiskin#icon_shop.svg",
     children = needShopUnseenMark.get() ? priorityUnseenMark : null
   },
   { iconMul = 0.8, key = "shop_btn" }) 
+
+let shouldShowClanUnseenMark = Computed(@() hasClanSubmissions.get()
+  || hasClanChatUnseen.get()
+  || hasClanQuestsUnseen.get()
+  || (!isClanBtnLocked.get() && !isClanBtnClicked.get()))
+
+function clansBtn() {
+  let lockedMark = {
+    size = lockIconSize
+    rendObj = ROBJ_IMAGE
+    color = 0xFFFFFFFF
+    image = Picture($"ui/gameuiskin#lock_icon.svg:{lockIconSize[0]}:{lockIconSize[1]}:P")
+  }
+
+  let children = @() {
+    watch = [shouldShowClanUnseenMark, isClanBtnLocked]
+    hplace = ALIGN_RIGHT
+    vplace = ALIGN_TOP
+    pos = const [-hdpx(4), hdpx(4)]
+    children = isClanBtnLocked.get() ? lockedMark
+      : shouldShowClanUnseenMark.get() ? priorityUnseenMark
+      : null
+  }
+
+  let openReqLvlMsgBox = @() openMsgBox({
+    uid = CLAN_LEVEL_REQUIRED,
+    text = loc("error/CLAN_LEVEL_REQUIRED", { level = clanMinCampaignLevel.get() }),
+    onBgClick = @() closeMsgBox(CLAN_LEVEL_REQUIRED)})
+
+  function onClick() {
+    if (isClanBtnLocked.get())
+      return openReqLvlMsgBox()
+    setClanBtnClicked()
+    return currentClan.get() != null ? clanOptionsScene() : openClanSearch()
+  }
+
+  return @() {
+    watch = isClanBtnLocked
+    children = translucentButton("ui/gameuiskin#icon_clan_main.svg",
+    onClick,
+    utf8ToUpper(loc("clans")),
+    @(_) children,
+    {
+      iconMul = 0.8,
+      bitMask = COMMADN_STATE.LEFT,
+      contentOvr = { opacity = isClanBtnLocked.get() ? 0.5 : 1 }})
+  }
+}
 
 let isAchievementsAndPromoBtnVisible = Computed(@() isQuestsTabVisible("", questsCfg.get(), questsBySection.get()))
 
@@ -260,24 +320,26 @@ let btnVerRow = @(children, ovr = {}) {
   children
 }.__update(ovr)
 
+let filledSlotsRow = [
+  btnOpenUnitsTree
+  {
+    children = [
+      {
+        size = slotBarMainMenuSize
+        children = slotBarMainMenu
+      }
+      btnChangeSlotsPreset
+    ]
+  }
+]
+
 let leftBottomButtons = @() {
   watch = [curSlots, curCampaign]
   vplace = ALIGN_BOTTOM
   flow = FLOW_VERTICAL
   gap = hdpx(-10)
   children = curSlots.get().len() > 0
-    ? [
-        btnOpenUnitsTree
-        {
-          children = [
-            {
-              size = slotBarMainMenuSize
-              children = slotBarMainMenu
-            }
-            btnChangeSlotsPreset
-          ]
-        }
-      ]
+    ? filledSlotsRow
     : [
         btnOpenUnitsTree
         fakeSlotMainMenu()
@@ -290,10 +352,18 @@ let eventsTitleBlock = {
   color = 0xFFFFFFFF
 }.__update(fontVeryTinyAccented)
 
-let isPassActive = Computed(@() isBpSeasonActive.get() || isOPSeasonActive.get() || isEpSeasonActive.get())
+let isPassActive = Computed(@() isMainBpActive.get() || isBpSeasonActive.get())
 let hasBanner = Computed(@() shouldShowEventMechanics.get()
   && isFitSeasonRewardsRequirements.get()
   && (isPassActive.get() || isEventActive.get()))
+
+let eventsBlockRow = btnVerRow([
+  eventsTitleBlock
+  btnHorRow([
+    btnsOpenSpecialEvents
+    btnNewPlayerBpWnd
+  ])
+], const { gap = hdpx(-10) })
 
 let leftTopButtons = {
   vplace = ALIGN_TOP
@@ -327,17 +397,29 @@ let leftTopButtons = {
       children = isNextBattleNewbieOffline.get() && DBGLEVEL == 0 ? null
         : btnVerRow([
             hasBanner.get() ? bpBanner(isPassActive.get(), isEventActive.get()) : btnOnlyAchievementsAndPromo
-            btnVerRow([
-              eventsTitleBlock
-              btnHorRow([
-                btnsOpenSpecialEvents
-                btnNewPlayerBpWnd
-              ])
-            ], { gap = hdpx(-10) })
+            eventsBlockRow
             btnHorRow([btnShop()])
           ].filter(@(v) v != null))
     }
   ])
+}
+
+let hangarBoosters = boostersListActive("hangar")
+let battleItemsAndBoostersRow = {
+  size = FLEX_H
+  flow = FLOW_HORIZONTAL
+  valign = ALIGN_CENTER
+  halign = ALIGN_RIGHT
+  children = [
+    battleItemsBtn
+    const { size = FLEX }
+    @() {
+      watch = campConfigs
+      size = [SIZE_TO_CONTENT, boostersHeight]
+      valign = ALIGN_CENTER
+      children = (campConfigs.get()?.allBoosters.len() ?? 0) > 0 ? hangarBoosters : null
+    }
+  ]
 }
 
 let toBattleButtonPlace = {
@@ -346,29 +428,16 @@ let toBattleButtonPlace = {
   halign = ALIGN_RIGHT
   flow = FLOW_VERTICAL
   children = [
-    {
+    @() {
+      watch = [allow_clans, shouldShowEventMechanics]
       size = FLEX_H
       halign = ALIGN_RIGHT
       flow = FLOW_VERTICAL
       gap = hdpx(20)
       children = [
-        squadPanel
-        {
-          size = FLEX_H
-          flow = FLOW_HORIZONTAL
-          valign = ALIGN_CENTER
-          halign = ALIGN_RIGHT
-          children = [
-            battleItemsBtn
-            { size = FLEX }
-            @() {
-              watch = campConfigs
-              size = [SIZE_TO_CONTENT, boostersHeight]
-              valign = ALIGN_CENTER
-              children = (campConfigs.get()?.allBoosters.len() ?? 0) > 0 ? boostersListActive("hangar") : null
-            }
-          ]
-        }
+        allow_clans.get() && shouldShowEventMechanics.get() ? clansBtn() : null
+        squadPanelFull
+        battleItemsAndBoostersRow
       ]
     }
     {

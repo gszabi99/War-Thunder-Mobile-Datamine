@@ -84,7 +84,7 @@ function mkRateStarsRow(valueWatch, needInteractive, needBig) {
       let res = {
         watch = valueWatch
         rendObj = ROBJ_IMAGE
-        size = [ iconSize, iconSize ]
+        size = iconSize
         image = Picture($"ui/gameuiskin#{icon}.svg:{iconSize}:{iconSize}")
       }
       if (needInteractive)

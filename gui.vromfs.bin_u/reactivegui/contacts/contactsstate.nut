@@ -17,7 +17,7 @@ from "%rGui/contacts/contact.nut" import updateContact, updateContactNames
 from "%rGui/contacts/contactLists.nut" import contactsLists
 from "%rGui/contacts/contactPresence.nut" import presences, updatePresences
 from "%rGui/contacts/contactsClient.nut" import contactsRequest, contactsRegisterHandler
-from "%rGui/matching/matchingApi.nut" import matchingRpcCall, matchingRpcRegisterHandler
+from "%rGui/matching/matchingApi.nut" import matchingRequest, matchingRegisterHandler
 let logC = log_with_prefix("[CONTACTS] ")
 
 const GAME_GROUP_NAME = "warthunder"
@@ -26,6 +26,7 @@ const FETCH_CB = "contacts.onFetch"
 const SEARCH_TAB = "search"
 const FRIENDS_TAB = "friends"
 const SQUAD_TAB = "squad"
+const SQUAD_APPLICATIONS_TAB = "squad_applications"
 const RETRY_FETCH_TIME = 60
 
 let isContactsOpened = mkWatched(persist, "isContactsOpened", false)
@@ -69,7 +70,7 @@ let searchContactsResult = Computed(function() {
 })
 searchContactsResult.subscribe(updateContactNames)
 
-let getContactsInviteId = @(uid) $"contacts_invite_{uid}"
+let getContactsInviteId = @[pure, nodiscard](uid) $"contacts_invite_{uid}"
 let buildFullListName = @(name) $"#{GAME_GROUP_NAME}#{name}"
 
 myInfo.subscribe(function(info) {
@@ -112,7 +113,7 @@ function updateAllLists(new_contacts) {
   updateContactNames(contactNames)
 }
 
-let fetchContactsImpl = @() matchingRpcCall("mpresence.reload_contact_list", null, FETCH_CB)
+let fetchContactsImpl = @() matchingRequest("mpresence.reload_contact_list", null, FETCH_CB)
 
 function fetchContacts() {
   if (canFetchContacts.get())
@@ -137,7 +138,7 @@ function onFetchContacts(result) {
     contactsInProgress.set(contactsInProgress.get().filter(@(v) !v))
 }
 
-matchingRpcRegisterHandler(FETCH_CB, onFetchContacts)
+matchingRegisterHandler(FETCH_CB, onFetchContacts)
 
 function fetchIfNeed() {
   if (!canFetchContacts.get() || !isFetchDelayed.get())
@@ -317,9 +318,11 @@ return {
   clearSearchData
 
   openContacts
+  closeContacts = @() isContactsOpened.set(false)
   SEARCH_TAB
   FRIENDS_TAB
   SQUAD_TAB
+  SQUAD_APPLICATIONS_TAB
   contactsOpenTabId
   isContactsOpened
   getContactsInviteId

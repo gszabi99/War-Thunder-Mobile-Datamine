@@ -62,6 +62,15 @@ let premImageMain = @() {
 }
 
 
+let premiumTimeAnims = [
+  { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.15, easing = OutQuad,
+    play = true, trigger = "premiumAnimSkip" }
+  { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.3, easing = OutQuad,
+    playFadeOut = true, trigger = "premiumAnimSkip" }
+  { prop = AnimProp.translate, to = const [0, hdpx(50)], duration = 0.3, easing = OutQuad,
+    playFadeOut = true, trigger = "premiumAnimSkip" }
+]
+
 function premiumTime(style = CS_GAMERCARD) {
   local timeLeft = max(0, visibleEndsAt.get() - serverTime.get())
   if (timeLeft >= 3 * TIME_DAY_IN_SECONDS)  
@@ -79,14 +88,7 @@ function premiumTime(style = CS_GAMERCARD) {
     text = timeLeft > 0 ? secondsToHoursLoc(timeLeft) : "".concat(0, loc("measureUnits/days"))
     color = premiumTextColor
     transform = {}
-    animations = [
-      { prop = AnimProp.opacity, from = 0.0, to = 1.0, duration = 0.15, easing = OutQuad,
-        play = true, trigger = "premiumAnimSkip" }
-      { prop = AnimProp.opacity, from = 1.0, to = 0.0, duration = 0.3, easing = OutQuad,
-        playFadeOut = true, trigger = "premiumAnimSkip" }
-      { prop = AnimProp.translate, to = [0, hdpx(50)], duration = 0.3, easing = OutQuad,
-        playFadeOut = true, trigger = "premiumAnimSkip" }
-    ]
+    animations = premiumTimeAnims
     fontFxColor = style.fontFxColor
     fontFxFactor = style.fontFxFactor
     fontFx = style.fontFx

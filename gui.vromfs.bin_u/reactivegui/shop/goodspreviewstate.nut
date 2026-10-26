@@ -7,7 +7,7 @@ from "%appGlobals/pServer/pServerApi.nut" import shopPurchaseInProgress, persona
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/rewardType.nut" import unitRewardTypes, G_UNIT, G_UNIT_UPGRADE, G_BLUEPRINT, G_CURRENCY, G_LOOTBOX,
-  G_PREMIUM, G_SKIN
+  G_PREMIUM, G_SKIN, G_BP_POINTS
 from "%appGlobals/updater/addonsState.nut" import unitSizes
 from "%rGui/mainMenu/mainMenuState.nut" import isInMenuNoModals
 from "%rGui/shop/goodsUtils.nut" import getBestUnitByGoods
@@ -16,6 +16,7 @@ from "%rGui/shop/offerState.nut" import activeOffer
 from "%rGui/shop/personalGoodsState.nut" import activePersonalGoods
 from "%rGui/shop/platformGoods.nut" import platformPurchaseInProgress
 from "%rGui/shop/rewardsToShopGoods.nut" import personalGoodsToShopGoods
+from "%rGui/rewards/rewardViewInfo.nut" import getBlueprintMax
 from "%rGui/shop/shopState.nut" import shopGoodsAllCampaigns, saveSeenGoods
 from "%rGui/updater/updaterState.nut" import openDownloadAddonsWnd
 
@@ -28,6 +29,7 @@ const GPT_SLOTS = "slots"
 const GPT_BLUEPRINT = "blueprint"
 const GPT_SKIN = "skin"
 const GPT_PUZZLE_PIECE = "puzzle_piece"
+const GPT_BP_POINTS = "bp_points"
 
 const HIDE_PREVIEW_MODALS_ID = "goodsPreviewAnim"
 
@@ -38,7 +40,7 @@ let openPreviewCount = Watched(openedGoodsId.get() == null ? 0 : 1)
 let openedSubsId = mkWatched(persist, "openedSubsId", null)
 
 
-function getAllTagsUnitsToShowGoods(goods) {
+function [pure, nodiscard] getAllTagsUnitsToShowGoods(goods) {
   let res = {}
   if (goods?.meta.previewUnit != null)
     res[goods.meta.previewUnit] <- true
@@ -48,7 +50,7 @@ function getAllTagsUnitsToShowGoods(goods) {
   return res
 }
 
-let getNotLoadedTagsUnitsToShowGoods = @(goods, uSizes)
+let getNotLoadedTagsUnitsToShowGoods = @[pure, nodiscard](goods, uSizes)
   getAllTagsUnitsToShowGoods(goods).filter(@(_, u) (uSizes?[u] ?? -1) != 0)
 
 let getPreviewGoods = @(id, activeOff, activeOffsByGoods, shopGoods, persGoods)
@@ -108,6 +110,7 @@ let previewTypeByGType = {
   [G_LOOTBOX] = GPT_LOOTBOX,
   [G_CURRENCY] = GPT_CURRENCY,
   [G_PREMIUM] = GPT_PREMIUM,
+  [G_BP_POINTS] = GPT_BP_POINTS,
 }
 
 let getPreviewType = @(goods) (goods?.slotsPreset ?? "") != "" ? GPT_SLOTS
@@ -150,8 +153,8 @@ offerUnitName.subscribe(function(v) {
 let needValidate = {
   [G_UNIT] = @(r, profile, _) r.id in profile?.units,
   [G_UNIT_UPGRADE] = @(r, profile, _) profile?.units[r.id].isUpgraded ?? false,
-  [G_BLUEPRINT] = @(r, profile, configs) r.id in profile?.units
-    || (profile?.blueprints[r.id] ?? 0) + r.count > (configs?.allBlueprints[r.id].targetCount ?? 0),
+  [G_BLUEPRINT] = @(r, profile, configs)
+    (profile?.blueprints[r.id] ?? 0) + r.count > getBlueprintMax(r.id, profile, configs),
 }
 
 servProfile.subscribe(function(servProfileV){
@@ -179,6 +182,7 @@ return {
   GPT_BLUEPRINT
   GPT_SKIN
   GPT_PUZZLE_PIECE
+  GPT_BP_POINTS
 
   HIDE_PREVIEW_MODALS_ID
 

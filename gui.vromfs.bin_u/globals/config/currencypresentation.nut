@@ -9,9 +9,9 @@ let iconsScale = {
   ship_tool_kit = 1.6
   ship_smoke_screen_system_mod = 1.5
   tank_tool_kit_expendable = 1.5
-  tank_medical_kit = 1.5
-  tank_extinguisher = 1.6
-  spare = 1.8
+  tank_medical_kit = 1.3
+  tank_extinguisher = 1.3
+  spare = 1.3
   firework_kit = 1.4
   warbond = 1.4
   eventKey = 1.2
@@ -26,6 +26,7 @@ let iconsScale = {
   anniversarybond = 1.4
   anniversarytoken = 1.3
   halloweenbond = 1.4
+  halloweentoken = 1.3
   blackfridaybond = 1.4
   hotmaybond = 1.4
   independencebond = 1.4
@@ -35,6 +36,7 @@ let iconsScale = {
   ukbond = 1.3
   japanbond = 1.3
   maptoken = 0.9
+  main_s39 = 1.4
 }
 let maxIconsScale = iconsScale.reduce(@(a, b) max(a, b))
 
@@ -57,6 +59,7 @@ let icons = {
   anniversarybond = "ui/gameuiskin#warbond_icon_anniversarybond_2026.avif"
   anniversarytoken = "ui/gameuiskin#warbond_icon_anniversarytoken_2026.avif"
   halloweenbond = "ui/gameuiskin#warbond_icon_halloweenbond_2025.avif"
+  halloweentoken = "ui/gameuiskin#warbond_icon_halloweentoken_2026.avif"
   valentinebond = "ui/gameuiskin#warbond_icon_valentinebond_2026.avif"
   candybond = "ui/gameuiskin#warbond_icon_candybond_2026.avif"
   lollipopbond = "ui/gameuiskin#warbond_icon_lollipopbond_2026.avif"
@@ -77,6 +80,8 @@ let icons = {
   spare = "ui/gameuiskin#shop_consumables_tank_cards_gamercard.avif"
   firework_kit = "ui/gameuiskin#shop_fireworks_gamercard.avif"
   ircm_kit = "ui/gameuiskin#icon_ircm.avif"
+  
+  main_s39 = "ui/gameuiskin#warbond_icon_passpoints_s39.avif"
 }
 
 let bigIcons = {
@@ -95,6 +100,7 @@ let bigIcons = {
   anniversarybond = "ui/gameuiskin#anniversarybond_goods_2026_01.avif"
   anniversarytoken = "ui/gameuiskin#anniversarytoken_goods_2026_01.avif"
   halloweenbond = "ui/gameuiskin#halloweenbond_goods_2025_01.avif"
+  halloweentoken = "ui/gameuiskin#halloweentoken_goods_2026_01.avif"
   valentinebond = "ui/gameuiskin#valentinebond_goods_2026_01.avif"
   candybond = "ui/gameuiskin#candybond_goods_2026_01.avif"
   lollipopbond = "ui/gameuiskin#lollipopbond_goods_2026_01.avif"

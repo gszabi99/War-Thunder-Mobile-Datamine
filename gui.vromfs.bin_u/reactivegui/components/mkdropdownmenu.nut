@@ -25,6 +25,8 @@ let isDropDownMenuOpened = Watched(false)
 
 function makeMenuBtn(onClick, icon, iconSize) {
   let stateFlags = Watched(0)
+  let menuIcon = Picture($"{icon}:{iconSize}:{iconSize}:P")
+  let hotkeys = [["^J:Start", loc("mainmenu/menu")]]
   return @() {
     watch = [stateFlags, isDropDownMenuOpened]
     size = const [menuButtonSize, menuButtonSize]
@@ -38,13 +40,13 @@ function makeMenuBtn(onClick, icon, iconSize) {
     borderWidth = isDropDownMenuOpened.get() ? menuButtonBorderWidth : 0
     borderColor = borderColor
     children = {
-      size = [iconSize, iconSize]
+      size = iconSize
       rendObj = ROBJ_IMAGE
-      image = Picture($"{icon}:{iconSize}:{iconSize}:P")
+      image = menuIcon
       color = stateFlags.get() & S_HOVER ? hoverColor : textColor
     }
-    sound = { click  = "menu_appear" }
-    hotkeys = [["^J:Start", loc("mainmenu/menu")]]
+    sound = const { click  = "menu_appear" }
+    hotkeys
   }
 }
 
@@ -61,6 +63,15 @@ function closeWithCb(cb) {
 function textButton(btn, onClick) {
   let { name, icon = null } = btn
   let stateFlags = Watched(0)
+  let gradientImage = btnGradientVert()
+  let iconChild = icon != null
+    ? {
+        size = const [optionIconSize, optionIconSize]
+        rendObj = ROBJ_IMAGE
+        image = Picture($"{icon}:{optionIconSize}:{optionIconSize}:P")
+        keepAspect = true
+      }
+    : null
   return function() {
     let sf = stateFlags.get()
     return {
@@ -69,25 +80,18 @@ function textButton(btn, onClick) {
       minWidth = SIZE_TO_CONTENT
       padding = hdpx(15)
       rendObj = sf & S_HOVER ? ROBJ_BOX : ROBJ_IMAGE
-      image = sf & S_HOVER ? null : btnGradientVert()
+      image = sf & S_HOVER ? null : gradientImage
       fillColor = sf & S_HOVER ? optionActiveColor : null
       halign = ALIGN_LEFT
       valign = ALIGN_CENTER
       behavior = Behaviors.Button
       onClick = onClick
-      sound = { click  = "choose" }
+      sound = const { click  = "choose" }
       onElemState = @(s) stateFlags.set(s)
       flow = FLOW_HORIZONTAL
       gap = hdpx(30)
       children = [
-        icon != null
-          ? {
-              size = const [optionIconSize, optionIconSize]
-              rendObj = ROBJ_IMAGE
-              image = Picture($"{icon}:{optionIconSize}:{optionIconSize}:P")
-              keepAspect = true
-            }
-          : null
+        iconChild
         {
           rendObj = ROBJ_TEXT
           text = name

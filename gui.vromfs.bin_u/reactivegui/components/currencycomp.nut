@@ -3,6 +3,7 @@ from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/config/currencyPresentation.nut" import getIconSize, currencyIconsColor, getCurrencyImage,
   getCurrencyFallback
 import "%rGui/components/currencyStyles.nut" as currencyStyles
+from "%rGui/components/spinner.nut" import mkSpinner
 from "%rGui/shop/priceExt.nut" import getPriceExtStr
 from "%rGui/textFormatByLang.nut" import decimalFormat, shortTextFromNum
 from "types" import Integer
@@ -15,7 +16,7 @@ function mkCurrencyImage (id, size, ovr = {}) {
   let iconSize = getIconSize(id, size)
   return {
     rendObj = ROBJ_IMAGE
-    size = [iconSize, iconSize]
+    size = iconSize
     vplace = ALIGN_CENTER
     color = currencyIconsColor?[id] ?? 0xFFFFFFFF
     keepAspect = KEEP_ASPECT_FIT
@@ -37,16 +38,22 @@ let mkCurrencyText = @(value, style) {
   fontFx = style.fontFx
 }.__update(style.fontStyle)
 
-let mkCurrencyComp = @(value, currencyId, style = CS_COMMON, imgChild = null) {
+let mkCurrencyRow = @(currencyId, style, imgChild, valueComp) {
   flow = FLOW_HORIZONTAL
   size = [SIZE_TO_CONTENT, style.iconSize]
   valign = ALIGN_CENTER
   gap = style.iconGap
   children = [
     mkCurrencyImage(currencyId, style.iconSize, { key = style?.iconKey, children = imgChild })
-    mkCurrencyText(value, style)
+    valueComp
   ]
 }
+
+let mkCurrencyComp = @(value, currencyId, style = CS_COMMON, imgChild = null)
+  mkCurrencyRow(currencyId, style, imgChild, mkCurrencyText(value, style))
+
+let mkCurrencyWaitComp = @(currencyId, style = CS_COMMON, imgChild = null)
+  mkCurrencyRow(currencyId, style, imgChild, mkSpinner(style.iconSize))
 
 let mkFreeText = @(style = CS_COMMON) {
   rendObj = ROBJ_TEXT
@@ -129,7 +136,7 @@ function mkExp(value, color, style = CS_GAMERCARD) {
     gap = style.iconGap
     children = [
       {
-        size = [ style.iconSize, style.iconSize ]
+        size = style.iconSize
         rendObj = ROBJ_IMAGE
         image = Picture($"!ui/gameuiskin#experience_icon.svg:{style.iconSize}:{style.iconSize}")
         keepAspect = KEEP_ASPECT_FIT
@@ -154,6 +161,7 @@ return freeze(currencyStyles.__merge({
 
   mkFreeText
   mkCurrencyComp
+  mkCurrencyWaitComp
   mkDiscountPriceComp
   mkPriceExtText
   mkDiscountPriceExtComp

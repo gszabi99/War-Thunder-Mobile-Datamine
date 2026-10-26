@@ -90,7 +90,7 @@ function mkReloadPartData(action, color) {
 let reloadSecAction = Computed(@() isSecondaryBulletsSame.get() ? secondaryAction.get() : null)
 let reloadIndicator = @() {
   watch = [primaryAction, primaryExtraAction, reloadSecAction]
-  size = [crosshairReloadSize, crosshairReloadSize]
+  size = crosshairReloadSize
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   children = [
@@ -129,7 +129,7 @@ let pointCrosshair = {
 
 let circleCrosshair = {
   key = {}
-  size = [crosshairSize, crosshairSize]
+  size = crosshairSize
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = crosshairLineWidth
   fillColor = 0
@@ -148,7 +148,7 @@ let circleCrosshair = {
         [VECTOR_LINE, 50, -crosshairLineSize, 50, crosshairLineSize],
         [VECTOR_LINE, 50, 100 - crosshairLineSize, 50, 100 + crosshairLineSize],
       ]
-      transform = { pivot = [0.5, 0.5] }
+      transform = { pivot = 0.5 }
       animations = [
         fireAnimationIncreaseSize,
         { prop = AnimProp.scale, from = [1.3, 1.3], to = [1.0, 1.0],
@@ -156,12 +156,12 @@ let circleCrosshair = {
       ]
     }
   ]
-  transform = { pivot = [0.5, 0.5] }
+  transform = { pivot = 0.5 }
   animations = fireAnimationsInZomm
 }
 
 let mkCrosshairAutoAim = @(color) {
-  size = [crosshairSize, crosshairSize]
+  size = crosshairSize
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = crosshairLineWidth
   fillColor = 0
@@ -171,7 +171,7 @@ let mkCrosshairAutoAim = @(color) {
     [VECTOR_LINE, 50, 10, 50, 90],
     [VECTOR_LINE, 10, 50, 90, 50],
   ]
-  transform = { pivot = [0.5, 0.5] }
+  transform = { pivot = 0.5 }
   key = "crosshairInZoom"
   animations = fireAnimationsInZomm
   children = reloadIndicator

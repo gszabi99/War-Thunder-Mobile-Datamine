@@ -22,20 +22,24 @@ function toggleSubscription(event, func, isEnable) {
   toggleFunc(event, func)
 }
 
-let mkDmViewerHint = @(isVisible, x, y, children) @() !isVisible.get() ? { watch = isVisible } : {
-  watch = isVisible
-  size = 0
-  children = @() {
+function mkDmViewerHint(isVisible, x, y, children) {
+  let hintBox = {
+    padding = const [hintPad - hitTitleGap, hintPad, hintPad, hintPad]
+    rendObj = ROBJ_SOLID
+    color = hintBgColor
+    children
+  }
+  let hint = @() {
     watch = [x, y]
     size = 0
     pos = [x.get() + (hintShiftX * (x.get() < hintRightAlignedMaxX ? 1 : -1)), y.get() + hintShiftY]
     halign = x.get() < hintRightAlignedMaxX ? ALIGN_LEFT : ALIGN_RIGHT
-    children = {
-      padding = const [hintPad - hitTitleGap, hintPad, hintPad, hintPad]
-      rendObj = ROBJ_SOLID
-      color = hintBgColor
-      children
-    }
+    children = hintBox
+  }
+  return @() !isVisible.get() ? { watch = isVisible } : {
+    watch = isVisible
+    size = 0
+    children = hint
   }
 }
 

@@ -115,5 +115,87 @@
   },
   "technicsSkins": {
     "groundSkin": "sand"
+  },
+  "overrideRiLodRange": {
+    "phi_octahedron_b": {
+      "lod0": 5000.0,
+      "lod1": 8000.0
+    },
+    "phi_octahedron_a": {
+      "lod0": 5000.0,
+      "lod1": 8000.0
+    },
+    "phi_wall_c": {
+      "lod0": 5000.0,
+      "lod1": 8000.0
+    },
+    "phi_wall_b": {
+      "lod0": 5000.0,
+      "lod1": 8000.0
+    },
+    "phi_wall_a": {
+      "lod0": 5000.0,
+      "lod1": 8000.0
+    },
+    "phi_cliff_a": {
+      "lod0": 5000.0,
+      "lod1": 8000.0
+    },
+    "halloween_tree_lamp": {
+      "lod0": 25.0,
+      "lod1": 50.0,
+      "lod2": 120.0
+    },
+    "halloween_pumpkin": {
+      "lod0": 25.0,
+      "lod1": 50.0,
+      "lod2": 120.0
+    },
+    "halloween_pumpkin_single": {
+      "lod0": 25.0,
+      "lod1": 50.0,
+      "lod2": 120.0
+    },
+    "halloween_lamp_chain": {
+      "lod0": 25.0,
+      "lod1": 50.0,
+      "lod2": 120.0
+    },
+    "phi_cliff_c": {
+      "lod0": 5000.0,
+      "lod1": 10000.0
+    },
+    "phi_peak_b": {
+      "lod0": 5000.0,
+      "lod1": 8000.0
+    },
+    "phi_peak_c": {
+      "lod0": 5000.0,
+      "lod1": 8000.0
+    },
+    "phi_peak_a": {
+      "lod0": 5000.0,
+      "lod1": 8000.0
+    },
+    "phi_cliff_b": {
+      "lod0": 5000.0,
+      "lod1": 8000.0
+    },
+    "phi_column_b": {
+      "lod0": 5000.0,
+      "lod1": 8000.0
+    },
+    "phi_column_a": {
+      "lod0": 5000.0,
+      "lod1": 8000.0
+    },
+    "phi_land_b": {
+      "lod0": 5000.0,
+      "lod1": 8000.0
+    },
+    "phi_land_a": {
+      "lod0": 5000.0,
+      "lod1": 8000.0
+    }
   }
 }

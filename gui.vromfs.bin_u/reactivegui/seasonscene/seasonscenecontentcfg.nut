@@ -1,10 +1,14 @@
 from "%globalsDarg/darg_library.nut" import *
+from "dagor.localize" import doesLocTextExist
 from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentation
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
-from "%rGui/battlePass/battlePassState.nut" import hasBpRewardsToReceive, battlePassGoods, bpFreeRewardsUnlock,
+from "%appGlobals/rewardType.nut" import G_CURRENCY
+from "%rGui/battlePass/battlePassWnd.nut" import battlePassContent
+from "%rGui/battlePass/battlePassObsoleteState.nut" import hasBpRewardsToReceive, battlePassGoods, bpFreeRewardsUnlock,
   bpPaidRewardsUnlock, bpProgressUnlock
 import "%rGui/collections/collectionScene.nut" as collectionScene
 from "%rGui/collections/collectionsState.nut" import mkCollectionHasUnseen
+from "%rGui/battlePass/battlePassState.nut" import curBpPages, curBpId
 from "%rGui/battlePass/eventPassState.nut" import hasEpRewardsToReceive, hasEpRewardsToReceiveByTableId,
   eventsPassList, allEventPassGoods, eventFreeRewardsUnlock, eventPaidRewardsUnlock, eventProgressUnlock
 from "%rGui/battlePass/operationPassState.nut" import hasOPRewardsToReceive, operationPassGoods, OP_EVENT_ID,
@@ -14,23 +18,27 @@ from "%rGui/battlePass/passState.nut" import visibleTabs, BATTLE_PASS, OPERATION
   seenPasses, isPassGoodsUnseen
 from "%rGui/event/eventState.nut" import curEventCurrencies, MAIN_EVENT_ID, specialEvents, unseenLootboxes,
   unseenLootboxesShowOnce, subEventsByMain
-import "%rGui/event/eventWnd.nut" as eventWnd
+from "%rGui/event/eventWnd.nut" import eventWnd, hasEventWndSquadPanel
 from "%rGui/event/treeEvent/treeEventWnd.nut" import treeEventMapWnd, contentOverlayShadeColor
 from "%rGui/event/treeEvent/treeEventState.nut" import curEventMapCurrencies, mkEventMapHasUnseen
-from "%rGui/event/gmEventState.nut" import openedGmEventId
-import "%rGui/event/gmEventWnd.nut" as gmEventWnd
+from "%rGui/event/gmEventState.nut" import curGmList, openedGmEventId, getGameModePresentationByMode
+from "%rGui/event/gmEventWnd.nut" import gmEventWnd, hasGmEventSquadPanel
 from "%rGui/leaderboard/lbWnd.nut" import lbScene
 from "%rGui/quests/questsState.nut" import questsCfg, curTabParams, progressUnlockByTab, hasUnseenQuestsBySection,
   hasRewardQuestsBySection, progressUnlockBySection
 import "%rGui/quests/questsWnd.nut" as questsWndCtor
-from "%rGui/seasonScene/seasonSceneState.nut" import PASS_SCENE, QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB, BATTLE_TAB,
-  MAP_TAB, LEADERBOARD_TAB, questTabsByEventId, isSeasonTabVisible, seasonShopId, COLLECTION_TAB
+from "%rGui/seasonScene/seasonSceneState.nut" import QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB, BATTLE_TAB,
+  BATTLE_TAB_2, BATTLE_TAB_3, MAP_TAB, LEADERBOARD_TAB, questTabsByEventId, isSeasonTabVisible, seasonShopId,
+  COLLECTION_TAB, BATTLE_TAB_MODE_IDX, PASS_OBSOLETE_SCENE, PASS_SCENE
 from "%rGui/shop/eventShopState.nut" import getShopIdForEventId
 from "%rGui/shop/lootboxPreviewState.nut" import isEventWndLootboxOpen, closeEventWndLootbox
 from "%rGui/shop/shopState.nut" import hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop,
   personalGoodsByShop, shopCurCategories
 import "%rGui/shop/shopWnd.nut" as eventShopTabContent
 from "%rGui/shop/shopWndPage.nut" import mkShopHeaderRight
+from "%rGui/components/currencyStyles.nut" import gamercardGap
+from "%rGui/mainMenu/balanceComps.nut" import mkBpPointsBalance
+from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
 from "%rGui/unlocks/unlocks.nut" import getAllUnlockCurrencies
 from "%rGui/unlocks/userstat.nut" import userstatStatsTables
 
@@ -45,6 +53,7 @@ let contentCfgDefaults = {
   onBack = null 
   mkHasUnseen = null 
   sceneShadeColor = null 
+  hasSquadPanel = null 
 }
 
 let getQuestTabs = @(eventId, subEventsByMainV)
@@ -57,8 +66,51 @@ let hasQuestsUnseen = @(tabsList, questsCfgV, prUnlockByTab, hasUnseenBySection,
       || questsCfgV?[tabId].findvalue(@(s) !!hasUnseenBySection?[s]
           || !!prUnlockBySection?[s]?.hasReward) != null)
 
+
+function mkBattleModeTab(tabId) {
+  let mode = Computed(@() curGmList.get()?[BATTLE_TAB_MODE_IDX[tabId]])
+  let modePresentation = Computed(@() getGameModePresentationByMode(mode.get()))
+  return {
+    icon = Computed(@() modePresentation.get().icon ?? getEventPresentation(openedGmEventId.get()).icon)
+    label = Computed(function() {
+      let gm = mode.get()
+      return modePresentation.get().locId ?? gm?.loc_name
+        ?? (gm == null ? null
+          : doesLocTextExist($"gameMode/{gm.name}") ? $"gameMode/{gm.name}" : gm.name)
+    })
+    content = @() gmEventWnd
+    hasSquadPanel = hasGmEventSquadPanel
+  }
+}
+
 let sceneContentCfg = {
   [PASS_SCENE] = {
+    icon = "ui/gameuiskin#icon_bp.svg"
+    label = "pass"
+    function headerRightCtor() {
+      let currencies = Computed(function() {
+        let resTbl = {}
+        foreach (page in curBpPages.get() ?? [])
+          foreach (slot in page.slots)
+            foreach (g in slot.rewards)
+              if ((g?.gType ?? "") == G_CURRENCY)
+                resTbl[g?.id ?? ""] <- true
+        return resTbl.keys()
+      })
+      return @() {
+        watch = [currencies, curBpId]
+        hplace = ALIGN_RIGHT
+        flow = FLOW_HORIZONTAL
+        gap = gamercardGap
+        children = [
+          curBpId.get() != null ? mkBpPointsBalance(curBpId.get()) : null
+          mkCurrenciesBtns(currencies.get(), const {}, const { size = SIZE_TO_CONTENT })
+        ].filter(@(v) v != null)
+      }
+    }
+    content = @() battlePassContent
+  },
+  [PASS_OBSOLETE_SCENE] = {
     key = "pass_tab_btn" 
     icon = "ui/gameuiskin#icon_bp.svg"
     label = "pass"
@@ -133,6 +185,7 @@ let sceneContentCfg = {
     label = "trophies"
     currencies = curEventCurrencies
     content = @() eventWnd
+    hasSquadPanel = hasEventWndSquadPanel
     function onBack() {
       if (!isEventWndLootboxOpen.get())
         return false
@@ -142,11 +195,9 @@ let sceneContentCfg = {
     mkHasUnseen = @(eventId) Computed(@() (unseenLootboxes.get()?[eventId.get()].len() ?? 0) > 0
       || unseenLootboxesShowOnce.get().findindex(@(v) v == eventId.get()) != null)
   },
-  [BATTLE_TAB] = {
-    icon = Computed(@() getEventPresentation(openedGmEventId.get()).icon)
-    label = "mainmenu/toBattle/short"
-    content = @() gmEventWnd
-  },
+  [BATTLE_TAB] = mkBattleModeTab(BATTLE_TAB),
+  [BATTLE_TAB_2] = mkBattleModeTab(BATTLE_TAB_2),
+  [BATTLE_TAB_3] = mkBattleModeTab(BATTLE_TAB_3),
   [MAP_TAB] = {
     icon = "ui/gameuiskin#data_mark_geo.svg"
     label = "mainmenu/treeEvent"
@@ -173,6 +224,11 @@ let sceneContentCfg = {
     mkHasUnseen = mkCollectionHasUnseen
   },
 }
-  .map(@(c, id) contentCfgDefaults.__merge(c, { isVisible = isSeasonTabVisible[id].watched }))
+  .map(function(c, id) {
+    let cfg = contentCfgDefaults.__merge(c, { isVisible = isSeasonTabVisible[id].watched })
+    cfg.icon = cfg.icon instanceof Watched ? cfg.icon : Watched(cfg.icon)
+    cfg.label = cfg.label instanceof Watched ? cfg.label : Watched(cfg.label)
+    return cfg
+  })
 
 return sceneContentCfg

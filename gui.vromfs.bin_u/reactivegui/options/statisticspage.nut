@@ -141,38 +141,38 @@ let mkInfo = @(campaign, unitsStats) modalWndBg.__merge({
 
 let inc = @(res, key) res.$rawset(key, (res?[key] ?? 0) + 1)
 
+let unitsStats = Computed(function() {
+  let { unitLevels = {}, allUnits = {}, unitResearchExp = {}, allBlueprints = {} } = serverConfigs.get()
+  let { units = {} } = servProfile.get()
+  let res = {}
+  foreach (name, u in allUnits) {
+    let { levelPreset = "0", campaign = "", isCollectible = false, isHidden = false,
+      isPremium = false, maxLevel = null
+    } = u
+    if (name in unreleasedUnits.get())
+      continue
+    let counts = getSubTable(res, campaign)
+    let listId = name in unitResearchExp ? "Research"
+      : name in allBlueprints ? "Blueprint"
+      : isCollectible ? "Collectible"
+      : isPremium && !isHidden ? "Premium"
+      : isPremium ? "SeasonPrem"
+      : "Other"
+    inc(counts, "all")
+    inc(counts, $"all{listId}")
+
+    if (name not in units)
+      continue
+    inc(counts, "my")
+    inc(counts, $"my{listId}")
+    let { level } = units[name]
+    if (level >= (maxLevel ?? unitLevels?[levelPreset].len() ?? 0)) 
+      inc(counts, "myMaxLevel")
+  }
+  return res
+})
+
 return function() {
-  let unitsStats = Computed(function() {
-    let { unitLevels = {}, allUnits = {}, unitResearchExp = {}, allBlueprints = {} } = serverConfigs.get()
-    let { units = {} } = servProfile.get()
-    let res = {}
-    foreach (name, u in allUnits) {
-      let { levelPreset = "0", campaign = "", isCollectible = false, isHidden = false,
-        isPremium = false, maxLevel = null
-      } = u
-      if (name in unreleasedUnits.get())
-        continue
-      let counts = getSubTable(res, campaign)
-      let listId = name in unitResearchExp ? "Research"
-        : name in allBlueprints ? "Blueprint"
-        : isCollectible ? "Collectible"
-        : isPremium && !isHidden ? "Premium"
-        : isPremium ? "SeasonPrem"
-        : "Other"
-      inc(counts, "all")
-      inc(counts, $"all{listId}")
-
-      if (name not in units)
-        continue
-      inc(counts, "my")
-      inc(counts, $"my{listId}")
-      let { level } = units[name]
-      if (level >= (maxLevel ?? unitLevels?[levelPreset].len() ?? 0)) 
-        inc(counts, "myMaxLevel")
-    }
-    return res
-  })
-
   return {
     onAttach = actualizeStats
     watch = campaignsList

@@ -5,6 +5,7 @@ from "%rGui/components/currencyComp.nut" import mkCurrencyComp
 from "%rGui/components/currencyStyles.nut" import CS_SMALL
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
 from "%rGui/style/stdColors.nut" import selectColor
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/tooltip.nut" import mkButtonHoldTooltip
 from "%rGui/unitCustom/unitDecals/decalsCache.nut" import getDecalImg
 
@@ -49,23 +50,26 @@ function getDecalDesc(name) {
   return text
 }
 
-let mkDecalPrice = @(isAvailable, decalPrice, ovr = {}) @() {
-  watch = [isAvailable, decalPrice]
-  size = const [FLEX, ph(30)]
-  vplace = ALIGN_BOTTOM
-  valign = ALIGN_CENTER
-  children = !isAvailable.get() && (decalPrice.get()?.price ?? 0) > 0
-    ? [
-        {
-          size = FLEX
-          rendObj = ROBJ_BOX
-          fillColor = commonBgColor
-        }
-        mkCurrencyComp(decalPrice.get().price, decalPrice.get().currencyId, CS_SMALL)
-          .__update({ pos = const [borderWidth, 0] })
-      ]
-    : null
-}.__update(ovr)
+function mkDecalPrice(isAvailable, decalPrice, ovr = {}) {
+  let priceBg = {
+    size = FLEX
+    rendObj = ROBJ_BOX
+    fillColor = commonBgColor
+  }
+  return @() {
+    watch = [isAvailable, decalPrice]
+    size = const [FLEX, ph(30)]
+    vplace = ALIGN_BOTTOM
+    valign = ALIGN_CENTER
+    children = !isAvailable.get() && (decalPrice.get()?.price ?? 0) > 0
+      ? [
+          priceBg
+          mkCurrencyComp(decalPrice.get().price, decalPrice.get().currencyId, CS_SMALL)
+            .__update({ pos = const [borderWidth, 0] })
+        ]
+      : null
+  }.__update(ovr)
+}
 
 let decalBackground = {
   size = FLEX
@@ -77,7 +81,7 @@ let decalBackground = {
 }
 
 let lockIcon = {
-  size = [lockIconBlockHeight, lockIconBlockHeight]
+  size = lockIconBlockHeight
   rendObj = ROBJ_BOX
   fillColor = commonBgColor
   halign = ALIGN_CENTER
@@ -104,6 +108,7 @@ function mkDecalCard(decal, availableDecals, selectedDecal, unseenDecals, onSele
   let isAvailable = Computed(@() decal.get()?.name in availableDecals.get())
   let isUnseen = Computed(@() decal.get()?.name in unseenDecals.get())
   let decalPrice = Computed(@() decal.get()?.price)
+  let priceComp = mkDecalPrice(isAvailable, decalPrice)
   return @() !decal.get() ? { watch = decal }
     : {
         watch = [stateFlags, decal, isSelected, isAvailable, isUnseen]
@@ -114,36 +119,36 @@ function mkDecalCard(decal, availableDecals, selectedDecal, unseenDecals, onSele
         borderColor = isSelected.get() ? selBorderDecalColor : 0
         borderWidth
         behavior = Behaviors.Button
-        transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-        transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
         children = [
           decalBackground
           mkDecalIcon(decal.get().name)
-          mkDecalPrice(isAvailable, decalPrice)
+          priceComp
           isAvailable.get() || (decal.get()?.price.currencyId ?? "") != "" ? null : lockIcon
           isUnseen.get() ? unseenMark : null
         ]
-      }.__update(mkButtonHoldTooltip(@() onSelect(decal.get().name), stateFlags, decal.get().name,
-        @() {
-          content = @() {
-            watch = decal
-            halign = ALIGN_CENTER
-            valign =  ALIGN_CENTER
-            flow = FLOW_VERTICAL
-            gap = hdpx(10)
-            children = [
-              mkDecalText(getDecalTitle(decal.get().name))
-              mkDecalText(getDecalDesc(decal.get().name), fontVeryVeryTinyAccented)
-              {
-                children = [
-                  decalBackground
-                  mkDecalIcon(decal.get().name, decalIconSizeBig)
-                ]
-              }
-              mkDecalPrice(isAvailable, decalPrice, { size = SIZE_TO_CONTENT })
-            ]
-          }
-        }))
+        ...mkPressTransitionScale(stateFlags.get(), 0.9)
+        ...mkButtonHoldTooltip(@() onSelect(decal.get().name), stateFlags, decal.get().name,
+          @() {
+            content = @() {
+              watch = decal
+              halign = ALIGN_CENTER
+              valign =  ALIGN_CENTER
+              flow = FLOW_VERTICAL
+              gap = hdpx(10)
+              children = [
+                mkDecalText(getDecalTitle(decal.get().name))
+                mkDecalText(getDecalDesc(decal.get().name), fontVeryVeryTinyAccented)
+                {
+                  children = [
+                    decalBackground
+                    mkDecalIcon(decal.get().name, decalIconSizeBig)
+                  ]
+                }
+                mkDecalPrice(isAvailable, decalPrice, const { size = SIZE_TO_CONTENT })
+              ]
+            }
+          })
+      }
 }
 
 let disabledSlotContent = @() {
@@ -197,6 +202,7 @@ let mkDefaultDecalSlot = @(decalId, isDisabled) {
 function mkDecalSlot(slot, selectedSlotId, editingDecalId, handleClick) {
   let stateFlags = Watched(0)
   let isSelected = Computed(@() selectedSlotId.get() == slot.id)
+  let defaultSlotContent = slot.isEmpty ? null : mkDefaultDecalSlot(slot.decalId, slot.isDisabled)
   return @() {
     watch = [stateFlags, isSelected, editingDecalId]
     size = decalCardWidth
@@ -207,15 +213,14 @@ function mkDecalSlot(slot, selectedSlotId, editingDecalId, handleClick) {
     behavior = Behaviors.Button
     onClick = @() handleClick(slot.id)
     onElemState = @(sf) stateFlags.set(sf)
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
     children = [
       decalBackground
       slot.isEmpty
         ? mkEmptyDecalSlot(isSelected.get(), slot.isDisabled, editingDecalId.get())
-        : mkDefaultDecalSlot(slot.decalId, slot.isDisabled)
+        : defaultSlotContent
       slot.isBlocked ? lockIcon : null
     ]
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
   }
 }
 

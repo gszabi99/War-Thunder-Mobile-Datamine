@@ -30,6 +30,7 @@
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_battleship",
+  "addTorpedoesCountPack": 1,
   "explosionFx": "explosion_ship_large",
   "smokeScreenActivateTime": 2.0,
   "smokeScreenEffectTime": 30.0,
@@ -340,6 +341,15 @@
       "auxiliary_caliber_turret_15_dm": {},
       "auxiliary_caliber_turret_16_dm": {}
     },
+    "torpedo_tubes": {
+      "armorClass": "ship_structural_steel",
+      "armorThickness": 15.0,
+      "hp": 56920.0,
+      "tt_01_dm": {},
+      "tt_02_dm": {},
+      "tt_03_dm": {},
+      "tt_04_dm": {}
+    },
     "elevators": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
@@ -471,6 +481,33 @@
           "moduleStatusEffect": {
             "name": "shotFreqMult",
             "prob": 1.0
+          }
+        }
+      },
+      {
+        "name": [
+          "tt_01_dm",
+          "tt_02_dm",
+          "tt_03_dm",
+          "tt_04_dm"
+        ],
+        "onHit": {
+          "damage": 900.0,
+          "damageType": "explosion",
+          "isSingleAction": false,
+          "moduleStatusEffect": {
+            "name": "shotFreqMult",
+            "prob": 1.0
+          },
+          "action": {
+            "type": "forcedExplosion",
+            "probability": 0.01,
+            "damage": 2000.0,
+            "damageType": "explosion",
+            "fxEvent": "ammo_expl",
+            "parts": {
+              "part": "compartment_05_dm"
+            }
           }
         }
       },
@@ -2775,6 +2812,173 @@
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 100.0
         }
+      },
+      {
+        "trigger": "gunner27",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/ussr_450mm_mod1912_torpedo.blk",
+        "emitter": "bone_torpedo_01",
+        "bullets": 12,
+        "useEmitter": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 25.2,
+        "startDir": [
+          20.0,
+          1.0,
+          0.0
+        ],
+        "useStartSpeed": true,
+        "allowableDelta": 20.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.05,
+        "turret": {
+          "head": "tt_head_01",
+          "gun": "tt_head_01"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner28",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/ussr_450mm_mod1912_torpedo.blk",
+        "emitter": "bone_torpedo_02",
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "useEmitter": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 25.2,
+        "startDir": [
+          20.0,
+          1.0,
+          0.0
+        ],
+        "useStartSpeed": true,
+        "allowableDelta": 20.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.05,
+        "turret": {
+          "head": "tt_head_02",
+          "gun": "tt_head_02"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner29",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/ussr_450mm_mod1912_torpedo.blk",
+        "emitter": "bone_torpedo_03",
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "useEmitter": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 25.2,
+        "startDir": [
+          20.0,
+          1.0,
+          0.0
+        ],
+        "useStartSpeed": true,
+        "allowableDelta": 20.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.05,
+        "turret": {
+          "head": "tt_head_03",
+          "gun": "tt_head_03"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner30",
+        "triggerGroup": "torpedoes",
+        "external": true,
+        "blk": "gameData/Weapons/torpedoes/ussr_450mm_mod1912_torpedo.blk",
+        "emitter": "bone_torpedo_04",
+        "bullets": 0,
+        "isSharedAmmoOnTriggerGroup": true,
+        "useEmitter": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          4.0,
+          0.0,
+          0.0
+        ],
+        "startSpeed": 25.2,
+        "startDir": [
+          20.0,
+          1.0,
+          0.0
+        ],
+        "useStartSpeed": true,
+        "allowableDelta": 20.0,
+        "gyroAngle": 185.0,
+        "courseSmoothness": 100.0,
+        "maxAngularSpeed": 0.8,
+        "shotFreq": 0.05,
+        "turret": {
+          "head": "tt_head_04",
+          "gun": "tt_head_04"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
       }
     ]
   },
@@ -2783,6 +2987,11 @@
       "name": "ussr_battleship_poltava_default",
       "blk": "gameData/units/ships/weaponPresets/ussr_battleship_poltava_default.blk"
     }
+  },
+  "torpedoSeries": {
+    "delay": 0.1,
+    "count": 1,
+    "isDeadzoneCheck": true
   },
   "modifications": {
     "ship_tool_kit": {},
@@ -4654,6 +4863,173 @@
                 "hasVertical": true,
                 "verticalOmegaMult": 1.0,
                 "verticalSpeedLimitKPH": 100.0
+              }
+            },
+            {
+              "trigger": "gunner27",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/ussr_450mm_mod1912_torpedo.blk",
+              "emitter": "bone_torpedo_01",
+              "bullets": 12,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 20.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_01",
+                "gun": "tt_head_01"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner28",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/ussr_450mm_mod1912_torpedo.blk",
+              "emitter": "bone_torpedo_02",
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 20.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_02",
+                "gun": "tt_head_02"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner29",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/ussr_450mm_mod1912_torpedo.blk",
+              "emitter": "bone_torpedo_03",
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 20.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_03",
+                "gun": "tt_head_03"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner30",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/ussr_450mm_mod1912_torpedo.blk",
+              "emitter": "bone_torpedo_04",
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 20.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_04",
+                "gun": "tt_head_04"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
               }
             },
             {
@@ -6539,6 +6915,173 @@
             },
             {
               "trigger": "gunner27",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/ussr_450mm_mod1912_torpedo.blk",
+              "emitter": "bone_torpedo_01",
+              "bullets": 12,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 20.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_01",
+                "gun": "tt_head_01"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner28",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/ussr_450mm_mod1912_torpedo.blk",
+              "emitter": "bone_torpedo_02",
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 20.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_02",
+                "gun": "tt_head_02"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner29",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/ussr_450mm_mod1912_torpedo.blk",
+              "emitter": "bone_torpedo_03",
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 20.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_03",
+                "gun": "tt_head_03"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner30",
+              "triggerGroup": "torpedoes",
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/ussr_450mm_mod1912_torpedo.blk",
+              "emitter": "bone_torpedo_04",
+              "bullets": 0,
+              "isSharedAmmoOnTriggerGroup": true,
+              "useEmitter": true,
+              "startFx": "start_torpedo",
+              "startFxOffset": [
+                4.0,
+                0.0,
+                0.0
+              ],
+              "startSpeed": 25.2,
+              "startDir": [
+                20.0,
+                1.0,
+                0.0
+              ],
+              "useStartSpeed": true,
+              "allowableDelta": 20.0,
+              "gyroAngle": 185.0,
+              "courseSmoothness": 100.0,
+              "maxAngularSpeed": 0.8,
+              "shotFreq": 0.05,
+              "turret": {
+                "head": "tt_head_04",
+                "gun": "tt_head_04"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner70",
               "triggerGroup": "mortar",
               "weaponType": "bombs",
               "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -6564,7 +7107,7 @@
               }
             },
             {
-              "trigger": "gunner28",
+              "trigger": "gunner71",
               "triggerGroup": "mortar",
               "weaponType": "bombs",
               "blk": "gameData/weapons/bombguns/depth_charge_mk_6.blk",
@@ -6631,9 +7174,25 @@
             "auxiliary_caliber_turret_15_dm": {},
             "auxiliary_caliber_turret_16_dm": {},
             "engine_room_01_dm": {},
-            "engine_room_02_dm": {}
+            "engine_room_02_dm": {},
+            "tt_01_dm": {},
+            "tt_02_dm": {},
+            "tt_03_dm": {},
+            "tt_04_dm": {}
           }
         }
+      }
+    },
+    "weapons_torpedo_movement_mode": {
+      "effects": {
+        "splashDamageMul": 0.7,
+        "maxSpeedInWater": 6.63
+      }
+    },
+    "weapons_torpedo_damage_mode": {
+      "effects": {
+        "splashDamageMul": 1.3,
+        "maxSpeedInWater": -6.63
       }
     },
     "maintanance_new_propellers": {},

@@ -545,7 +545,7 @@ let mkSlot = @(children) {
 
 let emptySlot = { size = array(2, rewardBoxSize) }
 let markTop = {
-  size = [markSize, markSize]
+  size = markSize
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#roulette_pointer.svg:{markSize}:{markSize}:P")
   keepAspect = true
@@ -594,6 +594,7 @@ function mkBlueprintPlateTexts(reward, unitRank, rStyle) {
   let available = Computed(@() (servProfile.get()?.blueprints?[id] ?? 0) + countInc.get())
   let total = Computed(@() serverConfigs.get()?.allBlueprints?[id].targetCount ?? 1)
   let hasBlueprintUnit = Computed(@() id in campMyUnits.get())
+  let progressBarText = mkProgressBarText(reward, rStyle)
 
   return @() {
     watch = consistentReceivedRewardIdx
@@ -624,7 +625,7 @@ function mkBlueprintPlateTexts(reward, unitRank, rStyle) {
           unitRank
             ? mkGradRankSmall(unitRank).__update({ fontSize = rStyle.textStyle.fontSize, pos = const [0, hdpx(5)] })
             : null
-          mkProgressBarText(reward, rStyle)
+          progressBarText
         ]
       }
     ]
@@ -654,11 +655,13 @@ function mkSkinPlate(reward, rStyle, ovr = {}) {
     let unitIdx = receivedRewardsAll.get().findindex(@(rec) null != rec?.viewInfo.findvalue(@(r) r.rType == G_UNIT && r.id == id))
     return unitIdx == null || unitIdx <= rouletteOpenIdx.get() - 1
   })
+  let plate = mkRewardPlate(reward, rStyle)
+  let lockedMark = mkRewardLocked(REWARD_STYLE_MEDIUM)
   return @() {
     watch = isAvailable
     children = [
-      mkRewardPlate(reward, rStyle)
-      !isAvailable.get() ? mkRewardLocked(REWARD_STYLE_MEDIUM) : null
+      plate
+      !isAvailable.get() ? lockedMark : null
     ]
   }.__update(ovr)
 }
@@ -851,6 +854,8 @@ function rouletteRewardsBlock() {
   }
 }
 
+let translateTransitions = [{ prop = AnimProp.translate, duration = 0.3, easing = InOutQuad }]
+
 function receivedRewardsBlock() {
   let widthSum = []
   let openRewardsWidth = rouletteOpenRewards.get()
@@ -880,7 +885,7 @@ function receivedRewardsBlock() {
         gap = slotsGap
         children = rouletteOpenRewards.get().map(@(v) mkRewardBlock(v, REWARD_STYLE_MEDIUM))
         transform = { translate = [offsetVisible, 0] }
-        transitions = [{ prop = AnimProp.translate, duration = 0.3, easing = InOutQuad }]
+        transitions = translateTransitions
       }
     ].extend(
       !rouletteOpenResult.get() || receivedRewardsAll.get().len() == 0 ? []
@@ -892,7 +897,7 @@ function receivedRewardsBlock() {
                 transform = {
                   translate = [idx <= resultOffsetIdx.get() ? offsetVisible + widthSum[idx] : posInvisible, 0]
                 }
-                transitions = [{ prop = AnimProp.translate, duration = 0.3, easing = InOutQuad }]
+                transitions = translateTransitions
               })))
   }
 }
@@ -923,7 +928,7 @@ let mkOpenCountText = @(text, curCount, totalCount) {
       animations = progressAnimations
     }.__update(fontTiny)
     {
-      size = [openCountIconSize, openCountIconSize]
+      size = openCountIconSize
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#events_chest_icon.svg:{openCountIconSize}:{openCountIconSize}:P")
       keepAspect = true
@@ -948,7 +953,7 @@ let progressbar = @(value) {
       color = 0xFFFFFFFF
       transform = {
         scale = [value, 1.0]
-        pivot = [0, 0]
+        pivot = 0
       }
       transitions = [{ prop = AnimProp.scale, duration = 0.1, easing = InOutQuad }]
     }
@@ -958,7 +963,7 @@ let progressbar = @(value) {
       color = premiumTextColor
       transform = {
         scale = [value, 1.0]
-        pivot = [0, 0]
+        pivot = 0
       }
       transitions = [{ prop = AnimProp.scale, duration = 1.3, easing = InOutQuad }]
     }
@@ -1003,7 +1008,7 @@ let fixedProgressInfo = @() {
           rendObj = ROBJ_TEXT
           text = loc("fixedReward/received/desc", {openedLootboxForJackpot = fixedRewardTotal.get()})
           transform = {}
-          animations = [
+          animations = const [
             { prop = AnimProp.scale, to = [1.1, 1.1],
               duration = 2.0, easing = CosineFull, play = true, loop = true, globalTimer = true }
           ]
@@ -1014,23 +1019,21 @@ let fixedProgressInfo = @() {
 let afterJackpotReceivedInfo = @() {
   size = const [progressbarWidth, SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
-  children = [
-    @() {
-      watch = isJackpotCurrent
-      size = const [FLEX, openCountIconSize]
-      halign = ALIGN_CENTER
-      valign = ALIGN_BOTTOM
-      children = {
-        rendObj = ROBJ_TEXT
-        text = isJackpotCurrent.get() ? loc("jackpot/received") : loc("jackpot/alreadyReceived")
-        transform = {}
-        animations = [
-          { prop = AnimProp.scale, to = [1.1, 1.1],
-            duration = 2.0, easing = CosineFull, play = true, loop = true, globalTimer = true }
-        ]
-      }.__update(fontSmallAccented)
-    }
-  ]
+  children = @() {
+    watch = isJackpotCurrent
+    size = const [FLEX, openCountIconSize]
+    halign = ALIGN_CENTER
+    valign = ALIGN_BOTTOM
+    children = {
+      rendObj = ROBJ_TEXT
+      text = isJackpotCurrent.get() ? loc("jackpot/received") : loc("jackpot/alreadyReceived")
+      transform = {}
+      animations = const [
+        { prop = AnimProp.scale, to = [1.1, 1.1],
+          duration = 2.0, easing = CosineFull, play = true, loop = true, globalTimer = true }
+      ]
+    }.__update(fontSmallAccented)
+  }
 }
 
 let fixedRewardInfo = @() {

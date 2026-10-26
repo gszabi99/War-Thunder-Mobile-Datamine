@@ -3,6 +3,7 @@ from "math" import round
 from "%appGlobals/clientState/respawnStateBase.nut" import respawnUnitInfo, respawnUnitSkins
 from "%appGlobals/config/skinPresentation.nut" import getSkinPresentation
 from "%rGui/respawn/respawnState.nut" import chooseAutoSkin, respawnSlots, selSlot, selectedSkins
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import selectColor, hoverColor
 from "%rGui/unit/unitSettings.nut" import isAutoSkin
 from "%rGui/unitCustom/unitCustomComps.nut" import mkIcon
@@ -13,6 +14,7 @@ const skinSize = hdpxi(90)
 let skinBorderRadius = round(skinSize * 0.2).tointeger()
 const skinGap = hdpx(16)
 const aTimeSelected = 0.2
+const colorTransition = [{ prop = AnimProp.color, duration = aTimeSelected }]
 
 let unitName = Computed(@() selSlot.get()?.name)
 
@@ -34,6 +36,9 @@ respawnUnitSkins.subscribe(function(_) {
 function skinBtn(skin) {
   let stateFlags = Watched(0)
   let isSelected = Computed(@() (selectedSkins.get()?[unitName.get()] ?? selSlot.get()?.skin ?? "") == skin)
+  let borderImg = Picture($"ui/gameuiskin#slot_border.svg:{skinSize}:{skinSize}:P")
+  let hoverGlowImg = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
+  let backIcon = mkIcon("ui/gameuiskin#back_icon.svg", const { color = 0xFF78FA78 })
 
   return @() {
     watch = [stateFlags, unitName]
@@ -46,15 +51,14 @@ function skinBtn(skin) {
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
     onClick = @() selectedSkins.mutate(@(skins) skins[unitName.get()] <- skin)
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
     children = [
       @() {
         watch = isSelected
         size = FLEX
         rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#slot_border.svg:{skinSize}:{skinSize}:P")
+        image = borderImg
         color = isSelected.get() ? selectColor : 0
-        transitions = [{ prop = AnimProp.color, duration = aTimeSelected }]
+        transitions = colorTransition
       }
       @() {
         watch = stateFlags
@@ -62,18 +66,19 @@ function skinBtn(skin) {
         rendObj = ROBJ_BOX
         fillColor = stateFlags.get() & S_HOVER ? hoverColor : 0
         borderRadius = skinBorderRadius
-        image = Picture("ui/gameuiskin#hovermenu_shop_button_glow.avif")
-        transitions = [{ prop = AnimProp.color, duration = aTimeSelected }]
-        transform = { rotate = 180 }
+        image = hoverGlowImg
+        transitions = colorTransition
+        transform = const { rotate = 180 }
       }
       @() {
         watch = isSelected
         size = FLEX
         halign = ALIGN_LEFT
         valign = ALIGN_BOTTOM
-        children = isSelected.get() ? mkIcon("ui/gameuiskin#back_icon.svg", { color = 0xFF78FA78 }) : null
+        children = isSelected.get() ? backIcon : null
       }
     ]
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 

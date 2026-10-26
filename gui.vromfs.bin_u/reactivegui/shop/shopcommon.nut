@@ -84,6 +84,7 @@ let gtypeToShopCategory = {
   [SGT_DECORATOR] = SC_DECORATOR,
   [SGT_SKIN] = SC_FEATURED,
   [SGT_PUZZLE_PIECE] = SC_COLLECTION,
+  [SGT_BP_POINTS] = SC_FEATURED,
 }
 
 let getShopCategory = @(gtype) gtypeToShopCategory?[gtype] ?? SC_OTHER
@@ -99,6 +100,7 @@ let rTypeToGTypeCommon = {
   [G_SKIN] = SGT_SKIN,
   [G_DECAL] = SGT_DECALS,
   [G_UNIT_UPGRADE] = SGT_UNIT,
+  [G_BP_POINTS] = SGT_BP_POINTS,
 }
 
 let rTypeToGTypeComplex = {

@@ -25,7 +25,6 @@ from "%rGui/unlocks/userstat.nut" import isUserstatMissingData
 
 const SEEN_QUESTS = "seenQuests"
 
-let isQuestsAttached = mkWatched(persist, "isQuestsAttached", false)
 let rewardsList = Watched(null)
 let isRewardsQuestFinished = Watched(false)
 let isRewardsListOpen = Computed(@() rewardsList.get() != null)
@@ -293,8 +292,6 @@ eventbus_subscribe("adsRewardApply", function(data) {
 
 
 return {
-  isQuestsAttached
-
   rewardsList
   isRewardsQuestFinished
   isRewardsListOpen

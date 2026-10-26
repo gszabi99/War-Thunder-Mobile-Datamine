@@ -76,7 +76,7 @@ let curEventClusters = Computed(function() {
 })
 let curEventUnlocks = keepref(Computed(@() activeUnlocks.get().filter(@(u) (u?.meta.quests ?? "") in curEventClusters.get())))
 
-function getEventNodeType(node) {
+function [pure, nodiscard] getEventNodeType(node) {
   if (node?.meta.quests != null)
     return NODE_QUESTS
   if ((node?.rewards ?? []).len() > 0)
@@ -96,9 +96,9 @@ let startNodeIds = Computed(function() {
   return res
 })
 
-let isUnlocked = @(status) ((status ?? 0) & NS_UNLOCKED) != 0
-let isPurchased = @(status) ((status ?? 0) & NS_PURCHASED) != 0
-let isRewardsReceived = @(status) ((status ?? 0) & NS_REWARDS_RECEIVED) != 0
+let isUnlocked = @[pure, nodiscard](status) ((status ?? 0) & NS_UNLOCKED) != 0
+let isPurchased = @[pure, nodiscard](status) ((status ?? 0) & NS_PURCHASED) != 0
+let isRewardsReceived = @[pure, nodiscard](status) ((status ?? 0) & NS_REWARDS_RECEIVED) != 0
 
 let getNodeStatusKind = @(status)
   isRewardsReceived(status) ? NODE_RECEIVED

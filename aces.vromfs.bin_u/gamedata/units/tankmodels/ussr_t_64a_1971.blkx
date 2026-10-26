@@ -175,9 +175,8 @@
       },
       "turret_02_side_dm": {
         "armorThickness": 140.0,
-        "genericArmorQuality": 0.1,
+        "genericArmorQuality": 0.8,
         "cumulativeArmorQuality": 0.85,
-        "ArmorQuality": 0.8,
         "embedded": false
       }
     },

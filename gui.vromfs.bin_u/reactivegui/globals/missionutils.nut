@@ -4,7 +4,7 @@ from "guiMission" import get_current_mission_desc
 from "string" import split_by_chars
 
 
-function getLocIdsArray(config, key = "locId") {
+function getLocIdsArray(config, key) {
   let keyValue = config?[key] ?? ""
   let parsedString = split_by_chars(keyValue, "; ")
   if (parsedString.len() <= 1)
@@ -23,17 +23,24 @@ function getLocIdsArray(config, key = "locId") {
   return result
 }
 
-let getMissionLocName = @(config, key = "locId")
+let getMissionLocName = @(config, key)
   "".join(getLocIdsArray(config, key)
       .map(@(locId) locId.len() == 1 ? locId : loc(locId)))
+
+
+let getMissionLocationName = @(config) getMissionLocName(config, "locName")
+let getMissionModeName = @(config) getMissionLocName(config, "locMode")
+
+function getMissionFullName(config) {
+  let mode = getMissionModeName(config)
+  let location = getMissionLocationName(config)
+  return mode == "" ? location : $"{mode} {location}"
+}
 
 function locMissionName() {
   let misBlk = DataBlock()
   get_current_mission_desc(misBlk)
-  local ret = ""
-  if ((misBlk?.locName.len() ?? 0) > 0)
-    ret = getMissionLocName(misBlk, "locName")
-  return ret
+  return getMissionFullName(misBlk)
 }
 
 function locMissionDesc() {
@@ -49,4 +56,6 @@ return {
   locMissionDesc
   locMissionName
   getMissionLocName
+  getMissionLocationName
+  getMissionFullName
 }

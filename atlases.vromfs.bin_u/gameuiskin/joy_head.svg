@@ -1,1 +1,4 @@
-<svg width="50" height="50"><circle fill="#DADADA" opacity="0.5" cx="25" cy="25" r="25"/><circle fill="#DADADA" opacity="0.5" cx="25" cy="25" r="20"/></svg>
+<svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+<circle cx="25" cy="25" r="25" fill="#DADADA" opacity=".5"/>
+<circle cx="25" cy="25" r="20" fill="#DADADA" opacity=".5"/>
+</svg>

@@ -12,7 +12,7 @@ from "%rGui/leaderboard/lbStyle.nut" import lbRewardsBlockWidth, lbTableHeight, 
   rewardStyle, lbRewardRowPadding, lbRewardsGap, rowBgOddColor, rowBgEvenColor
 from "%rGui/quests/rewardsComps.nut" import mkRewardsPreview
 from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, sortRewardsViewInfo
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import localPlayerColor
 from "%rGui/tooltip.nut" import withTooltip, tooltipDetach
 from "lbStateBase.nut" import curLbRequestData
@@ -101,7 +101,7 @@ function mkPrizeInfo(rType, progress, idx, isReady) {
   let stateFlags = Watched(0)
   let key = {}
   let imgBase = {
-    size = [prizeIconSize, prizeIconSize]
+    size = prizeIconSize
     rendObj = ROBJ_IMAGE
     keepAspect = true
     image = idx not in prizeIcons ? null
@@ -127,7 +127,7 @@ function mkPrizeInfo(rType, progress, idx, isReady) {
                   flow = FLOW_HORIZONTAL
                 })
             onDetach = tooltipDetach(stateFlags)
-            transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
+            ...mkPressTransitionScale(stateFlags.get(), 0.9)
           })
       @() {
         watch = isReady

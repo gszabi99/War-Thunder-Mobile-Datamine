@@ -18,6 +18,8 @@ function resetHitIndicatorState() {
   hitIndicatorStateCrit.set(false)
 }
 
+let hitBlinkAnimations = [{ prop = AnimProp.opacity, to = 0.3, duration = hitIndicatorBlinkFreq, easing = CosineFull, loop = true, play = true, globalTimer = true }]
+
 let hitIndicator = @() {
   watch = [hitIndicatorStateCount, hitIndicatorStateCrit]
   size = FLEX
@@ -29,7 +31,7 @@ let hitIndicator = @() {
       rendObj = ROBJ_IMAGE
       image = hitIndicatorStateCrit.get() ? hitIndicatorCritImage : hitIndicatorImage
       transform = { rotate = i * 10 }
-      animations = [{ prop = AnimProp.opacity, to = 0.3, duration = hitIndicatorBlinkFreq, easing = CosineFull, loop = true, play = true, globalTimer = true }]
+      animations = hitBlinkAnimations
     })
 }
 

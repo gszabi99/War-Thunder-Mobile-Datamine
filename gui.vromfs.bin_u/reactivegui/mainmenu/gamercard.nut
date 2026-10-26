@@ -12,7 +12,7 @@ from "%appGlobals/rewardType.nut" import G_CURRENCY
 from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, dayOffset
 from "%rGui/components/backButton.nut" import backButton
-from "%rGui/components/currencyStyles.nut" import gamercardGap
+from "%rGui/components/currencyStyles.nut" import gamercardGap, gcSeparator
 from "%rGui/components/gradientDefComps.nut" import doubleSideGradient
 from "%rGui/components/levelBlockPkg.nut" import mkLevelBg, mkProgressLevelBg, playerExpColor, rotateCompensate,
   levelProgressBarWidth
@@ -28,6 +28,8 @@ from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
 from "%rGui/shop/goodsUtils.nut" import getGoodsByCurrencyId
 from "%rGui/shop/shopCommon.nut" import SC_GOLD, SC_WP, SC_PLATINUM
 from "%rGui/shop/shopState.nut" import openShopWnd, shopGoods, soonGoods
+from "%rGui/squad/squadChatBtn.nut" import squadChatBtn
+from "%rGui/squad/squadChatState.nut" import isInSquadChat
 from "%rGui/state/profilePremium.nut" import havePremium
 from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset
 from "%rGui/style/stdColors.nut" import textColor, premiumTextColor, hoverColor
@@ -59,7 +61,7 @@ let textParams = {
 let avatar = @() {
   watch = [myAvatarImage, hasUnseenDecorators]
   rendObj = ROBJ_IMAGE
-  size = [avatarSize, avatarSize]
+  size = avatarSize
   image = Picture($"{myAvatarImage.get()}:{avatarSize}:{avatarSize}:P")
   halign = ALIGN_RIGHT
   children = {
@@ -103,10 +105,10 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
       }.__update(progressOvr))
       mkLevelBg({
         ovr = {
-          size = [levelHolderSize, levelHolderSize]
+          size = levelHolderSize
           pos = [-progresOffset, 0]
           color = 0xFF000000
-          transform = { rotate = 45 }
+          transform = const { rotate = 45 }
         }
         childOvr = {
           halign = ALIGN_CENTER
@@ -114,7 +116,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
           children = [
             textParams.__merge({
               text = level - starLevel
-              transform = { rotate = -45 }
+              transform = const { rotate = -45 }
             })
             starLevelSmall(showStarLevel, starLevelOvr)
           ]
@@ -123,11 +125,11 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
       !needTargetLevel || isMaxLevel ? null
         : mkLevelBg({
             ovr = {
-              size = [levelHolderSize, levelHolderSize]
+              size = levelHolderSize
               hplace = ALIGN_RIGHT
               pos = [progresOffset, 0]
               color = 0xFF000000
-              transform = { rotate = 45 }
+              transform = const { rotate = 45 }
             }
             childOvr = {
               halign = ALIGN_CENTER
@@ -138,7 +140,7 @@ let levelBlock = @(ovr = {}, progressOvr = {}, needTargetLevel = false) function
                 textParams.__merge({
                   text = level - starLevel + (isStarProgress ? 0 : 1)
                   color = nextLevelTextColor
-                  transform = { rotate = -45 }
+                  transform = const { rotate = -45 }
                 })
                 starLevelSmall(nextStarLevel, starLevelOvr)
               ]
@@ -159,34 +161,37 @@ let hoverBg = {
   texOffs = gradCircCornerOffset
 }
 
+let profileNameBlock = {
+  flow = FLOW_HORIZONTAL
+  size = [SIZE_TO_CONTENT, avatarSize]
+  gap = profileGap
+  children = [
+    avatar
+    {
+      flow = FLOW_VERTICAL
+      vplace = ALIGN_CENTER
+      children = [
+        name
+        mkTitle(fontTinyAccentedShaded)
+      ]
+    }
+  ]
+}
+let profileLevelBlock = levelBlock()
+
 let gamercardProfile = @() {
   watch = profileStateFlags
   behavior = Behaviors.Button
   onElemState = @(sf) profileStateFlags.set(sf)
   onClick = @() accountOptionsScene()
-  sound = { click  = "meta_profile_button" }
+  sound = const { click  = "meta_profile_button" }
   children = [
     {
       size = [levelProgressBarWidth + avatarSize, FLEX]
       children = profileStateFlags.get() & S_HOVER ? hoverBg : null
     }
-    {
-      flow = FLOW_HORIZONTAL
-      size = [SIZE_TO_CONTENT, avatarSize]
-      gap = profileGap
-      children = [
-        avatar
-        {
-          flow = FLOW_VERTICAL
-          vplace = ALIGN_CENTER
-          children = [
-            name
-            mkTitle(fontTinyAccentedShaded)
-          ]
-        }
-      ]
-    }
-    levelBlock()
+    profileNameBlock
+    profileLevelBlock
   ]
 }
 
@@ -298,19 +303,20 @@ let mkGamercard = @(menuBtn, backCb = null) {
 let gamercardWithoutLevelBlock = {
   size = [ saSize[0], gamercardHeight ]
   hplace = ALIGN_CENTER
-  children =
-    {
-      size = [ SIZE_TO_CONTENT, avatarSize ]
-      flow = FLOW_HORIZONTAL
-      hplace = ALIGN_RIGHT
-      valign = ALIGN_CENTER
-      gap = gamercardGap
-      children = [
-        premIconWithTimeOnChange
-        mkCurrencyBalance(WP, @() openShopWnd(SC_WP))
-        mkCurrencyBalance(GOLD, @() openShopWnd(SC_GOLD))
-      ]
-    }
+  children = @() {
+    watch = isInSquadChat
+    size = [ SIZE_TO_CONTENT, avatarSize ]
+    flow = FLOW_HORIZONTAL
+    hplace = ALIGN_RIGHT
+    valign = ALIGN_CENTER
+    gap = gamercardGap
+    children = [
+      premIconWithTimeOnChange
+      mkCurrencyBalance(WP, @() openShopWnd(SC_WP))
+      mkCurrencyBalance(GOLD, @() openShopWnd(SC_GOLD))
+    ]
+      .extend(isInSquadChat.get() ? [gcSeparator, squadChatBtn] : [])
+  }
 }
 
 let mkGamercardUnitCampaign = @(backCb, keyHintText, unit = ownHangarUnit) {
@@ -338,25 +344,29 @@ function mkCurrencyOpenAction(cId, goods, soon, configs, limitReset, dOffset, se
   return goodsId == null ? null : @() openGoodsPreview(goodsId)
 }
 
-let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}, ovr = {}) {
-  size = FLEX_H
-  halign = ALIGN_RIGHT
-  valign = ALIGN_CENTER
-  children = @() {
-    watch = [shopGoods, soonGoods, serverConfigs, goodsLimitReset, dayOffset, serverTimeDay,
-      purchasesCount, todayPurchasesCount]
-    flow = FLOW_HORIZONTAL
+let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}, ovr = {}, needChat = true) function() {
+  let children = (clone currencies ?? []) 
+    .sort(@(a, b) sortByCurrencyId(b, a)) 
+    .map(@(c) mkCurrencyBalance(c, noActionCurrencies?[c] ? null
+      : mkCurrencyOpenAction(c, shopGoods.get(), soonGoods.get(), serverConfigs.get(),
+          goodsLimitReset.get(), dayOffset.get(), serverTimeDay.get(), purchasesCount.get(), todayPurchasesCount.get())))
+  if (needChat && isInSquadChat.get()) {
+    if (children.len() > 0)
+      children.append(gcSeparator)
+    children.append(squadChatBtn)
+  }
+  return {
+    watch = [ shopGoods, soonGoods, serverConfigs, goodsLimitReset, dayOffset, serverTimeDay,
+      purchasesCount, todayPurchasesCount, isInSquadChat
+    ]
+    size = FLEX_H
     halign = ALIGN_RIGHT
     valign = ALIGN_CENTER
+    flow = FLOW_HORIZONTAL
     gap = gamercardGap
-    children = !currencies ? null
-      : [].extend(currencies)
-          .sort(@(a, b) sortByCurrencyId(b, a)) 
-          .map(@(c) mkCurrencyBalance(c, noActionCurrencies?[c] ? null
-            : mkCurrencyOpenAction(c, shopGoods.get(), soonGoods.get(), serverConfigs.get(),
-                goodsLimitReset.get(), dayOffset.get(), serverTimeDay.get(), purchasesCount.get(), todayPurchasesCount.get())))
-  }
-}.__update(ovr)
+    children
+  }.__update(ovr)
+}
 
 let gamercardBalanceBtns = mkCurrenciesBtns([WP, GOLD])
 

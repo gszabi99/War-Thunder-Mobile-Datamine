@@ -23,7 +23,7 @@ let defaultGamepadParams = {
 function stickDragAreaBg(scale) {
   let size = scaleEven(stickDragAreaSize, scale)
   return {
-    size = [size, size]
+    size = size
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
@@ -35,7 +35,7 @@ function stickDragAreaBg(scale) {
 function stickHeadBg(scale, ovr) {
   let size = scaleEven(stickHeadSize, scale)
   return {
-    size = [size, size]
+    size = size
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
     rendObj = ROBJ_IMAGE
@@ -43,6 +43,7 @@ function stickHeadBg(scale, ovr) {
     color = hudWhiteColor
   }.__update(ovr)
 }
+
 
 
 
@@ -74,11 +75,14 @@ let mkMiniStick = kwarg(function mkMiniStick(
   let stickHeadControl = @(scale) stickHeadBase(scale, { transform = {} })
   let { shortcutId, activeStick } = gamepadParams
 
-  let stickDragAreaControl = @(scale) @() {
-    watch = isStickActive
-    size = FLEX
-    transform = {}
-    children = isStickActive.get() ? stickDragAreaBg(scale) : null
+  function stickDragAreaControl(scale) {
+    let dragAreaBg = stickDragAreaBg(scale)
+    return @() {
+      watch = isStickActive
+      size = FLEX
+      transform = {}
+      children = isStickActive.get() ? dragAreaBg : null
+    }
   }
 
   let gamepadAxisListener = axisListener({
@@ -90,22 +94,24 @@ let mkMiniStick = kwarg(function mkMiniStick(
     },
   })
 
+  let btnChildren = [
+    mkContinuousButtonParams(
+      @() isStickActive.set(true),
+      @() isStickActive.set(false),
+      shortcutId),
+    mkGamepadShortcutImage(shortcutId, {pos = const [0, ph(-50)]})
+  ]
+  let btnScaleTransition = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
   let btn = @() {
     watch = isStickActive
-    children = [
-      mkContinuousButtonParams(
-        @() isStickActive.set(true),
-        @() isStickActive.set(false),
-        shortcutId),
-      mkGamepadShortcutImage(shortcutId, {pos = const [0, ph(-50)]})
-    ]
-    transform = { scale = isStickActive.get() ? [0.8, 0.8] : [1.0, 1.0] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
+    children = btnChildren
+    transform = { scale = isStickActive.get() ? 0.8 : 1.0 }
+    transitions = btnScaleTransition
   }
 
   let stickControlEnabled = @(size, scale) {
     behavior = TouchScreenStick
-    size = [size, size]
+    size = size
     watch = [isGamepad, isStickActive]
 
     useCenteringOnTouchBegin = true
@@ -127,7 +133,7 @@ let mkMiniStick = kwarg(function mkMiniStick(
   }
 
   let stickControlDisabled = @(size, scale) {
-    size = [size, size]
+    size = size
     function children() {
       let cdLeft = stickCooldownEndTime.get() - get_mission_time()
       let isCdValid = cdLeft > 0 && stickCooldownTimeSec.get() > 0
@@ -154,20 +160,22 @@ let mkMiniStick = kwarg(function mkMiniStick(
 
   function stickControl(scale) {
     let size = scaleEven(stickTouchAreaSize, scale)
+    let disabledControl = stickControlDisabled(size, scale)
     return @() { watch = isStickEnabled }
-      .__update(isStickEnabled.get() ? stickControlEnabled(size, scale) : stickControlDisabled(size, scale))
+      .__update(isStickEnabled.get() ? stickControlEnabled(size, scale) : disabledControl)
   }
 
-  let stickView = {
-    size = [stickTouchAreaSize, stickTouchAreaSize]
+  let mkStickView = @(scale = 1.0) {
+    size = scaleEven(stickTouchAreaSize, scale)
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = stickHeadBase(1)
+    children = stickHeadBase(scale)
   }
 
   return {
     stickControl
-    stickView
+    stickView = mkStickView()
+    mkStickView
   }
 })
 

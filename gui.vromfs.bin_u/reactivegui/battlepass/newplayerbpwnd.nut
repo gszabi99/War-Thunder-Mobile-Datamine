@@ -199,38 +199,36 @@ function mkCard(stageInfo, cardW = null, image = bgCard) {
     flow = FLOW_VERTICAL
     gap = hdpx(10)
     vplace = ALIGN_TOP
-    children = [
-      {
-        size = [cardW, bpCardHeight]
-        rendObj = ROBJ_IMAGE
-        image
-        onElemState = @(v) stateFlags.set(v)
+    children = {
+      size = [cardW, bpCardHeight]
+      rendObj = ROBJ_IMAGE
+      image
+      onElemState = @(v) stateFlags.set(v)
 
-        behavior = Behaviors.Button
-        function onClick() {
-          selectedStage.set(progress)
-          if (canReceive)
-            receiveNPRewards(progress)
-          else if (!isNPActive.get())
-            rewardInfoMsg(stageInfo)
-        }
-        xmbNode = {}
-        sound = { click  = "click" }
-        halign = ALIGN_CENTER
-
-        children = [
-          hoverCard(stateFlags)
-          cardBorder(cardW, selectedStage, progress)
-          cardContent(stageInfo, stateFlags, isNPRewardsInProgress, previewComp(stageInfo.viewInfo))
-          canReceive ? null
-            : {
-                size = [cardW, bpCardHeight]
-                rendObj = ROBJ_SOLID
-                color = 0x40000000
-              }
-        ]
+      behavior = Behaviors.Button
+      function onClick() {
+        selectedStage.set(progress)
+        if (canReceive)
+          receiveNPRewards(progress)
+        else if (!isNPActive.get())
+          rewardInfoMsg(stageInfo)
       }
-    ]
+      xmbNode = {}
+      sound = { click  = "click" }
+      halign = ALIGN_CENTER
+
+      children = [
+        hoverCard(stateFlags)
+        cardBorder(cardW, selectedStage, progress)
+        cardContent(stageInfo, stateFlags, isNPRewardsInProgress, previewComp(stageInfo.viewInfo))
+        canReceive ? null
+          : {
+              size = [cardW, bpCardHeight]
+              rendObj = ROBJ_SOLID
+              color = 0x40000000
+            }
+      ]
+    }
   }
 }
 

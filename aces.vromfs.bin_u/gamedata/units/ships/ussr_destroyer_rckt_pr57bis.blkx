@@ -22,7 +22,7 @@
   "SoundMove": "models.Ship",
   "tailStartOffset": 10.0,
   "drawHpProgressBarByMetaparts": true,
-  "multHpFromMetaparts": 72260.0,
+  "multHpFromMetaparts": 76060.0,
   "type": "typeDestroyer",
   "expClass": "exp_destroyer",
   "timeToFire": 40.0,
@@ -273,7 +273,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 72260.0,
+      "hp": 76060.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "compartment_01_dm": {
@@ -299,7 +299,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 50.0,
-      "hp": 72260.0,
+      "hp": 76060.0,
       "genericDamageMult": 1.0,
       "explosionDamageMult": 0.1,
       "fireParamsPreset": "common_ship_fire",
@@ -309,7 +309,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 72260.0,
+      "hp": 76060.0,
       "fireParamsPreset": "ship_turrets",
       "genericDamageMult": 1.0,
       "main_caliber_turret_01_dm": {},
@@ -321,7 +321,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
       "armorThrough": 300.0,
-      "hp": 72260.0,
+      "hp": 76060.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "auxiliary_caliber_turret_03_dm": {},
@@ -367,7 +367,7 @@
     "torpedo_tubes": {
       "armorClass": "ship_structural_steel",
       "armorThickness": 15.0,
-      "hp": 72260.0,
+      "hp": 76060.0,
       "genericDamageMult": 1.0,
       "fireParamsPreset": "ship_aux_fire",
       "tt_01_dm": {},
@@ -387,30 +387,26 @@
       "role": "sailor",
       "crew": 49
     },
-    "sailor3": [
-      {
-        "dmPart": "compartment_03_dm",
-        "role": "sailor",
-        "crew": 49
-      },
-      {
-        "dmPart": "compartment_03_dm",
-        "role": "sailor",
-        "crew": 49
-      }
-    ],
-    "sailor4": [
-      {
-        "dmPart": "compartment_04_dm",
-        "role": "sailor",
-        "crew": 49
-      },
-      {
-        "dmPart": "compartment_04_dm",
-        "role": "sailor",
-        "crew": 49
-      }
-    ]
+    "sailor3": {
+      "dmPart": "compartment_03_dm",
+      "role": "sailor",
+      "crew": 49
+    },
+    "sailor4": {
+      "dmPart": "compartment_04_dm",
+      "role": "sailor",
+      "crew": 49
+    },
+    "sailor5": {
+      "dmPart": "compartment_05_dm",
+      "role": "sailor",
+      "crew": 49
+    },
+    "sailor6": {
+      "dmPart": "compartment_06_dm",
+      "role": "sailor",
+      "crew": 49
+    }
   },
   "DamageEffects": {
     "part": [
@@ -601,7 +597,7 @@
   },
   "MetaParts": {
     "hull": {
-      "hp": 72260.0,
+      "hp": 76060.0,
       "maxDamageMode": true,
       "part": [
         "compartment_01_dm",
@@ -1659,7 +1655,6 @@
           3
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -1716,7 +1711,6 @@
           6
         ],
         "emitterGenFmt": "bone_torpedo_%02d",
-        "ammoDpGenFmt": "torpedo_%02d_dm",
         "startFx": "start_torpedo",
         "startFxOffset": [
           4.0,
@@ -2993,7 +2987,6 @@
                 3
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -3050,7 +3043,6 @@
                 6
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -4311,7 +4303,6 @@
                 3
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,
@@ -4368,7 +4359,6 @@
                 6
               ],
               "emitterGenFmt": "bone_torpedo_%02d",
-              "ammoDpGenFmt": "torpedo_%02d_dm",
               "startFx": "start_torpedo",
               "startFxOffset": [
                 4.0,

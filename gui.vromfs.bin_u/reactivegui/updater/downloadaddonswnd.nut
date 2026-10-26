@@ -37,7 +37,7 @@ let statusText = Computed(@() wantStartDownloadAddons.get().len() == 0 ? loc("up
 )
 
 let waitSpinner = {
-  size = [spinnerSize, spinnerSize]
+  size = spinnerSize
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#progress_bar_circle.svg:{spinnerSize}:{spinnerSize}")
   color = 0x01606060
@@ -95,11 +95,12 @@ function pauseButton() {
       @() isDownloadPausedByConnection.get() ? openLimitConnectionMsgBox()
         : isDownloadPaused.set(!isDownloadPaused.get()),
       hdpxi(45),
-      [hdpx(105), hdpx(80)]
+      const [hdpx(105), hdpx(80)]
     )
   })
 }
 
+let progressStatusText = mkProgressStatusText(statusText)
 let bottomBlock = {
   size = FLEX_H
   vplace = ALIGN_BOTTOM
@@ -114,7 +115,7 @@ let bottomBlock = {
       flow = FLOW_VERTICAL
       gap = progressbarGap
       children = [
-        mkProgressStatusText(statusText)
+        progressStatusText
         mkProgressbar(progressPercentInt, isStageDownloading.get() ? downloadingColor : checkingColor)
       ]
     }

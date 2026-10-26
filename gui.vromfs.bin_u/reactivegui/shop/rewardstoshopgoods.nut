@@ -1,6 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 
-let rewardsToShopGoods = @(rewards) { rewards }
+let rewardsToShopGoods = @[nodiscard](rewards) { rewards }
 let personalGoodsToShopGoods = @(pGoods)
   rewardsToShopGoods(pGoods.goods).__update(pGoods)
 

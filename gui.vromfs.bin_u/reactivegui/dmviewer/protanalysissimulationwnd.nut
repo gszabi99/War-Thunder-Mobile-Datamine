@@ -21,13 +21,15 @@ const hintContentMaxWidth = hdpx(400)
 
 let close = @() isSimulationMode.set(false)
 
+let cursorOvr = { cursor }
+
 let sceneHeader = @() {
   watch = [inspectedBaseUnit, needShowCursor]
   children = mkLeftBlockUnitCampaign(
     close,
     getCampaignPresentation(inspectedBaseUnit.get()?.campaign).levelUnitDetailsLocId,
     inspectedBaseUnit,
-    needShowCursor.get() ? { cursor } : {})
+    needShowCursor.get() ? cursorOvr : {})
 }
 
 let mkInfoStr = @(watch, toStr, ovr = {}) @() {
@@ -57,15 +59,21 @@ let mkHintStr = @(watch, ovr = {}) @() {
   maxWidth = hintContentMaxWidth
 }.__update(fontVeryTiny, ovr)
 
+let angleHint = mkHintStr(strAngle)
+let headingAngleHint = mkHintStr(strHeadingAngle)
+let penetratedArmorHint = mkHintStr(strPenetratedArmor)
+let ricochetProbHint = mkHintStr(strRicochetProb)
+let partsHint = mkHintStr(strParts, { margin = const [hdpx(24), 0, 0, 0] })
+
 let hintComp = @() !isHintVisible.get() ? { watch = isHintVisible } : panelBg.__merge({
   watch = isHintVisible
   children = [
     mkHintStr(strTitle, { margin = const [0, 0, hdpx(24), 0], maxWidth = null }.__update(fontSmall))
-    mkHintStr(strAngle)
-    mkHintStr(strHeadingAngle)
-    mkHintStr(strPenetratedArmor)
-    mkHintStr(strRicochetProb)
-    mkHintStr(strParts, { margin = const [hdpx(24), 0, 0, 0] })
+    angleHint
+    headingAngleHint
+    penetratedArmorHint
+    ricochetProbHint
+    partsHint
   ]
 })
 

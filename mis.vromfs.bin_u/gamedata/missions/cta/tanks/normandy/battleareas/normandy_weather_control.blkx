@@ -43,8 +43,8 @@
           "value": ""
         },
         "missionSetWeatherParams": {
-          "waterWindStrengtMin": 1.9,
-          "waterWindStrengtMax": 2.3
+          "waterWindStrengtMin": 2.0,
+          "waterWindStrengtMax": 2.0
         }
       },
       "else_actions": {}

@@ -1,1 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="171" height="171"><circle fill="#FFF" cx="85.5" cy="85.5" r="85.5"/></svg>
+<svg width="171" height="171" xmlns="http://www.w3.org/2000/svg">
+<circle cx="85.5" cy="85.5" r="85.5" fill="#FFF"/>
+</svg>

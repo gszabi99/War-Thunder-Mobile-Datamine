@@ -111,7 +111,7 @@ isSkipPushed.subscribe(@(v) v ? anim_start(skipTrigger) : anim_skip(skipTrigger)
 let pSize = hdpx(40).tointeger()
 let mkSkipProgress = @(stepSkipDelay, skipStep) {
   key = "skipProgress"
-  size = [pSize, pSize]
+  size = pSize
   rendObj = ROBJ_PROGRESS_CIRCULAR
   image = Picture($"ui/gameuiskin#circular_progress_1.svg:{pSize}:{pSize}:K")
   fgColor = 0xFFFFFFFF
@@ -164,7 +164,7 @@ let pointerSize = hdpx(70).tointeger()
 const pointerAnimTime = 1.0
 const pointerAnimOffset = hdpx(25)
 let pointerArrowContent = {
-  size = [pointerSize, pointerSize]
+  size = pointerSize
   rendObj = ROBJ_IMAGE
   color = 0xFF61B53A
   image = Picture($"ui/gameuiskin#arrow_tutor.svg:{pointerSize}:{pointerSize}:K")

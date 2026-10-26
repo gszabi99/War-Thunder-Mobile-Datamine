@@ -17,7 +17,7 @@ function mkNextBulletArrow(size, rotateDeg, ovr = {}) {
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#spinnerListBox_arrow_up.svg:{size}:P")
     color = hudPearlGrayColor
-    transform = { pivot = [0.5, 0.5], rotate = rotateDeg }
+    transform = { pivot = 0.5, rotate = rotateDeg }
     animations = [{ prop = AnimProp.translate, from = [0, 0], to = [moveX, moveY],
       duration = 0.7, easing = CosineFull, play = true }]
   }.__update(ovr)

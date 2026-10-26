@@ -21,7 +21,7 @@ from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimar
 import "%rGui/debugTools/debugSkins/chooseByNameWnd.nut" as chooseByNameWnd
 import "%rGui/debugTools/debugSkins/chooseSkinsUnitTypeWnd.nut" as chooseSkinsUnitTypeWnd
 from "%rGui/navState.nut" import registerScene
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/unit/hangarUnit.nut" import hangarUnitName, hangarUnitSkin, setHangarUnitWithSkin
 
 
@@ -216,11 +216,10 @@ function mkTagButton(tag) {
     rendObj = ROBJ_TEXT
     text = tag
     color = isSelected.get() ? 0xFFFFFFFF : 0xFFC0C0C0
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
-
     children = underline
-  }.__update(fontSmall)
+    ...mkPressTransitionScale(stateFlags.get())
+    ...fontSmall
+  }
 }
 
 function tagsList() {
@@ -238,20 +237,25 @@ function tagsList() {
   }
 }
 
-let currentForUnitMark = @(isCurrentForUnit) @()
+function currentForUnitMark(isCurrentForUnit) {
+  let checkImg = Picture($"ui/gameuiskin#check.svg:{checkSize[0]}:{checkSize[1]}:P")
+  return @()
   !isCurrentForUnit.get() ? { watch = isCurrentForUnit }
     : {
         watch = isCurrentForUnit
         size = checkSize
         margin = hdpx(7)
         rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#check.svg:{checkSize[0]}:{checkSize[1]}:P")
+        image = checkImg
         imageHalign = ALIGN_LEFT
         keepAspect = true
         color = 0xFFFFFFFF
       }
+}
 
-let defaultForSkinMark = @(isDefaultForSkin) @()
+function defaultForSkinMark(isDefaultForSkin) {
+  let defaultImg = Picture($"ui/gameuiskin#lobby_social_icon.svg:{checkSize[0]}:{checkSize[1]}:P")
+  return @()
   !isDefaultForSkin.get() ? { watch = isDefaultForSkin }
     : {
         watch = isDefaultForSkin
@@ -259,16 +263,30 @@ let defaultForSkinMark = @(isDefaultForSkin) @()
         margin = hdpx(7)
         hplace = ALIGN_RIGHT
         rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#lobby_social_icon.svg:{checkSize[0]}:{checkSize[1]}:P")
-        imagehalign = ALIGN_RIGHT
+        image = defaultImg
+        imageHalign = ALIGN_RIGHT
         keepAspect = true
         color = 0xFFFFFFFF
       }
+}
 
 function presetBtn(preset, isCurrentForUnit, isDefaultForSkin) {
   let stateFlags = Watched(0)
   let { id, image } = preset
   let isSelected = Computed(@() selPreset.get()?.id == id)
+  let presetImg = Picture($"ui/gameuiskin#{image}:{presetSize}:{presetSize}:P")
+  let slotBorderImg = Picture($"ui/gameuiskin#slot_border.svg:{presetSize}:{presetSize}:P")
+  let presetChildren = [
+    @() {
+      watch = isSelected
+      size = FLEX
+      rendObj = ROBJ_IMAGE
+      image = slotBorderImg
+      color = isSelected.get() ? selectedColor : 0
+    }
+    currentForUnitMark(isCurrentForUnit)
+    defaultForSkinMark(isDefaultForSkin)
+  ]
   return @() {
     watch = stateFlags
     key = preset
@@ -276,22 +294,12 @@ function presetBtn(preset, isCurrentForUnit, isDefaultForSkin) {
     rendObj = ROBJ_BOX
     fillColor = 0xFFFFFFFF
     borderRadius = presetBorderSize
-    image = Picture($"ui/gameuiskin#{image}:{presetSize}:{presetSize}:P")
+    image = presetImg
     behavior = Behaviors.Button
     onElemState = @(sf) stateFlags.set(sf)
     onClick = @() selPreset.set(preset)
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.95, 0.95] : [1, 1] }
-    children = [
-      @() {
-        watch = isSelected
-        size = FLEX
-        rendObj = ROBJ_IMAGE
-        image = Picture($"ui/gameuiskin#slot_border.svg:{presetSize}:{presetSize}:P")
-        color = isSelected.get() ? selectedColor : 0
-      }
-      currentForUnitMark(isCurrentForUnit)
-      defaultForSkinMark(isDefaultForSkin)
-    ]
+    children = presetChildren
+    ...mkPressTransitionScale(stateFlags.get())
   }
 }
 
@@ -319,7 +327,7 @@ let presetsList = @(curSkinUnitPreset, curSkinDefaultPreset) function() {
           children = column
         })
       }
-      { size = FLEX_V })
+      const { size = FLEX_V })
   }
 }
 

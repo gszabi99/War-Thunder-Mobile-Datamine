@@ -4,6 +4,9 @@ from "%appGlobals/unitConst.nut" import *
 let config = {
   [TANK] = require("%rGui/hudTuning/cfg/cfgHudTank.nut"),
   [AIR] = require("%rGui/hudTuning/cfg/cfgHudAircraft.nut"),
+
+
+
   [SHIP] = require("%rGui/hudTuning/cfg/cfgHudShip.nut"),
   [SUBMARINE] = require("%rGui/hudTuning/cfg/cfgHudSubmarine.nut"),
   [SAILBOAT] = require("%rGui/hudTuning/cfg/cfgHudSailboat.nut"),

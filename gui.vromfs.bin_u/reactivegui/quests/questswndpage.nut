@@ -24,7 +24,7 @@ from "%rGui/components/unseenMark.nut" import priorityUnseenMark
 from "%rGui/options/mkOptionsScene.nut" import topAreaSize
 from "%rGui/options/optionsStyle.nut" import minContentOffset, tabW
 from "%rGui/quests/bqQuests.nut" import sendBqQuestsTask, sendBqQuestsRerollTask
-from "%rGui/quests/questBar.nut" import mkQuestBar, mkQuestListProgressBar
+from "%rGui/quests/questBar.nut" import mkQuestBar, mkQuestListProgressBar, mkUnlockStagesCtor
 from "%rGui/quests/questChain.nut" import mkChainProgress
 from "%rGui/quests/questsPkg.nut" import mkSectionBtn, sectionBtnHeight, sectionBtnMaxWidth, sectionBtnGap,
   mkTimeUntil, allQuestsCompleted, mkAdsBtn, btnSize, mkQuestText, btnStyle, btnStyleSound
@@ -35,6 +35,7 @@ from "%rGui/quests/questsState.nut" import questsBySection, unseenUnlocks, saveS
 from "%rGui/quests/rewardsComps.nut" import mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon,
   progressBarRewardSize, mkRewardsPreviewFull, getRewardsPreviewInfo, getEventCurrencyReward, REWARDS_PREVIEW_SLOTS
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_VERY_TINY
+from "%rGui/rewards/rewardViewInfo.nut" import getUnlockRewardsViewInfo
 from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT, PURCH_SRC_OPERATION_PASS,
   PURCH_TYPE_QUEST_REROLL, mkBqPurchaseInfo
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
@@ -162,52 +163,55 @@ function exploreRewardMsgBox(item, rewardsPreview, price, currencyId, currencyRe
   })
 }
 
-let mkQuestBtn = @(item, currencyReward, rewardsPreview, hasReceivedAllRewards, needOPAccessMark = false) function() {
+function mkQuestBtn(item, currencyReward, rewardsPreview, hasReceivedAllRewards, needOPAccessMark = false) {
   let { name, progressCorrectionStep = 0 } = item
   let hasAds = !item?.hasReward && !hasReceivedAllRewards && progressCorrectionStep > 0
   let isRewardInProgress = hasAds ? Computed(@() name in unlockInProgress.get() || adBudgetInProgress.get())
     : Computed(@() name in unlockInProgress.get())
-  let price = getUnlockPrice(item)
 
-  let questBtn = needOPAccessMark
-      ? textButtonPurchase(utf8ToUpper(loc("quests/needOP")), openOPPurchaseWnd,
-          { ovr = {size = btnSize, minWidth = btnSize[0], padding = const [0, hdpx(2)]} })
-    : item?.hasReward
-      ? textButtonSecondary(
+  return function() {
+    let price = getUnlockPrice(item)
+
+    let questBtn = needOPAccessMark
+        ? textButtonPurchase(utf8ToUpper(loc("quests/needOP")), openOPPurchaseWnd,
+            { ovr = {size = btnSize, minWidth = btnSize[0], padding = const [0, hdpx(2)]} })
+      : item?.hasReward
+        ? textButtonSecondary(
+            utf8ToUpper(loc("btn/receive")),
+            @() receiveReward(item, currencyReward),
+            btnStyleSound)
+      : hasReceivedAllRewards
+        ? {
+            size = btnSize
+            rendObj = ROBJ_TEXT
+            halign = ALIGN_CENTER
+            valign = ALIGN_CENTER
+            text = utf8ToUpper(loc("ui/received"))
+            behavior = Behaviors.Button 
+          }.__update(fontTinyAccentedShaded)
+      : allowOpenUnlock.get()
+        ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_complete")),
+            mkCurrencyComp(0, GOLD).__merge({size = [SIZE_TO_CONTENT, CS_COMMON.iconSize]}),
+            @() openNextUnlockStage(item.name),
+            btnStyle)
+      : progressCorrectionStep > 0 ? mkAdsBtn(item)
+      : (price.price ?? 0) > 0
+        ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_complete")),
+            mkCurrencyComp(price.price, price.currency).__merge({size = [SIZE_TO_CONTENT, CS_COMMON.iconSize]}),
+            @() buyRewardMsgBox(item, rewardsPreview, price.price , price.currency, currencyReward),
+            btnStyle)
+      : textButtonInactive(
           utf8ToUpper(loc("btn/receive")),
-          @() receiveReward(item, currencyReward),
-          btnStyleSound)
-    : hasReceivedAllRewards
-      ? {
-          size = btnSize
-          rendObj = ROBJ_TEXT
-          halign = ALIGN_CENTER
-          valign = ALIGN_CENTER
-          text = utf8ToUpper(loc("ui/received"))
-          behavior = Behaviors.Button 
-        }.__update(fontTinyAccentedShaded)
-    : allowOpenUnlock.get()
-      ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_complete")),
-          mkCurrencyComp(0, GOLD).__merge({size = [SIZE_TO_CONTENT, CS_COMMON.iconSize]}),
-          @() openNextUnlockStage(item.name),
+          @() anim_start($"unfilledBarEffect_{name}"),
           btnStyle)
-    : progressCorrectionStep > 0 ? mkAdsBtn(item)
-    : (price.price ?? 0) > 0
-      ? textButtonPricePurchase(utf8ToUpper(loc("msgbox/btn_complete")),
-          mkCurrencyComp(price.price, price.currency).__merge({size = [SIZE_TO_CONTENT, CS_COMMON.iconSize]}),
-          @() buyRewardMsgBox(item, rewardsPreview, price.price , price.currency, currencyReward),
-          btnStyle)
-    : textButtonInactive(
-        utf8ToUpper(loc("btn/receive")),
-        @() anim_start($"unfilledBarEffect_{name}"),
-        btnStyle)
-  return {
-    watch = allowOpenUnlock
-    key = $"quest_reward_receive_btn_{name}" 
-    size = btnSize
-    halign = ALIGN_CENTER
-    valign = ALIGN_BOTTOM
-    children = mkSpinnerHideBlock(isRewardInProgress, questBtn)
+    return {
+      watch = allowOpenUnlock
+      key = $"quest_reward_receive_btn_{name}" 
+      size = btnSize
+      halign = ALIGN_CENTER
+      valign = ALIGN_BOTTOM
+      children = mkSpinnerHideBlock(isRewardInProgress, questBtn)
+    }
   }
 }
 
@@ -233,17 +237,19 @@ function mkItemTimerUntilReroll(statsTable) {
   }
 }
 
-let mkRerollBtn = @(item, rerollPrice, isDisabledW) @() {
-  watch = isDisabledW
-  vplace = ALIGN_TOP
-  children = mkSpinnerHideBlock(Computed(@() item.name in unlockInProgress.get()),
-    item.hasReward || isDisabledW.get()
-      ? iconButtonInactive($"ui/gameuiskin#icon_repeatable.svg",
-          @() null
-          { ovr = { size = [btnSize[1], btnSize[1]], minWidth = 0 } })
-      : iconButtonCommon($"ui/gameuiskin#icon_repeatable.svg",
-          @() rerollQuestMsgBox(item.name, rerollPrice.get().price, rerollPrice.get().currency),
-          { ovr = { size = [btnSize[1], btnSize[1]], minWidth = 0 } }))
+function mkRerollBtn(item, rerollPrice, isDisabledW) {
+  let isRerollInProgress = Computed(@() item.name in unlockInProgress.get())
+  let rerollBtnOvr = { ovr = { size = [btnSize[1], btnSize[1]], minWidth = 0 } }
+  return @() {
+    watch = isDisabledW
+    vplace = ALIGN_TOP
+    children = mkSpinnerHideBlock(isRerollInProgress,
+      item.hasReward || isDisabledW.get()
+        ? iconButtonInactive($"ui/gameuiskin#icon_repeatable.svg", @() null, rerollBtnOvr)
+        : iconButtonCommon($"ui/gameuiskin#icon_repeatable.svg",
+            @() rerollQuestMsgBox(item.name, rerollPrice.get().price, rerollPrice.get().currency),
+            rerollBtnOvr))
+  }
 }
 
 let getSectionTableUnlock = @(sectionUnlocks) sectionUnlocks.findvalue(@(u) (u?.requirement ?? "") == "")
@@ -283,6 +289,93 @@ function mkItem(item, textCtor, sectionId) {
 
   let needOPAccessMark = Computed(@() !isOPActive.get()
     && item?.meta.personal.startswith("premium_personal_unlocks"))
+  let isRerollDisabled = Computed(@() hasReceivedAllRewards.get() || needOPAccessMark.get())
+  let unseenMark = {
+    margin = unseenMarkMargin
+    children = priorityUnseenMark
+  }
+  let lockedRewardBlock = {
+    size = btnSize
+    halign = ALIGN_CENTER
+    valign = ALIGN_CENTER
+    children = {
+      rendObj = ROBJ_IMAGE
+      size = const [imgLockSize, imgLockSize]
+      image = Picture($"ui/gameuiskin#lock_icon.svg:{imgLockSize}:{imgLockSize}:P")
+      keepAspect = true
+    }
+  }
+  let notCompletedBlock = {
+    rendObj = ROBJ_SOLID
+    size = FLEX
+    color = bgColor
+  }
+  let rewardsRow = {
+    vplace = ALIGN_BOTTOM
+    flow = FLOW_HORIZONTAL
+    gap = questItemsGap
+    children = [
+      @() {
+        watch = filteredRewardsPreview
+        flow = FLOW_HORIZONTAL
+        gap = questItemsGap
+        halign = ALIGN_RIGHT
+        children = filteredRewardsPreview.get().len() > 0
+          ? mkRewardsPreview(filteredRewardsPreview.get(), item?.isFinished, REWARDS_PREVIEW_SLOTS, REWARD_STYLE_VERY_TINY)
+          : null
+      }
+
+      @() {
+        watch = [isCompletedPrevQuest, eventCurrencyReward, rewardsPreview, hasReceivedAllRewards, needOPAccessMark]
+        children = isCompletedPrevQuest.get()
+          ? mkQuestBtn(item, eventCurrencyReward.get(), rewardsPreview.get(), hasReceivedAllRewards.get(), needOPAccessMark.get())
+          : lockedRewardBlock
+      }
+    ]
+  }
+  let questHeaderBlock = {
+    size = FLEX_H
+    padding = const [hdpx(10), hdpx(30), hdpx(15), hdpx(30)]
+    flow = FLOW_HORIZONTAL
+    gap = questItemsGap
+    valign = ALIGN_BOTTOM
+    children = [
+      @() {
+        watch = [isCompletedPrevQuest, headerPadding, leftBlockMinHeight, needOPAccessMark]
+        size = FLEX_H
+        flow = FLOW_VERTICAL
+        minHeight = leftBlockMinHeight.get()
+        gap = hdpx(8)
+        opacity = needOPAccessMark.get() ? 0.5 : 1.0
+        children = isCompletedPrevQuest.get()
+          ? [
+              !item?.chainQuests ? null : mkChainProgress(item, {padding = [0, 0, 0, headerPadding.get()]})
+              textCtor(item, {padding = [0, 0, 0, headerPadding.get()] })
+              const { size = FLEX }
+              mkQuestBar(item)
+            ].filter(@(v) v != null)
+          : {
+              rendObj = ROBJ_TEXT
+              size = const [FLEX, hdpx(90)]
+              flow = FLOW_HORIZONTAL
+              halign = ALIGN_LEFT
+              valign = ALIGN_CENTER
+              text = loc("quests/requiredCompletePreviousQuest")
+            }.__update(fontTinyAccented)
+      }
+
+      @() {
+        watch = hasRerollBtn
+        flow = FLOW_VERTICAL
+        gap = questItemsGap
+        halign = ALIGN_RIGHT
+        children = [
+          !hasRerollBtn.get() ? null : mkRerollBtn(item, rerollPrice, isRerollDisabled)
+          rewardsRow
+        ].filter(@(v) v != null)
+      }
+    ]
+  }
 
   return {
     rendObj = ROBJ_SOLID
@@ -299,101 +392,20 @@ function mkItem(item, textCtor, sectionId) {
             watch = isUnseen
             size = FLEX_H
             children = !isUnseen.get() ? null
-              : {
-                  margin = unseenMarkMargin
-                  children = priorityUnseenMark
-                }
+              : unseenMark
           }
 
       @() {
         watch = isHiddenForReroll
         size = FLEX_H
         children = isHiddenForReroll.get() ? mkItemTimerUntilReroll(statsTable)
-          : {
-              size = FLEX_H
-              padding = const [hdpx(10), hdpx(30), hdpx(15), hdpx(30)]
-              flow = FLOW_HORIZONTAL
-              gap = questItemsGap
-              valign = ALIGN_BOTTOM
-              children = [
-                @() {
-                  watch = [isCompletedPrevQuest, headerPadding, leftBlockMinHeight, needOPAccessMark]
-                  size = FLEX_H
-                  flow = FLOW_VERTICAL
-                  minHeight = leftBlockMinHeight.get()
-                  gap = hdpx(8)
-                  opacity = needOPAccessMark.get() ? 0.5 : 1.0
-                  children = isCompletedPrevQuest.get()
-                    ? [
-                        !item?.chainQuests ? null : mkChainProgress(item, {padding = [0, 0, 0, headerPadding.get()]})
-                        textCtor(item, {padding = [0, 0, 0, headerPadding.get()] })
-                        { size = FLEX }
-                        mkQuestBar(item)
-                      ].filter(@(v) v != null)
-                    : {
-                        rendObj = ROBJ_TEXT
-                        size = const [FLEX, hdpx(90)]
-                        flow = FLOW_HORIZONTAL
-                        halign = ALIGN_LEFT
-                        valign = ALIGN_CENTER
-                        text = loc("quests/requiredCompletePreviousQuest")
-                      }.__update(fontTinyAccented)
-                }
-
-                @() {
-                  watch = hasRerollBtn
-                  flow = FLOW_VERTICAL
-                  gap = questItemsGap
-                  halign = ALIGN_RIGHT
-                  children = [
-                    !hasRerollBtn.get() ? null : mkRerollBtn(item, rerollPrice, Computed(@() hasReceivedAllRewards.get() || needOPAccessMark.get()))
-                    {
-                      vplace = ALIGN_BOTTOM
-                      flow = FLOW_HORIZONTAL
-                      gap = questItemsGap
-                      children = [
-                        @() {
-                          watch = filteredRewardsPreview
-                          flow = FLOW_HORIZONTAL
-                          gap = questItemsGap
-                          halign = ALIGN_RIGHT
-                          children = filteredRewardsPreview.get().len() > 0
-                            ? mkRewardsPreview(filteredRewardsPreview.get(), item?.isFinished, REWARDS_PREVIEW_SLOTS, REWARD_STYLE_VERY_TINY)
-                            : null
-                        }
-
-                        @() {
-                          watch = [isCompletedPrevQuest, eventCurrencyReward, rewardsPreview, hasReceivedAllRewards, needOPAccessMark]
-                          children = isCompletedPrevQuest.get()
-                            ? mkQuestBtn(item, eventCurrencyReward.get(), rewardsPreview.get(), hasReceivedAllRewards.get(), needOPAccessMark.get())
-                            : {
-                                size = btnSize
-                                halign = ALIGN_CENTER
-                                valign = ALIGN_CENTER
-                                children = {
-                                  rendObj = ROBJ_IMAGE
-                                  size = const [imgLockSize, imgLockSize]
-                                  image = Picture($"ui/gameuiskin#lock_icon.svg:{imgLockSize}:{imgLockSize}:P")
-                                  keepAspect = true
-                                }
-                              }
-                        }
-                      ]
-                    }
-                  ].filter(@(v) v != null)
-                }
-              ]
-            }
+          : questHeaderBlock
       }
       @() {
         watch = isCompletedPrevQuest
         size = FLEX_H
         children = isCompletedPrevQuest.get() ? null
-          : {
-              rendObj = ROBJ_SOLID
-              size = FLEX
-              color = bgColor
-            }
+          : notCompletedBlock
       }
     ]
   }
@@ -422,6 +434,7 @@ function mkSectionTabs(sections, curSectionId, onSectionChange) {
     children = sections.map(function(id) {
       let isUnlocked = Computed(@()
         isSectionUnlockActive(getSectionTableUnlock(questsBySection.get()?[id] ?? []), unlockTables.get()))
+      let lockedIcon = mkLockedIcon({ opacity = lockedOpacity })
       return mkSectionBtn(@() onSectionChange(id),
         Computed(@() curSectionId.get() == id),
         Computed(@() !!hasUnseenQuestsBySection.get()?[id]
@@ -432,7 +445,7 @@ function mkSectionTabs(sections, curSectionId, onSectionChange) {
           gap = sectionBtnGap
           valign = ALIGN_CENTER
           children = [
-            isUnlocked.get() ? null : mkLockedIcon({ opacity = lockedOpacity })
+            isUnlocked.get() ? null : lockedIcon
             @() {
               watch = [sectionsCfg, sectionsFont]
               rendObj = ROBJ_TEXT
@@ -518,6 +531,26 @@ function mergeQuestChains(quests, tabId, sectionId) {
   return res
 }
 
+function mkQuestsList(questsSorted, itemCtor, curSectionId, onDetach) {
+  let questsCount = Computed(@() questsSorted.get().len())
+  return @() {
+    watch = questsCount
+    size = FLEX_H
+    flow = FLOW_VERTICAL
+    gap = hdpx(20)
+    children = array(questsCount.get())
+      .map(function(_, i) {
+        let q = Computed(@(prev) prevIfEqual(prev, questsSorted.get()?[i]))
+        return @() {
+          watch = [q, curSectionId]
+          size = FLEX_H
+          children = q.get() == null ? null : itemCtor(q.get(), curSectionId.get())
+        }
+      })
+    onDetach
+  }
+}
+
 let mkFullScreenWidthBar = @(block, isFullScreenWidth) block == null || !isFullScreenWidth ? block
   : {
       size = [saSize[0], SIZE_TO_CONTENT]
@@ -560,7 +593,6 @@ function questsWndPage(sections, itemCtor, tabId, isFullScreenWidth = Watched(fa
       common = mergedList.filter(@(v) v.personal == "").sort(questsSort)
     }
   })
-  let questsCount = Computed(@() questsSortedByPersonal.get().common.len() + questsSortedByPersonal.get().personal.len())
   let questsSorted = Computed(function() {
     let { personal, common } = questsSortedByPersonal.get()
     let personalOrder = personalQuestsOrder.get()
@@ -593,11 +625,18 @@ function questsWndPage(sections, itemCtor, tabId, isFullScreenWidth = Watched(fa
     progressUnlockBySection.get(), progressUnlockByTab.get(), userstatStatsTables.get(), serverConfigs.get()))
 
   let scrollHandler = ScrollHandler()
+  let scrollArrowBtn = mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall)
 
   let isSectionsEmpty = Computed(@() sections.get().findindex(@(s) questsBySection.get()[s].len() > 0) == null)
+  let sectionDivider = {
+    size = const [FLEX, hdpx(4)]
+    rendObj = ROBJ_SOLID
+    color = selectColor
+  }
+  let mkStages = mkUnlockStagesCtor(tabId, curSectionId)
   function header() {
     let progressBlock = !hasProgressUnlock.get() ? null
-      : mkQuestListProgressBar(progressUnlock, tabId, curSectionId, isFullScreenWidth)
+      : mkQuestListProgressBar(progressUnlock, isFullScreenWidth, mkStages, getUnlockRewardsViewInfo)
 
     let sectionsBlock = isSectionsEmpty.get() ? allQuestsCompleted
       : sections.get().len() > 1
@@ -606,11 +645,7 @@ function questsWndPage(sections, itemCtor, tabId, isFullScreenWidth = Watched(fa
             flow = FLOW_VERTICAL
             children = [
               mkSectionTabs(sections.get(), curSectionId, onSectionChange)
-              {
-                size = [FLEX, hdpx(4)]
-                rendObj = ROBJ_SOLID
-                color = selectColor
-              }
+              sectionDivider
             ]
           }
       : null
@@ -683,50 +718,34 @@ function questsWndPage(sections, itemCtor, tabId, isFullScreenWidth = Watched(fa
       curTabParams.set({})
       removeCustomUnseenPurchHandler(markPurchasesSeenDelayed)
     }
-    children = [
-      @() {
-        watch = [isCurSectionActive, isFullScreenWidth]
-        size = FLEX
-        flow = FLOW_VERTICAL
-        gap = pageBlocksGap
-        children = [
-          header
+    children = @() {
+      watch = [isCurSectionActive, isFullScreenWidth]
+      size = FLEX
+      flow = FLOW_VERTICAL
+      gap = pageBlocksGap
+      children = [
+        header
 
-          !isCurSectionActive.get()
-            ? questTimerUntilStart(sectionTableUnlock)
-            : @() {
-                watch = [isCurSectionActive, blocksOnTop, isFullScreenWidth]
-                size = FLEX
-                children = !isCurSectionActive.get() ? null
-                  : [
-                      !isFullScreenWidth.get() ? null
-                        : mkTimerBlock(endsAtTime,
-                            {pos = [-(saBorders[0] + (tabW + minContentOffset) / 2 - selLineSize), 0]})
-                      pannableCtors[blocksOnTop.get()](
-                        @() {
-                          watch = questsCount
-                          size = FLEX_H
-                          flow = FLOW_VERTICAL
-                          gap = hdpx(20)
-                          children = array(questsCount.get())
-                            .map(function(_, i) {
-                              let q = Computed(@(prev) prevIfEqual(prev, questsSorted.get()?[i]))
-                              return @() {
-                                watch = [q, curSectionId]
-                                size = FLEX_H
-                                children = q.get() == null ? null : itemCtor(q.get(), curSectionId.get())
-                              }
-                            })
-                          onDetach = @() saveSeenQuestsForSection(curSectionId.get())
-                        },
-                        {},
-                        { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
-                      mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall)
-                    ]
-              }
-        ]
-      }
-    ]
+        !isCurSectionActive.get()
+          ? questTimerUntilStart(sectionTableUnlock)
+          : @() {
+              watch = [isCurSectionActive, blocksOnTop, isFullScreenWidth]
+              size = FLEX
+              children = !isCurSectionActive.get() ? null
+                : [
+                    !isFullScreenWidth.get() ? null
+                      : mkTimerBlock(endsAtTime,
+                          {pos = [-(saBorders[0] + (tabW + minContentOffset) / 2 - selLineSize), 0]})
+                    pannableCtors[blocksOnTop.get()](
+                      mkQuestsList(questsSorted, itemCtor, curSectionId,
+                        @() saveSeenQuestsForSection(curSectionId.get())),
+                      {},
+                      { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+                    scrollArrowBtn
+                  ]
+            }
+      ]
+    }
   }
 }
 
@@ -736,6 +755,9 @@ return {
   mkQuestBtn
   exploreRewardMsgBox
   mkAchievement = @(item, sectionId) mkItem(item, mkAchievementText, sectionId)
+  mkQuestsList
+  mergeQuestChains
+  questsSort
 
   unseenMarkMargin
 }

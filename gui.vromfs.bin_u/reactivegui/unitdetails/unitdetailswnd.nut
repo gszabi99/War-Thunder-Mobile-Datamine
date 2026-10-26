@@ -57,25 +57,26 @@ let btnOpenUnitCustomization = mkBtnOpenCustomization(baseUnit,
   { hotkeys = ["^J:LB"], ovr = { size = leftBtnSizeWithRewardBtn } })
 let protectionAnalysisButton = mkBtnOpenProtectionAnalysis(unitToShow, baseUnit,
   { hotkeys = ["^J:RB"], ovr = { size = [statsWidth, defButtonHeight] }, contentOvr = { width = statsWidth } })
+let unitInfoPanelContent = panelBg.__merge({
+  size = FLEX_V
+  gap = hdpx(30)
+  children = [
+    unitInfoPanelFull(unitToShow,
+      {
+        behavior = HangarCameraControl
+        touchMarginPriority = TOUCH_BACKGROUND
+      })
+    dmViewerSwitchComp
+    protectionAnalysisButton
+  ]
+})
 
 let unitInfoPanelPlace = @() {
   watch = curCampaign
   size = FLEX_V
   pos = [0, infoPanelOffsetY]
   padding = [ getInfoPanelTopPadByCampaign(curCampaign.get()), 0, 0, 0 ]
-  children = panelBg.__merge({
-    size = FLEX_V
-    gap = hdpx(30)
-    children = [
-      unitInfoPanelFull(unitToShow,
-        {
-          behavior = HangarCameraControl
-          touchMarginPriority = TOUCH_BACKGROUND
-        })
-      dmViewerSwitchComp
-      protectionAnalysisButton
-    ]
-  })
+  children = unitInfoPanelContent
 }
 
 let testDriveButton = @() {
@@ -96,8 +97,8 @@ function buttonsBlock() {
     watch = [curCampaign, hasSlotAttrPreset, baseUnit, campMyUnits]
     gap = hdpx(15)
     children = [
-      { size = FLEX }
-      mkUnitPkgDownloadInfo(baseUnit, true, { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
+      const { size = FLEX }
+      mkUnitPkgDownloadInfo(baseUnit, true, const { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
       isOwnUnitPreview ? mkBtnOpenUnitMastery(baseUnit, { ovr = { size = leftBtnSizeWithRewardBtn }})
         : null
       testDriveButton

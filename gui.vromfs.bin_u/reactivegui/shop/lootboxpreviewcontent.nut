@@ -5,6 +5,7 @@ from "%sqstd/string.nut" import utf8ToUpper
 from "%sqstd/underscore.nut" import prevIfEqual
 from "%appGlobals/config/boostersPresentation.nut" import getBoosterIcon
 from "%appGlobals/config/lootboxPresentation.nut" import getLootboxName
+from "%appGlobals/pServer/campaign.nut" import bestCampLevel
 from "%appGlobals/pServer/pServerApi.nut" import lootboxInProgress
 from "%appGlobals/pServer/profile.nut" import campMyUnits
 from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
@@ -20,7 +21,7 @@ import "%rGui/components/currencyStyles.nut" as currencyStyles
 from "%rGui/components/gradTexts.nut" import mkGradGlowText
 from "%rGui/components/spinner.nut" import mkSpinner
 from "%rGui/components/textButton.nut" import mkCustomButton, mergeStyles
-from "%rGui/event/eventState.nut" import eventSeason, bestCampLevel, curEventLootboxes
+from "%rGui/event/eventState.nut" import eventSeason, curEventLootboxes
 from "%rGui/rewards/components/lootboxView.nut" import mkLootboxImageWithSlotScale
 from "%rGui/rewards/lootboxRewardChances.nut" import mkLootboxChancesComp, mkIsLootboxChancesInProgress
 from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon,
@@ -177,7 +178,7 @@ let chancePartCtors = {
   blueprint = @(sr, chances, _)
     mkChanceRow(sr.count, chances.percents?[sr.id] ?? 0,
       {
-        size = const [blueprintSize, blueprintSize]
+        size = blueprintSize
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/unitskin#blueprint_default_small.avif:{blueprintSize}:{blueprintSize}:P")
         transform = { rotate = -10 }
@@ -185,7 +186,7 @@ let chancePartCtors = {
   booster = @(sr, chances, rId)
     mkChanceRow(sr.count, chances.percents?[sr.id] ?? 0,
       {
-        size = [chanceStyle.iconSize, chanceStyle.iconSize]
+        size = chanceStyle.iconSize
         rendObj = ROBJ_IMAGE
         image = Picture($"{getBoosterIcon(rId)}:{chanceStyle.iconSize}:{chanceStyle.iconSize}:P")
       })
@@ -235,7 +236,7 @@ function mkChanceContent(reward, rewardStatus, stepsCount, dropFromNested) {
     return @() {
       watch = [isInProgress, mainChances, rId, hasLimitInfo]
       flow = FLOW_VERTICAL
-      sound = { attach = "click" }
+      sound = const { attach = "click" }
       gap = tooltipTextGap
       halign = ALIGN_LEFT
       children = isInProgress.get() ? spinner
@@ -253,7 +254,7 @@ function mkChanceContent(reward, rewardStatus, stepsCount, dropFromNested) {
   return @() {
     watch = [isInProgressFull, mainChances, nestedChances, rId, hasLimitInfo]
     flow = FLOW_VERTICAL
-    sound = { attach = "click" }
+    sound = const { attach = "click" }
     gap = tooltipTextGap
     halign = ALIGN_LEFT
     children = isInProgressFull.get() ? spinner
@@ -273,7 +274,7 @@ function mkChanceContent(reward, rewardStatus, stepsCount, dropFromNested) {
           .extend(
             dropFromNested?.isFixed ? []
               : [
-                { size = hdpx(20) },
+                const { size = hdpx(20) },
                 mkText(loc("item/chance/withName",
                 {
                   name = getLootboxName(dropFromNested.id)
@@ -346,34 +347,39 @@ function mkReward(reward, rStyle, lootboxW = null, dropFromNested = null) {
         return stepsToFixed[1] - stepsToFixed[0]
       })
 
+  let previewIcon = onClick == null ? null : mkPreviewIcon(reward, rStyle)
+  let lockedMark = mkRewardLocked(rStyle)
+  let fixedIcon = !isAllReceived && isFixed ? mkRewardFixedIcon(rStyle) : null
+  let rewardReceivedMark = isAllReceived ? mkRewardReceivedMark(rStyle) : null
+  let holdTooltip = mkButtonHoldTooltip(onClick, stateFlags, key,
+    @() {
+      content = isOpenReward ? loc("lootbox/eachOpenReward")
+        : mkChanceContent(reward,
+            {
+              isAvailable,
+              isAllReceived,
+              isFixed
+            },
+            stepsCount.get(),
+            dropFromNested)
+    },
+    0.01)
+
   return @() {
     watch = [isAvailable, stateFlags, stepsCount]
     behavior = Behaviors.Button
     key
     children = [
       mkRewardPlate(reward, rStyle)
-      onClick == null ? null : mkPreviewIcon(reward, rStyle)
-      !isAvailable.get() ? mkRewardLocked(rStyle)
-        : !isAllReceived && isFixed ? mkRewardFixedIcon(rStyle)
+      previewIcon
+      !isAvailable.get() ? lockedMark
+        : !isAllReceived && isFixed ? fixedIcon
         : !isAllReceived && dropLimitRaw != NO_DROP_LIMIT ? mkReceivedCounter(received, dropLimit)
         : topLeftIconCtor?[rType](reward, rStyle)
-      isAllReceived && stepsCount.get() <= 0 ? mkRewardReceivedMark(rStyle) : null
+      isAllReceived && stepsCount.get() <= 0 ? rewardReceivedMark : null
       stepsCount.get() < 0 && !isAllReceived ? mkRewardDisabledBkg : null
     ]
-  }.__update(ovr,
-    mkButtonHoldTooltip(onClick, stateFlags, key,
-      @() {
-        content = isOpenReward ? loc("lootbox/eachOpenReward")
-          : mkChanceContent(reward,
-              {
-                isAvailable,
-                isAllReceived,
-                isFixed
-              },
-              stepsCount.get(),
-              dropFromNested)
-      },
-      0.01))
+  }.__update(ovr, holdTooltip)
 }
 
 function itemsBlock(rewards, width, style, ovr = {}, lootbox = null) {
@@ -452,6 +458,20 @@ function mkRewardLootboxInfo(reward, width, style) {
     }
     return res
   })
+  let arrowBlock = {
+    size = [style.boxSize - style.boxGap, style.boxSize]
+    valign = ALIGN_CENTER
+    halign = ALIGN_RIGHT
+    children = {
+      size = arrowSize
+      pos = [style.boxGap, 0]
+      rendObj = ROBJ_VECTOR_CANVAS
+      fillColor = nestedBgColor
+      color = 0
+      commands = const [[VECTOR_POLY, 0, 50, 100, 0, 100, 100]]
+    }
+  }
+  let moreInfoButton = mkMoreInfoButton(reward, style)
   return @() {
     watch = [rewards, visibleCount]
     size = [width, SIZE_TO_CONTENT]
@@ -460,19 +480,7 @@ function mkRewardLootboxInfo(reward, width, style) {
     valign = ALIGN_CENTER
     children = [
       mkReward(reward, style, sourceLootbox)
-      {
-        size = [style.boxSize - style.boxGap, style.boxSize]
-        valign = ALIGN_CENTER
-        halign = ALIGN_RIGHT
-        children = {
-          size = arrowSize
-          pos = [style.boxGap, 0]
-          rendObj = ROBJ_VECTOR_CANVAS
-          fillColor = nestedBgColor
-          color = 0
-          commands = [[VECTOR_POLY, 0, 50, 100, 0, 100, 100]]
-        }
-      }
+      arrowBlock
       {
         padding = style.boxGap
         rendObj = ROBJ_SOLID
@@ -482,7 +490,7 @@ function mkRewardLootboxInfo(reward, width, style) {
         children = rewards.get()
           .slice(0, visibleCount.get())
           .map(@(r) mkReward(r, style, null, reward)) 
-          .append(rewards.get().len() == visibleCount.get() ? null : mkMoreInfoButton(reward, style))
+          .append(rewards.get().len() == visibleCount.get() ? null : moreInfoButton)
       }
     ]
   }
@@ -619,43 +627,44 @@ function mkJackpotProgressBar(stepsFinished, stepsToNext, ovr = {}) {
     fillColor = jpBgColor
     borderWidth = jpBorderWidth
     borderColor = jpBarColor
-    children = [
-      {
-        rendObj = ROBJ_BOX
-        size = [pw(100 * questCompletion), jpBarHeight]
-        fillColor = jpBarColor
-      }
-    ]
+    children = {
+      rendObj = ROBJ_BOX
+      size = [pw(100 * questCompletion), jpBarHeight]
+      fillColor = jpBarColor
+    }
   }.__update(ovr)
 }
 
-let mkJackpotProgress = @(stepsToFixed) @() {
-  key = "jackpot_progress" 
-  watch = stepsToFixed
-  flow = FLOW_VERTICAL
-  children = stepsToFixed.get()[1] - stepsToFixed.get()[0] <= 0 ? null : [
-    mkRow([
-      {
-        rendObj = ROBJ_TEXT
-        text = utf8ToUpper(loc("events/fixedReward"))
-      }.__update(fontVeryTinyAccented)
-      {
-        rendObj = ROBJ_TEXT
-        text = stepsToFixed.get()[1] - stepsToFixed.get()[0]
-      }.__update(fontVeryTinyAccented)
-    ])
-    mkJackpotProgressBar(stepsToFixed.get()[0], stepsToFixed.get()[1], { margin = const [hdpx(10), 0] })
-    mkRow([
-      {
-        maxWidth = hdpx(400)
-        rendObj = ROBJ_TEXTAREA
-        behavior = Behaviors.TextArea
-        text = loc("events/guaranteedReward")
-      }.__update(fontVeryTiny)
-      { size = const [hdpx(10), 0] }
-      smallChestIcon
-    ])
-  ]
+function mkJackpotProgress(stepsToFixed) {
+  let spacer = { size = const [hdpx(10), 0] }
+  return @() {
+    key = "jackpot_progress" 
+    watch = stepsToFixed
+    flow = FLOW_VERTICAL
+    children = stepsToFixed.get()[1] - stepsToFixed.get()[0] <= 0 ? null : [
+      mkRow([
+        {
+          rendObj = ROBJ_TEXT
+          text = utf8ToUpper(loc("events/fixedReward"))
+        }.__update(fontVeryTinyAccented)
+        {
+          rendObj = ROBJ_TEXT
+          text = stepsToFixed.get()[1] - stepsToFixed.get()[0]
+        }.__update(fontVeryTinyAccented)
+      ])
+      mkJackpotProgressBar(stepsToFixed.get()[0], stepsToFixed.get()[1], { margin = const [hdpx(10), 0] })
+      mkRow([
+        {
+          maxWidth = hdpx(400)
+          rendObj = ROBJ_TEXTAREA
+          behavior = Behaviors.TextArea
+          text = loc("events/guaranteedReward")
+        }.__update(fontVeryTiny)
+        spacer
+        smallChestIcon
+      ])
+    ]
+  }
 }
 
 return {

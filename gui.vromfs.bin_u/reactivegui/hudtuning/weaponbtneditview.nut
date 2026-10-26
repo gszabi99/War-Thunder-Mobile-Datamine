@@ -16,7 +16,7 @@ let mkWeaponNumber = @(weaponNumber, isRoman = true) weaponNumber == 0 ? null : 
   halign = ALIGN_CENTER
   children = [
     {
-      size = [weaponNumberSize, weaponNumberSize]
+      size = weaponNumberSize
       rendObj = ROBJ_BOX
       fillColor = hudWhiteColor
       transform = { rotate = 45 }
@@ -38,13 +38,13 @@ let weaponBtnEditViewCtor = @(size, imgSize) function(image, relImageSize = 1, o
     children = [
       {
         rendObj = ROBJ_SOLID
-        size = [size, size]
+        size = size
         color = hudTransparentColor
         transform = { rotate = 45 }
       }
       {
         rendObj = ROBJ_BOX
-        size = [size, size]
+        size = size
         borderColor
         borderWidth
         transform = { rotate = 45 }
@@ -53,7 +53,7 @@ let weaponBtnEditViewCtor = @(size, imgSize) function(image, relImageSize = 1, o
         rendObj = ROBJ_IMAGE
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
-        size = [imageSize, imageSize]
+        size = imageSize
         image = Picture($"{image}:{imageSize}:{imageSize}")
         keepAspect = KEEP_ASPECT_FIT
       }

@@ -231,7 +231,7 @@ function mkTgtPoint(hint) {
     size = 0
     pos = [pw(lines[0]), ph(lines[1])]
     children = {
-      size = [pointSize, pointSize]
+      size = pointSize
       rendObj = ROBJ_SOLID
       color
       vplace = ALIGN_CENTER

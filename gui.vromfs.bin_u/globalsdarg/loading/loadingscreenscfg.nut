@@ -176,6 +176,14 @@ let screensList = {
     weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_16.avif")
   }
+  event_halloween_2026 = {
+    weight = 2.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_halloween_2026.avif")
+    timeRange = {
+      season = "event_halloween_season"
+      seasonIdx = 3
+    }
+  }
   event_halloween = {
     weight = 0.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_halloween_2024.avif")
@@ -349,11 +357,20 @@ let screensList = {
   }
   major_s38_launch_protocol = {
     camp = [ "tanks" ]
-    weight = 2.0
+    weight = 1.0
     mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_40_s38.avif")
     timeRange = {
       season = "season"
       seasonIdx = 38
+    }
+  }
+  major_s39_battle_allies = {
+    camp = [ "tanks" ]
+    weight = 3.0
+    mkLayers = @() mkSingleImageLayers("ui/bkg/login_bkg_t_41_s39.avif")
+    timeRange = {
+      season = "season"
+      seasonIdx = 39
     }
   }
 }.map(@(v) "timeRange" not in v ? v :

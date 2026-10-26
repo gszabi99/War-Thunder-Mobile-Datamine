@@ -1,12 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%sqstd/frp.nut" import ComputedImmediate
 from "%appGlobals/currenciesState.nut" import GOLD
 from "%appGlobals/pServer/campaign.nut" import campConfigs
 from "%appGlobals/pServer/pServerApi.nut" import buy_unit_level, unitInProgress, registerHandler
 from "%appGlobals/pServer/profile.nut" import campMyUnits
 from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%rGui/attributes/attrState.nut" import getSpCostText
-from "%rGui/attributes/buyLevelComp.nut" import generateDataDiscount, mkLevelBlock
+from "%rGui/attributes/buyLevelComp.nut" import generateDataDiscount, mkLevelBlock, noFreeLevelToBuy
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
 from "%rGui/components/textButton.nut" import buttonsHGap
@@ -27,7 +26,7 @@ let unit = Computed(@() campMyUnits.get()?[unitName.get()])
 let unitLevels = Computed(@() campConfigs.get()?.unitLevels[unit.get()?.levelPreset] ?? [])
 let maxLevel = Computed(@() unit.get()?.maxLevel ?? unitLevels.get().len()) 
 let levelsToMax = Computed(@() maxLevel.get() - (unit.get()?.level ?? 0))
-let needShowWnd = keepref(ComputedImmediate(@() levelsToMax.get() > 0))
+let needShowWnd = keepref(Computed(@() levelsToMax.get() > 0))
 
 let hasFreeLevelsToBuy = Computed(@() activeTutorialId.get() == TUTORIAL_ATTRIBUTES_ID)
 
@@ -70,8 +69,8 @@ function wndContent() {
         unitInProgress,
         onClickPurchase,
         selectColor,
-        v.levels == FREE_LEVELS_TO_BUY ? hasFreeLevelsToBuy : Watched(false),
-        v.levels == FREE_LEVELS_TO_BUY ? { key = "attrOneLevelBtn" } : {}))
+        v.levels == FREE_LEVELS_TO_BUY ? hasFreeLevelsToBuy : noFreeLevelToBuy,
+        v.levels == FREE_LEVELS_TO_BUY ? const { key = "attrOneLevelBtn" } : {}))
   })
 }
 

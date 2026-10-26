@@ -20,7 +20,7 @@ from "%sqstd/underscore.nut" import isEqual, isDataBlock
 from "%appGlobals/clientState/clientState.nut" import isInDebriefing, isInLoadingScreen, isInMenu
 from "%appGlobals/gameModes/gameModes.nut" import gameModesRaw
 from "%appGlobals/loginState.nut" import isLoggedIn, isMatchingOnline
-from "%rGui/matching/matchingApi.nut" import matchingRpcCall, matchingRpcRegisterHandler, matching_subscribe
+from "%rGui/matching/matchingApi.nut" import matchingRequest, matchingRegisterHandler, matching_subscribe
 from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox
 from "%appGlobals/profileStates.nut" import myUserId, myUserName
 from "%appGlobals/sessionLobbyState.nut" import lobbyStates, sessionLobbyStatus
@@ -360,7 +360,7 @@ SessionLobby = {
 
     SessionLobbyState.roomUpdated = notify || !SessionLobbyState.isRoomOwner || !this.isInRoom()
     if (!SessionLobbyState.roomUpdated)
-      matchingRpcCall("mrooms.set_attributes",
+      matchingRequest("mrooms.set_attributes",
         { roomId = SessionLobbyState.roomId, public = SessionLobbyState.settings },
         "onSetAttributes")
 
@@ -504,7 +504,7 @@ SessionLobby = {
 
     if (SessionLobbyState.isRoomOwner && SessionLobbyState.status != lobbyStates.NOT_IN_ROOM
         && SessionLobbyState.status != lobbyStates.CREATING_ROOM)
-      matchingRpcCall("mrooms.set_password",
+      matchingRequest("mrooms.set_password",
         { roomId = SessionLobbyState.roomId, password = v_password },
         { id = "onSetPasswrod", prevPass = SessionLobbyState.password })
     SessionLobbyState.password = v_password
@@ -588,7 +588,7 @@ SessionLobby = {
       return ready
     }
 
-    matchingRpcCall("mrooms.set_ready_state",
+    matchingRequest("mrooms.set_ready_state",
       { state = ready, roomId = SessionLobbyState.roomId },
       { id = "onSetReady", ready, roomId = SessionLobbyState.roomId })
     return true
@@ -607,7 +607,7 @@ SessionLobby = {
     if (!SessionLobbyState.isRoomOwner)
       return
 
-    matchingRpcCall("mrooms.destroy_room", { roomId = SessionLobbyState.roomId })
+    matchingRequest("mrooms.destroy_room", { roomId = SessionLobbyState.roomId })
     SessionLobby.afterLeaveRoom({})
   }
 
@@ -618,7 +618,7 @@ SessionLobby = {
     }
 
     MRoomsHandlersState.isLeaving = true
-    matchingRpcCall("mrooms.leave_room", {}, { id = "onRoomLeave", roomId = g_mrooms_handlers.getRoomId() })
+    matchingRequest("mrooms.leave_room", {}, { id = "onRoomLeave", roomId = g_mrooms_handlers.getRoomId() })
   }
 
   function checkLeaveRoomInDebriefing() {
@@ -657,7 +657,7 @@ SessionLobby = {
     )
 
     this.switchStatus(lobbyStates.JOINING_ROOM)
-    matchingRpcCall("mrooms.join_room", join_params,
+    matchingRequest("mrooms.join_room", join_params,
       { id = "onRoomJoin", roomId = join_params?.roomId, password = join_params?.password })
   }
 
@@ -762,7 +762,7 @@ SessionLobby = {
       return
     log("start session")
 
-    matchingRpcCall("mrooms.start_session",
+    matchingRequest("mrooms.start_session",
       { roomId = SessionLobbyState.roomId, cluster = this.getPublicParam("cluster", "EU") },
       "onStartSession")
     this.switchStatus(lobbyStates.START_SESSION)
@@ -1243,7 +1243,7 @@ let MRoomsHandlers = class {
 
 g_mrooms_handlers = MRoomsHandlers()
 
-matchingRpcRegisterHandler("onRoomJoin", function(resp, context) {
+matchingRegisterHandler("onRoomJoin", function(resp, context) {
   if ("error" not in resp) {
     g_mrooms_handlers.onRoomJoinCb(resp)
     SessionLobby.afterRoomJoining(resp)
@@ -1262,20 +1262,20 @@ matchingRpcRegisterHandler("onRoomJoin", function(resp, context) {
   showMatchingError(resp)
 })
 
-matchingRpcRegisterHandler("onSetPasswrod", function(resp, context) {
+matchingRegisterHandler("onSetPasswrod", function(resp, context) {
   if (showMatchingError(resp)) {
     SessionLobbyState.password = context.prevPass
     SessionLobby.checkDynamicSettings()
   }
 })
 
-matchingRpcRegisterHandler("onRoomLeave", function(_, context) {
+matchingRegisterHandler("onRoomLeave", function(_, context) {
   if (g_mrooms_handlers.getRoomId() == context.roomId)
     g_mrooms_handlers.onRoomLeaveCb()
   SessionLobby.afterLeaveRoom({})
 })
 
-matchingRpcRegisterHandler("onSetAttributes", function afterRoomUpdate(resp) {
+matchingRegisterHandler("onSetAttributes", function afterRoomUpdate(resp) {
   if (showMatchingError(resp))
     return SessionLobby.destroyRoom()
 
@@ -1283,7 +1283,7 @@ matchingRpcRegisterHandler("onSetAttributes", function afterRoomUpdate(resp) {
   SessionLobby.checkAutoStart()
 })
 
-matchingRpcRegisterHandler("onSetReady", function(resp, context) {
+matchingRegisterHandler("onSetReady", function(resp, context) {
   let { ready, roomId } = context
   SessionLobbyState.isReady = ready
     && SessionLobby.isInRoom()
@@ -1291,7 +1291,7 @@ matchingRpcRegisterHandler("onSetReady", function(resp, context) {
     && !showMatchingError(resp)
 })
 
-matchingRpcRegisterHandler("onStartSession", function(resp) {
+matchingRegisterHandler("onStartSession", function(resp) {
   if (!SessionLobby.isInRoom())
     return
   if (showMatchingError(resp)) {

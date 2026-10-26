@@ -79,14 +79,12 @@
       "superstructure_bottom_dm": {
         "armorThickness": 38.0
       },
-      "body_front_dm": {
-        "armorThickness": 254.0
-      },
       "body_side_dm": {
         "armorThickness": 44.4
       },
-      "body_top_dm": {
-        "armorThickness": 127.0
+      "body_dm": {
+        "armorThickness": 127.0,
+        "variableThickness": true
       },
       "body_bottom_dm": {
         "armorThickness": 114.3
@@ -115,21 +113,48 @@
       "body_back_dm": {
         "armorThickness": 25.4
       },
+      "body_top_dm": {
+        "armorThickness": 5.0
+      },
       "turret_01_front_dm": {
         "armorThickness": 127.0,
         "armorClass": "CHA_tank"
       },
       "turret_08_top_dm": {
         "armorThickness": 10.0
+      },
+      "composite_armor_hull_02_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_03_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_06_dm": {
+        "armorThickness": 5.0,
+        "hidableInXrayViewer": true
       }
     },
     "turret_RHA": {
       "armorClass": "RHA_tank",
       "armorThickness": 25.4,
+      "turret_03_bottom_dm": {
+        "armorThickness": 10.0
+      },
+      "turret_03_side_dm": {
+        "armorThickness": 5.0,
+        "armorClass": "aluminium"
+      },
+      "turret_04_top_dm": {
+        "armorThickness": 12.7,
+        "hidableInViewer": true
+      },
       "turret_02_top_dm": {},
       "turret_01_top_dm": {},
       "turret_03_front_dm": {
-        "armorThickness": 100.0
+        "armorThickness": 25.4,
+        "hidableInViewer": true
       },
       "turret_03_top_dm": {},
       "turret_06_top_dm": {
@@ -156,10 +181,8 @@
         "armorThickness": 51.0
       },
       "turret_02_bottom_dm": {
-        "armorThickness": 25.0
-      },
-      "turret_03_bottom_dm": {
-        "armorThickness": 64.0
+        "armorThickness": 20.0,
+        "armorClass": "tank_structural_steel"
       },
       "turret_commander_dm": {
         "armorThickness": 64.0
@@ -173,15 +196,6 @@
       "turret_03_back_dm": {
         "armorThickness": 127.0
       },
-      "turret_02_front_dm": {
-        "armorThickness": 90.0
-      },
-      "turret_03_side_dm": {
-        "armorThickness": 127.0
-      },
-      "turret_04_top_dm": {
-        "armorThickness": 10.0
-      },
       "turret_04_back_dm": {
         "armorThickness": 200.0
       },
@@ -192,6 +206,9 @@
         "armorThickness": 25.4
       },
       "turret_01_side_dm": {
+        "armorThickness": 25.4
+      },
+      "turret_04_bottom_dm": {
         "armorThickness": 25.4
       }
     },
@@ -2706,7 +2723,24 @@
     "replace_tex": {
       "from": "us_camo_olive*",
       "to": "us_camo_desert_pink_lines*"
-    }
+    },
+    "set_tex": [
+      {
+        "from": "m103_body_c*",
+        "to": "camo_noskin_common*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "t58_turret_c*",
+        "to": "camo_noskin_common*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "t58_gun_c*",
+        "to": "camo_noskin_common*",
+        "param": "camo_skin_tex"
+      }
+    ]
   },
   "defaultDecals": {
     "default": {
@@ -2765,6 +2799,11 @@
       "skin_condition": 100.0,
       "camo_scale": 0.0,
       "camo_rotation": 0.0
+    },
+    "fiction": {
+      "skin_condition": 100.0,
+      "camo_scale": 0.0,
+      "camo_rotation": 0.0
     }
   },
   "vehicleSkins": {
@@ -2772,6 +2811,99 @@
       "replace_tex": {
         "from": "us_camo_olive*",
         "to": "us_camo_olive*"
+      },
+      "set_tex": [
+        {
+          "from": "m103_body_c*",
+          "to": "camo_noskin_common*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t58_turret_c*",
+          "to": "camo_noskin_common*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t58_gun_c*",
+          "to": "camo_noskin_common*",
+          "param": "camo_skin_tex"
+        }
+      ]
+    },
+    "fiction": {
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "us_camo_olive*"
+      },
+      "set_tex": [
+        {
+          "from": "m103_body_c*",
+          "to": "m103_halloween_body_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t58_turret_c*",
+          "to": "t58_halloween_turret_c*",
+          "param": "camo_skin_tex"
+        },
+        {
+          "from": "t58_gun_c*",
+          "to": "t58_halloween_gun_c*",
+          "param": "camo_skin_tex"
+        }
+      ]
+    }
+  },
+  "defaultAttachables": {
+    "fiction": {
+      "attachable": {
+        "node": "turret_03_bottom_dm",
+        "name": "jack_o_lantern",
+        "tm": [
+          [
+            -0.880488,
+            -0.457118,
+            -0.125638
+          ],
+          [
+            -0.141116,
+            -0.000282841,
+            0.989993
+          ],
+          [
+            0.452579,
+            -0.889406,
+            0.0642578
+          ],
+          [
+            -3.23047,
+            0.606415,
+            0.505737
+          ]
+        ],
+        "slotId": 0,
+        "traceTm": [
+          [
+            0.694043,
+            -0.713463,
+            0.0963041
+          ],
+          [
+            -0.665518,
+            -0.584801,
+            0.463782
+          ],
+          [
+            0.0301599,
+            0.989576,
+            0.140819
+          ],
+          [
+            15.1471,
+            47.4576,
+            -637.353
+          ]
+        ]
       }
     }
   },

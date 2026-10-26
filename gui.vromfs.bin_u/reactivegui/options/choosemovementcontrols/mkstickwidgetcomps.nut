@@ -17,7 +17,7 @@ function mkStickWidgetComps(fullSize) {
   let stickSize = round(0.73 * bgRadius)
 
   let imgRotaion = {
-    size = [imgRotationSize, imgRotationSize]
+    size = imgRotationSize
     pos = [-0.5 * imgRotationSize, 0]
     vplace = ALIGN_CENTER
     image = Picture($"ui/gameuiskin#hud_tank_stick_rotation.svg:{imgRotationSize}:{imgRotationSize}:P")
@@ -43,7 +43,7 @@ function mkStickWidgetComps(fullSize) {
   }
 
   let imgBg = {
-    size = [imgBgSize, imgBgSize]
+    size = imgBgSize
     image = Picture($"ui/gameuiskin#hud_tank_stick_bg.svg:{imgBgSize}:{imgBgSize}:P")
     rendObj = ROBJ_IMAGE
     vplace = ALIGN_CENTER
@@ -82,14 +82,14 @@ function mkStickWidgetComps(fullSize) {
 
 
   let stickBgComp = {
-    size = [fullSize, fullSize]
+    size = fullSize
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
     children = fullImgBg
   }
 
   let stickHeadComp = {
-    size = [stickSize, stickSize]
+    size = stickSize
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
     rendObj = ROBJ_IMAGE

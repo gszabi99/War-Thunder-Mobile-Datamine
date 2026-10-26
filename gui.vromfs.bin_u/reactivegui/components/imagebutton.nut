@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset
 from "%rGui/style/stdColors.nut" import hoverColor
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 let framedBtnSize = [evenPx(100), evenPx(100)]
@@ -39,9 +40,9 @@ function framedImageBtn(image, onClick, ovr = {}, addChild = null) {
       mkIconImage(image, imageSize, stateFlags.get())
       addChild
     ]
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
-  }.__update(ovr)
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
+    ...ovr
+  }
 }
 
 function framedGradientImageBtn(gradImage, image, onClick, ovr = {}, addChild = null) {
@@ -61,8 +62,6 @@ function framedGradientImageBtn(gradImage, image, onClick, ovr = {}, addChild = 
     behavior = Behaviors.Button
     onClick
     onElemState = @(sf) stateFlags.set(sf)
-    transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
     children = {
       size = FLEX
       rendObj = ROBJ_BOX
@@ -75,8 +74,11 @@ function framedGradientImageBtn(gradImage, image, onClick, ovr = {}, addChild = 
         mkIconImage(image, imageSize, stateFlags.get())
         addChild
       ]
-    }.__update(innerOvr)
-  }.__update(outerOvr)
+      ...innerOvr
+    }
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
+    ...outerOvr
+  }
 }
 
 let hoverBg = {
@@ -109,12 +111,12 @@ function imageBtn(image, onClick, ovr = {}, addChild = null) {
           rendObj = ROBJ_IMAGE
           image = Picture($"{image}:{size[0]}:{size[1]}:P")
           keepAspect = true
-          transform = { scale = stateFlags.get() & S_ACTIVE ? [0.9, 0.9] : [1, 1] }
-          transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
+          ...mkPressTransitionScale(stateFlags.get(), 0.9)
         }
       addChild
     ]
-  }.__update(ovr)
+    ...ovr
+  }
 }
 
 return {

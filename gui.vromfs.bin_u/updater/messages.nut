@@ -86,6 +86,7 @@ let mkMsgBox = @(title, desc, buttons) bgMessage.__merge({
 
 function mkButton(text, onClick) {
   let stateFlags = Watched(0)
+  let scaleTransitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
   return @() {
     watch = stateFlags
     size = const [SIZE_TO_CONTENT, buttonHeight]
@@ -95,14 +96,14 @@ function mkButton(text, onClick) {
     rendObj = ROBJ_BOX
     fillColor = 0xFFB9B9B9
     behavior = Behaviors.Button
-    sound = { click = "click" }
+    sound = const { click = "click" }
     onClick
     onElemState = @(v) stateFlags.set(v)
     brightness = stateFlags.get() & S_HOVER ? 1.25 : 1
     transform = {
-      scale = stateFlags.get() & S_ACTIVE ? [0.95, 0.95] : [1, 1]
+      scale = stateFlags.get() & S_ACTIVE ? const [0.95, 0.95] : const [1, 1]
     }
-    transitions = [{ prop = AnimProp.scale, duration = 0.14, easing = Linear }]
+    transitions = scaleTransitions
     children = {
       size = FLEX
       halign = ALIGN_CENTER

@@ -50,7 +50,7 @@ function ctorMarkAttention(size, data) {
   let startDelay = (startTimeMs - get_time_msec()) / 1000.0
   let totalTime = (endTimeMs - startTimeMs) / 1000.0
   return mkMapMarkerComp(id, mapPos, {
-    size = [size, size]
+    size = size
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#map_mark_attention.svg:{size}:{size}:P")
     color = hudWhiteColor
@@ -87,7 +87,7 @@ let markerTypes = {
       let totalTime = (endTimeMs - startTimeMs) / 1000.0
       let size = evenPx(32)
       return mkMapMarkerComp(id, mapPos, {
-        size = [size, size]
+        size = size
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#map_mark_speaker.svg:{size}:{size}:P")
         color = 0xC0C0C0C0

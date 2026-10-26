@@ -152,7 +152,7 @@ function onApply() {
 }
 
 let slotBase = {
-  size = [weaponSize, weaponSize]
+  size = weaponSize
   rendObj = ROBJ_BOX
   fillColor = cardBgColor
   borderWidth = weaponBorderWidth

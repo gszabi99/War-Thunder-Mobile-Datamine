@@ -1,13 +1,3 @@
 {
-  "intro": {
-    "movie": {
-      "file": "video/gaijin_logo.blk",
-      "minTime": 1000,
-      "win32": false,
-      "win64": false,
-      "macosx": false,
-      "linux64": false,
-      "linux32": false
-    }
-  }
+  "intro": {}
 }

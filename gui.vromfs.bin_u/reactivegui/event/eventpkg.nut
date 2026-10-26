@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/currenciesState.nut" import balance
+from "%appGlobals/pServer/campaign.nut" import bestCampLevel
 from "%appGlobals/pServer/seasonCurrencies.nut" import mkCurrencyFullId
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/rewardType.nut" import G_LOOTBOX
@@ -11,7 +12,7 @@ import "%rGui/components/buttonStyles.nut" as buttonStyles
 from "%rGui/components/currencyComp.nut" import CS_INCREASED_ICON, CS_INACTIVE_ICON, mkCurrencyImage, mkCurrencyText
 from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/textButton.nut" import mkCustomButton, textButtonPricePurchase
-from "%rGui/event/eventState.nut" import bestCampLevel, eventSeason, curEvent
+from "%rGui/event/eventState.nut" import eventSeason, curEvent
 from "%rGui/rewards/components/lootboxView.nut" import mkLootboxImageWithSlotScale
 from "%rGui/rewards/rewardPlateComp.nut" import REWARD_STYLE_TINY, mkRewardPlate, mkRewardFixedIcon
 from "%rGui/rewards/rewardViewInfo.nut" import getLootboxRewardsViewInfo, canReceiveFixedReward, isRewardEmpty,
@@ -72,41 +73,45 @@ function isDropLimitReached(reward, profile) {
   return dropLimitRaw != NO_DROP_LIMIT && dropLimitRaw <= (profile?.lootboxStats[source].total?[rewardId] ?? 0)
 }
 
-let lootboxInfo = @(lootbox, stateFlags) function() {
-  local rewards = []
-  local slots = 0
-  let allRewards = getLootboxRewardsViewInfo(lootbox, true)
-  let profile = servProfile.get()
-  foreach (reward in allRewards) {
-    if ((reward?.isLastReward && (rewards.len() != 0 || !canReceiveLastReward(lootbox, reward, profile)))
-        || slots + (reward?.slots ?? 0) > REWARDS + 1
-        || isRewardEmpty(reward.rewardCfg, profile)
-        || isDropLimitReached(reward, profile)
-        || ((reward?.isJackpot || reward?.isFixed)
-          && !canReceiveFixedReward(lootbox, reward?.parentRewardId ?? reward.rewardId, reward.rewardCfg, profile))
-        )
-      continue
-    slots += reward?.slots ?? 0
-    rewards.append(reward)
-    if (slots >= REWARDS)
-      break
-  }
+function lootboxInfo(lootbox, stateFlags) {
+  let fixedIcon = mkRewardFixedIcon(REWARD_STYLE_TINY)
+  let fillColorTransitions = [{ prop = AnimProp.fillColor, duration = 0.15, easing = Linear }]
+  return function() {
+    local rewards = []
+    local slots = 0
+    let allRewards = getLootboxRewardsViewInfo(lootbox, true)
+    let profile = servProfile.get()
+    foreach (reward in allRewards) {
+      if ((reward?.isLastReward && (rewards.len() != 0 || !canReceiveLastReward(lootbox, reward, profile)))
+          || slots + (reward?.slots ?? 0) > REWARDS + 1
+          || isRewardEmpty(reward.rewardCfg, profile)
+          || isDropLimitReached(reward, profile)
+          || ((reward?.isJackpot || reward?.isFixed)
+            && !canReceiveFixedReward(lootbox, reward?.parentRewardId ?? reward.rewardId, reward.rewardCfg, profile))
+          )
+        continue
+      slots += reward?.slots ?? 0
+      rewards.append(reward)
+      if (slots >= REWARDS)
+        break
+    }
 
-  let children = rewards.map(@(r) {
-    children = [
-      mkRewardPlate(r, REWARD_STYLE_TINY),
-      (r?.isFixed || r?.isJackpot) ? mkRewardFixedIcon(REWARD_STYLE_TINY) : null
-    ]
-  })
+    let children = rewards.map(@(r) {
+      children = [
+        mkRewardPlate(r, REWARD_STYLE_TINY),
+        (r?.isFixed || r?.isJackpot) ? fixedIcon : null
+      ]
+    })
 
-  return {
-    watch = servProfile
-    children = @() {
-      watch = stateFlags
-      fillColor = stateFlags.get() & S_HOVER ? hoverColor : fillColor
-      children
-      transitions = [{ prop = AnimProp.fillColor, duration = 0.15, easing = Linear }]
-    }.__update(slots > REWARDS ? infoCanvasBig : infoCanvasSmall)
+    return {
+      watch = servProfile
+      children = @() {
+        watch = stateFlags
+        fillColor = stateFlags.get() & S_HOVER ? hoverColor : fillColor
+        children
+        transitions = fillColorTransitions
+      }.__update(slots > REWARDS ? infoCanvasBig : infoCanvasSmall)
+    }
   }
 }
 

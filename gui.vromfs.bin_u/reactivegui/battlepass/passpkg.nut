@@ -23,6 +23,7 @@ let vGradientGapSize = [hdpx(4), FLEX]
 let contentH = saSize[1] - bottomPanelH - hdpx(40)
 let rewardPannableWidthTabs = sw(100) - (sideTabWidth + vGradientGapSize[0])
 const rewardPannableWidthFull = sw(100)
+const buyLevelTextExtraWidth = hdpx(50)
 
 let rewardPannableTabs = horizontalPannableAreaCtor(rewardPannableWidthTabs, [hdpx(40), saBorders[0]])
 let rewardPannableFull = horizontalPannableAreaCtor(rewardPannableWidthFull, [saBorders[0], saBorders[0]])
@@ -73,6 +74,16 @@ let bpProgressText  = @(pointsCurStage, pointsPerStage, ovr = {}) @() {
   text = "/".concat(pointsCurStage.get(), pointsPerStage.get())
 }.__update(fontVeryTiny, ovr)
 
+let mkLevelProgressBlock = @(pointsCurStage, pointsPerStage) {
+  size = const [hdpx(300), SIZE_TO_CONTENT]
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  children = [
+    bpCurProgressbar(pointsCurStage, pointsPerStage)
+    bpProgressText(pointsCurStage, pointsPerStage)
+  ]
+}
+
 let mkRewardsPannable = @(content, scrollHandler, isFullScreenWidth)
   (isFullScreenWidth ? rewardPannableFull : rewardPannableTabs)(
       content,
@@ -85,18 +96,18 @@ let mkRewardsPannable = @(content, scrollHandler, isFullScreenWidth)
         scrollHandler = scrollHandler
       })
 
-function mkPassIcon(watch, getImage, getIsActive, fallback, ovr = {}) {
-  let size = ovr?.size ?? defPassIconSize
+function mkPassIcon(watch, getImage, getIsActive, fallback, size = defPassIconSize) {
+  let fallbackImg = Picture($"{fallback}:{size[0]}:{size[1]}:P")
   return @() {
     watch
     size
     rendObj = ROBJ_IMAGE
     vplace = ALIGN_CENTER
     image = Picture($"{getImage()}:{size[0]}:{size[1]}:P")
-    fallbackImage = Picture($"{fallback}:{size[0]}:{size[1]}:P")
+    fallbackImage = fallbackImg
     keepAspect = true
     opacity = getIsActive() ? 1 : 0.5
-  }.__update(ovr)
+  }
 }
 
 let emptyBuyLevelBlock = { size = [SIZE_TO_CONTENT, purchBtnHeight] }
@@ -117,8 +128,7 @@ function mkBuyLevelBlock(canBuyLevel, viewInfo, levelPrice, isLevelPurchaseInPro
               @() buyLevelMsg(price, context),
               { hotkeys = ["^J:X"]
                 ovr = { size = [SIZE_TO_CONTENT, purchBtnHeight]
-                        minWidth = cardWidth
-                        contentPadding = [0, hdpx(20)]
+                        minWidth = cardWidth + buyLevelTextExtraWidth
                       }
               }),
             { hplace = ALIGN_CENTER, size = [SIZE_TO_CONTENT, purchBtnHeight] })
@@ -128,7 +138,7 @@ function mkBuyLevelBlock(canBuyLevel, viewInfo, levelPrice, isLevelPurchaseInPro
 
 return {
   bpCurProgressbar
-  bpProgressText
+  mkLevelProgressBlock
 
   bpProgressbarEmpty = bpProgress(null)
   bpProgressbarFull = bpProgress(fullLineBP)
@@ -137,6 +147,7 @@ return {
 
   tabSize
   tabIconSize = hdpx(90)
+  defPassIconSize
   sideTabWidth
   vGradientGapSize
   contentH

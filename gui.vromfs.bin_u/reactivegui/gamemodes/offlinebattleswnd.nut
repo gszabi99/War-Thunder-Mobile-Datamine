@@ -34,7 +34,7 @@ from "%rGui/navState.nut" import registerScene
 import "%rGui/options/mkOption.nut" as mkOption
 from "%rGui/options/optCtrlType.nut" import OCT_LIST
 from "%rGui/style/gradients.nut" import gradTranspDoubleSideX, gradDoubleTexOffset
-from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
+from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/unit/components/unitPlateComp.nut" import mkUnitBg, mkUnitSelectedGlow, mkUnitImage, mkUnitTexts, mkUnitInfo
 from "%rGui/unit/hangarUnit.nut" import setHangarUnitWithSkin
 import "%rGui/unit/mkUnitPkgDownloadInfo.nut" as mkUnitPkgDownloadInfo
@@ -167,15 +167,15 @@ function selectSearchResultUnit(unit) {
 
 function mkSearchResultUnit(unit) {
   let stateFlags = Watched(0)
+  let plate = mkUnitPlate(unit)
   return @() {
     watch = stateFlags
     behavior = Behaviors.Button
     onClick = @() selectSearchResultUnit(unit)
     onElemState = @(v) stateFlags.set(v)
-    sound = { click  = "click" }
-    transform = { scale = (stateFlags.get() & S_ACTIVE) != 0 ? [0.9, 0.9] : [1, 1] }
-    transitions = [{ prop = AnimProp.scale, duration = 0.15, easing = InOutQuad }]
-    children = mkUnitPlate(unit)
+    sound = const { click  = "click" }
+    children = plate
+    ...mkPressTransitionScale(stateFlags.get(), 0.9)
   }
 }
 
@@ -387,7 +387,7 @@ let wndHeader = headerGradientBg(
   ], { vplace = ALIGN_TOP })
 
 let rightContent = {
-  size = [rightPanelWidth, FLEX]
+  size = const [rightPanelWidth, FLEX]
   minHeight = hdpx(700)
   halign = ALIGN_RIGHT
   hplace = ALIGN_RIGHT
@@ -429,7 +429,7 @@ let bottomLeftContent = @() {
   valign = ALIGN_BOTTOM
   gap = buttonsVGap
   children = [
-    mkUnitPkgDownloadInfo(selectedUnit, true, { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
+    mkUnitPkgDownloadInfo(selectedUnit, true, const { halign = ALIGN_LEFT, hplace = ALIGN_LEFT })
     !canAccessForDebug.get() ? null
       : {
           flow = FLOW_VERTICAL
