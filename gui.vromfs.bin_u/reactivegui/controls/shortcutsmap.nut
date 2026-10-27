@@ -116,6 +116,7 @@ let allShortcuts = isReplayShortcuts ? {
   ID_FIRE_MGUNS = "J:RB | L.Ctrl"
   ID_LOCK_TARGET = "J:LT | L.Alt"
   ID_ROCKETS = "J:A | X"
+  ID_AAM = "J:LB J:B | V"
   ID_WTM_AIRCRAFT_TORPEDOES = "J:Y | C"
   ID_COUNTERMEASURES_FLARES = "J:LB J:A | Q"
 

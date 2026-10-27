@@ -1772,7 +1772,7 @@
           },
           "Weapon": [
             {
-              "trigger": "rockets",
+              "trigger": "aam",
               "external": true,
               "separate": true,
               "blk": "gamedata/weapons/rocketGuns/halloween_aam.blk",
@@ -1782,7 +1782,7 @@
               "needPickupAmmo": true
             },
             {
-              "trigger": "rockets",
+              "trigger": "aam",
               "external": true,
               "separate": true,
               "blk": "gamedata/weapons/rocketGuns/halloween_aam.blk",

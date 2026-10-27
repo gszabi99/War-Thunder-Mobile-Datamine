@@ -4,7 +4,7 @@ from "%rGui/components/movementArrows.nut" import moveArrowsAirView
 from "%rGui/hud/actionBar/actionBarState.nut" import curActionBarTypes
 from "%rGui/hud/airMap.nut" import airMapEditView, airMap
 from "%rGui/hud/airState.nut" import Cannon0, MGun0, hasCanon0, hasMGun0, AddGun, hasAddGun, isActiveTurretCamera,
-  hasBombs, RocketsState, hasRockets, TorpedoesState, hasTorpedos, isTorpedoReady, hasFlare, HasBooster
+  hasBombs, RocketsState, hasRockets, AamState, hasAam, TorpedoesState, hasTorpedos, isTorpedoReady, hasFlare, HasBooster
 from "%rGui/hud/aircraftMovementBlock.nut" import aircraftMovement, aircraftIndicators, aircraftMovementEditView,
   aircraftIndicatorsEditView, aircraftMoveStick, aircraftMoveSecondaryStick, aircraftMoveStickView, aircraftMoveArrows,
   isAircraftMoveArrowsAvailable, brakeButton, brakeButtonEditView
@@ -36,6 +36,7 @@ from "%rGui/hudTuning/hudTuningState.nut" import shouldShowRadar, shouldShowAirT
 import "%rGui/hudTuning/squareBtnEditView.nut" as mkSquareBtnEditView
 from "%rGui/missionState.nut" import raceForceCannotShoot, notGtRace
 from "%rGui/radar/radar.nut" import radarHudCtor, radarHudEditView
+from "%rGui/rocketAim/aamSeekerControl.nut" import getAamShortcutId, isAamLocked
 
 
 let returnToShipShortcutIds = {
@@ -72,6 +73,15 @@ return cfgHudCommon.__merge(initHudTuningCfg({
     editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_rb_rocket.svg")
     priority = Z_ORDER.BUTTON_PRIMARY
     isVisibleInBattle = hasRockets
+  }
+
+  aam = {
+    ctor = mkCircleWeaponryItemCtor("ID_AAM", AamState, hasAam, "ui/gameuiskin#hud_aam_rocket.svg", isAamLocked,
+      getAamShortcutId)
+    defTransform = mkLBPos([hdpx(285), hdpx(-275)])
+    editView = mkCircleBtnPlaneEditView("ui/gameuiskin#hud_aam_rocket.svg")
+    priority = Z_ORDER.BUTTON_PRIMARY
+    isVisibleInBattle = hasAam
   }
 
   torpedo = {

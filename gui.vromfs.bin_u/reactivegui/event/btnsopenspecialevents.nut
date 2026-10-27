@@ -9,7 +9,7 @@ from "%rGui/event/gmEventState.nut" import gmEventsList
 import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
 from "%rGui/quests/questsState.nut" import tabIdToOpen
 import "%rGui/seasonScene/mkSeasonSceneUnseenMark.nut" as mkSeasonSceneUnseenMark
-from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, openEventShopWnd, BATTLE_TAB
+from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, openEventShopWnd
 from "%rGui/shop/eventShopState.nut" import getShopEventName
 from "%rGui/shop/shopState.nut" import goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop, personalGoodsByShop
 
@@ -62,7 +62,7 @@ function btnsOpenSpecialEvents() {
       usedEvents[id] <- true
       let eventId = specialEventsOrdered.get().findvalue(@(s) s.eventName == id)?.eventId
       children.append(translucentButton(getEventPresentation(id).icon,
-        @() openSeasonScene(id, BATTLE_TAB),
+        @() openSeasonScene(id),
         null,
         eventId != null ? mkUnseenWithSf(eventId) : null))
     })

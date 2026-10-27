@@ -77,11 +77,11 @@
       0.0
     ],
     "guidance": {
-      "warmUpTime": 1.0,
-      "workTime": 20.0,
+      "warmUpTime": 0.0,
+      "workTime": 1000000.0,
       "uncageBeforeLaunch": false,
       "disableTOFInHud": true,
-      "permanentlyActivated": true,
+      "permanentlyActivated": false,
       "lockTimeOut": 0.3,
       "reacquireTarget": true,
       "breakLockMaxTime": 3.0,
@@ -91,7 +91,7 @@
       ],
       "opticalSeeker": {
         "rangeBand0": 11000.0,
-        "rangeBand1": 3400.0,
+        "rangeBand1": 4500.0,
         "rangeBand2": 10000.0,
         "rangeBand3": 0.0,
         "rangeBand6": 1000.0,

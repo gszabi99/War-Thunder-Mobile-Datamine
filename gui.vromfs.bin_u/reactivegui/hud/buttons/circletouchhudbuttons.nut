@@ -497,7 +497,7 @@ let mkReadyIndicator = @(bgSize, isReady) @() {
   color = borderColor
 }
 
-let mkCircleWeaponryItemCtor = @(shortcutId, weapon, hasWeapon, img, isAimReady = null) function(scale) {
+let mkCircleWeaponryItemCtor = @(shortcutId, weapon, hasWeapon, img, isAimReady = null, getUseShortcutId = null) function(scale) {
   let isDisabled = mkIsControlDisabled(shortcutId)
   let isAvailable = Computed(@() isWeaponAvailable(weapon.get()) && !isDisabled.get())
   let stateFlags = getWeapStateFlags(shortcutId)
@@ -512,7 +512,7 @@ let mkCircleWeaponryItemCtor = @(shortcutId, weapon, hasWeapon, img, isAimReady 
 
   function onButtonReleaseWhileActiveZone() {
     onStopTouch()
-    useShortcut(shortcutId)
+    useShortcut(getUseShortcutId?() ?? shortcutId)
   }
 
   function onButtonPush() {

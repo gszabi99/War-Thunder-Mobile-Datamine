@@ -158,7 +158,9 @@ previewGoodsUnit.subscribe(function(unit) {
 })
 
 function openDetailsWnd() {
-  let { name } = unitForShow.get()
+  let { name = null } = unitForShow.get()
+  if (name == null)
+    return
   let cfg = {
     name
     isUpgraded = previewGoodsUnit.get()?.isUpgraded ?? false

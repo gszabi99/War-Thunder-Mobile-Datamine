@@ -22,6 +22,7 @@ let presentations = {
   new_year_26_lights_decal = { scale = 0.7 }
   april_event_2026_victory_marks = { scale = 0.8 }
   uk_guitar_decal = { preview = "ui/gameuiskin#uk_guitar_decal.avif" }
+  wtm_zombiehand_decal = { preview = "ui/gameuiskin#wtm_zombiehand_decal.avif", scale = 0.7 }
 }
   .map(@(v) defPresentation.__merge(v))
 

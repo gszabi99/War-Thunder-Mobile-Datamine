@@ -11,7 +11,7 @@ import "%rGui/interopGen.nut" as interopGen
 from "%rGui/unitDetails/unitBlkDetails.nut" import getUnitBlkDetails
 
 
-let { CANNON_1, MACHINE_GUNS_1, ROCKET, BOMBS, TORPEDO, CANNON_ADDITIONAL, FLARES } = AirParamsMain
+let { CANNON_1, MACHINE_GUNS_1, ROCKET, AAM, BOMBS, TORPEDO, CANNON_ADDITIONAL, FLARES } = AirParamsMain
 let debugDebuff = mkWatched(persist, "debugDebuff", 0)
 let { TURRET } = FlightCameraType
 
@@ -28,6 +28,7 @@ let AddGun           = Watched({ count = 0, time = -1, endTime = -1 })
 
 let BombsState       = Watched({ count = 0, time = -1, endTime = 1 }) 
 let RocketsState     = Watched({ count = 0, time = -1, endTime = 1 }) 
+let AamState         = Watched({ count = 0, time = -1, endTime = 1 }) 
 let TorpedoesState   = Watched({ count = 0, time = -1, endTime = 1 }) 
 let FlaresState      = Watched({ count = 0, time = -1, endTime = -1, mode = 0 }) 
 let cannonsOverheat  = Watched(0)
@@ -64,6 +65,7 @@ let airState = {
 
   BombsState
   RocketsState
+  AamState
   TorpedoesState
 
   Fuel = 0
@@ -73,6 +75,7 @@ let airState = {
 
   hasBombs = Computed(@() (MainMask.get() & (1 << BOMBS)) != 0)
   hasRockets = Computed(@() (MainMask.get() & (1 << ROCKET)) != 0)
+  hasAam = Computed(@() (MainMask.get() & (1 << AAM)) != 0)
   hasTorpedos = Computed(@() (MainMask.get() & (1 << TORPEDO)) != 0)
   hasFlare = Computed(@() (MainMask.get() & (1 << FLARES)) != 0)
 
@@ -145,6 +148,11 @@ registerInteropFunc("updateAdditionalCannons", function(tb) {
 registerInteropFunc("updateBombs", @(tb) BombsState.set(tb))
 
 registerInteropFunc("updateRockets", @(tb) RocketsState.set(tb))
+
+registerInteropFunc("updateAam", function(tb) {
+  if (AamState.get().count != tb.count)
+    AamState.set(AamState.get().__merge(tb))
+})
 
 registerInteropFunc("updateTorpedoes", @(tb) TorpedoesState.set(tb))
 

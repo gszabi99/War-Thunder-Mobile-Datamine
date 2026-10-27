@@ -14,6 +14,7 @@ import "%rGui/hud/hudBottomCenter.nut" as hudBottomCenter
 import "%rGui/hud/hudTopMainLog.nut" as hudTopMainLog
 from "%rGui/hud/weaponryBlockImpl.nut" import currentWeaponNameText
 import "%rGui/hudTuning/hudTuningElems.nut" as hudTuningElems
+from "%rGui/rocketAim/rocketAamAim.nut" import rocketAamAim
 from "%rGui/options/options/airControlsOptions.nut" import currentAircraftCtrlType, curFreeCamByTouchOption
 from "%rGui/style/hudColors.nut" import hudBlueColor, hudExtraLightBlackColor, hudCoralRedColorFade
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
@@ -200,6 +201,7 @@ let aircraftHud = {
     hudBottomCenter
     currentWeaponNameText
     hudKillerInfo
+    rocketAamAim
   ]
   animations = wndSwitchAnim
 }
