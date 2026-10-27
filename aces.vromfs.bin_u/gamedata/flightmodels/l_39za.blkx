@@ -2951,5 +2951,35 @@
         "to": "cz_ub_16_57ump_73_xmas_n*"
       }
     ]
+  },
+  "vehicleSkins": {
+    "standart": {
+      "replace_tex": [
+        {
+          "from": "l_39za_c*",
+          "to": "l_39za_c*"
+        },
+        {
+          "from": "l_39za_n*",
+          "to": "l_39za_n*"
+        },
+        {
+          "from": "l_39za_gsh_23_c*",
+          "to": "l_39za_gsh_23_c*"
+        },
+        {
+          "from": "l_39za_gsh_23_n*",
+          "to": "l_39za_gsh_23_n*"
+        },
+        {
+          "from": "pk3_gunpod_c*",
+          "to": "pk3_gunpod_c*"
+        },
+        {
+          "from": "l_39za_pylon_c*",
+          "to": "l_39za_pylon_c*"
+        }
+      ]
+    }
   }
 }

@@ -951,7 +951,8 @@
       "hasMagnetoControl": false,
       "hasRadiatorControl": false,
       "hasOilRadiatorControl": false,
-      "hasCommonRadiator": true
+      "hasCommonRadiator": true,
+      "hasBoosterSwitcher": true
     }
   },
   "Engine2": {
@@ -1198,7 +1199,8 @@
       "hasMagnetoControl": false,
       "hasRadiatorControl": false,
       "hasOilRadiatorControl": false,
-      "hasCommonRadiator": true
+      "hasCommonRadiator": true,
+      "hasBoosterSwitcher": true
     }
   },
   "Mass": {

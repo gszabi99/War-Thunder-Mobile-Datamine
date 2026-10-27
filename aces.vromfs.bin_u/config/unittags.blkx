@@ -50781,7 +50781,7 @@
           "shotFreq": 0.067,
           "distToLive": 2500.0,
           "gunsCount": 6,
-          "caliber": 533.0,
+          "caliber": 500.0,
           "ammoCount": 16,
           "isBeltAmmo": false
         }
@@ -50835,7 +50835,7 @@
           "shotFreq": 0.067,
           "distToLive": 2500.0,
           "gunsCount": 5,
-          "caliber": 533.0,
+          "caliber": 500.0,
           "ammoCount": 11,
           "isBeltAmmo": false
         }
