@@ -16,7 +16,28 @@ let mkTextarea = @(text, maxWidth, ovr = {}) {
   text
 }.__update(fontTiny, ovr)
 
-let hints = [
+const markSz = evenPx(60)
+const iconSz = evenPx(32)
+let mkIconForHint = @(icon) {
+  size = markSz
+  pos = const [hdpx(-75), hdpx(-12)]
+  halign = ALIGN_CENTER
+  valign = ALIGN_CENTER
+  rendObj = ROBJ_BOX
+  borderRadius = markSz / 2
+  borderWidth = hdpx(3)
+  borderColor = 0xFFECBD00
+  fillColor = 0xFF413600
+  children = {
+    size = iconSz
+    rendObj = ROBJ_IMAGE
+    image = Picture($"ui/gameuiskin#{icon}:{iconSz}")
+    keepAspect = true
+    color = 0xFFFFFFFF
+  }
+}
+
+let mkHints = @() [
   {
     content = mkTextarea(loc("help/event/race_witches/winner"), hdpx(450))
     pos = mkSizeByParent([208, 210])
@@ -29,10 +50,33 @@ let hints = [
     bgColor = hintBgColor
   }
   {
-    content = mkTextarea(loc("help/event/race_witches/boosters"), hdpx(305))
-    pos = mkSizeByParent([3075, 900])
+    content = mkTextarea(loc("help/event/race_witches/boosters2"), hdpx(450))
+    pos = mkSizeByParent([2315, 30])
     bgColor = hintBgColor
-    blockOvr = { hplace = ALIGN_RIGHT, vplace = ALIGN_BOTTOM }
+  }
+  {
+    content = [
+      mkTextarea(loc("help/event/race_witches/boosterMissile"), hdpx(350))
+      mkIconForHint("hud_missile.svg")
+    ]
+    pos = mkSizeByParent([2485, 250])
+    bgColor = hintBgColor
+  }
+  {
+    content = [
+      mkTextarea(loc("help/event/race_witches/boosterOilSpill"), hdpx(350))
+      mkIconForHint("race_smoke.svg")
+    ]
+    pos = mkSizeByParent([2485, 450])
+    bgColor = hintBgColor
+  }
+  {
+    content = [
+      mkTextarea(loc("help/event/race_witches/boosterFuel"), hdpx(350))
+      mkIconForHint("hud_rocket_engine.svg")
+    ]
+    pos = mkSizeByParent([2485, 820])
+    bgColor = hintBgColor
   }
 ]
 
@@ -48,7 +92,7 @@ function makeScreen() {
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER
       image = Picture(bgImage)
-      children = mkScreenHints(hints)
+      children = mkScreenHints(mkHints())
     }
   }
 }

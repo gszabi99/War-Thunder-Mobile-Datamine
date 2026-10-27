@@ -8,9 +8,10 @@ from "%appGlobals/pServer/pServerApi.nut" import registerHandler, get_clan_progr
 from "%appGlobals/pServer/profileSeasons.nut" import curSeasons
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
-from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, dayOffset, getDay, dayEndsAt
-from "%rGui/clans/currentClanState.nut" import NO_CLAN_ID, currentClanId, myClanJoinTime, isReadyToConnect,
-  mkIsTimePassed
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
+from "%appGlobals/userstats/serverTime.nut" import getServerTime, isServerTimeValid
+from "%rGui/clans/currentClanState.nut" import NO_CLAN_ID, currentClanId, myClanJoinTime, myClanFastProgressAccess,
+  isReadyToConnect, mkIsTimePassed
 from "%rGui/unlocks/unlocks.nut" import activeUnlocks, unseenUnlocks
 from "%rGui/unlocks/userstat.nut" import userstatStatsTables
 
@@ -22,6 +23,7 @@ const CLAN_PROGRESS_STATS_ID = "on_get_clan_progress"
 const CLAN_PROGRESS_REWARD_ID = "on_receive_clan_progress_reward"
 const STATS_LIFETIME_MS = 60000
 const ERROR_RETRY_MS = 60000
+const CLAN_QUESTS_JOIN_DELAY_SEC = 86400
 
 let logC = log_with_prefix("[CLAN_PROGRESS] ")
 
@@ -39,12 +41,30 @@ let lastClanProgress = Computed(@() servProfile.get()?.lastClanProgress[CLAN_PRO
 
 let clanQuestsUnlockTime = Computed(function() {
   let joinTime = myClanJoinTime.get()
-  if (joinTime == null || getDay(joinTime, dayOffset.get()) < serverTimeDay.get())
+  if (joinTime == null || myClanFastProgressAccess.get())
     return 0
-  return dayEndsAt(joinTime, dayOffset.get())
+  return joinTime + CLAN_QUESTS_JOIN_DELAY_SEC
 })
-let isClanQuestsLocked = Computed(@() clanQuestsUnlockTime.get() > 0)
-let getLockStateText = @() $"joinTime {myClanJoinTime.get()}, unlockTime {clanQuestsUnlockTime.get()}"
+let isClanQuestsLocked = Watched(true)
+
+function updateClanQuestsLock() {
+  if (!isServerTimeValid.get()) {
+    isClanQuestsLocked.set(true)
+    clearExtTimer(updateClanQuestsLock)
+    return
+  }
+  let timeLeft = clanQuestsUnlockTime.get() - getServerTime()
+  isClanQuestsLocked.set(timeLeft > 0)
+  if (timeLeft > 0)
+    resetExtTimeout(timeLeft, updateClanQuestsLock)
+  else
+    clearExtTimer(updateClanQuestsLock)
+}
+updateClanQuestsLock()
+clanQuestsUnlockTime.subscribe(@(_) updateClanQuestsLock())
+isServerTimeValid.subscribe(@(_) updateClanQuestsLock())
+let getLockStateText = @()
+  $"joinTime {myClanJoinTime.get()}, unlockTime {clanQuestsUnlockTime.get()}, fastAccess {myClanFastProgressAccess.get()}"
 
 let receivedClanRewards = Computed(@() servProfile.get()?.receivedClanRewards[CLAN_PROGRESS_ID] ?? {})
 

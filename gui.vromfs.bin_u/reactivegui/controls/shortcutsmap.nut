@@ -79,6 +79,8 @@ let allShortcuts = isReplayShortcuts ? {
   ID_SAILBOAT_GUNS_RANGE_DEC = "J:D.Down | PageDown"
   ID_SAILBOAT_HELD_GUN_RANGE_INC = "Home"
   ID_SAILBOAT_HELD_GUN_RANGE_DEC = "End"
+  ID_SAILBOAT_BULLET_LEFT = "J:Y | C"
+  ID_SAILBOAT_BULLET_RIGHT = "J:B | V"
 
   ID_SHIP_ACTION_BAR_ITEM_40 = "J:D.Left | 1" 
   ID_SHIP_ACTION_BAR_ITEM_14 = "J:D.Right | 2" 

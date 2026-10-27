@@ -86,7 +86,7 @@ function mkBattleModeTab(tabId) {
 let sceneContentCfg = {
   [PASS_SCENE] = {
     icon = "ui/gameuiskin#icon_bp.svg"
-    label = "pass"
+    label = "catalog"
     function headerRightCtor() {
       let currencies = Computed(function() {
         let resTbl = {}

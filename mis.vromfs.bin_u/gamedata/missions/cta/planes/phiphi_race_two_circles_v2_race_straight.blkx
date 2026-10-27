@@ -115,7 +115,7 @@
   },
   "imports": {
     "import_record": {
-      "file": "gameData/missions/cta/planes/phiphi_race_two_circles.blk",
+      "file": "gameData/missions/cta/planes/phiphi_race_two_circles_v2.blk",
       "importAreas": true,
       "importUnits": true,
       "importTriggers": true,

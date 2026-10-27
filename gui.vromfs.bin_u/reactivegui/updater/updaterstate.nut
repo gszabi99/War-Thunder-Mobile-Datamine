@@ -230,7 +230,7 @@ let wantStartDownloadAddons = Computed(function(prev) {
     @() {
       addons = allAddons.filter(@(_, a) (getAddonCampaign(a) ?? campaign) == campaign)
       units = getMissingUnits(missingUnitResourcesByRank.get()?[campaign] ?? {}, maxMRank + 1)
-       .__merge(randomBattleMaxMisInfo.get().misUnits)
+        .__merge(randomBattleMaxMisInfo.get().misUnits)
     }
   )
 
@@ -278,7 +278,12 @@ function cleanAddonsToDownload(addonsToRemoveArr = null, unitsToRemoveArr = null
 }
 
 let closeDownloadAddonsWnd = @() downloadWndParams.set(null)
-curCampaign.subscribe(@(_) downloadWndParams.get() == null ? firstPriorityAddons.set({}) : null)
+curCampaign.subscribe(function(_) {
+  if (downloadWndParams.get() != null)
+    return
+  firstPriorityAddons.set({})
+  firstPriorityUnits.set({})
+})
 
 function updateStartDownload() {
   let needDownload = needStartDownloadAddons.get().len() != 0
@@ -551,6 +556,8 @@ function openDownloadAddonsWnd(addons = [], units = [], bqSource = "unknown", bq
     if (sizeMb <= 0 && rqAddons.len() > 0)
       sizeMb = (getAddonsSize(rqAddons, addonsSizes.get()) + (MB / 2)) / MB
   }
+  else
+    firstPriorityAddons.set({})
 
   if (rqUnits.len() != 0) {
     let rqTbl = {}
@@ -562,6 +569,8 @@ function openDownloadAddonsWnd(addons = [], units = [], bqSource = "unknown", bq
     if (fullUnits.len() != unitsToDownload.get().len())
       unitsToDownload.set(fullUnits)
   }
+  else
+    firstPriorityUnits.set({})
 
   let bqAction = rqAddons.len() + rqUnits.len() == 0 ? "open_download_wnd"
     : rqAddons.len() == 0 ? "open_download_wnd_for_units"

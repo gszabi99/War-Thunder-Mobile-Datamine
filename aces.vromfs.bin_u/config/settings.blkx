@@ -1502,7 +1502,10 @@
       }
     },
     "broken_bloom": {
-      "gpu": "Samsung Xclipse",
+      "gpu": [
+        "Samsung Xclipse",
+        "G610"
+      ],
       "android_presets": {
         "graphics": {
           "bloomQuality": [

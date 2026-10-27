@@ -263,9 +263,10 @@ let mkBulletBorder = @(bgSize, borderWidth, isAvailable, stateFlags) @() {
   commands = const [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
 }
 
-function mkBulletToggle(scale, isRight, i, onClick, icon, isCurrent, cdInfo) {
+function mkBulletToggle(scale, isRight, i, onClick, icon, isCurrent, cdInfo, gamepadScStateFlags) {
   let isAvailable = Computed(@() cdInfo.get().end <= 0)
   let stateFlags = Watched(0)
+  let stateFlagsExt = Computed(@() stateFlags.get() | gamepadScStateFlags.get())
   let angle = bulletsAngles?[i] ?? 0
   let pos = [cos(angle) * bulletsPosRaidus * scale * (isRight ? -1.0 : 1.0), sin(angle) * bulletsPosRaidus * scale]
   let btnSize = scaleEven(bulletsButtonSize, scale)
@@ -294,7 +295,7 @@ function mkBulletToggle(scale, isRight, i, onClick, icon, isCurrent, cdInfo) {
         })
         mkBulletBorder(bgSize,
           hdpxi(scale * (isCurrent.get() ? selBulletBorderWidthBase : bulletBorderWidthBase)),
-          isAvailable.get(), stateFlags)
+          isAvailable.get(), stateFlagsExt)
         mkBtnImage(imgSize, icon.get(), color)
       ]
     }
@@ -314,7 +315,15 @@ function mkBulletsBg(scale, isRight) {
   }
 }
 
-let mkToggleBulletsButtonsCtor = @(trigger, bInfo, bNames, currentIdx, cd, cdEnd
+let bulletShortcurOvrRight = {
+  pos = [pw(105), ph(-60)]
+  hplace = ALIGN_CENTER,
+  vplace = ALIGN_CENTER
+}
+
+let bulletShortcurOvrLeft = { ...bulletShortcurOvrRight, pos = [pw(-105), ph(-60)] }
+
+let mkToggleBulletsButtonsCtor = @(trigger, bInfo, bNames, currentIdx, cd, cdEnd, shortcutId
 ) function(scale, isRightAlign) {
   let bOrder = Computed(function() {
     let res = []
@@ -326,29 +335,55 @@ let mkToggleBulletsButtonsCtor = @(trigger, bInfo, bNames, currentIdx, cd, cdEnd
       }
     return res
   })
+
+  let nextBulletIndex = Computed(function() {
+    let total = bOrder.get().len()
+    if (total == 0)
+      return null
+    let cur = bOrder.get().findindex(@(b) b.idx == currentIdx.get()) ?? 1
+    return (cur - 1 + total) % total
+  })
+
+  let nextStateFlags = Watched(0)
+  let nextBulletBtn = {
+    size = 0
+    behavior = Behaviors.Button
+    onElemState = @(v) nextStateFlags.set(v)
+    onClick = @() nextBulletIndex.get() not in bOrder.get() ? null
+      : onChangeBullet(trigger, bOrder.get()[nextBulletIndex.get()].idx, cdEnd.get()[nextBulletIndex.get()])
+    hotkeys = mkGamepadHotkey(shortcutId)
+  }
+
   return @() {
     watch = [bOrder, isRightAlign]
     size = FLEX
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [ mkBulletsBg(scale, isRightAlign.get()) ]
-      .extend(bOrder.get().map(function(v, i) {
-        let { idx, name } = v
-        let cdInfo = Computed(@(prev) prevIfEqual(prev, { cd = cd.get()[i], end = cdEnd.get()[i] }))
-        return mkBulletToggle(scale, isRightAlign.get(), i,
-          @() onChangeBullet(trigger, idx, cdEnd.get()[i]),
-          mkIconComp(bInfo, name),
-          Computed(@() currentIdx.get() == idx),
-          cdInfo)
-      }))
+      .extend(bOrder.get()
+        .map(function(v, i) {
+          let { idx, name } = v
+          let cdInfo = Computed(@(prev) prevIfEqual(prev, { cd = cd.get()[i], end = cdEnd.get()[i] }))
+          return mkBulletToggle(scale, isRightAlign.get(), i,
+            @() onChangeBullet(trigger, idx, cdEnd.get()[i]),
+            mkIconComp(bInfo, name),
+            Computed(@() currentIdx.get() == idx),
+            cdInfo,
+            Computed(@() nextBulletIndex.get() == i ? nextStateFlags.get() : 0))
+        }))
+      .append(
+        mkGamepadShortcutImage(shortcutId,
+          isRightAlign.get() ? bulletShortcurOvrRight : bulletShortcurOvrLeft,
+          scale),
+        nextBulletBtn)
   }
 }
 
 let toggleBulletsCtors = {
   AB_PRIMARY_WEAPON = mkToggleBulletsButtonsCtor(TRIGGER_GROUP_PRIMARY, bulletsInfo, bulletsNamePrim,
-    currentBulletIdxPrim, cdPrim, cdEndPrim)
+    currentBulletIdxPrim, cdPrim, cdEndPrim, "ID_SAILBOAT_BULLET_RIGHT")
   AB_SECONDARY_WEAPON = mkToggleBulletsButtonsCtor(TRIGGER_GROUP_SECONDARY, bulletsInfoSec, bulletsNameSec,
-    currentBulletIdxSec, cdSec, cdEndSec)
+    currentBulletIdxSec, cdSec, cdEndSec, "ID_SAILBOAT_BULLET_LEFT")
 }
 
 let lengthSq = @(x, y) x * x + y * y

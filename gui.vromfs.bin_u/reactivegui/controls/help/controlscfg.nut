@@ -94,10 +94,23 @@ let shortcutsByUnitTypes = {
     ]
     axes = sameLoc("controls/unit_control", ["walker_throttle", "walker_steering"])
       .extend(sameLoc("hotkeys/ID_PLANE_MOUSE_AIM_HEADER", ["walker_mouse_aim_x", "walker_mouse_aim_y"]))
-  }
+  },
+  [SAILBOAT] = {
+    shortcuts = [
+      "ID_FLIGHTMENU", "ID_ZOOM_TOGGLE", "ID_COMBINATION",
+      cLoc("flightmenu/btnStats", "ID_MPSTATSCREEN"),
+      cLoc("hotkeys/broadsideRight", "ID_SHIP_WEAPON_PRIMARY"),
+      cLoc("hotkeys/broadsideLeft", "ID_SHIP_WEAPON_SECONDARY"),
+      "ID_SAILBOAT_BULLET_LEFT", "ID_SAILBOAT_BULLET_RIGHT", "ID_SAILBOAT_GUNS_RANGE_INC", "ID_SAILBOAT_GUNS_RANGE_DEC",
+      "ID_SHOW_HERO_MODULES",
+      cLoc("hotkeys/ID_SHOW_VOICE_MESSAGE_LIST", "ID_VOICE_MSG"), "ID_CHANGE_ZOOM_DEC", "ID_CHANGE_ZOOM_INC",
+    ]
+      .extend(sameLoc("controls/unit_control", ["ship_steering_rangeMin", "ship_steering_rangeMax",
+        "ship_main_engine_rangeMax", "ship_main_engine_rangeMin"]))
+    axes = sameLoc("hotkeys/ID_PLANE_MOUSE_AIM_HEADER", ["ship_mouse_aim_x", "ship_mouse_aim_y"])
+  },
 }
 
 return {
   shortcutsByUnitTypes
-  pages = unitTypeOrder.filter(@(ut) ut in shortcutsByUnitTypes)
 }

@@ -35,7 +35,7 @@ from "%rGui/components/translucentButton.nut" import translucentButtonsVGap, tra
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
 from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 import "%rGui/event/btnsOpenSpecialEvents.nut" as btnsOpenSpecialEvents
-from "%rGui/event/eventState.nut" import isFitSeasonRewardsRequirements, isEventActive
+from "%rGui/event/eventState.nut" import isFitSeasonRewardsRequirements, isEventActive, eventSeasonIdx
 import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
 from "%rGui/gameModes/newbieOfflineMissions.nut" import isNextBattleNewbieOffline
 from "%rGui/hudHints/lqTexturesWarning.nut" import lqTexturesWarningHangar
@@ -354,6 +354,7 @@ let eventsTitleBlock = {
 
 let isPassActive = Computed(@() isMainBpActive.get() || isBpSeasonActive.get())
 let hasBanner = Computed(@() shouldShowEventMechanics.get()
+  && eventSeasonIdx.get() != -1
   && isFitSeasonRewardsRequirements.get()
   && (isPassActive.get() || isEventActive.get()))
 

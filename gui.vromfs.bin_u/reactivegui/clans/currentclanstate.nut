@@ -180,6 +180,7 @@ let myClanJoinTime = Computed(function() {
   let myId = myUserId.get()
   return currentClan.get()?.users.findvalue(@(u) u.userId == myId)?.joinedTimestamp
 })
+let myClanFastProgressAccess = Computed(@() currentClan.get()?.fastProgressAccess ?? false)
 
 mnGenericSubscribe("profile", function(event) {
   if (event?.func == "clan_update")
@@ -196,6 +197,7 @@ return {
   hasConfirmedClan
   myClanGrade
   myClanJoinTime
+  myClanFastProgressAccess
   forceRefreshCurrentClan = forceRefresh
   isCurrentClanRefreshing = isRequestInProgress
   resetCurrentClanInfo

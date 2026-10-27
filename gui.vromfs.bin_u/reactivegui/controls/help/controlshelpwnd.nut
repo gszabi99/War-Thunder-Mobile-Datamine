@@ -1,17 +1,19 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
 from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/unitConst.nut" import unitTypeOrder
 from "%appGlobals/unitTags.nut" import getUnitType
 from "%rGui/components/backButton.nut" import backButton
 import "%rGui/components/listButton.nut" as listButton
 from "%rGui/controls/axisToHotkey.nut" import axisToHotkey
-from "%rGui/controls/help/controlsCfg.nut" import shortcutsByUnitTypes, pages
+from "%rGui/controls/help/controlsCfg.nut" import shortcutsByUnitTypes
 import "%rGui/controls/help/mkControlsHelpNintendo.nut" as mkControlsHelpNintendo
 import "%rGui/controls/help/mkControlsHelpSony.nut" as mkControlsHelpSony
 import "%rGui/controls/help/mkControlsHelpXone.nut" as mkControlsHelpXone
 from "%rGui/controls/shortcutsMap.nut" import gamepadShortcuts, gamepadAxes
 from "%rGui/controlsMenu/gamepadVendor.nut" import gamepadPreset
-from "%rGui/hudState.nut" import unitType
+from "%rGui/hudStateExt.nut" import hudUnitType
+from "%rGui/event/eventState.nut" import unitTypesByEvent
 from "%rGui/navState.nut" import registerScene
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/gradients.nut" import mkGradientCtorRadial, gradTexSize
@@ -38,13 +40,16 @@ let toggleShowCombo = @() showCombo.set(!showCombo.get())
 let tabHighlight = mkBitmapPictureLazy(gradTexSize, gradTexSize / 4,
   mkGradientCtorRadial(0xFFFFFFFF, 0, 10, 30, 31,-22))
 
+let pages = Computed(@()
+  [...unitTypeOrder, ...unitTypesByEvent.get().keys()].filter(@(ut) ut in shortcutsByUnitTypes))
+
 isOpened.subscribe(function(v) {
   if (!v)
     return
-  let uType = isInBattle.get() ? unitType.get()
+  let uType = isInBattle.get() ? hudUnitType.get()
     : hangarUnitName.get() != "" ? getUnitType(hangarUnitName.get())
     : null
-  curUnitType.set(pages.contains(uType) ? uType : pages[0])
+  curUnitType.set(pages.get().contains(uType) ? uType : pages.get()[0])
 })
 
 let combinationBtnToggle = {
@@ -101,7 +106,7 @@ function content() {
 }
 
 let togglePage = @(diff)
-  curUnitType.set(pages[clamp((pages.indexof(curUnitType.get()) ?? -1) + diff, 0, pages.len() - 1)])
+  curUnitType.set(pages.get()[clamp((pages.get().indexof(curUnitType.get()) ?? -1) + diff, 0, pages.get().len() - 1)])
 
 let pageTitle = {
   hplace = ALIGN_CENTER
@@ -144,14 +149,15 @@ function mkTab(uType) {
   }
 }
 
-let footer = {
+let footer = @() {
+  watch = pages
   size = [FLEX, saBorders[1] + hdpx(60)]
   rendObj = ROBJ_SOLID
   color = 0xDD22262E
   flow = FLOW_HORIZONTAL
   gap = hdpx(10)
   valign = ALIGN_CENTER
-  children = pages.map(@(uType) mkTab(uType))
+  children = pages.get().map(@(uType) mkTab(uType))
   hotkeys = [
     ["J:LB", @() togglePage(-1), loc("mainmenu/btnPagePrev")],
     ["J:RB", @() togglePage(1), loc("mainmenu/btnPageNext")],
