@@ -66361,3 +66361,7 @@ splatterDistance
 splatterConeHalfAngleDeg
 gamedata/weapons/rocketGuns/halloween_aam.blk
 hdrSupport
+2600
+2800
+3000
+air_race_phiphi_islands_map*

@@ -4279,7 +4279,8 @@
       ],
       "drawDistanceCorrection": true,
       "matchExpClass": {
-        "fr_amx_30_ACRA": true
+        "fr_amx_30_ACRA": true,
+        "fr_amx_10m_acra": true
       },
       "crosshair_distances": {
         "distance": [
@@ -4457,100 +4458,150 @@
         "line": [
           {
             "line": [
-              -1.7,
-              2.2,
-              1.7,
-              2.2
+              0.8,
+              3.15,
+              -0.8,
+              3.15
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              4.5,
-              1.7,
-              4.5
+              1.6,
+              5.87,
+              -1.6,
+              5.87
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              6.5,
-              1.7,
-              6.5
+              0.8,
+              8.11,
+              -0.8,
+              8.11
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              8.7,
-              1.7,
-              8.7
+              1.6,
+              10.52,
+              -1.6,
+              10.52
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              11.2,
-              1.7,
-              11.2
+              0.8,
+              12.44,
+              -0.8,
+              12.44
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              14.8,
-              1.7,
-              14.8
+              1.6,
+              14.13,
+              -1.6,
+              14.13
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              18.1,
-              1.7,
-              18.1
+              0.8,
+              15.84,
+              -0.8,
+              15.84
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              22.0,
-              1.7,
-              22.0
+              1.6,
+              17.653,
+              -1.6,
+              17.653
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              26.2,
-              1.7,
-              26.2
+              0.8,
+              19.556,
+              -0.8,
+              19.556
             ],
             "move": true,
             "thousandth": true
           },
           {
             "line": [
-              -1.7,
-              31.4,
-              1.7,
-              31.4
+              1.6,
+              21.689,
+              -1.6,
+              21.689
+            ],
+            "move": true,
+            "thousandth": true
+          },
+          {
+            "line": [
+              0.8,
+              24.0,
+              -0.8,
+              24.0
+            ],
+            "move": true,
+            "thousandth": true
+          },
+          {
+            "line": [
+              1.6,
+              26.4,
+              -1.6,
+              26.4
+            ],
+            "move": true,
+            "thousandth": true
+          },
+          {
+            "line": [
+              0.8,
+              29.067,
+              -0.8,
+              29.067
+            ],
+            "move": true,
+            "thousandth": true
+          },
+          {
+            "line": [
+              1.6,
+              31.84,
+              -1.6,
+              31.84
+            ],
+            "move": true,
+            "thousandth": true
+          },
+          {
+            "line": [
+              0.8,
+              34.933,
+              -0.8,
+              34.933
             ],
             "move": true,
             "thousandth": true
@@ -4572,9 +4623,10 @@
           },
           {
             "text": "200",
+            "align": 0,
             "pos": [
-              5.0,
-              2.2
+              6.0,
+              3.15
             ],
             "move": true,
             "thousandth": true,
@@ -4583,9 +4635,10 @@
           },
           {
             "text": "400",
+            "align": 0,
             "pos": [
-              5.0,
-              4.5
+              6.0,
+              5.87
             ],
             "move": true,
             "thousandth": true,
@@ -4594,9 +4647,10 @@
           },
           {
             "text": "600",
+            "align": 0,
             "pos": [
-              5.0,
-              6.5
+              6.0,
+              8.11
             ],
             "move": true,
             "thousandth": true,
@@ -4605,9 +4659,10 @@
           },
           {
             "text": "800",
+            "align": 0,
             "pos": [
-              5.0,
-              8.7
+              6.0,
+              10.52
             ],
             "move": true,
             "thousandth": true,
@@ -4616,9 +4671,10 @@
           },
           {
             "text": "1000",
+            "align": 0,
             "pos": [
-              5.0,
-              11.2
+              6.0,
+              12.44
             ],
             "move": true,
             "thousandth": true,
@@ -4627,9 +4683,10 @@
           },
           {
             "text": "1200",
+            "align": 0,
             "pos": [
-              5.0,
-              14.8
+              6.0,
+              14.13
             ],
             "move": true,
             "thousandth": true,
@@ -4638,9 +4695,10 @@
           },
           {
             "text": "1400",
+            "align": 0,
             "pos": [
-              5.0,
-              18.1
+              6.0,
+              15.84
             ],
             "move": true,
             "thousandth": true,
@@ -4649,9 +4707,10 @@
           },
           {
             "text": "1600",
+            "align": 0,
             "pos": [
-              5.0,
-              22.0
+              6.0,
+              17.653
             ],
             "move": true,
             "thousandth": true,
@@ -4660,9 +4719,10 @@
           },
           {
             "text": "1800",
+            "align": 0,
             "pos": [
-              5.0,
-              26.2
+              6.0,
+              19.556
             ],
             "move": true,
             "thousandth": true,
@@ -4671,9 +4731,70 @@
           },
           {
             "text": "2000",
+            "align": 0,
             "pos": [
-              5.0,
-              31.4
+              6.0,
+              21.689
+            ],
+            "move": true,
+            "thousandth": true,
+            "size": 0.7,
+            "highlight": true
+          },
+          {
+            "text": "2200",
+            "align": 0,
+            "pos": [
+              6.0,
+              24.0
+            ],
+            "move": true,
+            "thousandth": true,
+            "size": 0.7,
+            "highlight": true
+          },
+          {
+            "text": "2400",
+            "align": 0,
+            "pos": [
+              6.0,
+              26.4
+            ],
+            "move": true,
+            "thousandth": true,
+            "size": 0.7,
+            "highlight": true
+          },
+          {
+            "text": "2600",
+            "align": 0,
+            "pos": [
+              6.0,
+              29.067
+            ],
+            "move": true,
+            "thousandth": true,
+            "size": 0.7,
+            "highlight": true
+          },
+          {
+            "text": "2800",
+            "align": 0,
+            "pos": [
+              6.0,
+              31.84
+            ],
+            "move": true,
+            "thousandth": true,
+            "size": 0.7,
+            "highlight": true
+          },
+          {
+            "text": "3000",
+            "align": 0,
+            "pos": [
+              6.0,
+              34.933
             ],
             "move": true,
             "thousandth": true,

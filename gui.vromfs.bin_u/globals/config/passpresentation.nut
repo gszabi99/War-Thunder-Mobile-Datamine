@@ -139,6 +139,63 @@ let bpPresentations = {
   main_s39 = defBpPresenration
 }
 
+let mkCurrencyViewInfo = @(id, count) { subId = "", gType = "currency", count, id }
+
+let defHelpBpPresentation = {
+  bg = "ui/images/event_s39_background.avif",
+  boardImg = "ui/images/event_s39_board.avif",
+  currency = {
+    subId = ""
+    gType = "bpPoints"
+    count = 100
+    id = "main_s39"
+  }
+  rewards = [
+    {
+      subId = "camo"
+      gType = "skin"
+      count = 0
+      id = "f9f-5"
+    }
+    {
+      subId = "desert_threecolors_bp"
+      gType = "skin"
+      count = 0
+      id = "il_frigate_rckt_saar5"
+    }
+    {
+      subId = "forest"
+      gType = "skin"
+      count = 0
+      id = "germ_leopard_2a5_pso"
+    }
+    mkCurrencyViewInfo(GOLD, 120)
+    mkCurrencyViewInfo(GOLD, 120)
+    mkCurrencyViewInfo(WP, 24000)
+    mkCurrencyViewInfo(WP, 24000)
+    mkCurrencyViewInfo(WP, 24000)
+    mkCurrencyViewInfo(WP, 24000)
+    mkCurrencyViewInfo(WARBOND, 250)
+    mkCurrencyViewInfo(EVENT_KEY, 2)
+    {
+      subId = ""
+      gType = "item"
+      count = 5
+      id = "spare"
+    }
+    {
+      subId = ""
+      gType = "prizeTicket"
+      count = 1
+      id = "blueprints_200_season_39"
+    }
+  ]
+}
+
+let bpHelpWndPresentations = {
+  main_s39 = defHelpBpPresentation
+}
+
 return {
   getOPPresentation = @(camp) opPresentations?[camp] ?? defOpPresentation
   getEpPresentation = @(eventId) epPresentations?[eventId] ?? defEpPresentation
@@ -148,4 +205,5 @@ return {
     defPointsPresentation)
   getGradePresentation = @(bpId, grade) bpPresentations?[bpId].grades[grade] ?? bpPresentations?[bpId].grades[0]
     ?? defGradePresentation
+  getBpHelpWndPresentation = @(bpId) bpHelpWndPresentations?[bpId] ?? defHelpBpPresentation
 }

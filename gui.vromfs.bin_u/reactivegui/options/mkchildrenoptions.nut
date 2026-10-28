@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/battlePass/passPkg.nut" import contentH
+from "%rGui/battlePass/passPkg.nut" import bottomPanelH
 from "%rGui/components/horizontalTabs.nut" import mkHorizontalTabs
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
 from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
@@ -15,6 +15,7 @@ let pannableAreaWidth = saSize[0] - tabW + saBorders[0]
 const backButtonHeight = hdpx(60)
 const gapBackButton = hdpx(50)
 const tabHeight = hdpx(120)
+const contentH = saSize[1] - bottomPanelH - hdpx(40)
 
 let topAreaSize = saBorders[1] + backButtonHeight + gapBackButton - tabHeight
 let gradientHeightBottom = saBorders[1] * 2

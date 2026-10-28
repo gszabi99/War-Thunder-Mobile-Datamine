@@ -11,8 +11,8 @@ from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardReceivedM
   mkRewardBorder
 from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo
 from "%rGui/battlePass/battlePassState.nut" import curBpPages, curBpGrade, curBpGoods, curBpCurPoints,
-  curBpId, curBpTotalPoints, curBpEndTime, curBpReceived, isPurchaseWndOpened
-from "%rGui/battlePass/bpRewardDesc.nut" import bpRewardDesc, getLocByRType
+  curBpId, curBpTotalPoints, curBpEndTime, curBpReceived, isPurchaseWndOpened, openBpHelpWnd
+from "%rGui/battlePass/bpRewardDesc.nut" import bpRewardDesc, getLocByRTypeNonUpdatable
 from "%rGui/battlePass/passPkg.nut" import mkPassIcon, contentH, defPassIconSize
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/textButton.nut" import textButtonPurchase, textButtonPricePurchaseLow
@@ -21,6 +21,7 @@ from "%rGui/components/timerBlock.nut" import mkTimerBlock
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkCurrencyImage
 from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
 from "%rGui/event/eventState.nut" import eventSeasonIdx
+from "%rGui/seasonScene/seasonSceneState.nut" import openHelpWndIfUnseen
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase, showNoBalanceMsgAdd
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import userlogTextColor
@@ -28,11 +29,13 @@ from "%rGui/style/gradients.nut" import simpleHorGrad
 
 
 let wndKey = {}
-let boardRatio = 1.125
-let boardHeight = contentH.tointeger()
-let boardWidth = (contentH / boardRatio).tointeger()
+let boardRatio = 863.0 / 752.0
+let boardWidth = min(contentH / boardRatio, sw(100) * 0.4).tointeger()
+let boardHeight = (boardWidth * boardRatio).tointeger()
 let iconSize = hdpxi(40)
-let pagePadding = [boardHeight * 0.065, boardWidth * 0.15]
+let paginatorHeight = evenPx(70)
+let pagePadding = [boardHeight * 0.06, 0, boardHeight * 0.035, saBordersRv[1]]
+let hintMargin = [paginatorHeight + pagePadding[2] + hdpx(8), 0]
 const claimBtnSize = [SIZE_TO_CONTENT, hdpxi(90)]
 
 let selectedPage = Watched(0)
@@ -180,9 +183,10 @@ function pageContent(style) {
   })
 
   return {
-    size = FLEX
+    size = FLEX_V
     halign = ALIGN_CENTER
     gap = hdpx(20)
+    padding = pagePadding
     children = [
       {
         size = [blockWidth, SIZE_TO_CONTENT]
@@ -202,41 +206,8 @@ function pageContent(style) {
           }
         ]
       }
-      {
-        flow = FLOW_VERTICAL
-        vplace = ALIGN_BOTTOM
-        halign = ALIGN_CENTER
-        gap = hdpx(8)
-        children = [
-          function() {
-            let pointsDifference = curBpPages.get()[selectedPage.get()].reqPoints - curBpTotalPoints.get()
-            return {
-              watch = [curBpPages, selectedPage, curBpTotalPoints, curBpId]
-              children = pointsDifference <= 0 ? null
-                : {
-                    size = [boardWidth, SIZE_TO_CONTENT]
-                    halign = ALIGN_CENTER
-                    padding = hdpx(12)
-                    rendObj = ROBJ_BOX
-                    fillColor = 0x26000000
-                    children = {
-                      rendObj = ROBJ_TEXTAREA
-                      behavior = Behaviors.TextArea
-
-                      embed = {
-                        icon = mkCurrencyImage(curBpId.get(),
-                          get_font_metrics(fontTinyAccented.font, fontTinyAccented.fontSize).ascent * 0.75,
-                          { imageValign = ALIGN_BOTTOM })
-                      }
-                      text = loc("battlepass/lock/points", { battlePassPointsIcon = "<icon/>", value = pointsDifference })
-                    }.__update(fontTinyAccented)
-                  }
-            }
-          }
-          mkPaginatorCurPage(selectedPage, Computed(@() curBpPages.get().len() - 1), {}, evenPx(70),
-            mkIndicatorCtor(rewardPlateSize))
-        ]
-      }
+      mkPaginatorCurPage(selectedPage, Computed(@() curBpPages.get().len() - 1), { vplace = ALIGN_BOTTOM },
+        paginatorHeight, mkIndicatorCtor(rewardPlateSize))
     ]
   }
 }
@@ -285,8 +256,10 @@ let battlePassContent = @() {
   key = wndKey
   size = FLEX
   halign = ALIGN_CENTER
-  onAttach = @()
+  function onAttach() {
     openReward(curBpPages.get(), curBpTotalPoints.get(), curBpCurPoints.get(), curBpGrade.get(), curBpReceived.get())
+    openHelpWndIfUnseen(curBpId.get(), openBpHelpWnd)
+  }
   children = curBpId.get() == null ? null
     : {
         size = FLEX
@@ -299,8 +272,36 @@ let battlePassContent = @() {
             size = [boardWidth, boardHeight]
             rendObj = ROBJ_IMAGE
             image = Picture($"ui/images/event_s39_board.avif:{boardWidth}:{boardHeight}:P")
-            padding = pagePadding
-            children = pageContent({ ...REWARD_STYLE_BP_PAGE, needShowPreview = false })
+            valign = ALIGN_BOTTOM
+            children = [
+              pageContent({ ...REWARD_STYLE_BP_PAGE, needShowPreview = false })
+              function() {
+                let pointsDifference = curBpPages.get()[selectedPage.get()].reqPoints - curBpTotalPoints.get()
+                return {
+                  watch = [curBpPages, selectedPage, curBpTotalPoints, curBpId]
+                  children = pointsDifference <= 0 ? null
+                    : {
+                        size = [boardWidth, SIZE_TO_CONTENT]
+                        halign = ALIGN_CENTER
+                        padding = hdpx(12)
+                        margin = hintMargin
+                        rendObj = ROBJ_BOX
+                        fillColor = 0x26000000
+                        children = {
+                          rendObj = ROBJ_TEXTAREA
+                          behavior = Behaviors.TextArea
+
+                          embed = {
+                            icon = mkCurrencyImage(curBpId.get(),
+                              get_font_metrics(fontTinyAccented.font, fontTinyAccented.fontSize).ascent * 0.75,
+                              { imageValign = ALIGN_BOTTOM })
+                          }
+                          text = loc("battlepass/lock/points", { battlePassPointsIcon = "<icon/>", value = pointsDifference })
+                        }.__update(fontTinyAccented)
+                      }
+                }
+              }
+            ]
           }
           @() {
             watch = [selectedReward, curBpId]
@@ -333,7 +334,7 @@ let battlePassContent = @() {
                                   : openMsgBoxPurchase({
                                       text = loc("shop/needMoneyQuestion",
                                         { item = colorize(userlogTextColor,
-                                            getLocByRType(selectedReward.get().viewInfo[0].rType,
+                                            getLocByRTypeNonUpdatable(selectedReward.get().viewInfo[0].rType,
                                               selectedReward.get().viewInfo[0].id))}),
                                       price = {
                                         price = selectedReward.get().cost

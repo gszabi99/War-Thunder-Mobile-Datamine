@@ -5,6 +5,7 @@ from "%appGlobals/config/decalsPresentation.nut" import getDecalDescPresentation
 from "%appGlobals/config/lootboxPresentation.nut" import getEventLootboxSizeMul
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/unitPresentation.nut" import getUnitName
+from "%appGlobals/decorators/nickFrames.nut" import frameNick
 from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_BP
 from "%rGui/components/gradientDefComps.nut" import doubleSideGradient, doubleSideGradientPaddingX
 from "%rGui/components/infoButton.nut" import infoCommonButton
@@ -80,7 +81,21 @@ let locByTypesReward = {
   booster = @(_) loc($"debriefing/booster")
 }
 
-let getLocByRType = @(rType, id) locByTypesReward?[rType](id) ?? rType
+let decoratorNameByType = {
+  avatar =  @(_) loc("decorator/avatar")
+  nickFrame = @(decoratorId) frameNick("", decoratorId)
+  title = @(decoratorId) loc($"title/{decoratorId}")
+}
+
+let locByTypesRewardNonUpdatable = {
+  function decorator(id) {
+    let { dType = null } = allDecorators.get()?[id]
+    return dType == null ? id : (decoratorNameByType?[dType](id) ?? loc($"decorator/{dType}"))
+  }
+}
+
+let getLocByRTypeNonUpdatable = @(rType, id)
+  locByTypesRewardNonUpdatable?[rType](id) ?? locByTypesReward?[rType](id) ?? rType
 
 let mkDecoratorHeader = @(viewInfo, ovr = {}) @() {
   watch = allDecorators
@@ -95,7 +110,7 @@ let mkDefaultRewardHeader = @(viewInfo, ovr = {}) {
   behavior = Behaviors.TextArea
   vplace = ALIGN_TOP
   halign = ALIGN_CENTER
-  text = getLocByRType(viewInfo.rType, viewInfo.id)
+  text = getLocByRTypeNonUpdatable(viewInfo.rType, viewInfo.id)
 }.__update(fontSmallAccented, ovr)
 
 let specialHeadCtors = {
@@ -255,5 +270,5 @@ function bpRewardDesc(slot, bpId) {
 return {
   bpRewardDesc
   bpObsoleteRewardDesc
-  getLocByRType
+  getLocByRTypeNonUpdatable
 }

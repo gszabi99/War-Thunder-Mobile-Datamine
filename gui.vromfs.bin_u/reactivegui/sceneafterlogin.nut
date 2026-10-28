@@ -156,6 +156,7 @@ require("%rGui/clans/editClanWnd.nut")
 require("%rGui/collections/collectionPuzzleWnd.nut")
 require("%rGui/collections/convertDupesWnd.nut")
 require("%rGui/collections/collectionsHelpWnd.nut")
+require("%rGui/battlePass/bpHelpWnd.nut")
 
 
 isInBattle.subscribe(@(v)

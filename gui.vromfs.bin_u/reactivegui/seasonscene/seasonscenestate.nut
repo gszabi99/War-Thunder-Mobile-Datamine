@@ -17,7 +17,7 @@ from "%rGui/battlePass/battlePassState.nut" import activeBattlePassesCfg, curBpI
 from "%rGui/battlePass/eventPassState.nut" import eventsPassList
 from "%rGui/battlePass/operationPassState.nut" import isOPSeasonActive, OP_EVENT_ID, OPCampaign
 from "%rGui/battlePass/passState.nut" import playerSelectedScene, getVisibleTabs
-from "%rGui/collections/collectionsState.nut" import curCollectionId, activeCollectionsCfg, openCollectionsHelpWnd
+from "%rGui/collections/collectionsState.nut" import curCollectionId, activeCollectionsCfg
 from "%rGui/event/eventLootboxes.nut" import eventLootboxesRaw
 from "%rGui/event/eventState.nut" import openEventInfo, specialEvents, MAIN_EVENT_ID, curEvent, eventWndOpenCounter,
   subEventsList, specialEventsOrdered, isEventActive, getIsEventActive, getEventLootboxes, closeEventShellCleanup,
@@ -237,42 +237,53 @@ function loadSeasonHelpWndSeen() {
 loadSeasonHelpWndSeen()
 isOnlineSettingsAvailable.subscribe(@(_) loadSeasonHelpWndSeen())
 
+function shouldAutoOpenHelpWnd(sId) {
+  return sId != null
+    && !isTutorialActive.get()
+    && !seasonHelpWndSeen.get()?[sId]
+}
+
+function openHelpWndIfUnseen(sId, openFunc) {
+  if (shouldAutoOpenHelpWnd(sId)) {
+    deferOnce(openFunc)
+    markSeasonHelpWndSeen(sId)
+  }
+}
+
 function openSeasonScene(eventName, tabIdRaw = null, subId = null) {
   eventName = specialEvents.get().findvalue(@(v) v.eventName == eventName)?.eventId ?? eventName
-  let prevTab = playerSelectedSeasonTab.get()
-  let tabId = isSeasonTabVisible?[tabIdRaw].calcByEventId(eventName) ? tabIdRaw
-    : isSeasonTabVisible?[prevTab].calcByEventId(eventName) ? prevTab
-    : seasonTabs.findvalue(@(v) isSeasonTabVisible[v].calcByEventId(eventName))
   if (isOfflineMenu) {
     openFMsgBox({ text = "Not supported in the offline mode" })
     return null
   }
+
+  let prevTab = playerSelectedSeasonTab.get()
+  local tabId = isSeasonTabVisible?[tabIdRaw].calcByEventId(eventName) ? tabIdRaw
+    : isSeasonTabVisible?[prevTab].calcByEventId(eventName) ? prevTab
+    : seasonTabs.findvalue(@(v) isSeasonTabVisible[v].calcByEventId(eventName))
+
   if (tabId == null) {
     logerr("Try to open season scene when all tabs are not visible")
     return null
+  }
+
+  if (tabIdRaw == null)
+    if (shouldAutoOpenHelpWnd(activeCollectionsCfg.get().findindex(@(c) c.meta?.event_id == eventName))
+        && isSeasonTabVisible[COLLECTION_TAB].calcByEventId(eventName))
+      tabId = COLLECTION_TAB
+    else if (shouldAutoOpenHelpWnd(activeBattlePassesCfg.get().findindex(@(c) c.meta?.event_id == eventName))
+        && isSeasonTabVisible[PASS_SCENE].calcByEventId(eventName)) {
+      tabId = PASS_SCENE
   }
 
   openEventInfo.set({
     eventName
     counter = curEvent.get() == eventName ? eventWndOpenCounter.get() + 1 : 1
   })
-
   seasonSceneOpenCounter.set(seasonSceneOpenCounter.get() + 1)
   openSeasonTab(tabId)
   if (tabId == PASS_OBSOLETE_SCENE && subId != null)
     playerSelectedScene.set(subId)
-
-  if (tabIdRaw == null) {
-    let cId = curCollectionId.get()
-    if (cId != null
-        && isSeasonTabVisible[COLLECTION_TAB].calcByEventId(eventName)
-        && !isTutorialActive.get()
-        && !seasonHelpWndSeen.get()?[cId]) {
-      openSeasonTab(COLLECTION_TAB)
-      deferOnce(openCollectionsHelpWnd)
-      markSeasonHelpWndSeen(cId)
-    }
-  }
 }
 
 let openMainSeasonScene = @(id = null, subId = null) openSeasonScene(MAIN_EVENT_ID, id, subId)
@@ -368,4 +379,5 @@ return {
   bgUnits
   newsTag
   isQuestsTabVisible
+  openHelpWndIfUnseen
 }

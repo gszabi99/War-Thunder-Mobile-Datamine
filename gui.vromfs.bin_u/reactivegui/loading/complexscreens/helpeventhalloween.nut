@@ -20,7 +20,6 @@ const markSz = evenPx(60)
 const iconSz = evenPx(32)
 let mkIconForHint = @(icon) {
   size = markSz
-  pos = const [hdpx(-75), hdpx(-12)]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   rendObj = ROBJ_BOX
@@ -35,6 +34,16 @@ let mkIconForHint = @(icon) {
     keepAspect = true
     color = 0xFFFFFFFF
   }
+}
+
+let mkIconAndTextarea = @(iconFn, text, textareaMaxWidth) {
+  valign = ALIGN_CENTER
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(10)
+  children = [
+    mkIconForHint(iconFn)
+    mkTextarea(text, textareaMaxWidth)
+  ]
 }
 
 let mkHints = @() [
@@ -55,27 +64,18 @@ let mkHints = @() [
     bgColor = hintBgColor
   }
   {
-    content = [
-      mkTextarea(loc("help/event/race_witches/boosterMissile"), hdpx(350))
-      mkIconForHint("hud_missile.svg")
-    ]
-    pos = mkSizeByParent([2485, 250])
+    content = mkIconAndTextarea("hud_missile.svg", loc("help/event/race_witches/boosterMissile"), hdpx(350))
+    pos = mkSizeByParent([2365, 250])
     bgColor = hintBgColor
   }
   {
-    content = [
-      mkTextarea(loc("help/event/race_witches/boosterOilSpill"), hdpx(350))
-      mkIconForHint("race_smoke.svg")
-    ]
-    pos = mkSizeByParent([2485, 450])
+    content = mkIconAndTextarea("race_smoke.svg", loc("help/event/race_witches/boosterOilSpill"), hdpx(350))
+    pos = mkSizeByParent([2365, 450])
     bgColor = hintBgColor
   }
   {
-    content = [
-      mkTextarea(loc("help/event/race_witches/boosterFuel"), hdpx(350))
-      mkIconForHint("hud_rocket_engine.svg")
-    ]
-    pos = mkSizeByParent([2485, 820])
+    content = mkIconAndTextarea("hud_rocket_engine.svg", loc("help/event/race_witches/boosterFuel"), hdpx(350))
+    pos = mkSizeByParent([2365, 820])
     bgColor = hintBgColor
   }
 ]

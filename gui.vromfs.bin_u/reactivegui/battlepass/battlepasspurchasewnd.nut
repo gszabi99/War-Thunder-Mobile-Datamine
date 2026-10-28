@@ -121,10 +121,8 @@ let rewardsList = @(selBpInfo) function() {
   let { received = {} } = servProfile.get()?.battlePasses?[curBpId.get()]
   local potentialSpent = 0
 
-  for (local pIdx = curBpPages.get().len() - 1; pIdx >= 0; pIdx--) {
-    let p = curBpPages.get()[pIdx]
-    for (local sIdx = p.slots.len() - 1; sIdx >= 0; sIdx--) {
-      let s = p.slots[sIdx]
+  foreach (pIdx, p in curBpPages.get()) {
+    foreach (sIdx, s in p.slots) {
       let isReceived = s.limit != 0 && (received?[pIdx][sIdx] ?? 0) >= s.limit
       if (isReceived || s.reqPassGrade > grade)
         continue
@@ -166,11 +164,11 @@ let rewardsList = @(selBpInfo) function() {
       flow = FLOW_VERTICAL
       gap = rewardsListGap
       children = [
-        rewardsBlock(loc("battlePass/receiveOnPurchase/exclusive", { count = viewInfoExclusive.len() }), viewInfoExclusive)
+        rewardsBlock(loc("battlePass/receiveOnPurchase/exclusive", { count = viewInfoExclusive.len() }),
+          viewInfoExclusive)
         rewardsBlock(loc("battlePass/claimOnProgress"), viewInfoOnGrade)
         rewardsBlock(
-          points == 0 ? loc("battlePass/claimOnPurchase")
-            : " ".join([loc("battlePass/claimOnPurchase"), loc("battlepass/pointsBonus", { num = points })]),
+          points == 0 ? loc("battlePass/claimOnPurchase") : loc("battlePass/claimOnPurchasePoints", { num = points }),
           viewInfoOnPurchase)
       ].filter(@(v) v != null)
       animations = wndSwitchAnim

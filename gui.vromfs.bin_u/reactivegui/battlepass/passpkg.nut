@@ -7,6 +7,7 @@ from "%rGui/components/levelBlockPkg.nut" import mkProgressLevelBg
 from "%rGui/components/pannableArea.nut" import horizontalPannableAreaCtor
 from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
 from "%rGui/components/textButton.nut" import textButtonPricePurchaseLow
+from "%rGui/components/gradientDefComps.nut" import headerHeightInSafeArea, headerMargin
 from "%rGui/rewards/rewardPlateComp.nut" import getRewardPlateSize
 
 
@@ -20,7 +21,8 @@ let bottomPanelH = saBorders[1] + bottomPanelIconSize
 
 let sideTabWidth = saBorders[0] + tabSize[0]
 let vGradientGapSize = [hdpx(4), FLEX]
-let contentH = saSize[1] - bottomPanelH - hdpx(40)
+let colorBarH = hdpx(8)
+let contentH = sh(100) - bottomPanelH - colorBarH - headerHeightInSafeArea - headerMargin - saBordersRv[0]
 let rewardPannableWidthTabs = sw(100) - (sideTabWidth + vGradientGapSize[0])
 const rewardPannableWidthFull = sw(100)
 const buyLevelTextExtraWidth = hdpx(50)
@@ -150,6 +152,7 @@ return {
   defPassIconSize
   sideTabWidth
   vGradientGapSize
+  colorBarH
   contentH
   bottomPanelH
   bottomPanelIconSize

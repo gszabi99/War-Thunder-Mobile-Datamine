@@ -117,8 +117,9 @@ function mkMissionResultTitle(debrData, needAnim) {
     : kickInactivity ? missionResultParamsByType.inactivity
     : isDisconnected ? missionResultParamsByType.disconnect
     : isDeserter ? missionResultParamsByType.deserter
-    : !isFinished ? missionResultParamsByType.inProgress
     : isWon ? missionResultParamsByType.victory
+    : (!isFinished && (gameType & GT_LAST_MAN_STANDING) != 0) ? missionResultParamsByType.finished
+    : !isFinished ? missionResultParamsByType.inProgress
     : (gameType & GT_FFA) != 0 ? missionResultParamsByType.finished
     : missionResultParamsByType.defeat
   return {

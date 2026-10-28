@@ -58,6 +58,7 @@
     -3.2
   ],
   "specialSpeechLanguage": "Ghost",
+  "customSnapshot": "crew_processing_off",
   "default_skin_tomoe": {
     "replace_tex": [
       {

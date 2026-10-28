@@ -1,7 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 from "wt.behaviors" import HangarCameraControl
 from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
-from "%rGui/battlePass/passPkg.nut" import bottomPanelH, bottomPanelIconSize
+from "%rGui/battlePass/battlePassState.nut" import curBpId, openBpHelpWnd
+from "%rGui/battlePass/passPkg.nut" import bottomPanelH, bottomPanelIconSize, colorBarH
 from "%rGui/battlePass/passState.nut" import playerSelectedScene
 from "%rGui/collections/collectionsState.nut" import openCollectionsHelpWnd, curCollectionId
 from "%rGui/components/backButton.nut" import backButton
@@ -17,7 +18,7 @@ from "%rGui/news/newsState.nut" import openNewsWndTagged
 import "%rGui/seasonScene/seasonSceneContentCfg.nut" as sceneContentCfg
 from "%rGui/seasonScene/seasonSceneState.nut" import seasonSceneOpenCounter, seasonTabs, seasonTabIdx, seasonPageId,
   newsTag, PASS_OBSOLETE_SCENE, openSeasonTab, closeSeasonScene, bgScene, bgUnits, registerSeasonTabClose,
-  SEASON_SCENE_ID, COLLECTION_TAB
+  SEASON_SCENE_ID, COLLECTION_TAB, PASS_SCENE
 from "%rGui/squad/squadChatBtn.nut" import squadChatBtn
 from "%rGui/style/gradients.nut" import mkGradientCtorRadial, gradTexSize
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
@@ -150,7 +151,7 @@ let seasonHeader = headerGradientWithRightBlock(
         closeSeasonScene()
     })
     @() {
-      watch = [newsTag, seasonPageId, curCollectionId]
+      watch = [newsTag, seasonPageId, curCollectionId, curBpId]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       gap = hdpx(40)
@@ -162,6 +163,8 @@ let seasonHeader = headerGradientWithRightBlock(
         }.__update(fontBig)
         seasonPageId.get() == COLLECTION_TAB
             && curCollectionId.get() != null ? infoEllipseButton(openCollectionsHelpWnd)
+          : seasonPageId.get() == PASS_SCENE
+            && curBpId.get() != null ? infoEllipseButton(openBpHelpWnd)
           : newsTag.get() == null ? null
           : infoEllipseButton(@() openNewsWndTagged(newsTag.get()))
       ]
@@ -172,7 +175,7 @@ let seasonHeader = headerGradientWithRightBlock(
 let selectColorBar = {
   rendObj = ROBJ_SOLID
   color = selectColor
-  size = const [FLEX, hdpx(8)]
+  size = const [FLEX, colorBarH]
 }
 
 function seasonScene() {
