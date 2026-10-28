@@ -32,12 +32,16 @@ let mkBadgeLayerChildren = @(badge, size) {
   ]
 }
 
-let mkClanBadgePreview = @(badgeW, size) @() {
-  watch = badgeW
+let mkClanBadgeImage = @(badge, size) {
   size
   rendObj = ROBJ_IMAGE
-  image = getClanBg(badgeW.get().badge_bg_color)
-  children = mkBadgeLayerChildren(badgeW.get(), size)
+  image = getClanBg(badge.badge_bg_color)
+  children = mkBadgeLayerChildren(badge, size)
+}
+
+let mkClanBadgePreview = @(badgeW, size) @() {
+  watch = badgeW
+  ...mkClanBadgeImage(badgeW.get(), size)
 }
 
 function mkClanBadgeBtn(badgeW, size, onClick) {
@@ -74,6 +78,7 @@ function mkClanBadgeBtn(badgeW, size, onClick) {
 }
 
 return {
+  mkClanBadgeImage
   mkClanBadgePreview
   mkClanBadgeBtn
   mkBadgePartImg

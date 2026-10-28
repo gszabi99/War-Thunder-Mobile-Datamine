@@ -157,7 +157,20 @@ let sceneContentCfg = {
   [QUESTS_TAB] = {
     icon = "ui/gameuiskin#quests.svg"
     label = "tasks"
-    currencies = Computed(@() curTabParams.get()?.currencies)
+    function headerRightCtor() {
+      let currencies = Computed(@() curTabParams.get()?.currencies ?? [])
+      let bpPoints = Computed(@() curTabParams.get()?.bpPoints ?? [])
+      return @() {
+        watch = [currencies, bpPoints]
+        hplace = ALIGN_RIGHT
+        flow = FLOW_HORIZONTAL
+        gap = gamercardGap
+        children = [
+          ...bpPoints.get().map(@(bpId) mkBpPointsBalance(bpId))
+          mkCurrenciesBtns(currencies.get(), const {}, const { size = SIZE_TO_CONTENT })
+        ]
+      }
+    }
     content = questsWndCtor
     mkHasUnseen = @(eventId) Computed(function() {
       let bySection = eventId.get() in questTabsByEventId

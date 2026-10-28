@@ -12,6 +12,7 @@ from "%appGlobals/timeToText.nut" import secondsToTimeAbbrString
 from "%rGui/clans/clanPermissions.nut" import clanGrades
 from "%rGui/clans/clanState.nut" import canManageMember
 from "%rGui/clans/components/clanManageSection.nut" import mkManageSection
+from "%rGui/clans/components/playerClanComps.nut" import mkPlayerClanRow
 from "%rGui/clans/currentClanState.nut" import currentClan, myClanGrade
 from "%rGui/components/buttonStyles.nut" import COMMON
 from "%rGui/components/clipboard.nut" import copyToClipboard
@@ -56,6 +57,7 @@ const wndWidth = hdpx(1100)
 const mainBlockGap = hdpx(30)
 let iconSize = [hdpx(40), hdpx(20)]
 const contactInfoHeight = hdpx(130)
+const clanIconSize = hdpxi(40)
 const profileMedalSize = hdpx(65)
 const medalOffset = hdpx(10)
 const sectionBtnHeight = hdpx(80)
@@ -110,6 +112,15 @@ let mkContactInfo = @(contact, info) @() {
         contactLevelBlock(info.get())
       ]
     }
+  ]
+}
+
+let mkContactInfoWithClan = @(userId, contact, info) {
+  flow = FLOW_VERTICAL
+  gap = hdpx(10)
+  children = [
+    mkContactInfo(contact, info)
+    mkPlayerClanRow(userId, clanIconSize, fontTinyAccented)
   ]
 }
 
@@ -504,7 +515,7 @@ function mkPlayerInfo(player, globalStats, campaign, isInvitesAllowed, sections 
             gap = mainBlockGap
             children = [
               isBot ? mkBotNameContent(player, info)
-                : mkContactInfo(contact, info)
+                : mkContactInfoWithClan(userId, contact, info)
               mkMedals(info, campaign)
             ]
           }

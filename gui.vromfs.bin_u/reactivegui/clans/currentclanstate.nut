@@ -3,13 +3,15 @@ from "dagor.time" import get_time_msec
 from "dagor.workcycle" import resetTimeout
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%appGlobals/clientState/clientState.nut" import isInBattle
+from "%appGlobals/clientState/initialState.nut" import projectId
 from "%appGlobals/loginState.nut" import isProfileReceived, isMatchingConnected
 from "%rGui/matching/matchingApi.nut" import mnGenericSubscribe
 from "%appGlobals/pServer/pServerApi.nut" import get_user_clan_info, get_clan_info, registerHandler,
-  clan_join_list, clan_update_login_timestamp
+  clan_join_list, clan_update_login_timestamp, refresh_clan_public_info
 from "%appGlobals/permissions.nut" import allow_clans
 from "%appGlobals/profileStates.nut" import myUserId
 from "%rGui/clans/clanPermissions.nut" import CLAN_JOIN_LIST, clanGrades, hasClanPermission
+from "%rGui/clans/clanPublicInfo.nut" import updateClanPublicInfo, removeUserClan
 
 
 const REQUEST_TIMEOUT_MS = 45000
@@ -29,6 +31,7 @@ let myClanGrade = hardPersistWatched("currentClan.myClanGrade", null)
 let lastTime = hardPersistWatched("currentClan.lastTime", { request = 0, update = 0 })
 let lastErrorTime = hardPersistWatched("currentClan.lastErrorTime", 0)
 let lastStatusUpdateErrorTime = hardPersistWatched("currentClan.lastStatusUpdateErrorTime", 0)
+let shouldRefreshPublicInfo = hardPersistWatched("currentClan.shouldRefreshPublicInfo", true)
 let shouldUpdateUserRequests = hardPersistWatched("currentClan.shouldUpdateUserRequests", false)
 let needUpdateUserRequests = Computed(@() isReadyToConnect.get() && shouldUpdateUserRequests.get())
 let hasConfirmedClan = Computed(@() currentClanId.get() != NO_CLAN_ID && isClanActual.get())
@@ -94,7 +97,9 @@ registerHandler("on_user_clan_info", function(res, context) {
   myClanGrade.set(res?.gradeStr)
   shouldUpdateUserRequests.set(true)
   if (clanId == NO_CLAN_ID) {
+    shouldRefreshPublicInfo.set(false)
     currentClan.set(null)
+    removeUserClan(myUserId.get())
     lastTime.mutate(@(v) v.update = get_time_msec())
     lastErrorTime.set(0)
     return
@@ -102,6 +107,10 @@ registerHandler("on_user_clan_info", function(res, context) {
   if (isReadyToConnect.get()) {
     get_clan_info(clanId, { id = "on_clan_info", clanId })
     sendOnlineStatusUpdate(clanId)
+    if (shouldRefreshPublicInfo.get()) {
+      shouldRefreshPublicInfo.set(false)
+      refresh_clan_public_info(projectId)
+    }
     if (hasClanPermission(CLAN_JOIN_LIST, clanGrades.get(), res?.gradeStr))
       clan_join_list(clanId, { id = JOIN_LIST_ID, clanId })
   }
@@ -117,6 +126,7 @@ registerHandler("on_clan_info", function(res, context) {
     return
   }
   currentClan.set(res.__merge({ clanId }))
+  updateClanPublicInfo(currentClan.get())
   lastErrorTime.set(0)
 })
 
@@ -157,8 +167,10 @@ isInBattle.subscribe(function(inBattle) {
 })
 
 isReadyToConnect.subscribe(function(v) {
-  if (v)
+  if (v) {
+    shouldRefreshPublicInfo.set(true)
     forceRefresh()
+  }
   else {
     resetCurrentClanInfo()
   }

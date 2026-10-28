@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "app" import isShowDebugInterface, is_dev_version, is_app_loaded, get_base_game_version_str
+from "app" import isShowDebugInterface, is_dev_version, is_app_loaded, get_base_game_version_str, get_game_version_str
 from "dagor.system" import dgs_get_settings
 from "eventbus" import eventbus_subscribe
 from "replays" import get_replay_props
@@ -28,7 +28,7 @@ function initSubscription() {
   if (is_dev_version() && !(dgs_get_settings()?.debug.showDebugInterface ?? true))
     return
   eventbus_subscribe("updateStatusString", @(s) state.set(state.get().__merge(s)))
-  gameVersion.set(get_base_game_version_str())
+  gameVersion.set($"{get_base_game_version_str()} ({get_game_version_str()})")
   hasDebugInterfaceInMpSession.set(isShowDebugInterface())
 }
 if (is_app_loaded())

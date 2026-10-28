@@ -12,6 +12,7 @@ const maxUidInRequest = 100
 let allPublicInfo = hardPersistWatched("allPublicInfo", {})
 let delayedUids = mkWatched(persist, "delayedUids", {})
 let inProgressUids = Watched({})
+let updateSubscribers = []
 let needRequest = Computed(@() canRequestToContacts.get() && delayedUids.get().len() > 0 && inProgressUids.get().len() == 0)
 
 function requestPublicInfo() {
@@ -37,7 +38,7 @@ function requestPublicInfo() {
   }
   logP($"Request public info for {usersToSend.len()} contacts")
   contactsRequest("get_public_users_info",
-    { data = { users = usersToSend, tags = ["general"] } },
+    { data = { users = usersToSend, tags = ["general", "clan"] } },
     { uids = uidsToSend })
 }
 
@@ -50,8 +51,11 @@ contactsRegisterHandler("get_public_users_info", function(result, context) {
   let timeUpd = { receiveTime = get_time_msec() }
   foreach(uid, _ in uids)
     upd[uid] <- (result?[uid] ?? {}).__merge(timeUpd)
-  if (upd.len() != 0)
+  if (upd.len() != 0) {
     allPublicInfo.set(allPublicInfo.get().__merge(upd))
+    foreach (cb in updateSubscribers)
+      cb(upd)
+  }
   requestPublicInfo()
 })
 
@@ -75,6 +79,10 @@ let mkPublicInfo = @(userId)
 let mkIsPublicInfoWait = @(userId)
   Computed(@() userId in inProgressUids.get() )
 
+function subscribePublicInfoUpdate(cb) {
+  updateSubscribers.append(cb)
+}
+
 function deactualizePublicInfos(ids) {
   let updatedReceiveTime = {}
   foreach(uid in ids){
@@ -94,4 +102,5 @@ return {
   refreshPublicInfo
   mkPublicInfo
   deactualizePublicInfos
+  subscribePublicInfoUpdate
 }

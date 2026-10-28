@@ -17,7 +17,8 @@ from "%rGui/quests/bqQuests.nut" import sendBqQuestsReceiveTask
 from "%rGui/rewards/rewardViewInfo.nut" import isSingleViewInfoRewardEmpty
 from "%rGui/state/profilePremium.nut" import hasVip
 from "%rGui/unlocks/unlocks.nut" import campaignActiveUnlocks, allUnlocksDesc, unlockTables, unlockTablesSeasons,
-  unlockProgress, emptyProgress, setLastSeenUnlocks, unseenUnlocks, getUnlockAllRewardCurrencies, getAllUnlockCurrencies
+  unlockProgress, emptyProgress, setLastSeenUnlocks, unseenUnlocks, getUnlockAllRewardBpPoints,
+  getUnlockAllRewardCurrencies, getAllUnlockCurrencies
 from "%rGui/unlocks/unlocksConst.nut" import EVENT_PREFIX, COMMON_TAB, EVENT_TAB, PROMO_TAB, ACHIEVEMENTS_TAB,
   PERSONAL_TAB, DAILY_SECTION, WEEKLY_SECTION, PERSONAL_META_MARK, SPEED_UP_AD_COST
 from "%rGui/unlocks/userstat.nut" import isUserstatMissingData
@@ -177,16 +178,25 @@ let getStarsTotalNonUpdatable = @(unlock) (
 let tutorialSectionIdWithReward = Computed(@() questsCfg.get()?[EVENT_TAB]
   .findvalue(@(section) null != questsBySection.get()?[section].findvalue(@(r) r.hasReward)))
 
-function getQuestCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, statsTables, sConfigs) {
+function getQuestBalancesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, statsTables, sConfigs) {
   let currencies = {}
+  let bpPoints = {}
+  function addUnlockBalances(unlock) {
+    currencies.__update(getAllUnlockCurrencies(unlock, sConfigs, statsTables))
+    bpPoints.__update(getUnlockAllRewardBpPoints(unlock, sConfigs))
+  }
+
   if (tabId in pUnlockByTab)
-    currencies.__update(getAllUnlockCurrencies(pUnlockByTab[tabId], sConfigs, statsTables))
+    addUnlockBalances(pUnlockByTab[tabId])
   qCfg?[tabId].each(function(s) {
     if (s in pUnlockBySection)
-      currencies.__update(getAllUnlockCurrencies(pUnlockBySection[s], sConfigs, statsTables))
-    qBySection?[s].each(@(q) currencies.__update(getAllUnlockCurrencies(q, sConfigs, statsTables)))
+      addUnlockBalances(pUnlockBySection[s])
+    qBySection?[s].each(addUnlockBalances)
   })
-  return currencies.keys()
+  return {
+    currencies = currencies.keys()
+    bpPoints = bpPoints.keys().sort()
+  }
 }
 
 function getQuestNextRewardCurrenciesInTab(tabId, qCfg, qBySection, pUnlockBySection, pUnlockByTab, sConfigs) {
@@ -314,7 +324,7 @@ return {
   inactiveEventUnlocks
   progressUnlockByTab
   progressUnlockBySection
-  getQuestCurrenciesInTab
+  getQuestBalancesInTab
   getQuestNextRewardCurrenciesInTab
 
   tutorialSectionIdWithReward

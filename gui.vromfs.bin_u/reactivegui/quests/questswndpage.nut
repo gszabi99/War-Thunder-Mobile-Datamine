@@ -30,7 +30,7 @@ from "%rGui/quests/questsPkg.nut" import mkSectionBtn, sectionBtnHeight, section
   mkTimeUntil, allQuestsCompleted, mkAdsBtn, btnSize, mkQuestText, btnStyle, btnStyleSound
 from "%rGui/quests/questsState.nut" import questsBySection, unseenUnlocks, saveSeenQuestsForSection, sectionsCfg,
   questsCfg, mkHasReceivedAllRewards, inactiveEventUnlocks, hasUnseenQuestsBySection, progressUnlockByTab,
-  progressUnlockBySection, getQuestCurrenciesInTab, curTabParams, tutorialSectionId, isSameTutorialSectionId,
+  progressUnlockBySection, getQuestBalancesInTab, curTabParams, tutorialSectionId, isSameTutorialSectionId,
   tutorialSectionIdWithReward, getStarsTotalNonUpdatable
 from "%rGui/quests/rewardsComps.nut" import mkRewardsPreview, questItemsGap, statusIconSize, mkLockedIcon,
   progressBarRewardSize, mkRewardsPreviewFull, getRewardsPreviewInfo, getEventCurrencyReward, REWARDS_PREVIEW_SLOTS
@@ -621,8 +621,11 @@ function questsWndPage(sections, itemCtor, tabId, isFullScreenWidth = Watched(fa
     return n
   })
 
-  let tabCurrencies = Computed(@() getQuestCurrenciesInTab(tabId, questsCfg.get(), questsBySection.get(),
-    progressUnlockBySection.get(), progressUnlockByTab.get(), userstatStatsTables.get(), serverConfigs.get()))
+  let tabBalances = Computed(function(prev) {
+    let balances = getQuestBalancesInTab(tabId, questsCfg.get(), questsBySection.get(),
+      progressUnlockBySection.get(), progressUnlockByTab.get(), userstatStatsTables.get(), serverConfigs.get())
+    return prevIfEqual(prev, balances)
+  })
 
   let scrollHandler = ScrollHandler()
   let scrollArrowBtn = mkScrollArrow(scrollHandler, MR_B, scrollArrowImageSmall)
@@ -699,7 +702,6 @@ function questsWndPage(sections, itemCtor, tabId, isFullScreenWidth = Watched(fa
   }
 
   return @() {
-    watch = tabCurrencies
     key = sections
     size = FLEX
     function onAttach() {
@@ -707,7 +709,8 @@ function questsWndPage(sections, itemCtor, tabId, isFullScreenWidth = Watched(fa
       curSectionId.subscribe(curSectionSubscription)
       personalQuestsSubcription(questsSortedByPersonal.get())
       questsSortedByPersonal.subscribe(personalQuestsSubcription)
-      curTabParams.set({ tabId, currencies = tabCurrencies.get() })
+      let { currencies, bpPoints } = tabBalances.get()
+      curTabParams.set({ tabId, currencies, bpPoints })
       addCustomUnseenPurchHandler(isPurchNoNeedResultWindow, markPurchasesSeenDelayed)
     }
     function onDetach() {

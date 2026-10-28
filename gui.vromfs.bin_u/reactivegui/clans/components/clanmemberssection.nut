@@ -265,8 +265,8 @@ function mkMemberRow(clanW, member, idx) {
               }.__update(fontTiny)
           mkMemberAvatar(info)
           mkMemberNameBlock(contact, info, uid, isMyUser)
-          mkMemberGrade(gradeStr)
           mkOnlineStatus(userId, isOwnClan, loginTimestamp)
+          mkMemberGrade(gradeStr)
           mkLeaveBtn(isMyUser, gradeStr)
         ]
       }

@@ -3,7 +3,7 @@ from "%sqstd/string.nut" import utf8ToUpper
 from "%rGui/clans/clanCfg.nut" import gradesSettingscfg
 from "%rGui/clans/clanPermissions.nut" import clanGrades
 from "%rGui/clans/clanState.nut" import memberGrade, assignableGrades, canKickMember, canChangeMemberGrade,
-  changeMemberGrade, kickMember
+  changeMemberGrade, kickMember, isFounderKickable
 from "%rGui/clans/components/clanPropertyBtn.nut" import mkClanChangeBtn, propertyBtnDefHeight
 from "%rGui/clans/components/chooseValueWnd.nut" import openChooseValueWnd
 from "%rGui/clans/currentClanState.nut" import currentClan, myClanGrade
@@ -66,7 +66,8 @@ function mkChangeGradeBtn(targetUserId) {
 }
 
 function mkManageSection(targetUserId) {
-  let canKickUser = Computed(@() canKickMember(clanGrades.get(), myClanGrade.get(), currentClan.get(), targetUserId))
+  let canKickUser = Computed(@() canKickMember(clanGrades.get(), myClanGrade.get(), currentClan.get(), targetUserId,
+    isFounderKickable.get()))
   let canChangeGrade = Computed(@() canChangeMemberGrade(clanGrades.get(), myClanGrade.get(), currentClan.get(), targetUserId))
   let kickBtn = textButtonCommon(utf8ToUpper(loc("clans/manage/kick")), @() onKickMember(targetUserId), { ovr = { size = btnSize } })
 

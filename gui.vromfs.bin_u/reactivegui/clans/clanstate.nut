@@ -9,6 +9,7 @@ from "string" import format
 from "%sqstd/string.nut" import hexStringToInt
 from "%sqstd/functools.nut" import memoize
 from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/time.nut" import TIME_DAY_IN_SECONDS
 from "%appGlobals/clientState/initialState.nut" import projectId
 from "%appGlobals/dirtyWordsFilter.nut" import isNamePassing, clearExcessiveWhitespace
 from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
@@ -22,12 +23,15 @@ from "%appGlobals/pServer/pServerApi.nut" import clan_lookup, clan_create, clan_
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/permissions.nut" import allow_clans
 from "%appGlobals/profileStates.nut" import myUserId
+from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
 from "%appGlobals/userstats/serverTime.nut" import getServerTime, isServerTimeValid
-from "%appGlobals/clanConsts.nut" import GRADE_LEADER
+from "%appGlobals/clanConsts.nut" import GRADE_LEADER, GRADE_FOUNDER
 from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
 from "%rGui/clans/clanCfg.nut" import LANGUAGE, MEMBERS, LOCATION
 from "%rGui/clans/clanPermissions.nut" import CLAN_KICK_MEMBER, CLAN_CHANGE_GRADE, hasClanPermission
-from "%rGui/clans/currentClanState.nut" import forceRefreshCurrentClan, resetCurrentClanInfo, currentClanId, NO_CLAN_ID, shouldUpdateUserRequests
+from "%rGui/clans/clanPublicInfo.nut" import updateClanPublicInfo
+from "%rGui/clans/currentClanState.nut" import forceRefreshCurrentClan, resetCurrentClanInfo, currentClan, currentClanId,
+  NO_CLAN_ID, shouldUpdateUserRequests
 from "%rGui/clans/filterClanState.nut" import clanFilterComp, resetFilter
 
 
@@ -55,6 +59,7 @@ let onKickActions = []
 let clanMinCampaignLevel = Computed(@() serverConfigs.get()?.gameProfile.clanMinCampaignLevel ?? defClanMinLvl)
 let hasRequiredLvl = Computed(@() clanMinCampaignLevel.get() <= bestCampLevel.get())
 let isClanBtnClicked = Watched(false)
+let isFounderKickable = Watched(false)
 
 function loadIsClanBtnClicked() {
   if (!isOnlineSettingsAvailable.get()) {
@@ -80,7 +85,7 @@ let isClanCreateOpen = hardPersistWatched("isClanCreateOpen", false)
 let clanInfoCache = hardPersistWatched("clanInfoCache", {})
 
 let errorsToShow = ["USER_ALREADY_HAVE_CLAN", "FIELD_REQUIRED", "CLAN_IS_FULL", "CLAN_IS_DELETED",
-  "CLAN_LEVEL_REQUIRED"].totable()
+  "CLAN_LEVEL_REQUIRED", "KICK_INACTIVE_DAYS_NOT_REACHED"].totable()
 let allowedValidationFields = ["name", "description", "message"].totable()
 
 function shouldShowErrorToPlayer(err) {
@@ -127,10 +132,41 @@ function handleClanError(res) {
   return true
 }
 
+let founderKickTime = Computed(function() {
+  let inactiveDays = clanServerConfigs.get()?.founderKickAfterInactiveDays ?? 0
+  let founder = currentClan.get()?.users.findvalue(@(u) u.gradeStr == GRADE_FOUNDER)
+  if (inactiveDays <= 0 || founder == null)
+    return null
+  let { joinedTimestamp = 0, loginTimestamp = 0, gradeReceivedTimestamp = 0 } = founder
+  let lastSeen = loginTimestamp != 0 ? loginTimestamp : joinedTimestamp
+  return max(lastSeen, gradeReceivedTimestamp) + inactiveDays * TIME_DAY_IN_SECONDS
+})
+
+function updateFounderKickable() {
+  let kickTime = founderKickTime.get()
+  if (kickTime == null || !isServerTimeValid.get()) {
+    isFounderKickable.set(false)
+    clearExtTimer(updateFounderKickable)
+    return
+  }
+  let timeLeft = kickTime - getServerTime()
+  isFounderKickable.set(timeLeft <= 0)
+  if (timeLeft > 0)
+    resetExtTimeout(timeLeft, updateFounderKickable)
+  else
+    clearExtTimer(updateFounderKickable)
+}
+updateFounderKickable()
+founderKickTime.subscribe(@(_) updateFounderKickable())
+isServerTimeValid.subscribe(@(_) updateFounderKickable())
+
 let memberGrade = @[pure, nodiscard](clan, userid) (clan?.users ?? []).findvalue(@(u) u.userId == userid.tointeger())?.gradeStr
 
-let canKickMember = @[pure, nodiscard](gradesCfg, myGrade, clan, targetUserId) hasClanPermission(CLAN_KICK_MEMBER,
-  gradesCfg, myGrade, memberGrade(clan, targetUserId))
+function [pure, nodiscard] canKickMember(gradesCfg, myGrade, clan, targetUserId, canKickFounder) {
+  let targetGrade = memberGrade(clan, targetUserId)
+  return (canKickFounder || targetGrade != GRADE_FOUNDER)
+    && hasClanPermission(CLAN_KICK_MEMBER, gradesCfg, myGrade, targetGrade)
+}
 let canChangeMemberGrade = @[pure, nodiscard](gradesCfg, myGrade, clan, targetUserId) hasClanPermission(CLAN_CHANGE_GRADE,
   gradesCfg, myGrade, memberGrade(clan, targetUserId))
 
@@ -154,7 +190,8 @@ function canManageMember(gradesCfg, myGrade, clan, targetUserId) {
       || memberGrade(clan, targetUserId) == null)
     return false
 
-  return canKickMember(gradesCfg, myGrade, clan, targetUserId) || canChangeMemberGrade(gradesCfg, myGrade, clan, targetUserId)
+  return canKickMember(gradesCfg, myGrade, clan, targetUserId, isFounderKickable.get())
+    || canChangeMemberGrade(gradesCfg, myGrade, clan, targetUserId)
 }
 
 function deleteOldestClanCacheEntry(v, protectedId = null) {
@@ -183,6 +220,7 @@ function putClanInfoToCache(clanId, data) {
   if (clanId == null || data == null || !isServerTimeValid.get())
     return false
 
+  updateClanPublicInfo(data)
   let now = getServerTime()
 
   clanInfoCache.mutate(function(v) {
@@ -417,8 +455,10 @@ function kickMember(userId) {
 }
 
 registerHandler("on_clan_kick_member", function(res, context) {
-  if (handleClanError(res))
+  if (handleClanError(res)) {
+    forceRefreshCurrentClan()
     return
+  }
   let { clanId, userId } = context
   if (clanId == currentClanId.get())
     foreach (action in onKickActions)
@@ -504,6 +544,7 @@ return {
 
   memberGrade
   assignableGrades
+  isFounderKickable
   canKickMember
   canChangeMemberGrade
   canManageMember

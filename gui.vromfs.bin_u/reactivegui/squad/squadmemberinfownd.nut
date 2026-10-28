@@ -9,6 +9,7 @@ from "%appGlobals/squadState.nut" import squadMembers, isInvitedToSquad, squadId
 from "%appGlobals/unitPresentation.nut" import getUnitPresentation
 import "%rGui/clans/clanSquadCreateWnd.nut" as clanSquadCreateWnd
 from "%rGui/clans/clanSquadsState.nut" import isClanSquadLeader
+from "%rGui/clans/components/playerClanComps.nut" import mkPlayerClanIcon
 from "%rGui/components/animGrowLines.nut" import mkAnimGrowLinesFromRectToWnd
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
@@ -194,6 +195,7 @@ function memberInfo(uid) {
   let status = statusBlock(uid)
   let battleStatus = inBattleBlock(uid)
   let actionButtons = buttons(uid)
+  let clanIcon = mkPlayerClanIcon(userId)
   return @() {
     watch = [contact, info]
     size = [headerWidth, SIZE_TO_CONTENT]
@@ -202,7 +204,8 @@ function memberInfo(uid) {
     gap
     children = [
       contactAvatar(info.get(), avatarSize)
-      contactNameBlock(contact.get(), info.get(), [status, battleStatus, contactLevelBlock(info.get(), const { valign = ALIGN_BOTTOM })])
+      contactNameBlock(contact.get(), info.get(),
+        [status, battleStatus, contactLevelBlock(info.get(), const { valign = ALIGN_BOTTOM })], {}, clanIcon)
         .__update({ size = const [FLEX, avatarSize] })
       actionButtons
     ]

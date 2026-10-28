@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%rGui/clans/components/playerClanComps.nut" import mkPlayerClanIcon
 from "%rGui/contacts/contact.nut" import Contact
 from "%rGui/contacts/contactInfoPkg.nut" import darkenBgColor, borderWidth, rowHeight, gap, contactNameBlock,
   contactAvatar, contactLevelBlock, contactOnlineStatusBlock, contactSquadStatusBlock
@@ -17,6 +18,7 @@ function mkContactRow(uid, rowIdx, isSelected, onClick, responseAction = null, l
   let stateFlags = Watched(0)
   let onlineStatusBlock = contactOnlineStatusBlock(onlineStatus, battleUnit)
   let squadStatusBlock = contactSquadStatusBlock(uid.tointeger(), { margin = [0, gap, 0, 0]})
+  let clanIcon = mkPlayerClanIcon(userId)
   return @() {
     watch = [contact, info, isSelected]
     key = uid
@@ -50,7 +52,7 @@ function mkContactRow(uid, rowIdx, isSelected, onClick, responseAction = null, l
               contactAvatar(info.get())
             ]
           }
-          contactNameBlock(contact.get(), info.get())
+          contactNameBlock(contact.get(), info.get(), [], {}, clanIcon)
           const {
             size = FLEX
           }

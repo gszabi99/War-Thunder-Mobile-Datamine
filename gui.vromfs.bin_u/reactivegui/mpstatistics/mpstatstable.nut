@@ -9,10 +9,12 @@ import "%appGlobals/decorators/avatars.nut" as getAvatarImage
 from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%appGlobals/timeToText.nut" import preciseSecondsToString
 from "%appGlobals/unitPresentation.nut" import getUnitName, unitClassFontIcons
+from "%rGui/clans/components/playerClanComps.nut" import mkPlayerClanIcon
 from "%rGui/components/gradTexts.nut" import mkGradRankSmall
 from "%rGui/components/masteryTierComp.nut" import mkMasteryTierColorIcon
 from "%rGui/components/playerPlaceIcon.nut" import playerPlaceIconSize, mkPlaceIcon
 from "%rGui/components/scrollbar.nut" import makeVertScroll
+from "%rGui/contacts/contactPublicInfo.nut" import refreshPublicInfo
 from "%rGui/hud/raceState.nut" import raceTotalLaps, raceTotalCheckpoints
 from "%rGui/mpStatistics/playersSortFunc.nut" import getScoreFull
 from "%rGui/mpStatistics/viewProfile.nut" import selectedPlayerForInfo
@@ -122,17 +124,19 @@ let mkPlayerName = @(player, teamColor, halign = null) {
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   gap = hdpx(5)
-  halign
   children = [
     premiumMark(player)
-    cellTextProps.__merge({
-      maxWidth = !player.hasPremium ? pw(95) : pw(80)
+    player.isBot ? null : mkPlayerClanIcon(player.userId)
+    {
+      ...cellTextProps
+      size = FLEX_H
+      halign
       behavior = Behaviors.Marquee
       delay = defMarqueeDelay
       speed = hdpx(30)
       color = player.isLocal ? cellTextColor : teamColor
       text = player.name
-    })
+    }
   ]
 }
 
@@ -338,6 +342,7 @@ function mkPlayerRow(columnCfg, player, teamColor, idx, isTeamBattle, bgColorOvr
   let isCurrent = Computed(@() player != null && selectedPlayerForInfo.get()?.player.userId == player?.userId)
   let rowChildren = {
     key = player?.userId
+    onAttach = (player == null || player.isBot) ? null : @() refreshPublicInfo(player.userId.tostring())
     behavior = Behaviors.Button
     onClick = player == null ? null
       : function() {

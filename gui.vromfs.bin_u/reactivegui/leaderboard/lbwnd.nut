@@ -6,6 +6,7 @@ from "%appGlobals/timeToText.nut" import secondsToHoursLoc, parseUnixTimeCached
 from "%appGlobals/user/nickTools.nut" import getPlayerName
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%appGlobals/activeControls.nut" import isGamepad
+from "%rGui/clans/components/playerClanComps.nut" import mkPlayerClanIcon
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderBg
 from "%rGui/components/paginator.nut" import mkPaginator
 from "%rGui/components/playerPlaceIcon.nut" import mkPlaceIconSmall
@@ -135,6 +136,7 @@ function mkNameCell(category, rowData) {
   let userId = rowData._id.tostring()
   let info = mkPublicInfo(userId)
   let realnick = category.getText(rowData)
+  let clanIcon = mkPlayerClanIcon(userId)
   return function() {
     let { nickFrame = null } = info.get()?.decorators
     let visualName = frameNick(getPlayerName(realnick, myUserRealName.get(), myUserName.get()), nickFrame)
@@ -154,7 +156,7 @@ function mkNameCell(category, rowData) {
       onClick = @() viewProfile(userId, { isInvitesAllowed = false })
       children = [
         contactAvatar(info.get(), lbRowHeight - hdpx(2))
-        contactNameBlock({ realnick }, info.get(), [], { nameStyle, titleStyle = fontVeryTinyShaded })
+        contactNameBlock({ realnick }, info.get(), [], { nameStyle, titleStyle = fontVeryTinyShaded }, clanIcon)
       ]
     }
   }

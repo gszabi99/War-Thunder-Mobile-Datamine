@@ -28,24 +28,34 @@ const gap = hdpx(10)
 const premIconSize = hdpxi(25)
 
 
-function contactNameBlock(contact, info, addChildren = [], styles = {}) {
+function contactNameBlock(contact, info, addChildren = [], styles = {}, clanIcon = null) {
   let { realnick } = contact
   let { decorators = {}, hasPremium = false, hasPrem = false, hasVip = false } = info
   let { nickFrame = null, title = null } = decorators
   let { nameStyle = fontTiny, titleStyle = fontTiny } = styles
+  let nameText = @() {
+    watch = [myUserRealName, myUserName]
+    rendObj = ROBJ_TEXT
+    behavior = Behaviors.Marquee
+    color = nameColor
+    text = frameNick(getPlayerName(realnick, myUserRealName.get(), myUserName.get()), nickFrame)
+    ...nameStyle
+  }
   return {
     size = FLEX_V
     flow = FLOW_VERTICAL
     valign = ALIGN_CENTER
     children = [
-      @() {
-        watch = [myUserRealName, myUserName]
-        rendObj = ROBJ_TEXT
-        behavior = Behaviors.Marquee
-        color = nameColor
-        vplace = title || hasPremium ? ALIGN_TOP : ALIGN_CENTER
-        text = frameNick(getPlayerName(realnick, myUserRealName.get(), myUserName.get()), nickFrame)
-      }.__update(nameStyle)
+      clanIcon == null ? nameText
+        : {
+            flow = FLOW_HORIZONTAL
+            valign = ALIGN_CENTER
+            gap
+            children = [
+              clanIcon
+              nameText
+            ]
+          }
       {
         valign = ALIGN_BOTTOM
         flow = FLOW_HORIZONTAL

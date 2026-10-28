@@ -1141,6 +1141,12 @@ return {
     params = { userId }
   }, cb)
 
+  refresh_clan_public_info = @(userProjectId, cb = null) request({
+    method = "refresh_clan_public_info"
+    projectId = CLAN_SERVER_PROJECT_ID
+    params = { userProjectId }
+  }, cb)
+
   get_clan_info = @(clanId, cb = null) request({
     method = "get_clan_info"
     userid = clanId

@@ -5,7 +5,7 @@ from "%sqstd/globalState.nut" import hardPersistWatched
 from "%sqstd/underscore.nut" import isEqual
 from "%appGlobals/loginState.nut" import isLoggedIn
 from "%appGlobals/pServer/campaign.nut" import curCampaign
-from "%appGlobals/rewardType.nut" import G_CURRENCY
+from "%appGlobals/rewardType.nut" import G_CURRENCY, G_BP_POINTS
 from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
 from "%rGui/unlocks/userstat.nut" import userstatDescList, userstatUnlocks, userstatStatsTables, userstatRequest,
   userstatRegisterHandler, forceRefreshUnlocks, forceRefreshStats, tablesActivityOvr
@@ -181,18 +181,22 @@ function isPrevUnlockCompleted(id, unlocks) {
     || null != requirements.findvalue(@(r) unlocks?[r].isCompleted ?? false)
 }
 
-function getUnlockAllRewardCurrencies(u, sConfigs) {
+function getUnlockAllRewardIds(u, sConfigs, rewardType) {
   let res = {}
   let { stages = [] } = u
   foreach (s in stages)
     s?.rewards.each(@(_, rId)
       sConfigs?.userstatRewards[rId].each(function(g) {
         let { gType = "", id = "" } = g
-        if (gType == G_CURRENCY)
+        if (gType == rewardType)
           res[id] <- true
       }))
   return res
 }
+
+let getUnlockAllRewardCurrencies = @(u, sConfigs) getUnlockAllRewardIds(u, sConfigs, G_CURRENCY)
+
+let getUnlockAllRewardBpPoints = @(u, sConfigs) getUnlockAllRewardIds(u, sConfigs, G_BP_POINTS)
 
 function getAllUnlockCurrencies(u, sConfigs, statsTables) {
   let res = getUnlockAllRewardCurrencies(u, sConfigs)
@@ -425,6 +429,7 @@ return {
   spendingUnlocks
   isPrevUnlockCompleted
   getUnlockAllRewardCurrencies
+  getUnlockAllRewardBpPoints
   getAllUnlockCurrencies
 
   unlockInProgress
