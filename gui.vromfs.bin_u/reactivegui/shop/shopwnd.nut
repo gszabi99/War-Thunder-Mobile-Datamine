@@ -189,7 +189,7 @@ function mkShopContent(contentW, pannableAreaCtor, shopIdW = null, close = close
 
 let eventShopTabPannableArea = verticalPannableAreaCtor(contentH, [headerMargin, headerMargin])
 
-function eventShopTabContent() {
+let eventShopTabContent = @(onDetachCb) function() {
   let curTabShopId = Computed(@() getShopIdForEventId(curEvent.get(), specialEvents.get(),
     goodsByShop.get(), soonGoodsByShop.get(), soonPersonalGoodsByShop.get(), personalGoodsByShop.get()))
   let shopId = curTabShopId.get()
@@ -200,6 +200,7 @@ function eventShopTabContent() {
     function onDetach() {
       if (shopId != null)
         saveSeenGoodsCurrent(shopId)
+      onDetachCb()
     }
     children = @() {
       watch = curTabShopId

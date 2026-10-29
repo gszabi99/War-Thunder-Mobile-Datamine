@@ -167,13 +167,20 @@ function mkGamercardShopBalanceBtnsCtor(mkBalance, gType) {
     let goods = shopG.findvalue(@(goods) null != goods.rewards.findvalue(@(r) r.id == id && r.gType == gType))
     return goods == null || getGoodsShopId(goods) == shopId ? null : @() openShopByGoods(goods)
   }
-  return @(shopId, catId, assets) @() {
+  return @(shopId, catId, assets, cb = null) @() {
     watch = [shopId, catId, goodsByShop, shopGoods]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     gap = gamercardGap
-    children = assets.map(@(id)
-      mkBalance(id, mkRefillClick(shopId.get(), catId.get(), goodsByShop.get(), shopGoods.get(), id)))
+    children = assets.map(function(id) {
+      let refillClick = mkRefillClick(shopId.get(), catId.get(), goodsByShop.get(), shopGoods.get(), id)
+      return mkBalance(id,
+        refillClick == null ? null
+          : function() {
+              cb?()
+              refillClick()
+            })
+    })
   }
 }
 

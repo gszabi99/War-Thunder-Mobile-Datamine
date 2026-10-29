@@ -9685,8 +9685,8 @@
     }
   },
   "floodFilter": {
-    "duplicatedTime": 3.0,
-    "chatMessagesTime": 0.5,
+    "duplicatedTime": 5.0,
+    "chatMessagesTime": 2.0,
     "voiceMessagesTime": 1.0,
     "messagesPerTime1": 5,
     "messagesTime1": 5.0,

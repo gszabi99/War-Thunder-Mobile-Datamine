@@ -30,7 +30,7 @@ from "%rGui/quests/questsState.nut" import questsCfg, curTabParams, progressUnlo
 import "%rGui/quests/questsWnd.nut" as questsWndCtor
 from "%rGui/seasonScene/seasonSceneState.nut" import QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB, BATTLE_TAB,
   BATTLE_TAB_2, BATTLE_TAB_3, MAP_TAB, LEADERBOARD_TAB, questTabsByEventId, isSeasonTabVisible, seasonShopId,
-  COLLECTION_TAB, BATTLE_TAB_MODE_IDX, PASS_OBSOLETE_SCENE, PASS_SCENE
+  COLLECTION_TAB, BATTLE_TAB_MODE_IDX, PASS_OBSOLETE_SCENE, PASS_SCENE, openSeasonTab
 from "%rGui/shop/eventShopState.nut" import getShopIdForEventId
 from "%rGui/shop/lootboxPreviewState.nut" import isEventWndLootboxOpen, closeEventWndLootbox
 from "%rGui/shop/shopState.nut" import hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop,
@@ -42,6 +42,8 @@ from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
 from "%rGui/unlocks/unlocks.nut" import getAllUnlockCurrencies
 from "%rGui/unlocks/userstat.nut" import userstatStatsTables
 
+
+let backToTab = mkWatched(persist, "backToTab", null)
 
 let contentCfgDefaults = {
   icon = "ui/gameuiskin#icon_primary_attention.svg" 
@@ -104,7 +106,8 @@ let sceneContentCfg = {
         gap = gamercardGap
         children = [
           curBpId.get() == null ? null
-            : gamercardShopBpPointsBalanceBtns(Watched(null), Watched(null), [curBpId.get()])
+            : gamercardShopBpPointsBalanceBtns(Watched(null), Watched(null), [curBpId.get()],
+                @() backToTab.set(PASS_SCENE))
           mkCurrenciesBtns(currencies.get(), const {}, const { size = SIZE_TO_CONTENT })
         ].filter(@(v) v != null)
       }
@@ -179,7 +182,8 @@ let sceneContentCfg = {
         gap = gamercardGap
         children = [
           bpPoints.get().len() == 0 ? null
-            : gamercardShopBpPointsBalanceBtns(Watched(null), Watched(null), bpPoints.get())
+            : gamercardShopBpPointsBalanceBtns(Watched(null), Watched(null), bpPoints.get(),
+                @() backToTab.set(QUESTS_TAB))
           mkCurrenciesBtns(currencies.get(), const {}, const { size = SIZE_TO_CONTENT })
         ].filter(@(v) v != null)
       }
@@ -198,12 +202,19 @@ let sceneContentCfg = {
     label = "topmenu/store"
     currencies = curEventCurrencies
     headerRightCtor = @() mkShopHeaderRight(seasonShopId, Computed(@() shopCurCategories.get()?[seasonShopId.get()]))
-    content = eventShopTabContent
+    content = eventShopTabContent(@() backToTab.set(null))
     mkHasUnseen = @(eventId) Computed(function() {
       let sId = getShopIdForEventId(eventId.get(), specialEvents.get(),
         goodsByShop.get(), soonGoodsByShop.get(), soonPersonalGoodsByShop.get(), personalGoodsByShop.get())
       return sId != null && (hasUnseenGoodsByShop.get()?[sId].findvalue(@(c) c) ?? false)
     })
+    function onBack() {
+      if (backToTab.get() == null)
+        return false
+      openSeasonTab(backToTab.get())
+      backToTab.set(null)
+      return true
+    }
   },
   [LOOTBOX_TAB] = {
     key = "quest_header_btn"

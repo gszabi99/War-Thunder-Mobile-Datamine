@@ -336,10 +336,10 @@ let battlePassContent = @() {
           @() {
             watch = actualBoardWidth
             size = [actualBoardWidth.get(), boardHeight]
-            texOffs = [0, 100]
-            screenOffs = [0, hdpx(100)]
+            texOffs = [90, 120]
+            screenOffs = [hdpx(90), hdpx(120)]
             rendObj = ROBJ_9RECT
-            image = Picture($"ui/images/event_s39_board.avif:{boardWidth}:{boardHeight}:P")
+            image = Picture($"ui/images/event_s39_board.avif:0:P")
             valign = ALIGN_BOTTOM
             children = [
               pageContent({ ...bpPageStyle, needShowPreview = false })
