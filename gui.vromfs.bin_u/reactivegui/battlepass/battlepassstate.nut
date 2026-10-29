@@ -1,11 +1,17 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import deferOnce
+from "blkGetters" import get_local_custom_settings_blk
+from "console" import register_command
+from "eventbus" import eventbus_send
+from "%sqstd/datablock.nut" import isDataBlock, blk2SquirrelObjNoArrays
 import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
 from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/userstats/serverTime.nut" import getServerTime, isServerTimeValid
 from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
 from "%appGlobals/rewardType.nut" import G_BP_GRADE
+from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
 from "%rGui/unlocks/unlocksConst.nut" import MAIN_EVENT_ID
 from "%rGui/event/eventState.nut" import curEvent, eventSeasonIdx
 from "%rGui/shop/shopState.nut" import shopGoods
@@ -14,6 +20,9 @@ from "%rGui/shop/shopState.nut" import shopGoods
 const SREQ_BP_GRADE_EQUAL = 2
 const MAX_TIME = 0x7FFFFFFFFFFFFFFF
 let activeBattlePassesCfg = Watched({})
+
+const SEEN_PAGES_SAVE_ID = "seenBattlePassPages"
+let seenBattlePassPages = mkWatched(persist, SEEN_PAGES_SAVE_ID, {})
 
 let isPurchaseWndOpened = mkWatched(persist, "isPurchaseWndOpened", false)
 
@@ -89,7 +98,41 @@ let sendBpBqEvent = @(action) sendCustomBqEvent("battlepass_1", {
   isPassPurchased = curBpGrade.get() > 0
 })
 
+function markBpPagesSeen(bpId, page) {
+  if ((seenBattlePassPages.get()?[bpId] ?? -1) >= page)
+    return
+
+  seenBattlePassPages.mutate(@(v) v[bpId] <- page)
+  let blk = get_local_custom_settings_blk()
+  blk.addBlock(SEEN_PAGES_SAVE_ID)[bpId] = page
+  eventbus_send("saveProfile", {})
+}
+
+function loadBpPagesSeen() {
+  if (!isOnlineSettingsAvailable.get()) {
+    seenBattlePassPages.set({})
+    return
+  }
+  let blk = get_local_custom_settings_blk()?[SEEN_PAGES_SAVE_ID]
+  seenBattlePassPages.set(isDataBlock(blk) ? blk2SquirrelObjNoArrays(blk) : {})
+}
+
+loadBpPagesSeen()
+isOnlineSettingsAvailable.subscribe(@(_) loadBpPagesSeen())
+
 isPurchaseWndOpened.subscribe(@(v) v ? sendBpBqEvent("bp_purchase_open") : null)
+
+function resetAllBpPagesSeen() {
+  if (seenBattlePassPages.get().len() == 0)
+    return
+
+  seenBattlePassPages.set({})
+  get_local_custom_settings_blk().removeBlock(SEEN_PAGES_SAVE_ID)
+  eventbus_send("saveProfile", {})
+}
+
+subscribeResetProfile(resetAllBpPagesSeen)
+register_command(resetAllBpPagesSeen, "debug.reset_all_bp_pages_seen")
 
 return {
   activeBattlePassesCfg
@@ -110,6 +153,9 @@ return {
   curBpReceived
 
   isMainBpActive = Computed(@() null != activeBattlePassesCfg.get().findvalue(@(v) v.meta?.event_id == MAIN_EVENT_ID))
+
+  seenBattlePassPages
+  markBpPagesSeen
 
   isPurchaseWndOpened
   isBpHelpWndOpened

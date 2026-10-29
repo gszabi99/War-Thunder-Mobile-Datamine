@@ -4152,25 +4152,12 @@
       "decal0OppositeMirrored": false,
       "decal0WidthBox": 0.211923,
       "decal0Tex": "ussr_text_silny"
-    },
-    "forest": {
-      "skin_condition": 100.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0
     }
   },
   "default_skin": {
     "replace_tex": {
       "from": "ussr_camo_green*",
       "to": "ussr_camo_deform*"
-    }
-  },
-  "vehicleSkins": {
-    "forest": {
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_modern_green*"
-      }
     }
   },
   "dmgAngles": {

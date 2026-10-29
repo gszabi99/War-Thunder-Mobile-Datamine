@@ -79,6 +79,7 @@ let locByTypesReward = {
   blueprint = @(_) loc("blueprints")
   lootbox = @(id) loc($"lootbox/{id}")
   booster = @(_) loc($"debriefing/booster")
+  prizeTicket = @(_) loc("events/prizesToChoose")
 }
 
 let decoratorNameByType = {

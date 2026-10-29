@@ -37,10 +37,21 @@ const SUCCESS_WND_UID = "successReportWindow"
 const REPORT_WND_UID = "playerReportWindow"
 const REJECT_WND_UID = "rejectReportWindow"
 
+let baseCategories = ["OTHER", "CHEAT", "TEAMKILL", "SKIN"]
 let chatLogCategories = ["INSULT_CHAT", "SPAM_CHAT"]
-let categoryCfg = ["OTHER", "CHEAT", "TEAMKILL", "SKIN"].extend(chatLogCategories)
+let categoriesWithChat = [...baseCategories, ...chatLogCategories]
 
 let selectedPlayerForReport = Watched(null)
+let reportChatLog = Computed(function() {
+  let offenderId = selectedPlayerForReport.get()?.offender_userid
+  let sel = selectedPlayerForInfo.get()
+  return (offenderId != null && sel?.player.userId == offenderId)
+    ? sel?.chatLog
+    : null
+})
+let reportCategories = Computed(@() reportChatLog.get() == null
+  ? baseCategories
+  : categoriesWithChat)
 let isReportStatusSuccessed = Watched(false)
 let isReportStatusRejected = Watched(false)
 let isRequestInProgress = Watched(false)
@@ -71,7 +82,7 @@ function close() {
 
 function getFormValidationError() {
   let err = []
-  if (fieldCategory.get() == "")
+  if (!reportCategories.get().contains(fieldCategory.get()))
     err.append(loc("support/form/hint/select_a_category"))
   if (fieldMessage.get() == "")
     err.append(loc("support/form/hint/fill_all_text_fields"))
@@ -159,11 +170,9 @@ function mkRequest(requestData) {
   res.date <- serverTime.get()
   res.lang <- lang
 
-  let sel = selectedPlayerForInfo.get()
-  if (chatLogCategories.contains(category)
-      && sel?.player.userId == requestData.offender_userid
-      && sel?.chatLog != null)
-    res.chat_log <- convertChatLog(sel.chatLog)
+  let chatLog = reportChatLog.get()
+  if (chatLog != null && chatLogCategories.contains(category))
+    res.chat_log <- convertChatLog(chatLog)
 
   return res
 }
@@ -212,7 +221,7 @@ return {
   REJECT_WND_UID
   REPORT_WND_UID
   MAX_MESSAGE_CHARS
-  categoryCfg
+  reportCategories
   fieldCategory
   fieldMessage
   close

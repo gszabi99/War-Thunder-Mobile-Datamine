@@ -271,6 +271,7 @@ return {
   kickFromClanChat
   leaveChat
   sendMessage
+  addSystemMessage
   markChatSeen
   markChatSeenBeforeTime
 

@@ -1,9 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%sqstd/underscore.nut" import isEqual
-from "%appGlobals/squadState.nut" import isSquadLeader, isInSquad, squadData, squadApplications, seenSquadApplications
+from "%appGlobals/squadState.nut" import isSquadLeader, isInSquad, squadData, squadApplications, seenSquadApplications,
+  squadLen, squadApplicationsInProgress, squadApplicationsRemote
 from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
 from "%rGui/clans/currentClanState.nut" import currentClanId, currentClan
+from "%rGui/gameModes/gameModeState.nut" import maxSquadSizeByCampaign, maxSquadSize
 from "%rGui/matching/matchingApi.nut" import matchingRequest, matchingRegisterHandler
 from "%rGui/squad/squadManager.nut" import createSquad, acceptSquadMembership
 from "%rGui/squad/squadSharedData.nut" import addToSquadData
@@ -11,12 +13,18 @@ from "%rGui/squad/squadSharedData.nut" import addToSquadData
 
 const SQUAD_OPEN = "open"
 const SQUAD_CLOSED = "closed"
+const SQUAD_HIDDEN = "hidden"
 
 let clanSquadsList = hardPersistWatched("clan.squadsList", [])
 let isSquadListInProgress = mkWatched(persist, "clan.isSquadListInProgress", false)
 let squadInProgress = mkWatched(persist, "clan.squadInProgress", false)
 let isClanSquadLeader = Computed(@() isSquadLeader.get() && squadData.get()?.squadType != null)
-let isNeedAutoAcceptApplications = keepref(Computed(@() isSquadLeader.get() && squadData.get()?.squadType == SQUAD_OPEN))
+let clanSquadFreeSlots = Computed(@()
+  (maxSquadSizeByCampaign.get()?[squadData.get()?.campaign] ?? maxSquadSize.get())
+    - squadLen.get()
+    - squadApplicationsInProgress.get().reduce(@(res, v) v ? res + 1 : res, 0))
+let isNeedAutoAcceptApplications = keepref(Computed(@() isSquadLeader.get() && squadData.get()?.squadType == SQUAD_OPEN
+  && clanSquadFreeSlots.get() > 0))
 
 currentClanId.subscribe(@(_) clanSquadsList.set([]))
 
@@ -82,23 +90,29 @@ function updateClanSquadField(key, value) {
 function handleAutoAccept() {
   if (!isNeedAutoAcceptApplications.get())
     return
+  local places = clanSquadFreeSlots.get()
   foreach (userId in squadApplications.get())
-    acceptSquadMembership(userId)
+    if (places <= 0)
+      return
+    else {
+      acceptSquadMembership(userId)
+      places--
+    }
 }
 
 handleAutoAccept()
 isNeedAutoAcceptApplications.subscribe(@(_) handleAutoAccept())
-squadApplications.subscribe(@(_) handleAutoAccept())
+squadApplicationsRemote.subscribe(@(_) handleAutoAccept())
 
 
 function updateSeenApplications() {
   let wasSeen = seenSquadApplications.get()
-  let curSeen = squadApplications.get().reduce(@(res, id) id in wasSeen ? res.$rawset(id, true) : res, {})
+  let curSeen = squadApplicationsRemote.get().reduce(@(res, id) id in wasSeen ? res.$rawset(id, true) : res, {})
   if (curSeen.len() != wasSeen.len())
     seenSquadApplications.set(curSeen)
 }
 updateSeenApplications()
-squadApplications.subscribe(@(_) updateSeenApplications())
+squadApplicationsRemote.subscribe(@(_) updateSeenApplications())
 
 function markSquadApplicationSeen(id) {
   if (id not in seenSquadApplications.get() && squadApplications.get().contains(id))
@@ -124,9 +138,11 @@ return {
 
   squadInProgress
   isClanSquadLeader
+  clanSquadFreeSlots
 
   SQUAD_OPEN
   SQUAD_CLOSED
+  SQUAD_HIDDEN
 
   markSquadApplicationSeen
   markAllSquadApplicationsSeen

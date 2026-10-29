@@ -233,4 +233,5 @@ return {
   squadPanelFull = mkSquadPanel(true)
   squadPanelNoInvites = mkSquadPanel(true)
   squadPanelShort
+  squadPanelGap = gap
 }

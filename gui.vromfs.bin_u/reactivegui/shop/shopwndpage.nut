@@ -159,19 +159,21 @@ function onGoodsClick(goods) {
 }
 
 function mkGamercardShopBalanceBtnsCtor(mkBalance, gType) {
-  function mkRefillClick(shopId, curCatId, id) {
+  function mkRefillClick(shopId, curCatId, gByShop, shopG, id) {
     let has = @(g) null != (g?.rewards ?? g?.goods ?? []).findvalue(@(r) r.id == id && r.gType == gType)
-    let category = goodsByShop.get()?[shopId].findindex(@(goods) null != goods.findvalue(has))
+    let category = gByShop?[shopId].findindex(@(goods) null != goods.findvalue(has))
     if (category != null)
       return category == curCatId ? null : @() onTabChange(category, shopId)
-    let goods = shopGoods.get().findvalue(@(goods) null != goods.rewards.findvalue(@(r) r.id == id && r.gType == gType))
+    let goods = shopG.findvalue(@(goods) null != goods.rewards.findvalue(@(r) r.id == id && r.gType == gType))
     return goods == null || getGoodsShopId(goods) == shopId ? null : @() openShopByGoods(goods)
   }
-  return @(shopId, catId, assets) {
+  return @(shopId, catId, assets) @() {
+    watch = [shopId, catId, goodsByShop, shopGoods]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     gap = gamercardGap
-    children = assets.map(@(id) mkBalance(id, mkRefillClick(shopId.get(), catId.get(), id)))
+    children = assets.map(@(id)
+      mkBalance(id, mkRefillClick(shopId.get(), catId.get(), goodsByShop.get(), shopGoods.get(), id)))
   }
 }
 
@@ -473,4 +475,5 @@ return {
   mkGoodsState
   mkShopGamercard
   mkShopHeaderRight
+  gamercardShopBpPointsBalanceBtns
 }

@@ -287,6 +287,8 @@ function getClanNameError(text, minChars) {
     return loc("clans/validation/name/tooShort")
   if (text.startswith("#"))
     return loc("clans/validation/name/startsWithHash")
+  if (!isNamePassing(text))
+    return loc("clans/validation/name/invalid")
   return null
 }
 

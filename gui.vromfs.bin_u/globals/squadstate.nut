@@ -15,7 +15,7 @@ let squadDataRemote = hardPersistWatched("squadDataRemote", {})
 let squadLen = Computed(@() squadMembers.get().len())
 let squadMyState = Computed(@() squadMembers.get()?[myUserId.get()])
 let squadLeaderState = Computed(@() squadMembers.get()?[squadId.get()])
-let squadApplications = hardPersistWatched("squadApplications", [])
+let squadApplicationsRemote = hardPersistWatched("squadApplicationsRemote", [])
 let squadApplicationsInProgress = hardPersistWatched("squadApplicationsInProgress", {})
 let seenSquadApplications = hardPersistWatched("seenSquadApplications", {})
 let myMembershipRequestsInProgress = hardPersistWatched("myMembershipRequestsInProgress", {})
@@ -31,6 +31,7 @@ let squadData = Computed(@() !isSquadLeader.get() || squadDataToSet.get().len() 
   ? squadDataRemote.get()
   : squadDataRemote.get().__merge(squadDataToSet.get()))
 let myMembershipRequests = Computed(@() { ...myMembershipRequestsRemote.get(), ...myMembershipRequestsInProgress.get() })
+let squadApplications = Computed(@() squadApplicationsRemote.get().filter(@(id) id not in squadApplicationsInProgress.get()))
 let unseenSquadApplications = Computed(@() squadApplications.get()
   .reduce(@(res, id) id in seenSquadApplications.get() ? res : res.$rawset(id, true), {}))
 
@@ -80,6 +81,7 @@ return {
   getMemberMaxMRank
 
   squadApplications
+  squadApplicationsRemote
   squadApplicationsInProgress
   seenSquadApplications
   unseenSquadApplications

@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/squadState.nut" import squadApplications, unseenSquadApplications
-from "%rGui/clans/clanSquadsState.nut" import markSquadApplicationSeen, markAllSquadApplicationsSeen
+from "%rGui/clans/clanSquadsState.nut" import markSquadApplicationSeen, markAllSquadApplicationsSeen, clanSquadFreeSlots
+from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/textButton.nut" import iconButtonCommon, buttonsVGap
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark, unseenSize
 from "%rGui/contacts/contactActions.nut" import PROFILE_VIEW
@@ -8,7 +9,6 @@ from "%rGui/contacts/contactInfoPkg.nut" import gap, rowHeight
 from "%rGui/contacts/contactsState.nut" import closeContacts
 from "%rGui/contacts/mkContactActionBtn.nut" import mkContactActionBtn
 from "%rGui/contacts/mkContactListScene.nut" import contactsBlock
-from "%rGui/matching/matchingApi.nut" import matchingRegisterHandler
 from "%rGui/squad/squadManager.nut" import acceptSquadMembership, denySquadMembership
 
 
@@ -39,10 +39,26 @@ let btnDefOvr = {
   }
 }
 
-matchingRegisterHandler("closeSquadApplicationSceneIfEmpty", function(_) {
+function closeSquadApplicationSceneIfEmpty() {
   if (squadApplications.get().len() == 0)
     closeContacts()
-})
+}
+
+function acceptSquadMembershipIfCan(userId) {
+  let places = clanSquadFreeSlots.get()
+  if (places <= 0) {
+    openMsgBox({ text = loc("matching/SQUAD_FULL") })
+    return
+  }
+
+  acceptSquadMembership(userId)
+  if (places == 1)
+    foreach (uid in squadApplications.get())
+      if (uid != userId)
+        denySquadMembership(uid)
+
+  closeSquadApplicationSceneIfEmpty()
+}
 
 let mkContactRightBlock = @(uidStr) @() {
   size = FLEX_V
@@ -57,10 +73,13 @@ let mkContactRightBlock = @(uidStr) @() {
       children = uidStr.tointeger() in unseenSquadApplications.get() ? priorityUnseenMark : null
     }
     iconButtonCommon("ui/gameuiskin#icon_party_not_ready.svg",
-      @() denySquadMembership(uidStr.tointeger(), "closeSquadApplicationSceneIfEmpty"),
+      function() {
+        denySquadMembership(uidStr.tointeger())
+        closeSquadApplicationSceneIfEmpty()
+      },
       btnDefOvr)
     iconButtonCommon("ui/gameuiskin#icon_party_ready.svg",
-      @() acceptSquadMembership(uidStr.tointeger(), "closeSquadApplicationSceneIfEmpty"),
+      @() acceptSquadMembershipIfCan(uidStr.tointeger()),
       btnDefOvr)
   ]
 }

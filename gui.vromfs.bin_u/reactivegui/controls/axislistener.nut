@@ -1,12 +1,10 @@
 from "%rGui/controls/shortcutConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/controls/shortcutSimpleComps.nut" import isCombinationModActive, isLtModActive, isRtModActive
+from "%rGui/controls/shortcutSimpleComps.nut" import isCombinationModActive
 
 
 let axisModifiers = Computed(@() {
   [AXIS_MODIFIEER_LB] = isCombinationModActive.get(),
-  [AXIS_MODIFIEER_LT] = isLtModActive.get(),
-  [AXIS_MODIFIEER_RT] = isRtModActive.get(),
 })
 
 let axisModListeners = Watched({})

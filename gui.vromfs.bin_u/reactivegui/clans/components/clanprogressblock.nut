@@ -5,7 +5,7 @@ from "%rGui/clans/clanQuestsInfoWnd.nut" import openClanQuestsInfoWnd
 from "%rGui/clans/clanQuestsState.nut" import clanProgress, receiveClanProgressReward,
   startClanProgressRefresh, stopClanProgressRefresh
 from "%rGui/components/infoButton.nut" import infoEllipseButton
-from "%rGui/quests/questBar.nut" import mkQuestListProgressBar, mkStagesCtor
+from "%rGui/quests/questBar.nut" import mkQuestListProgressBar, mkStagesCtor, getCurStageIdx
 from "%rGui/quests/rewardsComps.nut" import progressBarRewardSize
 from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo
 from "%rGui/style/gradients.nut" import simpleHorGrad
@@ -46,18 +46,28 @@ let mkTitle = @() {
   ]
 }
 
-let mkClanProgressBlock = @() {
+let getClanScrollStageIdx = @(progress) progress.hasReward ? progress.stage - 1 : getCurStageIdx(progress)
+
+let mkClanProgressBar = @(hasScrollArrow = true) {
+  onAttach = startClanProgressRefresh
+  onDetach = stopClanProgressRefresh
+  children = mkQuestListProgressBar(clanProgress, isFullScreenWidth, mkClanStages, getClanStageRewards,
+    hasScrollArrow, getClanScrollStageIdx)
+}
+
+let clanProgressBlock = @() {
   flow = FLOW_VERTICAL
   gap = blocksGap
   onAttach = startClanProgressRefresh
   onDetach = stopClanProgressRefresh
   children = [
     mkTitle()
-    mkQuestListProgressBar(clanProgress, isFullScreenWidth, mkClanStages, getClanStageRewards)
+    mkClanProgressBar()
   ]
 }
 
 return {
-  mkClanProgressBlock
+  clanProgressBlock
+  mkClanProgressBar
   clanProgressBlockHeight = titleHeight + blocksGap + progressBarRewardSize
 }

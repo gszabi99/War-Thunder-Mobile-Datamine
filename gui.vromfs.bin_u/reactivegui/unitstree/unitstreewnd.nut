@@ -16,7 +16,7 @@ from "%rGui/style/gamercardStyle.nut" import gamercardHeight
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScale
 from "%rGui/unit/components/unitInfoPanel.nut" import unitInfoPanel, mkUnitTitle, statsWidth, scrollHandlerInfoPanel
 from "%rGui/unit/hangarUnit.nut" import hangarUnit
-from "%rGui/unit/unitAccess.nut" import byBlockedUnits
+from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
 from "%rGui/unit/unitsFilterPkg.nut" import isFiltersVisible, filterStateFlags, openFilters
 from "%rGui/unit/unitsFilterState.nut" import mkFilters, resetFilters
 from "%rGui/unit/unitsWndActions.nut" import unitActions, discountBlock
@@ -224,7 +224,7 @@ function infoPanel(nodesReceiveInfo) {
   let isBlockedUnit = Computed(function() {
     let { name = "" } = hangarUnit.get()
     return name not in campMyUnits.get()
-      && name in byBlockedUnits.get()
+      && name in unitsBlockedByBattleMode.get()
       && (unitsResearchStatus.get()?[name].hasAccessLock ?? true)
       && (name not in serverConfigs.get()?.allBlueprints || canBuyUnitsStatus.get()?[name] != US_CAN_BUY)
   })

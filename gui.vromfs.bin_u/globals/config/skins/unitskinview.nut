@@ -5873,8 +5873,7 @@ return {
       "": "ussr_t_90a_event"
     },
     "ussr_t_90m_arena_m": {
-      "": "ussr_camo_deform",
-      "forest": "ussr_modern_green"
+      "": "ussr_camo_deform"
     },
     "ussr_type_65_aa": {
       "": "ussr_camo_forest_01",

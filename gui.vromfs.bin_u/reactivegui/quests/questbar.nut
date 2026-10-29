@@ -365,7 +365,8 @@ function stageRewardsWidth(rewardsArray, allGoods, servConfigs) {
     + (rewardsArray.len() > 0 ? (rewardsArray.len() - 1) * questItemsGap : 0)
 }
 
-function mkQuestListProgressBar(progressUnlock, isFullScreenWidth, mkStages, getRewards) {
+function mkQuestListProgressBar(progressUnlock, isFullScreenWidth, mkStages, getRewards,
+    hasScrollArrow = true, getScrollStageIdx = getCurStageIdx) {
   let barWidthFull = Computed(@() isFullScreenWidth.get() ? progressBarWidthNoTabs : progressBarWidthFull)
   let progressBarWidth = Computed(@() barWidthFull.get() - starIconOffset)
   let stageRewards = Computed(@() (progressUnlock.get()?.stages ?? [])
@@ -375,7 +376,7 @@ function mkQuestListProgressBar(progressUnlock, isFullScreenWidth, mkStages, get
   let minWidth = Computed(@() rewardsFullWidth.get() + stageRewards.get().len() * minStageProgressWidth + firstProgressWider)
   let hasScroll = Computed(@() progressBarWidth.get() < minWidth.get())
   let questStarIcon = Picture("ui/gameuiskin#quest_experience_icon.avif:0:P")
-  let scrollArrowBtn = mkScrollArrow(scrollHandler, MR_R, scrollArrowImageSmall)
+  let scrollArrowBtn = hasScrollArrow ? mkScrollArrow(scrollHandler, MR_R, scrollArrowImageSmall) : null
   return @() progressUnlock.get() == null ? { watch = progressUnlock }
     : {
         watch = [progressUnlock, hasScroll, progressBarWidth, minWidth, rewardsFullWidth, isFullScreenWidth]
@@ -390,11 +391,11 @@ function mkQuestListProgressBar(progressUnlock, isFullScreenWidth, mkStages, get
                 hplace = ALIGN_CENTER
                 vplace = ALIGN_CENTER
                 function onAttach() {
-                  let curStageIdx = getCurStageIdx(progressUnlock.get())
-                  if (curStageIdx == null)
+                  let scrollStageIdx = getScrollStageIdx(progressUnlock.get())
+                  if (scrollStageIdx == null)
                     return
                   local x = 0
-                  for (local i = 0; i < curStageIdx; i++)
+                  for (local i = 0; i < scrollStageIdx; i++)
                     x += minStageProgressWidth + stageRewardsWidth(stageRewards.get()[i], allShopGoods.get(), serverConfigs.get())
                   scrollHandler.scrollToX(max(0, x - progressBarRewardSize / 4))
                 }
@@ -407,12 +408,13 @@ function mkQuestListProgressBar(progressUnlock, isFullScreenWidth, mkStages, get
                       behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ]
                       scrollHandler
                     })
-                  {
-                    size = [progressBarWidth.get() + hdpx(80), SIZE_TO_CONTENT]
-                    hplace = ALIGN_LEFT
-                    vplace = ALIGN_CENTER
-                    children = scrollArrowBtn
-                  }
+                  scrollArrowBtn == null ? null
+                    : {
+                        size = [progressBarWidth.get() + hdpx(80), SIZE_TO_CONTENT]
+                        hplace = ALIGN_LEFT
+                        vplace = ALIGN_CENTER
+                        children = scrollArrowBtn
+                      }
                 ]
               }
           {
@@ -436,4 +438,5 @@ return {
   mkUnlockStagesCtor
 
   calcStageCompletion
+  getCurStageIdx
 }

@@ -8,7 +8,8 @@ from "%rGui/battlePass/battlePassObsoleteState.nut" import hasBpRewardsToReceive
   bpPaidRewardsUnlock, bpProgressUnlock
 import "%rGui/collections/collectionScene.nut" as collectionScene
 from "%rGui/collections/collectionsState.nut" import mkCollectionHasUnseen
-from "%rGui/battlePass/battlePassState.nut" import curBpPages, curBpId
+from "%rGui/battlePass/battlePassState.nut" import curBpPages, curBpId, seenBattlePassPages, activeBattlePassesCfg,
+  battlePasses
 from "%rGui/battlePass/eventPassState.nut" import hasEpRewardsToReceive, hasEpRewardsToReceiveByTableId,
   eventsPassList, allEventPassGoods, eventFreeRewardsUnlock, eventPaidRewardsUnlock, eventProgressUnlock
 from "%rGui/battlePass/operationPassState.nut" import hasOPRewardsToReceive, operationPassGoods, OP_EVENT_ID,
@@ -35,9 +36,8 @@ from "%rGui/shop/lootboxPreviewState.nut" import isEventWndLootboxOpen, closeEve
 from "%rGui/shop/shopState.nut" import hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop,
   personalGoodsByShop, shopCurCategories
 import "%rGui/shop/shopWnd.nut" as eventShopTabContent
-from "%rGui/shop/shopWndPage.nut" import mkShopHeaderRight
+from "%rGui/shop/shopWndPage.nut" import mkShopHeaderRight, gamercardShopBpPointsBalanceBtns
 from "%rGui/components/currencyStyles.nut" import gamercardGap
-from "%rGui/mainMenu/balanceComps.nut" import mkBpPointsBalance
 from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
 from "%rGui/unlocks/unlocks.nut" import getAllUnlockCurrencies
 from "%rGui/unlocks/userstat.nut" import userstatStatsTables
@@ -103,12 +103,24 @@ let sceneContentCfg = {
         flow = FLOW_HORIZONTAL
         gap = gamercardGap
         children = [
-          curBpId.get() != null ? mkBpPointsBalance(curBpId.get()) : null
+          curBpId.get() == null ? null
+            : gamercardShopBpPointsBalanceBtns(Watched(null), Watched(null), [curBpId.get()])
           mkCurrenciesBtns(currencies.get(), const {}, const { size = SIZE_TO_CONTENT })
         ].filter(@(v) v != null)
       }
     }
     content = @() battlePassContent
+    mkHasUnseen = @(eventId) Computed(function() {
+      let eId = eventId.get()
+      let bpId = activeBattlePassesCfg.get().findindex(@(c) c.meta?.event_id == eId)
+      if (eId == null || bpId == null)
+        return false
+
+      let { pages = [] } = activeBattlePassesCfg.get()?[bpId]
+      let { totalPoints = 0 } = battlePasses.get()?[bpId]
+      let seenPage = seenBattlePassPages.get()?[bpId] ?? -1
+      return pages.findvalue(@(p, idx) idx > seenPage && totalPoints >= p.reqPoints) != null
+    })
   },
   [PASS_OBSOLETE_SCENE] = {
     key = "pass_tab_btn" 
@@ -166,9 +178,10 @@ let sceneContentCfg = {
         flow = FLOW_HORIZONTAL
         gap = gamercardGap
         children = [
-          ...bpPoints.get().map(@(bpId) mkBpPointsBalance(bpId))
+          bpPoints.get().len() == 0 ? null
+            : gamercardShopBpPointsBalanceBtns(Watched(null), Watched(null), bpPoints.get())
           mkCurrenciesBtns(currencies.get(), const {}, const { size = SIZE_TO_CONTENT })
-        ]
+        ].filter(@(v) v != null)
       }
     }
     content = questsWndCtor

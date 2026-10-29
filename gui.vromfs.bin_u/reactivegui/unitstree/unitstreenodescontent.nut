@@ -18,7 +18,7 @@ from "%rGui/style/gamercardStyle.nut" import gamercardHeight
 from "%rGui/tutorial/tutorialWnd/tutorialWndDefStyle.nut" import mkCutBg
 from "%rGui/unit/components/unitInfoPanel.nut" import statsWidth
 from "%rGui/unit/components/unitPlateComp.nut" import unitPlateTiny
-from "%rGui/unit/unitAccess.nut" import byBlockedUnits
+from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
 from "%rGui/unit/unitsWndState.nut" import curSelectedUnit, curUnitName, visibleUnitsList
 from "%rGui/unit/unseenUnits.nut" import unseenUnits, markUnitSeen, markUnitsSeen
 from "%rGui/unitsTree/animState.nut" import animUnitWithLink, animNewUnitsAfterResearch, isBuyUnitWndOpened,
@@ -813,14 +813,14 @@ function mkHasDarkScreen() {
     || isBuyUnitWndOpened.get())
   return Computed(@() !currentResearch.get() && !isSlotsAnimActive.get() && !isPlayingAnyAnim.get()
     && null != unitsResearchStatus.get().findvalue(@(val) val.canResearch == true
-      && (!(val?.hasAccessLock ?? true) || val.name not in byBlockedUnits.get())))
+      && (!(val?.hasAccessLock ?? true) || val.name not in unitsBlockedByBattleMode.get())))
 }
 
 let mkDarkScreen = @(size, positions) function() {
   let boxes = []
   foreach (name, pos in positions) {
     let { canResearch = false, hasAccessLock = true } = unitsResearchStatus.get()?[name]
-    if (canResearch && (!hasAccessLock || name not in byBlockedUnits.get()))
+    if (canResearch && (!hasAccessLock || name not in unitsBlockedByBattleMode.get()))
       boxes.append({
         l = pos[0], r = pos[0] + nodePlatesSize[0],
         t = pos[1], b = pos[1] + nodePlatesSize[1]
@@ -828,7 +828,7 @@ let mkDarkScreen = @(size, positions) function() {
   }
   return {
     size = FLEX
-    watch = [unitsResearchStatus, byBlockedUnits]
+    watch = [unitsResearchStatus, unitsBlockedByBattleMode]
     children = {
       size = FLEX
       children = mkCutBg(boxes, { l = -sw(50), r = size[0] + sw(50), t = -sh(50), b = size[1] + sh(50) })

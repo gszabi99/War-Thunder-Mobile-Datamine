@@ -32,7 +32,7 @@ from "%rGui/components/mkDropDownMenu.nut" import mkDropMenuBtn
 from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
 from "%rGui/components/translucentButton.nut" import translucentButtonsVGap, translucentButtonsWidth,
   translucentButton, translucentBtnStyles, COMMADN_STATE
-from "%rGui/components/unseenMark.nut" import priorityUnseenMark
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark, mkUnseenMark
 from "%rGui/controlsMenu/gpActBtn.nut" import btnBEscUp
 import "%rGui/event/btnsOpenSpecialEvents.nut" as btnsOpenSpecialEvents
 from "%rGui/event/eventState.nut" import isFitSeasonRewardsRequirements, isEventActive, eventSeasonIdx
@@ -70,6 +70,7 @@ import "%rGui/unitsTree/btnOpenUnitsTree.nut" as btnOpenUnitsTree
 from "%rGui/unitsTree/unitsTreeNodesState.nut" import unitsResearchStatus, visibleNodes, selectedCountry,
   getResearchableCountries
 from "%rGui/unlocks/userstat.nut" import addUnlocksUpdater, removeUnlocksUpdater
+from "%rGui/unseenPriority.nut" import SEEN, UNSEEN_LOW, UNSEEN_HIGH
 import "%rGui/updater/downloadInfoBlock.nut" as downloadInfoBlock
 from "%rGui/updater/updaterState.nut" import registerAutoDownloadUnits, DLP_MEDIUM
 import "battleItemsBtn.nut" as battleItemsBtn
@@ -214,10 +215,10 @@ let btnShop = @() translucentButton("ui/gameuiskin#icon_shop.svg",
   },
   { iconMul = 0.8, key = "shop_btn" }) 
 
-let shouldShowClanUnseenMark = Computed(@() hasClanSubmissions.get()
-  || hasClanChatUnseen.get()
-  || hasClanQuestsUnseen.get()
-  || (!isClanBtnLocked.get() && !isClanBtnClicked.get()))
+let clanUnseenPriority = Computed(@()
+  (hasClanSubmissions.get() || hasClanQuestsUnseen.get() || !isClanBtnClicked.get()) ? UNSEEN_HIGH
+    : hasClanChatUnseen.get() ? UNSEEN_LOW
+    : SEEN)
 
 function clansBtn() {
   let lockedMark = {
@@ -226,15 +227,14 @@ function clansBtn() {
     color = 0xFFFFFFFF
     image = Picture($"ui/gameuiskin#lock_icon.svg:{lockIconSize[0]}:{lockIconSize[1]}:P")
   }
+  let clanUnseenMark = mkUnseenMark(clanUnseenPriority)
 
   let children = @() {
-    watch = [shouldShowClanUnseenMark, isClanBtnLocked]
+    watch = isClanBtnLocked
     hplace = ALIGN_RIGHT
     vplace = ALIGN_TOP
     pos = const [-hdpx(4), hdpx(4)]
-    children = isClanBtnLocked.get() ? lockedMark
-      : shouldShowClanUnseenMark.get() ? priorityUnseenMark
-      : null
+    children = isClanBtnLocked.get() ? lockedMark : clanUnseenMark
   }
 
   let openReqLvlMsgBox = @() openMsgBox({

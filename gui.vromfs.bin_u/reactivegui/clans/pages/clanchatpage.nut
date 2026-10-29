@@ -23,7 +23,7 @@ function chatContent() {
     flow = FLOW_VERTICAL
     children = [
       mkChatLog(chatId, contentWidthFull - 2 * msgListGap, "", clanChatLogItems)
-      chatId == null ? null : mkChatTextInput(chatId)
+      chatId == null ? null : mkChatTextInput(chatId, null, true)
     ]
   }
 }

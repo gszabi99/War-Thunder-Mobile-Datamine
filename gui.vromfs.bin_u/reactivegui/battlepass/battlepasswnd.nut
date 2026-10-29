@@ -6,20 +6,22 @@ from "%appGlobals/rewardType.nut" import *
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/pServer/pServerApi.nut" import receive_bp_reward, battlePassInProgress
 from "%appGlobals/config/passPresentation.nut" import getGradePresentation
-from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_BP_PAGE, getRewardPlateSize
+from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_BP_PAGE
 from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardReceivedMark, mkRewardLocked, mkRewardUnitFlag,
   mkRewardBorder
 from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo
 from "%rGui/battlePass/battlePassState.nut" import curBpPages, curBpGrade, curBpGoods, curBpCurPoints,
-  curBpId, curBpTotalPoints, curBpEndTime, curBpReceived, isPurchaseWndOpened, openBpHelpWnd
+  curBpId, curBpTotalPoints, curBpEndTime, curBpReceived, isPurchaseWndOpened, openBpHelpWnd,
+  markBpPagesSeen, seenBattlePassPages, activeBattlePassesCfg, battlePasses
 from "%rGui/battlePass/bpRewardDesc.nut" import bpRewardDesc, getLocByRTypeNonUpdatable
 from "%rGui/battlePass/passPkg.nut" import mkPassIcon, contentH, defPassIconSize
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/textButton.nut" import textButtonPurchase, textButtonPricePurchaseLow
-from "%rGui/components/paginator.nut" import mkPaginatorCurPage
+from "%rGui/components/paginator.nut" import mkPaginatorCurPage, pageGap
 from "%rGui/components/timerBlock.nut" import mkTimerBlock
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkCurrencyImage
 from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
+from "%rGui/components/unseenMark.nut" import priorityUnseenMark
 from "%rGui/event/eventState.nut" import eventSeasonIdx
 from "%rGui/seasonScene/seasonSceneState.nut" import openHelpWndIfUnseen
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase, showNoBalanceMsgAdd
@@ -29,17 +31,37 @@ from "%rGui/style/gradients.nut" import simpleHorGrad
 
 
 let wndKey = {}
+let bpPageStyle = REWARD_STYLE_BP_PAGE
+
+let paginatorTabGap = hdpx(10)
+let paginatorTabWidth = 0.5 * bpPageStyle.boxSize
+let paginatorHeight = evenPx(70)
+
 let boardRatio = 863.0 / 752.0
 let boardWidth = min(contentH / boardRatio, sw(100) * 0.4).tointeger()
 let boardHeight = (boardWidth * boardRatio).tointeger()
+
+let pagePadding = [boardHeight * 0.06, boardWidth * 0.1, boardHeight * 0.035, saBordersRv[1]]
+
+let blockWidth = bpPageStyle.boxSize * 4 + bpPageStyle.boxGap * 3
+
+let actualBoardWidth = Computed(function() {
+  let pageIndicatorWidth = pageGap * 2 + paginatorHeight * 2
+    + curBpPages.get().len() * paginatorTabWidth
+    + (curBpPages.get().len() - 1) * paginatorTabGap
+  return max(blockWidth + pagePadding[1] + pagePadding[3],
+    boardWidth,
+    pageIndicatorWidth + pagePadding[1] + pagePadding[3])
+})
+
 let iconSize = hdpxi(40)
-let paginatorHeight = evenPx(70)
-let pagePadding = [boardHeight * 0.06, 0, boardHeight * 0.035, saBordersRv[1]]
 let hintMargin = [paginatorHeight + pagePadding[2] + hdpx(8), 0]
 const claimBtnSize = [SIZE_TO_CONTENT, hdpxi(90)]
 
-let selectedPage = Watched(0)
-let selectedSlotIdx = Watched(0)
+let selectedPage = mkWatched(persist, "selectedPage", null)
+let selectedSlotIdx = mkWatched(persist, "selectedSlotIdx", null)
+let pagesToMarkSeen = mkWatched(persist, "pagesToMarkSeen", {})
+let bpIdToMarkSeen = mkWatched(persist, "bpIdOnDetach", null)
 
 function mkSlotViewInfo(profileBpInfo, slot, slotIdx, page, pageIdx) {
   let { reqPoints } = page
@@ -94,6 +116,49 @@ let topLeftIconCtor = {
   [G_UNIT] = mkRewardFlag,
 }
 
+function findReward(pages, totalPoints, curPoints, grade, received, pIdx = null) {
+  if (pages.len() == 0)
+    return { pageIdx = null, slotIdx = null }
+
+  for (local pageIdx = pIdx ?? (pages.len() - 1); pageIdx >= (pIdx ?? 0); pageIdx--) {
+    let page = pages?[pageIdx]
+    if (page == null)
+      return { pageIdx = null, slotIdx = null }
+
+    if (page.reqPoints > totalPoints)
+      continue
+
+    for (local slotIdx = page.slots.len() - 1; slotIdx >= 0; slotIdx--) {
+      let { limit, cost, reqPassGrade } = page.slots[slotIdx]
+      if ((limit == 0 || (received?[pageIdx][slotIdx] ?? 0) < limit) && curPoints >= cost && grade >= reqPassGrade)
+        return { pageIdx, slotIdx }
+    }
+  }
+
+  return { pageIdx = pIdx ?? 0, slotIdx = 0 }
+}
+
+function tryMarkSeenPage(bpId, prevPage) {
+  if (prevPage == null)
+    return
+
+  let { pages = [] } = activeBattlePassesCfg.get()?[bpId]
+  let { totalPoints = 0 } = battlePasses.get()?[bpId]
+  if (pages.len() == 0 || pages?[prevPage] == null || totalPoints < pages[prevPage].reqPoints)
+    return
+
+  pagesToMarkSeen.mutate(@(v) v[prevPage] <- true)
+}
+
+function openReward(pIdx = null) {
+  tryMarkSeenPage(bpIdToMarkSeen.get(), selectedPage.get())
+
+  let { pageIdx, slotIdx } = findReward(curBpPages.get(), curBpTotalPoints.get(), curBpCurPoints.get(),
+    curBpGrade.get(), curBpReceived.get(), pIdx)
+  selectedPage.set(pageIdx)
+  selectedSlotIdx.set(slotIdx)
+}
+
 function mkSlot(slot, rawReward, rStyle) {
   let reward = { ...slot, ...rawReward }
   let { isReceived, canReceive } = reward
@@ -120,31 +185,38 @@ function mkSlot(slot, rawReward, rStyle) {
   }
 }
 
-let mkIndicatorCtor = @(rewardPlateSize) @(page, setPage) {
+let indicatorCtor = @(page) {
   size = FLEX_V
   flow = FLOW_VERTICAL
   gap = { size = FLEX }
   padding = [0, 0, hdpx(4), 0]
   halign = ALIGN_CENTER
+  valign = ALIGN_BOTTOM
   children = [
-    {
-      rendObj = ROBJ_TEXT
-      valign = ALIGN_BOTTOM
-      vplace = ALIGN_BOTTOM
-      text = loc("mainmenu/page", { page = page + 1 })
-    }.__update(fontTinyAccented)
+    page == null ? null
+      : {
+          rendObj = ROBJ_TEXT
+          valign = ALIGN_BOTTOM
+          vplace = ALIGN_BOTTOM
+          text = loc("mainmenu/page", { page = page + 1 })
+        }.__update(fontTinyAccented)
     @() {
-      watch = curBpPages
+      watch = [curBpPages, curBpId, curBpTotalPoints, seenBattlePassPages, pagesToMarkSeen]
       flow = FLOW_HORIZONTAL
-      gap = hdpx(10)
+      gap = paginatorTabGap
       valign = ALIGN_BOTTOM
-      children = array(curBpPages.get().len()).map(@(_, i) {
-        size = [0.5 * rewardPlateSize[0], i == page ? hdpx(16) : hdpx(10)]
+      children = curBpPages.get().map(@(p, i) {
+        size = [paginatorTabWidth, i == page ? hdpx(16) : hdpx(10)]
         rendObj = ROBJ_SOLID
         behavior = Behaviors.Button
         color = i == page ? 0xFFFFFFFF : 0xB0000000
-        onClick = @() setPage(i)
+        onClick = @() i == page ? null : openReward(i)
         sound = { click = "click" }
+        children = (curBpTotalPoints.get() >= p.reqPoints
+          && (seenBattlePassPages.get()?[curBpId.get()] ?? -1) < i
+          && !pagesToMarkSeen.get()?[i])
+            ? { ...priorityUnseenMark, vplace = ALIGN_BOTTOM, hplace = ALIGN_CENTER }
+            : null
       })
     }
   ]
@@ -153,7 +225,7 @@ let mkIndicatorCtor = @(rewardPlateSize) @(page, setPage) {
 function getRows(pages, page, width, style) {
   let slotsInRow = getSlotsInRow(width, style)
   let rows = []
-  let { slots = [] } = pages[page]
+  let { slots = [] } = pages?[page]
   local slotsLeft = 0
   foreach (_, slot in slots) {
     let viewInfo = getRewardsViewInfo(slot.rewards)
@@ -170,8 +242,6 @@ function getRows(pages, page, width, style) {
 }
 
 function pageContent(style) {
-  let rewardPlateSize = getRewardPlateSize(1, style)
-  let blockWidth = min(boardWidth, rewardPlateSize[0] * 4 + style.boxGap * 3)
 
   let curBpPagesViewInfo = Computed(function() {
     let bpId = curBpId.get()
@@ -207,7 +277,7 @@ function pageContent(style) {
         ]
       }
       mkPaginatorCurPage(selectedPage, Computed(@() curBpPages.get().len() - 1), { vplace = ALIGN_BOTTOM },
-        paginatorHeight, mkIndicatorCtor(rewardPlateSize))
+        paginatorHeight, indicatorCtor, @(pIdx) openReward(pIdx))
     ]
   }
 }
@@ -226,30 +296,7 @@ let mkLockLayer = @() {
   }
 }
 
-function findReward(pages, totalPoints, curPoints, grade, received, pIdx = null) {
-  for (local pageIdx = pIdx ?? (pages.len() - 1); pageIdx >= (pIdx ?? 0); pageIdx--) {
-    let page = pages?[pageIdx]
-    if (page == null)
-      return { pageIdx = 0, slotIdx = 0 }
-
-    if (page.reqPoints > totalPoints)
-      continue
-
-    for (local slotIdx = page.slots.len() - 1; slotIdx >= 0; slotIdx--) {
-      let { limit, cost, reqPassGrade } = page.slots[slotIdx]
-      if ((limit == 0 || (received?[pageIdx][slotIdx] ?? 0) < limit) && curPoints >= cost && grade >= reqPassGrade)
-        return { pageIdx, slotIdx }
-    }
-  }
-
-  return { pageIdx = pIdx ?? 0, slotIdx = 0 }
-}
-
-function openReward(pages, totalPoints, curPoints, grade, received, pIdx = null) {
-  let { pageIdx, slotIdx } = findReward(pages, totalPoints, curPoints, grade, received, pIdx)
-  selectedPage.set(pageIdx)
-  selectedSlotIdx.set(slotIdx)
-}
+let curBpIdSubscription = @(_) openReward()
 
 let battlePassContent = @() {
   watch = curBpId
@@ -257,8 +304,26 @@ let battlePassContent = @() {
   size = FLEX
   halign = ALIGN_CENTER
   function onAttach() {
-    openReward(curBpPages.get(), curBpTotalPoints.get(), curBpCurPoints.get(), curBpGrade.get(), curBpReceived.get())
+    curBpId.subscribe(curBpIdSubscription)
+
     openHelpWndIfUnseen(curBpId.get(), openBpHelpWnd)
+
+    bpIdToMarkSeen.set(curBpId.get())
+
+    let page = curBpPages.get()?[selectedPage.get()]
+    if (page != null && page.slots?[selectedSlotIdx.get()] != null)
+      return
+    let pageToOpen = page != null ? selectedPage.get() : null
+    openReward(pageToOpen)
+  }
+  function onDetach() {
+    curBpId.unsubscribe(curBpIdSubscription)
+
+    tryMarkSeenPage(bpIdToMarkSeen.get(), selectedPage.get())
+    markBpPagesSeen(bpIdToMarkSeen.get(), pagesToMarkSeen.get().reduce(@(res, _, p) max(p.tointeger(), res), -1))
+
+    pagesToMarkSeen.set({})
+    bpIdToMarkSeen.set(null)
   }
   children = curBpId.get() == null ? null
     : {
@@ -268,20 +333,23 @@ let battlePassContent = @() {
         halign = ALIGN_CENTER
         gap = hdpx(24)
         children = [
-          {
-            size = [boardWidth, boardHeight]
-            rendObj = ROBJ_IMAGE
+          @() {
+            watch = actualBoardWidth
+            size = [actualBoardWidth.get(), boardHeight]
+            texOffs = [0, 100]
+            screenOffs = [0, hdpx(100)]
+            rendObj = ROBJ_9RECT
             image = Picture($"ui/images/event_s39_board.avif:{boardWidth}:{boardHeight}:P")
             valign = ALIGN_BOTTOM
             children = [
-              pageContent({ ...REWARD_STYLE_BP_PAGE, needShowPreview = false })
+              pageContent({ ...bpPageStyle, needShowPreview = false })
               function() {
-                let pointsDifference = curBpPages.get()[selectedPage.get()].reqPoints - curBpTotalPoints.get()
+                let pointsDifference = (curBpPages.get()?[selectedPage.get()].reqPoints ?? 0) - curBpTotalPoints.get()
                 return {
-                  watch = [curBpPages, selectedPage, curBpTotalPoints, curBpId]
+                  watch = [curBpPages, selectedPage, curBpTotalPoints, curBpId, actualBoardWidth]
                   children = pointsDifference <= 0 ? null
                     : {
-                        size = [boardWidth, SIZE_TO_CONTENT]
+                        size = [actualBoardWidth.get(), SIZE_TO_CONTENT]
                         halign = ALIGN_CENTER
                         padding = hdpx(12)
                         margin = hintMargin
@@ -410,11 +478,6 @@ let battlePassContent = @() {
       }
   animations = wndSwitchAnim
 }
-
-curBpId.subscribe(@(_)
-  openReward(curBpPages.get(), curBpTotalPoints.get(), curBpCurPoints.get(), curBpGrade.get(), curBpReceived.get()))
-selectedPage.subscribe(@(pIdx) openReward(curBpPages.get(), curBpTotalPoints.get(), curBpCurPoints.get(),
-  curBpGrade.get(), curBpReceived.get(), pIdx))
 
 return {
   battlePassContent

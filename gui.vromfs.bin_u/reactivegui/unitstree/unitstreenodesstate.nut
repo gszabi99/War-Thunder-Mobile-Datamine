@@ -13,7 +13,7 @@ import "%appGlobals/pServer/servProfile.nut" as servProfile
 import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
 from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
 from "%rGui/unit/debugUnits.nut" import needToShowHiddenUnitsDebug
-from "%rGui/unit/unitAccess.nut" import byBlockedUnits, blockedCountries
+from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode, blockedCountries
 from "types" import Table
 
 
@@ -80,17 +80,19 @@ let currentResearch = Computed(@() unitsResearchStatus.get().findvalue(@(r) r.is
 let researchCountry = Computed(@() currentResearch.get()?.country)
 
 let isAllAvailableUnitsResearched = Computed(@()
-  null == unitsResearchStatus.get().findvalue(@(r) (r.canResearch || r.canBuy)
-    && (!(r?.hasAccessLock ?? true) || r.name not in byBlockedUnits.get())))
+   null == unitsResearchStatus.get().findvalue(@(r) (r.canResearch || r.canBuy)
+     && ((r?.hasAccessLock ?? true) && r.name not in unitsBlockedByBattleMode.get())))
 
 let mkCountries = @(nodeList) Computed(function(prev) {
   let resTbl = {}
-  foreach (node in nodeList.get())
-    if (node.name not in byBlockedUnits.get()
-        || node.name in campMyUnits.get()
-        || researchCountry.get() == node.country
-        || isAllAvailableUnitsResearched.get())
-      resTbl[node.country] <- true
+  foreach (node in nodeList.get()) {
+    if (node.name in unitsBlockedByBattleMode.get()
+      && node.name not in campMyUnits.get()
+      && currentResearch.get() == null
+      && !isAllAvailableUnitsResearched.get())
+      continue
+    resTbl[node.country] <- true
+  }
   let res = resTbl.keys()
     .sort(@(a, b) (countryPriority?[b] ?? -1) <=> (countryPriority?[a] ?? -1)
       || a <=> b)

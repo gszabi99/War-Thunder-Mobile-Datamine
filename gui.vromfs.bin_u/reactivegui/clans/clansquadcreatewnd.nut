@@ -6,7 +6,7 @@ from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentatio
 from "%appGlobals/pServer/campaign.nut" import campaignsList
 from "%appGlobals/squadState.nut" import isInSquad, squadData
 from "%appGlobals/updater/gameModeAddons.nut" import maxReleasedUnitRanks
-from "%rGui/clans/clanSquadsState.nut" import updateClanSquad, squadInProgress, SQUAD_OPEN, SQUAD_CLOSED,
+from "%rGui/clans/clanSquadsState.nut" import updateClanSquad, squadInProgress, SQUAD_OPEN, SQUAD_CLOSED, SQUAD_HIDDEN,
   isClanSquadLeader, updateClanSquadField
 from "%rGui/clans/components/chooseValueWnd.nut" import openChooseValueWnd
 from "%rGui/clans/components/clanComps.nut" import mkSectionText
@@ -84,6 +84,17 @@ function openChangeRank() {
     @(v) isClanSquadLeader.get() ? updateClanSquadField("mRank", v) : playerSelectedRank.set(v))
 }
 
+let openChangeSquadType = @() openChooseValueWnd(
+  {
+    locTitle = "squad/type"
+    values = [ SQUAD_OPEN, SQUAD_CLOSED, SQUAD_HIDDEN ]
+    valToString = @(v) loc($"clan/squadType/{v}")
+    col = 3
+    btnMinWidth = hdpx(350)
+  },
+  squadType,
+  @(v) isClanSquadLeader.get() ? updateClanSquadField("squadType", v) : playerSelectedType.set(v))
+
 let mkOptions = @() {
   flow = FLOW_HORIZONTAL
   gap = buttonsHGap
@@ -97,6 +108,11 @@ let mkOptions = @() {
     mkOption(loc("squad/type"),
       Computed(@() loc($"clan/squadType/{squadType.get()}")),
       function() {
+        if (isClanSquadLeader.get()) {
+          openChangeSquadType()
+          return
+        }
+
         let newType = squadType.get() == SQUAD_OPEN ? SQUAD_CLOSED : SQUAD_OPEN
         if (isClanSquadLeader.get())
           updateClanSquadField("squadType", newType)
@@ -110,7 +126,7 @@ let openSquadCreateWnd = @() addModalWindowWithHeader(WND_UID,
   @() {
     watch = isClanSquadLeader
     rendObj = ROBJ_TEXT
-    text = loc(isClanSquadLeader.get() ? "clan/squad" : "clan/createSquad")
+    text = loc(isClanSquadLeader.get() ? "clan/squad/configure" : "clan/createSquad")
     ...fontSmall
   },
   @() {

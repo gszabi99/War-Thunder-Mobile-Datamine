@@ -1,12 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import deferOnce
+from "chat" import is_chat_message_allowed
 from "%sqstd/platform.nut" import is_pc
 from "%appGlobals/profileStates.nut" import myUserId
 from "%appGlobals/dirtyWordsFilter.nut" import checkPhrase
 from "%rGui/components/circleBtn.nut" import mkCircleImgBtn, circleBtnStyles
 from "%rGui/chat/chatMsgCtors.nut" import getChatMessageCreator
 from "%rGui/chat/chatState.nut" import MAX_CHAT_LOG_LEN, chatLogs, chatInputs, chatMembers, sendMessage, markChatSeen,
-  chatLastSeenMsg, hasUnseen, getFirstUnseenMessageId
+  chatLastSeenMsg, hasUnseen, getFirstUnseenMessageId, addSystemMessage
 from "%darg/helpers/emojiLib.nut" import mkEmojiParams, prepareTextForEmojiSubst, mkTextareaWithEmoji
 from "%rGui/contacts/contact.nut" import Contact
 from "%rGui/contacts/contactInfoPkg.nut" import contactAvatar, contactNameBlockNoTitle
@@ -107,12 +108,16 @@ let inputTextareaParams = {
   ...msgTextareaParamsBase
 }
 
-function mkChatTextInput(chatId, onEscapeExt = null) {
+function mkChatTextInput(chatId, onEscapeExt = null, hasFloodFilter = false) {
   let text = Computed(@() chatInputs.get()?[chatId] ?? "")
   function sendCurMessage() {
     let val = checkPhrase(text.get().strip())
     if (val == "")
       return
+    if (hasFloodFilter && !is_chat_message_allowed(val)) {
+      addSystemMessage(chatId, loc("chat/send_disabled_hint"))
+      return
+    }
     sendMessage(chatId, val)
     chatInputs.mutate(@(ci) ci.$rawset(chatId, ""))
   }

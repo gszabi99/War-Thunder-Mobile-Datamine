@@ -141,13 +141,15 @@ let mkPaginator = @(curPage, lastPage, myPage = Watched(-1), ovr = {}) function(
   return mkPaginatorRow(watch, children, ovr)
 }
 
-let mkDefaultIndicator = @(pageIdx, _) {
+let mkDefaultIndicator = @(pageIdx) {
   minWidth = pageHeight
   halign = ALIGN_CENTER
   children = pageText(pageIdx + 1, textColor)
 }
 
-let mkPaginatorCurPage = @(curPage, lastPage, ovr = {}, height = pageHeight, indicatorCtor = mkDefaultIndicator) function() {
+let mkPaginatorCurPage = @(curPage, lastPage, ovr = {}, height = pageHeight, indicatorCtor = mkDefaultIndicator,
+  onClickCtor = null)
+function() {
   let watch = [curPage, lastPage]
   if (lastPage.get() >= 0 && lastPage.get() < 1)
     return { watch, ...ovr }
@@ -155,17 +157,20 @@ let mkPaginatorCurPage = @(curPage, lastPage, ovr = {}, height = pageHeight, ind
   let cur = curPage.get()
   let last = lastPage.get() >= 0 ? lastPage.get() : max(cur, 1) + 1
 
+  let clickCtor = onClickCtor != null ? onClickCtor : @(val) curPage.set(val)
+
   return mkPaginatorRow(watch,
     [
-      mkArrowBtn(true, height)(@() curPage.set(cur - 1), cur > 0)
-      indicatorCtor(cur, @(v) curPage.set(v))
-      mkArrowBtn(false, height)(@() curPage.set(cur + 1), cur < last)
+      mkArrowBtn(true, height)(@() clickCtor(cur - 1), cur != null && cur > 0)
+      indicatorCtor(cur)
+      mkArrowBtn(false, height)(@() clickCtor(cur + 1), cur != null && cur < last)
     ],
     ovr,
     height)
 }
 
 return {
+  pageGap
   mkPaginator
   mkPaginatorCurPage
 }

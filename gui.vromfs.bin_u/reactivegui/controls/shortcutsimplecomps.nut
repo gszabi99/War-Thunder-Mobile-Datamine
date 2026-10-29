@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/activeControls.nut" import isGamepad
 from "%globalsDarg/fontScale.nut" import getScaledFont
-from "%rGui/controls/shortcutsMap.nut" import allShortcuts, gamepadShortcuts, allShortcutsUp, getGamepadKeys
+from "%rGui/controls/shortcutsMap.nut" import gamepadShortcuts, allShortcutsUp, getGamepadKeys
 from "%rGui/controlsMenu/gamepadImgByKey.nut" import mkBtnImageComp
 
 
@@ -10,10 +10,6 @@ const defBtnHeight = hdpxi(50)
 const combinationButton = "J:LB"
 let combBtnInfo = resolve_button(combinationButton)
 let isCombinationModActive = Watched(false)
-let isLtPressed = Watched(false)
-let isRtPressed = Watched(false)
-let isLtModActive = Computed(@() isLtPressed.get() && !isCombinationModActive.get())
-let isRtModActive = Computed(@() isRtPressed.get() && !isCombinationModActive.get())
 
 if (combBtnInfo == null)
   logerr("Failed to resolve combinationButton")
@@ -91,21 +87,6 @@ let mkLtButtonListener = combBtnInfo == null ? null
       onDetach = @() isCombinationModActive.set(false)
     }
 
-function mkShortcutHoldListener(shortcutId, isPressed) {
-  let buttons = (allShortcuts?[shortcutId] ?? "").split(" | ")
-    .filter(@(k) k.split(" ").len() == 1)
-    .map(resolve_button)
-    .filter(@(b) b != null)
-  let isOwnButton = @(evt) buttons.findindex(@(b) b.devId == evt.devId && b.btnId == evt.btnId) != null
-  return {
-    size = 0
-    behavior = Behaviors.ProcessKeyInput
-    onKeyPress = @(evt) isOwnButton(evt) ? isPressed.set(true) : null
-    onKeyRelease = @(evt) isOwnButton(evt) ? isPressed.set(false) : null
-    onDetach = @() isPressed.set(false)
-  }
-}
-
 return {
   mkGamepadShortcutImage
   mkGamepadHotkey
@@ -113,9 +94,4 @@ return {
 
   mkLtButtonListener
   isCombinationModActive
-  mkShortcutHoldListener
-  isLtPressed
-  isRtPressed
-  isLtModActive
-  isRtModActive
 }

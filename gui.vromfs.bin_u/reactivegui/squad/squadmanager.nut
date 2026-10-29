@@ -25,7 +25,7 @@ from "%rGui/style/stdColors.nut" import highlightTextColor
 let logS = log_with_prefix("[SQUAD] ")
 let { squadId, isReady, isInSquad, isSquadLeader, isInvitedToSquad, squadMembers, squadMyState,
   squadLeaderCampaign, squadMembersOrder, squadOnline, squadLeaderQueueDataCheckTime, squadDataRemote,
-  squadApplications, myMembershipRequests, myMembershipRequestsRemote, myMembershipRequestsInProgress,
+  squadApplicationsRemote, myMembershipRequests, myMembershipRequestsRemote, myMembershipRequestsInProgress,
   squadApplicationsInProgress, squadData
 } = squadState
 
@@ -51,7 +51,7 @@ squadId.subscribe(function(v) {
   myMembershipRequestsInProgress.set({})
   squadApplicationsInProgress.set({})
   if (v == null)
-    squadApplications.set([])
+    squadApplicationsRemote.set([])
 })
 isInSquad.subscribe(@(v) v ? squadJoinTime.set(get_time_msec()) : null)
 squadMembers.subscribe(@(list) validateNickNames(list.keys()))
@@ -267,7 +267,7 @@ function updateSquadInfo(squad_info) {
   if (data != null)
     squadDataRemote.set(data)
 
-  squadApplications.set(applications)
+  squadApplicationsRemote.set(applications)
   if (applications.len() > 0)
     validateNickNames(applications)
 
@@ -455,13 +455,14 @@ function removeMember(member) {
 
 subscribeFMsgBtns({
   leaveSquad = @(p) leaveSquad(p.cb)
+  cancelLeaveSquad = @(p) matchingCallHandlerDeffered(p.cb, { error = "cancel" })
   dismissSquadMember = @(p) matchingRequest("msquad.dismiss_member", p, LOG_ERROR)
 })
 
 let leaveSquadMessage = @(cb = null) openFMsgBox({
   text = loc("squad/ask/leave")
   buttons = [
-    { id = "cancel", isCancel = true }
+    { id = "cancel", isCancel = true, eventId = "cancelLeaveSquad", context = { cb }}
     { id = "leaveSquad", isDefault = true, eventId = "leaveSquad", context = { cb }}
   ]
 })
@@ -554,11 +555,23 @@ matchingRegisterHandler("squad.onRequestMembership", function(result, context) {
     myMembershipRequestsInProgress.mutate(@(v) v.$rawdelete(context.squadId))
 })
 
+matchingRegisterHandler("squad.requestMembership", function(result, context) {
+  if ("error" in result)
+    myMembershipRequestsInProgress.mutate(@(v) v.$rawdelete(context.squadId))
+  else
+    matchingRequest("msquad.request_membership", { squadId = context.squadId },
+      { id = "squad.onRequestMembership", squadId = context.squadId })
+})
+
 function requestSquadMembership(sId) {
   if (sId in myMembershipRequests.get())
     return
+
   myMembershipRequestsInProgress.mutate(@(v) v.$rawset(sId, true))
-  matchingRequest("msquad.request_membership", { squadId = sId }, { id = "squad.onRequestMembership", squadId = sId })
+  if (isInSquad.get())
+    leaveSquadMessage({ id = "squad.requestMembership", squadId = sId })
+  else
+    matchingRequest("msquad.request_membership", { squadId = sId }, { id = "squad.onRequestMembership", squadId = sId })
 }
 
 matchingRegisterHandler("squad.onRevokeMembershipRequest", function(result, context) {
@@ -576,20 +589,20 @@ function revokeSquadMembershipRequest(sId) {
 matchingRegisterHandler("squad.onSquadMembershipDecision", function(result, context) {
   let { userId } = context
   squadApplicationsInProgress.mutate(@(v) v.$rawdelete(userId))
-  if (!logSquadError(result) && squadApplications.get().contains(userId))
-    squadApplications.modify(@(v) v.filter(@(id) id != userId))
+  if (!logSquadError(result) && squadApplicationsRemote.get().contains(userId))
+    squadApplicationsRemote.modify(@(v) v.filter(@(id) id != userId))
   matchingCallHandler(context.cbExt, result)
 })
 
 function acceptSquadMembership(userId, cbExt = null) {
-  if (!squadApplications.get().contains(userId) || userId in squadApplicationsInProgress.get())
+  if (!squadApplicationsRemote.get().contains(userId) || userId in squadApplicationsInProgress.get())
     return
-  squadApplicationsInProgress.mutate(@(v) v.$rawset(userId, false))
+  squadApplicationsInProgress.mutate(@(v) v.$rawset(userId, true))
   matchingRequest("msquad.accept_membership", { userId }, { id = "squad.onSquadMembershipDecision", userId, cbExt })
 }
 
 function denySquadMembership(userId, cbExt = null) {
-  if (!squadApplications.get().contains(userId) || userId in squadApplicationsInProgress.get())
+  if (!squadApplicationsRemote.get().contains(userId) || userId in squadApplicationsInProgress.get())
     return
   squadApplicationsInProgress.mutate(@(v) v.$rawset(userId, false))
   matchingRequest("msquad.deny_membership", { userId }, { id = "squad.onSquadMembershipDecision", userId, cbExt })
@@ -704,8 +717,8 @@ let msubscribes = {
           v.$rawdelete(squad?.id)
         })
     }
-    else if (squad?.id == squadId.get() && !squadApplications.get().contains(applicant.id)) {
-      squadApplications.mutate(@(v) v.append(applicant.id))
+    else if (squad?.id == squadId.get() && !squadApplicationsRemote.get().contains(applicant.id)) {
+      squadApplicationsRemote.mutate(@(v) v.append(applicant.id))
       validateNickNames([applicant.id])
     }
   },
@@ -723,21 +736,21 @@ let msubscribes = {
         })
       removeMyMembershipRequest(id)
     }
-    else if (squadApplications.get().contains(applicant.id))
-      squadApplications.modify(@(v) v.filter(@(id) id != applicant.id))
+    else if (squadApplicationsRemote.get().contains(applicant.id))
+      squadApplicationsRemote.modify(@(v) v.filter(@(id) id != applicant.id))
   },
 
   ["msquad.notify_application_revoked"] = function(p) {
     let { id = null } = p?.applicant
-    if (squadApplications.get().contains(id))
-      squadApplications.modify(@(v) v.filter(@(i) i != id))
+    if (squadApplicationsRemote.get().contains(id))
+      squadApplicationsRemote.modify(@(v) v.filter(@(i) i != id))
     removeMyMembershipRequest(p?.squad.id)
   },
 
   ["msquad.notify_applications_denied"] = function(p) {
     let { applications = [] } = p
-    if (applications.len() != 0 && squadApplications.get().len() != 0)
-      squadApplications.modify(@(v) v.filter(@(id) !applications.contains(id)))
+    if (applications.len() != 0 && squadApplicationsRemote.get().len() != 0)
+      squadApplicationsRemote.modify(@(v) v.filter(@(id) !applications.contains(id)))
   },
 
   ["msquad.notify_application_accepted"] = @(_) fetchSquadInfo(),

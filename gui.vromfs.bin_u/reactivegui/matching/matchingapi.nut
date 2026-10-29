@@ -1,5 +1,7 @@
-from "%globalScripts/logs.nut" import *
-from "dagor.workcycle" import deferOnce
+from "%globalsDarg/darg_library.nut" import *
+from "console" import register_command
+from "dagor.random" import frnd
+from "dagor.workcycle" import deferOnce, setTimeout
 from "eventbus" import eventbus_subscribe
 from "matching.api" import matching_call_fixed_event, matching_listen_notify, matching_listen_rpc, matching_send_response
 from "matching.errors" import OK
@@ -10,6 +12,7 @@ from "%sqstd/globalState.nut" import hardPersistWatched
 let handlers = {}
 let callbacks = hardPersistWatched("matchingApi.callbacks", {})
 let defferedCallbacks = hardPersistWatched("matchingApi.defferedCallbacks", [])
+let debugDelay = hardPersistWatched("matchingApi.debugDelay", 0.0)
 
 
 function matching_subscribe(evtName, handler) {
@@ -136,7 +139,7 @@ function callAllDefferd(cb, result) {
 eventbus_subscribe("onMatchingCb",
   @(msg) popCallback(msg.reqId.tostring(), msg.error == OK ? msg.result : (msg.result ?? {}).__merge({ ["error"] = msg.error })))
 
-function matchingRequest(cmd, params = null, cb = null) {
+function matchingRequestImpl(cmd, params = null, cb = null) {
   let res = matching_call_fixed_event(cmd, "onMatchingCb", params)
   let { reqId = null } = res
   if (cb != null) {
@@ -148,6 +151,12 @@ function matchingRequest(cmd, params = null, cb = null) {
   }
   return reqId
 }
+
+let matchingRequest = @(cmd, params = null, cb = null)
+  debugDelay.get() <= 0 ? matchingRequestImpl(cmd, params, cb)
+    : setTimeout(max(0.2, frnd()) * debugDelay.get(), @() matchingRequestImpl(cmd, params, cb))
+
+register_command(@(delay) debugDelay.set(delay), "matching.delay_requests")
 
 return {
   matchingRequest

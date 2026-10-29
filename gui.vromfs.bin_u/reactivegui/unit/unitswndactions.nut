@@ -34,7 +34,7 @@ from "%rGui/state/profilePremium.nut" import havePremium
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/unit/hangarUnit.nut" import hangarUnitName
 import "%rGui/unit/purchaseUnit.nut" as purchaseUnit
-from "%rGui/unit/unitAccess.nut" import byBlockedUnits
+from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
 from "%rGui/unit/unitUtils.nut" import getUnitAnyPrice
 from "%rGui/unit/unitsDiscountState.nut" import unitDiscounts
 from "%rGui/unit/upgradeUnitWnd/upgradeUnitState.nut" import upgradeCommonUnitName
@@ -201,13 +201,13 @@ function setResearchUnit(unitName) {
 }
 
 
-function unitUpgradeBtn(unit, sConfigs, sProfile) {
+function unitUpgradeBtn(unit) {
   if (!unit?.upgradeCostGold)
     return
   let { isUpgraded = false, isUpgradeable = false, isPremium = false} = unit
-  let blueprint = sConfigs?.allBlueprints[unit.name]
+  let blueprint = serverConfigs.get()?.allBlueprints[unit.name]
   let hasBlueprintsForUpgrade = !(blueprint?.hasUpgrade ?? false)
-    || (sProfile?.blueprints[unit.name] ?? 0) >= (blueprint?.targetCount ?? 0)
+    || (servProfile.get()?.blueprints[unit.name] ?? 0) >= (blueprint?.targetCount ?? 0)
   return !(!isUpgraded && isUpgradeable && !isPremium && hasBlueprintsForUpgrade) ? null
     : textButtonPricePurchase(utf8ToUpper(loc("msgbox/unit_upgrade")),
       mkCurrencyComp(unit.upgradeCostGold, GOLD),
@@ -248,7 +248,7 @@ function unitActionButtons(unitNameW, unitReceiveInfoW) {
     let canBuyStatus = canBuyUnitsStatus.get()?[unitName]
     let isOwned = unitName in campMyUnits.get()
     let withBlueprint = unitName in serverConfigs.get()?.allBlueprints && !isOwned
-    let isBlocked = hasAccessLock && (unitName in byBlockedUnits.get())
+    let isBlocked = hasAccessLock && (unitName in unitsBlockedByBattleMode.get())
       && (!withBlueprint || canBuyStatus != US_CAN_BUY)
     let unitFromCanBuyUnits = canBuyUnits.get()?[unitName]
     let canBuyUnit = unitFromCanBuyUnits != null
@@ -278,7 +278,7 @@ function unitActionButtons(unitNameW, unitReceiveInfoW) {
           { hotkeys = ["^J:X"] }))
       }
       else if (!isOwned) {
-        let requiredBattleModeForUnlock = byBlockedUnits.get()?[unitNameW.get()]
+        let requiredBattleModeForUnlock = unitsBlockedByBattleMode.get()?[unitNameW.get()]
         let offerId = shopGoods.get().findindex(@(offer)
           null != offer.rewards.findvalue(@(v) v.gType == G_BATTLE_MOD && v.id == requiredBattleModeForUnlock))
         bigBtnsList.append(textButtonMultiline(utf8ToUpper(loc("unitsTree/getEarlyAccess")),
@@ -321,7 +321,7 @@ function unitActionButtons(unitNameW, unitReceiveInfoW) {
         @() goToReceive(receiveType, receiveData),
         { hotkeys = ["^J:X"] }))
 
-    bigBtnsList.append(unitUpgradeBtn(campMyUnits.get()?[unitName], serverConfigs.get(), servProfile.get()))
+    bigBtnsList.append(unitUpgradeBtn(campMyUnits.get()?[unitName]))
     smallBtnsList.append(withUnseenMark(unitName, infoBtn))
 
     return {
@@ -329,7 +329,7 @@ function unitActionButtons(unitNameW, unitReceiveInfoW) {
         unitNameW, curUnit, campMyUnits, campUnitsCfg, curCampaign, unitReceiveInfoW,
         canBuyUnits, havePremium, canBuyUnitsStatus,
         curCampaignSlotUnits, shopGoods, unitDiscounts,
-        unitsResearchStatus, serverConfigs, byBlockedUnits, servProfile
+        unitsResearchStatus, serverConfigs, unitsBlockedByBattleMode, servProfile
       ]
       size = FLEX_H
       valign = ALIGN_CENTER

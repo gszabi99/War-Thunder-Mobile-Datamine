@@ -2,23 +2,19 @@ from "%globalScripts/weaponConsts.nut" import *
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.time" import get_time_msec
 from "dagor.workcycle" import resetTimeout, deferOnce
-from "math" import fabs
 from "mission" import get_mission_time
 from "vehicleModel" import getNextBulletType, changeBulletType, getBulletCountByType, getBulletNameByType,
   setSideGunRange
 from "wt.behaviors" import TouchScreenButton
-from "%sqstd/math.nut" import PI, cos, sin, lerpClamped
+from "%sqstd/math.nut" import PI, cos, sin
 from "%sqstd/underscore.nut" import isEqual
 from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
 from "%appGlobals/clientState/clientState.nut" import isInBattle
 from "%appGlobals/unitConst.nut" import SAILBOAT
 from "%appGlobals/unitTags.nut" import getUnitTagsCfg
 from "%globalsDarg/screenMath.nut" import scaleArr
-import "%rGui/controls/axisListener.nut" as axisListener
-from "%rGui/controls/shortcutConsts.nut" import JOY_XBOX_REAL_AXIS_R_THUMB_H, JOY_XBOX_REAL_AXIS_R_THUMB_V,
-  AXIS_MODIFIEER_LT, AXIS_MODIFIEER_RT
 from "%rGui/controls/shortcutSimpleComps.nut" import mkGamepadShortcutImage, mkGamepadHotkey,
-  mkContinuousButtonParams, mkShortcutHoldListener, isLtPressed, isRtPressed, isLtModActive, isRtModActive
+  mkContinuousButtonParams
 from "%rGui/hud/actionBar/actionBarState.nut" import actionBarItems, updateActionBarDelayed, primaryAction,
   primaryExtraAction, secondaryAction, actionItemsInCd
 from "%rGui/hud/bullets/hudUnitBulletsState.nut" import currentBulletIdxPrim, currentBulletIdxSec, bulletsInfo,
@@ -33,14 +29,12 @@ from "%rGui/hudState.nut" import playerUnitName, isUnitAlive, isUnitDelayed
 from "%rGui/hudStateExt.nut" import hudUnitType
 from "%rGui/hudTuning/cfg/cfgOptions.nut" import isBulletsRight
 from "%rGui/hudTuning/hudTuningBattleState.nut" import curUnitHudTuningOptions
-from "%rGui/options/options/shipControlsOptions.nut" import isSailboatGunsRangeByStick
 from "%rGui/style/hudColors.nut" import hudSmokyGreyColor, hudWhiteColor
 
 
 const DISTANCE_CHANGE_DELAY = 0.1
 const BTN_SIZE_TO_DIST_RANGE = 1.0
 const RANGE_CHANGE_PER_SEC = 0.8
-const RANGE_STICK_DEAD_ZONE = 0.2
 const RANGE_UPDATE_TIME = 0.02
 
 let bigButtonSize = evenPx(150)
@@ -160,81 +154,39 @@ let sideGunRanges = {
 
 let isRangeIncPushed = Watched(false)
 let isRangeDecPushed = Watched(false)
-let isHeldRangeIncPushed = Watched(false)
-let isHeldRangeDecPushed = Watched(false)
-let mkKeysDir = @(isInc, isDec) Computed(@() (isInc.get() ? 1 : 0) - (isDec.get() ? 1 : 0))
-let rangeKeysDir = mkKeysDir(isRangeIncPushed, isRangeDecPushed)
-let heldRangeKeysDir = mkKeysDir(isHeldRangeIncPushed, isHeldRangeDecPushed)
+let rangeKeysDir = Computed(@() (isRangeIncPushed.get() ? 1 : 0) - (isRangeDecPushed.get() ? 1 : 0))
 
-function mkSideGunRangeCtrl(range, isHeld, axisModifier) {
-  let stickDir = Watched(0.0)
-  let dir = Computed(@() clamp(rangeKeysDir.get() + stickDir.get()
-      + (isHeld.get() && isSailboatGunsRangeByStick.get() ? heldRangeKeysDir.get() : 0),
-    -1.0, 1.0))
-  return { range, axisModifier, stickDir, dir }
-}
-
-let sideGunRangeCtrls = {
-  AB_PRIMARY_WEAPON = mkSideGunRangeCtrl(rangePrim, isRtModActive, AXIS_MODIFIEER_RT)
-  AB_SECONDARY_WEAPON = mkSideGunRangeCtrl(rangeSec, isLtModActive, AXIS_MODIFIEER_LT)
-}
-
-local isRangeUpdateActive = false
 local rangeUpdateMsec = 0
 function updateRanges() {
-  let curMsec = get_time_msec()
-  let dt = isRangeUpdateActive ? 0.001 * (curMsec - rangeUpdateMsec) : 0.0
-  rangeUpdateMsec = curMsec
-  isRangeUpdateActive = false
-  foreach (ctrl in sideGunRangeCtrls) {
-    let dir = ctrl.dir.get()
-    if (dir == 0)
-      continue
-    isRangeUpdateActive = true
-    ctrl.range.set(clamp(ctrl.range.get() + dir * RANGE_CHANGE_PER_SEC * dt, 0.0, 1.0))
+  let dir = rangeKeysDir.get()
+  if (dir == 0) {
+    rangeUpdateMsec = 0
+    return
   }
-  if (isRangeUpdateActive)
-    resetTimeout(RANGE_UPDATE_TIME, updateRanges)
+
+  let curMsec = get_time_msec()
+  if (rangeUpdateMsec != 0) {
+    let dt = 0.001 * (curMsec - rangeUpdateMsec)
+    foreach (range in sideGunRanges)
+      range.set(clamp(range.get() + dir * RANGE_CHANGE_PER_SEC * dt, 0.0, 1.0))
+  }
+
+  rangeUpdateMsec = curMsec
+  resetTimeout(RANGE_UPDATE_TIME, updateRanges)
 }
 
-function startRangeUpdate(_) {
-  if (!isRangeUpdateActive)
-    updateRanges()
-}
-
-foreach (ctrl in sideGunRangeCtrls)
-  ctrl.dir.subscribe(startRangeUpdate)
+rangeKeysDir.subscribe(@(_) updateRanges())
 
 let mkRangeKey = @(shortcutId, isPushed)
   mkContinuousButtonParams(@() isPushed.set(true), @() isPushed.set(false), shortcutId)
 
-function mkStickRangeListener(ctrl) {
-  let { axisModifier, stickDir } = ctrl
-  function onStick(v) {
-    let value = lerpClamped(RANGE_STICK_DEAD_ZONE, 1.0, 0.0, 1.0, fabs(v))
-    stickDir.set(v > 0 ? value : -value)
-  }
-  return axisListener({
-    [JOY_XBOX_REAL_AXIS_R_THUMB_V | axisModifier] = onStick,
-    [JOY_XBOX_REAL_AXIS_R_THUMB_H | axisModifier] = @(_) null,
-  })
-}
-
-let rangeControls = [
-  mkRangeKey("ID_SAILBOAT_GUNS_RANGE_INC", isRangeIncPushed)
-  mkRangeKey("ID_SAILBOAT_GUNS_RANGE_DEC", isRangeDecPushed)
-  mkRangeKey("ID_SAILBOAT_HELD_GUN_RANGE_INC", isHeldRangeIncPushed)
-  mkRangeKey("ID_SAILBOAT_HELD_GUN_RANGE_DEC", isHeldRangeDecPushed)
-  mkShortcutHoldListener("ID_SHIP_WEAPON_PRIMARY", isRtPressed)
-  mkShortcutHoldListener("ID_SHIP_WEAPON_SECONDARY", isLtPressed)
-]
-let rangeControlsWithStick = (clone rangeControls).extend(sideGunRangeCtrls.values().map(mkStickRangeListener))
-
 let sailboatGunsRangeControls = @() {
-  watch = [hudUnitType, isSailboatGunsRangeByStick]
+  watch = hudUnitType
   children = hudUnitType.get() != SAILBOAT ? null
-    : isSailboatGunsRangeByStick.get() ? rangeControlsWithStick
-    : rangeControls
+    : [
+        mkRangeKey("ID_SAILBOAT_GUNS_RANGE_INC", isRangeIncPushed)
+        mkRangeKey("ID_SAILBOAT_GUNS_RANGE_DEC", isRangeDecPushed)
+      ]
 }
 
 let prevIfEqual = @(prev, cur) isEqual(cur, prev) ? prev : cur

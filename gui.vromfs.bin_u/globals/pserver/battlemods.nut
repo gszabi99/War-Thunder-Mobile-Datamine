@@ -73,7 +73,6 @@ foreach (w in [isServerTimeValid, serverConfigs, accessResearchCfg])
   w.subscribe(@(_) updateBlockedResearch())
 
 return {
-  accessResearchCfg
   activeBattleMods
   blockedResearchByBattleMods
 }

@@ -1,10 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import setInterval, clearTimer
 from "%sqstd/string.nut" import utf8ToUpper
-from "%appGlobals/squadState.nut" import squadDataRemote, squadId
+from "%appGlobals/squadState.nut" import squadDataRemote, squadId, isSquadLeader, isInSquad
 from "%rGui/clans/components/clanComps.nut" import clanScrollBarStyle, mkGradeIcon
 import "%rGui/clans/clanSquadCreateWnd.nut" as clanSquadCreateWnd
-from "%rGui/clans/clanSquadsState.nut" import requestClanSquads, clanSquadsList, SQUAD_OPEN, isClanSquadLeader
+from "%rGui/clans/clanSquadsState.nut" import requestClanSquads, clanSquadsList, SQUAD_OPEN, SQUAD_HIDDEN,
+  isClanSquadLeader
 from "%rGui/clans/currentClanState.nut" import currentClan
 from "%rGui/components/buttonStyles.nut" import defButtonMinWidth
 from "%rGui/components/gradTexts.nut" import mkGradRank
@@ -15,6 +16,7 @@ from "%rGui/contacts/contactInfoPkg.nut" import contactNameBlock, contactAvatar
 from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicInfo
 from "%rGui/gameModes/gameModeState.nut" import maxSquadSizeByCampaign, maxSquadSize
 from "%rGui/squad/squadManager.nut" import requestSquadMembership, myMembershipRequests, revokeSquadMembershipRequest
+from "%rGui/squad/squadPanel.nut" import squadPanelFull, squadPanelGap
 from "%rGui/style/stdColors.nut" import rowBgEvenColor, rowBgOddColor
 
 
@@ -65,6 +67,15 @@ function mkCampIcon(campaign) {
   }
 }
 
+let mkMySquadStatus = @(text) {
+  size = [rowBtnWidth, SIZE_TO_CONTENT]
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  halign = ALIGN_CENTER
+  text
+  ...fontTiny
+}
+
 function mkSquadRow(squad, idx) {
   let { leader, data = {}, members = [] } = squad
   let { campaign = "", mRank = 0, squadType = null } = data
@@ -74,7 +85,7 @@ function mkSquadRow(squad, idx) {
   let member = Computed(@() currentClan.get()?.users.findvalue(@(m) m.userId == leader))
   let squadSize = Computed(@() maxSquadSizeByCampaign.get()?[campaign] ?? maxSquadSize.get())
   return @() {
-    watch = [contact, info, member, squadSize, squadId, myMembershipRequests]
+    watch = [contact, info, member, squadSize, squadId, isSquadLeader, myMembershipRequests]
     key = leader
     size = [FLEX, rowHeight]
     padding = rowPadding
@@ -105,7 +116,9 @@ function mkSquadRow(squad, idx) {
         children = mRank == 0 ? null : mkGradRank(mRank)
       }
       tblGapComp
-      squadType == null || squadId.get() == leader ? { size = [rowBtnWidth, SIZE_TO_CONTENT] }
+      squadType == null ? { size = [rowBtnWidth, SIZE_TO_CONTENT] }
+        : squadId.get() == leader
+          ? mkMySquadStatus(loc(isSquadLeader.get() ? "status/squad_leader" : "status/squad_member"))
         : myMembershipRequests.get()?[leader]
           ? textButtonCommon(utf8ToUpper(loc("revokeMembershipRequest")),
               @() revokeSquadMembershipRequest(leader),
@@ -122,7 +135,7 @@ let squadsList = @() {
   size = FLEX_H
   flow = FLOW_VERTICAL
   children = clanSquadsList.get()
-    .filter(@(s) s?.data.squadType != null)
+    .filter(@(s) (s?.data.squadType ?? SQUAD_HIDDEN) != SQUAD_HIDDEN)
     .map(mkSquadRow)
 }
 
@@ -150,12 +163,17 @@ return {
         barStyleCtor = clanScrollBarStyle
       })
     @() {
-      watch = isClanSquadLeader
-      size = FLEX_H
-      halign = ALIGN_RIGHT
-      children = textButtonCommon(
-        utf8ToUpper(loc(isClanSquadLeader.get() ? "clan/squad" : "clan/createSquad")),
-        clanSquadCreateWnd)
+      watch = [isClanSquadLeader, isInSquad]
+      hplace = ALIGN_RIGHT
+      valign = ALIGN_BOTTOM
+      flow = FLOW_HORIZONTAL
+      gap = squadPanelGap
+      children = [
+        isInSquad.get() ? squadPanelFull : null
+        textButtonCommon(
+          utf8ToUpper(loc(isClanSquadLeader.get() ? "clan/squad/configure" : "clan/createSquad")),
+          clanSquadCreateWnd)
+      ]
     }
   ]
 }

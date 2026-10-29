@@ -64,6 +64,9 @@ let isSeasonSceneTop = Computed(@() scenesOrder.get()?[scenesOrder.get().len() -
 let seasonTabs = [ QUESTS_TAB, BATTLE_TAB, BATTLE_TAB_2, BATTLE_TAB_3, MAP_TAB, COLLECTION_TAB,
   PASS_SCENE, PASS_OBSOLETE_SCENE, LOOTBOX_TAB, LEADERBOARD_TAB, EVENT_SHOP_TAB
 ]
+let seasonTabPriority = [ PASS_SCENE, PASS_OBSOLETE_SCENE, QUESTS_TAB, BATTLE_TAB, BATTLE_TAB_2, BATTLE_TAB_3,
+  MAP_TAB, COLLECTION_TAB, LOOTBOX_TAB, LEADERBOARD_TAB, EVENT_SHOP_TAB
+]
 
 let questTabsByEventId = {
   [""] = [ ACHIEVEMENTS_TAB, PROMO_TAB ],
@@ -260,7 +263,7 @@ function openSeasonScene(eventName, tabIdRaw = null, subId = null) {
   let prevTab = playerSelectedSeasonTab.get()
   local tabId = isSeasonTabVisible?[tabIdRaw].calcByEventId(eventName) ? tabIdRaw
     : isSeasonTabVisible?[prevTab].calcByEventId(eventName) ? prevTab
-    : seasonTabs.findvalue(@(v) isSeasonTabVisible[v].calcByEventId(eventName))
+    : seasonTabPriority.findvalue(@(v) isSeasonTabVisible[v].calcByEventId(eventName))
 
   if (tabId == null) {
     logerr("Try to open season scene when all tabs are not visible")

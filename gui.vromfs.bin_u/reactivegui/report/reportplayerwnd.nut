@@ -9,7 +9,7 @@ from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
 from "%rGui/components/textButton.nut" import textButtonCommon
 from "%rGui/components/textInput.nut" import multilineTextInput
 from "%rGui/controlsMenu/gpActBtn.nut" import btnBUp
-from "%rGui/report/reportPlayerState.nut" import REJECT_WND_UID, SUCCESS_WND_UID, REPORT_WND_UID, categoryCfg,
+from "%rGui/report/reportPlayerState.nut" import REJECT_WND_UID, SUCCESS_WND_UID, REPORT_WND_UID, reportCategories,
   fieldCategory, fieldMessage, getFormValidationError, selectedPlayerForReport, requestSelfRow, close,
   isReportStatusSuccessed, isReportStatusRejected, isRequestInProgress
 from "%rGui/style/backgrounds.nut" import bgShaded
@@ -44,6 +44,18 @@ let mkTextInputLabel = @(text) {
   color = defColor
 }.__update(fontSmall)
 
+let categoryMenu = @() {
+  watch = reportCategories
+  children = dropDownMenu({
+    values = reportCategories.get(),
+    currentOption = fieldCategory,
+    valToString = @(v) loc($"support/form/report/{v}"),
+    setValue = @(v) fieldCategory.set(v),
+    onAttach = @() reportCategories.get().contains(fieldCategory.get()) ? null
+      : fieldCategory.set(reportCategories.get()[0])
+  })
+}
+
 function formBlock() {
   return {
     size = FLEX_H
@@ -51,14 +63,7 @@ function formBlock() {
     gap = hdpx(25)
     children = [
       mkTextInputLabel(loc("msgbox/report/selectReason"))
-      dropDownMenu({
-        values = categoryCfg,
-        currentOption = fieldCategory,
-        valToString = @(v) loc($"support/form/report/{v}"),
-        setValue = @(v) fieldCategory.set(v),
-        onAttach = @() fieldCategory.get() == "" ? fieldCategory.set(categoryCfg[0])
-          : null
-      })
+      categoryMenu
       mkTextInputLabel(loc("msgbox/report/addComment"))
       multilineTextInput({ state = fieldMessage })
     ]

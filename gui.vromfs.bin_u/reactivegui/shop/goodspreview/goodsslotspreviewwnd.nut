@@ -48,7 +48,7 @@ from "%rGui/style/stdAnimations.nut" import wndSwitchAnim, mkPressTransitionScal
 from "%rGui/style/stdColors.nut" import userlogTextColor
 from "%rGui/tooltip.nut" import mkTooltipText
 from "%rGui/unit/components/unitUnlockAnimation.nut" import revealAnimation
-from "%rGui/unit/unitAccess.nut" import byBlockedUnits
+from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
 from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
 
 
@@ -185,17 +185,14 @@ function timer() {
 function headerText() {
   let previewG = previewGoods.get()
   let allLeftSlotNames = (goodsRewardSlots.get()?.variants ?? []).reduce(
-    @(res, v)
-      isRewardEmpty(v, servProfile.get())
-          || v[0].id in unreleasedUnits.get()
-          || v[0].id in byBlockedUnits.get()
-        ? res
-        : res.append(getUnitName(v[0].id).replace(" ", nbsp)),
+    @(res, v) isRewardEmpty(v, servProfile.get()) || v[0].id in unreleasedUnits.get() || v[0].id in unitsBlockedByBattleMode.get()
+      ? res
+      : res.append(getUnitName(v[0].id).replace(" ", nbsp)),
     [])
   let description = loc(getSlotsTexts(openedGoodsId.get()).description)
   return {
     watch = [previewGoods, openedGoodsId, goodsRewardSlots, campMyUnits, serverConfigs,
-      servProfile, unreleasedUnits, byBlockedUnits
+      servProfile, unreleasedUnits, unitsBlockedByBattleMode
     ]
     flow = FLOW_HORIZONTAL
     gap = hdpx(30)

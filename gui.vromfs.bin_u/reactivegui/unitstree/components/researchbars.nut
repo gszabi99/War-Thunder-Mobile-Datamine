@@ -5,7 +5,7 @@ import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/pServer/slots.nut" import curCampaignSlotUnits
 from "%rGui/components/levelBlockPkg.nut" import mkProgressLevelBg
 from "%rGui/rewards/rewardViewInfo.nut" import getBlueprintBarColor
-from "%rGui/unit/unitAccess.nut" import byBlockedUnits
+from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
 from "%rGui/unitsTree/treeAnimConsts.nut" import attractColor, aTimeHint, aTimePriceScale
 from "%rGui/unitsTree/unitNodesReceiveInfo.nut" import getReceiveDesc
 from "%rGui/unitsTree/unitsTreeNodesState.nut" import unitsResearchStatus
@@ -52,11 +52,11 @@ let mkBarText = @(text) {
 function blueprintBar(unit) {
   let curBluebrintsCount = Computed(@() servProfile.get()?.blueprints?[unit.name] ?? 0)
   let reqBluebrintsCount = Computed(@() serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1)
+  let isBlocked = unit.name in unitsBlockedByBattleMode.get()
   let blueprintDescText = mkBarText(loc("blueprints/desc"))
-  let isBlocked = Computed(@() unit.name in byBlockedUnits.get())
-  return @() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in campMyUnits.get() && !isBlocked.get()
+  return @() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in campMyUnits.get() && !isBlocked
     ? {
-      watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, campMyUnits, isBlocked]
+      watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, campMyUnits, unitsBlockedByBattleMode]
       size = FLEX_H
       flow = FLOW_VERTICAL
       gap = hdpx(5)
@@ -65,14 +65,14 @@ function blueprintBar(unit) {
         mkLevelLine(curBluebrintsCount.get(), reqBluebrintsCount.get(),
           getBlueprintBarColor(unit.name, serverConfigs.get()))
       ]}
-    : { watch = [serverConfigs, campMyUnits, isBlocked] }
+    : { watch = [serverConfigs, campMyUnits, unitsBlockedByBattleMode]}
 }
 
 let unitExpBar = @(unitName, unitResearch) function() {
   let { isCurrent = false, canResearch = false, exp = 0, reqExp = 1, hasAccessLock = true } = unitResearch.get()
-  let isBlocked = hasAccessLock && unitName in byBlockedUnits.get()
+  let isBlocked = hasAccessLock && unitName in unitsBlockedByBattleMode.get()
   return {
-    watch = [unitResearch, campMyUnits, byBlockedUnits]
+    watch = [unitResearch, campMyUnits, unitsBlockedByBattleMode]
     children = unitName not in campMyUnits.get() && (isCurrent || canResearch) && !isBlocked
       ? mkLevelLine(exp, reqExp, unitResearchExpColor)
       : null
@@ -91,7 +91,7 @@ function unitResearchBar(unitName) {
     let { isCurrent = false, canResearch = false, canBuy = false, isResearched = false,
       hasAccessLock = true
     } = unitResearch.get()
-    if (hasAccessLock && unitName in byBlockedUnits.get())
+    if (hasAccessLock && unitName in unitsBlockedByBattleMode.get())
       return null
     return isCurrent ? "unitsTree/currentResearch"
       : canResearch ? "unitsTree/availableForResearch"

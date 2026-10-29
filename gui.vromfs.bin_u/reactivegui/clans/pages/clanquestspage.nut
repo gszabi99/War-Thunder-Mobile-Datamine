@@ -3,7 +3,7 @@ from "string" import format
 from "%sqstd/time.nut" import secondsToTime
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%rGui/clans/clanQuestsState.nut" import CLAN_QUESTS_TAB, clanQuests, isClanQuestsLocked, clanQuestsUnlockTime
-from "%rGui/clans/components/clanProgressBlock.nut" import mkClanProgressBlock, clanProgressBlockHeight
+from "%rGui/clans/components/clanProgressBlock.nut" import clanProgressBlock, clanProgressBlockHeight
 from "%rGui/components/gradientDefComps.nut" import headerHeightInSafeArea, headerMargin
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
 from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
@@ -82,7 +82,7 @@ function mkClanQuestsPage() {
     flow = FLOW_VERTICAL
     gap = pageBlocksGap
     children = [
-      mkClanProgressBlock()
+      clanProgressBlock()
       @() {
         watch = hasQuests
         size = FLEX
