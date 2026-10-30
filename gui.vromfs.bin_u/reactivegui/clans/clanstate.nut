@@ -27,7 +27,7 @@ from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
 from "%appGlobals/userstats/serverTime.nut" import getServerTime, isServerTimeValid
 from "%appGlobals/clanConsts.nut" import GRADE_LEADER, GRADE_FOUNDER
 from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
-from "%rGui/clans/clanCfg.nut" import LANGUAGE, MEMBERS, LOCATION
+from "%rGui/clans/clanCfg.nut" import LANGUAGE, MEMBERS, LOCATION, TYPE, AVAILABILITY
 from "%rGui/clans/clanPermissions.nut" import CLAN_KICK_MEMBER, CLAN_CHANGE_GRADE, hasClanPermission
 from "%rGui/clans/clanPublicInfo.nut" import updateClanPublicInfo
 from "%rGui/clans/currentClanState.nut" import forceRefreshCurrentClan, resetCurrentClanInfo, currentClan, currentClanId,
@@ -105,7 +105,14 @@ function getClanLookupFilters() {
     textFields[LANGUAGE] <- filter[LANGUAGE]
   if (filter[LOCATION])
     textFields[LOCATION] <- filter[LOCATION]
-  return { textFields, minMembers = filter[MEMBERS] }
+  let res = { textFields, minMembers = filter[MEMBERS] }
+
+  if (filter[AVAILABILITY])
+    res.members <- filter[AVAILABILITY]
+  if (filter[TYPE])
+    res.privacy <- filter[TYPE]
+
+  return res
 }
 
 function refreshClanInfo() {

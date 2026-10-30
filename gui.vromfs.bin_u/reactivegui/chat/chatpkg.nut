@@ -5,9 +5,10 @@ from "%sqstd/platform.nut" import is_pc
 from "%appGlobals/profileStates.nut" import myUserId
 from "%appGlobals/dirtyWordsFilter.nut" import checkPhrase
 from "%rGui/components/circleBtn.nut" import mkCircleImgBtn, circleBtnStyles
+from "%rGui/components/spinner.nut" import mkSpinner
 from "%rGui/chat/chatMsgCtors.nut" import getChatMessageCreator
 from "%rGui/chat/chatState.nut" import MAX_CHAT_LOG_LEN, chatLogs, chatInputs, chatMembers, sendMessage, markChatSeen,
-  chatLastSeenMsg, hasUnseen, getFirstUnseenMessageId, addSystemMessage
+  chatLastSeenMsg, hasUnseen, getFirstUnseenMessageId, addSystemMessage, pendingChatLogs
 from "%darg/helpers/emojiLib.nut" import mkEmojiParams, prepareTextForEmojiSubst, mkTextareaWithEmoji
 from "%rGui/contacts/contact.nut" import Contact
 from "%rGui/contacts/contactInfoPkg.nut" import contactAvatar, contactNameBlockNoTitle
@@ -242,7 +243,9 @@ let msgCornerMy = msgCorner.__merge({
   commands = [[VECTOR_POLY, 0, 0, 100, 0, 0, 100]]
 })
 
-function mkMessageText(text, contact, info, isMe, maxTextWidth) {
+let msgWaitSpinner = mkSpinner(hdpxi(50), { vplace = ALIGN_CENTER, margin = [0, msgListGap] })
+
+function mkMessageText(text, contact, info, isMe, maxTextWidth, isPending) {
   let nameBlock = @() contactNameBlockNoTitle(contact.get(), info.get(),
     { color = isMe.get() ? localPlayerColor : nameColor }.__update(chatFontShaded),
     { watch = [ contact, info, isMe ] })
@@ -265,8 +268,11 @@ function mkMessageText(text, contact, info, isMe, maxTextWidth) {
         mkTextareaWithEmoji(textForSubst, substMap, msgTextareaParams, chatFontEmojiParams)
       ]
     }]
-    if (isMe.get())
+    if (isMe.get()) {
       children.append(msgCornerMy)
+      if (isPending)
+        children.insert(0, msgWaitSpinner)
+    }
     else
       children.insert(0, msgCorner)
 
@@ -306,7 +312,7 @@ function mkAvatar(info, userIdStr, onClick) {
 }
 
 function mkMessage(msg, members, maxTextWidth, chatId) {
-  let { sender = null, text, messageId = null } = msg
+  let { sender = null, text, messageId = null, isPending = false } = msg
   let { userId = null } = sender
   if (userId == null)
     return mkSystemMsg(text)
@@ -318,7 +324,7 @@ function mkMessage(msg, members, maxTextWidth, chatId) {
   let onAttach = messageId == null ? null : @() refreshPublicInfo(userIdStr)
 
   let avatar = mkAvatar(info, userIdStr, @() onAvatarClick(chatId, userIdStr, messageId))
-  let msgText = mkMessageText(text, contact, info, isMe, maxTextWidth)
+  let msgText = mkMessageText(text, contact, info, isMe, maxTextWidth, isPending)
   return @() {
     watch = isMe
     key = messageId
@@ -373,11 +379,11 @@ function scrollToFirstUnseen(scrollHandler, chatLog, chatId) {
 }
 
 function mergeMessages(messages, extras) {
+  let res = clone messages
   if (extras.len() == 0)
-    return messages
+    return res
 
   let minTs = messages.len() >= MAX_CHAT_LOG_LEN ? messages[0].timestamp : 0
-  let res = [...messages]
   local idx = 0
   foreach (extra in extras) {
     if (extra.timestamp < minTs)
@@ -392,13 +398,14 @@ function mergeMessages(messages, extras) {
 function mkChatLog(chatId, width, headerText = "", extraItems = Watched([])) {
   let blockSize = [width, FLEX]
   let chatLog = Computed(@() chatLogs.get()?[chatId] ?? [])
+  let pendingChatLog = Computed(@() pendingChatLogs.get()?[chatId] ?? [])
   let members = Computed(@() chatMembers.get()?[chatId] ?? {})
   let maxTextWidth = width - msgBlockOffset
     - avatarSize - onlineMarkSize - 2 * msgListGap
     - msgCornerSize - 2 * msgRadius
 
   let maxEventTextWidth = width - msgBlockOffset - 2 * msgRadius
-  let listItems = Computed(@() mergeMessages(chatLog.get(), extraItems.get()))
+  let listItems = Computed(@() mergeMessages(chatLog.get(), extraItems.get()).extend(pendingChatLog.get()))
 
   function mkMsgComp(msg) {
     let ctor = getChatMessageCreator(msg?.ctorId)

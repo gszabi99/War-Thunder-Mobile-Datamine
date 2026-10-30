@@ -1,9 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 from "blkGetters" import get_local_custom_settings_blk
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, deferOnce
 from "eventbus" import eventbus_send
 from "json" import object_to_json_string, parse_json
+from "matching.errors" import CLIENT_ERROR_OFFLINE, SERVER_ERROR_REQUEST_TIMEOUT
 from "types" import String
 from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/underscore.nut" import prevIfEqual
 from "%appGlobals/loginState.nut" import isLoggedIn, isMatchingOnline, isOnlineSettingsAvailable
 from "%appGlobals/profileStates.nut" import myUserId
 from "%appGlobals/userstats/serverTime.nut" import getServerTime, isServerTimeValid
@@ -11,16 +15,27 @@ from "%rGui/matching/matchingApi.nut" import matchingRequest, matchingRegisterHa
   matching_subscribe
 
 
+const MAX_TIME = 0x7FFFFFFFFFFFFFFF
 const MAX_CHAT_LOG_LEN = 100
 const CHAT_SEEN_ID = "chatSeen"
 const LAST_SEEN_LIFE_TIME = 30 * 24 * 3600 
+const RETRY_MSG_TIME_MSEC = 1000
+const RETRY_MSG_TIME_ADD_MSEC = 1000
+
+let retryOnError = [ CLIENT_ERROR_OFFLINE, SERVER_ERROR_REQUEST_TIMEOUT ]
+  .totable()
 
 let chatLogs = hardPersistWatched("chatLogs", {})
+let pendingChatLogs = hardPersistWatched("pendingChatLogs", {})
 let chatMembers = hardPersistWatched("chatMembers", {})
 let chatInputs = hardPersistWatched("chatInputs", {})
 let chatLastSeenMsg = hardPersistWatched("chatLastSeenMsg", {})
+let sendMsgLocalId = hardPersistWatched("sendMsgLocalId", 0)
+let sendErrorsInARow = hardPersistWatched("sendErrorsInARow", 0)
 let isReadyToClearLastSeen = keepref(Computed(@() isServerTimeValid.get() && isOnlineSettingsAvailable.get()
   && chatLastSeenMsg.get().len() > 0))
+let sendRetryTime = Computed(@() RETRY_MSG_TIME_MSEC + sendErrorsInARow.get() * RETRY_MSG_TIME_ADD_MSEC)
+let connectedChats = Computed(@(prev) prevIfEqual(prev, chatLogs.get().map(@(_) true)))
 
 
 function loadChatSeen() {
@@ -70,7 +85,7 @@ matchingRegisterHandler("onChatCreate", function(resp, context) {
 
 function removeChat(chatId) {
   let hasSeen = chatId in chatLastSeenMsg.get()
-  foreach (w in [chatLogs, chatMembers, chatLastSeenMsg, chatInputs])
+  foreach (w in [chatLogs, chatMembers, chatLastSeenMsg, chatInputs, pendingChatLogs])
     if (chatId in w.get())
       w.mutate(@(v) v.$rawdelete(chatId))
   if (hasSeen)
@@ -130,13 +145,113 @@ function addSystemMessage(chatId, text) {
   })
 }
 
-let sendMessage = @(chatId, text, cbExt = null)
-  matchingRequest("chat.send_chat_message", { chatId, message = { text } }, { id = "onChatMessage", chatId, cbExt })
+function removePendingLog(chatId, localId) {
+  let idx = pendingChatLogs.get()?[chatId].findindex(@(v) v.localId == localId)
+  if (idx != null)
+    pendingChatLogs.mutate(function(v) {
+      let cur = clone v[chatId]
+      cur.remove(idx)
+      v[chatId] = cur
+    })
+}
+
+function modifyPendingLog(chatId, localId, action) {
+  let idx = pendingChatLogs.get()?[chatId].findindex(@(v) v.localId == localId)
+  if (idx == null)
+    return false
+  pendingChatLogs.mutate(function(v) {
+    let cur = clone v[chatId]
+    cur[idx] = clone cur[idx]
+    action(cur[idx])
+    v[chatId] = cur
+  })
+  return true
+}
+
+function sendMessage(chatId, text) {
+  let localId = sendMsgLocalId.get()
+  sendMsgLocalId.set(localId + 1)
+  let hasPending = (pendingChatLogs.get()?[chatId].len() ?? 0) > 0
+  pendingChatLogs.mutate(function(v) {
+    let cur = clone v?[chatId] ?? []
+    cur.append({
+      localId
+      text
+      sender = { userId = myUserId.get() }
+      isPending = true
+      requestTime = hasPending ? 0 : get_time_msec()
+      receiveTime = 0
+    })
+    v[chatId] <- cur
+  })
+  if (!hasPending)
+    matchingRequest("chat.send_chat_message", { chatId, message = { text } }, { id = "onChatMessage", chatId, localId })
+}
 
 matchingRegisterHandler("onChatMessage", function(resp, context) {
+  let { chatId, localId } = context
+  if (resp?.error in retryOnError) {
+    sendErrorsInARow.modify(@(v) v + 1)
+    modifyPendingLog(chatId, localId, @(v) v.receiveTime = get_time_msec())
+    return
+  }
   if ("error" in resp)
-    addSystemMessage(context.chatId, loc("chat/sendMessageFailed"))
-  matchingCallHandler(context.cbExt, resp)
+    addSystemMessage(chatId, loc("chat/sendMessageFailed"))
+  else
+    sendErrorsInARow.set(0)
+  removePendingLog(chatId, localId)
+})
+
+function tryResendPendingLogs() {
+  if (!isMatchingOnline.get())
+    return
+
+  let curTime = get_time_msec()
+  local nextTime = MAX_TIME
+  let chatIds = pendingChatLogs.get().keys()
+  foreach (chatId in chatIds) {
+    let l = pendingChatLogs.get()?[chatId][0]
+    if (l == null || l.requestTime > l.receiveTime || chatId not in connectedChats.get())
+      continue
+    let timeToSend = l.receiveTime + sendRetryTime.get()
+    if (timeToSend > curTime) {
+      nextTime = min(nextTime, timeToSend)
+      continue
+    }
+    let { text, localId } = l
+    modifyPendingLog(chatId, localId, @(v) v.requestTime = curTime)
+    matchingRequest("chat.send_chat_message", { chatId, message = { text } }, { id = "onChatMessage", chatId, localId })
+  }
+  if (nextTime != MAX_TIME)
+    resetTimeout(max(0.1, 0.001 * (nextTime - curTime)), tryResendPendingLogs)
+}
+
+tryResendPendingLogs()
+pendingChatLogs.subscribe(@(_) deferOnce(tryResendPendingLogs))
+connectedChats.subscribe(@(_) deferOnce(tryResendPendingLogs))
+
+isMatchingOnline.subscribe(function(v) {
+  if (!v)
+    return
+  sendErrorsInARow.set(0)
+  let hasPending = null != pendingChatLogs.get().findvalue(@(list) list.len() > 0)
+  if (!hasPending)
+    return
+  pendingChatLogs.mutate(function(all) {
+    foreach (chatId in all.keys()) {
+      if (all[chatId].len() == 0)
+        continue
+      let list = clone all[chatId]
+      for (local i = 0; i < list.len(); i++) {
+        let l = list[i]
+        if (l.requestTime <= l.receiveTime)
+          continue
+        list[i] = clone l
+        list[i].receiveTime = l.requestTime
+      }
+      all[chatId] = list
+    }
+  })
 })
 
 let chat_handlers = {
@@ -168,6 +283,7 @@ isLoggedIn.subscribe(function(v) {
   chatLogs.set({})
   chatMembers.set({})
   chatInputs.set({})
+  pendingChatLogs.set({})
   wasLoggedIn = false
 })
 
@@ -260,7 +376,9 @@ function markChatSeenBeforeTime(chatId, time) {
 
 return {
   MAX_CHAT_LOG_LEN
+  connectedChats
   chatLogs
+  pendingChatLogs
   chatMembers
   chatInputs
   chatLastSeenMsg

@@ -262,7 +262,9 @@ function infoPanel(nodesReceiveInfo) {
                 flow = FLOW_VERTICAL
                 gap = infoPanelFooterGap
                 children = [
-                  needShowBlueprintDescr.get() ? mkBarText(loc("blueprints/fullDescription")) : null
+                  !needShowBlueprintDescr.get() ? null
+                    : hangarUnit.get()?.isClan ? mkBarText(loc("blueprints/clan/fullDescription"))
+                    : mkBarText(loc("blueprints/fullDescription"))
                   isBlockedUnit.get() && unitReceiveInfo.get() == null ? mkBarText(loc("unitsTree/needAccessHint")) : null
                   researchBlock(hangarUnit.get(), unitReceiveInfo.get())
                   @() {

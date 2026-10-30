@@ -151,6 +151,9 @@ let specialEventsLootboxesState = Computed(function() {
 
 let getEventPresentationId = @[pure, nodiscard](eventId, eSeason, sEvents) eventId == MAIN_EVENT_ID ? eSeason : sEvents?[eventId].eventName
 
+let curEventName = Computed(@() curEvent.get() == MAIN_EVENT_ID ? MAIN_EVENT_ID
+  : specialEvents.get()?[curEvent.get()].eventName)
+
 let curEventSeason = Computed(@() curEvent.get() == MAIN_EVENT_ID
     ? (userstatStatsTables.get()?.stats.season["$index"] ?? 0)
   : specialEvents.get()?[curEvent.get()].season)
@@ -349,6 +352,7 @@ isEventActive.subscribe(@(v) v ? null : logE($"Primary game event finished!"))
 
 return {
   curEvent
+  curEventName
   curEventSeason
   curEventEndsAt
   isCurEventActive

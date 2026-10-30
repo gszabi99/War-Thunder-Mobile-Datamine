@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/clans/clanCfg.nut" import LOCATION, LANGUAGE, MEMBERS, clanLocations, languagesCfg, languageValues
+from "%rGui/clans/clanCfg.nut" import LOCATION, LANGUAGE, MEMBERS, clanLocations, languagesCfg, languageValues, TYPE, AVAILABILITY
+from "%appGlobals/clanConsts.nut" import PRIVACY_OPEN, PRIVACY_REQUEST, AVAILABILITY_FULL, AVAILABILITY_NOT_FULL
 
 
 let clanFilterW = mkWatched(persist, "clanFilter", {})
@@ -7,13 +8,13 @@ let mkSetFilterValue = @(id) @(value) clanFilterW.mutate(@(v) v[id] <- value)
 let resetFilter = @() clanFilterW.set({})
 
 let filters = [
-  
-  
-  
-  
-  
-  
-  
+  {
+    id = TYPE
+    values = [null, PRIVACY_OPEN, PRIVACY_REQUEST]
+    valToString = @(v) v ? $"clans/type/{v}": "filter/type/any"
+    btnMinWidth = hdpx(250)
+    defValue = null
+  },
   {
     id = LOCATION
     values = [null].extend(clanLocations.get())
@@ -40,14 +41,13 @@ let filters = [
     defValue = 0
     fullLocTitle = "filters/members/title"
   },
-  
-  
-  
-  
-  
-  
-  
-  
+  {
+    id = AVAILABILITY
+    values = [null, AVAILABILITY_FULL, AVAILABILITY_NOT_FULL]
+    valToString = @(v) v ? $"filter/availability/{v}" : "filter/availability/any"
+    btnMinWidth = hdpx(250)
+    defValue = null
+  },
 ].map(@(v) v.__update({
   locTitle = $"filters/{v.id}"
 }))

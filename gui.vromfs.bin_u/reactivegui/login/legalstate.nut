@@ -41,12 +41,11 @@ let requiredVersionsByLangOnline = hardPersistWatched("requiredVersionsByLangOnl
 let requiredVersions = Computed(@() requiredVersionsByLangOnline.get()?[legalApiLngId] != null
   ? legalToApprove.map(@(_, id) requiredVersionsByLangOnline.get()?[legalApiLngId][id] ?? UNKNOWN_REQ_VER)
   : null)
-let isDocsCollectionReady = @(mapTbl) legalToApprove.findvalue(@(_, id) id not in mapTbl) == null
-let acceptedVersionListsOnline = hardPersistWatched("acceptedVersionListsOnline", {})
+let acceptedVersionListsOnline = hardPersistWatched("acceptedVersionListsOnline", null)
 let acceptedVersionListsTemporary = hardPersistWatched("acceptedVersionListsTemporary", {})
 let acceptedVersionListsBackup = Watched(null)
 let acceptedVersionLists = Computed(@()
-  !isDocsCollectionReady(acceptedVersionListsOnline.get()) || acceptedVersionListsBackup.get() == null
+  acceptedVersionListsOnline.get() == null || acceptedVersionListsBackup.get() == null
     ? null
     : acceptedVersionListsOnline.get().map(function(v, id) {
         let res = clone (!v.contains(FAILED_ACC_VER) ? v : (acceptedVersionListsBackup.get()?[id] ?? []))
@@ -58,7 +57,7 @@ let needApprove = Computed(@() acceptedVersionLists.get() == null || requiredVer
 let isAcceptLegalsInProgress = Watched(false)
 let needSyncBackup = Computed(@() isOnlineSettingsAvailable.get()
   && acceptedVersionListsBackup.get() != null
-  && isDocsCollectionReady(acceptedVersionListsOnline.get())
+  && acceptedVersionListsOnline.get() != null
   && acceptedVersionListsOnline.get().findvalue(@(vers) vers.contains(FAILED_ACC_VER)) == null
   && !isEqual(acceptedVersionListsBackup.get(), acceptedVersionListsOnline.get()))
 let isLoginAllowed = Computed(@() legalToApprove.findvalue(@(_, id) (acceptedVersionLists.get()?[id].len() ?? 0) == 0) == null)
@@ -190,37 +189,37 @@ isAuthorized.subscribe(@(v) v ? requestRequiredVersionsOncePerLang() : null)
 
 eventbus_subscribe(RESP_GET_ACCEPTED_VERSIONS, mkJsonHttpRequestCb(
   function(data) {
-    let { answer, context } = data
-    let id = context
-    let accVers = answer?.result[PROJECT][id] ?? []
-    acceptedVersionListsOnline.mutate(@(v) v[id] <- accVers)
+    let accVers = data.answer?.result[PROJECT] ?? {}
+    acceptedVersionListsOnline.set(legalToApprove.map(@(_, id) accVers?[id] ?? []))
   },
   function(errInfo) {
     let { errId, needSendBQ, context } = errInfo
-    let id = context
+    let ids = context
     if (needSendBQ)
-      sendErrorBqEvent($"Legal: GetAccVers {id} {errId}")
-    acceptedVersionListsOnline.mutate(@(v) v[id] <- [ FAILED_ACC_VER ])
+      sendErrorBqEvent($"Legal: GetAccVers {ids} {errId}")
+    acceptedVersionListsOnline.set(legalToApprove.map(@(_) [ FAILED_ACC_VER ]))
   }))
 function requestAcceptedVersions() {
   if (!isAuthorized.get())
     return
-  foreach (id, _ in legalToApprove)
-    httpRequest({
-      method = "GET"
-      url = GET_ACCEPTED_VER_URL.subst({ id, project = PROJECT })
-      headers = mkAuthRequestHeaders()
-      respEventId = RESP_GET_ACCEPTED_VERSIONS
-      context = id
-    })
+  let ids = ",".join(legalToApprove.keys().sort())
+  httpRequest({
+    method = "GET"
+    url = GET_ACCEPTED_VER_URL.subst({ id = ids, project = PROJECT })
+    headers = mkAuthRequestHeaders()
+    respEventId = RESP_GET_ACCEPTED_VERSIONS
+    context = ids
+  })
 }
 
 function reinitAcceptedVersions() {
-  acceptedVersionListsOnline.set({})
+  acceptedVersionListsOnline.set(null)
   if (isAuthorized.get())
     requestAcceptedVersions()
 }
-reinitAcceptedVersions()
+if (acceptedVersionListsOnline.get() == null
+    || acceptedVersionListsOnline.get().findvalue(@(v) v.contains(FAILED_ACC_VER)) != null)
+  reinitAcceptedVersions()
 isAuthorized.subscribe(@(_) reinitAcceptedVersions())
 
 
@@ -235,6 +234,8 @@ eventbus_subscribe(RESP_ACCEPT_ACTION, mkJsonHttpRequestCb(
     let { token, version } = data.answer.result
     let id = token
     logL($"Accepted online successfully: {id} {version}")
+    if (acceptedVersionListsOnline.get() == null)
+      return
     acceptedVersionListsOnline.mutate(function(v) {
       if (id not in v)
         return
@@ -321,14 +322,14 @@ register_command(
   function() {
     if (!isAuthorized.get())
       return console_print("Not authorized") 
-    foreach (id, _ in legalToApprove)
-      httpRequest({
-        method = "GET"
-        url = GET_ACCEPTED_VER_URL.subst({ id, project = PROJECT })
-        headers = mkAuthRequestHeaders()
-        callback = debugRequestCb
-        context = id
-      })
+    let ids = ",".join(legalToApprove.keys().sort())
+    httpRequest({
+      method = "GET"
+      url = GET_ACCEPTED_VER_URL.subst({ id = ids, project = PROJECT })
+      headers = mkAuthRequestHeaders()
+      callback = debugRequestCb
+      context = ids
+    })
   }
   "debug.legalApiV2.printUserAcceptedVersions")
 

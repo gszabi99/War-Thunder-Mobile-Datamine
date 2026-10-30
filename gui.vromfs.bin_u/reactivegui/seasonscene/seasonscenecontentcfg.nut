@@ -30,7 +30,7 @@ from "%rGui/quests/questsState.nut" import questsCfg, curTabParams, progressUnlo
 import "%rGui/quests/questsWnd.nut" as questsWndCtor
 from "%rGui/seasonScene/seasonSceneState.nut" import QUESTS_TAB, EVENT_SHOP_TAB, LOOTBOX_TAB, BATTLE_TAB,
   BATTLE_TAB_2, BATTLE_TAB_3, MAP_TAB, LEADERBOARD_TAB, questTabsByEventId, isSeasonTabVisible, seasonShopId,
-  COLLECTION_TAB, BATTLE_TAB_MODE_IDX, PASS_OBSOLETE_SCENE, PASS_SCENE, openSeasonTab
+  COLLECTION_TAB, BATTLE_TAB_MODE_IDX, PASS_OBSOLETE_SCENE, PASS_SCENE, openSeasonTab, backToTab
 from "%rGui/shop/eventShopState.nut" import getShopIdForEventId
 from "%rGui/shop/lootboxPreviewState.nut" import isEventWndLootboxOpen, closeEventWndLootbox
 from "%rGui/shop/shopState.nut" import hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop,
@@ -43,7 +43,6 @@ from "%rGui/unlocks/unlocks.nut" import getAllUnlockCurrencies
 from "%rGui/unlocks/userstat.nut" import userstatStatsTables
 
 
-let backToTab = mkWatched(persist, "backToTab", null)
 
 let contentCfgDefaults = {
   icon = "ui/gameuiskin#icon_primary_attention.svg" 

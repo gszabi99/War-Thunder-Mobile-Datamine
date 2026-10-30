@@ -15,6 +15,7 @@ from "%appGlobals/clientState/missionState.nut" import battleCampaign, hudCustom
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
 from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign
 from "%appGlobals/profileStates.nut" import myUserId
+from "%appGlobals/squadState.nut" import isInSquad
 from "%appGlobals/unitConst.nut" import AIR
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%rGui/components/backButton.nut" import backButton, backButtonWidth
@@ -33,6 +34,7 @@ from "%rGui/hudState.nut" import isUnitDelayed, isUnitAlive, isPlayingReplay, un
 from "%rGui/options/options/airControlsOptions.nut" import isAircraftControlByGyro
 import "%rGui/options/optionsScene.nut" as optionsScene
 from "%rGui/respawn/respawnState.nut" import respawnSlots, canUseSpare, isBailoutDeserter, spawnScoreCosts
+from "%rGui/squad/squadPanel.nut" import squadPanelNoInvites
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
@@ -256,7 +258,14 @@ let flightMenu = bgShaded.__merge({
     clearTimer(refreshSpawnInfo)
     removeControlsMask("flightmenu")
   }
-  children = flightMenuContent
+  children = [
+    flightMenuContent
+    @() {
+      watch = isInSquad
+      hplace = ALIGN_RIGHT
+      children = isInSquad.get() ? squadPanelNoInvites : null
+    }
+  ]
   animations = wndSwitchAnim
 })
 

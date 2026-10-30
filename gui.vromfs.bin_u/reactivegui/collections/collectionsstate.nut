@@ -8,7 +8,7 @@ import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
 from "%appGlobals/userstats/serverTime.nut" import isServerTimeValid, getServerTime
 from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
-from "%rGui/event/eventState.nut" import curEvent
+from "%rGui/event/eventState.nut" import curEventName
 from "%rGui/event/treeEvent/eventMapLoader.nut" import mkLoadPreset
 
 
@@ -18,8 +18,8 @@ let activeCollectionsCfg = Watched({})
 let openedPuzzleId = mkWatched(persist, "openedPuzzleId")
 let seenPiecesExt = hardPersistWatched("collections.seenPiecesExt", {})
 let shouldOpenCollectionsHelpWnd = mkWatched(persist, "shouldOpenCollectionsHelpWnd", false)
-let curCollectionId = Computed(@() curEvent.get() == null ? null
-  : activeCollectionsCfg.get().findindex(@(c) c.meta?.event_id == curEvent.get()))
+let curCollectionId = Computed(@() curEventName.get() == null ? null
+  : activeCollectionsCfg.get().findindex(@(c) c.meta?.event_id == curEventName.get()))
 let isPuzzleWndOpened = Computed(@() curCollectionId.get() != null && openedPuzzleId.get() != null)
 let isCollectionsHelpWndOpened = Computed(@() shouldOpenCollectionsHelpWnd.get() && curCollectionId.get() != null)
 

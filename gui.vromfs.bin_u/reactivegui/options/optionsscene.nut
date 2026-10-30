@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 from "app" import get_game_version_str, get_base_game_version_str
-from "%appGlobals/clientState/clientState.nut" import isInBattle
 from "%appGlobals/unitConst.nut" import AIR, HELICOPTER, TANK, SHIP, BOAT, SUBMARINE, SAILBOAT, WALKER
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
@@ -106,11 +105,11 @@ let header = headerGradientWithRightBlock(
       text = loc("mainmenu/btnOptions")
     }.__update(fontBigShaded)
   ]
-  @() {
-    watch = isInBattle
+  {
+    size = FLEX_H
     halign = ALIGN_RIGHT
     children = [
-      isInBattle.get() ? null : squadChatBtn
+      squadChatBtn
       {
         size = [SIZE_TO_CONTENT, 0]
         vplace = ALIGN_BOTTOM

@@ -13,7 +13,7 @@ from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
 from "%appGlobals/rewardType.nut" import G_BP_GRADE
 from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
 from "%rGui/unlocks/unlocksConst.nut" import MAIN_EVENT_ID
-from "%rGui/event/eventState.nut" import curEvent, eventSeasonIdx
+from "%rGui/event/eventState.nut" import curEventName, eventSeasonIdx
 from "%rGui/shop/shopState.nut" import shopGoods
 
 
@@ -26,8 +26,8 @@ let seenBattlePassPages = mkWatched(persist, SEEN_PAGES_SAVE_ID, {})
 
 let isPurchaseWndOpened = mkWatched(persist, "isPurchaseWndOpened", false)
 
-let curBpId = Computed(@() curEvent.get() == null ? null
-  : activeBattlePassesCfg.get().findindex(@(c) c.meta?.event_id == curEvent.get()))
+let curBpId = Computed(@() curEventName.get() == null ? null
+  : activeBattlePassesCfg.get().findindex(@(c) c.meta?.event_id == curEventName.get()))
 
 let shouldOpenBpHelpWnd = mkWatched(persist, "shouldOpenBpHelpWnd", false)
 let isBpHelpWndOpened = Computed(@() shouldOpenBpHelpWnd.get() && curBpId.get() != null)

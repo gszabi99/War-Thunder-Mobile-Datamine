@@ -23,7 +23,7 @@ from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkCurrencyImage
 from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
 from "%rGui/event/eventState.nut" import eventSeasonIdx
-from "%rGui/seasonScene/seasonSceneState.nut" import openHelpWndIfUnseen
+from "%rGui/seasonScene/seasonSceneState.nut" import openHelpWndIfUnseen, EVENT_SHOP_TAB, openSeasonTab, seasonPageId, backToTab
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase, showNoBalanceMsgAdd
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import userlogTextColor
@@ -411,6 +411,10 @@ let battlePassContent = @() {
                                       purchase = @() receive_bp_reward(curBpId.get(), selectedReward.get().pageIdx,
                                         selectedReward.get().slotIdx, selectedReward.get().cost)
                                       bqInfo = null
+                                      function onGoToShop() {
+                                        backToTab.set(seasonPageId.get())
+                                        openSeasonTab(EVENT_SHOP_TAB)
+                                      }
                                     })
                             {
                               ovr = {

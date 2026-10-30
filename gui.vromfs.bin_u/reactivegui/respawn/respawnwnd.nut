@@ -13,7 +13,7 @@ from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitName
 from "%rGui/components/animGrowLines.nut" import mkAnimGrowLines, mkAGLinesCfgOrdered, mkStaticLines
 from "%rGui/components/buttonStyles.nut" import defButtonHeight, BATTLE, INACTIVE
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkCurrencyImage
-from "%rGui/components/currencyStyles.nut" import CS_RESPAWN, CS_GAMERCARD, gamercardGap
+from "%rGui/components/currencyStyles.nut" import CS_RESPAWN, CS_GAMERCARD, gamercardGap, gcSeparator
 from "%rGui/components/infoButton.nut" import infoTooltipButton
 from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
@@ -41,6 +41,8 @@ from "%rGui/respawn/respawnState.nut" import isRespawnAttached, respawnSlots, re
   selSlotContentGenId, selSlot, selSlotUnitType, playerSelectedSlotIdx, sparesNum, unitListScrollHandler, hasSkins,
   needRespawnSlotsAndWeaponry, spawnScoreCosts, isUseSpawnScore
 from "%rGui/respawn/spawnScore.nut" import mkSpawnScore, spawnScoreBalance
+from "%rGui/squad/squadChatBtn.nut" import squadChatBtn
+from "%rGui/squad/squadChatState.nut" import isInSquadChat
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import markTextColor, badTextColor2, textColor, commonTextColor
@@ -82,7 +84,7 @@ let spareBalance = @() {
 }
 
 let balanceBlock = @() {
-  watch = needSpareBalance
+  watch = [needSpareBalance, isInSquadChat, isUseSpawnScore]
   size = FLEX_V
   hplace = ALIGN_RIGHT
   flow = FLOW_HORIZONTAL
@@ -92,6 +94,11 @@ let balanceBlock = @() {
     spawnScoreBalance
     needSpareBalance.get() ? spareBalance : null
   ]
+    .extend(!isInSquadChat.get() ? []
+      : [
+          isUseSpawnScore.get() || needSpareBalance.get() ? gcSeparator : null
+          squadChatBtn
+        ])
 }
 
 let topPanel = {

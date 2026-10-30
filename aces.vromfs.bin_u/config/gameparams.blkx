@@ -8953,10 +8953,10 @@
     ]
   },
   "commonScenes": {
-    "scene": [
-      "gameData/scenes/common_scene.blk",
-      "gameData/scenes/loose_grid_scene.blk"
-    ]
+    "scene": "gameData/scenes/common_scene.blk"
+  },
+  "localScenes": {
+    "scene": "gameData/scenes/loose_grid_scene.blk"
   },
   "commonClientScenes": {
     "scene": "gameData/scenes/common_client_scene.blk"

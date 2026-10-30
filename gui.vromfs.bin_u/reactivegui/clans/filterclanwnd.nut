@@ -45,7 +45,7 @@ function wndContent() {
 
     return {
       watch = clanFilterComp
-      size = const [SIZE_TO_CONTENT, hdpx(500)]
+      size = const [SIZE_TO_CONTENT, hdpx(700)]
       padding = hdpx(60)
       halign = ALIGN_CENTER
       flow = FLOW_VERTICAL

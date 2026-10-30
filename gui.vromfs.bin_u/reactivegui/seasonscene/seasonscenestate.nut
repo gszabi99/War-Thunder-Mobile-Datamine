@@ -59,6 +59,8 @@ let seasonHelpWndSeen = Watched({})
 
 let playerSelectedSeasonTab = mkWatched(persist, "playerSelectedSeasonTab", PASS_OBSOLETE_SCENE)
 let seasonSceneOpenCounter = mkWatched(persist, "seasonSceneOpenCounter", 0)
+let backToTab = mkWatched(persist, "backToTab", null)
+
 let isSeasonSceneTop = Computed(@() scenesOrder.get()?[scenesOrder.get().len() - 1] == SEASON_SCENE_ID)
 
 let seasonTabs = [ QUESTS_TAB, BATTLE_TAB, BATTLE_TAB_2, BATTLE_TAB_3, MAP_TAB, COLLECTION_TAB,
@@ -119,8 +121,11 @@ let isSeasonTabVisible = {
     watched = Computed(@() shouldShowEventMechanics.get() && openedTreeEventId.get() != null)
   },
   [PASS_SCENE] = {
-    calcByEventId = @(id) shouldShowEventMechanics.get()
-      && null != activeBattlePassesCfg.get().findvalue(@(c) c.meta?.event_id == id)
+    function calcByEventId(id) {
+      let eventName = specialEvents.get()?[id].eventName ?? id
+      return shouldShowEventMechanics.get()
+        && null != activeBattlePassesCfg.get().findvalue(@(c) c.meta?.event_id == eventName)
+    }
     watched = Computed(@() shouldShowEventMechanics.get() && curBpId.get() != null)
   },
   [PASS_OBSOLETE_SCENE] = {
@@ -134,8 +139,11 @@ let isSeasonTabVisible = {
     watched = Computed(@() isQuestsTabVisible(curEvent.get(), questsCfg.get(), questsBySection.get()))
   },
   [COLLECTION_TAB] = {
-    calcByEventId = @(id) shouldShowEventMechanics.get()
-      && null != activeCollectionsCfg.get().findvalue(@(c) c.meta?.event_id == id)
+    function calcByEventId(id) {
+      let eventName = specialEvents.get()?[id].eventName ?? id
+      return shouldShowEventMechanics.get()
+        && null != activeCollectionsCfg.get().findvalue(@(c) c.meta?.event_id == eventName)
+    }
     watched = Computed(@() shouldShowEventMechanics.get() && curCollectionId.get() != null)
   },
   [EVENT_SHOP_TAB] = {
@@ -368,6 +376,7 @@ return {
   seasonTabIdx
   seasonPageId
   seasonShopId
+  backToTab
 
   openSeasonTab
   openSeasonScene

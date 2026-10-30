@@ -11,6 +11,7 @@ const TYPE = "type"
 const LOCATION = "location"
 const LANGUAGE = "language"
 const MEMBERS = "members"
+const AVAILABILITY = "availability"
 
 let memberSortOptions = [
   {
@@ -92,6 +93,7 @@ return {
   LOCATION
   LANGUAGE
   MEMBERS
+  AVAILABILITY
   memberSortOptions
   memberSortingCfg
   gradesSettingscfg

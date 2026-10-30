@@ -4,6 +4,7 @@ from "guiMission" import GO_WIN, GO_FAIL
 from "mission" import get_current_mission_name
 from "%appGlobals/clientState/missionState.nut" import battleCampaign, hudCustomRules
 from "%rGui/components/backButton.nut" import backButton, backButtonHeight
+from "%rGui/components/currencyStyles.nut" import gcSeparatorWithGap
 from "%rGui/hud/hudEventManager.nut" import subscribeHudEvent
 from "%rGui/hud/scoreBoard.nut" import scoreBoardType, scoreBoardCfgByType
 from "%rGui/missionState.nut" import gameOverReason, isGtFFA, gameType
@@ -11,6 +12,8 @@ from "%rGui/mpStatistics/mpStatsTable.nut" import mkMpStatsTable, getColumnsByCa
 from "%rGui/mpStatistics/playersByTeamState.nut" import updatePlayersByTeams, playersByTeam, startContinuousUpdate,
   stopContinuousUpdate
 from "%rGui/respawn/spawnScore.nut" import spawnScoreBalance
+from "%rGui/squad/squadChatBtn.nut" import squadChatBtn
+from "%rGui/squad/squadChatState.nut" import isInSquadChat
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
@@ -87,10 +90,17 @@ return bgShaded.__merge({
             wndTitle
           ]
         }
-        {
+        @() {
+          watch = isInSquadChat
           hplace = ALIGN_RIGHT
           vplace = ALIGN_CENTER
-          children = spawnScoreBalance
+          valign = ALIGN_CENTER
+          flow = FLOW_HORIZONTAL
+          gap = gcSeparatorWithGap
+          children = [
+            spawnScoreBalance
+            isInSquadChat.get() ? squadChatBtn : null
+          ]
         }
       ]
     }
