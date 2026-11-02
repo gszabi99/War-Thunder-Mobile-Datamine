@@ -45,4 +45,5 @@ function isUnitNameMatchSearchStr(unit, searchStr) {
 
 return {
   isUnitNameMatchSearchStr
+  mkSearchTokenMemoized = memoize(mkSearchToken)
 }

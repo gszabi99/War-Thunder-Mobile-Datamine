@@ -32,6 +32,7 @@ from "%rGui/style/gradients.nut" import simpleHorGrad
 
 let wndKey = {}
 let bpPageStyle = REWARD_STYLE_BP_PAGE
+let gradeColors = [null, 0xFFFFAE00, 0xFF9C03EE]
 
 let paginatorTabGap = hdpx(10)
 let paginatorTabWidth = 0.5 * bpPageStyle.boxSize
@@ -166,6 +167,17 @@ function mkSlot(slot, rawReward, rStyle) {
   let lockedIcon = !canReceive && !isReceived ? mkRewardLocked(rStyle) : topLeftIconCtor?[rawReward.rType](reward, rStyle)
   let rewardReceivedMark = isReceived ? mkRewardReceivedMark(rStyle) : null
   let rewardPlate = mkRewardPlate(reward, rStyle)
+  let gradeIndicator = gradeColors?[slot.reqPassGrade] == null ? null
+    : {
+        size = bpPageStyle.boxSize
+        rendObj = ROBJ_VECTOR_CANVAS
+        fillColor = gradeColors[slot.reqPassGrade]
+        color = gradeColors[slot.reqPassGrade]
+        commands = [
+          [VECTOR_INNER_LINE],
+          [VECTOR_POLY, 15, 0, 30, 0, 0, 30, 0, 15]
+        ]
+      }
 
   let isSelected = Computed(@() reward.pageIdx == selectedPage.get() && reward.slotIdx == selectedSlotIdx.get())
   return @() {
@@ -178,6 +190,7 @@ function mkSlot(slot, rawReward, rStyle) {
     }
     children = [
       rewardPlate
+      gradeIndicator
       lockedIcon
       rewardReceivedMark
       isSelected.get() ? mkRewardBorder : null

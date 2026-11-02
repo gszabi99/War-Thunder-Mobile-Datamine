@@ -4,7 +4,7 @@ from "%appGlobals/dirtyWordsFilter.nut" import isNamePassing, clearExcessiveWhit
 from "types" import String
 
 
-const NAMES_CACHE_MAX_LEN = 1000
+const NAMES_CACHE_MAX_LEN = 10000
 let namesCache = {}
 
 

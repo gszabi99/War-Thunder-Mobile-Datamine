@@ -215,6 +215,8 @@ let nickFrames = {
   medal_three_bday_26 = @(n) $"⊥{n}⊥"
   tiger_dragon_china_2026 = @(n) $"⋿{n}⌁"
   five_stars_china_2026 = @(n) $"⋾{n}⋾"
+  bear_paw_russia_2026 = @(n) $"〈{n}⌰"
+  ushanka_russia_2026 = @(n) $"⌱{n}⌱"
 }
 
 let frameNick = @(nick, frameId) nickFrames?[frameId](nick) ?? nick

@@ -102,6 +102,12 @@ let presentations = {
     bg = "ui/images/event_bg_season_20.avif"
   }
   hotmaybond                   = { bg = "ui/images/event_bg_season_20.avif" }
+  event_russia_united_day      = {
+    icon = "ui/gameuiskin#icon_event_russia_united_day_2026.svg"
+    image = "ui/gameuiskin#icon_event_russia_united_day_2026_shop.avif"
+    bg = "ui/bkg/login_bkg_unitedwestand_2026.avif"
+  }
+  russiabond                  = { bg = "ui/bkg/login_bkg_unitedwestand_2026.avif" }
   event_china_national_day     = {
     icon = "ui/gameuiskin#icon_event_china_national_day_2026.svg"
     image = "ui/gameuiskin#icon_event_china_national_day_2026_shop.avif"

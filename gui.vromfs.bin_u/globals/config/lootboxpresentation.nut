@@ -30,6 +30,9 @@ let customLootboxImages = {
   event_special_ships_lunar_ny_2025         = "ui/gameuiskin/event_special_lunar_ny.avif"
   event_special_air_lunar_ny_2025           = "ui/gameuiskin/event_special_lunar_ny.avif"
 
+  event_special_tanks_russia_united_day_2026 = "ui/gameuiskin/event_special_russia_united_day_2026_box.avif"
+  event_special_ships_russia_united_day_2026 = "ui/gameuiskin/event_special_russia_united_day_2026_box.avif"
+  event_special_air_russia_united_day_2026 = "ui/gameuiskin/event_special_russia_united_day_2026_box.avif"
   event_special_tanks_china_national_day_2026 = "ui/gameuiskin/event_special_china_national_day_2026_box.avif"
   event_special_tanks_independence_2025       = "ui/gameuiskin/event_special_independence_2025.avif"
   event_special_ships_independence_2025       = "ui/gameuiskin/event_special_independence_2025.avif"
@@ -211,6 +214,9 @@ let lootboxPreviewBg = {
   event_special_gift_ships_new_year_2025         = { bg = "ui/images/event_bg_christmas_2024.avif" }
   event_special_gift_air_new_year_2025           = { bg = "ui/images/event_bg_christmas_2024.avif" }
 
+  event_special_tanks_russia_united_day_2026 = { bg = "ui/bkg/login_bkg_unitedwestand_2026.avif" }
+  event_special_ships_russia_united_day_2026 = { bg = "ui/bkg/login_bkg_unitedwestand_2026.avif" }
+  event_special_air_russia_united_day_2026 = { bg = "ui/bkg/login_bkg_unitedwestand_2026.avif" }
   event_special_tanks_china_national_day_2026 = { bg = "ui/images/event_bg_event_china_national_day.avif" }
   event_special_tanks_independence_2025          = { bg = "ui/images/event_bg_event_independence_day.avif" }
   event_special_ships_independence_2025          = { bg = "ui/images/event_bg_event_independence_day.avif" }

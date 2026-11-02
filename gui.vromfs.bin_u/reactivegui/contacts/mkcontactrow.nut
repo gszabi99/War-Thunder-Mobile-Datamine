@@ -9,14 +9,14 @@ from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicIn
 from "%rGui/style/stdColors.nut" import selectColor
 
 
-function mkContactRow(uid, rowIdx, isSelected, onClick, responseAction = null, leftContent = null) {
+function mkContactRow(uid, rowIdx, isSelected, onClick, responseAction = null, leftContent = null, needOnlineStatus = true) {
   let userId = uid.tostring()
   let contact = Contact(userId)
   let info = mkPublicInfo(userId)
-  let onlineStatus = mkContactOnlineStatus(userId)
-  let battleUnit = Computed(@() serverConfigs.get()?.allUnits[presences.get()?[userId].battleUnit])
   let stateFlags = Watched(0)
-  let onlineStatusBlock = contactOnlineStatusBlock(onlineStatus, battleUnit)
+  let onlineStatusBlock = !needOnlineStatus ? null
+    : contactOnlineStatusBlock(mkContactOnlineStatus(userId),
+        Computed(@() serverConfigs.get()?.allUnits[presences.get()?[userId].battleUnit]))
   let squadStatusBlock = contactSquadStatusBlock(uid.tointeger(), { margin = [0, gap, 0, 0]})
   let clanIcon = mkPlayerClanIcon(userId)
   return @() {
