@@ -4,6 +4,8 @@ from "%darg/helpers/bitmap.nut" import mkBitmapPicture, setMaxCachedSize
 
 setMaxCachedSize(max(sw(15) * sh(15), 128 * 128))
 
+let mkWhite = @(part) part + (part << 8) + (part << 16) + (part << 24)
+
 const gradTexSize = 64
 let colorParts = @(color) {
   r = (color >> 16) & 0xFF
@@ -47,12 +49,23 @@ let mkColoredGradientY = @(colorTop, colorBottom, height = 12)
       }
     })
 
+let simpleVerGrad = mkBitmapPicture(2, 10,
+  function(params, bmp) {
+    let { w, h } = params
+    for (local y = 0; y < h; y++) {
+      let color = mkWhite((0xFF * y.tofloat()/ (h - 1) + 0.5).tointeger())
+      for (local x = 0; x < w; x++)
+        bmp.setPixel(x, y, color)
+    }
+  })
+
 return {
   
   gradTexSize
   gradDoubleTexOffset = (0.5 * gradTexSize).tointeger() - 2
   
   gradTranspDoubleSideX
+  simpleVerGrad
   
   mkGradientCtorDoubleSideX
   mkColoredGradientY

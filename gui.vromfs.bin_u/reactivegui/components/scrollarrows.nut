@@ -17,7 +17,6 @@ function mkArrowImageComp(lengthPx) {
 
 let scrollArrowImageSmallSize = evenPx(50)
 
-let scrollArrowImageBig = mkArrowImageComp(evenPx(88))
 let scrollArrowImageSmall = mkArrowImageComp(scrollArrowImageSmallSize)
 let scrollArrowImageVerySmall = mkArrowImageComp(evenPx(30))
 
@@ -53,7 +52,7 @@ let posParams = {
 }
 
 
-function mkScrollArrow(scrollHandler, align, arrowImageComp = scrollArrowImageBig, ovr = {}) {
+function mkScrollArrow(scrollHandler, align, arrowImageComp = scrollArrowImageSmall, ovr = {}) {
   let isShow = mkIsShow[align](scrollHandler)
   return @() arrowImageComp.__merge(posParams[align],
     {

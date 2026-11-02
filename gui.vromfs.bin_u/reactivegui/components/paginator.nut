@@ -5,7 +5,7 @@ from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 
 const defPageColor = 0xFFC0C0C0
-const pageHeight = evenPx(60)
+const paginatorHeight = evenPx(60)
 const pageGap = hdpx(20)
 
 let transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
@@ -24,8 +24,8 @@ let underline = @(color) {
 }
 
 let pageContainer = @(children, ovr) {
-  size = [SIZE_TO_CONTENT, pageHeight]
-  minWidth = pageHeight
+  size = [SIZE_TO_CONTENT, paginatorHeight]
+  minWidth = paginatorHeight
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = {
@@ -69,7 +69,7 @@ function mkPage(page, onClick, color) {
     })
 }
 
-function mkArrowBtn(needRotate = false, height = pageHeight) {
+function mkArrowBtn(needRotate = false, height = paginatorHeight) {
   let style = freeze({ ...circleBtnStyles.COMMON, size = height })
   let inactiveStyle = freeze({ ...circleBtnStyles.INACTIVE, size = height })
 
@@ -92,7 +92,7 @@ function mkArrowBtn(needRotate = false, height = pageHeight) {
 let prevBtn = mkArrowBtn(true)
 let nextBtn = mkArrowBtn()
 
-let mkPaginatorRow = @(watch, children, ovr, height = pageHeight) {
+let mkPaginatorRow = @(watch, children, ovr, height = paginatorHeight) {
   watch
   size = [SIZE_TO_CONTENT, height]
   valign = ALIGN_CENTER
@@ -142,12 +142,12 @@ let mkPaginator = @(curPage, lastPage, myPage = Watched(-1), ovr = {}) function(
 }
 
 let mkDefaultIndicator = @(pageIdx) {
-  minWidth = pageHeight
+  minWidth = paginatorHeight
   halign = ALIGN_CENTER
   children = pageText(pageIdx + 1, textColor)
 }
 
-let mkPaginatorCurPage = @(curPage, lastPage, ovr = {}, height = pageHeight, indicatorCtor = mkDefaultIndicator,
+let mkPaginatorCurPage = @(curPage, lastPage, ovr = {}, height = paginatorHeight, indicatorCtor = mkDefaultIndicator,
   onClickCtor = null)
 function() {
   let watch = [curPage, lastPage]
@@ -170,6 +170,7 @@ function() {
 }
 
 return {
+  paginatorHeight
   pageGap
   mkPaginator
   mkPaginatorCurPage

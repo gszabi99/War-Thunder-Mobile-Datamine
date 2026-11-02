@@ -722,7 +722,7 @@ deberás reiniciar el juego para aplicarlas.";"После завершения �
 необходимо перезапустить игру для их применения.";"Щоби застосувати щойно завантажені текстури ультрависокої якості,
 потрібно перезапустити гру.";"Po zakończeniu pobierania tekstur w bardzo wysokiej jakości,
 należy ponownie uruchomić grę, aby je zastosować.";"Depois de descarregar as texturas de ultra-alta qualidade,
-é necessário reiniciar o jogo para as aplicar.";"Çok yüksek kaliteli dokuları indirdikten sonra,
+é necessário reiniciar o jogo para as aplicar.";"Çok yüksek kaliteli dokuları indirdikten sonra, 
 oyuna uygulamak için oyunu yeniden başlatmanız gerekli.";"Po dokončení stahování textur v ultra vysoké kvalitě
 je nutné pro jejich použití hru restartovat.";"Αφού ολοκληρώσετε τη λήψη των εξαιρετικά υψηλής ποιότητας υφών,
 θα πρέπει να κάνετε επανεκκίνηση του παιχνιδιού για να εφαρμοστούν.";"Setelah selesai mengunduh tekstur berkualitas ultra-tinggi,
@@ -895,7 +895,7 @@ However, this option is also available to other players. If you're not intereste
 <color=@mark>Активный</color> - отображает прицельную сетку и углы максимального наведения орудия в режиме прицеливания.";"<color=@mark>Вимк.</color> — приховує приціл і кути наведення гармати в режимі прицілювання.
 <color=@mark>Увімк.</color> — відображає приціл і кути наведення гармати в режимі прицілювання.";"<color=@mark>Wyłączone</color> – ukrywa celownik i kąty celowania bronią w trybie celowania.
 <color=@mark>Włączone</color> – pokazuje celownik i kąty celowania bronią w trybie celowania.";"<color=@mark>Desativar</color> - esconde a retícula e os ângulos de mira da arma no modo de mira.
-<color=@mark>Ativar</color> - mostra a retícula e os ângulos de mira da arma em modo de mira.";"<color=@mark>Devre dışı bırak</color> - nişan modunda nişan çizgisini ve silah nişan açılarını gizler.
+<color=@mark>Ativar</color> - mostra a retícula e os ângulos de mira da arma em modo de mira.";"<color=@mark>Devre dışı bırak</color> - nişan modunda nişan çizgisini ve silah nişan açılarını gizler. 
 <color=@mark>Etkinleştir</color> - nişan modunda nişan çizgisini ve silah nişan açılarını gösterir.";"<color=@mark>Zakázat</color> – skryje zaměřovač a úhly zaměření zbraně v režimu míření.
 <color=@mark>Povolit</color> – zobrazí zaměřovač a úhly zaměření zbraně v režimu míření.";"<color=@mark>Disable</color> - hides the reticle and the gun aiming angles in aiming mode.
 <color=@mark>Enable</color> - show the reticle and the gun aiming angles in aiming mode.";"<color=@mark>Nonaktifkan</color> — menyembunyikan reticle dan sudut bidik meriam dalam mode bidik.

@@ -19,7 +19,7 @@ from "%rGui/battlePass/operationPassState.nut" import isOPSeasonActive, OP_EVENT
 from "%rGui/battlePass/passState.nut" import playerSelectedScene, getVisibleTabs
 from "%rGui/collections/collectionsState.nut" import curCollectionId, activeCollectionsCfg
 from "%rGui/event/eventLootboxes.nut" import eventLootboxesRaw
-from "%rGui/event/eventState.nut" import openEventInfo, specialEvents, MAIN_EVENT_ID, curEvent, eventWndOpenCounter,
+from "%rGui/event/eventState.nut" import openEventInfo, specialEvents, MAIN_EVENT_ID, curEvent, curEventName, eventWndOpenCounter,
   subEventsList, specialEventsOrdered, isEventActive, getIsEventActive, getEventLootboxes, closeEventShellCleanup,
   closeEventWnd, getEventPresentationId, eventSeason, allSpecialEvents, specialEventsWithTree
 from "%rGui/event/gmEventState.nut" import curGmList, getGameModePresentationByMode
@@ -217,7 +217,9 @@ let bgScene = Computed(function() {
 })
 
 let hasBattleTab = isSeasonTabVisible[BATTLE_TAB].watched
-let newsTag = Computed(@() (hasBattleTab.get() || seasonPageId.get() == MAP_TAB) ? curEvent.get() : null)
+let newsTag = Computed(@() (hasBattleTab.get() || seasonPageId.get() == MAP_TAB)
+  ? (curEventName.get() ?? curEvent.get())
+  : null)
 
 let openSeasonTab = @(id) playerSelectedSeasonTab.set(id)
 

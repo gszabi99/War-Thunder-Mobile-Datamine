@@ -4,7 +4,7 @@ from "dagor.system" import dgs_get_settings, exit
 from "%sqstd/platform.nut" import is_ios
 from "%sqstd/string.nut" import utf8ToUpper
 from "%globalsDarg/updaterUtils.nut" import totalSizeText
-from "gradients.nut" import mkColoredGradientY, gradTranspDoubleSideX, gradDoubleTexOffset
+from "gradients.nut" import mkColoredGradientY, gradTranspDoubleSideX, gradDoubleTexOffset, simpleVerGrad
 from "updaterState.nut" import needUpdateMsg, needRestartMsg, needDownloadAcceptMsg, needNotEnoughDiskSpaceMsg,
   totalSizeBytes, freeDiskSpaceMB, requiredDiskSpaceMB, closeDownloadWarning, isFailedToGetVersion
 
@@ -108,8 +108,8 @@ function mkButton(text, onClick) {
       size = FLEX
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      rendObj = ROBJ_9RECT
-      image = Picture($"ui/gameuiskin#gradient_button.svg")
+      rendObj = ROBJ_IMAGE
+      image = simpleVerGrad
       padding = buttonBorderWidth
       color = 0xFFEEEEEE
       children = {
@@ -122,9 +122,9 @@ function mkButton(text, onClick) {
         children = [
           {
             size = FLEX
-            rendObj = ROBJ_9RECT
+            rendObj = ROBJ_IMAGE
             color = 0xFF7395CF
-            image = Picture($"ui/gameuiskin#gradient_button.svg")
+            image = simpleVerGrad
           }
           {
             size = const [buttonTextWidth, SIZE_TO_CONTENT]

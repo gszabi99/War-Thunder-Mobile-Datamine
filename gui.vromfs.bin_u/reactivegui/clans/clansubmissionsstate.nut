@@ -10,8 +10,8 @@ from "%rGui/contacts/contact.nut" import validateNickNames
 
 const COMPLETE_REQUEST_ID = "on_clan_complete_request"
 
-let clanSubmissionsUids = mkWatched(persist, "clanSubmissionsUids", {})
-let hasClanSubmissions = Computed(@() clanSubmissionsUids.get().len() > 0)
+let clanSubmissions = mkWatched(persist, "clanSubmissions", [])
+let hasClanSubmissions = Computed(@() clanSubmissions.get().len() > 0)
 let submissionsClanId = keepref(Computed(function() {
   let clanId = currentClanId.get() ?? -1
   return allow_clans.get() && hasClanPermission(CLAN_JOIN_LIST, clanGrades.get(), myClanGrade.get()) ? clanId : -1
@@ -29,45 +29,44 @@ function refreshClanSubmissions() {
 function completeClanRequest(clanId, userId, accept) {
   if (clanId == null || !canCompleteClanRequest.get() || userId in clanRequestResponseInProgress.get())
     return
-
-  let requestorProjectId = clanSubmissionsUids.get()?[userId.tostring()].userProjectId
-  clan_complete_request(clanId, accept, userId, requestorProjectId, { id = COMPLETE_REQUEST_ID, clanId, userId, accept })
+  let { userProjectId = null } = clanSubmissions.get().findvalue(@(v) v.userId == userId)
+  if (userProjectId == null)
+    return
+  clan_complete_request(clanId, accept, userId, userProjectId, { id = COMPLETE_REQUEST_ID, clanId, userId, accept })
 }
 
-let approveClanSubmission = @(userId) completeClanRequest(currentClanId.get(), userId.tointeger(), true)
-let rejectClanSubmission = @(userId) completeClanRequest(currentClanId.get(), userId.tointeger(), false)
+let approveClanSubmission = @(userId) completeClanRequest(currentClanId.get(), userId, true)
+let rejectClanSubmission = @(userId) completeClanRequest(currentClanId.get(), userId, false)
 
 registerHandler(JOIN_LIST_ID, function(res, context) {
   if (handleClanError(res) || context.clanId != submissionsClanId.get())
     return
 
-  let uids = {}
-  foreach (user in (res?.users ?? []))
-    if (user?.userId != null)
-      uids[user.userId.tostring()] <- { userProjectId = user?.userProjectId, message = user?.message }
-
-  clanSubmissionsUids.set(uids)
-  validateNickNames(uids.keys())
+  let submissions = (res?.users ?? []).filter(@(v) "userId" in v && "userProjectId" in v)
+  clanSubmissions.set(submissions)
+  validateNickNames(submissions.map(@(s) s.userId.tostring()))
 })
 
 registerHandler(COMPLETE_REQUEST_ID, function(res, context) {
   if (handleClanError(res) || context.clanId != submissionsClanId.get())
     return
-
-  clanSubmissionsUids.mutate(@(v) v.$rawdelete(context.userId.tostring()))
+  let { userId } = context
+  let idx = clanSubmissions.get().findindex(@(v) v.userId == userId)
+  if (idx != null)
+    clanSubmissions.mutate(@(v) v.remove(idx))
 })
 
 function onSubmissionsClanId(clanId) {
   if (clanId >= 0)
     refreshClanSubmissions()
   else
-    clanSubmissionsUids.set({})
+    clanSubmissions.set([])
 }
 onSubmissionsClanId(submissionsClanId.get())
 submissionsClanId.subscribe(onSubmissionsClanId)
 
 return {
-  clanSubmissionsUids
+  clanSubmissions
   hasClanSubmissions
   clanRequestResponseInProgress
   canCompleteClanRequest

@@ -26,10 +26,12 @@ function contactsList(uidsList, playerSelectedUserId, responseAction, leftConten
           children = ordered.get()
             .map(@(uid, idx) mkContactRow(uid, idx,
               Computed(@() playerSelectedUserId.get() == uid),
-              @() playerSelectedUserId.set(uid),
+              @() playerSelectedUserId.modify(@(v) v == uid ? null : uid),
               responseAction?(uid),
               leftContent?(uid)))
-        }, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
+        },
+        {},
+        { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
       mkScrollArrow(scrollHandler, MR_B)
     ]
   }
@@ -58,7 +60,7 @@ function contactsBlock(uidsList, playerSelectedUserId, responseAction, emptyText
 
 let buttons = @(selectedUserId, mkContactActions) @() {
   watch = selectedUserId
-  size = [saSize[0], SIZE_TO_CONTENT]
+  size = [FLEX, SIZE_TO_CONTENT]
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   valign = ALIGN_BOTTOM

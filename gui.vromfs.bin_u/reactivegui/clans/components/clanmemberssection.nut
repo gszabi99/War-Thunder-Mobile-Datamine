@@ -1,5 +1,6 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/string.nut" import utf8ToLower
 from "%sqstd/time.nut" import TIME_DAY_IN_SECONDS
 from "%appGlobals/userstats/serverTime.nut" import getServerTime, isServerTimeValid
 from "%appGlobals/activeControls.nut" import isGamepad
@@ -9,7 +10,7 @@ from "%appGlobals/profileStates.nut" import myUserId
 from "%appGlobals/pServer/campaign.nut" import campaignsList
 from "%appGlobals/pServer/clanServConfigs.nut" import clanServerConfigs
 from "%appGlobals/permissions.nut" import allow_clans_chat
-from "%rGui/clans/clanCfg.nut" import memberSortOptions, memberSortingCfg, gradesSettingscfg
+from "%rGui/clans/clanCfg.nut" import gradesSettingscfg
 from "%rGui/clans/components/clanComps.nut" import mkButtonText, mkSectionText, divider, mkGradeIcon
 from "%rGui/clans/components/clanPropertyBtn.nut" import mkClanChangeBtn
 from "%rGui/clans/components/chooseValueWnd.nut" import openChooseValueWnd
@@ -48,6 +49,25 @@ const gradeIconSize = hdpxi(36)
 const gradeColumnWidth = hdpx(260)
 
 const sortDirectionIcon = "ui/gameuiskin#triangle.svg"
+
+const CMS_CAMPAIGNS = "campaigns"
+const CMS_RANK = "rank"
+const CMS_NAME = "alphabet"
+
+const memberSortPriority = [CMS_RANK, CMS_CAMPAIGNS, CMS_NAME]
+const defSortValue = memberSortPriority[0]
+let sortingBy = mkWatched(persist, "sortingBy", defSortValue)
+let isSortAscending = mkWatched(persist, "isSortAscending", false)
+
+let memberSortingCfg = {
+  locTitle = "clans/members/sortBy"
+  values = memberSortPriority
+  valToString = @(v) $"clans/members/sort/{v}"
+  btnMinWidth = hdpx(300)
+  col = 3
+}
+
+let nickToLower = memoize(utf8ToLower)
 
 let mkMemberAvatar = @(info) @() {
   watch = info
@@ -116,15 +136,15 @@ let mkLeaveBtn = @(isMyUser, gradeStr) function() {
   }
 }
 
-let mkSortDirectionBtn = @(sortingDirection) @() {
-  watch = [sortingDirection, isGamepad]
+let sortDirectionBtn = @() {
+  watch = [isSortAscending, isGamepad]
   children = iconButtonCommon(sortDirectionIcon,
-    @() sortingDirection.set(!sortingDirection.get()),
+    @() isSortAscending.set(!isSortAscending.get()),
     {
       iconOvr = {
         size = iconSize
         keepAspect = true
-        transform = { rotate = sortingDirection.get() ? 0 : 180 }
+        transform = { rotate = isSortAscending.get() ? 180 : 0 }
       }
       ovr = {
         size = isGamepad.get() ? [btnIconSize * 2, btnIconSize] : [btnIconSize, btnIconSize]
@@ -147,7 +167,7 @@ function mkMembersText(maxMembers, curMembers) {
   }
 }
 
-function mkHeaderActionsRow(sortingBy, sortingDirection, maxMembers, curMembers) {
+function mkHeaderActionsRow(maxMembers, curMembers) {
   let sortAction = @() openChooseValueWnd(memberSortingCfg, sortingBy, @(v) sortingBy.set(v))
   return {
     size = const [FLEX, rowHeight]
@@ -158,7 +178,7 @@ function mkHeaderActionsRow(sortingBy, sortingDirection, maxMembers, curMembers)
     padding = gapSection
     valign = ALIGN_CENTER
     children = [
-      mkSortDirectionBtn(sortingDirection)
+      sortDirectionBtn
       @() {
         watch = sortingBy
         children = mkClanChangeBtn(mkButtonText(sortingBy.get(), memberSortingCfg),
@@ -282,8 +302,6 @@ let mkMembersList = @(clanW, members) @() {
 }
 
 function mkClanMembersSection(clanW) {
-  let sortingBy = Watched(memberSortOptions[0].id)
-  let sortingDirection = Watched(true)
   let hasClan = Computed(@() clanW.get() != null)
   let maxMembers = Computed(@() clanW.get()?.maxMembers ?? 0)
   let curMembers = Computed(@() clanW.get()?.users.len() ?? 0)
@@ -291,28 +309,35 @@ function mkClanMembersSection(clanW) {
   let members = Computed(function() {
     let users = clanW.get()?.users ?? []
     let sortingId = sortingBy.get()
-    let isAscending = sortingDirection.get()
+    let isAscending = isSortAscending.get()
 
-    let option = memberSortOptions.findvalue(@(item) item.id == sortingId) ?? memberSortOptions[0]
-    let ctx = option.buildCtx(users, {
-      campaigns = @() campaignsList.get()
-      allInfo = @() allPublicInfo.get()
-      contacts = @() allContacts.get()
-      grades = @() clanServerConfigs.get()?.grades ?? {}
+    let campaigns = campaignsList.get()
+    let allInfo = allPublicInfo.get()
+    let contacts = allContacts.get()
+    let grades = clanServerConfigs.get()?.grades ?? {}
+
+    let decorated = users.map(function(user) {
+      let uid = user.userId.tostring()
+      let res = { user, uid }
+      res[CMS_NAME] <- nickToLower(contacts?[uid].realnick ?? uid)
+      res[CMS_RANK] <- grades?[user?.gradeStr].order ?? -1
+      if (sortingId == CMS_CAMPAIGNS) {
+        let userCampaigns = allInfo?[uid]?.general.campaigns
+        res[CMS_CAMPAIGNS] <- campaigns.reduce(@(r, c) r + (userCampaigns?[c].level ?? 0), 0)
+      }
+      res.primeKey <- res?[sortingId] ?? 0
+      return res
     })
 
-    let decorated = users.map(@(user) {
-      user
-      uid = user.userId.tostring()
-      key = option.getKey(user, ctx)
-    })
+    let sortPrime = sortingId == CMS_NAME ? @(a, b) b.primeKey <=> a.primeKey
+      : @(a, b) a.primeKey <=> b.primeKey
 
-    decorated.sort(function(a, b) {
-      let primaryCmp = a.key <=> b.key
-      if (primaryCmp != 0)
-        return isAscending ? primaryCmp : -primaryCmp
-      return a.uid <=> b.uid
-    })
+    let sortFunc = @(a, b) sortPrime(a, b)
+      || a[CMS_RANK] <=> b[CMS_RANK]
+      || b[CMS_NAME] <=> a[CMS_NAME]
+      || a.uid <=> b.uid
+
+    decorated.sort(isAscending ? sortFunc : @(a, b) sortFunc(b, a)) 
 
     return decorated.map(@(item) item.user)
   })
@@ -335,7 +360,7 @@ function mkClanMembersSection(clanW) {
     children = !hasClan.get()
       ? null
       : [
-          mkHeaderActionsRow(sortingBy, sortingDirection, maxMembers, curMembers)
+          mkHeaderActionsRow(maxMembers, curMembers)
           divider
           mkMembersList(clanW, members)
         ]

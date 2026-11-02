@@ -2,8 +2,10 @@ from "%globalsDarg/darg_library.nut" import *
 from "app" import get_cur_circuit_name
 from "blkGetters" import get_local_custom_settings_blk
 from "console" import register_command
+from "dagor.clipboard" import set_clipboard_text
 from "dagor.http" import httpRequest, HTTP_SUCCESS
 from "dagor.iso8601" import parse_unix_time
+from "dagor.system" import DBGLEVEL
 from "dagor.time" import get_time_msec
 from "dagor.workcycle" import setTimeout, clearTimer
 from "eventbus" import eventbus_subscribe, eventbus_send
@@ -17,6 +19,7 @@ from "%appGlobals/loginState.nut" import isLoggedIn, isOnlineSettingsAvailable
 from "%appGlobals/pServer/campaign.nut" import sharedStats
 from "%rGui/language.nut" import wtmobLngId
 from "%rGui/components/modalWindows.nut" import hasModalWindows
+from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/mainMenu/mainMenuState.nut" import isMainMenuAttached
 from "types" import Integer, String
 
@@ -321,8 +324,17 @@ function openNewsWndTagged(tag) {
   let article = newsfeed.get().findvalue(@(v) v.tags?.contains(tag))
   if (article)
     playerSelectedArticleId.set(article.id)
-  else
+  else {
     logN($"No news article found with tag: \"{tag}\"")
+    if (DBGLEVEL > 0)
+      openMsgBox({
+        text = $"DEBUG: No news article found with tag:\n\"{tag}\""
+        buttons = [
+          { text = loc("gblk/saveError/copy"), cb = @() set_clipboard_text(tag) }
+          { id = "ok", styleId = "PRIMARY", isDefault = true }
+        ]
+      })
+  }
   openNewsWnd()
 }
 

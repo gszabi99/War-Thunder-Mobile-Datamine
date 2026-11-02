@@ -5,20 +5,17 @@ from "%rGui/clans/clanChatState.nut" import hasClanChatUnseen
 from "%rGui/clans/clanPermissions.nut" import CLAN_JOIN_LIST, clanGrades, hasClanPermission
 from "%rGui/clans/clanQuestsState.nut" import hasClanQuestsUnseen, clanQuestsEndsAt
 from "%rGui/clans/clanState.nut" import getClanDisplayName, isClanInfoOpen, closeClanInfo, viewedClan
-from "%rGui/clans/clanSubmissions.nut" import mkClanSubmissionResponse, mkClanSubmissionMessage
-from "%rGui/clans/clanSubmissionsState.nut" import clanSubmissionsUids, hasClanSubmissions
+from "%rGui/clans/clanSubmissionsState.nut" import hasClanSubmissions
 from "%rGui/clans/components/clanBadge.nut" import mkClanBadgePreview
 from "%rGui/clans/currentClanState.nut" import currentClan, myClanGrade
 import "%rGui/clans/pages/clanChatPage.nut" as clanChatPage
 import "%rGui/clans/pages/clanQuestsPage.nut" as mkClanQuestsPage
 import "%rGui/clans/pages/clanSquadsPage.nut" as clanSquadsPage
+import "%rGui/clans/pages/clanSubmissionsPage.nut" as clanSubmissionsPage
 import "%rGui/clans/pages/myClanPage.nut" as myClanPage
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/gradientDefComps.nut" import headerGradientBg
 from "%rGui/components/timerBlock.nut" import mkTimer
-from "%rGui/contacts/contactActions.nut" import PROFILE_VIEW
-from "%rGui/contacts/mkContactActionBtn.nut" import mkContactActionBtn
-from "%rGui/contacts/mkContactListScene.nut" import mkContactListScene
 from "%rGui/options/mkOptionsScene.nut" import mkOptionsScene
 from "%rGui/style/stdColors.nut" import textColor
 from "%rGui/unlocks/userstat.nut" import registerUnlocksSceneToUpdate
@@ -86,12 +83,7 @@ let tabs = [
     locId = "clan/submissions"
     image = "ui/gameuiskin#icon_clan_submissions.svg"
     isFullWidth = true
-    content = mkContactListScene(clanSubmissionsUids,
-      @(userId) [mkContactActionBtn(PROFILE_VIEW, userId, { hotkeys = ["^J:LT"] })],
-      mkClanSubmissionResponse,
-      loc("clan/submissions/empty"),
-      mkClanSubmissionMessage
-    )
+    content = clanSubmissionsPage
     isVisible = Computed(@() hasClanSubmissions.get()
       && hasClanPermission(CLAN_JOIN_LIST, clanGrades.get(), myClanGrade.get()))
     unseen = Computed(@() hasClanSubmissions.get() ? UNSEEN_HIGH : SEEN)

@@ -99,7 +99,7 @@ let contactsList = {
           .sort(@(a, b) a.name <=> b.name)
           .map(@(c, idx) mkContactRow(c.uid, idx,
             Computed(@() selectedUserId.get() == c.uid),
-            @() playerSelectedUserId.set(c.uid)))
+            @() playerSelectedUserId.modify(@(v) c.uid == v ? null : c.uid)))
       }, {}, { behavior = [ Behaviors.Pannable, Behaviors.ScrollEvent ], scrollHandler })
     mkScrollArrow(scrollHandler, MR_B)
   ]

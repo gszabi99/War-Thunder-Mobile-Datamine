@@ -23,7 +23,12 @@ const RETRY_MSG_TIME_MSEC = 1000
 const RETRY_MSG_TIME_ADD_MSEC = 1000
 
 let retryOnError = [ CLIENT_ERROR_OFFLINE, SERVER_ERROR_REQUEST_TIMEOUT ]
-  .totable()
+  .reduce(function(res, v) {
+      res[v] <- v
+      res[v | 0xFFFFFFFF00000000] <- v
+      return res
+    },
+    {})
 
 let chatLogs = hardPersistWatched("chatLogs", {})
 let pendingChatLogs = hardPersistWatched("pendingChatLogs", {})

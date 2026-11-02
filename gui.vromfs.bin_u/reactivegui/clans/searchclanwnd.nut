@@ -13,7 +13,8 @@ from "%rGui/clans/components/clanBadge.nut" import mkClanBadgePreview
 from "%rGui/clans/components/clanComps.nut" import maskToCampaigns
 from "%rGui/clans/currentClanState.nut" import currentClanId, NO_CLAN_ID
 from "%rGui/clans/lastClanRewardsBtn.nut" import lastClanRewardsBtn
-from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
+from "%rGui/components/buttonStyles.nut" import defButtonHeight
+from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose, wndHeaderHeight
 from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
 from "%rGui/components/textButton.nut" import textButtonPrimary
 from "%rGui/components/textInput.nut" import floatingTextInput
@@ -35,6 +36,9 @@ const campaignIconSize = hdpx(40)
 const rowBgOddColor = 0x60000000
 const rowBgEvenColor = 0x60141414
 const defMaxUsersCount = 30
+const modalWndSize = const [sw(70), sh(80)]
+let clanListHeightMax = modalWndSize[1].tointeger() - wndHeaderHeight - textInputHeight - wndPadding * 4
+let clanListHeightMin = clanListHeightMax - defButtonHeight
 
 let lookupClansDebounced = debounce(lookupClans, onChangeDelay)
 searchClanNameCleared.subscribe(@(_) is_pc ? lookupClansDebounced() : lookupClans())
@@ -124,26 +128,34 @@ let mkRow = @(clan) {
   ]
 }
 
-let pannableArea = verticalPannableAreaCtor(sh(37), [0, 0])
-let mkClansTable = @() pannableArea(@() {
-  watch = foundedClans
-  rendObj = ROBJ_SOLID
-  size = FLEX_H
-  flow = FLOW_VERTICAL
-  padding = hdpx(20)
-  color = 0xFF030C13
-  children = foundedClans.get().len() == 0 ? null
-    : foundedClans.get().map(@(clan, idx) {
-        size = const [FLEX, hdpx(60)]
-        rendObj = ROBJ_BOX
-        fillColor = (idx % 2) ? rowBgOddColor : rowBgEvenColor
-        flow = FLOW_HORIZONTAL
-        borderColor = selectColor
-        behavior = Behaviors.Button
-        onClick = @() openClanInfo(clan)
-        children = mkRow(clan)
-      })
-})
+let pannableAreaMax = verticalPannableAreaCtor(clanListHeightMax, [0, 0])
+let pannableAreaMin = verticalPannableAreaCtor(clanListHeightMin, [0, 0])
+let pannableAreaW = Computed(@() currentClanId.get() == NO_CLAN_ID ? pannableAreaMin
+  : pannableAreaMax)
+
+let mkClansTable = @() @() {
+  watch = pannableAreaW
+  size = FLEX
+  children = pannableAreaW.get()(@() {
+    watch = foundedClans
+    rendObj = ROBJ_SOLID
+    size = FLEX_H
+    flow = FLOW_VERTICAL
+    padding = hdpx(20)
+    color = 0xFF030C13
+    children = foundedClans.get().len() == 0 ? null
+      : foundedClans.get().map(@(clan, idx) {
+          size = const [FLEX, hdpx(60)]
+          rendObj = ROBJ_BOX
+          fillColor = (idx % 2) ? rowBgOddColor : rowBgEvenColor
+          flow = FLOW_HORIZONTAL
+          borderColor = selectColor
+          behavior = Behaviors.Button
+          onClick = @() openClanInfo(clan)
+          children = mkRow(clan)
+        })
+  })
+}
 
 let lookupInProgress = Computed(@() clansLookupInProgress.get().len() > 0 || clanInfoInProgress.get().len() > 0)
 
@@ -152,7 +164,7 @@ let searchClanWnd = bgShaded.__merge({
   size = FLEX
   children = [
     modalWndBg.__merge({
-      size = const [sw(70), sh(80)]
+      size = modalWndSize
       children = [
         function() {
           let clansTable = mkClansTable()

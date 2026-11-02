@@ -145,9 +145,11 @@ function matchingRequestImpl(cmd, params = null, cb = null) {
   if (cb != null) {
     if (reqId != null)
       addCallback(reqId.tostring(), cb)
-    else
+    else {
+      log("[MATCHING] > ignore call: ", cmd, params, "\nerror: ", res)
       
       callAllDefferd(cb, { error = res?.error ?? "Unknown error" })
+    }
   }
   return reqId
 }

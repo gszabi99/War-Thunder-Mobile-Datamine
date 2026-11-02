@@ -66,15 +66,12 @@ const DAYS_TO_EARN_FREEZE_POINT = 12
 const FREEZE_POINTS_EARN = 1
 const FREEZE_POINTS_SPEND = 1
 const FREEZE_POINTS_MAX = 30
+const freezeAlertHoldTime = 2.0
+const freezeAlertFadeTime = 1.0
 const freezePointsColor = 0xFF088BCA
 const freezeProgressColor = 0xFF00BBFF
 let freezePointsIcon = colorize(freezePointsColor, "\u2685")
 const freezeInfoPad = hdpx(10)
-let freezePointsAdded = keepref(Computed(@() !show_daily_login_freeze.get() ? 0
-  : (userstatStats.get()?.stats.daily.meta_common.daily_login_guard_added ?? 0)))
-let freezePointsSpent = keepref(Computed(@() !show_daily_login_freeze.get() ? 0
-  : (userstatStats.get()?.stats.daily.meta_common.daily_login_guard_spent ?? 0)))
-let freezePointsChangeMsgboxSeen = mkWatched(persist, "freezePointsChangeMsgboxSeen", {})
 
 local lastAnimState = -1
 local animStateStartTime = 0
@@ -507,10 +504,16 @@ function dayInRowInfo() {
 }
 
 let freezePointsInfoBgImg = mkColoredGradientY(0xFF002E5B, 0xFF003B78)
+let freezePointsAlertBgImg = mkColoredGradientY(0xFF00BBFF, 0xFFFFFFFF)
 let freezePointsTextProps = {
   vplace = ALIGN_CENTER
   color = freezePointsColor
   ...fontTinyAccented
+}
+let freezePointsAlertTextProps = {
+  ...freezePointsTextProps
+  hplace = ALIGN_CENTER
+  color = 0xFF000000
 }
 let mkFpValStr = @(count) $"{count}{freezePointsIcon}"
 let freezePointsTooltipCtor = @() loc("dailyRewards/freeze/desc",
@@ -520,7 +523,26 @@ let freezePointsTooltipCtor = @() loc("dailyRewards/freeze/desc",
 function freezePointsBlock() {
   if (!show_daily_login_freeze.get())
     return { watch = show_daily_login_freeze }
-  let { daily_login_streak = 0, daily_login_guard = 0 } = userstatStats.get()?.stats.daily.meta_common
+  let { daily_login_streak = 0, daily_login_guard = 0,
+    daily_login_guard_added = 0, daily_login_guard_spent = 0 } = userstatStats.get()?.stats.daily.meta_common
+  let statusId = daily_login_guard_added > 0 && daily_login_guard_spent > 0 ? "addedAndSpent"
+    : daily_login_guard_added > 0 ? "added"
+    : daily_login_guard_spent > 0 ? "spent"
+    : "available"
+  let statusStr = loc($"dailyRewards/freeze/status/{statusId}", {
+    count = daily_login_guard
+    total = mkFpValStr(FREEZE_POINTS_MAX)
+    addedCount = mkFpValStr(daily_login_guard_added)
+    spentCount = mkFpValStr(daily_login_guard_spent)
+  })
+  let progressStr = loc("dailyRewards/freeze/daysInRow", { freezePoints = mkFpValStr(FREEZE_POINTS_EARN),
+    days = daily_login_streak, daysTotal = DAYS_TO_EARN_FREEZE_POINT })
+  let alertStr = daily_login_guard_spent > 0
+      ? loc("dailyRewards/freeze/spent", { freezePoints = mkFpValStr(daily_login_guard_spent) })
+    : daily_login_guard_added > 0
+      ? loc("dailyRewards/freeze/earned",
+          { freezePoints = mkFpValStr(daily_login_guard_added), daysTotal = DAYS_TO_EARN_FREEZE_POINT })
+    : ""
   return {
     watch = [ userstatStats, show_daily_login_freeze ]
     size = [max(itemBlockSize[0], saSize[0]), SIZE_TO_CONTENT]
@@ -528,24 +550,43 @@ function freezePointsBlock() {
     children = [
       {
         size = FLEX_H
-        rendObj = ROBJ_BOX
-        image = freezePointsInfoBgImg
-        fillColor = 0xFFFFFFFF
-        padding = [freezeInfoPad, max(freezeInfoPad, (itemBlockSize[0] - saSize[0]) / 2)]
         children = [
-          mkTextarea(loc("dailyRewards/freeze/daysInRow", { freezePoints = mkFpValStr(FREEZE_POINTS_EARN),
-            days = daily_login_streak, daysTotal = DAYS_TO_EARN_FREEZE_POINT }),
-            freezePointsTextProps)
           {
-            flow = FLOW_HORIZONTAL
-            hplace = ALIGN_RIGHT
-            vplace = ALIGN_CENTER
-            gap = hdpx(20)
+            size = FLEX_H
+            rendObj = ROBJ_BOX
+            image = freezePointsInfoBgImg
+            fillColor = 0xFFFFFFFF
+            padding = [freezeInfoPad, max(freezeInfoPad, (itemBlockSize[0] - saSize[0]) / 2)]
             children = [
-              mkTextarea(loc("item/balance", { count = "/".concat(daily_login_guard, mkFpValStr(FREEZE_POINTS_MAX)) }),
-                freezePointsTextProps)
-              infoTooltipButton(freezePointsTooltipCtor, { flow = FLOW_VERTICAL, valign = ALIGN_TOP })
+              mkTextarea(progressStr, freezePointsTextProps)
+              {
+                flow = FLOW_HORIZONTAL
+                hplace = ALIGN_RIGHT
+                vplace = ALIGN_CENTER
+                gap = hdpx(20)
+                children = [
+                  mkTextarea(statusStr, freezePointsTextProps)
+                  infoTooltipButton(freezePointsTooltipCtor, { flow = FLOW_VERTICAL, valign = ALIGN_TOP })
+                ]
+              }
             ]
+          }
+          alertStr == "" ? null : {
+            key = {}
+            size = FLEX_H
+            rendObj = ROBJ_BOX
+            image = freezePointsAlertBgImg
+            fillColor = 0xFFFFFFFF
+            padding = [freezeInfoPad, 0]
+            opacity = 0
+            transform = {}
+            animations = [
+              { prop = AnimProp.opacity, from = 1, to = 1, duration = freezeAlertHoldTime,
+                  easing = OutQuad, play = true }
+              { prop = AnimProp.opacity, from = 1, to = 0, delay = freezeAlertHoldTime,
+                  duration = freezeAlertFadeTime, easing = OutQuad, play = true }
+            ]
+            children = mkTextarea(alertStr, freezePointsAlertTextProps)
           }
         ]
       }
@@ -596,23 +637,6 @@ let awardScene = bgShaded.__merge({
 const sceneId = "loginAwardWnd"
 registerScene(sceneId, awardScene, close, isLoginAwardOpened)
 registerUnlocksSceneToUpdate(sceneId)
-
-freezePointsAdded.subscribe(function(v) {
-  let flag = "added"
-  if (v <= 0 || (freezePointsChangeMsgboxSeen.get()?[flag] ?? false))
-    return
-  openMsgBox({ text = loc("dailyRewards/freeze/earned", { freezePoints = mkFpValStr(v),
-    daysTotal = DAYS_TO_EARN_FREEZE_POINT }) })
-  freezePointsChangeMsgboxSeen.mutate(@(cfg) cfg[flag] <- true)
-})
-freezePointsSpent.subscribe(function(v) {
-  let flag = "spent"
-  if (v <= 0 || (freezePointsChangeMsgboxSeen.get()?[flag] ?? false))
-    return
-  openMsgBox({ text = loc("dailyRewards/freeze/spent", { freezePoints = mkFpValStr(v) }) })
-  freezePointsChangeMsgboxSeen.mutate(@(cfg) cfg[flag] <- true)
-})
-isAuthorized.subscribe(@(v) v ? null : freezePointsChangeMsgboxSeen.set({}))
 
 register_command(
   function() {

@@ -33,6 +33,7 @@ from "%rGui/clans/clanPublicInfo.nut" import updateClanPublicInfo
 from "%rGui/clans/currentClanState.nut" import forceRefreshCurrentClan, resetCurrentClanInfo, currentClan, currentClanId,
   NO_CLAN_ID, shouldUpdateUserRequests
 from "%rGui/clans/filterClanState.nut" import clanFilterComp, resetFilter
+from "types" import String, Table
 
 
 const CLAN_SEARCH_ID = "clan_lookup"
@@ -89,10 +90,17 @@ let errorsToShow = ["USER_ALREADY_HAVE_CLAN", "FIELD_REQUIRED", "CLAN_IS_FULL", 
 let allowedValidationFields = ["name", "description", "message"].totable()
 
 function shouldShowErrorToPlayer(err) {
-  let { message = null, data = null } = err
-  if (message == "VALIDATOR_SERVER_REJECT_VALUE")
-    return data == null || data?.extra.field in allowedValidationFields
-  return message in errorsToShow
+  if (err instanceof Table && "message" in err) {
+    let { message = null, data = null } = err
+    if (message == "VALIDATOR_SERVER_REJECT_VALUE")
+      return data == null || data?.extra.field in allowedValidationFields
+    return message in errorsToShow
+  }
+
+  if (err instanceof String)
+    return err in errorsToShow
+
+  return false
 }
 
 function getClanLookupFilters() {
