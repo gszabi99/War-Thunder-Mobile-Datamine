@@ -6,13 +6,15 @@ from "%rGui/clans/components/clanComps.nut" import clanScrollBarStyle, mkGradeIc
 import "%rGui/clans/clanSquadCreateWnd.nut" as clanSquadCreateWnd
 from "%rGui/clans/clanSquadsState.nut" import requestClanSquads, clanSquadsList, SQUAD_OPEN, SQUAD_HIDDEN,
   isClanSquadLeader
+from "%rGui/clans/clanChatState.nut" import isInClanChat, clanChatMembers
 from "%rGui/clans/currentClanState.nut" import currentClan
 from "%rGui/components/buttonStyles.nut" import defButtonMinWidth
 from "%rGui/components/gradTexts.nut" import mkGradRank
 from "%rGui/components/scrollbar.nut" import makeVertScroll
 from "%rGui/components/textButton.nut" import textButtonCommon, textButtonPrimary, buttonsVGap
 from "%rGui/contacts/contact.nut" import validateNickNames, Contact
-from "%rGui/contacts/contactInfoPkg.nut" import contactNameBlock, contactAvatar
+from "%rGui/contacts/contactInfoPkg.nut" import contactNameBlock, contactAvatar, contactOnlineStatusBlock, gap
+from "%rGui/contacts/contactPresence.nut" import presences
 from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicInfo
 from "%rGui/gameModes/gameModeState.nut" import maxSquadSizeByCampaign, maxSquadSize
 from "%rGui/squad/squadManager.nut" import requestSquadMembership, myMembershipRequests, revokeSquadMembershipRequest
@@ -30,6 +32,11 @@ const campIconSize = evenPx(60)
 
 const flexGapComp = { size = FLEX }
 const tblGapComp = { size = [buttonsVGap, 0] }
+
+const delayedShowAnimations = [
+  { prop = AnimProp.opacity, from = 0, to = 0, duration = 0.3, play = true }
+  { prop = AnimProp.opacity, from = 0, to = 1, delay = 0.3, duration = 0.15, easing = InQuad, play = true }
+]
 
 let isAttached = Watched(false)
 
@@ -122,7 +129,14 @@ function mkSquadRow(squad, idx) {
         : myMembershipRequests.get()?[leader]
           ? textButtonCommon(utf8ToUpper(loc("revokeMembershipRequest")),
               @() revokeSquadMembershipRequest(leader),
-              { ovr = { size = [rowBtnWidth, rowBtnHeight], minWidth = rowBtnWidth } })
+              {
+                ovr = {
+                  key = "revokeRequest"
+                  size = [rowBtnWidth, rowBtnHeight]
+                  minWidth = rowBtnWidth
+                  animations = delayedShowAnimations
+                }
+              })
         : textButtonPrimary(utf8ToUpper(loc(squadType == SQUAD_OPEN ? "join" : "requestToJoin")),
             @() requestSquadMembership(leader),
             { ovr = { size = [rowBtnWidth, rowBtnHeight], minWidth = rowBtnWidth } })
@@ -130,13 +144,25 @@ function mkSquadRow(squad, idx) {
   }
 }
 
+let mkSquadRowWithOnline = @(squad, idx) {
+  size = [FLEX, rowHeight]
+  flow = FLOW_HORIZONTAL
+  gap
+  valign = ALIGN_CENTER
+  children = [
+    contactOnlineStatusBlock(Computed(@() squad.leader in clanChatMembers.get()),
+      Computed(@() presences.get()?[squad.leader.tostring()].battleUnit))
+    mkSquadRow(squad, idx)
+  ]
+}
+
 let squadsList = @() {
-  watch = clanSquadsList
+  watch = [clanSquadsList, isInClanChat]
   size = FLEX_H
   flow = FLOW_VERTICAL
   children = clanSquadsList.get()
     .filter(@(s) (s?.data.squadType ?? SQUAD_HIDDEN) != SQUAD_HIDDEN)
-    .map(mkSquadRow)
+    .map(isInClanChat.get() ? mkSquadRowWithOnline : mkSquadRow)
 }
 
 return {

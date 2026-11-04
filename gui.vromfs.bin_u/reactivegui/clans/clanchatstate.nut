@@ -3,7 +3,7 @@ from "%sqstd/globalState.nut" import hardPersistWatched
 from "%appGlobals/clientState/clientState.nut" import isInMenu
 from "%appGlobals/permissions.nut" import allow_clans_chat
 from "%rGui/chat/chatState.nut" import joinClanChat, leaveChat, chatLogs, kickFromClanChat, mkChatHasUnseen,
-  chatLastSeenMsg, markChatSeenBeforeTime
+  chatLastSeenMsg, markChatSeenBeforeTime, chatMembers
 from "%rGui/clans/currentClanState.nut" import currentClanId, hasConfirmedClan, NO_CLAN_ID, myClanJoinTime
 from "%rGui/clans/clanState.nut" import registerOnClanKickCb
 from "%rGui/clans/clanToken.nut" import clanToken, isClanTokenForCurrent, isDelayTokenByErrorForCurrent,
@@ -23,12 +23,17 @@ let needJoinChat = keepref(Computed(@() !isInClanChat.get() && allowJoinChat.get
   && !isDelayTokenByErrorForCurrent.get() && isClanTokenForCurrent.get()))
 let needLeaveChat = keepref(Computed(@() isInClanChat.get() && currentClanId.get() != joinedClanChatInfo.get()?.clanId))
 let needToKickUsers = keepref(Computed(@() isInClanChat.get() && isClanTokenForCurrent.get() && usersToKick.get().len() > 0))
+let clanChatMembers = Computed(@() chatMembers.get()?[clanChatId.get()] ?? {})
 
 matchingRegisterHandler("onClanChatJoin", function(r, context) {
   let { clanId } = context
   if (clanId != currentClanId.get())
     return
   if ("error" in r) {
+    if (r?.error_id == "CHAT.CLAN_TOKEN_EXPIRED") {
+      clanToken.set(null)
+      return
+    }
     addTokenErrorDelay(clanId)
     return
   }
@@ -98,4 +103,6 @@ let clanChatUnseen = mkChatHasUnseen(clanChatId)
 return {
   clanChatId
   hasClanChatUnseen = Computed(@() !allow_clans_chat.get() ? false : clanChatUnseen.get())
+  isInClanChat
+  clanChatMembers
 }

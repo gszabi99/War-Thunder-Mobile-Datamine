@@ -2,13 +2,19 @@ from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import resetTimeout
 from "math" import ceil
 from "%sqstd/platform.nut" import is_pc
+from "%sqstd/string.nut" import utf8ToUpper
+from "%appGlobals/pServer/pServerApi.nut" import clanRequestResponseInProgress
 from "%rGui/clans/clanSubmissionsState.nut" import approveClanSubmission, rejectClanSubmission,
-  clanRequestResponseInProgress, canCompleteClanRequest, clanSubmissions, hasClanSubmissions
+  canCompleteClanRequest, clanSubmissions, hasClanSubmissions, rejectAllClanSubmissions, approveAllClanSubmissions,
+  isAllSubmissionsInProgress
+from "%rGui/clans/currentClanState.nut" import currentClan
+from "%rGui/components/buttonStyles.nut" import defButtonMinWidth
 from "%rGui/components/closeWndBtn.nut" import closeWndBtn
 from "%rGui/components/gradientDefComps.nut" import headerHeightInSafeArea, headerMargin
 from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/paginator.nut" import mkPaginator, paginatorHeight
-from "%rGui/components/textButton.nut" import iconButtonCommon, iconButtonInactive
+from "%rGui/components/spinner.nut" import spinner
+from "%rGui/components/textButton.nut" import iconButtonCommon, iconButtonInactive, textButtonCommon
 from "%rGui/components/textInput.nut" import floatingTextInput
 from "%rGui/contacts/contact.nut" import Contact, getContactNick, allContacts
 from "%rGui/contacts/contactInfoPkg.nut" import gap, rowHeight
@@ -19,20 +25,22 @@ from "%rGui/style/stdColors.nut" import tabBgColor
 from "%rGui/unit/unitNameSearch.nut" import mkSearchTokenMemoized
 
 
-const textInputHeight = evenPx(60)
+const textInputHeight = evenPx(80)
 const searchIconSize = evenPx(40)
 const resetImgHeight = evenPx(30)
 const btnMargin = hdpx(8)
-const gapY = 2 * btnMargin
+const bigGap = 2 * btnMargin
 
 const btnIconSize = evenPx(50)
-const listHeight = saSize[1] - headerHeightInSafeArea - headerMargin - textInputHeight - 2 * gapY - paginatorHeight
+const listHeight = saSize[1] - headerHeightInSafeArea - headerMargin - textInputHeight - 2 * bigGap - paginatorHeight
 const ROWS_IN_PAGE = (listHeight / rowHeight).tointeger()
 const msgIcon = "ui/gameuiskin#icon_clan_letter.svg"
 
 let curPage = mkWatched(persist, "curPage", 0)
 let searchName = mkWatched(persist, "searchName", "")
 let searchNameDeffered = Watched(searchName.get())
+
+let hasSpaceInClan = Computed(@() (currentClan.get()?.maxMembers ?? 0) > (currentClan.get()?.users.len() ?? 0))
 
 let updateSearchNameDeffered = @() searchNameDeffered.set(searchName.get())
 searchName.subscribe(is_pc ? @(_) resetTimeout(0.8, updateSearchNameDeffered)
@@ -51,12 +59,7 @@ let askRejectSubmission = @(userId) openMsgBox({
   text = loc("clans/submissions/askReject")
   buttons = [
     { id = "cancel", isCancel = true }
-    {
-      id = "reject"
-      styleId = "PRIMARY"
-      isDefault = true
-      cb = @() rejectClanSubmission(userId)
-    }
+    { id = "reject", cb = @() rejectClanSubmission(userId) }
   ]
 })
 
@@ -66,18 +69,25 @@ let openSubmissionRequest = @(contact, text) openMsgBox({
 })
 
 function mkClanSubmissionResponse(s) {
-  let isAllowed = Computed(@() canCompleteClanRequest.get() && s.userId not in clanRequestResponseInProgress.get())
+  let isInProgress = Computed(@() isAllSubmissionsInProgress.get() || s.userId in clanRequestResponseInProgress.get())
   return @() {
-    watch = isAllowed
+    watch = [canCompleteClanRequest, isInProgress, hasSpaceInClan]
     size = FLEX_V
+    valign = ALIGN_CENTER
+    halign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap
     margin = hdpx(8)
-    children = isAllowed.get()
-      ? [
-         iconButtonCommon("ui/gameuiskin#icon_party_not_ready.svg", @() askRejectSubmission(s.userId), btnDefOvr)
-         iconButtonCommon("ui/gameuiskin#icon_party_ready.svg", @() approveClanSubmission(s.userId), btnDefOvr)
-       ]
+    children = isInProgress.get() ? spinner
+      : canCompleteClanRequest.get()
+        ? [
+            iconButtonCommon("ui/gameuiskin#icon_party_not_ready.svg", @() askRejectSubmission(s.userId), btnDefOvr)
+            hasSpaceInClan.get()
+              ? iconButtonCommon("ui/gameuiskin#icon_party_ready.svg", @() approveClanSubmission(s.userId), btnDefOvr)
+              : iconButtonInactive("ui/gameuiskin#icon_party_ready.svg",
+                  @() openMsgBox({ text = loc("error/CLAN_IS_FULL") }),
+                  btnDefOvr)
+          ]
       : [
           iconButtonInactive("ui/gameuiskin#icon_party_not_ready.svg", null, btnDefOvr)
           iconButtonInactive("ui/gameuiskin#icon_party_ready.svg", null, btnDefOvr)
@@ -140,6 +150,58 @@ let searchBlock = {
   ]
 }
 
+let askRejectAll = @() openMsgBox({
+  text = loc("clans/submissions/askRejectAll")
+  buttons = [
+    { id = "cancel", isCancel = true }
+    { text = loc("btn/reject_all_applications"), cb = rejectAllClanSubmissions }
+  ]
+})
+
+function askApproveAll() {
+  let freeSlots = (currentClan.get()?.maxMembers ?? 0) - (currentClan.get()?.users.len() ?? 0)
+  openMsgBox({
+    text = loc(freeSlots >= clanSubmissions.get().len() ? "clans/submissions/askApproveAll"
+      : "clans/submissions/askApproveAll/moreThanFull")
+    buttons = [
+      { id = "cancel", isCancel = true }
+      { text = loc("btn/approve_all_applications"), cb = approveAllClanSubmissions }
+    ]
+  })
+}
+
+const btnOvr = { ovr = { size = [defButtonMinWidth, textInputHeight] } }
+let buttons = @() {
+  watch = [isAllSubmissionsInProgress, clanRequestResponseInProgress, hasSpaceInClan, clanSubmissions, canCompleteClanRequest]
+  size = [2 * defButtonMinWidth + gap, textInputHeight]
+  flow = FLOW_HORIZONTAL
+  gap
+  valign = ALIGN_CENTER
+  halign = ALIGN_RIGHT
+  children = isAllSubmissionsInProgress.get() || clanRequestResponseInProgress.get().len() > 0
+      ? spinner
+    : clanSubmissions.get().len() <= 1 || !canCompleteClanRequest.get() ? null
+    : [
+        !hasSpaceInClan.get() ? null
+          : textButtonCommon(utf8ToUpper(loc("btn/approve_all_applications")),
+              askApproveAll,
+              btnOvr)
+        textButtonCommon(utf8ToUpper(loc("btn/reject_all_applications")),
+          askRejectAll,
+          btnOvr)
+      ]
+}
+
+let buttonsRow = @() {
+  size = [FLEX, textInputHeight]
+  flow = FLOW_HORIZONTAL
+  gap = bigGap
+  children = [
+    searchBlock
+    buttons
+  ]
+}
+
 let watchedFalse = Watched(false)
 function mkClanSubmissionsPage() {
   let filtered = Computed(function() {
@@ -171,10 +233,10 @@ function mkClanSubmissionsPage() {
     key = pageSubmissions
     size = FLEX
     flow = FLOW_VERTICAL
-    gap = gapY
+    gap = bigGap
     onAttach = validateCurPage
     children = [
-      searchBlock
+      buttonsRow
       @() {
         watch = [pageSubmissions, hasClanSubmissions]
         size = FLEX

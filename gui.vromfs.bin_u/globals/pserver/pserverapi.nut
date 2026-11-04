@@ -1195,6 +1195,14 @@ return {
     params = { accept, requestorId, requestorProjectId }
   }, cb)
 
+  clan_reject_all_requests = @(clanId, cb = null) request({
+    method = "clan_reject_all_requests"
+    userid = clanId
+    projectId = CLAN_SERVER_PROJECT_ID
+    progressId = PROGRESS_CLAN_JOIN_RESPONSE
+    progressValue = -1
+  }, cb)
+
   get_user_join_requests = @(userProjectId, cb = null) request({
     method = "get_user_join_requests"
     projectId = CLAN_SERVER_PROJECT_ID

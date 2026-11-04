@@ -158,6 +158,11 @@
         "url": "https://contact-nightly-01.gaijin.net:4443/json"
       }
     },
+    "currency": {
+      "servers": {
+        "url": "https://currency-nightly-01.gaijin.net:7443/json-rcp"
+      }
+    },
     "userstat": {
       "servers": {
         "url": "https://userstat-nightly-01.gaijin.net:5443/char"
@@ -222,6 +227,14 @@
         "url": [
           "https://contact-staging-01.gaijin.net:7443/json",
           "https://contact-staging-02.gaijin.net:7443/json"
+        ]
+      }
+    },
+    "currency": {
+      "servers": {
+        "url": [
+          "https://currency-staging-01.gaijin.net:6443/json-rpc",
+          "https://currency-staging-02.gaijin.net:6443/json-rpc"
         ]
       }
     },
@@ -294,6 +307,11 @@
         "url": "https://contacts-stable-01.gaijin.net:9443/json"
       }
     },
+    "currency": {
+      "servers": {
+        "url": "https://currency-stable-01.gaijin.net:12443/json-rpc"
+      }
+    },
     "userstat": {
       "servers": {
         "url": "https://userstat-stable-01.gaijin.net:11443/char"
@@ -350,6 +368,11 @@
     "contacts": {
       "servers": {
         "url": "https://contacts-submission-01.gaijin.net:9443/json"
+      }
+    },
+    "currency": {
+      "servers": {
+        "url": "https://currency-submission-01.gaijin.net:12443/json-rpc"
       }
     },
     "userstat": {
@@ -431,6 +454,14 @@
         "url": [
           "https://contact-proxy-01.gaijin.net/json",
           "https://contact-proxy-02.gaijin.net/json"
+        ]
+      }
+    },
+    "currency": {
+      "servers": {
+        "url": [
+          "https://currency-production-01.gaijin.net/json-rpc",
+          "https://currency-production-02.gaijin.net/json-rpc"
         ]
       }
     },

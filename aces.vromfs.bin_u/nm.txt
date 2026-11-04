@@ -66366,3 +66366,11 @@ hdrSupport
 3000
 air_race_phiphi_islands_map*
 localScenes
+currency
+https://currency-nightly-01.gaijin.net:7443/json-rcp
+https://currency-staging-01.gaijin.net:6443/json-rpc
+https://currency-staging-02.gaijin.net:6443/json-rpc
+https://currency-stable-01.gaijin.net:12443/json-rpc
+https://currency-submission-01.gaijin.net:12443/json-rpc
+https://currency-production-01.gaijin.net/json-rpc
+https://currency-production-02.gaijin.net/json-rpc

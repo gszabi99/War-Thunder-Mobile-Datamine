@@ -11,6 +11,7 @@ from "%appGlobals/pServer/campaign.nut" import campaignsList
 from "%appGlobals/pServer/clanServConfigs.nut" import clanServerConfigs
 from "%appGlobals/permissions.nut" import allow_clans_chat
 from "%rGui/clans/clanCfg.nut" import gradesSettingscfg
+from "%rGui/clans/clanChatState.nut" import clanChatMembers
 from "%rGui/clans/components/clanComps.nut" import mkButtonText, mkSectionText, divider, mkGradeIcon
 from "%rGui/clans/components/clanPropertyBtn.nut" import mkClanChangeBtn
 from "%rGui/clans/components/chooseValueWnd.nut" import openChooseValueWnd
@@ -26,8 +27,6 @@ from "%rGui/decorators/decoratorState.nut" import chosenNickFrame, chosenTitle
 from "%rGui/clans/clanState.nut" import leaveClan
 from "%rGui/mpStatistics/viewProfile.nut" import viewProfile
 from "%rGui/style/gradients.nut" import simpleHorGradInv
-from "%rGui/chat/chatState.nut" import chatMembers
-from "%rGui/clans/clanChatState.nut" import clanChatId
 from "%rGui/style/stdColors.nut" import selectColor, nameColor, onlineColor, rowBgEvenColor, rowBgOddColor
 
 
@@ -192,7 +191,6 @@ function mkHeaderActionsRow(maxMembers, curMembers) {
   }
 }
 
-let clanChatMembers = Computed(@() chatMembers.get()?[clanChatId.get()] ?? {})
 let localLogoutTimes = hardPersistWatched("localLogoutTimes", {})
 local prevOnlineUsers = {}
 
