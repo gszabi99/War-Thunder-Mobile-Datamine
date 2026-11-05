@@ -375,28 +375,25 @@ function getClustersAndHostsForQueue(squadMembersVal) {
     || a.slowest <=> b.slowest)
   for (local minSize = squadSize; minSize > 0; minSize--) {
     foreach (needSkipFullyUnreachable in [ true, false ]) {
-      foreach (needFullReachability in (can_send_hosts_reachability_to_matching.get() ? [ false ] : [ true, false ])) {
-        foreach (slowestRttLimit in [ OPTIMAL_RTT_LIMIT_MS, OPTIMAL_RTT_LIMIT_MS_SQUAD, -1 ]) {
-          local stats = rttStatsList
-            .filter(@(v) v.size >= minSize
-              && (!needSkipFullyUnreachable || v.reachability > 0)
-              && (!needFullReachability || v.reachability == 1.0))
-          if (!stats.len())
-            continue
-          let rttLimit = slowestRttLimit != -1
-            ? slowestRttLimit
-            : stats.map(@(v) v.slowest).reduce(@(res, v) min(res, v))
-          stats = stats.filter(@(v) v.slowest <= rttLimit)
-          if (stats.len()) {
-            let deniedHosts = []
-            foreach (v in stats)
-              foreach (ip in v.unreachable)
-                if (!deniedHosts.contains(ip))
-                  deniedHosts.append(ip)
-            return {
-              clusters = stats.map(@(v) v.clusterId)
-              denied_hosts = deniedHosts
-            }
+      foreach (slowestRttLimit in [ OPTIMAL_RTT_LIMIT_MS, OPTIMAL_RTT_LIMIT_MS_SQUAD, -1 ]) {
+        local stats = rttStatsList
+          .filter(@(v) v.size >= minSize
+            && (!needSkipFullyUnreachable || v.reachability > 0))
+        if (!stats.len())
+          continue
+        let rttLimit = slowestRttLimit != -1
+          ? slowestRttLimit
+          : stats.map(@(v) v.slowest).reduce(@(res, v) min(res, v))
+        stats = stats.filter(@(v) v.slowest <= rttLimit)
+        if (stats.len()) {
+          let deniedHosts = []
+          foreach (v in stats)
+            foreach (ip in v.unreachable)
+              if (!deniedHosts.contains(ip))
+                deniedHosts.append(ip)
+          return {
+            clusters = stats.map(@(v) v.clusterId)
+            denied_hosts = deniedHosts
           }
         }
       }
