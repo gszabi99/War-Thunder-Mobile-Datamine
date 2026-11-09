@@ -58,6 +58,7 @@ let isTimeoutAfterRequest = mkIsTimePassed(lastTime, REQUEST_TIMEOUT_MS, @(v) v.
 let isRequestInProgress = Computed(@() lastTime.get().request > lastTime.get().update && !isTimeoutAfterRequest.get())
 let isClanInfoTimeExpired = mkIsTimePassed(lastTime, CLAN_INFO_LIFETIME_MS, @(v) isRequestInProgress.get() ? get_time_msec() : v.update)
 let isTimeExpired = Computed(@() currentClanId.get() != NO_CLAN_ID && isClanInfoTimeExpired.get())
+let isInitialClanInfoFetching = Computed(@() isRequestInProgress.get() && currentClanId.get() == NO_CLAN_ID)
 
 let canRefresh = @() !isRequestInProgress.get() && !isInBattle.get()
 
@@ -217,4 +218,5 @@ return {
   needUpdateUserRequests
   isReadyToConnect
   mkIsTimePassed
+  isInitialClanInfoFetching
 }

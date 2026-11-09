@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/clans/clanState.nut" import getClanDisplayName
+from "%rGui/clans/clanState.nut" import getClanDisplayName, openClanInfo
 from "%rGui/clans/components/clanBadge.nut" import mkClanBadgeImage
 from "%rGui/clans/clanPublicInfo.nut" import getUserClan
 
@@ -20,10 +20,15 @@ function mkByUserId(userId, ctor) {
 
 let mkPlayerClanIcon = @(userId) mkByUserId(userId, @(clan) mkClanBadgeImage(clan.badge, defIconSize))
 
-let mkPlayerClanRow = @(userId, iconSize, textStyle) mkByUserId(userId, @(clan) {
+let mkPlayerClanRow = @(userId, iconSize, textStyle, onOpen = null) mkByUserId(userId, @(clan) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = hdpx(10)
+  behavior = Behaviors.Button
+  function onClick() {
+    openClanInfo({ _id = clan.clanId })
+    onOpen?()
+  }
   children = [
     mkClanBadgeImage(clan.badge, iconSize)
     {

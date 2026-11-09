@@ -143,8 +143,7 @@ function mkBtnAppearAnim(needBlink, needShowW, children) {
 let mkBtnToHangar = @(needShow, debrData, isMainBtn, unlockedReward) mkBtnAppearAnim(false, needShow,
   (isMainBtn ? textButtonBattle : textButtonCommon)(
     utf8ToUpper(loc(unlockedReward.has ? $"return_to_hangar/lvlUnlocks/{unlockedReward.type}"
-      : (debrData?.campaign ?? "") != "" ? getCampaignPresentation(debrData.campaign).returnToHangarShortLocId
-      : "return_to_hangar/short"
+      : getCampaignPresentation(debrData?.campaign).returnToHangarShortLocId
     )),
     function() {
       if (activatingTimeBtns_Final.get() > get_time_msec())

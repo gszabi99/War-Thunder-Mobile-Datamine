@@ -25,11 +25,12 @@ from "%rGui/clans/clanQuestsState.nut" import hasClanQuestsUnseen
 from "%rGui/clans/clanState.nut" import openClanSearch, hasRequiredLvl, isClanBtnClicked, setClanBtnClicked,
   clanMinCampaignLevel
 from "%rGui/clans/clanSubmissionsState.nut" import hasClanSubmissions
-from "%rGui/clans/currentClanState.nut" import currentClan
+from "%rGui/clans/currentClanState.nut" import currentClanId, NO_CLAN_ID, isInitialClanInfoFetching
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/imageButton.nut" import framedGradientImageBtn
 from "%rGui/components/mkDropDownMenu.nut" import mkDropMenuBtn
 from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
+from "%rGui/components/spinner.nut" import mkSpinner
 from "%rGui/components/translucentButton.nut" import translucentButtonsVGap, translucentButtonsWidth,
   translucentButton, translucentBtnStyles, COMMADN_STATE
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark, mkUnseenMark
@@ -90,7 +91,8 @@ let campBtnSize = [translucentButtonsVGap * 2 + translucentButtonsWidth * 3, PRI
 let campBtnImageSize = [hdpx(60), hdpx(60)]
 const campBtnGap = hdpx(10)
 
-let isClanBtnLocked = Computed(@() !hasRequiredLvl.get() && currentClan.get() == null)
+let isClanBtnLocked = Computed(@() (!hasRequiredLvl.get() && currentClanId.get() == NO_CLAN_ID)
+  || isInitialClanInfoFetching.get())
 
 let mainMenuUnit = Computed(function() {
   if (curUnit.get() != null)
@@ -230,11 +232,13 @@ function clansBtn() {
   let clanUnseenMark = mkUnseenMark(clanUnseenPriority)
 
   let children = @() {
-    watch = isClanBtnLocked
+    watch = [isClanBtnLocked, isInitialClanInfoFetching]
     hplace = ALIGN_RIGHT
     vplace = ALIGN_TOP
     pos = const [-hdpx(4), hdpx(4)]
-    children = isClanBtnLocked.get() ? lockedMark : clanUnseenMark
+    children = isInitialClanInfoFetching.get() ? mkSpinner(lockIconSize[1])
+      : isClanBtnLocked.get() ? lockedMark
+      : clanUnseenMark
   }
 
   let openReqLvlMsgBox = @() openMsgBox({
@@ -243,10 +247,17 @@ function clansBtn() {
     onBgClick = @() closeMsgBox(CLAN_LEVEL_REQUIRED)})
 
   function onClick() {
+    if (isInitialClanInfoFetching.get())
+      return openMsgBox({
+        uid = "CLAN_INFO_IS_FETCHING",
+        text = $"{loc("loading")}\n{loc("try_again_later")}",
+        onBgClick = @() closeMsgBox("CLAN_INFO_IS_FETCHING")})
     if (isClanBtnLocked.get())
       return openReqLvlMsgBox()
+
     setClanBtnClicked()
-    return currentClan.get() != null ? clanOptionsScene() : openClanSearch()
+    return currentClanId.get() != NO_CLAN_ID ? clanOptionsScene()
+      : openClanSearch()
   }
 
   return @() {

@@ -48818,6 +48818,114 @@
       }
     }
   },
+  "p-39k_1": {
+    "type": "aircraft",
+    "hangar_place": "aircraft",
+    "info": {
+      "engine1_dm": {
+        "manufacturer": "allison",
+        "model": "1710-63",
+        "mass": 651.0
+      },
+      "tanks_params": {
+        "protected": true
+      }
+    },
+    "tags": {
+      "ally": true,
+      "type_fighter": true,
+      "country_ussr": true,
+      "berlin": true,
+      "korsun": true,
+      "eastern_front": true,
+      "air": true
+    },
+    "Shop": {
+      "maxAltitude": 9500.0,
+      "maxSpeed": 164.0,
+      "turnTime": 20.0,
+      "airfieldLen": 300.0,
+      "climbTime": 352.0,
+      "maxSpeedAlt": 3900.0,
+      "climbAlt": 4572.0,
+      "climbSpeed": 12.9,
+      "wingLoading": 175.25,
+      "powerToWeightRatio": 0.38,
+      "rollRate": 74.0,
+      "pilotsCount": 1,
+      "gunnersCount": 0,
+      "pylonCount": 1,
+      "massPerSec": 3.45358,
+      "weapons": {
+        "cannonM4": {
+          "type": "cannon",
+          "gunsCount": 1,
+          "ammoCount": 30,
+          "shotFreq": 2.5
+        },
+        "gunBrowning50_early": {
+          "type": "machine gun",
+          "gunsCount": 2,
+          "ammoCount": 400,
+          "shotFreq": 12.5
+        },
+        "gunBrowning30_usaaf": {
+          "type": "machine gun",
+          "gunsCount": 4,
+          "ammoCount": 1200,
+          "shotFreq": 16.6667
+        },
+        "su_fab250": {}
+      }
+    },
+    "bullets": {
+      "cannonM4": {
+        "default": {
+          "icon": "he_frag_i_t/ap_t/"
+        },
+        "m4_universal": {
+          "icon": "he_frag_i_t/he_frag_i_t/ap_t/"
+        },
+        "m4_ground_targets": {
+          "icon": "ap_t/"
+        },
+        "m4_air_targets": {
+          "icon": "he_frag_i_t/"
+        }
+      },
+      "gunBrowning50_early": {
+        "default": {
+          "icon": "t_ball_M1/ball_M2/i_ball_M1/ap_ball_M2/"
+        },
+        "50cal_universal": {
+          "icon": "ap_ball_M2/ap_ball_M2/ap_ball_M2/t_ball_M1/i_ball_M1/"
+        },
+        "50cal_ground_targets": {
+          "icon": "t_ball_M1/ap_ball_M2/ap_ball_M2/ap_ball_M2/"
+        },
+        "50cal_tracers": {
+          "icon": "t_ball_M1/t_ball_M1/t_ball_M1/ap_ball_M2/"
+        },
+        "50cal_stealth": {
+          "icon": "ap_ball_M2/i_ball_M1/ap_ball_M2/"
+        }
+      },
+      "gunBrowning30_usaaf": {
+        "default": {
+          "icon": "t_ball/ball/ball/ball/ap_ball/i_ball/"
+        },
+        "30cal_universal": {
+          "icon": "t_ball/ap_ball/i_ball/"
+        },
+        "30cal_tracers": {
+          "icon": "ap_ball/t_ball/t_ball/t_ball/t_ball/"
+        },
+        "30cal_stealth": {
+          "icon": "ap_ball/ap_ball/ap_ball/i_ball/i_ball/"
+        }
+      }
+    }
+  },
   "germ_cruiser_admiral_hipper": {
     "type": "ship",
     "hangar_place": "ship",
@@ -118748,6 +118856,147 @@
         },
         "120mm_DM_HE_FS": {
           "icon": "hud_ammo_he3_tf"
+        }
+      }
+    }
+  },
+  "ussr_t_34_1942_prem": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ussr_tft",
+    "tags": {
+      "country_ussr": true,
+      "tank": true,
+      "type_medium_tank": true,
+      "hide_in_offline_battles": true
+    },
+    "bullets": {
+      "76mm_F34_user_cannon": {
+        "76mm_ussr_AP_1941": {
+          "icon": "hud_ammo_ap2_he1"
+        },
+        "76mm_ussr_HE": {
+          "icon": "hud_ammo_he",
+          "isHE": true
+        },
+        "76mm_ussr_AP_1942": {
+          "icon": "hud_ammo_ap3_he0"
+        },
+        "default": {
+          "icon": "hud_ammo_ap1_he2"
+        },
+        "76mm_ussr_Smoke": {
+          "reqModification": "tank_smoke_screen_smoke_shell",
+          "maxCount": 2
+        }
+      }
+    },
+    "Shop": {
+      "mainWeaponCaliber": 76.2,
+      "armorThicknessFront": [
+        0.8,
+        0.15,
+        0.05
+      ],
+      "armorThicknessSide": [
+        0.15,
+        0.4,
+        0.45
+      ],
+      "crew": 4,
+      "mass": 30000.0,
+      "maxSpeedForward": 13.5945,
+      "maxSpeedBackward": 1.92102,
+      "powerToWeightRatio": 16.6667,
+      "weapons": {
+        "76mm_F34_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 76.2,
+          "armorPower": 86.7449,
+          "reloadTime": 6.45161,
+          "gunnerTurretRotationSpeed": 25.0,
+          "isBeltAmmo": false
+        },
+        "7_62mm_DT_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 8.5,
+          "reloadTime": 0.1,
+          "gunnerTurretRotationSpeed": 15.0,
+          "isBeltAmmo": true
+        }
+      }
+    }
+  },
+  "us_m1a2_abrams": {
+    "type": "tank",
+    "hangar_place": "tank",
+    "testFlight": "testFlight_ERA_tft",
+    "tags": {
+      "country_usa": true,
+      "tank": true,
+      "type_medium_tank": true
+    },
+    "Shop": {
+      "mainWeaponCaliber": 120.0,
+      "armorThicknessFront": [
+        0.75,
+        0.05,
+        0.2
+      ],
+      "armorThicknessSide": [
+        0.2,
+        0.05,
+        0.75
+      ],
+      "crew": 4,
+      "mass": 62050.0,
+      "maxSpeedForward": 18.9688,
+      "maxSpeedBackward": 11.1766,
+      "powerToWeightRatio": 24.4803,
+      "weapons": {
+        "120mm_M256_M1A2_user_cannon": {
+          "wtype": "mainCannon",
+          "caliber": 120.0,
+          "armorPower": 480.0,
+          "reloadTime": 5.0,
+          "gunnerTurretRotationSpeed": 40.0,
+          "isBeltAmmo": false
+        },
+        "12_7mm_M2_HB_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 12.7,
+          "armorPower": 23.3753,
+          "reloadTime": 0.104167,
+          "gunnerTurretRotationSpeed": 90.0,
+          "isBeltAmmo": true
+        },
+        "7_62mm_M240_user_machinegun": {
+          "wtype": "machinegun",
+          "caliber": 7.62,
+          "armorPower": 6.5,
+          "reloadTime": 0.0638162,
+          "gunnerTurretRotationSpeed": 18.0,
+          "isBeltAmmo": true
+        }
+      }
+    },
+    "bullets": {
+      "120mm_M256_M1A2_user_cannon": {
+        "120mm_M829A_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "120mm_M908_HE_OR": {
+          "icon": "hud_ammo_he_or_tank"
+        },
+        "default": {
+          "icon": "hud_ammo_heat"
+        },
+        "120mm_NATO_APDS_FS": {
+          "icon": "hud_ammo_apfsds"
+        },
+        "120mm_DM_HEAT_FS": {
+          "icon": "hud_ammo_heat"
         }
       }
     }

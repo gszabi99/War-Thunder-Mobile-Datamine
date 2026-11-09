@@ -19,6 +19,7 @@ from "%appGlobals/timeToText.nut" import secondsToHoursLoc
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%rGui/account/emailRegistrationState.nut" import canUpgradeGuestAccountToGaijinID, openGuestEmailRegistration
 from "%rGui/account/linkEmailForGaijinLogin.nut" import canLinkEmailForGaijinLogin, openLinkEmailForGaijinLogin
+from "%rGui/clans/clanOptionsScene.nut" import clanOptionsScene
 from "%rGui/clans/clanPermissions.nut" import CLAN_REMOVE, clanGrades, hasClanPermission
 from "%rGui/clans/clanState.nut" import leaveClan, removeClan, getClanDisplayName
 from "%rGui/clans/components/clanBadge.nut" import mkClanBadgePreview
@@ -348,7 +349,8 @@ function mkDescription() {
           ])
       currentClan.get() == null ? null
         : mkInfoCard([
-            mkInfoRow([clanBadge, clanName], { gap })
+            mkInfoRow([clanBadge, clanName],
+              { behavior = Behaviors.Button, onClick = clanOptionsScene, gap })
             clansInProgress.get() ? spinner
               : canRemoveClan.get() ? disbandClanBtn
               : leaveClanBtn

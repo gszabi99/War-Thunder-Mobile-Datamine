@@ -86,6 +86,13 @@ let epPresentations = {
     icon = "ui/gameuiskin#event_pass_icon_japan_tanks_release_event.avif"
     iconVip = "ui/gameuiskin#event_pass_icon_japan_tanks_release_event_vip.avif"
   }
+  black_friday_2026 = {
+    descLocId = "events/desc/tasksAndBattlesScore"
+    shortDescLocId = "events/desc/short/tasksAndBattlesScore"
+    passWndCurrencies = [ BLACKFRIDAYBOND ]
+    icon = "ui/gameuiskin#event_pass_icon_black_friday_2026.avif"
+    iconVip = "ui/gameuiskin#event_pass_icon_black_friday_2026_vip.avif"
+  }
   collectors_pass_tanks = collectorsPresentation
   collectors_pass_ships = collectorsPresentation
   collectors_pass_air = collectorsPresentation

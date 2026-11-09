@@ -59,6 +59,9 @@ let customLootboxImages = {
   operation_pass_infinite_lootbox_air             = "ui/gameuiskin/battle_pass_infinite_lootbox.avif"
 
   event_special_china_tanks_spending_event        = "ui/gameuiskin/event_special_lunar_ny.avif"
+  black_friday_2026_tanks_spending_box            = "ui/gameuiskin/wtm_lootbox_icon_black_friday.avif"
+  black_friday_2026_ships_spending_box            = "ui/gameuiskin/wtm_lootbox_icon_black_friday.avif"
+  black_friday_2026_air_spending_box              = "ui/gameuiskin/wtm_lootbox_icon_black_friday.avif"
   valentine_day_candy_lootbox                     = "ui/gameuiskin/valentine_day_candy_lootbox.avif"
   valentine_day_extra_reward_lootbox              = "ui/gameuiskin/valentine_day_candy_lootbox.avif"
 
@@ -192,6 +195,9 @@ let customRouletteImages = {
 
   event_special_china_tanks_spending_event   = "ui/images/event_bg_lunar.avif"
   japan_tanks_spending_event_box             = "ui/images/event_bg_japan_tanks_early_access.avif"
+  black_friday_2026_tanks_spending_box       = "ui/bkg/event_bg_black_friday_2026.avif"
+  black_friday_2026_ships_spending_box       = "ui/bkg/event_bg_black_friday_2026.avif"
+  black_friday_2026_air_spending_box         = "ui/bkg/event_bg_black_friday_2026.avif"
 
   valentine_day_candy_lootbox                = "ui/images/event_bg_valentine_day_2026.avif"
   valentine_day_extra_reward_lootbox         = "ui/images/event_bg_valentine_day_2026.avif"
@@ -245,6 +251,9 @@ let lootboxPreviewBg = {
   event_special_china_tanks_spending_event         = { bg = "ui/images/event_bg_lunar.avif" }
   japan_tanks_spending_event_box                   = { bg = "ui/images/event_bg_japan_tanks_early_access.avif", bgColor = 0xFF999999 }
   uk_air_spending_event_box                        = { bg = "ui/images/event_bg_uk_air_early_access.avif" }
+  black_friday_2026_tanks_spending_box             = { bg = "ui/bkg/event_bg_black_friday_2026.avif" }
+  black_friday_2026_ships_spending_box             = { bg = "ui/bkg/event_bg_black_friday_2026.avif" }
+  black_friday_2026_air_spending_box               = { bg = "ui/bkg/event_bg_black_friday_2026.avif" }
 
   valentine_day_candy_lootbox                      = { bg = "ui/images/event_bg_valentine_day_2026.avif" }
   valentine_day_extra_reward_lootbox               = { bg = "ui/images/event_bg_valentine_day_2026.avif" }

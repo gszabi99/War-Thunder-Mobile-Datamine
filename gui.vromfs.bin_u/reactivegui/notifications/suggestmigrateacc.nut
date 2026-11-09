@@ -27,6 +27,7 @@ let { getCountryCode } = require(isDownloadedFromGooglePlay() ? "android.billing
 
 const INCOMPATIBLE_FROM_VERSION = "1.28.0.0"
 const GAIJIN_ID_MSG_UID = "gaijinIdToMigrate"
+let isCompatibleVersion = check_version($"<{INCOMPATIBLE_FROM_VERSION}", get_base_game_version_str())
 
 local info = null
 
@@ -51,7 +52,7 @@ let shouldSuggestMigrateAcc = keepref(Computed(@()
   (is_android
     && external_gp_build_released.get()
     && !isExternalOperator()
-    && (isDownloadedFromGooglePlay() || isDownloadedFromSite)
+    && (isDownloadedFromGooglePlay() || (isDownloadedFromSite && isCompatibleVersion))
     && ["RU","BY"].contains(getCountryCode()))
   || debugForceSuggest.get()))
 let debugForceCompleted = mkWatched(persist, "debugForceCompleted", false)
@@ -68,8 +69,7 @@ isSuggested.subscribe(function(v) {
   debugForceSuggest.set(false)
 })
 
-let ver = get_base_game_version_str()
-let canCloseBySourceOrVersion = isDownloadedFromSite || check_version($"<{INCOMPATIBLE_FROM_VERSION}", ver)
+let canCloseBySourceOrVersion = isCompatibleVersion || isDownloadedFromSite
 let canClose = keepref(Computed(@() canCloseBySourceOrVersion && !shouldSuggestSwitchClient.get()))
 
 registerHandler("onMigAccInfoReceived", function(res) { info = res })

@@ -160,7 +160,7 @@
     },
     "currency": {
       "servers": {
-        "url": "https://currency-nightly-01.gaijin.net:7443/json-rcp"
+        "url": "https://currency-nightly-01.gaijin.net:7443/json-rpc"
       }
     },
     "userstat": {

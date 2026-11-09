@@ -64,6 +64,8 @@ const sectionBtnHeight = hdpx(80)
 const sectionBtnGap = hdpx(10)
 const lineWidth = hdpx(5)
 let bgGradient = mkColoredGradientY(commonBgGradColor, secondaryGradColor)
+let key = "playerInfo"
+let close = @() selectedPlayerForInfo.set(null)
 
 let mkText = @(text, color = defColor) {
   rendObj = ROBJ_TEXT
@@ -120,7 +122,7 @@ let mkContactInfoWithClan = @(userId, contact, info) {
   gap = hdpx(10)
   children = [
     mkContactInfo(contact, info)
-    mkPlayerClanRow(userId, clanIconSize, fontTinyAccented)
+    mkPlayerClanRow(userId, clanIconSize, fontTinyAccented, close)
   ]
 }
 
@@ -535,8 +537,6 @@ function addManageSection(sections, player) {
   return [...(sections ?? defSections), SECTION_PROFILE_IDS.MANAGE]
 }
 
-let close = @() selectedPlayerForInfo.set(null)
-let key = "playerInfo"
 selectedPlayerForInfo.subscribe(function(v) {
   removeModalWindow(key)
   if (v == null)

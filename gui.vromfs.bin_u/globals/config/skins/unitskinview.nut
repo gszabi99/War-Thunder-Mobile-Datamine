@@ -3398,6 +3398,10 @@ return {
       "": "usa_p38l_usaaf_horse",
       "china": "germ_bf_109a"
     },
+    "p-39k_1": {
+      "": "jap_ki_43_3_otsu",
+      "camo": "usa_p-47n-15"
+    },
     "p-39n_su": {
       "": "ussr_p_39n_su"
     },
@@ -4606,6 +4610,10 @@ return {
       "": "m1a1_hc_usmc_sm_kate",
       "forest": "us_camo_modern_desert_tan"
     },
+    "us_m1a2_abrams": {
+      "": "us_camo_m1a2_abrams",
+      "forest": "us_camo_modern_green"
+    },
     "us_m1a2_sep_abrams": {
       "": "us_camo_modern_desert_tan",
       "upgraded": "usa_modern_winter_verdant"
@@ -5711,6 +5719,10 @@ return {
     "ussr_t_34_1942": {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_green_ltbrown_lines"
+    },
+    "ussr_t_34_1942_prem": {
+      "": "ussr_camo_forest_black",
+      "forest": "ussr_camo_green"
     },
     "ussr_t_34_85_d_5t": {
       "": "ussr_camo_green",

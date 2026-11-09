@@ -17,8 +17,10 @@ from "%rGui/contacts/contactInfoPkg.nut" import contactNameBlock, contactAvatar,
 from "%rGui/contacts/contactPresence.nut" import presences
 from "%rGui/contacts/contactPublicInfo.nut" import mkPublicInfo, refreshPublicInfo
 from "%rGui/gameModes/gameModeState.nut" import maxSquadSizeByCampaign, maxSquadSize
+from "%rGui/mpStatistics/viewProfile.nut" import viewProfile
 from "%rGui/squad/squadManager.nut" import requestSquadMembership, myMembershipRequests, revokeSquadMembershipRequest
 from "%rGui/squad/squadPanel.nut" import squadPanelFull, squadPanelGap
+from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/style/stdColors.nut" import rowBgEvenColor, rowBgOddColor
 
 
@@ -91,9 +93,10 @@ function mkSquadRow(squad, idx) {
   let info = mkPublicInfo(userIdStr)
   let member = Computed(@() currentClan.get()?.users.findvalue(@(m) m.userId == leader))
   let squadSize = Computed(@() maxSquadSizeByCampaign.get()?[campaign] ?? maxSquadSize.get())
+  let stateFlags = Watched(0)
   return @() {
-    watch = [contact, info, member, squadSize, squadId, isSquadLeader, myMembershipRequests]
-    key = leader
+    watch = [contact, info, member, squadSize, squadId, isSquadLeader, myMembershipRequests, stateFlags]
+    key = userIdStr
     size = [FLEX, rowHeight]
     padding = rowPadding
     rendObj = ROBJ_SOLID
@@ -103,6 +106,11 @@ function mkSquadRow(squad, idx) {
       refreshPublicInfo(userIdStr)
       validateNickNames([userIdStr])
     }
+
+    behavior = Behaviors.Button
+    onElemState = @(sf) stateFlags.set(sf)
+    onClick = @() viewProfile(userIdStr)
+    touchMarginPriority = TOUCH_BACKGROUND
 
     flow = FLOW_HORIZONTAL
     gap = rowPadding
@@ -141,6 +149,7 @@ function mkSquadRow(squad, idx) {
             @() requestSquadMembership(leader),
             { ovr = { size = [rowBtnWidth, rowBtnHeight], minWidth = rowBtnWidth } })
     ]
+    ...mkPressTransitionScale(stateFlags.get(), 0.98)
   }
 }
 
@@ -193,7 +202,7 @@ return {
       hplace = ALIGN_RIGHT
       valign = ALIGN_BOTTOM
       flow = FLOW_HORIZONTAL
-      gap = squadPanelGap
+      gap = squadPanelGap * 3
       children = [
         isInSquad.get() ? squadPanelFull : null
         textButtonCommon(

@@ -57,8 +57,12 @@ let presentations = {
   season_38 = { color = 0xFFCC0000, dimColor = 0x80000000 }
   season_39 = { color = 0xFFE9AB11, bg = "ui/images/event_s39_background.avif" }
   nybond                       = { bg = "ui/images/event_bg_christmas_2024.avif" }
-  blackfridaybond              = { bg = "ui/images/event_bg_season_14.avif" }
+  blackfridaybond              = { bg = "ui/bkg/event_bg_black_friday_2026.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }
+  black_friday_2026 = {
+    bg = "ui/bkg/event_bg_black_friday_2026.avif"
+    icon = "ui/gameuiskin#icon_event_black_friday_2025.svg"
+  }
   black_friday_2025            = {
     image = $"ui/gameuiskin/icon_event_event_black_friday_shop.avif",
     bg = "ui/images/event_bg_season_27.avif"

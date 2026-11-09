@@ -13,7 +13,7 @@ from "%appGlobals/activeControls.nut" import isGamepad
 from "%appGlobals/clientState/clientState.nut" import canBailoutFromFlightMenu, isSingleMissionOverrided
 from "%appGlobals/clientState/missionState.nut" import battleCampaign, hudCustomRules
 from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentation
-from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign
+from "%appGlobals/pServer/campaign.nut" import campConfigs
 from "%appGlobals/profileStates.nut" import myUserId
 from "%appGlobals/squadState.nut" import isInSquad
 from "%appGlobals/unitConst.nut" import AIR
@@ -115,7 +115,6 @@ let menuContent = @(isGivingUp, campaign) mkCustomMsgBoxWnd(loc("msgbox/leaveBat
 function openLeaveBattleMsg() {
   let missionName = get_current_mission_info_cached()?.name ?? ""
   let isTutorial = get_game_mode() == GM_TRAINING && missionName.startswith("tutorial")
-  let campaign = Computed(@() battleCampaign.get() == "" ? curCampaign.get() : battleCampaign.get())
   let allSlotsMask = (1 << respawnSlots.get().len()) - 1
   local spareSlotsMask = allSlotsMask & getSpareSlotsMask()
   let currentUnitName = get_local_mplayer()?.aircraftName
@@ -128,10 +127,10 @@ function openLeaveBattleMsg() {
   addModalWindow({
     key = LEAVE_BATTLE_MSG_UID
     children = @() {
-      watch = [canDeserter, campaign]
+      watch = [canDeserter, battleCampaign]
       hplace = ALIGN_CENTER
       vplace = ALIGN_CENTER
-      children = menuContent(canDeserter.get() && !isTutorial && (isFreeSlotsAvailable || !is_ready_to_die()), campaign.get())
+      children = menuContent(canDeserter.get() && !isTutorial && (isFreeSlotsAvailable || !is_ready_to_die()), battleCampaign.get())
     }
     onClick = EMPTY_ACTION
   })

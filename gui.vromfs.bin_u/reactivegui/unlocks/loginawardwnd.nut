@@ -490,12 +490,10 @@ function rewardText() {
 }
 
 function dayInRowInfo() {
-  if (show_daily_login_freeze.get())
-    return { watch = show_daily_login_freeze }
-  let daysInRow = userstatStats.get()?.stats.daily.meta_common.login_streak ?? 0
-  return daysInRow < 1 ? { watch = userstatStats }
+  let daysInRow = max(loginAwardUnlock.get()?.current ?? 0, loginAwardUnlock.get()?.stage ?? 0)
+  return daysInRow < 1 ? { watch = loginAwardUnlock }
     : mkText(loc("dailyRewards/daysInRow", { days = daysInRow })
-      { watch = [ userstatStats, show_daily_login_freeze ]
+      { watch = loginAwardUnlock
         size = FLEX_H
         valign = ALIGN_BOTTOM
         halign = ALIGN_CENTER
@@ -507,7 +505,7 @@ let freezePointsInfoBgImg = mkColoredGradientY(0xFF002E5B, 0xFF003B78)
 let freezePointsAlertBgImg = mkColoredGradientY(0xFF00BBFF, 0xFFFFFFFF)
 let freezePointsTextProps = {
   vplace = ALIGN_CENTER
-  color = freezePointsColor
+  color = activeTextColor
   ...fontTinyAccented
 }
 let freezePointsAlertTextProps = {
@@ -545,7 +543,7 @@ function freezePointsBlock() {
     : ""
   return {
     watch = [ userstatStats, show_daily_login_freeze ]
-    size = [max(itemBlockSize[0], saSize[0]), SIZE_TO_CONTENT]
+    size = [itemBlockSize[0], SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     children = [
       {

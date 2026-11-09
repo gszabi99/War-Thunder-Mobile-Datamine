@@ -2814,5 +2814,45 @@
     "lod0": "kgkujvzon6h4xztmnp6abmifq474ufnd-g2bi",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "d4wuuf2w7pjsjjrzdn2zrdeuceye33qh-b5li"
+  },
+  "diamond_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "bqhacpp2vxqckvhzgyxgx2pibluzkb6v-eoui",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "wftjlycl6mdwh7n3j6ogzutvchnbkbry-bjwi"
+  },
+  "dollar_plane_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "5rzoqjuf4vik2r46z6ox4cwtzsu2wjm4-dxwy",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "3nz7vsqclca5fi52gg3u5buppkl2trei-bcgi"
+  },
+  "golden_toad_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "sihd7uln5hai25oadwnwidwkz6nygbat-esxq",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "uye42xwws6gwo75wqsv4imockzj3x4lm-bloy"
+  },
+  "rich_snail_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "fyj7voxaj4y2tez4mau3pfrf33yt3tbs-evfq",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "2ghqraqk2u7xgxgeu5udczut6iqjxvii-bn3y"
+  },
+  "take_my_money_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "enkfqkcb6swywf32aasqbn5xtytzdnuq-fjvy",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "c6ed2w24i77n5qu37e2jhjnptrepuzid-bsvy"
   }
 }

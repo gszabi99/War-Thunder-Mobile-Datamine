@@ -18,6 +18,12 @@ function removeMsg(msg) {
     persistMsgBoxes.mutate(@(v) v.remove(idx))
 }
 
+function removeMsgByUid(uid) {
+  let idx = persistMsgBoxes.get().findindex(@(m) m?.uid == uid)
+  if (idx != null)
+    persistMsgBoxes.mutate(@(v) v.remove(idx))
+}
+
 let getButtons = @(msg)
   (msg?.buttons ?? defaultBtnsCfg).map(@(btn) btn.__merge({
       function cb() {
@@ -69,9 +75,9 @@ function open(msg) {
     openMsgBox(msg.__merge({ buttons = getButtons(msg) }), KWARG_NON_STRICT)
 }
 
-function close(msg) {
-  removeMsg(msg)
-  closeMsgBox(msg.uid)
+function close(uid) {
+  removeMsgByUid(uid)
+  closeMsgBox(uid)
 }
 
 function restorePersist() {
@@ -99,7 +105,7 @@ isHudAttached.subscribe(function(v) {
 })
 
 eventbus_subscribe("fMsgBox.open", open)
-eventbus_subscribe("fMsgBox.close", close)
+eventbus_subscribe("fMsgBox.close", @(evt) close(evt.uid))
 
 return {
   getFMsgButtons = getButtons

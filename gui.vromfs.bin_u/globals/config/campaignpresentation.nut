@@ -56,7 +56,7 @@ let presentations = {
 }
   .map(mkPresentation)
 
-let defPresetntation = presentations.ships
+let defPresetntation = presentations.tanks
 
 let getCampaignPresentation = @(campaign) presentations?[campaign] ?? defPresetntation
 

@@ -3064,6 +3064,9 @@
     },
     "video": {
       "dynamic_hdr": true
+    },
+    "clipmap": {
+      "useFramegraphBuffers": false
     }
   },
   "stcode": {

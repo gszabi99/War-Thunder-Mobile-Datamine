@@ -60,9 +60,9 @@ let presentations = {
     { img = $"event_keys_03.avif", amountAtLeast = 10 }
   ],
   [BLACKFRIDAYBOND] = [
-    { img = "blackfridaybond_goods_01.avif", amountAtLeast = 0 }
-    { img = "blackfridaybond_goods_02.avif", amountAtLeast = 500 }
-    { img = "blackfridaybond_goods_03.avif", amountAtLeast = 1000 }
+    { img = "blackfridaybond_goods_01_2026.avif", amountAtLeast = 0 }
+    { img = "blackfridaybond_goods_02_2026.avif", amountAtLeast = 500 }
+    { img = "blackfridaybond_goods_03_2026.avif", amountAtLeast = 1500 }
   ],
   [HOTMAYBOND] = [
     { img = "hotmaybond_goods_01.avif", amountAtLeast = 0 }

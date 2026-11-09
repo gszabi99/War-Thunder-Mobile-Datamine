@@ -28,7 +28,7 @@ function framedImageBtn(image, onClick, ovr = {}, addChild = null) {
     watch = stateFlags
     size
     rendObj = ROBJ_BOX
-    borderWidth = hdpx(2)
+    borderWidth = hdpx(3)
     borderColor = stateFlags.get() & S_HOVER ? hoverColor : borderColor
     fillColor = bgColor
     onElemState = @(sf) stateFlags.set(sf)

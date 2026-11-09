@@ -7,6 +7,10 @@ from "hangarEventCommand" import set_protection_checker_params, protection_exami
 from "math" import round
 from "%sqstd/underscore.nut" import isEqual
 from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_PROTECTION_ANALYSIS
+from "%appGlobals/pServer/campaign.nut" import curCampaign
+import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
 from "%appGlobals/config/countryPresentation.nut" import sortCountries
 from "%appGlobals/permissions.nut" import allow_protection_analysis
 from "%rGui/dmViewer/dmViewerPkg.nut" import hitProbMinorColor
@@ -138,11 +142,16 @@ inspectedUnit.subscribe(selectThreatUnit)
 let searchableUnitsList = Computed(function() {
   if (!isProtectionAnalysisActive.get())
     return []
-  let list = visibleUnitsList.get().reduce(@(res, v) res.append(v), [])
-  let inspectedUnitName = inspectedUnit.get()?.name ?? ""
-  if (inspectedUnitName != "" && list.findvalue(@(u) u.name == inspectedUnitName) == null)
-    list.append(inspectedBaseUnit.get())
-  return list.sort(sortUnits)
+  let { name = "", campaign = "" } = inspectedUnit.get()
+  let visibleUnits = (campaign == curCampaign.get())
+    ? visibleUnitsList.get()
+    : (serverConfigs.get()?.allUnits ?? {}).filter(@(u) u.campaign == campaign
+        && ((!u?.isHidden && u.name not in unreleasedUnits.get()) || u.name in (servProfile.get()?.units ?? {})))
+  let needAddInspectedUnit = name not in visibleUnits
+  let res = visibleUnits.values()
+  if (needAddInspectedUnit)
+    res.append(inspectedBaseUnit.get())
+  return res.sort(sortUnits)
 })
 
 let threatCountriesList = Computed(@() !isProtectionAnalysisActive.get() ? []

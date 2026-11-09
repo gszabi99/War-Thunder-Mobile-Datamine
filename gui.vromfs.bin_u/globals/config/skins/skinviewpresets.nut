@@ -132,6 +132,7 @@ let skinsByTag = {
     "us_camo_t58_halloween"
     "fr_camo_amx_10m_acra_halloween"
     "germ_camo_leopard_2a5_pso"
+    "us_camo_m1a2_abrams"
   ],
 
   [DESERT] = [

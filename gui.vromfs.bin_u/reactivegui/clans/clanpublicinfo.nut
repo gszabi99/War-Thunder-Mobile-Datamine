@@ -13,14 +13,14 @@ let clansInfo = hardPersistWatched("clanPublicInfo.clansInfo", {})
 let userClanWeakRefs = {}
 local cleanupLen = MIN_CLEANUP_LEN
 
-let mkClanInfo = @(textFields) { name = textFields?.name ?? "", badge = mkClanBadge(textFields) }
+let mkClanInfo = @(clanId, textFields) { clanId, name = textFields?.name ?? "", badge = mkClanBadge(textFields) }
 
 function updateClans(clanIdsUpd, textFieldsUpd) {
   let idsUpd = clanIdsUpd.filter(@(clanId, uid) userClanIds.get()?[uid] != clanId)
   let clansUpd = {}
   foreach (clanId, textFields in textFieldsUpd) {
     let prevInfo = clansInfo.get()?[clanId]
-    let clanInfo = prevIfEqual(prevInfo, mkClanInfo(textFields))
+    let clanInfo = prevIfEqual(prevInfo, mkClanInfo(clanId, textFields))
     if (clanInfo != prevInfo)
       clansUpd[clanId] <- clanInfo
   }

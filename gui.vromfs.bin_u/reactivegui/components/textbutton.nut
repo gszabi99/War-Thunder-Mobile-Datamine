@@ -257,7 +257,7 @@ function mkCustomButton(content, onClick, style = buttonStyles.PRIMARY) {
   if ((!(ovrSize?[0] instanceof Integer) && !(ovrSize?[0] instanceof Float) && ovr?.minWidth != null && contentW > ovr.minWidth))
     ovrExt = ovrExt.__merge({ minWidth = contentW })
 
-  let key = ovrExt?.key ?? {}
+  let key = ovrExt?.key ?? tooltipCtor
   let clickHandlers = tooltipCtor == null ? { onElemState = @(v) stateFlags.set(v), onClick }
     : mkButtonHoldTooltip(onClick, stateFlags, key, tooltipCtor, repayTime)
   return @() {
