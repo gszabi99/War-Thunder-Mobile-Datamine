@@ -2,6 +2,7 @@ from "%rGui/unlocks/loginAwardPlaces.nut" import *
 from "%globalsDarg/darg_library.nut" import *
 from "console" import register_command
 from "dagor.time" import get_time_msec
+from "dagor.iso8601" import format_unix_time
 from "sound_wt" import playSound
 from "%sqstd/math.nut" import lerp
 from "%sqstd/string.nut" import utf8ToUpper
@@ -10,6 +11,7 @@ from "%appGlobals/loginState.nut" import isAuthorized
 from "%appGlobals/permissions.nut" import show_daily_login_freeze
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/rewardType.nut" import G_LOOTBOX
+from "%appGlobals/userstats/serverTime.nut" import getServerTime
 from "%rGui/ads/adsState.nut" import adsButtonCounter, isProviderInited
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/gradientDefComps.nut" import headerGradientBg
@@ -490,10 +492,10 @@ function rewardText() {
 }
 
 function dayInRowInfo() {
-  let daysInRow = max(loginAwardUnlock.get()?.current ?? 0, loginAwardUnlock.get()?.stage ?? 0)
-  return daysInRow < 1 ? { watch = loginAwardUnlock }
+  let daysInRow = userstatStats.get()?.stats.daily.meta_common.login_streak ?? 0
+  return daysInRow < 1 ? { watch = userstatStats }
     : mkText(loc("dailyRewards/daysInRow", { days = daysInRow })
-      { watch = loginAwardUnlock
+      { watch = userstatStats
         size = FLEX_H
         valign = ALIGN_BOTTOM
         halign = ALIGN_CENTER
@@ -521,8 +523,8 @@ let freezePointsTooltipCtor = @() loc("dailyRewards/freeze/desc",
 function freezePointsBlock() {
   if (!show_daily_login_freeze.get())
     return { watch = show_daily_login_freeze }
-  let { daily_login_streak = 0, daily_login_guard = 0,
-    daily_login_guard_added = 0, daily_login_guard_spent = 0 } = userstatStats.get()?.stats.daily.meta_common
+  let { daily_login_streak = 0, daily_login_guard = 0 } = userstatStats.get()?.stats["global"].meta_common
+  let { daily_login_guard_added = 0, daily_login_guard_spent = 0 } = userstatStats.get()?.stats.daily.meta_common
   let statusId = daily_login_guard_added > 0 && daily_login_guard_spent > 0 ? "addedAndSpent"
     : daily_login_guard_added > 0 ? "added"
     : daily_login_guard_spent > 0 ? "spent"
@@ -648,3 +650,21 @@ register_command(
     log("debugState set to: ", debugAnimState.get())
   },
   "debug.everydayAwardAnimationTestOff")
+
+register_command(
+  function() {
+    if (!isAuthorized.get())
+      return log("Not authorized")
+    let statIds = [ "login_streak", "wtm_skip_days_streak", "wt_skip_days_streak",
+      "daily_login_streak", "daily_login_guard", "daily_login_guard_added", "daily_login_guard_spent" ]
+    let { stats = {} } = userstatStats.get()
+    let res = [ $"DailyLoginReward Stats @ {format_unix_time(getServerTime())}" ]
+    foreach (id in statIds) {
+      let g = stats?["global"].meta_common[id]
+      let d = stats?.daily.meta_common[id]
+      let val = g == d ? g : $"{g} vs {d} (global vs daily)"
+      res.append($"Stat \"{id}\" = {val}")
+    }
+    log("\n".join(res))
+  },
+  "debug.dailyLoginReward.printStats")

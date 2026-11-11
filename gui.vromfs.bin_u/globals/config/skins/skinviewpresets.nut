@@ -353,6 +353,7 @@ let skinsByTag = {
     "camo_desert_threecolors"
     "camo_shuttle_los_angeles"
     "camo_battle_allies_saar5"
+    "camo_jags_oklahoma"
 
     "camo_arctic_minesweeper_block"
     "camo_bluegray_longspot"

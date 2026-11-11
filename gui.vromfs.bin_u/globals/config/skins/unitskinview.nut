@@ -4388,6 +4388,9 @@ return {
     "us_battleship_north_dakota": {
       "upgraded": "camo_blackgray_spots"
     },
+    "us_battleship_oklahoma": {
+      "": "camo_jags_oklahoma"
+    },
     "us_battleship_south_dakota": {
       "": "camo_greenriver_curves"
     },

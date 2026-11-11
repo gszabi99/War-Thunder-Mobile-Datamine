@@ -64596,6 +64596,71 @@
     },
     "bullets": {}
   },
+  "us_battleship_oklahoma": {
+    "type": "ship",
+    "hangar_place": "ship",
+    "testFlight": "testFlight_destroyer_usa_tfs",
+    "crewTotalCount": 692,
+    "tierGroup": 4,
+    "tags": {
+      "country_usa": true,
+      "type_battleship": true,
+      "ship": true
+    },
+    "Shop": {
+      "shipCrewMax": 1370,
+      "shipCrewMin": 200,
+      "shipCrewRating": 2.82242,
+      "maxSpeed": 11.54,
+      "turningTime": 33,
+      "supportPlane": "os2u_1_naval",
+      "supportPlaneCount": 2,
+      "addTorpedoesCountPack": 1,
+      "mainWeaponCaliber": 356.0,
+      "weapons": {
+        "356mm_45_14inch_mk1_naval_user_cannon": {
+          "wtype": "mainCannon",
+          "damage": 2850.0,
+          "shotFreq": 0.056,
+          "gunsCount": 10,
+          "caliber": 356.0,
+          "ammoCount": 1000,
+          "isBeltAmmo": false
+        },
+        "127mm_51_mk7_naval_user_cannon": {
+          "wtype": "auxCannon",
+          "damage": 450.0,
+          "shotFreq": 0.37,
+          "gunsCount": 6,
+          "gunsTotalCount": 12,
+          "caliber": 127.0,
+          "ammoCount": 2760,
+          "isBeltAmmo": false
+        },
+        "76mm_3_50_mk10_ww1_mk11_mount_naval_user_cannon_aaa": {
+          "wtype": "aaa",
+          "damage": 80.0,
+          "shotFreq": 0.316,
+          "aimMaxDist": 1750.0,
+          "gunsCount": 8,
+          "caliber": 76.2,
+          "ammoCount": 1600,
+          "isBeltAmmo": false
+        },
+        "us_533mm_21in_bliss_leavitt_mk9_torpedo": {
+          "wtype": "torpedo",
+          "damage": 4250.0,
+          "shotFreq": 0.071,
+          "distToLive": 2500.0,
+          "gunsCount": 2,
+          "caliber": 533.0,
+          "ammoCount": 12,
+          "isBeltAmmo": false
+        }
+      }
+    },
+    "bullets": {}
+  },
   "ussr_t_34_1942": {
     "type": "tank",
     "hangar_place": "tank",
@@ -109958,6 +110023,10 @@
         },
         "default": {
           "icon": "hud_ammo_heat"
+        },
+        "120mm_NATO_HE_FS": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
         }
       }
     }
@@ -110668,6 +110737,10 @@
         "default": {
           "icon": "hud_ammo_heat"
         },
+        "120mm_NATO_HE_FS": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
         "120mm_NATO_APDS_FS": {
           "reqModification": "shell_1",
           "icon": "hud_ammo_apfsds"
@@ -110744,6 +110817,10 @@
         },
         "default": {
           "icon": "hud_ammo_heat"
+        },
+        "120mm_NATO_HE_FS": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
         }
       }
     }
@@ -113807,6 +113884,10 @@
         "default": {
           "icon": "hud_ammo_heat"
         },
+        "120mm_NATO_HE_FS": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
         "120mm_NATO_APDS_FS": {
           "reqModification": "shell_1",
           "icon": "hud_ammo_apfsds"
@@ -113873,6 +113954,10 @@
         },
         "120mm_NATO_APDS_FS": {
           "icon": "hud_ammo_apfsds"
+        },
+        "120mm_NATO_HE_FS": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
         }
       }
     }
@@ -115620,6 +115705,10 @@
         "default": {
           "icon": "hud_ammo_heat"
         },
+        "120mm_NATO_HE_FS": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
+        },
         "120mm_NATO_APDS_FS": {
           "reqModification": "shell_1",
           "icon": "hud_ammo_apfsds"
@@ -115705,6 +115794,10 @@
         },
         "default": {
           "icon": "hud_ammo_heat"
+        },
+        "120mm_NATO_HE_FS": {
+          "isHE": true,
+          "icon": "hud_ammo_he"
         }
       }
     }
