@@ -18,7 +18,7 @@ from "%appGlobals/pServer/bqClient.nut" import sendErrorLocIdBqEvent
 from "%appGlobals/pServer/campaign.nut" import bestCampLevel
 from "%appGlobals/pServer/clanServConfigs.nut" import clanServerConfigs
 from "%appGlobals/pServer/pServerApi.nut" import clan_lookup, clan_create, clan_update, send_join_request,
-  clansInProgress, registerHandler, localizePServerError, get_clan_info, clanInfoInProgress, clan_leave, clan_remove,
+  clansInProgress, registerHandler, get_clan_info, clanInfoInProgress, clan_leave, clan_remove,
   clan_change_grade, clan_kick_user, clanChangeMemberInProgress, callHandler, clansLookupInProgress, clan_transfer_ownership
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/permissions.nut" import allow_clans
@@ -133,16 +133,19 @@ function handleClanError(res) {
   if (res?.error == null || res?.error == "")
     return false
 
-  let { bqLocId, text } = localizePServerError(res.error)
-  let shownText = res.error?.message != "CLAN_LEVEL_REQUIRED" ? text
-    : loc("error/CLAN_LEVEL_REQUIRED", { level = clanMinCampaignLevel.get() })
+  let errId = res.error instanceof String ? res.error
+    : res.error?.message
+  let locId = errId ? $"error/{errId}"
+    : "clans/error/unknown"
+  let text = errId != "CLAN_LEVEL_REQUIRED" ? loc(locId)
+    : loc(locId, { level = clanMinCampaignLevel.get() })
 
   if (shouldShowErrorToPlayer(res.error)) {
-    openFMsgBox({ text = shownText })
-    sendErrorLocIdBqEvent(bqLocId)
+    openFMsgBox({ text })
+    sendErrorLocIdBqEvent(locId)
     refreshClanInfo()
   } else
-    logerr($"CLAN ERROR: errorId: {bqLocId}, data: {object_to_json_string(res?.error.data.extra)}")
+    logerr($"CLAN ERROR: errorId: {errId}, data: {object_to_json_string(res?.error)}")
 
   return true
 }
@@ -410,6 +413,9 @@ registerHandler(CLAN_UPDATE_ID, function(res) {
 function sendJoinRequest(clanId, message = "", onSuccess = null) {
   if (!allow_clans.get() || clansInProgress.get() || currentClanId.get() != NO_CLAN_ID)
     return
+
+  if (!hasRequiredLvl.get())
+    return openFMsgBox({ text = loc("error/CLAN_LEVEL_REQUIRED", { level = clanMinCampaignLevel.get() }) })
 
   send_join_request(clanId, projectId, message, { id = CLAN_SEND_JOIN_REQUEST, clanId, onSuccess })
 }

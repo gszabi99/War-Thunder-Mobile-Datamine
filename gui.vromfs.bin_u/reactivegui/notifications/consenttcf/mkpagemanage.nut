@@ -3,7 +3,7 @@ from "%rGui/legal.nut" import legalByType
 from "%rGui/notifications/consentTcf/consentTcfComps.nut" import mkContent, mkStatusContent, mkManageButtons,
   mkTextarea, mkTextareaWithLinks, mkLink, openUrl, separatorLine, gapAbove, gapBelow, fadedAndMinor, fontMinor
 from "%rGui/notifications/consentTcf/consentTcfState.nut" import showPurposeInfo, isOpenedManage, isOpenedPartnersExt,
-  getPurposesList, getSpecialPurposesList, getFeaturesList, debugShowIds, PRIVACY_CHOICES_SAVED_MONTHS
+  getPurposesList, getSpecialPurposesList, getFeaturesList, getStandardTextsTbl, debugShowIds, PRIVACY_CHOICES_SAVED_MONTHS
 from "%rGui/notifications/consentTcf/mkExpandableSwitch.nut" import mkExpandableSwitch, mkSwitch, mkExpandable
 
 
@@ -57,6 +57,7 @@ let mkManageDesc = function() {
   let purposesLabel = mkTextarea("".concat(loc("consent_tcf/manage/purposes"), colon), gapAbove)
   let specialPurposesLabel = mkTextarea("".concat(loc("consent_tcf/manage/specialPurposes"), colon), gapAbove)
   let featuresLabel = mkTextarea("".concat(loc("consent_tcf/manage/features"), colon), gapAbove)
+  let featuresDesc = mkTextarea(getStandardTextsTbl()?.features ?? "", fadedAndMinor)
   let partnersLabel = mkTextarea("".concat(loc("consent_tcf/partners"), colon), gapAbove)
 
   return function() {
@@ -130,7 +131,7 @@ let mkManageDesc = function() {
       specialPurposesLabel
     ]
       .extend(specPurposes)
-      .append(featuresLabel)
+      .append(featuresLabel, featuresDesc)
       .extend(features)
       .append(partnersLabel,
         mkLink(loc("consent_tcf/partners/manage"), @() isOpenedPartnersExt.set(true)))

@@ -146,11 +146,11 @@ function campaignsBtn() {
     watch = [campaignsList, curCampaign, unseenCampaigns]
     children = campaignsList.get().len() <= 1 || curCampaign.get() == null  ? null
       : [
-          framedGradientImageBtn("gradient_button.svg", getCampaignPresentation(curCampaign.get()).icon, chooseCampaignWnd,
+          framedGradientImageBtn(getCampaignPresentation(curCampaign.get()).icon, chooseCampaignWnd,
             {
               padding = hdpx(10)
               size = campBtnSize
-              color = 0xFF000000
+              color = 0xBF000000
               sound = const { click = "click" }
               imageSize = campBtnImageSize
               flow = FLOW_HORIZONTAL

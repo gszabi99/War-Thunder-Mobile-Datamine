@@ -6,6 +6,8 @@ from "%rGui/notifications/consentTcf/consentTcfState.nut" import showPurposeInfo
 
 let quitPurpose = @() showPurposeInfo.set(null)
 
+let bullet = loc("ui/bullet")
+
 function mkPurposeDesc() {
   let { info = null, getVendorList = null } = showPurposeInfo.get()
   if (info == null)
@@ -22,7 +24,7 @@ function mkPurposeDesc() {
   ]
     .extend(illustrations.map(@(v) mkTextarea(v, fadedAndMinor.__merge(gapAbove))))
     .append(mkTextarea(vendorsListTitle, gapAboveAndBelow))
-    .extend(vendorList.map(@(v) mkTextarea(v.name)))
+    .extend(vendorList.map(@(v) mkTextarea($"{bullet}{v.name}")))
 }
 
 return @() mkContent(loc("readMore"), mkPurposeDesc, null, quitPurpose)

@@ -17,20 +17,35 @@ import "%rGui/clans/components/clanRequestWnd.nut" as openClanRequest
 from "%rGui/clans/currentClanState.nut" import currentClanId, myClanGrade, isCurrentClanRefreshing, NO_CLAN_ID
 from "%rGui/components/clipboard.nut" import copyToClipboard
 import "%rGui/components/mkIconBtn.nut" as mkIconBtn
-from "%rGui/components/msgBox.nut" import openMsgBox
+from "%rGui/components/msgBox.nut" import openMsgBox, closeMsgBox
 from "%rGui/components/scrollbar.nut" import makeVertScroll
 from "%rGui/components/spinner.nut" import spinner
 from "%rGui/components/textButton.nut" import textButtonPrimary, iconButtonCommon, textButtonInactive
 from "%rGui/style/gradients.nut" import mkColoredGradientY
+from "%rGui/options/optionsStyle.nut" import tabW, minContentOffset
 from "%rGui/clans/clanJoinRequestsState.nut" import userClanJoinRequests
 
 
 const iconSize = hdpx(40)
 const btnIconSize = hdpx(70)
-const badgeSize = hdpx(180)
+const badgeSize = hdpx(250)
 const copyIconSize = hdpxi(28)
 const gapNameCopy = hdpx(15)
 const gapSection = hdpx(20)
+const descriptionLinesCount = 5
+let descriptionWidth = saSize[0] - tabW - minContentOffset - badgeSize - gapSection * 3
+let descriptionFont = fontTinyShaded
+
+let mkDescArea = @(text) {
+  size = [descriptionWidth, SIZE_TO_CONTENT]
+  rendObj = ROBJ_TEXTAREA
+  behavior = Behaviors.TextArea
+  text
+  ...descriptionFont
+}
+let rowHeight = calc_comp_size(mkDescArea("W"))[1]
+
+let descriptionHeight = rowHeight * descriptionLinesCount
 
 let mkJoinBtnClick = @(onJoin) function() {
   openMsgBox({
@@ -56,6 +71,7 @@ let searchClanBtn = @() {
       })
 }
 
+const btnOvr = { childOvr = fontTinyShaded, ovr = { size = [SIZE_TO_CONTENT, btnIconSize] } }
 
 let mkActionBtn = @(isCurrentClan, canEditClan, clan) @() {
   watch = [isCurrentClan, canEditClan, isGamepad, clansInProgress, clanUserJoinRequestsInProgress, userClanJoinRequests,
@@ -67,13 +83,14 @@ let mkActionBtn = @(isCurrentClan, canEditClan, clan) @() {
         || (!isCurrentClan.get() && (clanUserJoinRequestsInProgress.get() || isCurrentClanRefreshing.get()))
       ? spinner
     : !isCurrentClan.get() && userClanJoinRequests.get()?[clan?.clanId]
-      ? textButtonInactive(utf8ToUpper(loc("inReview")), @() null)
+      ? textButtonInactive(utf8ToUpper(loc("inReview")), @() null, btnOvr)
     : !isCurrentClan.get() && currentClanId.get() != NO_CLAN_ID 
       ? null
     : !isCurrentClan.get()
       ? textButtonPrimary(utf8ToUpper(loc(clan?.privacyType == PRIVACY_OPEN ? "clans/joinBtn" : "sendRequestBtn")),
           clan?.privacyType == PRIVACY_OPEN ? mkJoinBtnClick(@() sendJoinRequest(clan?.clanId))
-            : @() openClanRequest(clan?.textFields.name, @(message, onSuccess) sendJoinRequest(clan?.clanId, message, onSuccess)))
+            : @() openClanRequest(clan?.textFields.name, @(message, onSuccess) sendJoinRequest(clan?.clanId, message, onSuccess)),
+          btnOvr)
     : canEditClan.get()
       ? [
           iconButtonCommon("ui/gameuiskin#menu_edit.svg", openClanEditor,
@@ -89,7 +106,7 @@ let mkActionBtn = @(isCurrentClan, canEditClan, clan) @() {
     : searchClanBtn
 }
 
-function mkTextWithCopy(text, font = fontMediumShaded) {
+function mkTextWithCopy(text, font) {
   let stateFlags = Watched(0)
 
   return {
@@ -125,6 +142,44 @@ let mkInfoDataRow = @(data) {
   children = clanInfoColumns.map(@(c) c.mkCell(data))
 }
 
+let mkClanNameRow = @(clan) {
+  size = FLEX_H
+  rendObj = ROBJ_TEXT
+  behavior = Behaviors.Marquee
+  padding = const [hdpx(-10), 0, 0, 0]
+  text = getClanDisplayName(clan?.textFields.name ?? "")
+  ...fontMediumShaded
+}
+
+let mkClanIdRow = @(clan) {
+  size = FLEX_H
+  flow = FLOW_HORIZONTAL
+  gap = gapSection
+  children = [
+    { rendObj = ROBJ_TEXT, text = $"{loc("options/userId")}{loc("ui/colon")}", ...fontTinyShaded}
+    mkTextWithCopy(getClanHexId(clan?.clanId), fontTinyShaded)
+  ]
+}
+
+let openDescription = @(text) openMsgBox({
+  uid = "CLAN_DESCRIPTION",
+  text = {
+    size = FLEX
+    padding = const [hdpx(50), 0, 0, 0]
+    children = makeVertScroll({
+      size = FLEX_H
+      rendObj = ROBJ_TEXTAREA
+      behavior = Behaviors.TextArea
+      text
+      ...descriptionFont
+    },
+    {
+      size = FLEX
+      barStyleCtor = clanScrollBarStyle
+    })},
+  buttons = [],
+  onBgClick = @() closeMsgBox("CLAN_DESCRIPTION")})
+
 function mkClanHeaderSection(clanW) {
   let badgeFromClanW = Computed(@(prev) prevIfEqual(prev, mkClanBadge(clanW.get()?.textFields)))
   let campaignsW = Computed(function() {
@@ -139,6 +194,9 @@ function mkClanHeaderSection(clanW) {
   let languageW = Computed(@() languagesCfg?[langId.get()].title ?? langId.get())
   let isCurrentClan = Computed(@() clanW.get()?.clanId != null && currentClanId.get() == clanW.get().clanId)
   let canEditClan = Computed(@() hasClanPermission(CLAN_EDIT, clanGrades.get(), myClanGrade.get()))
+  let descriptionW = Computed(@() clanW.get()?.textFields.description ?? "")
+  let isDescriptionFit = Computed(@() calc_comp_size(mkDescArea(descriptionW.get()))[1] <= descriptionHeight)
+  let onClick = @() openDescription(descriptionW.get())
 
   return @() {
     watch = clanW
@@ -146,8 +204,8 @@ function mkClanHeaderSection(clanW) {
     flow = FLOW_VERTICAL
     rendObj = ROBJ_IMAGE
     image = mkColoredGradientY(0xFF304453, 0xFF030C13)
-    gap = gapSection
-    padding = gapSection
+    gap = hdpx(5)
+    padding = const [gapSection, gapSection, 0, gapSection]
     children = clanW.get() == null
       ? null
       : [
@@ -156,50 +214,53 @@ function mkClanHeaderSection(clanW) {
             flow = FLOW_HORIZONTAL
             gap = gapSection
             children = [
+              mkClanBadgePreview(badgeFromClanW, badgeSize)
               {
+                size = FLEX
                 flow = FLOW_VERTICAL
-                gap = hdpx(10)
-                halign = ALIGN_CENTER
+                gap = hdpx(5)
                 children = [
-                  mkClanBadgePreview(badgeFromClanW, badgeSize)
                   {
                     size = FLEX_H
                     flow = FLOW_HORIZONTAL
-                    gap = gapSection
                     children = [
-                      { rendObj = ROBJ_TEXT, text = $"{loc("options/userId")}:", ...fontTinyAccented}
-                      mkTextWithCopy(getClanHexId(clanW.get()?.clanId), fontTinyAccented)
+                      {
+                        size = FLEX_H
+                        flow = FLOW_VERTICAL
+                        gap = hdpx(5)
+                        children = [
+                          mkClanNameRow(clanW.get())
+                          mkClanIdRow(clanW.get())
+                        ]
+                      }
+                      mkActionBtn(isCurrentClan, canEditClan, clanW.get())
                     ]
+                  }
+                  @() {
+                    watch = [descriptionW, isDescriptionFit]
+                    size = [descriptionWidth, isDescriptionFit.get() ? descriptionHeight : descriptionHeight - rowHeight ]
+                    rendObj = ROBJ_TEXTAREA
+                    behavior = [Behaviors.TextArea, Behaviors.Button]
+                    text = descriptionW.get()
+                    textOverflow = getconsttable()?.TOVERFLOW_ELLIPSIS
+                    clipChildren = false
+                    onClick
+                    ...descriptionFont
+                  }
+                  @() {
+                    watch = isDescriptionFit
+                    size = FLEX_H
+                    rendObj = ROBJ_TEXTAREA
+                    behavior = [Behaviors.TextArea, Behaviors.Button]
+                    onClick
+                    text = isDescriptionFit.get() ? null : colorize(0xFF3CA0FD, loc("readMore"))
+                    ...descriptionFont
                   }
                 ]
               }
-              {
-                size = FLEX
-                flow = FLOW_HORIZONTAL
-                gap = gapSection
-                children = {
-                  size = FLEX
-                  flow = FLOW_VERTICAL
-                  halign = ALIGN_LEFT
-                  gap = hdpx(10)
-                  children = [
-                    mkTextWithCopy(getClanDisplayName(clanW.get()?.textFields.name ?? ""))
-                    makeVertScroll({
-                        size = FLEX_H
-                        rendObj = ROBJ_TEXTAREA
-                        behavior = Behaviors.TextArea
-                        text = clanW.get()?.textFields.description ?? ""
-                      }.__update(fontTinyAccented),
-                      {
-                        size = FLEX
-                        barStyleCtor = clanScrollBarStyle
-                      })
-                  ]
-                }
-              }
-              mkActionBtn(isCurrentClan, canEditClan, clanW.get())
             ]
           }
+          { size = hdpx(5) }
           mkInfoLabelsRow
           separator
           mkInfoDataRow({ campaignsW, locationW, languageW })

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset
+from "%rGui/style/gradients.nut" import gradCircularSmallHorCorners, gradCircCornerOffset, simpleVerGrad
 from "%rGui/style/stdColors.nut" import hoverColor
 from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
@@ -45,7 +45,7 @@ function framedImageBtn(image, onClick, ovr = {}, addChild = null) {
   }
 }
 
-function framedGradientImageBtn(gradImage, image, onClick, ovr = {}, addChild = null) {
+function framedGradientImageBtn(image, onClick, ovr = {}, addChild = null) {
   let stateFlags = Watched(0)
   let size = ovr?.size ?? framedBtnSize
   let imageSize = ovr?.imageSize
@@ -58,7 +58,7 @@ function framedGradientImageBtn(gradImage, image, onClick, ovr = {}, addChild = 
     watch = stateFlags
     size
     rendObj = ROBJ_IMAGE
-    image = Picture($"ui/gameuiskin#{gradImage}:{size[0]}:{size[1]}:P"),
+    image = simpleVerGrad
     behavior = Behaviors.Button
     onClick
     onElemState = @(sf) stateFlags.set(sf)

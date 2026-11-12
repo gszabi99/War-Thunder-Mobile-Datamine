@@ -41,7 +41,7 @@ let noNeedLogerrOnErrors = [
   "unknownDeeplinkReward", "notAllowedDeeplinkReward",
   "USER_ALREADY_HAVE_CLAN", "FIELD_REQUIRED", "CLAN_IS_FULL",
   "CLAN_IS_DELETED", "VALIDATOR_SERVER_REJECT_VALUE", "KICK_INACTIVE_DAYS_NOT_REACHED",
-  "UNKNOWN_USERID", "DECLINE_TO_CREATE_NEW_PROFILE",
+  "UNKNOWN_USERID"
 ]
   .totable()
 

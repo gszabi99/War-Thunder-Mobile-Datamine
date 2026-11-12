@@ -43,6 +43,7 @@ from "%rGui/shop/offerByGoodsState.nut" import activeOffersByGoods
 from "%rGui/shop/shopCommon.nut" import SGT_UNIT, getGoodsType
 from "%rGui/shop/shopState.nut" import allShopGoods
 from "%rGui/style/backgrounds.nut" import bgShaded
+from "%rGui/style/gradients.nut" import simpleVerGrad
 from "%rGui/style/stdColors.nut" import blueprintBarColor
 from "%rGui/textFormatByLang.nut" import decimalFormat, shortTextFromNum
 from "%rGui/unit/components/unitPlateComp.nut" import mkUnitBg, mkUnitImage, mkPlateText, maxFlagSizeWithoutGrad
@@ -81,8 +82,8 @@ let mkRewardPlateBgImpl = @(size, bgImg, ovr = {}) {
     size = FLEX
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    rendObj = ROBJ_9RECT
-    image = Picture($"ui/gameuiskin#gradient_button.svg")
+    rendObj = ROBJ_IMAGE
+    image = simpleVerGrad
     padding = rewardPlateBorderWidth
     color = 0xFFEEEEEE
     children = {

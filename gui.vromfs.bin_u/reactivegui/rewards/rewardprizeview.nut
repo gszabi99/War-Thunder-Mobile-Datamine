@@ -6,6 +6,7 @@ from "%rGui/components/modalWindows.nut" import removeModalWindow
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM, getRewardPlateSize
 from "%rGui/rewards/rewardsPreviewModal.nut" import openRewardsPreviewModal
 from "%rGui/rewards/rewardViewInfo.nut" import isRewardEmpty
+from "%rGui/style/gradients.nut" import simpleVerGrad
 from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
 
 
@@ -33,8 +34,8 @@ function mkRewardPlateBg(r, rStyle) {
       size = FLEX
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      rendObj = ROBJ_9RECT
-      image = Picture($"ui/gameuiskin#gradient_button.svg")
+      rendObj = ROBJ_IMAGE
+      image = simpleVerGrad
       padding = hdpx(3)
       color = 0xFFEEEEEE
       children = {

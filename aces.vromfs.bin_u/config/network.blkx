@@ -25,7 +25,7 @@
       "curlConnectionTimeout": 10,
       "curlProcessingTimeout": 20,
       "fastModeTimeout": 3,
-      "vromRequestTimeout": 30
+      "vromRequestTimeout": 45
     }
   },
   "_common": {

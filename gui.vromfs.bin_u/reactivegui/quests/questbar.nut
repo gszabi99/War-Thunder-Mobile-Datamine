@@ -15,6 +15,7 @@ from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
 from "%rGui/shop/goodsView/sharedParts.nut" import tagRedColor
 from "%rGui/shop/offerByGoodsState.nut" import activeOffersByGoods
 from "%rGui/shop/shopState.nut" import allShopGoods, isDisabledGoods
+from "%rGui/style/gradients.nut" import simpleVerGrad
 from "%rGui/unlocks/unlocks.nut" import batchReceiveRewards, unlockInProgress, unlockProgress
 from "%rGui/unlocks/userstat.nut" import isUserstatMissingData
 
@@ -129,7 +130,7 @@ let animHighlight = @(name) [
 let bgGradient = {
   size = FLEX
   rendObj = ROBJ_IMAGE
-  image = Picture("ui/gameuiskin#gradient_button.svg:0:P")
+  image = simpleVerGrad
   color = 0x00505050
 }
 

@@ -344,37 +344,13 @@
       "hp": 400.0,
       "hidableInViewer": true,
       "createSecondaryShatters": false,
-      "ex_skirt_composite_armor_01_dm": {
+      "ex_armor_l_01_dm": {
         "armorThickness": 65.0,
         "armorClass": "hull_side_special_armor",
         "genericArmorQuality": 0.4,
         "hp": 800.0
       },
-      "ex_skirt_composite_armor_02_dm": {
-        "armorThickness": 65.0,
-        "armorClass": "hull_side_special_armor",
-        "genericArmorQuality": 0.4,
-        "hp": 800.0
-      },
-      "ex_skirt_composite_armor_03_dm": {
-        "armorThickness": 65.0,
-        "armorClass": "hull_side_special_armor",
-        "genericArmorQuality": 0.4,
-        "hp": 800.0
-      },
-      "ex_skirt_composite_armor_04_dm": {
-        "armorThickness": 65.0,
-        "armorClass": "hull_side_special_armor",
-        "genericArmorQuality": 0.4,
-        "hp": 800.0
-      },
-      "ex_skirt_composite_armor_05_dm": {
-        "armorThickness": 65.0,
-        "armorClass": "hull_side_special_armor",
-        "genericArmorQuality": 0.4,
-        "hp": 800.0
-      },
-      "ex_skirt_composite_armor_06_dm": {
+      "ex_armor_l_02_dm": {
         "armorThickness": 65.0,
         "armorClass": "hull_side_special_armor",
         "genericArmorQuality": 0.4,
@@ -394,6 +370,30 @@
       },
       "ex_armor_l_07_dm": {
         "armorThickness": 6.35
+      },
+      "ex_armor_r_01_dm": {
+        "armorThickness": 65.0,
+        "armorClass": "hull_side_special_armor",
+        "genericArmorQuality": 0.4,
+        "hp": 800.0
+      },
+      "ex_armor_r_02_dm": {
+        "armorThickness": 65.0,
+        "armorClass": "hull_side_special_armor",
+        "genericArmorQuality": 0.4,
+        "hp": 800.0
+      },
+      "ex_armor_r_03_dm": {
+        "armorThickness": 65.0,
+        "armorClass": "hull_side_special_armor",
+        "genericArmorQuality": 0.4,
+        "hp": 800.0
+      },
+      "ex_armor_r_04_dm": {
+        "armorThickness": 65.0,
+        "armorClass": "hull_side_special_armor",
+        "genericArmorQuality": 0.4,
+        "hp": 800.0
       },
       "ex_armor_r_05_dm": {
         "armorThickness": 6.35

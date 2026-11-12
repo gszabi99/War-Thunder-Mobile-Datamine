@@ -1528,6 +1528,12 @@
           "name": "dynamic_tank_foliage"
         }
       }
+    },
+    "broken_grass_height": {
+      "gpu": "Adreno (TM) 840",
+      "graphics": {
+        "grassLandmeshHeightCheck": true
+      }
     }
   },
   "gamepad_layout": {

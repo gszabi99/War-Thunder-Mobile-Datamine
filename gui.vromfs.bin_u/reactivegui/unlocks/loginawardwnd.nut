@@ -478,7 +478,7 @@ function itemsBlock() {
 function rewardText() {
   if (show_daily_login_freeze.get())
     return { watch = show_daily_login_freeze }
-  let { wtm_skip_days_streak = 0, wt_skip_days_streak = 0 } = userstatStats.get()?.stats.daily.meta_common
+  let { wtm_skip_days_streak = 0, wt_skip_days_streak = 0 } = userstatStats.get()?.stats["global"].meta_common
   let skipDays = min(wtm_skip_days_streak, wt_skip_days_streak)
   return mkText(loc(skipDays == 1 ? "EveryDayLoginAward/resetPeriod1"
                   : skipDays == 2 ? "EveryDayLoginAward/resetPeriod2"
@@ -492,7 +492,7 @@ function rewardText() {
 }
 
 function dayInRowInfo() {
-  let daysInRow = userstatStats.get()?.stats.daily.meta_common.login_streak ?? 0
+  let daysInRow = userstatStats.get()?.stats["global"].meta_common.login_streak ?? 0
   return daysInRow < 1 ? { watch = userstatStats }
     : mkText(loc("dailyRewards/daysInRow", { days = daysInRow })
       { watch = userstatStats

@@ -1,11 +1,12 @@
 from "%globalsDarg/darg_library.nut" import *
+from "%rGui/style/gradients.nut" import simpleVerGrad
 
 const defButtonHeight = hdpxi(110)
 const defButtonMinWidth = hdpxi(368)
 const defButtonBorderWidth = hdpx(3)
 let defBorderGradient = {
-  rendObj = ROBJ_9RECT
-  image = Picture($"ui/gameuiskin#gradient_button.svg")
+  rendObj = ROBJ_IMAGE
+  image = simpleVerGrad
   padding = defButtonBorderWidth
   color = 0xFFEEEEEE
 }

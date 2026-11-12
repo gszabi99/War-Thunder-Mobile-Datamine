@@ -10,7 +10,7 @@ from "consent.gaijin" import isConsentInited, initConsent, isConsentGiven, isVen
   setPurposeLIT, getVendorListByPurposeId, getVendorListBySpecialPurposeId, getVendorListByFeatureId,
   isAbleConsentForIABVendor, hasConsentForIABVendor, setConsentForIABVendor, isAbleConsentForGoogleVendor,
   hasConsentForGoogleVendor, setConsentForGoogleVendor, isAbleLITForIABVendor, hasVendorLIT, setVendorLIT,
-  getAllDataCategories
+  getAllDataCategories, getStandardTexts
 from "console" import register_command
 from "dagor.shell" import shell_execute
 from "dagor.workcycle" import resetTimeout
@@ -512,6 +512,12 @@ function getDataCategoiresList() {
   return dataCache.dataCategoriesList
 }
 
+function getStandardTextsTbl() {
+  if (dataCache?.standardTextsTbl == null)
+    dataCache.standardTextsTbl <- parse_json(getStandardTexts()) ?? {}
+  return dataCache.standardTextsTbl
+}
+
 register_command(@() debugShowIds.set(!debugShowIds.get()), "ui.tcf_consent.debug_show_ids")
 
 register_command(function() {
@@ -570,6 +576,7 @@ return {
   getSpecialPurposesList
   getFeaturesList
   getDataCategoiresList
+  getStandardTextsTbl
   mkPartnersExtLists
 
   doAnswerAllAndClose

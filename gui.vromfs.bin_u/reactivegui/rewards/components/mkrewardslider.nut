@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import resetTimeout
 from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
 from "%rGui/rewards/rewardStyles.nut" import getRewardPlateSize, rewardTicketDefaultSlots
-from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideX
+from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideX, simpleVerGrad
 
 
 const defColor = 0xFFFFFFFF
@@ -28,8 +28,8 @@ let mkRewardPlateBg = @(size) {
     size = FLEX
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    rendObj = ROBJ_9RECT
-    image = Picture($"ui/gameuiskin#gradient_button.svg")
+    rendObj = ROBJ_IMAGE
+    image = simpleVerGrad
     padding = hdpx(3)
     color = 0xFFEEEEEE
     children = {

@@ -5,6 +5,7 @@ from "%rGui/components/glare.nut" import commonGlare
 from "%rGui/controlsMenu/dargHotkeys.nut" import getGamepadHotkey
 from "%rGui/controlsMenu/gamepadImgByKey.nut" import mkBtnImageComp
 from "%rGui/controlsMenu/gpActBtn.nut" import btnA
+from "%rGui/style/gradients.nut" import simpleVerGrad
 from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 from "%rGui/tooltip.nut" import mkButtonHoldTooltip, REPAY_TIME
 from "types" import Float, Table, Integer
@@ -48,8 +49,8 @@ let pattern = {
 
 let mkGradient = @(override) {
   size = FLEX
-  rendObj = ROBJ_9RECT
-  image = Picture($"ui/gameuiskin#gradient_button.svg")
+  rendObj = ROBJ_IMAGE
+  image = simpleVerGrad
 }.__update(override)
 
 let mkButtonTextMultiline = @(text, override = {}) @() {
