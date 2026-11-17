@@ -6,6 +6,7 @@ from "%appGlobals/currenciesState.nut" import balance, WP, GOLD, PLATINUM
 from "%appGlobals/pServer/campaign.nut" import activeOffers, purchasesCount, todayPurchasesCount, goodsLimitReset
 from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/rewardType.nut" import unitRewardTypes, statRewardTypes, G_CURRENCY, G_BP_POINTS
 from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay, dayOffset
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp, CS_NO_BALANCE, CS_INCREASED_ICON
@@ -15,7 +16,8 @@ from "%rGui/event/buyEventCurrenciesState.nut" import openBuyEventCurrenciesWnd
 from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
 from "%rGui/shop/goodsUtils.nut" import getGoodsByCurrencyId
 from "%rGui/shop/msgQuestDesc.nut" import mkQuestDesc
-from "%rGui/shop/shopState.nut" import openShopWndByCurrencyId, openShopWndByGoods, shopGoods
+from "%rGui/shop/shopState.nut" import openShopWndByCurrencyId, shopGoods
+from "%rGui/seasonScene/seasonSceneState.nut" import openShopByGoods
 from "%rGui/style/stdColors.nut" import commonTextColor
 from "%rGui/textFormatByLang.nut" import decimalFormat
 from "%rGui/unlocks/unlocks.nut" import spendingUnlocks
@@ -37,7 +39,7 @@ let mkText = @(text) {
   text
 }.__update(fontSmall)
 
-function getReplenishCbNonUpdatable(cId, bqInfo) {
+function getReplenishCbNonUpdatable(cId, bqInfo, onGoToShop = null) {
   if (cId in openBuyWnd)
     return @() openBuyWnd[cId](bqInfo)
 
@@ -51,10 +53,11 @@ function getReplenishCbNonUpdatable(cId, bqInfo) {
     && g.rewards[0].gType == G_BP_POINTS
     && g.rewards[0].id == cId)
   if (bpPointsGoods != null)
-    return @() openShopWndByGoods(bpPointsGoods)
+    return @() openShopByGoods(bpPointsGoods, onGoToShop)
 
   let goodsId = getGoodsByCurrencyId(cId, shopGoods.get(), serverConfigs.get(),
-    goodsLimitReset.get(), dayOffset.get(), serverTimeDay.get(), purchasesCount.get(), todayPurchasesCount.get()
+    goodsLimitReset.get(), dayOffset.get(), serverTimeDay.get(), purchasesCount.get(), todayPurchasesCount.get(),
+    hasProfileUnits.get()
   )?.id
   if (goodsId != null)
     return @() openGoodsPreview(goodsId)
@@ -108,7 +111,7 @@ function showNoBalanceMsg(price, currencyId, bqInfo, onGoToShop, onCancel = null
   })
 }
 
-function showNoBalanceMsgAdd(price, required, currencyId, bqInfo) {
+function showNoBalanceMsgAdd(price, required, currencyId, bqInfo, onGoToShop) {
   let balanceId = Computed(@() currencyToFullId.get()?[currencyId] ?? currencyId)
   let notEnough = Computed(@() price + required
     - (balance.get()?[balanceId.get()] ?? battlePasses.get()?[balanceId].curPoints ?? 0))
@@ -118,7 +121,7 @@ function showNoBalanceMsgAdd(price, required, currencyId, bqInfo) {
     priceAdd = mkCurrencyComp(required, currencyId, CS_NO_BALANCE)
   }
   let cId = getBaseCurrency(currencyId)
-  let replenishCb = getReplenishCbNonUpdatable(cId, bqInfo)
+  let replenishCb = getReplenishCbNonUpdatable(cId, bqInfo, onGoToShop)
 
   openMsgBox({
     uid = NO_BALANCE_UID

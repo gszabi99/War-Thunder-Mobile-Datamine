@@ -11,7 +11,6 @@ from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_S
 from "%appGlobals/pServer/campaign.nut" import todayPurchasesCount
 from "%appGlobals/pServer/pServerApi.nut" import registerHandler, shopPurchaseInProgress, shopGenSlotInProgress,
   gen_goods_slots, buy_goods_slot, reset_reward_slots
-from "%appGlobals/pServer/profile.nut" import campMyUnits
 from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
@@ -30,7 +29,7 @@ from "%rGui/components/timerBlock.nut" import mkTimer
 from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
 from "%rGui/navState.nut" import registerScene
 from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateTexts,
-  mkRewardSearchPlate, mkRewardUnitFlag
+  mkRewardSearchPlate
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM, getRewardPlateSize,
   progressBarHeight
 from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, isRewardEmpty
@@ -38,7 +37,7 @@ from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_SHOP, PURCH_TYPE_GOODS_SLO
   mkBqPurchaseInfo
 from "%rGui/shop/discounts.nut" import discountsToApply
 from "%rGui/shop/goodsPreviewState.nut" import GPT_SLOTS, previewType, previewGoods, closeGoodsPreview,
-  openPreviewCount, GPT_BLUEPRINT, openedGoodsId, openedUnitFromTree
+  openPreviewCount, openedGoodsId, openedUnitFromTree
 from "%rGui/shop/goodsUtils.nut" import getAdjustedPriceInfo
 from "%rGui/shop/goodsView/goods.nut" import getGoodsLocName
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase, PURCHASE_BOX_UID
@@ -191,7 +190,7 @@ function headerText() {
     [])
   let description = loc(getSlotsTexts(openedGoodsId.get()).description)
   return {
-    watch = [previewGoods, openedGoodsId, goodsRewardSlots, campMyUnits, serverConfigs,
+    watch = [previewGoods, openedGoodsId, goodsRewardSlots, serverConfigs,
       servProfile, unreleasedUnits, unitsBlockedByBattleMode
     ]
     flow = FLOW_HORIZONTAL
@@ -296,7 +295,6 @@ function mkSlot(reward, rStyle) {
       !isSelected.get() && !(stateFlags.get() & S_HOVER) ? null
         : mkHightlightPlate(isSelected.get(), rStyle)
       plateTexts
-      reward.rType == GPT_BLUEPRINT && unit.get() != null ? mkRewardUnitFlag(unit.get(), rStyle) : null
     ]
     animations = openedUnitFromTree.get() == unit.get()?.name ? rerollUnitAnim : null
     ...mkPressTransitionScale(stateFlags.get())

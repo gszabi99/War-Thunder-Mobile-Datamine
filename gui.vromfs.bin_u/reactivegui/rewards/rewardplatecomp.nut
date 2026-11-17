@@ -35,7 +35,7 @@ from "%rGui/rewards/rewardPrizeView.nut" import openRewardPrizeView
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
   getRewardPlateSize, progressBarHeight, rewardTicketDefaultSlots
 from "%rGui/rewards/rewardViewInfo.nut" import NO_DROP_LIMIT, shopGoodsToRewardsViewInfo, sortRewardsViewInfo,
-  getBlueprintMax, getBlueprintBarColor
+  getBlueprintMax, isBlueprintUpgradeStage, getBlueprintSpentStages, getBlueprintBarColor
 from "%rGui/shop/discounts.nut" import calculateNewGoodsDiscount
 from "%rGui/shop/goodsUtils.nut" import getBestUnitByGoods
 from "%rGui/shop/goodsView/sharedParts.nut" import mkBgImg, mkFitCenterImg, offerPad
@@ -56,6 +56,7 @@ const commonOfferCurrencyIconSize = hdpxi(160)
 const smallOfferCurrencyIconSize = hdpxi(100)
 let textPadding = [0, hdpx(5)]
 const cornerIconMargin = hdpx(5)
+const premiumIconAspect = 73.18 / 31.9
 let fontLabelBig = fontSmall
 const transparentBlackColor = 0x80000000
 const rewardPlateBorderWidth = hdpx(3)
@@ -629,6 +630,72 @@ function mkUnitTextsImpl(r, rStyle, isUpgraded) {
 let mkRewardPlateUnitTexts = @(r, rStyle) mkUnitTextsImpl(r, rStyle, false)
 let mkRewardPlateUnitUpgradeTexts = @(r, rStyle) mkUnitTextsImpl(r, rStyle, true)
 
+function mkRewardFlagSize(rStyle) {
+  let w = rStyle.markSize
+  let h = round(w * (66.0 / 84)).tointeger()
+  return [w, h]
+}
+
+function mkRewardPremiumMark(height) {
+  let size = [round(height * premiumIconAspect).tointeger(), height]
+  return {
+    size
+    rendObj = ROBJ_IMAGE
+    keepAspect = true
+    image = Picture($"ui/gameuiskin#icon_premium.svg:{size[0]}:{size[1]}:P")
+  }
+}
+
+function mkRewardUnitFlag(unit, rStyle, hasPremiumMark) {
+  let operatorCountry = getUnitTagsCfg(unit.name)?.operatorCountry
+  if (operatorCountry == "")
+    return null
+  let countryId = operatorCountry ?? unit.country
+  if (countryId == null)
+    return null
+
+  let size = mkRewardFlagSize(rStyle)
+  let sizeStr = $"{size[0]}:{size[1]}"
+  let flagImg = size[0] > maxFlagSizeWithoutGrad
+    ? Picture($"ui/gameuiskin#{countryId}.avif:{sizeStr}:P")
+    : Picture($"ui/gameuiskin#{countryId}.svg:{sizeStr}:P")
+
+  let flag = {
+    size
+    margin = cornerIconMargin
+    rendObj = ROBJ_IMAGE
+    image = flagImg
+    fallbackImage = Picture($"ui/gameuiskin#menu_lang.svg:{sizeStr}:P")
+    keepAspect = true
+  }
+  return !hasPremiumMark ? flag
+    : {
+        flow = FLOW_HORIZONTAL
+        valign = ALIGN_CENTER
+        children = [
+          flag
+          mkRewardPremiumMark(size[1])
+        ]
+      }
+}
+
+function mkUnitFlagComp(id, rStyle, hasPremiumMark) {
+  let unit = Computed(@() serverConfigs.get()?.allUnits[id])
+  return @() {
+    watch = [unit, hasPremiumMark]
+    children = unit.get() == null ? null : mkRewardUnitFlag(unit.get(), rStyle, hasPremiumMark.get())
+  }
+}
+
+function mkRewardFlag(r, rStyle) {
+  if (r?.rType not in unitRewardTypes)
+    return null
+  let { id, rType } = r
+  let hasPremiumMark = rType != G_BLUEPRINT ? Watched(false)
+    : Computed(@() isBlueprintUpgradeStage(id, servProfile.get(), serverConfigs.get()))
+  return mkUnitFlagComp(id, rStyle, hasPremiumMark)
+}
+
 
 
 function mkRewardPlateBlueprintImage(r, rStyle) {
@@ -650,18 +717,33 @@ function mkRewardPlateBlueprintImage(r, rStyle) {
   }
 }
 
-function mkRewardPlateBlueprintTexts(r, rStyle) {
+function mkBlueprintProgress(id, countInc = null) {
+  let total = Computed(@() serverConfigs.get()?.allBlueprints[id].targetCount ?? 1)
+  let collected = Computed(function() {
+    let spentStages = getBlueprintSpentStages(id, servProfile.get(), serverConfigs.get())
+    return (servProfile.get()?.blueprints[id] ?? 0) + spentStages * total.get() + (countInc?.get() ?? 0)
+  })
+  let isUpgradeStage = Computed(@() collected.get() >= total.get()
+    && isBlueprintUpgradeStage(id, servProfile.get(), serverConfigs.get()))
+  return { total, collected, isUpgradeStage }
+}
+
+function mkRewardPlateBlueprintTexts(r, rStyle, options = {}) {
   let { id } = r
-  let available = Computed(@() servProfile.get()?.blueprints?[id] ?? 0)
-  let total = Computed(@() serverConfigs.get()?.allBlueprints?[id].targetCount ?? 1)
+  let { progress = null, hasForecast = true } = options
+  let { needShowFlag = true } = rStyle
+  let { total, collected, isUpgradeStage } = progress ?? mkBlueprintProgress(id)
+  let available = Computed(@() isUpgradeStage.get() ? collected.get() - total.get() : collected.get())
   let unitRank = Computed(@() serverConfigs.get()?.allUnits?[id]?.mRank)
   let isCompleted = Computed(@() id in servProfile.get()?.units
-    && getBlueprintMax(id, servProfile.get(), serverConfigs.get()) == 0)
-  let barColor = Computed(@() getBlueprintBarColor(id, serverConfigs.get()))
+    && getBlueprintMax(id, servProfile.get(), serverConfigs.get()) == 0
+    && available.get() >= total.get())
+  let barColor = Computed(@() getBlueprintBarColor(isUpgradeStage.get()))
   let isAllReceived = ("dropLimit" in r && "received" in r)
     ? r.dropLimit != NO_DROP_LIMIT && r.dropLimit <= r.received
     : false
   let progressText = mkProgressBarText(r, rStyle)
+  let flag = needShowFlag ? mkUnitFlagComp(id, rStyle, isUpgradeStage) : null
 
   return {
     size = FLEX
@@ -678,7 +760,7 @@ function mkRewardPlateBlueprintTexts(r, rStyle) {
             ]
           : [
               mkProgressLabel(available.get(), total.get(), rStyle)
-              isAllReceived
+              isAllReceived || !hasForecast
                 ? mkProgressBar(available.get(), total.get(), barColor.get())
                 : mkProgressBarWithForecast(r.count, available.get(), total.get(), barColor.get())
           ]
@@ -697,6 +779,7 @@ function mkRewardPlateBlueprintTexts(r, rStyle) {
           progressText
         ]
       }
+      flag
     ]
   }
 }
@@ -1038,6 +1121,18 @@ let mkRewardPlateVip = @(r, rStyle, ovr = {}) {
   ]
 }.__update(ovr)
 
+function mkRewardPlateWithCorner(r, rStyle, cornerIcon, overlay = null) {
+  if (cornerIcon == null && overlay == null)
+    return mkRewardPlate(r, rStyle)
+  return {
+    children = [
+      mkRewardPlate(r, cornerIcon == null ? rStyle : { ...rStyle, needShowFlag = false })
+      overlay
+      cornerIcon
+    ]
+  }
+}
+
 let mkRewardLocked = @(rStyle) {
   size = FLEX
   rendObj = ROBJ_SOLID
@@ -1048,36 +1143,6 @@ let mkRewardLocked = @(rStyle) {
     rendObj = ROBJ_IMAGE
     keepAspect = KEEP_ASPECT_FIT
     image = Picture($"ui/gameuiskin#lock_icon.svg:{rStyle.markSize}:{rStyle.markSize}:P")
-  }
-}
-
-function mkRewardFlagSize(rStyle) {
-  let w = rStyle.markSize
-  let h = round(w * (66.0 / 84)).tointeger()
-  return [w, h]
-}
-
-function mkRewardUnitFlag(unit, rStyle) {
-  let operatorCountry = getUnitTagsCfg(unit.name)?.operatorCountry
-  if (operatorCountry == "")
-    return null
-  let countryId = operatorCountry ?? unit.country
-  if (countryId == null)
-    return null
-
-  let size = mkRewardFlagSize(rStyle)
-  let sizeStr = $"{size[0]}:{size[1]}"
-  let flagImg = size[0] > maxFlagSizeWithoutGrad
-    ? Picture($"ui/gameuiskin#{countryId}.avif:{sizeStr}:P")
-    : Picture($"ui/gameuiskin#{countryId}.svg:{sizeStr}:P")
-
-  return {
-    size
-    margin = cornerIconMargin
-    rendObj = ROBJ_IMAGE
-    image = flagImg
-    fallbackImage = Picture($"ui/gameuiskin#menu_lang.svg:{sizeStr}:P")
-    keepAspect = true
   }
 }
 
@@ -1092,21 +1157,23 @@ return {
   mkRewardBorder
   mkRewardPlate
   mkRewardPlateVip
+  mkRewardPlateWithCorner
   mkRewardPlateBg
   mkRewardPlateImage
   mkRewardPlateUnknownImage
   mkRewardCurrencyImage
   mkRewardPlateTexts
+  mkRewardPlateBlueprintTexts
+  mkBlueprintProgress
   mkRewardReceivedMark
   mkRewardFixedIcon
   mkReceivedCounter
   mkRewardLocked
   mkProgressLabel
-  mkProgressBarWithForecast
-  mkProgressBarText
   mkProgressBar
   mkRewardTextLabel
   mkRewardUnitFlag
+  mkRewardFlag
 
   decoratorIconContentCtors
 }

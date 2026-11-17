@@ -12,9 +12,8 @@ from "%appGlobals/loginState.nut" import isLoggedIn
 from "%appGlobals/pServer/pServerApi.nut" import get_battle_data_jwt, get_battle_data_slots_jwt, registerHandler,
   callHandler, lastProfileKeysUpdated, get_battle_data_for_overrided_preset
 from "%appGlobals/pServer/pServerJwt.nut" import decodeJwtAndHandleErrors, saveJwtResultToJson
-from "%appGlobals/pServer/profile.nut" import curUnitName
+from "%appGlobals/pServer/profile.nut" import curUnitName, hasProfileUnits
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
-import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/pServer/slots.nut" import curCampaignSlotUnits
 from "%appGlobals/rentalState.nut" import battleRentInfo
 from "types" import Array, String
@@ -29,8 +28,8 @@ let needRefreshOvrMission = mkWatched(persist, "needRefreshOvrMission", false)
 let lastOvrMissionResult = mkWatched(persist, "lastOvrMissionResult", null)
 let bdOvrMissionParams = mkWatched(persist, "bdOvrMissionParams", null)
 let hasBattleUnit = Computed(@() battleUnitsInfo.get() != null
-  && (!battleUnitsInfo.get().isSlots ? battleUnitsInfo.get().unit in servProfile.get()?.units
-    : (null == battleUnitsInfo.get().unitList.findvalue(@(u) u not in servProfile.get()?.units))))
+  && (!battleUnitsInfo.get().isSlots ? battleUnitsInfo.get().unit in hasProfileUnits.get()
+    : (null == battleUnitsInfo.get().unitList.findvalue(@(u) u not in hasProfileUnits.get()))))
 let isBattleDataActual = isOfflineMenu ? WatchedRo(true)
   : Computed(@() battleUnitsInfo.get() != null
       && "error" not in lastResult.get()
@@ -143,8 +142,8 @@ function actualizeBattleData(unitNameOrSlots, executeAfterExt = null) {
 
 function actualizeBattleDataIfOwn(unitNameOrSlots, executeAfterExt = null) {
   let isOwn = unitNameOrSlots instanceof Array
-    ? null == unitNameOrSlots.findvalue(@(u) u not in servProfile.get()?.units)
-    : unitNameOrSlots in servProfile.get()?.units
+    ? null == unitNameOrSlots.findvalue(@(u) u not in hasProfileUnits.get())
+    : unitNameOrSlots in hasProfileUnits.get()
   if (isOwn)
     actualizeBattleData(unitNameOrSlots, executeAfterExt)
   else

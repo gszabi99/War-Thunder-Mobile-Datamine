@@ -5,42 +5,45 @@ from "%appGlobals/clientState/clientState.nut" import isInBattle
 
 let botsInfo = mkWatched(persist, "botsInfo", {})
 
+function mkUnits(level) {
+  let research = (rnd_float(1.0, 1.5) * level).tointeger()
+  let blueprint = (rnd_float(0.0, 0.375) * level).tointeger()
+  let premium = rnd_int(0, 3)
+  let collectible = rnd_int(0, 3)
+
+  return {
+    research
+    blueprint
+    premium
+    collectible
+    all = research + blueprint + premium + collectible
+    maxLevel = premium + collectible +
+      (rnd_float(0.05, 0.15) * (research + blueprint)).tointeger()
+  }
+}
+
 function generateBot(player) {
   let { userId, decorators = {}, level = 1 } = player
   let battle_end_ships = (level * level * rnd_float(3.0, 6.0) + 0.5).tointeger()
   let battle_end_tanks = (level * level * rnd_float(3.0, 6.0) + 0.5).tointeger()
   let battle_end_air = (level * level * rnd_float(3.0, 6.0) + 0.5).tointeger()
+
   let result = {
     info = {
       playerLevel = level
       campaigns = {
         ships = {
-          units = {
-            wp = (rnd_float(1.0, 1.5) * level).tointeger()
-            maxLevel = 0
-            prem = rnd_int(1, 3)
-            rare = rnd_int(1, 3)
-          }
+          units = mkUnits(level)
           level
           starLevelHistory = []
         }
         tanks = {
-          units = {
-            wp = (rnd_float(1.0, 1.5) * level).tointeger()
-            maxLevel = 0
-            prem = rnd_int(1, 3)
-            rare = rnd_int(1, 3)
-          }
+          units = mkUnits(level)
           level
           starLevelHistory = []
         }
         air = {
-          units = {
-            wp = (rnd_float(1.0, 1.5) * level).tointeger()
-            maxLevel = 0
-            prem = rnd_int(1, 3)
-            rare = rnd_int(1, 3)
-          }
+          units = mkUnits(level)
           level
           starLevelHistory = []
         }
@@ -67,10 +70,7 @@ function generateBot(player) {
       }
     }
   }
-  result.info.campaigns.ships.units.maxLevel =
-    result.info.campaigns.ships.units.prem + rnd_int(0, result.info.campaigns.ships.units.wp)
-  result.info.campaigns.tanks.units.maxLevel =
-    result.info.campaigns.tanks.units.prem + rnd_int(0, result.info.campaigns.tanks.units.wp)
+
   botsInfo.mutate(@(v) v[userId] <- result)
 }
 

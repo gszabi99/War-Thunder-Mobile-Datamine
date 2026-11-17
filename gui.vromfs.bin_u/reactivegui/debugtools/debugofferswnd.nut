@@ -9,7 +9,7 @@ from "%appGlobals/pServer/campaign.nut" import curCampaign
 from "%appGlobals/pServer/pServerApi.nut" import set_purch_player_type, check_new_offer, debug_offer_generation_stats,
   shift_all_offers_time, generate_fixed_type_offer, registerHandler, debug_offer_possible_units
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
-import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%rGui/components/debugWnd.nut" import closeButton
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
 from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText
@@ -74,7 +74,7 @@ registerHandler("onDebugOfferUnits",
 
     let { isOnlyOwn = false } = context
     let { allUnits = {} } = serverConfigs.get()
-    let myUnits = servProfile.get()?.units ?? {}
+    let myUnits = hasProfileUnits.get()
     let unitsByCamp = {}
     let unknown = []
     foreach(unitName in units) {

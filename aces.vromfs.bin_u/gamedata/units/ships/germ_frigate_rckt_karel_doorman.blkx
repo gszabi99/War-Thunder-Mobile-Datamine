@@ -2458,6 +2458,27 @@
         }
       },
       {
+        "name": "deck_fire",
+        "fx": [
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_small_dmg_04"
+          },
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_small_dmg_05"
+          },
+          {
+            "name": "ship_smoke_big",
+            "emitter": "emtr_smoke_small_dmg_04"
+          },
+          {
+            "name": "ship_smoke_big",
+            "emitter": "emtr_smoke_small_dmg_05"
+          }
+        ]
+      },
+      {
         "name": "engine_fire",
         "fx": [
           {

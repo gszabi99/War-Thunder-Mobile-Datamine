@@ -68,6 +68,24 @@
       "fxPresetName": "local_fire",
       "checkAdditionalWater": true
     },
+    "common_ship_fire_deck": {
+      "damage": 0.0224,
+      "isDamageRelative": true,
+      "damageType": "fire",
+      "radiusScale": 0.1,
+      "radiusScales": [
+        0.1,
+        0.15
+      ],
+      "maxFireTime": [
+        3.0,
+        30.0
+      ],
+      "extinguishChance": 1.0,
+      "allowMultipleFx": true,
+      "fxPresetName": "deck_fire",
+      "checkAdditionalWater": true
+    },
     "ship_aux_fire": {
       "damage": 0.0112,
       "isDamageRelative": true,

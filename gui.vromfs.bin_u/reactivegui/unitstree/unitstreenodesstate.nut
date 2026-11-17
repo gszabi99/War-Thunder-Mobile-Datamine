@@ -8,7 +8,7 @@ from "%sqstd/underscore.nut" import prevIfEqual
 import "%appGlobals/getTagsUnitName.nut" as getTagsUnitName
 from "%appGlobals/loginState.nut" import isLoggedIn
 from "%appGlobals/pServer/campaign.nut" import campConfigs
-from "%appGlobals/pServer/profile.nut" import campUnitsCfg, campMyUnits
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg, hasProfileUnits
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
 from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
@@ -34,7 +34,7 @@ let needDebugLines = mkWatched(persist, "needDebugLines", false)
 let visibleNodes = Computed(@()
   needToShowHiddenUnitsDebug.get() ? nodes.get()
     : nodes.get().filter(@(v) (!campUnitsCfg.get()?[v.name].isHidden && v.name not in unreleasedUnits.get())
-      || v.name in campMyUnits.get()))
+      || v.name in hasProfileUnits.get()))
 
 let selectedCountry = mkWatched(persist, "selectedCountry", null)
 let shownUnitsOffersForPurchase = mkWatched(persist, "shownUnitsOffersForPurchase", {})
@@ -48,7 +48,7 @@ let unitsResearchStatus = Computed(function(prev) {
   let { unitResearchExp = {} } = campConfigs.get()
   let { unitsResearch = {} } = servProfile.get()
   foreach (unitName, reqExp in unitResearchExp) {
-    if (unitName in campMyUnits.get() || unitName not in campUnitsCfg.get())
+    if (unitName in hasProfileUnits.get() || unitName not in campUnitsCfg.get())
       continue
     if (!needToShowHiddenUnitsDebug.get() && unitName in unreleasedUnits.get())
       continue
@@ -87,7 +87,7 @@ let mkCountries = @(nodeList) Computed(function(prev) {
   let resTbl = {}
   foreach (node in nodeList.get()) {
     if (node.name in unitsBlockedByBattleMode.get()
-      && node.name not in campMyUnits.get()
+      && node.name not in hasProfileUnits.get()
       && currentResearch.get() == null
       && !isAllAvailableUnitsResearched.get())
       continue
@@ -308,7 +308,7 @@ let allBlueprints = Computed(@() campConfigs.get()?.allBlueprints ?? {})
 let blueprintCounts = Computed(@() servProfile.get()?.blueprints ?? {})
 
 let availableBlueprints = Computed(@() allBlueprints.get()
-  .filter(@(_, unitName) unitName not in campMyUnits.get()))
+  .filter(@(_, unitName) unitName not in hasProfileUnits.get()))
 
 let blueprintUnitsStatus = Computed(function(prev) {
   let list = {}
@@ -341,6 +341,7 @@ let unseenResearchedUnits = Computed(function() {
   let bCounts = blueprintCounts.get()
   let seenUnits = seenResearchedUnits.get()
 
+  let myUnits = hasProfileUnits.get()
   foreach(unitName, node in unitTreeNodes) {
     let unit = campUnitsCfg.get()?[unitName]
     if (!unit || unit.isHidden || unitName in seenUnits)
@@ -350,17 +351,17 @@ let unseenResearchedUnits = Computed(function() {
 
     local isUnseenUnit = false
 
-    if (unitName not in campMyUnits.get() && unitName in unitResearchExp) {
+    if (unitName not in myUnits && unitName in unitResearchExp) {
       let { isResearched = false, canBuy = false } = unitsResearch?[unitName]
       isUnseenUnit = isResearched && canBuy
     }
-    else if (unitName not in campMyUnits.get() && unitName in blueprints) {
+    else if (unitName not in myUnits && unitName in blueprints) {
       let { targetCount } = blueprints[unitName]
       let curCount = bCounts?[unitName] ?? 0
       isUnseenUnit = curCount >= targetCount
     }
     else if (unit.isPremium)
-      isUnseenUnit = unitName in campMyUnits.get()
+      isUnseenUnit = unitName in myUnits
 
     if(isUnseenUnit) {
       if(country not in res)

@@ -8,15 +8,12 @@ from "%sqstd/math.nut" import lerpClamped, cos, sin, PI, pow
 from "%darg/helpers/compToCompAnim.nut" import addCompToCompAnim
 from "%appGlobals/config/currencyPresentation.nut" import getBaseCurrency
 from "%appGlobals/config/lootboxPresentation.nut" import getRouletteImage
-from "%appGlobals/pServer/profile.nut" import campMyUnits
-from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
-import "%appGlobals/pServer/servProfile.nut" as servProfile
-from "%rGui/components/gradTexts.nut" import mkGradRankSmall
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%rGui/components/modalWindows.nut" import hideModals, unhideModals
 from "%rGui/effects/mkLensFlare.nut" import mkLensFlareLootbox
 from "%rGui/navState.nut" import registerScene, scenesOrder, setSceneBg
 from "%rGui/rewards/rewardPlateComp.nut" import REWARD_STYLE_MEDIUM, mkRewardPlate, mkRewardLocked, mkRewardPlateBg,
-  mkProgressBar, mkRewardPlateImage, mkProgressLabel, mkProgressBarWithForecast, mkProgressBarText, mkRewardUnitFlag
+  mkRewardPlateImage, mkRewardPlateBlueprintTexts, mkBlueprintProgress
 from "%rGui/rewards/rewardStyles.nut" import getRewardPlateSize
 from "%rGui/rewards/rewardViewInfo.nut" import ignoreSubIdRTypes, joinViewInfo, findIndexForJoin
 from "%rGui/shop/lootboxOpenRouletteAnims.nut" import opacityAnim, lightAnim
@@ -574,9 +571,8 @@ recevedRewardAnimIdx.subscribe(function(idx) {
     consistentReceivedRewardIdx.set(idx)
 })
 
-function mkBlueprintPlateTexts(reward, unitRank, rStyle) {
-  let { id } = reward
-  let countInc = Computed(function() {
+function mkBlueprintCountInc(id) {
+  return Computed(function() {
     local totalCount = 0
     local rewards = receivedRewardsAll.get()
     for (local i = 0; i < rewards.len(); i++) {
@@ -590,59 +586,17 @@ function mkBlueprintPlateTexts(reward, unitRank, rStyle) {
     }
     return totalCount
   })
-
-  let available = Computed(@() (servProfile.get()?.blueprints?[id] ?? 0) + countInc.get())
-  let total = Computed(@() serverConfigs.get()?.allBlueprints?[id].targetCount ?? 1)
-  let hasBlueprintUnit = Computed(@() id in campMyUnits.get())
-  let progressBarText = mkProgressBarText(reward, rStyle)
-
-  return @() {
-    watch = consistentReceivedRewardIdx
-    size = FLEX
-    children = [
-      @() {
-        watch = hasBlueprintUnit
-        size = FLEX
-        valign = ALIGN_BOTTOM
-        flow = FLOW_VERTICAL
-        children = hasBlueprintUnit.get()
-          ? [
-              mkProgressLabel(total.get(), total.get(), rStyle)
-              mkProgressBar(total.get(), total.get())
-            ]
-          : [
-              mkProgressLabel(available.get(), total.get(), rStyle)
-              mkProgressBarWithForecast(reward.count, available.get(), total.get())
-          ]
-      }
-      {
-        size = FLEX
-        valign = ALIGN_BOTTOM
-        halign = ALIGN_RIGHT
-        flow = FLOW_VERTICAL
-        padding = const [0, hdpx(5)]
-        children = [
-          unitRank
-            ? mkGradRankSmall(unitRank).__update({ fontSize = rStyle.textStyle.fontSize, pos = const [0, hdpx(5)] })
-            : null
-          progressBarText
-        ]
-      }
-    ]
-  }
 }
 
 function mkBlueprintPlate(reward, rStyle, ovr = {}) {
   let size = getRewardPlateSize(reward.slots, rStyle)
-  let unit = Computed(@() serverConfigs.get()?.allUnits?[reward.id])
-
+  let progress = mkBlueprintProgress(reward.id, mkBlueprintCountInc(reward.id))
   return {
     size
     children = [
       mkRewardPlateBg(reward, rStyle)
       mkRewardPlateImage(reward, rStyle)
-      mkBlueprintPlateTexts(reward, unit.get()?.mRank, rStyle)
-      mkRewardUnitFlag(unit.get(), rStyle)
+      mkRewardPlateBlueprintTexts(reward, rStyle, { progress })
     ]
   }.__update(ovr)
 }
@@ -650,7 +604,7 @@ function mkBlueprintPlate(reward, rStyle, ovr = {}) {
 function mkSkinPlate(reward, rStyle, ovr = {}) {
   let { id } = reward
   let isAvailable = Computed(function() {
-    if (id not in campMyUnits.get())
+    if (id not in hasProfileUnits.get())
       return false
     let unitIdx = receivedRewardsAll.get().findindex(@(rec) null != rec?.viewInfo.findvalue(@(r) r.rType == G_UNIT && r.id == id))
     return unitIdx == null || unitIdx <= rouletteOpenIdx.get() - 1

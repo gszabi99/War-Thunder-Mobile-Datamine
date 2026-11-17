@@ -18,7 +18,7 @@ from "%sqstd/underscore.nut" import isEqual
 from "%appGlobals/clientState/clientState.nut" import isInBattle, isLocalMultiplayer
 from "%appGlobals/clientState/respawnStateBase.nut" import isInRespawn, respawnUnitInfo, respawnUnitItems,
   isRespawnStarted, timeToRespawn, isRespawnInProgress, isRespawnDataInProgress, isBatleDataRequired, respawnsLeft,
-  respawnsTotalInitial, respawnUnitSkins, curUnitsAvgCostWp, isBattleDataFake, hasPredefinedReward, respawnUnitMods
+  respawnsTotalInitial, respawnUnitSkins, curUnitsAvgCostWp, hasPredefinedReward, respawnUnitMods
 from "%appGlobals/decalBlkSerializer.nut" import decalTblToBlk
 from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
 from "%rGui/battleData/battleData.nut" import curBattleUnit, curBattleItems, curBattleSkins, isBattleDataReceived,
@@ -28,7 +28,6 @@ from "guiScriptUtils" import set_aircraft_accepted_cb
 
 let logR = log_with_prefix("[RESPAWN] ")
 
-let isFake = keepref(Computed(@() battleData.get()?.isFake))
 let predefinedReward = keepref(Computed(@() battleData.get()?.predefinedReward))
 let curBattleMods = Computed(@() battleData.get()?.modifications)
 let unitToSpawn = Computed(@() !isBatleDataRequired.get() || isBattleDataReceived.get() || isLocalMultiplayer.get()
@@ -69,7 +68,6 @@ curBattleItems.subscribe(@(v) isInRespawn.get() ? respawnUnitItems.set(v) : null
 curBattleMods.subscribe(@(v) isInRespawn.get() ? respawnUnitMods.set(v) : null)
 curBattleSkins.subscribe(@(v) isInRespawn.get() ? respawnUnitSkins.set(v) : null)
 unitsAvgCostWp.subscribe(@(v) isInRespawn.get() ? curUnitsAvgCostWp.set(v) : null)
-isFake.subscribe(@(v) isBattleDataFake.set(v))
 predefinedReward.subscribe(@(v) hasPredefinedReward.set(v != null))
 
 hasPredefinedReward.set(predefinedReward.get() != null)

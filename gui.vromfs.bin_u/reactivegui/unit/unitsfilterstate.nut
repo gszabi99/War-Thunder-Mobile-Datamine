@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import deferOnce
 from "%appGlobals/config/countryPresentation.nut" import sortCountries
-from "%appGlobals/pServer/profile.nut" import campUnitsCfg, campMyUnits
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg, campMyUnits, hasProfileUnits
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/unitPresentation.nut" import unitClassFontIcons
 from "%appGlobals/unitsState.nut" import canBuyUnitsStatus, US_UNKNOWN, US_OWN, US_NOT_FOR_SALE, US_CAN_BUY,
@@ -207,7 +207,7 @@ function optUpgrade(units, curFilters, setFilterValue) {
 
   let allUpgradesMask = Computed(function() {
     let all = unitUpgrades.get()
-    let my = campMyUnits.get()
+    let my = hasProfileUnits.get()
     local mask = 0
     foreach (uName, u in units.get())
       if (!u.isHidden || uName in my)

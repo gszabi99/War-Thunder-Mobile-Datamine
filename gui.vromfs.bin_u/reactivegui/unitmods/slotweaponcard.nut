@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
 from "%appGlobals/config/bulletsPresentation.nut" import getBulletBeltImage, TOTAL_VIEW_BULLETS
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%rGui/components/selectedLine.nut" import selectedLineHorSolid, opacityTransition, selLineSize
 from "%rGui/style/gradients.nut" import gradTexSize, mkGradientCtorRadial
 from "%rGui/style/stdColors.nut" import warningTextColor, tabBgColor
@@ -15,7 +15,7 @@ from "%rGui/unitMods/unitModsSlotsState.nut" import curWeaponsOrdered, curWeapon
 from "%rGui/weaponry/weaponsVisual.nut" import getWeaponShortNamesList, getBulletBeltShortName
 
 
-let unitUpgOrPremNotInMyHangar = Computed(@() !(curUnit.get()?.name in campMyUnits.get()) && (curUnit.get()?.isPremium || curUnit.get()?.isUpgraded))
+let unitUpgOrPremNotInMyHangar = Computed(@() !(curUnit.get()?.name in hasProfileUnits.get()) && (curUnit.get()?.isPremium || curUnit.get()?.isUpgraded))
 
 let weaponGap = modsGap
 let eqIconSize = [hdpxi(63), hdpxi(50)]

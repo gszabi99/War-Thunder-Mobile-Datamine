@@ -82,9 +82,11 @@ let freeMark = {
 function cardContent(stageInfo, stateFlags, isRewardsInProgress, addChild = null) {
   let { canReceive, viewInfo, isPaid, isReceived, isVip = false } = stageInfo
   let isEmptyReward = Computed(@() viewInfo != null && isSingleViewInfoRewardEmpty(viewInfo, servProfile.get()))
-  let rewardPlateContent = viewInfo == null ? emptySlot
-    : isVip ? mkRewardPlateVip(viewInfo, bpCardStyle)
-    : mkRewardPlate(viewInfo, bpCardStyle)
+  let mkPlate = @(style) viewInfo == null ? emptySlot
+    : isVip ? mkRewardPlateVip(viewInfo, style)
+    : mkRewardPlate(viewInfo, style)
+  let rewardPlateContent = mkPlate(bpCardStyle)
+  let lockedPlateContent = !isReceived && !canReceive ? mkPlate({ ...bpCardStyle, needShowFlag = false }) : null
   let receivedMark = mkRewardReceivedMark(REWARD_STYLE_MEDIUM)
   let canReceiveMarkContent = canReceive ? canReceiveMark(isRewardsInProgress) : null
   return @() {
@@ -101,7 +103,7 @@ function cardContent(stageInfo, stateFlags, isRewardsInProgress, addChild = null
           valign = ALIGN_CENTER
           children = [
             canReceive ? markAvailableReward(viewInfo?.slots ?? 1) : null
-            rewardPlateContent
+            lockedPlateContent == null || isEmptyReward.get() ? rewardPlateContent : lockedPlateContent
             addChild
             isReceived || isEmptyReward.get() ? receivedMark
               : canReceive ? null

@@ -1,7 +1,7 @@
 from "dagor.localize" import loc
 from "frp" import Computed
 from "%appGlobals/pServer/pServerApi.nut" import set_current_unit, curUnitInProgress, registerHandler
-from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg, selectedUnitByPlayer, curUnitName
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits, campUnitsCfg, selectedUnitByPlayer, curUnitName
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 
@@ -32,7 +32,7 @@ let buyUnitsData = Computed(function() {
   let canBuy = {}
   let unitStatus = campUnitsCfg.get().map(function(unit) {
     let { name } = unit
-    if (name in campMyUnits.get())
+    if (name in hasProfileUnits.get())
       return US_OWN
     if (name in allBlueprints && (blueprints?[name] ?? 0) < (allBlueprints?[name]?.targetCount ?? 0))
       return US_NEED_BLUEPRINTS
@@ -67,7 +67,7 @@ function getUnitLockedShortText(unit, status, reqPlayerLevel) {
 }
 
 function setCurrentUnit(unitName) {
-  if (unitName not in campMyUnits.get())
+  if (unitName not in hasProfileUnits.get())
     return "unitNotOwn"
   if (curUnitName.get() == unitName)
     return "unitIsAlreadyCurrent"

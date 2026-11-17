@@ -24,7 +24,7 @@ from "%rGui/clans/clanOptionsScene.nut" import clanOptionsScene
 from "%rGui/clans/clanQuestsState.nut" import hasClanQuestsUnseen
 from "%rGui/clans/clanState.nut" import openClanSearch, hasRequiredLvl, isClanBtnClicked, setClanBtnClicked,
   clanMinCampaignLevel
-from "%rGui/clans/clanSubmissionsState.nut" import hasClanSubmissions
+from "%rGui/clans/clanSubmissionsState.nut" import hasClanSubmissions, hasUnseenClanSubmissions
 from "%rGui/clans/currentClanState.nut" import currentClanId, NO_CLAN_ID, isInitialClanInfoFetching
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/imageButton.nut" import framedGradientImageBtn
@@ -218,8 +218,8 @@ let btnShop = @() translucentButton("ui/gameuiskin#icon_shop.svg",
   { iconMul = 0.8, key = "shop_btn" }) 
 
 let clanUnseenPriority = Computed(@()
-  (hasClanSubmissions.get() || hasClanQuestsUnseen.get() || !isClanBtnClicked.get()) ? UNSEEN_HIGH
-    : hasClanChatUnseen.get() ? UNSEEN_LOW
+  (hasUnseenClanSubmissions.get() || hasClanQuestsUnseen.get() || !isClanBtnClicked.get()) ? UNSEEN_HIGH
+    : (hasClanSubmissions.get() || hasClanChatUnseen.get()) ? UNSEEN_LOW
     : SEEN)
 
 function clansBtn() {

@@ -3,6 +3,7 @@ from "math" import round
 from "%appGlobals/config/goodsPresentation.nut" import getGoodsAsOfferIcon
 from "%appGlobals/config/skinPresentation.nut" import getSkinPresentation
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/rewardType.nut" import G_SKIN
 from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitClassFontIcon, getUnitName
@@ -123,7 +124,7 @@ function mkGoodsSkin(goods, onClick, state, animParams, addChildren) {
   let unitName = firstSkin?.id ?? ""
   let skinName = firstSkin?.subId ?? ""
   let unit = Computed(@() serverConfigs.get()?.allUnits[unitName])
-  let hasUnit = Computed(@() unitName in servProfile.get()?.units)
+  let hasUnit = Computed(@() unitName in hasProfileUnits.get())
   let isPurchased = Computed(@() servProfile.get()?.skins[unitName][skinName] ?? false)
   let ovrState = Computed(@() state.get() | (isPurchased.get() ? ALL_PURCHASED : 0))
 

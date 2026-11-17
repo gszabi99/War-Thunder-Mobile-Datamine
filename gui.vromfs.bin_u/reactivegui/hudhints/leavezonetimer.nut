@@ -25,5 +25,5 @@ registerHintCreator(HINT_TYPE, @(hint, _) {
 }.__update(fontMedium))
 
 eventbus_subscribe("onShowReturnToMapMessage",
-  @(data) data.showMessage ? addEvent({ id = HINT_TYPE, hType = HINT_TYPE, endTime = data.endTime })
+  @(data) data.showMessage ? addEvent({ id = HINT_TYPE, hType = HINT_TYPE, endTime = data.endTime, logPriority = 1 })
       : removeEvent({ id = HINT_TYPE }))

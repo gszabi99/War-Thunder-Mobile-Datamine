@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import deferOnce
-from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/timeoutExt.nut" import resetExtTimeout, clearExtTimer
 from "%appGlobals/unitsState.nut" import canBuyUnits
@@ -21,13 +20,8 @@ function updateActualDiscounts() {
     return
 
   let curTime = getServerTime()
-  let publisher = getCurCircuitOverride("publisher")
-  let { allDiscountsByPublisher = {} } = serverConfigs.get()
-  let allDiscounts = allDiscountsByPublisher?[publisher] ?? allDiscountsByPublisher?.default
-    ?? serverConfigs.get()?.allDiscounts 
-    ?? {}
-  let allDiscountsByUnit = allDiscounts?.unit ?? {}
-  local nextTime = allDiscountsByUnit.reduce(
+  let allDiscounts = serverConfigs.get()?.allDiscounts.unit ?? {}
+  local nextTime = allDiscounts.reduce(
     function(res, val) {
       let {start = 0, end = 0} = val?.timeRange
       if (start > curTime && start < res)
@@ -37,9 +31,9 @@ function updateActualDiscounts() {
       return res
     }, maxTime) ?? maxTime
 
-  unitDiscounts.set(allDiscountsByUnit
+  unitDiscounts.set(serverConfigs.get()?.allDiscounts.unit
     .filter(@(v, _id) isTimeInRange(v?.timeRange ?? {}, curTime))
-    .filter(@(_v, id) id in canBuyUnits.get()))
+    .filter(@(_v, id) id in canBuyUnits.get()) ?? {})
 
   if (nextTime == maxTime || nextTime <= curTime)
     clearExtTimer(updateActualDiscounts)

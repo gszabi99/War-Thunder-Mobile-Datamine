@@ -40,9 +40,12 @@ let currencyToGoodsType = {
   platinum = goodsTypes.SGT_PLATINUM
 }
 
-return shopCategories.__merge(goodsTypes,
-  {
-    shopCategories
-    goodsTypes
-    currencyToGoodsType
-  })
+return {
+  ...shopCategories
+  ...goodsTypes
+  shopCategories
+  goodsTypes
+  currencyToGoodsType
+  SREQ_BP_GRADE_EQUAL = 2
+  SREQ_UNIT_PURCHASED = 3
+}

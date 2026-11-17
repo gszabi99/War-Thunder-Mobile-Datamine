@@ -7,6 +7,7 @@ from "%sqstd/globalState.nut" import hardPersistWatched
 from "%sqstd/platform.nut" import is_android
 from "%sqstd/string.nut" import utf8ToUpper
 from "%sqstd/version_compare.nut" import check_version
+import "%appGlobals/clientState/callbackWhenAppWillActive.nut" as callbackWhenAppWillActive
 from "%appGlobals/clientState/clientState.nut" import isDownloadedFromSite, isInMenu, isOutOfBattleAndResults
 from "%appGlobals/curCircuitOverride.nut" import isExternalOperator
 from "%appGlobals/loginState.nut" import authTags, isLoggedIn
@@ -101,8 +102,10 @@ function openRegionalAppApkPageOnSite() {
 let doLogout = @() eventbus_send("logOutManually", {})
 
 function upgradeToGaijinId() {
-  if (canLinkEmailForGaijinLogin.get())
+  if (canLinkEmailForGaijinLogin.get()) {
+    callbackWhenAppWillActive(@() eventbus_send("login.startRelogin", {}))
     openLinkEmailForGaijinLogin()
+  }
   else if (canUpgradeGuestAccountToGaijinID.get())
     openGuestEmailRegistration()
 }

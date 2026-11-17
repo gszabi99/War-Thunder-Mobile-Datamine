@@ -4,7 +4,7 @@ from "math" import PI, sin
 from "%sqstd/string.nut" import utf8ToUpper
 from "%sqstd/underscore.nut" import isEqual
 from "%appGlobals/pServer/campaign.nut" import curCampaign
-from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg
+from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg, hasProfileUnits
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/pServer/slots.nut" import isCampaignWithSlots, curSlots
@@ -273,7 +273,7 @@ function mkLinks(linksCfg) {
   }]
   return function() {
     let { linesFrom, linesTo } = linksCfg
-    let own = campMyUnits.get()
+    let own = hasProfileUnits.get()
     let animUnlockUnit = animUnitWithLink.get()
     let animLockUnit = animBuyRequirementsUnitId.get() ?? animResearchRequirementsUnitId.get()
     let isAnimBuy = animBuyRequirementsInfo.get().res.len() > 0
@@ -326,7 +326,7 @@ function mkLinks(linksCfg) {
     }
 
     return {
-      watch = [unitsResearchStatus, campMyUnits, animUnitWithLink, canPlayAnimUnitWithLink,
+      watch = [unitsResearchStatus, hasProfileUnits, animUnitWithLink, canPlayAnimUnitWithLink,
         animBuyRequirementsUnitId, animBuyRequirementsInfo, animResearchRequirements, animResearchRequirementsUnitId,
         animResearchRequirementsAncestors
       ]
@@ -944,7 +944,7 @@ function onUnitNodesAppear(prevCountry, nodes, areaSize, prevScrollPos = null) {
 
 let onAnimChange = @(unitId, nodes, areaSize) @(v) scrollAnimToUnitGroup(
   v.keys()
-    .filter(@(name) name not in campMyUnits.get())
+    .filter(@(name) name not in hasProfileUnits.get())
     .append(unitId),
   nodes,
   areaSize

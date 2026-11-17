@@ -4,7 +4,7 @@ from "dagor.workcycle" import deferOnce, resetTimeout, clearTimer
 from "%appGlobals/currenciesState.nut" import balance
 from "%appGlobals/pServer/campaign.nut" import curCampaign, campConfigs
 from "%appGlobals/pServer/pServerApi.nut" import buy_unit, add_player_exp, unitInProgress, buy_unit_research
-from "%appGlobals/pServer/profile.nut" import campUnitsCfg, campMyUnits
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg, hasProfileUnits
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/pServer/slots.nut" import curSlots, isCampaignWithSlots, curCampaignSlotUnits
@@ -136,7 +136,7 @@ function startTutorial() {
     function onClick() {
       if (!unitInProgress.get()) {
         let { unitId = "", currencyId = "", price = "" } = delayedPurchaseUnitData.get()
-        if (unitId != "" && currencyId != "" && price != "" && unitId not in servProfile.get()?.units)
+        if (unitId != "" && currencyId != "" && price != "" && unitId not in hasProfileUnits.get())
           buy_unit(unitId, currencyId, price, { id = "onUnitPurchaseResult", unitId })
       }
       return true
@@ -234,7 +234,7 @@ function startTutorial() {
           closePurchaseAndBalanceBoxes()
           let nodeReceiveInfo = getNodesReceiveInfo({
             campConfigsV = campConfigs.get(),
-            campMyUnitsV = campMyUnits.get(),
+            hasUnitsV = hasProfileUnits.get(),
             unreleasedUnitsV = unreleasedUnits.get(),
             goodsByCategoryV = goodsByCategory.get(),
             personalGoodsByShopCategoryV = personalGoodsByShopCategory.get(),

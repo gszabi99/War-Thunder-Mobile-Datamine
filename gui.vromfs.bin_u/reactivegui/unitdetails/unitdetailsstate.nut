@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%rGui/unit/hangarUnit.nut" import setCustomHangarUnit
 from "%rGui/unit/unitList.nut" import mkBaseUnit
 
@@ -11,7 +11,8 @@ let isWindowAttached = Watched(false)
 let isCustomizationWndAttached = Watched(false)
 let isUnitModAttached = mkWatched(persist, "isUnitModAttached", false)
 let isUnitModSlotsAttached = mkWatched(persist, "isUnitModSlotsAttached", false)
-let isOwnUnit = Computed(@() (openUnitOvr.get()?.canShowOwnUnit ?? true) && openUnitOvr.get()?.name in campMyUnits.get())
+let isOwnUnit = Computed(@() (openUnitOvr.get()?.canShowOwnUnit ?? true)
+  && openUnitOvr.get()?.name in hasProfileUnits.get())
 
 let baseUnit = mkBaseUnit(openUnitOvr)
 let unitToShow = Computed(@() !isWindowAttached.get() && !isCustomizationWndAttached.get()

@@ -5,7 +5,7 @@ import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/rewardType.nut" import G_BLUEPRINT, G_UNIT, G_PRIZE_TICKET
 from "%rGui/clans/clanQuestsState.nut" import clanProgressCfg
 from "%rGui/components/modalWindows.nut" import addModalWindowWithHeader
-from "%rGui/rewards/rewardViewInfo.nut" import mkViewInfo
+from "%rGui/rewards/rewardViewInfo.nut" import mkViewInfo, isBlueprintUpgradeStage
 from "%rGui/shop/unseenPurchaseAddMessage.nut" import mkBlueprintPlate, mkUnitPlate, arrowIcon
 from "%rGui/style/stdColors.nut" import commonTextColor
 
@@ -38,12 +38,12 @@ let mkText = @(text) {
   text
 }.__update(fontSmall)
 
-let mkBlueprintsToUnitRow = @(unitName, targetCount, available) {
+let mkBlueprintsToUnitRow = @(unitName, targetCount, available, isUpgradeStage) {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   gap = hdpx(70)
   children = [
-    mkBlueprintPlate(mkViewInfo(unitName, G_BLUEPRINT, targetCount), available)
+    mkBlueprintPlate(mkViewInfo(unitName, G_BLUEPRINT, targetCount), available, isUpgradeStage)
     arrowIcon
     mkUnitPlate(mkViewInfo(unitName, G_UNIT))
   ]
@@ -54,7 +54,8 @@ let blueprintsToUnitRows = @() {
   flow = FLOW_VERTICAL
   gap = hdpx(20)
   children = clanUnitNames.get().map(@(name) mkBlueprintsToUnitRow(name,
-    serverConfigs.get()?.allBlueprints[name].targetCount ?? 1, servProfile.get()?.blueprints[name] ?? 0))
+    serverConfigs.get()?.allBlueprints[name].targetCount ?? 1, servProfile.get()?.blueprints[name] ?? 0,
+    isBlueprintUpgradeStage(name, servProfile.get(), serverConfigs.get())))
 }
 
 let openClanQuestsInfoWnd = @() addModalWindowWithHeader(WND_UID,

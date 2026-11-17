@@ -14,7 +14,7 @@ from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/textButton.nut" import mkCustomButton, textButtonPricePurchase
 from "%rGui/event/eventState.nut" import eventSeason, curEvent
 from "%rGui/rewards/components/lootboxView.nut" import mkLootboxImageWithSlotScale
-from "%rGui/rewards/rewardPlateComp.nut" import REWARD_STYLE_TINY, mkRewardPlate, mkRewardFixedIcon
+from "%rGui/rewards/rewardPlateComp.nut" import REWARD_STYLE_TINY, mkRewardPlateWithCorner, mkRewardFixedIcon
 from "%rGui/rewards/rewardViewInfo.nut" import getLootboxRewardsViewInfo, canReceiveFixedReward, isRewardEmpty,
   NO_DROP_LIMIT
 from "%rGui/seasonScene/seasonSceneState.nut" import openQuestsWndOnTab
@@ -96,12 +96,8 @@ function lootboxInfo(lootbox, stateFlags) {
         break
     }
 
-    let children = rewards.map(@(r) {
-      children = [
-        mkRewardPlate(r, REWARD_STYLE_TINY),
-        (r?.isFixed || r?.isJackpot) ? fixedIcon : null
-      ]
-    })
+    let children = rewards.map(@(r)
+      mkRewardPlateWithCorner(r, REWARD_STYLE_TINY, (r?.isFixed || r?.isJackpot) ? fixedIcon : null))
 
     return {
       watch = servProfile

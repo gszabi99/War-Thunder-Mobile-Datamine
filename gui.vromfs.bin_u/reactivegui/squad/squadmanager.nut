@@ -555,23 +555,26 @@ matchingRegisterHandler("squad.onRequestMembership", function(result, context) {
     myMembershipRequestsInProgress.mutate(@(v) v.$rawdelete(context.squadId))
 })
 
+function sendSquadMembershipRequest(sId) {
+  if (sId in myMembershipRequests.get())
+    return
+  myMembershipRequestsInProgress.mutate(@(v) v.$rawset(sId, true))
+  matchingRequest("msquad.request_membership", { squadId = sId }, { id = "squad.onRequestMembership", squadId = sId })
+}
+
 matchingRegisterHandler("squad.requestMembership", function(result, context) {
-  if ("error" in result)
-    myMembershipRequestsInProgress.mutate(@(v) v.$rawdelete(context.squadId))
-  else
-    matchingRequest("msquad.request_membership", { squadId = context.squadId },
-      { id = "squad.onRequestMembership", squadId = context.squadId })
+  if ("error" not in result)
+    sendSquadMembershipRequest(context.squadId)
 })
 
 function requestSquadMembership(sId) {
   if (sId in myMembershipRequests.get())
     return
 
-  myMembershipRequestsInProgress.mutate(@(v) v.$rawset(sId, true))
   if (isInSquad.get())
     leaveSquadMessage({ id = "squad.requestMembership", squadId = sId })
   else
-    matchingRequest("msquad.request_membership", { squadId = sId }, { id = "squad.onRequestMembership", squadId = sId })
+    sendSquadMembershipRequest(sId)
 }
 
 matchingRegisterHandler("squad.onRevokeMembershipRequest", function(result, context) {

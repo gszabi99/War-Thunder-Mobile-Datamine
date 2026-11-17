@@ -5,7 +5,7 @@ from "%rGui/clans/clanChatState.nut" import hasClanChatUnseen
 from "%rGui/clans/clanPermissions.nut" import CLAN_JOIN_LIST, clanGrades, hasClanPermission
 from "%rGui/clans/clanQuestsState.nut" import hasClanQuestsUnseen, clanQuestsEndsAt
 from "%rGui/clans/clanState.nut" import getClanDisplayName, isClanInfoOpen, closeClanInfo, viewedClan
-from "%rGui/clans/clanSubmissionsState.nut" import hasClanSubmissions
+from "%rGui/clans/clanSubmissionsState.nut" import hasClanSubmissions, hasUnseenClanSubmissions
 from "%rGui/clans/components/clanBadge.nut" import mkClanBadgePreview
 from "%rGui/clans/currentClanState.nut" import currentClan, myClanGrade
 import "%rGui/clans/pages/clanChatPage.nut" as clanChatPage
@@ -19,7 +19,7 @@ from "%rGui/components/timerBlock.nut" import mkTimer
 from "%rGui/options/mkOptionsScene.nut" import mkOptionsScene
 from "%rGui/style/stdColors.nut" import textColor
 from "%rGui/unlocks/userstat.nut" import registerUnlocksSceneToUpdate
-from "%rGui/unseenPriority.nut" import UNSEEN_HIGH, SEEN
+from "%rGui/unseenPriority.nut" import UNSEEN_HIGH, UNSEEN_LOW
 
 
 const SCENE_ID = "clanOptionsScene"
@@ -86,7 +86,7 @@ let tabs = [
     content = clanSubmissionsPage
     isVisible = Computed(@() hasClanSubmissions.get()
       && hasClanPermission(CLAN_JOIN_LIST, clanGrades.get(), myClanGrade.get()))
-    unseen = Computed(@() hasClanSubmissions.get() ? UNSEEN_HIGH : SEEN)
+    unseen = Computed(@() hasUnseenClanSubmissions.get() ? UNSEEN_HIGH : UNSEEN_LOW)
   }
   {
     id = "clanActivity"

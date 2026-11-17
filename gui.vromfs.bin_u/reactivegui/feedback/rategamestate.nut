@@ -12,7 +12,7 @@ from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
 from "%appGlobals/pServer/bqClient.nut" import sendCustomBqEvent
 from "%appGlobals/pServer/campaign.nut" import lastBattles
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
-import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/permissions.nut" import allow_review_cue, enabled_gp_rate_via_web
 from "%appGlobals/profileStates.nut" import myUserIdStr
 from "%appGlobals/userstats/serverTime.nut" import serverTime, isServerTimeValid
@@ -100,10 +100,12 @@ let isGameUnrated = Computed(@()
 let shouldRemind = Computed(function() {
   if (isGameUnrated.get()
       && winStreak.get() >= REQUIRED_WON_LAST_BATTLES_AMOUNT
-      && canRateGameByCurTime.get())
-    foreach(uName, _ in (servProfile.get()?.units ?? []))
+      && canRateGameByCurTime.get()) {
+    let myUnits = hasProfileUnits.get()
+    foreach(uName, _ in myUnits)
       if ((serverConfigs.get()?.allUnits[uName].mRank ?? 0) >= REQUIRED_UNIT_RANK)
         return true
+  }
 
   return false
 })

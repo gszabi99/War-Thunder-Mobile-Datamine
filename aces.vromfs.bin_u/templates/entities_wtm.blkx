@@ -301,6 +301,7 @@
     "damageLog:array": {},
     "captureLog:array": {},
     "repairLog:object": {},
+    "freeRepairLog:object": {},
     "damageLogPlayers:object": {},
     "damageLogStats:object": {},
     "streakLog:object": {},

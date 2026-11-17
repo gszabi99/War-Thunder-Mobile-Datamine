@@ -5,7 +5,7 @@ from "%rGui/components/unseenMark.nut" import priorityUnseenMark
 from "%rGui/seasonScene/seasonSceneState.nut" import openEventShopWnd
 from "%rGui/shop/eventShopState.nut" import getShopEventName
 from "%rGui/shop/shopState.nut" import hasUnseenGoodsByShop, goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop,
-  personalGoodsByShop
+  personalGoodsByShop, eventShopIds
 from "%rGui/components/timerBlock.nut" import mkTimer
 from "%rGui/event/eventState.nut" import MAIN_EVENT_ID
 
@@ -77,9 +77,9 @@ function mkBtn(sId, eventName) {
   let fallbackImg = Picture($"ui/gameuiskin/icon_event_event_black_friday_shop.avif:{eventShopBtnIconSize}:{eventShopBtnIconSize}:P")
   let eventUnseenMark = priorityUnseenMark.__merge(const { hplace = ALIGN_RIGHT, vplace = ALIGN_TOP})
   return @() {
-    watch = [eventButtonSF, isEventShopHasUnseen, eventCfg, eventName]
+    watch = [eventButtonSF, isEventShopHasUnseen]
     behavior = Behaviors.Button
-    onClick = @() openEventShopWnd(eventName.get())
+    onClick = @() openEventShopWnd(eventName)
     sound = const { click = "click" }
     onElemState = @(v) eventButtonSF.set(v)
     transform = eventButtonSF.get() & S_ACTIVE ? const { scale = [0.95, 0.95] }
@@ -103,29 +103,22 @@ function mkBtn(sId, eventName) {
     ]
   }
 }
-function mkEventShopBtn () {
-  let eventName = Computed(@() getShopEventName("events",
-      goodsByShop.get(),
-      soonGoodsByShop.get(),
-      soonPersonalGoodsByShop.get(),
-      personalGoodsByShop.get()))
 
-  let eventName2 = Computed(@() getShopEventName("events2",
-      goodsByShop.get(),
-      soonGoodsByShop.get(),
-      soonPersonalGoodsByShop.get(),
-      personalGoodsByShop.get()))
-
-  return @() {
-    watch = [eventName, eventName2]
-    flow = FLOW_HORIZONTAL
-    gap = hdpx(20)
-    children = [
-      eventName.get() == MAIN_EVENT_ID || eventName.get() == "" ? null
-        : mkBtn("events", eventName)
-      eventName2.get() == MAIN_EVENT_ID || eventName2.get() == "" ? null
-        : mkBtn("events2", eventName2)
-    ]
+function mkEventShopBtn() {
+  let eventsInfo = Computed(@() eventShopIds.map(@(shopId)
+    getShopEventName(shopId, goodsByShop.get(), soonGoodsByShop.get(), soonPersonalGoodsByShop.get(),
+      personalGoodsByShop.get())))
+  return function() {
+    let children = []
+    foreach (idx, eventName in eventsInfo.get())
+      if (eventName != MAIN_EVENT_ID && eventName != "")
+        children.append(mkBtn(eventShopIds[idx], eventName))
+    return {
+      watch = eventsInfo
+      flow = FLOW_HORIZONTAL
+      gap = hdpx(20)
+      children
+    }
   }
 }
 return mkEventShopBtn

@@ -12,7 +12,7 @@ from "%appGlobals/customSettings.nut" import resetCustomSettings
 from "%appGlobals/itemsState.nut" import itemsOrderFull
 from "%appGlobals/pServer/campaign.nut" import curCampaign, campProfile, setCampaign, campaignsList, campConfigs
 import "%appGlobals/pServer/pServerApi.nut" as pServerApi
-from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg, battleUnitsMaxMRank
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits, campUnitsCfg, battleUnitsMaxMRank
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
@@ -155,7 +155,7 @@ register_command(function(exp) {
   let name = mainHangarUnitName.get()
   if (name not in campUnitsCfg.get())
     return $"Unit '{name}' not exists"
-  if (name not in campMyUnits.get())
+  if (name not in hasProfileUnits.get())
     return $"Unit '{name}' not own"
   add_unit_exp(name, exp, "consolePrintResult")
   return "OK"
@@ -166,7 +166,7 @@ register_command(@(gold) add_unit_gold_today(mainHangarUnitName.get(), gold, "co
 register_command(function(unitName, gold) {
   if (unitName not in campUnitsCfg.get())
     return $"Unit '{unitName}' not exists"
-  if (unitName not in campMyUnits.get())
+  if (unitName not in hasProfileUnits.get())
     return $"Unit '{unitName}' not own"
   add_unit_gold_today(unitName, gold, "consolePrintResult")
   return "Unit found"
@@ -414,10 +414,10 @@ register_command(@() printAllCampData(function(camp, data) {
   "meta.print_all_campaigns_data")
 
 register_command(function() {
-    let { units = {} } = servProfile.get()
+    let myUnits = hasProfileUnits.get()
     let { allUnits = {} } = serverConfigs.get()
     let res = {}
-    foreach(u, _ in units)
+    foreach(u, _ in myUnits)
       getSubArray(res, allUnits?[u].campaign ?? "unknown").append(u)
     res.each(@(l) l.sort())
     console_print(object_to_json_string(res, true))

@@ -35,7 +35,6 @@ from "%appGlobals/unitPresentation.nut" import getUnitPresentation, getUnitName
 from "%appGlobals/unitsState.nut" import setCurrentUnit
 from "%rGui/collections/collectionComps.nut" import mkPuzzlePiece, mkPuzzleImagePiece, getPuzzleGrid, pieceBorder
 from "%rGui/collections/collectionsState.nut" import openPuzzle, activeCollectionsCfg
-from "%rGui/components/gradTexts.nut" import mkGradRankSmall
 from "%rGui/components/modalWindows.nut" import addModalWindow, removeModalWindow
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeader
 from "%rGui/components/scrollbar.nut" import makeVertScroll
@@ -49,12 +48,11 @@ from "%rGui/navState.nut" import tryResetToMainScene, canResetToMainScene
 from "%rGui/notifications/logEvents.nut" import sendTelemetrySavedEvent
 from "%rGui/rewards/battleModComp.nut" import mkBattleModEventUnitText
 from "%rGui/rewards/components/lootboxView.nut" import mkLootboxImage
-from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar,
-  mkProgressBarText, mkRewardPlate, mkRewardUnitFlag, mkRewardPlateUnknownImage
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlateBg, mkRewardPlateImage, mkRewardPlateBlueprintTexts,
+  mkRewardPlate, mkRewardPlateUnknownImage
 from "%rGui/rewards/rewardPrizeSelect.nut" import showPrizeSelectDelayed, ticketToShow
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM, getRewardPlateSize, rewardTicketDefaultSlots
-from "%rGui/rewards/rewardViewInfo.nut" import ignoreSubIdRTypes, getRewardsViewInfo, isSingleRewardEmpty,
-  getBlueprintMax, getBlueprintBarColor
+from "%rGui/rewards/rewardViewInfo.nut" import ignoreSubIdRTypes, getRewardsViewInfo, isSingleRewardEmpty
 from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, COLLECTION_TAB, isSeasonTabVisible
 from "%rGui/shop/shopState.nut" import allShopGoods
 from "%rGui/shop/unseenPurchaseAddMessage.nut" import mkMsgConvert, mkMsgDiscount, mkUnitButton
@@ -595,52 +593,6 @@ function mkSkinRewardIcon(startDelay, unitName, skinName) {
   }
 }
 
-function mkBlueprintPlateTexts(r, rStyle) {
-  let { id } = r
-  let available = Computed(@() servProfile.get()?.blueprints?[id] ?? 0)
-  let total = Computed(@() serverConfigs.get()?.allBlueprints?[id].targetCount ?? 1)
-  let unitRank = Computed(@() serverConfigs.get()?.allUnits?[id]?.mRank)
-  let isCompleted = Computed(@() id in campMyUnits.get()
-    && getBlueprintMax(id, servProfile.get(), serverConfigs.get()) == 0)
-  let barColor = Computed(@() getBlueprintBarColor(id, serverConfigs.get()))
-  let progressBarText = mkProgressBarText(r, rStyle)
-
-  return {
-    size = FLEX
-    children = [
-      @() {
-        watch = [available, total, isCompleted, barColor]
-        size = FLEX
-        valign = ALIGN_BOTTOM
-        flow = FLOW_VERTICAL
-        children = isCompleted.get()
-          ? [
-              mkProgressLabel(total.get(), total.get(), rStyle)
-              mkProgressBar(total.get(), total.get(), barColor.get())
-            ]
-          : [
-              mkProgressLabel(available.get(), total.get(), rStyle)
-              mkProgressBar(available.get(), total.get(), barColor.get())
-          ]
-      }
-      @() {
-        watch = unitRank
-        size = FLEX
-        valign = ALIGN_BOTTOM
-        halign = ALIGN_RIGHT
-        flow = FLOW_VERTICAL
-        padding = const [0, hdpx(5)]
-        children = [
-          unitRank.get()
-            ? mkGradRankSmall(unitRank.get()).__update({ fontSize = rStyle.textStyle.fontSize, pos = const [0, hdpx(5)] })
-            : null
-          progressBarText
-        ]
-      }
-    ]
-  }
-}
-
 function mkBlueprintRewardIcon(rewardInfo, rStyle) {
   let reward = getRewardsViewInfo([rewardInfo])?[0]
   let startDelay = rewardInfo.startDelay
@@ -649,7 +601,6 @@ function mkBlueprintRewardIcon(rewardInfo, rStyle) {
     return mkRewardIcon(startDelay, $"ui/unitskin#blueprint_{rewardInfo.id}.avif", 1.0, 1.5)
 
   let size = getRewardPlateSize(reward.slots, rStyle)
-  let unit = Computed(@() serverConfigs.get()?.allUnits?[rewardInfo.id])
   let highlightBlock = {
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
@@ -657,11 +608,10 @@ function mkBlueprintRewardIcon(rewardInfo, rStyle) {
   }
   let plateBg = mkRewardPlateBg(reward, rStyle)
   let plateImage = mkRewardPlateImage(reward, rStyle)
-  let plateTexts = mkBlueprintPlateTexts(reward, rStyle)
+  let plateTexts = mkRewardPlateBlueprintTexts(reward, rStyle, { hasForecast = false })
   let animProps = mkRewardAnimProps(startDelay, aRewardIconSelfScale)
 
-  return @() {
-    watch = unit
+  return {
     size
     children = [
       highlightBlock
@@ -670,7 +620,6 @@ function mkBlueprintRewardIcon(rewardInfo, rStyle) {
           plateBg
           plateImage
           plateTexts
-          unit.get() == null ? null : mkRewardUnitFlag(unit.get(), rStyle)
         ]
       }.__update(animProps)
     ]

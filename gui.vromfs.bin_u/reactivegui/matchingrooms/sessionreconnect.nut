@@ -8,7 +8,7 @@ from "%appGlobals/loginState.nut" import isLoggedIn, isMatchingOnline
 from "%rGui/matching/matchingApi.nut" import matchingRequest, matchingRegisterHandler, matchingCallHandler
 from "%appGlobals/openForeignMsgBox.nut" import subscribeFMsgBtns, openFMsgBox, closeFMsgBox
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
-import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/profileStates.nut" import myUserId
 from "%appGlobals/sessionLobbyState.nut" import lobbyStates, sessionLobbyStatus
 from "%appGlobals/updater/addonsState.nut" import hasAddons, unitSizes
@@ -39,10 +39,10 @@ let getAttribUnitName = @(attribs)
 
 function getMaxRankUnitName() {
   let { allUnits = {} } = serverConfigs.get()
-  let { units } = servProfile.get()
+  let myUnits = hasProfileUnits.get()
   local resUnit = null
   foreach(unit in allUnits)
-    if (unit.name in units && (resUnit?.mRank ?? -1) < unit.mRank)
+    if (unit.name in myUnits && (resUnit?.mRank ?? -1) < unit.mRank)
       resUnit = unit
   return resUnit?.name
 }

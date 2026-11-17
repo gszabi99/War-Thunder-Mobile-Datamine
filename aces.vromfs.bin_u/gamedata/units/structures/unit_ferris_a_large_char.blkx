@@ -1,0 +1,35 @@
+{
+  "model": "unit_ferris_a_large",
+  "subclass": "fortification",
+  "dynCollisionGeom": true,
+  "hasDmg": false,
+  "damageableByGun": false,
+  "expClass": "exp_zero",
+  "renderInWaterReflection": true,
+  "toGround": false,
+  "forceFastPhysForAI": true,
+  "useDestrPhysObj": false,
+  "substRI": false,
+  "damageCollisionMultiplier": 0.1,
+  "timeToFire": 4.0,
+  "DamageParts": {
+    "steel": {
+      "body_dm": {
+        "armorThickness": 1000.0,
+        "hp": 1000000.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "smoke": 0.0,
+        "fire": 0.0
+      },
+      "onKill": {
+        "expl": 0.0
+      }
+    }
+  }
+}

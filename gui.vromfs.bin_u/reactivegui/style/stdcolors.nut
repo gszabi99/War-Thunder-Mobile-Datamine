@@ -38,7 +38,7 @@ return {
   tabBgColor = 0xB20C1113
 
   blueprintBarColor = 0xFF3384C4
-  clanBlueprintBarColor = 0xFFFFC445
+  upgradeBlueprintBarColor = 0xFFFFC445
 
   rowBgEvenColor = 0x33333333
   rowBgOddColor = 0x66111111

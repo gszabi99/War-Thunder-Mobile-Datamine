@@ -14,6 +14,7 @@ from "%appGlobals/currenciesState.nut" import WP, GOLD, PLATINUM, commonCurrenci
 from "%appGlobals/itemsState.nut" import orderByItems
 from "%appGlobals/loginState.nut" import isSettingsAvailable
 from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/pServer/campaign.nut" import campConfigs, curCampaign, todayPurchasesCount
 from "%appGlobals/pServer/seasonCurrencies.nut" import sortByCurrencyId
 from "%appGlobals/permissions.nut" import can_debug_shop, allow_subscriptions
@@ -23,6 +24,7 @@ from "%appGlobals/userstats/serverTime.nut" import getServerTime, isServerTimeVa
 from "%appGlobals/userstats/serverTimeDay.nut" import serverTimeDay
 import "%rGui/event/shouldShowEventMechanics.nut" as shouldShowEventMechanics
 from "%rGui/rewards/rewardViewInfo.nut" import shopGoodsToRewardsViewInfo, sortRewardsViewInfo
+from "%rGui/shop/goodsUtils.nut" import isHiddenForShop
 from "%rGui/shop/bqPurchaseInfo.nut" import sendBqEventOnOpenCurrencyShop
 from "%rGui/shop/personalGoodsState.nut" import personalGoodsByShopCategory, personalGoodsUnseenIds,
   markPersonalGoodsSeen, resetSeenPersonalGoods, personalGoodsSoonByShopCategory, activePersonalGoods, personalGoodsCfg
@@ -117,20 +119,22 @@ let startNextDayTime = @(time) TIME_DAY_IN_SECONDS - (time % TIME_DAY_IN_SECONDS
 let shopsCfgOrdered = [
   {
     id = "events2"
-    isFit = @(g) (g?.meta.shopId == "2") && !g?.isHidden
+    isEvent = true
+    isFit = @(g) (g?.meta.shopId == "2")
   }
   {
     id = "events"
-    isFit = @(g) (g?.meta.shopId == "1" || "event_id" in g?.meta) && !g?.isHidden
+    isEvent = true
+    isFit = @(g) (g?.meta.shopId == "1" || "event_id" in g?.meta)
   }
   {
     id = "common"
-    isFit = @(g) !g?.isHidden
+    isFit = @(_) true
   }
 ]
+let eventShopIds = shopsCfgOrdered.filter(@(v) v?.isEvent).map(@(v) v.id).reverse()
 
-let getGoodsShopId = @(g) shopsCfgOrdered.findvalue(@(c) c.isFit(g))?.id
-let searchOrder = ["common", "events", "events2"]
+let getGoodsShopId = @(g, myUnits) !isHiddenForShop(g, myUnits) ? shopsCfgOrdered.findvalue(@(c) c.isFit(g))?.id : null
 
 function updateGoodsTimers() {
   let inactive = {}
@@ -231,8 +235,9 @@ let allSubs = Computed(@() allow_subscriptions.get() ? platformSubs.get() : {})
 
 let goodsByCategory = Computed(function() {
   let res = {}
+  let myUnits = hasProfileUnits.get()
   foreach (goods in shopGoods.get()) {
-    if (goods.isHidden) 
+    if (isHiddenForShop(goods, myUnits)) 
       continue
     let cat = getShopCategory(getGoodsType(goods))
     if (cat not in res)
@@ -250,9 +255,10 @@ let soonGoods = Computed(function() {
 let soonGoodsByShop = Computed(function() {
   let res = shopsCfgOrdered.reduce(@(res, v) res.$rawset(v.id, {}), {})
   let soon = soonGoodsByTime.get()
+  let myUnits = hasProfileUnits.get()
   foreach (id, goods in allShopGoods.get())
     if (id in soon) {
-      let sId = getGoodsShopId(goods)
+      let sId = getGoodsShopId(goods, myUnits)
       if (sId in res)
         getSubArray(res[sId], getShopCategory(getGoodsType(goods))).append(goods)
     }
@@ -260,10 +266,11 @@ let soonGoodsByShop = Computed(function() {
 })
 
 let mkGoodsByShop = @(gByCategoryW) Computed(function() {
+  let myUnits = hasProfileUnits.get()
   let res = shopsCfgOrdered.reduce(@(res, v) res.$rawset(v.id, {}), {})
   foreach(catId, goodsList in gByCategoryW.get())
     foreach(goods in goodsList)
-      getSubArray(res[getGoodsShopId(goods)], catId).append(goods)
+      getSubArray(res[getGoodsShopId(goods, myUnits)], catId).append(goods)
   return res
 })
 
@@ -518,7 +525,7 @@ function closeShopWnd(sId = null) {
 }
 
 function openShopWndByGoods(goods) {
-  openShopWnd(getShopCategory(getGoodsType(goods)), null, getGoodsShopId(goods))
+  openShopWnd(getShopCategory(getGoodsType(goods)), null, getGoodsShopId(goods, hasProfileUnits.get()))
   deferOnce(@() anim_start($"attract_goods_{goods.id}"))
 }
 
@@ -529,17 +536,19 @@ function openShopWndByGoods(goods) {
 let mkShopActualSchRewardsByCategoryFor = @(shopIdW) Computed(function() {
   let sId = shopIdW.get()
   let res = {}
+  let myUnits = hasProfileUnits.get()
   foreach(catId, goods in actualSchRewardByCategory.get())
-    if (sId != null && getGoodsShopId(goods) == sId)
+    if (sId != null && getGoodsShopId(goods, myUnits) == sId)
       res.$rawset(catId, goods)
   return res
 })
 let getCurShopGoodsByCategoryFor = @(goodsByCategoryW, shopIdW) Computed(function() {
   let sId = shopIdW.get()
   let res = {}
+  let myUnits = hasProfileUnits.get()
   foreach(catId, goodsList in goodsByCategoryW.get())
     foreach (goods in goodsList)
-      if(getGoodsShopId(goods) == sId) {
+      if (getGoodsShopId(goods, myUnits) == sId) {
         getSubArray(res, catId).append(goods)
       }
   return res
@@ -568,15 +577,6 @@ function onTabChange(id, sId = null) {
 
 let openShopWndByCurrencyId = @(currencyId, bqPurchaseInfo = null)
   openShopWnd(categoryByCurrency?[currencyId], bqPurchaseInfo?.__merge({ id = currencyId }))
-
-function findGoodsByShop(goodsByShopV, isFit) {
-  foreach (sId in searchOrder)
-    foreach (catId, list in goodsByShopV?[sId] ?? {})
-      foreach (goods in list)
-        if (isFit(goods))
-          return { shop = sId, category = catId }
-  return { shop = null, category = null }
-}
 
 let mkShopCurrenciesAndItemsList = @(shopId, catId) Computed(function() {
   let currencies = {}
@@ -665,7 +665,6 @@ return {
   pageScrollHandler
   isDisabledGoods
 
-  shopsCfgOrdered
   curShopId
   goodsByShop
   goodsIdsByShop
@@ -681,7 +680,8 @@ return {
   mkShopActualSchRewardsByCategoryFor
   getCurShopGoodsByCategoryFor
 
-  findGoodsByShop
+  eventShopIds
+
   getGoodsShopId
 
   mkShopCurrenciesAndItemsList

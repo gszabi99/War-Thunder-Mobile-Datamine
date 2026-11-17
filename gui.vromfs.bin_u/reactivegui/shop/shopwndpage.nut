@@ -5,9 +5,9 @@ from "%sqstd/string.nut" import utf8ToUpper
 from "%sqstd/underscore.nut" import arrayByRows, prevIfEqual
 from "%appGlobals/pServer/campaign.nut" import purchasesCount, curCampaign, subscriptions
 from "%appGlobals/pServer/pServerApi.nut" import shopPurchaseInProgress, schRewardInProgress, personalGoodsInProgress
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/rewardType.nut" import G_PREMIUM, G_CURRENCY, G_ITEM, G_SKIN, G_BP_POINTS, unitRewardTypes
-from "%appGlobals/unitTags.nut" import getUnitTagsCfg
+from "%rGui/unit/unitItemAccess.nut" import isItemAllowedForUnit
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/currencyStyles.nut" import gamercardGap
@@ -16,6 +16,7 @@ from "%rGui/components/msgBox.nut" import openMsgBox, msgBoxText
 from "%rGui/mainMenu/balanceComps.nut" import mkItemsBalance, mkBpPointsBalance
 from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
 from "%rGui/seasonScene/seasonSceneState.nut" import openShopByGoods
+from "%rGui/shop/goodsUtils.nut" import isHiddenForShop
 from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview, openSubsPreview
 from "%rGui/shop/goodsStates.nut" import PURCHASING, DELAYED, HAS_PURCHASES, IS_ACTIVE, HAS_UPGRADE, NOT_READY
 from "%rGui/shop/goodsView/goods.nut" import mkGoods
@@ -62,8 +63,8 @@ let personalTextByLifeTime = {
 function openGoodsNotAvailToPurchMsg(goods) {
   if (goods.rewards.len() == 1 && goods.rewards[0].id == "ircm_kit" && goods.rewards[0].gType == G_ITEM) {
     local canBuyCountermeasure = false
-    foreach(unit in campMyUnits.get())
-      if (getUnitTagsCfg(unit.name ?? "")?.Shop.weapons.countermeasure_launcher_ship != null) {
+    foreach(name, _ in hasProfileUnits.get())
+      if (isItemAllowedForUnit("ircm_kit", name)) {
         canBuyCountermeasure = true
         break
       }
@@ -159,21 +160,23 @@ function onGoodsClick(goods) {
 }
 
 function mkGamercardShopBalanceBtnsCtor(mkBalance, gType) {
-  function mkRefillClick(shopId, curCatId, gByShop, shopG, id) {
+  function mkRefillClick(shopId, curCatId, gByShop, shopG, myUnits, id) {
     let has = @(g) null != (g?.rewards ?? g?.goods ?? []).findvalue(@(r) r.id == id && r.gType == gType)
     let category = gByShop?[shopId].findindex(@(goods) null != goods.findvalue(has))
     if (category != null)
       return category == curCatId ? null : @() onTabChange(category, shopId)
-    let goods = shopG.findvalue(@(goods) null != goods.rewards.findvalue(@(r) r.id == id && r.gType == gType))
-    return goods == null || getGoodsShopId(goods) == shopId ? null : @() openShopByGoods(goods)
+    let goods = shopG.findvalue(@(goods) !isHiddenForShop(goods, myUnits)
+      && null != goods.rewards.findvalue(@(r) r.id == id && r.gType == gType))
+    return goods == null || getGoodsShopId(goods, myUnits) == shopId ? null : @() openShopByGoods(goods)
   }
   return @(shopId, catId, assets, cb = null) @() {
-    watch = [shopId, catId, goodsByShop, shopGoods]
+    watch = [shopId, catId, goodsByShop, shopGoods, hasProfileUnits]
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
     gap = gamercardGap
     children = assets.map(function(id) {
-      let refillClick = mkRefillClick(shopId.get(), catId.get(), goodsByShop.get(), shopGoods.get(), id)
+      let refillClick = mkRefillClick(shopId.get(), catId.get(), goodsByShop.get(), shopGoods.get(),
+        hasProfileUnits.get(), id)
       return mkBalance(id,
         refillClick == null ? null
           : function() {

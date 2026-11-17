@@ -6,7 +6,7 @@ from "%appGlobals/config/lootboxPresentation.nut" import getLootboxName
 from "%appGlobals/config/skinPresentation.nut" import getSkinPresentation
 from "%appGlobals/pServer/campaign.nut" import purchasesCount, todayPurchasesCount, goodsLimitReset
 from "%appGlobals/pServer/pServerApi.nut" import buy_unit_skin, enable_unit_skin, skinsInProgress
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import campMyUnits, hasProfileUnits
 from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/rewardType.nut" import G_SKIN, G_LOOTBOX
@@ -34,7 +34,7 @@ from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, openMainSe
   openShopByGoods
 from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_SKINS, PURCH_TYPE_SKIN, mkBqPurchaseInfo
 from "%rGui/shop/goodsPreviewState.nut" import openGoodsPreview
-from "%rGui/shop/goodsUtils.nut" import chooseBetterGoods, canPurchaseGoods
+from "%rGui/shop/goodsUtils.nut" import chooseBetterGoods, canPurchaseGoods, isHiddenForShop
 from "%rGui/shop/lootboxPreviewState.nut" import openEventWndLootbox
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
 from "%rGui/shop/shopState.nut" import shopGoods
@@ -100,10 +100,10 @@ let mkInfoTextarea = @(text, ovr = {}) doubleSideGradient.__merge({
   }.__update(fontTiny)
 }.__update(ovr))
 
-function findShopSkinGoods(unitName, skinName, allGoods) {
+function findShopSkinGoods(unitName, skinName, allGoods, myUnits) {
   local res = null
   foreach(g in allGoods) {
-    if (g.isHidden)
+    if (isHiddenForShop(g, myUnits))
       continue
 
     let { rewards } = g
@@ -123,7 +123,7 @@ function skinBtn(skinPresentation) {
   let isSelected = Computed(@() name == selectedSkin.get())
   let currencyId = Computed(function() {
     let baseId = serverConfigs.get()?.skins[name][baseUnit.get()?.name].currencyId
-      ?? findShopSkinGoods(baseUnit.get()?.name, name, shopGoods.get())?.price.currencyId
+      ?? findShopSkinGoods(baseUnit.get()?.name, name, shopGoods.get(), hasProfileUnits.get())?.price.currencyId
     return currencyToFullId.get()?[baseId] ?? baseId
   })
   let canChangeTags = Computed(@() hasTagsChoice.get() && isSelected.get() && !isLocked.get())
@@ -344,7 +344,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
     watch = [
       eventLootboxesRaw, serverConfigs, bpFreeRewardsUnlock, bpPaidRewardsUnlock,
       bpPurchasedUnlock, battlePassGoods, shopGoods, goodsLimitReset, dayOffset, serverTimeDay,
-      purchasesCount, todayPurchasesCount, shouldShowEventMechanics, currencyToFullId
+      purchasesCount, todayPurchasesCount, shouldShowEventMechanics, currencyToFullId, hasProfileUnits
     ]
     padding = [0, saBorders[0], 0, 0]
     hplace = ALIGN_RIGHT
@@ -352,7 +352,8 @@ let receiveSkinInfo = @(unitName, skinName) function() {
     valign = ALIGN_CENTER
   }
 
-  let skinGoods = findShopSkinGoods(unitName, skinName, shopGoods.get())
+  let myUnits = hasProfileUnits.get()
+  let skinGoods = findShopSkinGoods(unitName, skinName, shopGoods.get(), myUnits)
   if (skinGoods != null) {
     let currencyId = currencyToFullId.get()?[skinGoods?.price.currencyId] ?? skinGoods?.price.currencyId
     return res.__update({
@@ -366,7 +367,7 @@ let receiveSkinInfo = @(unitName, skinName) function() {
   let goodsByLootboxId = {}
   foreach (goods in shopGoods.get()) {
     let { id, rewards, isHidden = false, limit = 0, dailyLimit = 0, showAsOffer = false } = goods
-    if (isHidden && !showAsOffer)
+    if (isHiddenForShop(goods, myUnits) && !showAsOffer)
       continue
     if (!canPurchaseGoods(id, limit, dailyLimit, goodsLimitReset.get(), dayOffset.get(),
           serverTimeDay.get(), purchasesCount.get(), todayPurchasesCount.get()))

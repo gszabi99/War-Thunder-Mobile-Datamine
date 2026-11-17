@@ -3,7 +3,7 @@ from "dagor.workcycle" import resetTimeout
 from "sound_wt" import playSound
 from "%appGlobals/loginState.nut" import isLoggedIn
 from "%appGlobals/pServer/campaign.nut" import curCampaign
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%rGui/unitsTree/selectResearchWnd.nut" import needSelectResearch
 from "%rGui/unitsTree/treeAnimConsts.nut" import maxBuyRequirementsAnimTime, maxResearchRequirementsAnimTime
@@ -123,14 +123,14 @@ function mkAnimRequirements(unitId, allNodes, isUnlock = @(_) true) {
 
 let allNodes = Computed(@() serverConfigs.get()?.unitTreeNodes[curCampaign.get()])
 let animBuyRequirementsInfo = Computed(function() {
-  let my = campMyUnits.get()
+  let my = hasProfileUnits.get()
   return mkAnimRequirements(animBuyRequirementsUnitId.get(), allNodes.get(), @(name) name in my)
 })
 let animBuyRequirements = Computed(@() animBuyRequirementsInfo.get().res)
 
 let animResearchRequirementsInfo = Computed(function() {
   let status = unitsResearchStatus.get()
-  let my = campMyUnits.get()
+  let my = hasProfileUnits.get()
   return mkAnimRequirements(
     animResearchRequirementsUnitId.get(),
     allNodes.get(),

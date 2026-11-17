@@ -9,7 +9,7 @@ from "%appGlobals/loginState.nut" import isSettingsAvailable
 from "%appGlobals/pServer/campaign.nut" import campaignsLevelInfo, campaignsList, curCampaign
 from "%appGlobals/pServer/profileSeasons.nut" import curSeasons
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
-import "%appGlobals/pServer/servProfile.nut" as servProfile
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/unitConst.nut" import eventUnitTypes
 from "%rGui/battlePass/operationPassState.nut" import OP_EVENT_ID, isOPSeasonActive
 from "%rGui/event/eventLootboxes.nut" import eventLootboxesRaw, orderLootboxesBySlot
@@ -327,7 +327,7 @@ let isFitSeasonRewardsRequirements = Computed(function() {
           return true
 
     if (r.unitMRank > 0) {
-      foreach (k, _ in servProfile.get()?.units ?? {})
+      foreach (k, _ in hasProfileUnits.get())
         if ((serverConfigs.get()?.allUnits[k]?.mRank ?? 0) >= r.unitMRank)
           return true
     }

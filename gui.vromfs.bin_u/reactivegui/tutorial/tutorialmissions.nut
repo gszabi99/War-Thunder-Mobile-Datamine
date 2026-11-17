@@ -8,7 +8,7 @@ from "%appGlobals/loginState.nut" import isLoggedIn
 from "%appGlobals/pServer/campaign.nut" import receivedMissionRewards, curCampaign, isProfileReceived,
   isAnyCampaignSelected, abTests, sharedStatsByCampaign
 from "%appGlobals/pServer/pServerApi.nut" import apply_client_mission_reward, clientMissionRewardInProgress
-from "%appGlobals/pServer/profile.nut" import campMyUnits, playerLevelInfo
+from "%appGlobals/pServer/profile.nut" import campMyUnits, playerLevelInfo, hasProfileUnits
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/squadState.nut" import isInSquad
@@ -64,7 +64,7 @@ function needFirstBattleTutorForCampaign(campaign) {
   if (getFirstBattleTutor(campaign, serverConfigs.get()) not in missionsWithRewards.get())
     return false
   let sUnits = serverConfigs.get()?.allUnits ?? {}
-  let ownCampUnit = (servProfile.get()?.units ?? {}).findvalue(@(_, name) sUnits?[name].campaign == campaign)
+  let ownCampUnit = hasProfileUnits.get().findvalue(@(_, name) sUnits?[name].campaign == campaign)
   return ownCampUnit == null || needFirstBattleTutorByStats(servProfile.get()?.sharedStatsByCampaign[campaign])
 }
 

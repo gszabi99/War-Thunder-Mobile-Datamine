@@ -1,10 +1,10 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/pServer/slots.nut" import curCampaignSlotUnits
 from "%rGui/components/levelBlockPkg.nut" import mkProgressLevelBg
-from "%rGui/rewards/rewardViewInfo.nut" import getBlueprintBarColor
+from "%rGui/style/stdColors.nut" import blueprintBarColor
 from "%rGui/unit/unitAccess.nut" import unitsBlockedByBattleMode
 from "%rGui/unitsTree/treeAnimConsts.nut" import attractColor, aTimeHint, aTimePriceScale
 from "%rGui/unitsTree/unitNodesReceiveInfo.nut" import getReceiveDesc
@@ -54,26 +54,25 @@ function blueprintBar(unit) {
   let reqBluebrintsCount = Computed(@() serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 1)
   let isBlocked = unit.name in unitsBlockedByBattleMode.get()
   let blueprintDescText = mkBarText(loc("blueprints/desc"))
-  return @() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in campMyUnits.get() && !isBlocked
+  return @() unit.name in serverConfigs.get()?.allBlueprints && unit.name not in hasProfileUnits.get() && !isBlocked
     ? {
-      watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, campMyUnits, unitsBlockedByBattleMode]
+      watch = [curBluebrintsCount, reqBluebrintsCount, serverConfigs, hasProfileUnits, unitsBlockedByBattleMode]
       size = FLEX_H
       flow = FLOW_VERTICAL
       gap = hdpx(5)
       children = [
         blueprintDescText
-        mkLevelLine(curBluebrintsCount.get(), reqBluebrintsCount.get(),
-          getBlueprintBarColor(unit.name, serverConfigs.get()))
+        mkLevelLine(curBluebrintsCount.get(), reqBluebrintsCount.get(), blueprintBarColor)
       ]}
-    : { watch = [serverConfigs, campMyUnits, unitsBlockedByBattleMode]}
+    : { watch = [serverConfigs, hasProfileUnits, unitsBlockedByBattleMode]}
 }
 
 let unitExpBar = @(unitName, unitResearch) function() {
   let { isCurrent = false, canResearch = false, exp = 0, reqExp = 1, hasAccessLock = true } = unitResearch.get()
   let isBlocked = hasAccessLock && unitName in unitsBlockedByBattleMode.get()
   return {
-    watch = [unitResearch, campMyUnits, unitsBlockedByBattleMode]
-    children = unitName not in campMyUnits.get() && (isCurrent || canResearch) && !isBlocked
+    watch = [unitResearch, hasProfileUnits, unitsBlockedByBattleMode]
+    children = unitName not in hasProfileUnits.get() && (isCurrent || canResearch) && !isBlocked
       ? mkLevelLine(exp, reqExp, unitResearchExpColor)
       : null
   }
@@ -82,7 +81,7 @@ let unitExpBar = @(unitName, unitResearch) function() {
 function unitResearchBar(unitName) {
   let unitResearch = Computed(@() unitsResearchStatus.get()?[unitName])
   let hintLocId = Computed(function() {
-    if (unitName in campMyUnits.get())
+    if (unitName in hasProfileUnits.get())
       return curCampaignSlotUnits.get()?.findvalue(@(v) v == unitName) != null
         ? "slotbar/installedUnit"
         : null
@@ -100,7 +99,7 @@ function unitResearchBar(unitName) {
       : null
   })
 
-  let needHint = Computed(@() hintLocId.get() != null || unitName not in campMyUnits.get())
+  let needHint = Computed(@() hintLocId.get() != null || unitName not in hasProfileUnits.get())
   let hintAnimations = [
     { prop = AnimProp.color, to = attractColor, duration = aTimeHint, easing = CosineFull,
       trigger = "unitInfoActionHint" }

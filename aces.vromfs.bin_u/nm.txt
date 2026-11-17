@@ -66445,3 +66445,7 @@ turret_356mm_45cal_mk12_triple_skin_c*
 broken_grass_height
 grassLandmeshHeightCheck
 Adreno (TM) 840
+common_ship_fire_deck
+freeRepairLog:object
+deck_fire
+unit_ferris_a_large

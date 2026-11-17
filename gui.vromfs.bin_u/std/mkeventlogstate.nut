@@ -46,16 +46,20 @@ function mkEventLogState(persistId, maxActiveEvents = 10, defTtl = 0, isEventsEq
   }
   curEvents.get().each(startRemoveTimer)
 
-  function findFirstRemoveHint(): int|null {
+  function findFirstRemoveHint(newPriority: number): int|null {
     local time = null
     local resIdx = null
+    local resPriority = newPriority
     foreach(idx, evt in curEvents.get()) {
-      let { removeMsec = null } = evt
-      if (resIdx != null
+      let { removeMsec = null, logPriority = 0 } = evt
+      if (logPriority > resPriority)
+        continue
+      if (resIdx != null && logPriority == resPriority
           && (removeMsec == null || (time != null && time < removeMsec)))
         continue
       resIdx = idx
       time = removeMsec
+      resPriority = logPriority
     }
     return resIdx
   }
@@ -64,8 +68,11 @@ function mkEventLogState(persistId, maxActiveEvents = 10, defTtl = 0, isEventsEq
     let uid = ++lastEventUid
     let event = eventExt.__merge({ uid })
 
-    let idxToRemove = getEqualIndex(event)
-      ?? (curEvents.get().len() >= maxActiveEvents ? findFirstRemoveHint() : null)
+    let { logPriority = 0 } = event
+    let isFull = curEvents.get().len() >= maxActiveEvents
+    let idxToRemove = getEqualIndex(event) ?? (isFull ? findFirstRemoveHint(logPriority) : null)
+    if (isFull && idxToRemove == null)
+      return
 
     curEvents.mutate(function(list) {
       if (idxToRemove != null)

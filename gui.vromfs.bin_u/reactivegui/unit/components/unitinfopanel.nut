@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "math" import round, abs
 from "%appGlobals/itemsState.nut" import itemsCfgByCampaignOrdered
 from "%appGlobals/pServer/campaign.nut" import campConfigs
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/pServer/slots.nut" import curCampaignSlots
@@ -310,10 +310,7 @@ function unitArmorBlock(unit, needLabels) {
 
 function unitPriceBlock(unit) {
   let { isUpgraded = false, isPremium = false, campaign = null, name = null } = unit
-  if (campaign not in serverConfigs.get()?.unitTreeNodes
-      || name in campMyUnits.get()
-      || isUpgraded
-      || isPremium)
+  if (isUpgraded || isPremium)
     return null
   let price = Computed(@() getUnitAnyPrice(unit, unitDiscounts.get()))
   let priceLabel = mkText({ text = loc("unitsTree/purchasePrice"), size = FLEX_H })
@@ -322,18 +319,18 @@ function unitPriceBlock(unit) {
     fontStyle = fontVeryTinyAccented
     iconGap = hdpx(6)
   })
-  return @() price.get()?.price
+  return @() price.get()?.price && name not in hasProfileUnits.get() && campaign in serverConfigs.get()?.unitTreeNodes
     ? {
-      watch = [serverConfigs, campMyUnits, price]
-      size = const [statsWidth, SIZE_TO_CONTENT]
-      margin = const [statsGap, 0, 0, 0]
-      flow = FLOW_HORIZONTAL
-      children = [
-        priceLabel
-        mkCurrencyComp(price.get().price, price.get().currencyId, priceCurrencyStyle)
-      ]
-    }
-    : { watch = price }
+        watch = [serverConfigs, hasProfileUnits, price]
+        size = const [statsWidth, SIZE_TO_CONTENT]
+        margin = const [statsGap, 0, 0, 0]
+        flow = FLOW_HORIZONTAL
+        children = [
+          priceLabel
+          mkCurrencyComp(price.get().price, price.get().currencyId, priceCurrencyStyle)
+        ]
+      }
+    : { watch = [serverConfigs, hasProfileUnits, price] }
 }
 
 let mkConsumableRow = @(id, value) {

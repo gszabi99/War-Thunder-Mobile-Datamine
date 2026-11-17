@@ -6,7 +6,7 @@ from "%sqstd/datablock.nut" import eachParam, isDataBlock, blk2SquirrelObjNoArra
 from "%sqstd/time.nut" import TIME_DAY_IN_SECONDS
 import "%appGlobals/getTagsUnitName.nut" as getTagsUnitName
 from "%appGlobals/loginState.nut" import isLoggedIn
-from "%appGlobals/pServer/profile.nut" import campUnitsCfg, campMyUnits
+from "%appGlobals/pServer/profile.nut" import campUnitsCfg, hasProfileUnits
 from "%appGlobals/userstats/serverTime.nut" import getServerTime
 
 
@@ -51,7 +51,7 @@ isLoggedIn.subscribe(@(_) loadUnseenUnits())
 loadUnseenUnits()
 
 let availableUnitsList = Computed(function() {
-  let my = campMyUnits.get()
+  let my = hasProfileUnits.get()
   return campUnitsCfg.get()
     .filter(@(u) !u?.isHidden || u.name in my)
 })

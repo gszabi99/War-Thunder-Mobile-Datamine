@@ -1,6 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
 from "string" import format
-from "%appGlobals/clientState/respawnStateBase.nut" import isBattleDataFake
 from "%rGui/respawn/respawnAirChooseState.nut" import selectedBeltWeaponId
 from "%rGui/respawn/respawnAirChooseWeaponWnd.nut" import showAirRespChooseSecWnd, showAirRespChooseBeltWnd
 from "%rGui/respawn/respawnComps.nut" import headerText, header, headerHeight, bulletsBlockMargin, unitListHeight,
@@ -57,13 +56,13 @@ let mkCard = @(iconComp, title, bottomTitle = "", isSelectedStyle = false) {
 }
 
 let weaponTitle = @(w) format(loc("weapons/counter/right/short"), (w?.count ?? 1))
-let mkWeaponCard = @(w, canClick) mkCard(commonWeaponIcon(w).__update({vplace = ALIGN_BOTTOM, hplace = ALIGN_CENTER}),
+let mkWeaponCard = @(w) mkCard(commonWeaponIcon(w).__update({vplace = ALIGN_BOTTOM, hplace = ALIGN_CENTER}),
   weaponTitle(w)).__update({
-    onClick = canClick ? @() showAirRespChooseSecWnd(w.slotIdx) : null
-    sound = canClick ? { click = "click" } : null
+    onClick = @() showAirRespChooseSecWnd(w.slotIdx)
+    sound = { click = "click" }
   })
 
-let mkBeltCard = @(w, canClick)
+let mkBeltCard = @(w)
   @() mkCard(
     mkBeltImage(w.equipped?.bullets ?? []),
     caliberTitle(w),
@@ -72,8 +71,8 @@ let mkBeltCard = @(w, canClick)
   ).__update({
     watch = selectedBeltWeaponId
     borderColor = w.weaponId == selectedBeltWeaponId.get() ? 0xC07BFFFF : 0xFFFFFFFF
-    onClick = canClick ? @() showAirRespChooseBeltWnd(w.weaponId) : null
-    sound = canClick ? { click = "click" } : null
+    onClick = @() showAirRespChooseBeltWnd(w.weaponId)
+    sound = { click = "click" }
   })
 
 let mkEmptyInfo = @(text) {
@@ -214,20 +213,20 @@ function respawnAirWeaponry(selSlot) {
     let rows = []
     if (courseBeltWeapons.len() > 0)
       rows.append(mkGroup("weaponry/courseGunBelts",
-        courseBeltWeapons.sort(@(a, b) b.caliber <=> a.caliber).map(@(w) mkBeltCard(w, !isBattleDataFake.get())), { key = courseMenuKey }, {
+        courseBeltWeapons.sort(@(a, b) b.caliber <=> a.caliber).map(@(w) mkBeltCard(w)), { key = courseMenuKey }, {
           key = courseTitleKey
         }))
     if (turretBeltWeapons.len() > 0)
       rows.append(mkGroup("weaponry/turretGunBelts",
-        turretBeltWeapons.sort(@(a, b) b.caliber <=> a.caliber).map(@(w) mkBeltCard(w, !isBattleDataFake.get())), { key = turretMenuKey }, {
+        turretBeltWeapons.sort(@(a, b) b.caliber <=> a.caliber).map(@(w) mkBeltCard(w)), { key = turretMenuKey }, {
           key = turretTitleKey
         }))
     let secondaryStacks = stackSecondaryWeapons(secondaryWeapons)
     if (secondaryStacks.len() > 0)
-      rows.append(mkGroup("weaponry/secondaryWeapons", secondaryStacks.map(@(w) mkWeaponCard(w, !isBattleDataFake.get())), { key = secondaryMenuKey }, {
+      rows.append(mkGroup("weaponry/secondaryWeapons", secondaryStacks.map(@(w) mkWeaponCard(w)), { key = secondaryMenuKey }, {
         key = secondaryTitleKey
       }))
-    else if (wSlots.len() > 1 && !isBattleDataFake.get())
+    else if (wSlots.len() > 1)
       rows.append(mkGroup("weaponry/secondaryWeapons", mkEmptyInfo(loc("weaponry/tapToChooseSecondary")), {
         onClick = @() showAirRespChooseSecWnd(1)
         sound = const { click = "click" }
@@ -239,10 +238,10 @@ function respawnAirWeaponry(selSlot) {
       }))
 
     if (rows.len() == 0)
-      return { watch = [weaponPreset, chosenBelts, isBattleDataFake] }
+      return { watch = [weaponPreset, chosenBelts] }
 
     return {
-      watch = [weaponPreset, chosenBelts, isBattleDataFake]
+      watch = [weaponPreset, chosenBelts]
       size = [weaponGroupWidth + bulletsBlockMargin, SIZE_TO_CONTENT]
       flow = FLOW_HORIZONTAL
       children = [

@@ -16,7 +16,7 @@ from "%rGui/components/msgBox.nut" import openMsgBox
 from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
 from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon
 from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardDisabledBkg, mkRewardReceivedMark,
-  mkRewardUnitFlag
+  mkRewardFlag, mkRewardPlateWithCorner
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM, getRewardPlateSize
 from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, isRewardEmpty
 from "%rGui/shop/lootboxOpenRouletteState.nut" import rouletteOpenId, nextOpenId
@@ -285,15 +285,15 @@ function mkSlot(slotIdx, reward, rStyle) {
     (selIndexes.get().len() == currentTicketCounts.get().availableVariants && !isSelected.get()) || isPurchased.get())
 
   let key = {}
-  let onSlotElemState = withTooltip(stateFlags, key, @() !isSelected.get() && unit.get() ? null
+  let onSlotElemState = withTooltip(stateFlags, key, @() !isSelected.get() || unit.get() == null ? null
     : {
         content = mkPlateTooltipByType[reward.rType](unit),
         flow = FLOW_HORIZONTAL
       })
   let onSlotDetach = tooltipDetach(stateFlags)
-  let plate = mkRewardPlate(reward, rStyle)
+  let plate = mkRewardPlateWithCorner(reward, rStyle, mkRewardFlag(reward, rStyle))
   return @() {
-    watch = [isSelected, stateFlags, unit, isDisabled, isPurchased]
+    watch = [isSelected, stateFlags, isDisabled, isPurchased]
     key
     size
     behavior = Behaviors.Button
@@ -303,7 +303,6 @@ function mkSlot(slotIdx, reward, rStyle) {
     sound = const { click  = "click" }
     children = [
       plate
-      unit.get() ? mkRewardUnitFlag(unit.get(), rStyle) : null
       isPurchased.get() || (!isSelected.get() && !(stateFlags.get() & S_HOVER)) ? null
         : mkHightlightPlate(isSelected.get())
       isDisabled.get() ? mkDisableBkgWithTooltip(isPurchased.get(), rStyle) : null

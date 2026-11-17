@@ -3,7 +3,7 @@ from "%appGlobals/rewardType.nut" import *
 from "%appGlobals/config/countryPresentation.nut" import sortCountries
 from "%appGlobals/config/rewardStatsPresentation.nut" import hasStatsImage
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
-from "%rGui/style/stdColors.nut" import blueprintBarColor, clanBlueprintBarColor
+from "%rGui/style/stdColors.nut" import blueprintBarColor, upgradeBlueprintBarColor
 
 
 const NO_DROP_LIMIT = 1000000
@@ -337,8 +337,18 @@ function [pure, nodiscard] getBlueprintMax(id, profile, configs) {
   return id in profile?.units ? target : 2 * target
 }
 
-let getBlueprintBarColor = @[pure, nodiscard](id, configs)
-  (configs?.allBlueprints?[id].isClan ?? false) ? clanBlueprintBarColor : blueprintBarColor
+let isBlueprintUpgradeStage = @[pure, nodiscard](id, profile, configs)
+  id in profile?.units && (configs?.allBlueprints[id].hasUpgrade ?? false)
+
+function [pure, nodiscard] getBlueprintSpentStages(id, profile, configs) {
+  let unit = profile?.units[id]
+  if (unit == null)
+    return 0
+  return ((configs?.allBlueprints[id].hasUpgrade ?? false) && (unit?.isUpgraded ?? false)) ? 2 : 1
+}
+
+let getBlueprintBarColor = @[pure, nodiscard](isUpgradeStage)
+  isUpgradeStage ? upgradeBlueprintBarColor : blueprintBarColor
 
 let isEmptyByRType = {
   [G_DECORATOR] = @(value, _, profile, __) value in profile?.decorators,
@@ -442,6 +452,8 @@ return {
   ignoreSubIdRTypes
   isEmptyByRType
   getBlueprintMax
+  isBlueprintUpgradeStage
+  getBlueprintSpentStages
   getBlueprintBarColor
 
   getRewardsViewInfo

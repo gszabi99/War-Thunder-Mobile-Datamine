@@ -7,7 +7,7 @@ from "%appGlobals/config/boostersPresentation.nut" import getBoosterIcon
 from "%appGlobals/config/lootboxPresentation.nut" import getLootboxName
 from "%appGlobals/pServer/campaign.nut" import bestCampLevel
 from "%appGlobals/pServer/pServerApi.nut" import lootboxInProgress
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullId
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
@@ -24,8 +24,8 @@ from "%rGui/components/textButton.nut" import mkCustomButton, mergeStyles
 from "%rGui/event/eventState.nut" import eventSeason, curEventLootboxes
 from "%rGui/rewards/components/lootboxView.nut" import mkLootboxImageWithSlotScale
 from "%rGui/rewards/lootboxRewardChances.nut" import mkLootboxChancesComp, mkIsLootboxChancesInProgress
-from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardReceivedMark, mkRewardFixedIcon,
-  mkReceivedCounter, mkRewardLocked, mkRewardSearchPlate, mkRewardDisabledBkg, mkRewardUnitFlag
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardReceivedMark, mkRewardFixedIcon,
+  mkReceivedCounter, mkRewardLocked, mkRewardSearchPlate, mkRewardDisabledBkg, mkRewardFlag, mkRewardPlateWithCorner
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_TINY_SMALL_GAP, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
   progressBarHeight
 from "%rGui/rewards/rewardViewInfo.nut" import getAllLootboxRewardsViewInfo, getLootboxRewardsViewInfo,
@@ -304,20 +304,6 @@ function mkPreviewIconImpl(reward, rStyle, ovr = {}) {
   }
 }
 
-function mkRewardFlag(reward, rStyle) {
-  let unit = Computed(@() serverConfigs.get()?.allUnits?[reward.id])
-  return @() {
-    watch = unit
-    children = mkRewardUnitFlag(unit.get(), rStyle)
-  }
-}
-
-let topLeftIconCtor = {
-  [G_BLUEPRINT] = mkRewardFlag,
-  [G_UNIT_UPGRADE] = mkRewardFlag,
-  [G_UNIT] = mkRewardFlag,
-}
-
 let previewIconOvr = {
   [G_BLUEPRINT] = @(_) { pos = [0, -progressBarHeight] },
   [G_LOOTBOX] = @(rStyle) { pos = [0, -rStyle.labelHeight] },
@@ -339,7 +325,7 @@ function mkReward(reward, rStyle, lootboxW = null, dropFromNested = null) {
       clickableInfo = loc("mainmenu/btnPreview")
     }
   let isAllReceived = dropLimit != NO_DROP_LIMIT && dropLimit <= received
-  let isAvailable = Computed(@() rType != "skin" || id in campMyUnits.get())
+  let isAvailable = Computed(@() rType != "skin" || id in hasProfileUnits.get())
 
   let stepsCount = !isFixed || lootboxW == null ? Watched(0)
     : Computed(function() {
@@ -348,8 +334,14 @@ function mkReward(reward, rStyle, lootboxW = null, dropFromNested = null) {
       })
 
   let previewIcon = onClick == null ? null : mkPreviewIcon(reward, rStyle)
+  let cornerIcon = !isAllReceived && isFixed ? mkRewardFixedIcon(rStyle)
+    : !isAllReceived && dropLimitRaw != NO_DROP_LIMIT ? mkReceivedCounter(received, dropLimit)
+    : mkRewardFlag(reward, rStyle)
   let lockedMark = mkRewardLocked(rStyle)
-  let fixedIcon = !isAllReceived && isFixed ? mkRewardFixedIcon(rStyle) : null
+  let plate = mkRewardPlateWithCorner(reward, rStyle,
+    rType != G_SKIN ? cornerIcon
+      : @() { watch = isAvailable, size = FLEX, children = isAvailable.get() ? cornerIcon : lockedMark },
+    previewIcon)
   let rewardReceivedMark = isAllReceived ? mkRewardReceivedMark(rStyle) : null
   let holdTooltip = mkButtonHoldTooltip(onClick, stateFlags, key,
     @() {
@@ -366,16 +358,11 @@ function mkReward(reward, rStyle, lootboxW = null, dropFromNested = null) {
     0.01)
 
   return @() {
-    watch = [isAvailable, stateFlags, stepsCount]
+    watch = stepsCount
     behavior = Behaviors.Button
     key
     children = [
-      mkRewardPlate(reward, rStyle)
-      previewIcon
-      !isAvailable.get() ? lockedMark
-        : !isAllReceived && isFixed ? fixedIcon
-        : !isAllReceived && dropLimitRaw != NO_DROP_LIMIT ? mkReceivedCounter(received, dropLimit)
-        : topLeftIconCtor?[rType](reward, rStyle)
+      plate
       isAllReceived && stepsCount.get() <= 0 ? rewardReceivedMark : null
       stepsCount.get() < 0 && !isAllReceived ? mkRewardDisabledBkg : null
     ]

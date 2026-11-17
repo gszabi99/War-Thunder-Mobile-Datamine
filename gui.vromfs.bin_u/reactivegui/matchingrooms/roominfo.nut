@@ -5,35 +5,33 @@ from "%rGui/matchingRooms/sessionLobby.nut" import roomInfo
 
 
 let lastLabelsRoomId = mkWatched(persist, "lastLabelsRoomId", INVALID_ROOM_ID)
+let seenSquadPlayers = mkWatched(persist, "seenSquadPlayers", {})
+let squadLabelById = mkWatched(persist, "squadLabelById", {})
+
 roomInfo.subscribe(function(rInfo) {
-  local nextLabel = {}
-  local listSquads = {}
-  local listPlayers = {}
-  let isInNewRoom = rInfo && rInfo.roomId != lastLabelsRoomId.get()
-  local playerLabels = !isInNewRoom ? clone squadLabels.get() : {}
+  if (rInfo == null)
+    return
+  let isInNewRoom = rInfo.roomId != lastLabelsRoomId.get()
   if (isInNewRoom)
     lastLabelsRoomId.set(rInfo.roomId)
-  let players = rInfo?.public.filter(@(p) p?.squad) ?? {}
-  foreach(player in players) {
-    listPlayers[$"{player.id}"] <- player.squad
-    if (player.team not in nextLabel)
-      nextLabel[player.team] <- 1
-    let squadId = player.squad
-    if (squadId == INVALID_SQUAD_ID)
-        continue
-    if (squadId not in listSquads)
-      listSquads[squadId] <- -1
-    else if (listSquads[squadId] == -1) {
-      listSquads[squadId] = nextLabel[player.team]
-      nextLabel[player.team]++
-    }
-  }
+  let seen = isInNewRoom ? {} : clone seenSquadPlayers.get()
+  foreach (p in rInfo?.public ?? {})
+    if ((p?.squad ?? INVALID_SQUAD_ID) != INVALID_SQUAD_ID)
+      seen[$"{p.id}"] <- { squad = p.squad, team = p.team }
+  seenSquadPlayers.set(seen)
 
-  foreach (playerId, squadId in listPlayers){
-    if (playerId in playerLabels)
-      continue
-    playerLabels[playerId] <- listSquads[squadId]
+  let squadTeam = {}
+  let squadSize = {}
+  foreach (p in seen) {
+    squadTeam[p.squad] <- p.team
+    squadSize[p.squad] <- (squadSize?[p.squad] ?? 0) + 1
   }
-
-  squadLabels.set(playerLabels)
+  let squadLabel = isInNewRoom ? {} : clone squadLabelById.get()
+  let newSquads = squadSize.keys().filter(@(s) s not in squadLabel && squadSize[s] > 1).sort()
+  foreach (squad in newSquads) {
+    let team = squadTeam[squad]
+    squadLabel[squad] <- squadLabel.filter(@(_, s) squadTeam[s] == team).len() + 1
+  }
+  squadLabelById.set(squadLabel)
+  squadLabels.set(seen.map(@(p) squadLabel?[p.squad] ?? -1))
 })

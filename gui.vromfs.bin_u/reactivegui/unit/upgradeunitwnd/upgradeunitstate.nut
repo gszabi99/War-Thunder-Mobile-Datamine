@@ -1,13 +1,11 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 
 
 let upgradeCommonUnitName = mkWatched(persist, "upgradeCommonUnitName", null)
 
-let isChosenUnitUpgarde = Computed(@() campMyUnits.get()?[upgradeCommonUnitName.get()] != null)
-
 return {
   upgradeCommonUnitName
 
-  isChosenUnitUpgarde
+  isChosenUnitUpgarde = Computed(@() upgradeCommonUnitName.get() in hasProfileUnits.get())
 }

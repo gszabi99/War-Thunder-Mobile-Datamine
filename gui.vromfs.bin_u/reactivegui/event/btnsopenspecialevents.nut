@@ -11,7 +11,8 @@ from "%rGui/quests/questsState.nut" import tabIdToOpen
 import "%rGui/seasonScene/mkSeasonSceneUnseenMark.nut" as mkSeasonSceneUnseenMark
 from "%rGui/seasonScene/seasonSceneState.nut" import openSeasonScene, openEventShopWnd
 from "%rGui/shop/eventShopState.nut" import getShopEventName
-from "%rGui/shop/shopState.nut" import goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop, personalGoodsByShop
+from "%rGui/shop/shopState.nut" import goodsByShop, soonGoodsByShop, soonPersonalGoodsByShop, personalGoodsByShop,
+  eventShopIds
 
 
 function mkUnseenWithSf(eventId) {
@@ -72,7 +73,7 @@ function btnsOpenSpecialEvents() {
     let soonGoodsByShopV = soonGoodsByShop.get()
     let soonPersonalGoodsByShopV = soonPersonalGoodsByShop.get()
     let personalGoodsByShopV = personalGoodsByShop.get()
-    foreach (shopId in const ["events", "events2"]) {
+    foreach (shopId in eventShopIds) {
       let eventName = getShopEventName(shopId, goodsByShopV, soonGoodsByShopV, soonPersonalGoodsByShopV, personalGoodsByShopV)
       if (eventName != "" && eventName != MAIN_EVENT_ID && eventName not in usedEvents) {
         usedEvents[eventName] <- true

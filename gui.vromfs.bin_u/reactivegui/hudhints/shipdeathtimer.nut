@@ -27,4 +27,4 @@ registerHintCreator(HINT_TYPE, @(_, __) @() {
 })
 
 showTimeToDeath.subscribe(@(v) !v ? removeEvent({ id = HINT_TYPE })
-  : addEvent({ id = HINT_TYPE, hType = HINT_TYPE }))
+  : addEvent({ id = HINT_TYPE, hType = HINT_TYPE, logPriority = 1 }))

@@ -1,5 +1,5 @@
 from "%globalsDarg/darg_library.nut" import *
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/rewardType.nut" import unitRewardTypes
 from "%rGui/event/eventState.nut" import isFitSeasonRewardsRequirements
 from "%rGui/shop/offerByGoodsState.nut" import activeOffersByGoods
@@ -22,7 +22,7 @@ let offersByGoodsToShow = Computed(@() !isFitSeasonRewardsRequirements.get() ? [
             foreach (r in g.rewards)
               if (r.gType in unitRewardTypes) {
                 withUnits = true
-                hasNotReceived = hasNotReceived || r.id not in campMyUnits.get()
+                hasNotReceived = hasNotReceived || r.id not in hasProfileUnits.get()
               }
             return !withUnits || hasNotReceived
           })

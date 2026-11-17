@@ -2,7 +2,7 @@ from "%globalsDarg/darg_library.nut" import *
 from "math" import round
 from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
 from "%appGlobals/config/currencyPresentation.nut" import currencyIconsColor
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/timeToText.nut" import secondsToHoursLoc
@@ -166,10 +166,10 @@ let getComponentsByUnitType = @(unitType)
 let mkUnitBlueprintMark = @(unit, ovr = {}) function() {
   let count = servProfile.get()?.blueprints?[unit.name] ?? 0
   let tgtCount = serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 0
-  return count >= tgtCount || unit.name in campMyUnits.get()
-    ? { watch = [servProfile, serverConfigs, campMyUnits] }
+  return count >= tgtCount || unit.name in hasProfileUnits.get()
+    ? { watch = [servProfile, serverConfigs, hasProfileUnits] }
     : {
-        watch = [servProfile, serverConfigs, campMyUnits]
+        watch = [servProfile, serverConfigs, hasProfileUnits]
         hplace = ALIGN_LEFT
         vplace = ALIGN_BOTTOM
         flow = FLOW_HORIZONTAL

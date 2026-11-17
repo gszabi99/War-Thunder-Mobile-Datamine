@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "dagor.workcycle" import resetTimeout, clearTimer
 from "math" import ceil
-from "%appGlobals/pServer/profile.nut" import playerLevelInfo, campMyUnits
+from "%appGlobals/pServer/profile.nut" import playerLevelInfo, hasProfileUnits
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/pServer/slots.nut" import isCampaignWithSlots
@@ -12,7 +12,6 @@ from "%rGui/components/levelBlockPkg.nut" import maxLevelStarChar
 from "%rGui/components/selectedLineUnits.nut" import selectedLineHorUnits, selLineSize
 from "%rGui/components/unseenMark.nut" import priorityUnseenMarkFeature, priorityUnseenMark
 from "%rGui/options/options/gameOptions.nut" import isAllowAutoOfferToBuyUnitEnabled
-from "%rGui/rewards/rewardViewInfo.nut" import getBlueprintBarColor
 from "%rGui/shop/bqPurchaseInfo.nut" import PURCH_SRC_UNITS, PURCH_TYPE_UNIT, mkBqPurchaseInfo
 from "%rGui/slotBar/dragDropSlotState.nut" import draggedData
 from "%rGui/style/gradients.nut" import mkColoredGradientY
@@ -146,13 +145,12 @@ function mkTreeNodesUnitPlateSpeedUpAnim(unit, price, discount, researchStatus, 
                       : mkUnitResearchPriceAnim(researchStatus.get(), const { padding = 0 })
                   }
                   @() {
-                    watch = [animExpPart, serverConfigs]
+                    watch = [animExpPart, isBlueprint]
                     size = FLEX
                     rendObj = ROBJ_SOLID
                     valign = ALIGN_BOTTOM
                     color = 0xFF000000
-                    children = mkPlateExpBarAnimSlot(animExpPart.get(), isBlueprint.get(),
-                      getBlueprintBarColor(unit.name, serverConfigs.get()))
+                    children = mkPlateExpBarAnimSlot(animExpPart.get(), isBlueprint.get())
                   }
                 ]
               }
@@ -286,7 +284,7 @@ function mkTreeNodesUnitPlateDefault(unit, xmbNode, ovr = {}) {
     return null
 
   let researchStatus = Computed(@() unitsResearchStatus.get()?[unit.name])
-  let isOwned = Computed(@() unit.name in campMyUnits.get())
+  let isOwned = Computed(@() unit.name in hasProfileUnits.get())
   let isLocked = Computed(@() !isOwned.get() && (unit.name not in canBuyUnits.get()))
   let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
   let canPurchase = Computed(@() unit.name in canBuyUnits.get())
@@ -329,7 +327,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
   let stateFlags = Watched(0)
   let researchStatus = Computed(@() unitsResearchStatus.get()?[unit.name])
   let blueprintStatus = Computed(@() blueprintUnitsStatus.get()?[unit.name])
-  let isOwned = Computed(@() unit.name in campMyUnits.get())
+  let isOwned = Computed(@() unit.name in hasProfileUnits.get())
   let isLocked = Computed(@() !isOwned.get() && (unit.name not in canBuyUnits.get()))
   let isSelected = Computed(@() curSelectedUnit.get() == unit.name)
   let isGlowing = Computed(@() isSelected.get() || (stateFlags.get() & S_HOVER))
@@ -338,8 +336,9 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
   let isDraggedUnit = Computed(@() draggedData.get() != null
     && draggedData.get()?.unitName == unit.name
     && !draggedData.get()?.canRemove)
-  let price = Computed(@() canPurchase.get() || (researchStatus.get()?.isResearched && unit.name not in campMyUnits.get())
-      ? getUnitAnyPrice(unit, unitDiscounts.get())
+  let price = Computed(@() canPurchase.get()
+      || (researchStatus.get()?.isResearched && unit.name not in hasProfileUnits.get())
+    ? getUnitAnyPrice(unit, unitDiscounts.get())
     : null)
   let discount = Computed(@() unitDiscounts.get()?[unit.name])
   let isPremium = unit?.isUpgraded || unit?.isPremium
@@ -355,7 +354,7 @@ function mkTreeNodesUnitPlate(unit, xmbNode, ovr = {}, receiveInfo = null) {
         return ((unit?.level ?? 0) >= (unit?.maxLevel ?? levels)) && levels != 0 
       })
   let needShowBlueprintBar = Computed(@() isBlueprint.get()
-    && unit.name not in campMyUnits.get()
+    && unit.name not in hasProfileUnits.get()
     && (servProfile.get()?.blueprints[unit.name] ?? 0) < (serverConfigs.get()?.allBlueprints[unit.name].targetCount ?? 0))
   let trigger = $"{unit.name}_anim"
   let startCurAnim = @() anim_start(trigger)

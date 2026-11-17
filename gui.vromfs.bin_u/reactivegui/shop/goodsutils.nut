@@ -3,7 +3,9 @@ from "math" import pow
 from "%appGlobals/currenciesState.nut" import orderByCurrency
 from "%appGlobals/rewardType.nut" import G_UNIT_UPGRADE, G_LOOTBOX, G_SKIN, unitRewardTypes
 from "%appGlobals/userstats/serverTimeDay.nut" import getDay
+from "%rGui/shop/shopConst.nut" import SREQ_UNIT_PURCHASED
 from "%rGui/rewards/lootboxesRewards.nut" import RewardSearcher
+
 
 function tryApplyUnitSkinFromGoods(unit, goods) {
   let unitName = unit?.name ?? ""
@@ -61,13 +63,19 @@ function [pure, nodiscard] chooseBetterGoods(g1, g2) {
   return g1.price.price < g2.price.price ? g1 : g2
 }
 
-function getGoodsByCurrencyId(curId, sGoods, configs, limitReset, dayOffset, serverTimeDay, purchCount, todayPurchCount) {
+function isHiddenForShop(goods, myUnits) {
+  let { isHidden = false, requirements = [] } = goods
+  return isHidden
+    || (null != requirements.findvalue(@(r) r.reqType == SREQ_UNIT_PURCHASED && r.id not in myUnits))
+}
+
+function getGoodsByCurrencyId(curId, sGoods, configs, limitReset, dayOffset, serverTimeDay, purchCount, todayPurchCount, myUnits) {
   local bestGoods = null
   let { lootboxesCfg = {}, rewardsCfg = {} } = configs
   let searcher = RewardSearcher(rewardsCfg, lootboxesCfg, @(r) (null != r.findvalue(@(g) g.id == curId)))
   foreach (goods in sGoods) {
-    let { id, rewards, isHidden = false, limit = 0, dailyLimit = 0 } = goods
-    if (isHidden)
+    let { id, rewards, limit = 0, dailyLimit = 0 } = goods
+    if (isHiddenForShop(goods, myUnits))
       continue
     if (!canPurchaseGoods(id, limit, dailyLimit, limitReset, dayOffset, serverTimeDay, purchCount, todayPurchCount))
       continue
@@ -101,4 +109,5 @@ return {
   getAdjustedPriceInfo
   getGoodsByCurrencyId
   chooseBetterGoods
+  isHiddenForShop
 }

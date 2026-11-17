@@ -3,7 +3,7 @@ from "dagor.time" import get_time_msec
 from "sound_wt" import startSound, stopSound
 from "%sqstd/math.nut" import lerpClamped
 from "%appGlobals/config/currencyPresentation.nut" import currencyIconsColor
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%rGui/unit/components/unitPlateComp.nut" import mkIcon, plateTextsSmallPad
@@ -127,8 +127,8 @@ let mkBlueprintUnitResearchPriceAnim = @(unit, researchStatus, ovr = {}) functio
   let { exp = 0, reqExp = 0, isResearched = false } = researchStatus
   let count = servProfile.get()?.blueprints?[unit.name] ?? 0
   let tgtCount = serverConfigs.get()?.allBlueprints?[unit.name].targetCount ?? 0
-  return count < tgtCount || unit.name in campMyUnits.get()
-    ? { watch = [servProfile, serverConfigs, campMyUnits, animUnitAfterResearch] }
+  return count < tgtCount || unit.name in hasProfileUnits.get()
+    ? { watch = [servProfile, serverConfigs, hasProfileUnits, animUnitAfterResearch] }
     : {
         watch = animUnitAfterResearch
         padding = plateTextsSmallPad

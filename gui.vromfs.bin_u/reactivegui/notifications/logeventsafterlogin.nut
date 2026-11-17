@@ -5,7 +5,7 @@ from "%sqstd/frp.nut" import ComputedImmediate
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%appGlobals/loginState.nut" import isLoggedIn
 from "%appGlobals/pServer/campaign.nut" import isProfileReceived, lastBattles, sharedStats, curCampaign, campaignsList
-from "%appGlobals/pServer/profile.nut" import playerLevelInfo
+from "%appGlobals/pServer/profile.nut" import playerLevelInfo, hasProfileUnits
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/userstats/serverTime.nut" import serverTime
 from "%rGui/battlePass/battlePassObsoleteState.nut" import curStage
@@ -49,8 +49,7 @@ function sendEventOnReach(eventId, watch, threshold, sendEvent = sendTelemetryEv
   })
 }
 
-let unitsTotal = keepref(Computed(@() !isProfileReceived.get() ? null
-  : (servProfile.get()?.units.len() ?? 0)))
+let unitsTotal = keepref(Computed(@() !isProfileReceived.get() ? null : hasProfileUnits.get().len()))
 sendEventOnReach("get_units_8", unitsTotal, 8, @(id) sendTelemetrySavedEvent(id, id))
 
 let statsByCampaign = Computed(@() !isProfileReceived.get() ? null

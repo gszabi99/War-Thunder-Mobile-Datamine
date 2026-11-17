@@ -1,14 +1,13 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%globalsDarg/screenMath.nut" import scaleArr
+from "math" import sqrt
 from "%sqstd/string.nut" import utf8ToUpper
 import "%appGlobals/pServer/servProfile.nut" as servProfile
-from "%appGlobals/rewardType.nut" import *
-from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/pServer/pServerApi.nut" import receive_bp_reward, battlePassInProgress
 from "%appGlobals/config/passPresentation.nut" import getGradePresentation
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_BP_PAGE
-from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardReceivedMark, mkRewardLocked, mkRewardUnitFlag,
-  mkRewardBorder
+from "%rGui/rewards/rewardPlateComp.nut" import mkRewardReceivedMark, mkRewardLocked, mkRewardFlag,
+  mkRewardBorder, mkRewardPlateWithCorner
 from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo
 from "%rGui/battlePass/battlePassState.nut" import curBpPages, curBpGrade, curBpGoods, curBpCurPoints,
   curBpId, curBpTotalPoints, curBpEndTime, curBpReceived, isPurchaseWndOpened, openBpHelpWnd,
@@ -19,11 +18,11 @@ from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/textButton.nut" import textButtonPurchase, textButtonPricePurchaseLow
 from "%rGui/components/paginator.nut" import mkPaginatorCurPage, pageGap
 from "%rGui/components/timerBlock.nut" import mkTimerBlock
-from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkCurrencyImage
+from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkCurrencyImage, mkFreeText
 from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
 from "%rGui/event/eventState.nut" import eventSeasonIdx
-from "%rGui/seasonScene/seasonSceneState.nut" import openHelpWndIfUnseen, EVENT_SHOP_TAB, openSeasonTab, seasonPageId, backToTab
+from "%rGui/seasonScene/seasonSceneState.nut" import openHelpWndIfUnseen
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase, showNoBalanceMsgAdd
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import userlogTextColor
@@ -33,6 +32,10 @@ from "%rGui/style/gradients.nut" import simpleHorGrad
 let wndKey = {}
 let bpPageStyle = REWARD_STYLE_BP_PAGE
 let gradeColors = [null, 0xFFFFAE00, 0xFF9C03EE]
+
+const cornerCircleDist = 50 * (sqrt(2) - 1)
+let strikethroughCurrencyIconSize = (bpPageStyle.markSize * 0.75).tointeger()
+let strikethroughIconSize = strikethroughCurrencyIconSize * 2
 
 let paginatorTabGap = hdpx(10)
 let paginatorTabWidth = 0.5 * bpPageStyle.boxSize
@@ -68,19 +71,21 @@ function mkSlotViewInfo(profileBpInfo, slot, slotIdx, page, pageIdx) {
   let { reqPoints } = page
   let { limit, cost, reqPassGrade } = slot
   let { totalPoints = 0, curPoints = 0, received = {}, grade = 0 } = profileBpInfo
-  let isAboveLimit = limit != 0 && (received?[pageIdx][slotIdx] ?? 0) >= limit
+  let isReceived = limit != 0 && (received?[pageIdx][slotIdx] ?? 0) >= limit
   let hasReqPagePoints = totalPoints >= reqPoints
   let hasReqRewardPoints = curPoints >= cost
   let hasReqGrade = grade >= reqPassGrade
-  let canReceive = !isAboveLimit && hasReqGrade && hasReqPagePoints && hasReqRewardPoints
+  let isLocked = !hasReqGrade || !hasReqPagePoints
+  let canReceive = !isReceived && !isLocked && hasReqRewardPoints
   return {
     ...slot
     viewInfo = getRewardsViewInfo(slot.rewards)
     pageIdx
     slotIdx
-    isReceived = isAboveLimit
+    isReceived
+    isLocked
     canReceive
-    descLoc = isAboveLimit ? loc("battlepass/receivedRew")
+    descLoc = isReceived ? loc("battlepass/receivedRew")
       : canReceive ? loc("battlepass/receive")
       : !hasReqGrade ? loc(slot.reqPassGrade == 1 ? "battlepass/paid" : "battlepass/paid/vip")
       : loc("battlepass/lock/points", {
@@ -105,17 +110,6 @@ let openPurchBpButton = @(text) textButtonPurchase(utf8ToUpper(text), @() isPurc
 let noBpButton = { size = [FLEX, defButtonHeight] }
 
 let getSlotsInRow = @(width, style) max(2, (width + style.boxGap).tointeger() / (style.boxSize + style.boxGap))
-
-let mkRewardFlag = @(reward, rStyle) @() {
-  watch = serverConfigs
-  children = mkRewardUnitFlag(serverConfigs.get()?.allUnits?[reward.id], rStyle)
-}
-
-let topLeftIconCtor = {
-  [G_BLUEPRINT] = mkRewardFlag,
-  [G_UNIT_UPGRADE] = mkRewardFlag,
-  [G_UNIT] = mkRewardFlag,
-}
 
 function findReward(pages, totalPoints, curPoints, grade, received, pIdx = null) {
   if (pages.len() == 0)
@@ -162,11 +156,34 @@ function openReward(pIdx = null) {
 
 function mkSlot(slot, rawReward, rStyle) {
   let reward = { ...slot, ...rawReward }
-  let { isReceived, canReceive } = reward
+  let { isReceived, isLocked, canReceive } = reward
 
-  let lockedIcon = !canReceive && !isReceived ? mkRewardLocked(rStyle) : topLeftIconCtor?[rawReward.rType](reward, rStyle)
+  let lockedIcon = isLocked ? mkRewardLocked(rStyle)
+    : !canReceive && !isReceived
+      ? {
+          size = strikethroughIconSize
+          valign = ALIGN_CENTER
+          halign = ALIGN_CENTER
+          hplace = ALIGN_RIGHT
+          margin = hdpx(8)
+          children = [
+            mkCurrencyImage(curBpId.get(), strikethroughCurrencyIconSize, { vplace = null })
+            {
+              size = FLEX
+              rendObj = ROBJ_VECTOR_CANVAS
+              color = 0xFFFF0000
+              fillColor = 0
+              lineWidth = hdpxi(4)
+              commands = [
+                [VECTOR_INNER_LINE],
+                [VECTOR_LINE, 100 - cornerCircleDist, cornerCircleDist, cornerCircleDist, 100 - cornerCircleDist],
+                [VECTOR_ELLIPSE, 50, 50, 50, 50],
+              ]
+            }
+          ]
+        }
+    : mkRewardFlag(reward, rStyle)
   let rewardReceivedMark = isReceived ? mkRewardReceivedMark(rStyle) : null
-  let rewardPlate = mkRewardPlate(reward, rStyle)
   let gradeIndicator = gradeColors?[slot.reqPassGrade] == null ? null
     : {
         size = bpPageStyle.boxSize
@@ -178,6 +195,7 @@ function mkSlot(slot, rawReward, rStyle) {
           [VECTOR_POLY, 15, 0, 30, 0, 0, 30, 0, 15]
         ]
       }
+  let rewardPlate = mkRewardPlateWithCorner(reward, rStyle, lockedIcon, gradeIndicator)
 
   let isSelected = Computed(@() reward.pageIdx == selectedPage.get() && reward.slotIdx == selectedSlotIdx.get())
   return @() {
@@ -190,8 +208,6 @@ function mkSlot(slot, rawReward, rStyle) {
     }
     children = [
       rewardPlate
-      gradeIndicator
-      lockedIcon
       rewardReceivedMark
       isSelected.get() ? mkRewardBorder : null
     ]
@@ -311,7 +327,7 @@ let mkLockLayer = @() {
 
 let curBpIdSubscription = @(_) openReward()
 
-let battlePassContent = @() {
+let mkBattlePassContent = @(onGoToShop) @() {
   watch = curBpId
   key = wndKey
   size = FLEX
@@ -401,8 +417,9 @@ let battlePassContent = @() {
                         children = [
                           textButtonPricePurchaseLow(
                             selectedReward.get().canReceive ? utf8ToUpper(loc("mainmenu/btnClaim")) : null
-                            mkCurrencyComp(selectedReward.get().cost, curBpId.get())
-                              .__update({ margin = [0, 0, 0, hdpx(32)] })
+                            selectedReward.get().cost == 0 ? mkFreeText().__update(fontBoldTinyShaded)
+                              : mkCurrencyComp(selectedReward.get().cost, curBpId.get())
+                                  .__update({ margin = [0, 0, 0, hdpx(32)] })
                             @() selectedReward.get().canReceive && selectedReward.get().cost == 0
                                     ? receive_bp_reward(curBpId.get(), selectedReward.get().pageIdx,
                                         selectedReward.get().slotIdx, selectedReward.get().cost)
@@ -411,7 +428,7 @@ let battlePassContent = @() {
                                   : curBpPages.get()[selectedReward.get().pageIdx].reqPoints - curBpTotalPoints.get() > 0
                                     ? showNoBalanceMsgAdd(selectedReward.get().cost,
                                         curBpPages.get()[selectedReward.get().pageIdx].reqPoints
-                                          - curBpTotalPoints.get(), curBpId.get(), null)
+                                          - curBpTotalPoints.get(), curBpId.get(), null, onGoToShop)
                                   : openMsgBoxPurchase({
                                       text = loc("shop/needMoneyQuestion",
                                         { item = colorize(userlogTextColor,
@@ -424,18 +441,15 @@ let battlePassContent = @() {
                                       purchase = @() receive_bp_reward(curBpId.get(), selectedReward.get().pageIdx,
                                         selectedReward.get().slotIdx, selectedReward.get().cost)
                                       bqInfo = null
-                                      function onGoToShop() {
-                                        backToTab.set(seasonPageId.get())
-                                        openSeasonTab(EVENT_SHOP_TAB)
-                                      }
+                                      onGoToShop
                                     })
                             {
                               ovr = {
                                 size = FLEX,
                                 minWidth = hdpxi(320)
-                              }.__update(!selectedReward.get().canReceive ? { transform = null } : {})
+                              }.__update(selectedReward.get().isLocked ? { transform = null } : {})
                             })
-                          selectedReward.get().canReceive ? null : mkLockLayer()
+                          selectedReward.get().isLocked ? mkLockLayer() : null
                         ]
                       })
                 ]
@@ -497,5 +511,5 @@ let battlePassContent = @() {
 }
 
 return {
-  battlePassContent
+  mkBattlePassContent
 }

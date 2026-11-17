@@ -286,7 +286,7 @@
         "fireParamsPreset": "common_ship_fire"
       },
       "compartment_05_dm": {
-        "fireParamsPreset": "common_ship_fire"
+        "fireParamsPreset": "common_ship_fire_deck"
       },
       "compartment_06_dm": {
         "fireParamsPreset": "common_ship_fire"
@@ -4161,6 +4161,27 @@
           "name": "ship_fire_big",
           "centerDmgPart": true
         }
+      },
+      {
+        "name": "deck_fire",
+        "fx": [
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_small_dmg_04"
+          },
+          {
+            "name": "ship_fire_big",
+            "emitter": "emtr_fire_small_dmg_05"
+          },
+          {
+            "name": "ship_smoke_big",
+            "emitter": "emtr_smoke_small_dmg_04"
+          },
+          {
+            "name": "ship_smoke_big",
+            "emitter": "emtr_smoke_small_dmg_05"
+          }
+        ]
       },
       {
         "name": "engine_fire",

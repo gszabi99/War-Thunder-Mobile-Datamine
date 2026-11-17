@@ -412,11 +412,15 @@ function mkProfileSectionContent(player, info, globalStats, campaign, isInvitesA
       children = [
         function() {
           let my = info.get()?.campaigns[campaign].units
-          let all = globalStats.get()?[campaign]
+          let gStats = globalStats.get()?[campaign]
           if (isWaitInfo.get())
             return { watch = [isWaitInfo, globalStats, info], children = waitSpinner }
-          if (!my || !all)
+          if (!my || !gStats)
             return { watch = [isWaitInfo, globalStats, info] }
+          let { maxLevel = 0, research = 0, blueprint = 0, premium = 0,
+            collectible = 0, seasonPrem = 0, other = 0, all = 0
+          } = my
+
           return {
             watch = [isWaitInfo, globalStats, info]
             size = const [pw(45), SIZE_TO_CONTENT]
@@ -425,10 +429,13 @@ function mkProfileSectionContent(player, info, globalStats, campaign, isInvitesA
             gap = hdpx(5)
             children = [
               mkText(loc("lobby/vehicles"), hlColor).__update(fontTinyAccented)
-              mkRow(loc("stats/line"), $"{my.wp}/{all.wp}")
-              mkRow(loc("stats/maxLevel"), $"{my.maxLevel}/{my.wp + my.prem + my.rare}")
-              mkRow(loc("stats/premium"), $"{my.prem}/{all.prem}", premiumIconOvr)
-              mkRow(loc("stats/rare"), $"{my.rare}")
+              mkRow(loc("stats/maxLevel"), $"{maxLevel}/{all}")
+              mkRow(loc("stats/research"), $"{research}/{gStats.research}")
+              mkRow(loc("stats/blueprint"), $"{blueprint}/{gStats.blueprint}")
+              mkRow(loc("stats/premium"), $"{premium}/{gStats.prem}", premiumIconOvr)
+              seasonPrem == 0 ? null : mkRow(loc("stats/seasonPremium"), $"{seasonPrem}", premiumIconOvr)
+              collectible == 0 ? null : mkRow(loc("stats/rare"), $"{collectible}")
+              other == 0 ? null : mkRow(loc("stats/other"), $"{other}")
             ]
           }
         }
@@ -553,21 +560,24 @@ selectedPlayerForInfo.subscribe(function(v) {
   position.pos[1] = sh(47)
   let selCampaign = v.campaign
   let globalStats = Computed(function() {
-    let { allUnits = {} } = serverConfigs.get()
+    let { allUnits = {}, unitResearchExp = {}, allBlueprints = {} } = serverConfigs.get()
     let all = {}
     foreach (camp in campaignsList.get()) {
-      all[camp] <- { prem = 0, wp = 0 }
+      all[camp] <- { prem = 0, research = 0, blueprint = 0 }
     }
-    foreach (unit in allUnits) {
-      let { campaign = "", isHidden = false, isPremium = false, costWp = 0, name = ""} = unit
+    foreach (name, unit in allUnits) {
+      let { campaign = "", isHidden = false, isPremium = false, isCollectible = false } = unit
       if (name in unreleasedUnits.get())
         continue
       if (campaign not in all)
-        all[campaign] <- { prem = 0, wp = 0 }
-      if (isPremium && !isHidden)
+        all[campaign] <- { prem = 0, research = 0, blueprint = 0 }
+
+      if (name in unitResearchExp)
+        all[campaign].research++
+      else if (name in allBlueprints)
+        all[campaign].blueprint++
+      else if (isPremium && !isHidden && !isCollectible)
         all[campaign].prem++
-      else if (costWp > 0)
-        all[campaign].wp++
     }
     return all
   })

@@ -15,9 +15,9 @@ from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
 from "%rGui/unlocks/unlocksConst.nut" import MAIN_EVENT_ID
 from "%rGui/event/eventState.nut" import curEventName, eventSeasonIdx
 from "%rGui/shop/shopState.nut" import shopGoods
+from "%rGui/shop/shopConst.nut" import SREQ_BP_GRADE_EQUAL
 
 
-const SREQ_BP_GRADE_EQUAL = 2
 const MAX_TIME = 0x7FFFFFFFFFFFFFFF
 let activeBattlePassesCfg = Watched({})
 

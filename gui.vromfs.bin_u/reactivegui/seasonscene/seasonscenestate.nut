@@ -10,6 +10,7 @@ from "%appGlobals/config/eventSeasonPresentation.nut" import getEventPresentatio
 from "%appGlobals/config/passPresentation.nut" import getOPPresentation
 from "%appGlobals/loginState.nut" import isOnlineSettingsAvailable
 from "%appGlobals/openForeignMsgBox.nut" import openFMsgBox
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/permissions.nut" import has_leaderboard
 from "%rGui/account/resetProfileDetector.nut" import subscribeResetProfile
 from "%rGui/battlePass/battlePassObsoleteState.nut" import bpProgressUnlock
@@ -59,7 +60,6 @@ let seasonHelpWndSeen = Watched({})
 
 let playerSelectedSeasonTab = mkWatched(persist, "playerSelectedSeasonTab", PASS_OBSOLETE_SCENE)
 let seasonSceneOpenCounter = mkWatched(persist, "seasonSceneOpenCounter", 0)
-let backToTab = mkWatched(persist, "backToTab", null)
 
 let isSeasonSceneTop = Computed(@() scenesOrder.get()?[scenesOrder.get().len() - 1] == SEASON_SCENE_ID)
 
@@ -322,8 +322,8 @@ function openQuestsWndOnTab(tabId) {
 
 let openEventShopWnd = @(eventName) openSeasonScene(eventName, EVENT_SHOP_TAB)
 
-function openShopByGoods(goods) {
-  if (getGoodsShopId(goods) == "common")
+function openShopByGoods(goods, openEventShopCb = null) {
+  if (getGoodsShopId(goods, hasProfileUnits.get()) == "common")
     return openShopWndByGoods(goods)
   let eventId = goods?.meta?.event_id
   if (eventId == null) {
@@ -331,6 +331,7 @@ function openShopByGoods(goods) {
     return
   }
   openEventShopWnd(eventId)
+  openEventShopCb?()
 }
 
 function openGmEventWnd(eventName) {
@@ -378,7 +379,6 @@ return {
   seasonTabIdx
   seasonPageId
   seasonShopId
-  backToTab
 
   openSeasonTab
   openSeasonScene

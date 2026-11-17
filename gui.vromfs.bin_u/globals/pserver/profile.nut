@@ -1,8 +1,10 @@
 from "dagor.workcycle" import deferOnce
 from "frp" import Computed, Watched
 from "math" import min, max
+from "types" import Table
 from "%appGlobals/rentalState.nut" import battleRentInfo
 from "campaign.nut" import units, levelInfo, campConfigs
+import "servProfile.nut" as servProfile
 from "pServerApi.nut" import curUnitInProgress
 from "slots.nut" import curCampaignSlotUnits
 
@@ -81,6 +83,17 @@ let playerLevelInfo = Computed(function() {
 let curUnits = Computed(@()
   (curCampaignSlotUnits.get()?.map(@(u) campMyUnits.get()?[u]) ?? [curUnit.get()]).filter(@(u) u != null))
 
+function isEqualKeys(a, b) {
+  if (a.len() != b.len())
+    return false
+  foreach (key, _ in a)
+    if (key not in b)
+      return false
+  return true
+}
+
+let profileUnits = Computed(@() servProfile.get()?.units ?? {})
+
 return {
   selectedUnitByPlayer
   campUnitsCfg
@@ -90,4 +103,6 @@ return {
   battleUnitsMaxMRank
   curUnitName
   playerLevelInfo
+  hasProfileUnits = Computed(@(prev) prev instanceof Table && isEqualKeys(prev, profileUnits.get()) ? prev
+    : profileUnits.get())
 }

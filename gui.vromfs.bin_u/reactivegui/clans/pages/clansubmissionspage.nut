@@ -6,7 +6,7 @@ from "%sqstd/string.nut" import utf8ToUpper
 from "%appGlobals/pServer/pServerApi.nut" import clanRequestResponseInProgress
 from "%rGui/clans/clanSubmissionsState.nut" import approveClanSubmission, rejectClanSubmission,
   canCompleteClanRequest, clanSubmissions, hasClanSubmissions, rejectAllClanSubmissions, approveAllClanSubmissions,
-  isAllSubmissionsInProgress
+  isAllSubmissionsInProgress, markClanSubmissionsSeen
 from "%rGui/clans/currentClanState.nut" import currentClan
 from "%rGui/components/buttonStyles.nut" import defButtonMinWidth
 from "%rGui/components/closeWndBtn.nut" import closeWndBtn
@@ -234,7 +234,11 @@ function mkClanSubmissionsPage() {
     size = FLEX
     flow = FLOW_VERTICAL
     gap = bigGap
-    onAttach = validateCurPage
+    function onAttach() {
+      validateCurPage()
+      markClanSubmissionsSeen()
+    }
+    onDetach = markClanSubmissionsSeen
     children = [
       buttonsRow
       @() {

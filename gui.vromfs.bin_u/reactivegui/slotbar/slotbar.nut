@@ -4,7 +4,7 @@ from "sound_wt" import playSound
 from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_SLOTBAR
 from "%appGlobals/currenciesState.nut" import balance, GOLD
 from "%appGlobals/pServer/campaign.nut" import campConfigs
-from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg
+from "%appGlobals/pServer/profile.nut" import campMyUnits, campUnitsCfg, hasProfileUnits
 from "%appGlobals/pServer/slots.nut" import curSlots
 from "%appGlobals/unitPresentation.nut" import getUnitName
 from "%appGlobals/unitsState.nut" import setCurrentUnit
@@ -359,7 +359,7 @@ function mkHasUnseenUnitDetails(unit, hasUnseenArsenal) {
 
     if (hasUnseenArsenal.get() || hasUnseenMastery.get())
       return true
-    return name in campMyUnits.get() && (name in unseenSkins.get() || unseenDecals.get().len() > 0)
+    return name in hasProfileUnits.get() && (name in unseenSkins.get() || unseenDecals.get().len() > 0)
   })
 }
 

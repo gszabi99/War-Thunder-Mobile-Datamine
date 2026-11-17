@@ -14,7 +14,6 @@ let isRespawnDataInProgress = hardPersistWatched("isRespawnDataInProgress", fals
 let isRespawnInProgress = hardPersistWatched("isRespawnInProgress", false)
 let timeToRespawn = hardPersistWatched("timeToRespawn", -1)
 let curUnitsAvgCostWp = hardPersistWatched("curUnitsAvgCostWp", null)
-let isBattleDataFake = hardPersistWatched("isBattleDataFake", null)
 let hasPredefinedReward = hardPersistWatched("hasPredefinedReward", false)
 
 return {
@@ -31,6 +30,5 @@ return {
   isRespawnInProgress
   timeToRespawn
   curUnitsAvgCostWp
-  isBattleDataFake
   hasPredefinedReward
 }

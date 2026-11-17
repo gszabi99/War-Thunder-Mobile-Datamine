@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "%appGlobals/activeControls.nut" import isGamepad
 from "%appGlobals/currenciesState.nut" import WP, GOLD
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/pServer/slots.nut" import isCampaignWithSlots
 from "%appGlobals/unitsState.nut" import canBuyUnitsStatus, US_CAN_BUY
@@ -223,13 +223,13 @@ function infoPanel(nodesReceiveInfo) {
   let hasUnitActions = mkHasUnitActions()
   let isBlockedUnit = Computed(function() {
     let { name = "" } = hangarUnit.get()
-    return name not in campMyUnits.get()
+    return name not in hasProfileUnits.get()
       && name in unitsBlockedByBattleMode.get()
       && (unitsResearchStatus.get()?[name].hasAccessLock ?? true)
       && (name not in serverConfigs.get()?.allBlueprints || canBuyUnitsStatus.get()?[name] != US_CAN_BUY)
   })
   let needShowBlueprintDescr = Computed(@() hangarUnit.get()?.name in serverConfigs.get()?.allBlueprints
-    && hangarUnit.get()?.name not in campMyUnits.get()
+    && hangarUnit.get()?.name not in hasProfileUnits.get()
     && !isBlockedUnit.get())
   let hasDarkScreen = mkHasDarkScreen()
   let unitReceiveInfo = Computed(@() nodesReceiveInfo.get()?[curSelectedUnit.get()])

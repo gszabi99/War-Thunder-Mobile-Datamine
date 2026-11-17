@@ -1,6 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "console" import register_command
 from "dagor.workcycle" import deferOnce, resetTimeout
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/pServer/campaign.nut" import receivedSchRewards, abTests
 from "%rGui/components/modalWindows.nut" import hasModalWindows
 from "%rGui/controlsMenu/gpActBtn.nut" import btnBEsc
@@ -24,13 +25,13 @@ let isFinished = mkIsTutorialCompleted(TUTORIAL_SHOP_ID)
 let orderByCategory = shopCategoriesCfg.reduce(@(res, c, i) res.$rawset(c.id, i + 1), {})
 
 let hasPriority = @(a, b) (orderByCategory?[a] ?? -1) < (orderByCategory?[b] ?? orderByCategory.len())
-let isRewardFit = @(r) r.isReady && !r.needAdvert && getGoodsShopId(r) == "common"
+let isRewardFit = @(r, myUnits) r.isReady && !r.needAdvert && getGoodsShopId(r, myUnits) == "common"
 
 let hasReceivedAnySchReward = Computed(@() null != receivedSchRewards.get().findvalue(@(v) v > 0))
 let needShowTutorial = Computed(@() !isFinished.get()
   && !hasReceivedAnySchReward.get()
   && !hasFirstBattleRewards.get()
-  && null != actualSchRewardByCategory.get().findvalue(isRewardFit))
+  && null != actualSchRewardByCategory.get().findvalue(@(r) isRewardFit(r,  hasProfileUnits.get())))
 let canStartTutorial = Computed(@() !hasModalWindows.get()
   && isMainMenuAttached.get()
   && !isTutorialActive.get()
@@ -45,8 +46,9 @@ shouldEarlyCloseTutorial.subscribe(@(v) v ? deferOnce(finishEarly) : null)
 
 function startTutorial() {
   let wndShowEnough = Watched(false)
+  let myUnits = hasProfileUnits.get()
   let category = actualSchRewardByCategory.get().reduce(
-    @(res, r, cat) isRewardFit(r) && hasPriority(cat, res) ? cat : res,
+    @(res, r, cat) isRewardFit(r, myUnits) && hasPriority(cat, res) ? cat : res,
     null)
   let schReward = actualSchRewardByCategory.get()[category]
   setTutorialConfig({
@@ -138,7 +140,8 @@ register_command(
   function() {
     if (activeTutorialId.get() == TUTORIAL_SHOP_ID)
       return finishTutorial()
-    if (null == actualSchRewardByCategory.get().findvalue(isRewardFit))
+    let myUnits = hasProfileUnits.get()
+    if (null == actualSchRewardByCategory.get().findvalue(@(r) isRewardFit(r, myUnits)))
       console_print("Unable to start tutorial, because of no available sch rewards") 
     else
       isDebugMode.set(true)

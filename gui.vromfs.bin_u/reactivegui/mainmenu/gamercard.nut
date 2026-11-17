@@ -4,7 +4,7 @@ from "%appGlobals/config/campaignPresentation.nut" import getCampaignPresentatio
 from "%appGlobals/currenciesState.nut" import WP, GOLD, PLATINUM
 from "%appGlobals/pServer/campaign.nut" import curCampaign, campConfigs, purchasesCount, todayPurchasesCount,
   goodsLimitReset
-from "%appGlobals/pServer/profile.nut" import playerLevelInfo, campMyUnits
+from "%appGlobals/pServer/profile.nut" import playerLevelInfo, campMyUnits, hasProfileUnits
 from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/pServer/seasonCurrencies.nut" import sortByCurrencyId
 import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
@@ -336,20 +336,22 @@ let hasCurrencyShop = @(cId, goods, soon) cId in openCfg
   || null != goods.findvalue(@(g) isGoodsForCurrency(g, cId))
   || null != soon.findvalue(@(g) isGoodsForCurrency(g, cId))
 
-function mkCurrencyOpenAction(cId, goods, soon, configs, limitReset, dOffset, servTimeDay, purchCount, todayPurchCount) {
+function mkCurrencyOpenAction(cId, goods, soon, configs, limitReset, dOffset, servTimeDay, purchCount, todayPurchCount, myUnits) {
   if (hasCurrencyShop(cId, goods, soon))
     return openBuyCurrencyWnd(cId)
   let goodsId = getGoodsByCurrencyId(cId, goods.__merge(soon), configs, limitReset, dOffset, servTimeDay,
-    purchCount, todayPurchCount)?.id
+    purchCount, todayPurchCount, myUnits)?.id
   return goodsId == null ? null : @() openGoodsPreview(goodsId)
 }
 
 let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}, ovr = {}, needChat = true) function() {
+  let myUnits = hasProfileUnits.get()
   let children = (clone currencies ?? []) 
     .sort(@(a, b) sortByCurrencyId(b, a)) 
     .map(@(c) mkCurrencyBalance(c, noActionCurrencies?[c] ? null
       : mkCurrencyOpenAction(c, shopGoods.get(), soonGoods.get(), serverConfigs.get(),
-          goodsLimitReset.get(), dayOffset.get(), serverTimeDay.get(), purchasesCount.get(), todayPurchasesCount.get())))
+          goodsLimitReset.get(), dayOffset.get(), serverTimeDay.get(), purchasesCount.get(), todayPurchasesCount.get(),
+          myUnits)))
   if (needChat && isInSquadChat.get()) {
     if (children.len() > 0)
       children.append(gcSeparator)
@@ -357,7 +359,7 @@ let mkCurrenciesBtns = @(currencies, noActionCurrencies = {}, ovr = {}, needChat
   }
   return {
     watch = [ shopGoods, soonGoods, serverConfigs, goodsLimitReset, dayOffset, serverTimeDay,
-      purchasesCount, todayPurchasesCount, isInSquadChat
+      purchasesCount, todayPurchasesCount, isInSquadChat, hasProfileUnits
     ]
     size = FLEX_H
     halign = ALIGN_RIGHT

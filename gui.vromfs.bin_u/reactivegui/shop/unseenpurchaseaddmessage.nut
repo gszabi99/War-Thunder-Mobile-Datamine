@@ -15,10 +15,10 @@ from "%rGui/components/pannableArea.nut" import verticalPannableAreaCtor
 from "%rGui/components/scrollArrows.nut" import mkScrollArrow, scrollArrowImageSmall
 from "%rGui/components/textButton.nut" import textButtonPrimary, textButtonCommon
 from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlateBg, mkRewardPlateImage, mkProgressLabel, mkProgressBar,
-  mkRewardTextLabel, mkRewardPlateTexts, mkRewardPlate, mkRewardUnitFlag, getRewardPlateSize
+  mkRewardTextLabel, mkRewardPlateTexts, mkRewardPlate, mkRewardUnitFlag, mkRewardFlag, getRewardPlateSize
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_MEDIUM, REWARD_STYLE_SMALL
 from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, shopGoodsToRewardsViewInfo, sortRewardsViewInfo,
-  isRewardEmpty, getBlueprintBarColor
+  isRewardEmpty, isBlueprintUpgradeStage, getBlueprintBarColor
 from "%rGui/shop/discounts.nut" import calculateNewGoodsDiscount, discountsToApply, applyDiscount
 from "%rGui/shop/shopState.nut" import allShopGoods
 from "%rGui/shop/unseenPurchasesState.nut" import unseenPurchaseUnitPlateKey
@@ -52,7 +52,7 @@ let mkBlueprintsProgress = @(available, total, color) {
 let exceedBlueprintsProgress = @(count, targetCount, color)
   mkBlueprintsProgress(targetCount + count, targetCount, color)
 
-function mkBlueprintPlate(reward, available = null) {
+function mkBlueprintPlate(reward, available, isUpgradeStage) {
   let plateBg = mkRewardPlateBg(reward, REWARD_STYLE_MEDIUM)
   let plateImage = mkRewardPlateImage(reward, REWARD_STYLE_MEDIUM)
   return @() {
@@ -60,8 +60,8 @@ function mkBlueprintPlate(reward, available = null) {
     children = [
       plateBg
       plateImage
-      mkBlueprintsProgress(available ?? reward.count, reward.count, getBlueprintBarColor(reward.id, serverConfigs.get()))
-      mkRewardUnitFlag(serverConfigs.get()?.allUnits?[reward.id], REWARD_STYLE_MEDIUM)
+      mkBlueprintsProgress(available ?? reward.count, reward.count, getBlueprintBarColor(isUpgradeStage))
+      mkRewardUnitFlag(serverConfigs.get()?.allUnits[reward.id], REWARD_STYLE_MEDIUM, isUpgradeStage)
     ]
   }
 }
@@ -70,13 +70,13 @@ function mkUnitPlate(reward) {
   let plateBg = mkRewardPlateBg(reward, REWARD_STYLE_MEDIUM)
   let plateImage = mkRewardPlateImage(reward, REWARD_STYLE_MEDIUM)
   let plateTexts = mkRewardPlateTexts(reward, REWARD_STYLE_MEDIUM)
-  return @() {
-    watch = serverConfigs
+  let plateFlag = mkRewardFlag(reward, REWARD_STYLE_MEDIUM)
+  return {
     children = [
       plateBg
       plateImage
       plateTexts
-      mkRewardUnitFlag(serverConfigs.get()?.allUnits?[reward.id], REWARD_STYLE_MEDIUM)
+      plateFlag
     ]
   }
 }
@@ -86,16 +86,17 @@ let fromCtor = {
     let plateBg = mkRewardPlateBg(reward, REWARD_STYLE_MEDIUM)
     let plateImage = mkRewardPlateImage(reward, REWARD_STYLE_MEDIUM)
     let textLabel = reward.count < 0 ? mkRewardTextLabel(-reward.count, REWARD_STYLE_SMALL) : null
+    let plateFlag = mkRewardFlag(reward, REWARD_STYLE_MEDIUM)
     return @() {
-      watch = serverConfigs
+      watch = [serverConfigs, servProfile]
       children = [
         plateBg
         plateImage
         reward.count >= 0
           ? exceedBlueprintsProgress(reward.count, serverConfigs.get()?.allBlueprints[reward.id].targetCount ?? 1,
-              getBlueprintBarColor(reward.id, serverConfigs.get()))
+              getBlueprintBarColor(isBlueprintUpgradeStage(reward.id, servProfile.get(), serverConfigs.get())))
           : textLabel
-        mkRewardUnitFlag(serverConfigs.get()?.allUnits?[reward.id], REWARD_STYLE_MEDIUM)
+        plateFlag
       ]
     }
   },
@@ -183,7 +184,7 @@ function mkUnitByBlueprintsRow(conv, hasUnitButton) {
         valign = ALIGN_CENTER
         gap = hdpx(20)
         children = [
-          mkBlueprintPlate(mkGoodsViewInfo(from, from.count))
+          mkBlueprintPlate(mkGoodsViewInfo(from, from.count), null, to.gType == G_UNIT_UPGRADE)
           arrowIcon
           mkReceivedUnitPlate(to.id, to.gType == G_UNIT_UPGRADE,
             hasUnitButton ? unseenPurchaseUnitPlateKey(to.id) : null)

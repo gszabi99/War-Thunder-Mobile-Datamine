@@ -1,7 +1,7 @@
 from "%globalsDarg/darg_library.nut" import *
 from "eventbus" import eventbus_subscribe
 from "%sqstd/string.nut" import utf8ToUpper
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 from "%appGlobals/updater/addonsState.nut" import unitSizes
 from "%rGui/components/textButton.nut" import mkCustomButton, buttonStyles, mergeStyles
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
@@ -35,7 +35,7 @@ function mkBtnOpenCustomization(unitW, ovr) {
   let hasUnseenMark = Computed(function() {
     let { name = null, canShowOwnUnit = true } = unitW.get()
     return canShowOwnUnit
-      && name in campMyUnits.get()
+      && name in hasProfileUnits.get()
       && (name in unseenSkins.get() || unseenDecals.get().len() > 0)
   })
   let children = [

@@ -47,16 +47,13 @@ let rowHeight = calc_comp_size(mkDescArea("W"))[1]
 
 let descriptionHeight = rowHeight * descriptionLinesCount
 
-let mkJoinBtnClick = @(onJoin) function() {
-  openMsgBox({
-    text = loc("clans/joinRequest/confirm")
-    buttons = [
-      { id = "cancel", isCancel = true }
-      { id = "ok", styleId = "PRIMARY", isDefault = true, cb = onJoin }
-    ]
-  })
-}
-
+let askJoinRequest = @(clan) openMsgBox({
+  text = loc("clans/join/confirm")
+  buttons = [
+    { id = "cancel", isCancel = true }
+    { id = "ok", styleId = "PRIMARY", isDefault = true, cb = @() sendJoinRequest(clan?.clanId) }
+  ]
+})
 
 let searchClanBtn = @() {
   watch = [isClanSearchOpen, isGamepad]
@@ -88,7 +85,7 @@ let mkActionBtn = @(isCurrentClan, canEditClan, clan) @() {
       ? null
     : !isCurrentClan.get()
       ? textButtonPrimary(utf8ToUpper(loc(clan?.privacyType == PRIVACY_OPEN ? "clans/joinBtn" : "sendRequestBtn")),
-          clan?.privacyType == PRIVACY_OPEN ? mkJoinBtnClick(@() sendJoinRequest(clan?.clanId))
+          clan?.privacyType == PRIVACY_OPEN ? @() askJoinRequest(clan)
             : @() openClanRequest(clan?.textFields.name, @(message, onSuccess) sendJoinRequest(clan?.clanId, message, onSuccess)),
           btnOvr)
     : canEditClan.get()

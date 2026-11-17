@@ -3,7 +3,7 @@ from "%sqstd/underscore.nut" import prevIfEqual
 from "%appGlobals/config/lootboxPresentation.nut" import getLootboxName
 from "%appGlobals/currenciesState.nut" import WP, GOLD, PLATINUM
 from "%appGlobals/pServer/campaign.nut" import campConfigs
-from "%appGlobals/pServer/profile.nut" import campMyUnits
+from "%appGlobals/pServer/profile.nut" import hasProfileUnits
 import "%appGlobals/pServer/unreleasedUnits.nut" as unreleasedUnits
 from "%appGlobals/rewardType.nut" import unitRewardTypes, G_LOOTBOX
 from "%appGlobals/userstats/serverTime.nut" import serverTime
@@ -110,14 +110,14 @@ function chooseBestPurchInfo(list) {
 
 let getNodesReceiveInfo = kwarg(function getNodesReceiveInfoImpl(
     campConfigsV,
-    campMyUnitsV,
+    hasUnitsV,
     unreleasedUnitsV,
     goodsByCategoryV,
     personalGoodsByShopCategoryV,
     eventLootboxesV,
     shouldShowEventMechanicsV) {
   let { allUnits = {}, unitTreeNodes = {}, lootboxesCfg = {}, rewardsCfg = {} } = campConfigsV
-  let unitsToSearch = unitTreeNodes.filter(@(v) v.name not in campMyUnitsV
+  let unitsToSearch = unitTreeNodes.filter(@(v) v.name not in hasUnitsV
     && v.name not in unreleasedUnitsV
     && (allUnits?[v.name].isHidden ?? false))
   if (unitsToSearch.len() == 0)
@@ -161,7 +161,7 @@ let getNodesReceiveInfo = kwarg(function getNodesReceiveInfoImpl(
 
 let mkNodesReceiveInfo = @() Computed(@(prev) prevIfEqual(prev, getNodesReceiveInfo({
   campConfigsV = campConfigs.get(),
-  campMyUnitsV = campMyUnits.get(),
+  hasUnitsV = hasProfileUnits.get(),
   unreleasedUnitsV = unreleasedUnits.get(),
   goodsByCategoryV = goodsByCategory.get(),
   personalGoodsByShopCategoryV = personalGoodsByShopCategory.get(),
