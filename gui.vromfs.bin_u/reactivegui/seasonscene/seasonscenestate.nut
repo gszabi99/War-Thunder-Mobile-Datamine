@@ -60,6 +60,7 @@ let seasonHelpWndSeen = Watched({})
 
 let playerSelectedSeasonTab = mkWatched(persist, "playerSelectedSeasonTab", PASS_OBSOLETE_SCENE)
 let seasonSceneOpenCounter = mkWatched(persist, "seasonSceneOpenCounter", 0)
+let openedSeasonHelpWndId = mkWatched(persist, "openedSeasonHelpWndId", null)
 
 let isSeasonSceneTop = Computed(@() scenesOrder.get()?[scenesOrder.get().len() - 1] == SEASON_SCENE_ID)
 
@@ -217,9 +218,7 @@ let bgScene = Computed(function() {
 })
 
 let hasBattleTab = isSeasonTabVisible[BATTLE_TAB].watched
-let newsTag = Computed(@() (hasBattleTab.get() || seasonPageId.get() == MAP_TAB)
-  ? (curEventName.get() ?? curEvent.get())
-  : null)
+let newsTag = Computed(@() hasBattleTab.get() ? (curEventName.get() ?? curEvent.get()) : null)
 
 let openSeasonTab = @(id) playerSelectedSeasonTab.set(id)
 
@@ -256,9 +255,12 @@ function shouldAutoOpenHelpWnd(sId) {
     && !seasonHelpWndSeen.get()?[sId]
 }
 
-function openHelpWndIfUnseen(sId, openFunc) {
+let openSeasonHelpWnd = @(helpWndId) openedSeasonHelpWndId.set(helpWndId)
+let closeSeasonHelpWnd = @() openedSeasonHelpWndId.set(null)
+
+function openHelpWndIfUnseen(sId, helpWndId) {
   if (shouldAutoOpenHelpWnd(sId)) {
-    deferOnce(openFunc)
+    deferOnce(@() openSeasonHelpWnd(helpWndId))
     markSeasonHelpWndSeen(sId)
   }
 }
@@ -394,4 +396,7 @@ return {
   newsTag
   isQuestsTabVisible
   openHelpWndIfUnseen
+  openedSeasonHelpWndId
+  openSeasonHelpWnd
+  closeSeasonHelpWnd
 }

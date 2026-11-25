@@ -138,9 +138,9 @@ let presentations = {
     { img = "japanbond_goods_2026_03.avif", amountAtLeast = 1500 }
   ],
   [MAPTOKEN] = [
-    { img = "maptoken_01_s37.avif", amountAtLeast = 0 }
-    { img = "maptoken_02_s37.avif", amountAtLeast = 3 }
-    { img = "maptoken_03_s37.avif", amountAtLeast = 4 }
+    { img = "maptoken_01_s40.avif", amountAtLeast = 0 }
+    { img = "maptoken_02_s40.avif", amountAtLeast = 3 }
+    { img = "maptoken_03_s40.avif", amountAtLeast = 4 }
   ]
 }
 

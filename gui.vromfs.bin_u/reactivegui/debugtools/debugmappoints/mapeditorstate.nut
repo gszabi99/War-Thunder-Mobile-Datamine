@@ -47,6 +47,9 @@ let scalableETypes = [ELEM_BG].reduce(@(res, v) res.$rawset(v, true), {})
 const defaultLineWidth = 9
 const defaultObjDist = 20
 
+
+let pointPreviewStates = ["unlocked", "locked", "completed", "finished"]
+
 let editorMode = mkWatched(persist, "editorMode")
 let isHeaderOptionsOpen = mkWatched(persist, "isHeaderOptionsOpen", true)
 let isSidebarOptionsOpen = mkWatched(persist, "isSidebarOptionsOpen", true)
@@ -58,6 +61,7 @@ let savePath = Computed(@(prev) editorMode.get() == null && prev instanceof Stri
 
 let needUseAutoSave = mkWatched(persist, "needUseAutoSave", false)
 let snapType = mkWatched(persist, "snapType", SNAP_NONE)
+let pointPreviewState = mkWatched(persist, "pointPreviewState", pointPreviewStates[0])
 
 let loadedPageWithLastChange = mkWatched(persist, "loadedPageWithLastChange", null)
 let savedPages = mkWatched(persist, "savedPages", {})
@@ -813,4 +817,6 @@ return {
   scalableETypes
   getElemKey
   snapType
+  pointPreviewStates
+  pointPreviewState
 }

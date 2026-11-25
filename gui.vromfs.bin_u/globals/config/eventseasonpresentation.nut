@@ -13,6 +13,9 @@ let genParams = {
   imageTabOffset = @(_) [0, 0]
   bg = @(name) name == "" ? eventBgFallback : $"ui/images/event_bg_{name}.avif"
   gamercardItems = @(_) []
+  mapQuestsArt = @(_) {} 
+  mapHelpTokensLocId = @(_) "treeEvent/help/getMapTokens"
+  mapHelpRouteImage = @(_) null
 
   
   bgUnits = @(_) null 
@@ -56,6 +59,7 @@ let presentations = {
   season_37 = { color = 0xFF191970 }
   season_38 = { color = 0xFFCC0000, dimColor = 0x80000000 }
   season_39 = { color = 0xFFE9AB11, bg = "ui/images/event_s39_background.avif" }
+  season_40 = { color = 0xFFC3EBFF }
   nybond                       = { bg = "ui/images/event_bg_christmas_2024.avif" }
   blackfridaybond              = { bg = "ui/bkg/event_bg_black_friday_2026.avif" }
   event_black_friday_season    = { bg = "ui/images/event_bg_season_14.avif" }
@@ -94,6 +98,25 @@ let presentations = {
       image = "ui/images/event_s37_monitor.avif"
       offs = [80, 170, 190, 170] 
     }
+  }
+  season_40_main_event = {
+    locId = "events/name/season_40"
+    icon = "ui/gameuiskin#icon_event_season_40.svg"
+    mapSceneBg = "ui/images/event_s40_background.avif"
+    mapQuestsArt = {
+      page_1_main_1_season_40 = { image = "ui/images/collections/event_map_s40_01.avif" }
+      page_1_main_2_season_40 = { image = "ui/images/collections/event_map_s40_02.avif" }
+      page_2_main_1_season_40 = { image = "ui/images/collections/event_map_s40_03.avif" }
+      page_2_main_2_season_40 = { image = "ui/images/collections/event_map_s40_04.avif" }
+      page_2_main_3_season_40 = { image = "ui/images/collections/event_map_s40_05.avif" }
+      page_3_main_1_season_40 = { image = "ui/images/collections/event_map_s40_06.avif" }
+      page_3_main_2_season_40 = { image = "ui/images/collections/event_map_s40_07.avif" }
+      page_3_main_3_season_40 = { image = "ui/images/collections/event_map_s40_08.avif" }
+      page_4_main_1_season_40 = { image = "ui/images/collections/event_map_s40_09.avif" }
+      page_4_main_2_season_40 = { image = "ui/images/collections/event_map_s40_10.avif" }
+    }
+    mapHelpTokensLocId = "treeEvent/help/getMapTokens/season_40"
+    mapHelpRouteImage = "ui/gameuiskin#event_s40_tutor.avif"
   }
   april_event_2026  = {
     image = $"ui/gameuiskin/icon_event_april_2026_shop.avif",

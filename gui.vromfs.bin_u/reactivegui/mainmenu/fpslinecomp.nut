@@ -4,6 +4,7 @@ from "dagor.system" import dgs_get_settings
 from "eventbus" import eventbus_subscribe
 from "replays" import get_replay_props
 from "string" import format
+from "%sqstd/platform.nut" import is_ios
 from "%sqstd/string.nut" import capitalize
 from "%appGlobals/clientState/clientState.nut" import isInBattle, isInMenu, battleSessionId, isInDebriefing
 from "%appGlobals/updater/addonsState.nut" import hasAddons
@@ -11,6 +12,8 @@ from "%rGui/hudState.nut" import isPlayingReplay
 
 
 const DEBUG_INTERFACE_SHIFT_PX = -hdpx(16)
+
+const IOS_CORNER_SHIFT_PX = hdpx(50)
 
 let state = Watched({
   gpu = ""
@@ -126,7 +129,7 @@ let fpsLineComp = @() {
   flow = FLOW_HORIZONTAL
   vplace = ALIGN_BOTTOM
   valign = ALIGN_BOTTOM
-  pos = [saBorders[0], bottomShift.get()]
+  pos = [saBorders[0] + (is_ios ? IOS_CORNER_SHIFT_PX : 0), bottomShift.get()]
   gap
   children = isInBattle.get() ? presetBattle
     : isInMenu.get() ? presetMenu

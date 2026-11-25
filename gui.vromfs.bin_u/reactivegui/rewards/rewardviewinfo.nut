@@ -350,6 +350,14 @@ function [pure, nodiscard] getBlueprintSpentStages(id, profile, configs) {
 let getBlueprintBarColor = @[pure, nodiscard](isUpgradeStage)
   isUpgradeStage ? upgradeBlueprintBarColor : blueprintBarColor
 
+function [pure, nodiscard] isUnitViewInfo(r, configs) {
+  if (r?.rType in unitRewardTypes)
+    return true
+  if (r?.rType != G_PRIZE_TICKET)
+    return false
+  return null != configs?.prizeTicketsCfg[r.id].variants.findvalue(@(v) v.top()?.gType in unitRewardTypes)
+}
+
 let isEmptyByRType = {
   [G_DECORATOR] = @(value, _, profile, __) value in profile?.decorators,
   [G_UNIT] = @(value, _, profile, __) value in profile?.units,
@@ -455,6 +463,7 @@ return {
   isBlueprintUpgradeStage
   getBlueprintSpentStages
   getBlueprintBarColor
+  isUnitViewInfo
 
   getRewardsViewInfo
   shopGoodsToRewardsViewInfo

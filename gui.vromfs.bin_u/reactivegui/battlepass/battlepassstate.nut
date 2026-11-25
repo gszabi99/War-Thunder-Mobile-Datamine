@@ -29,9 +29,6 @@ let isPurchaseWndOpened = mkWatched(persist, "isPurchaseWndOpened", false)
 let curBpId = Computed(@() curEventName.get() == null ? null
   : activeBattlePassesCfg.get().findindex(@(c) c.meta?.event_id == curEventName.get()))
 
-let shouldOpenBpHelpWnd = mkWatched(persist, "shouldOpenBpHelpWnd", false)
-let isBpHelpWndOpened = Computed(@() shouldOpenBpHelpWnd.get() && curBpId.get() != null)
-
 let curBpPages = Computed(@() activeBattlePassesCfg.get()?[curBpId.get()].pages ?? [])
 let curBpEndTime = Computed(@() activeBattlePassesCfg.get()?[curBpId.get()].timeRange.end ?? 0)
 
@@ -158,7 +155,4 @@ return {
   markBpPagesSeen
 
   isPurchaseWndOpened
-  isBpHelpWndOpened
-  openBpHelpWnd = @() shouldOpenBpHelpWnd.set(true)
-  closeBpHelpWnd = @() shouldOpenBpHelpWnd.set(false)
 }

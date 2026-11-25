@@ -64,12 +64,6 @@
       0.9
     ]
   },
-  "steeringTable": {
-    "point": [
-      90.0,
-      0.0
-    ]
-  },
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank_modern",

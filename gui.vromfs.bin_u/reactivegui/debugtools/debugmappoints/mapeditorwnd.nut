@@ -13,11 +13,13 @@ from "%rGui/debugTools/debugMapPoints/mapEditorState.nut" import isEventMapEdito
   selectedLineIdx, isShiftPressed, ELEM_BG, ELEM_POINT, ELEM_LINE, ELEM_MIDPOINT, ELEM_LINE_END, selectedLineMidpoints,
   selectedMidpointIdx, selectedLineEnds, selectedLineEndId, scalableETypes, curEventNodeViews, pagePointSizes,
   pointViewSize, pageLineSectionLen, pageRoundedDashes, pageLineType, pageLineWidth, snapLines, tuningRewards,
-  selectedRewardId, ELEM_REWARD
+  selectedRewardId, ELEM_REWARD, pointPreviewState
 import "%rGui/debugTools/debugMapPoints/mapPointsManipulator.nut" as manipulator
 import "%rGui/event/treeEvent/mapNet.nut" as mapNet
 from "%rGui/event/treeEvent/treeEventComps.nut" import mkLineCmds, mkSolidLineCmds, mkLineCmdsOutline,
-  lineTypeCtors, buildLineSpline, LINE_DASHED, LINE_SOLID, editorSelLineColor
+  lineTypeCtors, buildLineSpline, LINE_DASHED, LINE_SOLID, editorSelLineColor,
+  lineToCompletedColor, lineToUnlockedColor, lineToLockedColor
+from "%rGui/event/treeEvent/treeEventUtils.nut" import lineOutlineWidth
 from "%rGui/navState.nut" import registerScene
 from "%rGui/style/gamercardStyle.nut" import gamercardHeight
 from "%rGui/style/gradients.nut" import mkColoredGradientY
@@ -34,6 +36,13 @@ let mapBlockSize = [
 ]
 
 const lineColor = 0xFFFFF0D0
+
+let lineColorByPointState = {
+  unlocked = lineToUnlockedColor
+  locked = lineToLockedColor
+  completed = lineToCompletedColor
+  finished = lineToCompletedColor
+}
 const selPointColor = 0xFF2080FF
 const selMarkerColor = 0xFFFF2020
 const snapLineColor = 0x80808000
@@ -124,7 +133,8 @@ let selectBorder = {
 function mkPoint(id, state, nodeViews) {
   let { view = "", pos } = state
   let effView = view != "" ? view : (nodeViews?[id] ?? defaultPointView)
-  let { image, color } = getMapPointsPresentation(effView).unlocked
+  let presentation = getMapPointsPresentation(effView)
+  let { selectionOverlay = null } = presentation
   let offset = getPointOffset(effView)
   let isSelected = Computed(@() selectedPointId.get() == id)
   let sizeExt = Computed(@() evenPx(pointViewSize(id, view, nodeViews, pagePointSizes.get())))
@@ -133,16 +143,25 @@ function mkPoint(id, state, nodeViews) {
 
   return function() {
     let size = sizeExt.get()
+    let { image, color, opacity } = presentation[pointPreviewState.get()]
     let pointImg = {
       size
       pos = [offset[0] * size, offset[1] * size]
       rendObj = ROBJ_IMAGE
       image = Picture($"{image}:{size}:P")
       color
+      opacity
+      keepAspect = true
+    }
+    let selectionImg = selectionOverlay == null ? null : {
+      size
+      pos = [offset[0] * size, offset[1] * size]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"{selectionOverlay}:{size}:P")
       keepAspect = true
     }
     return {
-      watch = [posExt, sizeExt]
+      watch = [posExt, sizeExt, pointPreviewState]
       pos = posExt.get()
       size
       children = @() {
@@ -151,6 +170,7 @@ function mkPoint(id, state, nodeViews) {
         size = FLEX
         children = [
           pointImg
+          isSelected.get() ? selectionImg : null
           isSelected.get() ? selectBorder : null
         ]
       }
@@ -307,7 +327,7 @@ function selectedLine(lines, points, size) {
         pageLineSectionLen, pageLineWidth, pageLineType]
       size = FLEX
       rendObj = ROBJ_VECTOR_CANVAS
-      commands = mkLineCmdsOutline(commands, hdpx(pageLineWidth.get()) + 2 * hdpxi(1), editorSelLineColor)
+      commands = mkLineCmdsOutline(commands, hdpx(pageLineWidth.get()) + 2 * lineOutlineWidth, editorSelLineColor)
     }
   }
 }
@@ -320,18 +340,17 @@ function mapLines() {
   let lineSplines = pageLines.get().map(@(line) { line, spline = needSpline ? buildLineSpline(line, points) : null })
 
   return {
-    watch = [pageLines, tuningPoints, pageMapSize, pageLineSectionLen, pageRoundedDashes, pageLineType, pageLineWidth]
+    watch = [pageLines, tuningPoints, pageMapSize, pageLineSectionLen, pageRoundedDashes, pageLineType, pageLineWidth,
+      pointPreviewState]
     size = FLEX
     rendObj = ROBJ_VECTOR_CANVAS
-    color = lineColor
-    fillColor = lineColor
     commands = mkCommands(lineSplines, {
       size = pageMapSize.get()
       width = hdpx(pageLineWidth.get())
       sectionLen = pageLineSectionLen.get()
       rounded = pageRoundedDashes.get()
       points
-      colorOf = @(_) null
+      colorOf = @(_) [VECTOR_COLOR, lineColorByPointState?[pointPreviewState.get()] ?? lineColor]
     })
     children = selectedLine(pageLines.get(), tuningPoints.get(), pageMapSize.get())
   }

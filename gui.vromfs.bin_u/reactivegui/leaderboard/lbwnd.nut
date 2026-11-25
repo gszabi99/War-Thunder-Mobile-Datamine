@@ -20,7 +20,7 @@ from "%rGui/leaderboard/lbConfig.nut" import lbCfgOrdered
 import "%rGui/leaderboard/lbRewardsBlock.nut" as lbRewardsBlock
 from "%rGui/leaderboard/lbRewardsState.nut" import hasCurLbRewards, curLbRewards, curLbTimeRange
 from "%rGui/leaderboard/lbState.nut" import curLbId, curLbData, curLbSelfRow, curLbErrName, curLbCfg,
-  isRefreshLbEnabled, lbPage, lbMyPage, lbLastPage, lbTotalPlaces, isLbRequestInProgress, minRatingBattles,
+  isRefreshLbEnabled, lbPage, lbMyPage, lbPaginatorLastPage, isDbgFakePages , lbTotalPlaces, isLbRequestInProgress, minRatingBattles,
   bestBattlesCount, hasBestBattles, isLbBestBattlesOpened
 from "%rGui/leaderboard/lbStyle.nut" import lbTableHeight, lbVGap, lbHeaderRowHeight, lbRowHeight,
   lbDotsRowHeight, lbTableBorderWidth, lbPageRows, rowBgOddColor, rowBgEvenColor, prizeIcons, lbRewardsBlockWidth
@@ -440,10 +440,11 @@ function content(hasRewards) {
   }
 }
 
-let needPaginator = Computed(@(prev) curLbData.get() == null
+let hasLbData = Computed(@(prev) curLbData.get() == null
   ? (prev == FRP_INITIAL ? false : prev)
   : curLbData.get().len() != 0)
-let paginatorBuilder = mkPaginator(lbPage, lbLastPage, lbMyPage, { key = needPaginator, animations = wndSwitchAnim })
+let needPaginator = Computed(@() isDbgFakePages .get() || hasLbData.get())
+let paginatorBuilder = mkPaginator(lbPage, lbPaginatorLastPage, lbMyPage, { key = needPaginator, animations = wndSwitchAnim })
 let paginator = @() {
   watch = needPaginator
   hplace = ALIGN_RIGHT

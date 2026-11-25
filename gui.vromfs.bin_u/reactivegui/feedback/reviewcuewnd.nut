@@ -4,13 +4,11 @@ from "%sqstd/string.nut" import utf8ToUpper
 from "%rGui/components/modalWnd.nut" import modalWndBg, modalWndHeaderWithClose
 from "%rGui/components/textButton.nut" import textButtonBattle, textButtonPrimary, textButtonCommon
 from "%rGui/components/textInput.nut" import textInput
-from "%rGui/feedback/rateGameState.nut" import isRateGameSeen, sendGameRating, platformAppReview, sendRateWndEvent
+from "%rGui/feedback/rateGameState.nut" import RATE_STARS_TOTAL, isRateGameSeen, sendGameRating, platformAppReview, sendRateWndEvent
 from "%rGui/navState.nut" import registerScene
 from "%rGui/style/backgrounds.nut" import bgShaded
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 
-
-const RATE_STARS_TOTAL = 5
 
 const contentW = hdpx(1064)
 const contentH = hdpx(660)

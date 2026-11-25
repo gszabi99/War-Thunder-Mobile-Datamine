@@ -3,10 +3,11 @@ from "dagor.math" import CatmullRomSplineBuilder2D
 from "%sqstd/math.nut" import sqrt
 from "%appGlobals/config/mapPointsPresentation.nut" import getMapPointsPresentation, getDefaultPointSize, getPointOffset,
   defaultPointView
+from "%rGui/style/gradients.nut" import gradRadial
 from "%rGui/event/treeEvent/segmentMath.nut" import mkLineSplinePoints
 from "%rGui/event/treeEvent/treeEventUtils.nut" import lineSectionLen, lineOutlineWidth, mapLineWidth,
   LINE_DASHED, LINE_SOLID
-from "%rGui/event/treeEvent/treeEventState.nut" import curEventMapNodes, selectedPointId,
+from "%rGui/event/treeEvent/treeEventState.nut" import curEventMapNodes, selectedPointId, openedQuestsNodeId,
   getEventNodeType, nodeStatusKind, nodeViews, curPagePointSizes, eventMapNodeInProgress,
   NODE_QUESTS, NODE_REWARD, NODE_LOCKED, NODE_AVAILABLE, NODE_PURCHASED, NODE_RECEIVED, startNodeIds,
   mkNodeAllQuestsDone, mkNodeHasUnseenReward
@@ -23,23 +24,26 @@ const lineBorderEmptySections = 6
 const splineTension = -0.5
 const linePeriod = lineDashSections + lineSpaceSections
 const minBgElemSizeSqForComplexView = hdpx(200) * hdpx(200)
-const completedIconSize = evenPx(40)
-const defNodeCompletedIconSize = evenPx(30)
+
+const lockGlowScale = 1.8
+const lockGlowColor = 0x80000000
 
 const editorSelLineColor = 0xC01860C0
-const lineToCompletedColor = 0xFF7FAEFF
-const lineToUnlockedColor = 0xFF7FAEFF
-const lineToLockedColor = 0x33192333
+const lineToCompletedColor = 0xFF0E1F4F
+const lineToUnlockedColor = 0xFF9E0606
+const lineToLockedColor = 0xFFEDE1C9
 
 const defOutlineColor = 0x80000000
 let lineOutLineColors = { 
   [editorSelLineColor] = 0xFF000000,
-  [lineToUnlockedColor] = 0x40181810,
-  [lineToLockedColor] = 0x40181810,
+  [lineToUnlockedColor] = 0xFF4C1804,
+  [lineToLockedColor] = 0xFF333333,
   [lineToCompletedColor] = 0xFF4C1804,
 }
 let lineOutlineWidthByColor = {
-  [lineToCompletedColor] = 0
+  [lineToCompletedColor] = 0,
+  [lineToUnlockedColor] = 0,
+  [lineToLockedColor] = hdpxi(3),
 }
 
 let variantFieldByKind = {
@@ -58,22 +62,35 @@ let mkCheckIcon = @(size, ovr = {}) {
 
 let mkCompletedMark = @(size) mkCheckIcon(size, { hplace = ALIGN_CENTER, vplace = ALIGN_CENTER })
 
-let completedMarkSizeFor = @(effView) effView == defaultPointView
-  ? defNodeCompletedIconSize
-  : completedIconSize
+let completedMarkSizeFor = @(effView) evenPx(getMapPointsPresentation(effView).completedMarkSize)
 
 let mkLockIcon = @(size, ovr = {}) {
   size
-  rendObj = ROBJ_IMAGE
-  image = Picture($"ui/gameuiskin#lock_icon.svg:{size}:P")
-  keepAspect = true
-  color = 0xFFFFFFFF
+  children = [
+    {
+      size = size * lockGlowScale
+      hplace = ALIGN_CENTER
+      vplace = ALIGN_CENTER
+      rendObj = ROBJ_IMAGE
+      image = gradRadial
+      color = lockGlowColor
+    }
+    {
+      size
+      rendObj = ROBJ_IMAGE
+      image = Picture($"ui/gameuiskin#lock_icon.svg:{size}:P")
+      keepAspect = true
+      color = 0xFFFFFFFF
+    }
+  ]
 }.__update(ovr)
 
 let rewardPlateBase = getRewardPlateSize(1, REWARD_STYLE_VERY_TINY)
 
 let sqr = @(v) v * v
-let onNodeClick = @(id, node) node != null ? selectedPointId.set(id) : null
+let onNodeClick = @(id, node) node == null ? null
+  : getEventNodeType(node) == NODE_QUESTS ? openedQuestsNodeId.set(id)
+  : selectedPointId.set(id)
 let resolveNodeView = @[pure, nodiscard](id, view, nodesV) view != ""
   ? view
   : (nodesV?[id] ?? defaultPointView)
@@ -105,13 +122,12 @@ let mkRewardPlate = @(r, rStyle) {
   ]
 }
 
-function mkNodeMarkerLayers(node, sizePx, marker, isCompleted, imgOffset) {
+let getPreviewReward = @(node) getEventNodeType(node) != NODE_REWARD ? null
+  : getRewardsViewInfo(node?.rewards).sort(sortRewardsViewInfo).findvalue(@(r) (r?.slots ?? 1) == 1)
+
+function mkNodeMarkerLayers(reward, sizePx, marker, isCompleted, imgOffset) {
   let { image, color, opacity } = marker
-  let nodeType = getEventNodeType(node)
-  let rewards = nodeType == NODE_REWARD ? getRewardsViewInfo(node?.rewards).sort(sortRewardsViewInfo) : []
-  let reward = rewards.findvalue(@(r) (r?.slots ?? 1) == 1)
   let plateScale = sizePx.tofloat() * 0.6 / rewardPlateBase[0]
-  let questsIconSize = sizePx / 2
   let iconOpacity =  isCompleted ? 0.5 : opacity
 
   return [
@@ -139,17 +155,6 @@ function mkNodeMarkerLayers(node, sizePx, marker, isCompleted, imgOffset) {
             children = mkRewardPlate(reward, REWARD_STYLE_VERY_TINY)
           }
         }
-    nodeType != NODE_QUESTS
-      ? null
-      : {
-          size = questsIconSize
-          opacity = iconOpacity
-          hplace = ALIGN_CENTER
-          vplace = ALIGN_CENTER
-          rendObj = ROBJ_IMAGE
-          image = Picture($"ui/gameuiskin#quests.svg:{questsIconSize}:P")
-          keepAspect = true
-        }
   ]
 }
 
@@ -172,18 +177,36 @@ let mkNodePulse = @(id, marker, sizePx, imgOffset) {
   animations = nodePulseAnimations
 }
 
+function mkSelectionOverlay(presentation, sizePx, imgOffset) {
+  let { selectionOverlay = null, selectionScale = 1.0 } = presentation
+  if (selectionOverlay == null)
+    return null
+  let size = (sizePx * selectionScale / 2 + 0.5).tointeger() * 2 
+  return {
+    size
+    pos = [imgOffset[0] * sizePx, imgOffset[1] * sizePx]
+    rendObj = ROBJ_IMAGE
+    image = Picture($"{selectionOverlay}:{size}")
+    keepAspect = true
+  }
+}
+
 function mkNodeMarkerPreview(node, effView, box, isCompleted = false, isStart = false) {
   let presentation = getMapPointsPresentation(effView)
   let sizePx = (box.r - box.l + 0.5).tointeger()
+  let imgOffset = getPointOffset(effView)
+  let reward = getPreviewReward(node)
 
   return {
     pos = [box.l, box.t]
     size = sizePx
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = mkNodeMarkerLayers(node, sizePx, presentation.selected, isCompleted, getPointOffset(effView))
-      .append((!isCompleted || isStart) ? null
-        : mkCompletedMark(completedMarkSizeFor(effView)))
+    children = mkNodeMarkerLayers(reward, sizePx, presentation.selected, isCompleted, imgOffset)
+      .append(
+        mkSelectionOverlay(presentation, sizePx, imgOffset),
+        (!isCompleted || isStart || reward == null) ? null
+          : mkCompletedMark(completedMarkSizeFor(effView)))
   }
 }
 
@@ -196,12 +219,14 @@ function mkPoint(state) {
     let presentation = getMapPointsPresentation(effView)
     let curKind = kind.get()
     let variant = presentation[variantFieldByKind?[curKind] ?? "locked"]
-    let marker = isSelected.get() ? presentation.selected : variant
+    let { selectionOverlay = null } = presentation
+    let marker = isSelected.get() && selectionOverlay == null ? presentation.selected : variant
     let sizePx = evenPx(curPagePointSizes.get()?[effView] ?? getDefaultPointSize(effView))
     let isCompleted = curKind == NODE_RECEIVED && allQuestsDone.get()
     let isStart = startNodeIds.get()?[id] ?? false
     let imgOffset = getPointOffset(effView)
     let showPulse = curKind == NODE_RECEIVED && !allQuestsDone.get()
+    let reward = getPreviewReward(node.get())
 
     return {
       watch = [kind, isSelected, node, nodeViews, curPagePointSizes, isNodeInProgress, hasUnseenReward, startNodeIds,
@@ -215,9 +240,10 @@ function mkPoint(state) {
       sound = const { click = "click" }
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      children = mkNodeMarkerLayers(node.get(), sizePx, marker, isCompleted, imgOffset).append(
+      children = mkNodeMarkerLayers(reward, sizePx, marker, isCompleted, imgOffset).append(
         !showPulse ? null
-          : mkNodePulse(id, presentation.selected, sizePx, imgOffset),
+          : mkNodePulse(id, selectionOverlay == null ? presentation.selected : variant, sizePx, imgOffset),
+        isSelected.get() ? mkSelectionOverlay(presentation, sizePx, imgOffset) : null,
         !hasUnseenReward.get() ? null
           : {
               size = sizePx
@@ -232,7 +258,7 @@ function mkPoint(state) {
               vplace = ALIGN_CENTER
               children = mkSpinner(sizePx / 2)
             },
-        (!isCompleted || isStart) ? null
+        (!isCompleted || isStart || reward == null) ? null
           : mkCompletedMark(completedMarkSizeFor(effView)))
     }
   }
@@ -426,4 +452,7 @@ return {
   LINE_DASHED
   LINE_SOLID
   editorSelLineColor
+  lineToCompletedColor
+  lineToUnlockedColor
+  lineToLockedColor
 }

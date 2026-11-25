@@ -1,10 +1,8 @@
 from "%globalsDarg/darg_library.nut" import *
 from "wt.behaviors" import HangarCameraControl
 from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
-from "%rGui/battlePass/battlePassState.nut" import curBpId, openBpHelpWnd
 from "%rGui/battlePass/passPkg.nut" import bottomPanelH, bottomPanelIconSize, colorBarH
 from "%rGui/battlePass/passState.nut" import playerSelectedScene
-from "%rGui/collections/collectionsState.nut" import openCollectionsHelpWnd, curCollectionId
 from "%rGui/components/backButton.nut" import backButton
 from "%rGui/components/gradientDefComps.nut" import headerGradientWithRightBlock
 from "%rGui/components/infoButton.nut" import infoEllipseButton
@@ -15,10 +13,11 @@ from "%rGui/mainMenu/gamercard.nut" import mkCurrenciesBtns
 from "%rGui/mainMenu/mainMenuState.nut" import isMainMenuAttached
 from "%rGui/navState.nut" import registerScene, setSceneBg
 from "%rGui/news/newsState.nut" import openNewsWndTagged
+from "%rGui/seasonScene/seasonHelpWnd.nut" import hasSeasonHelpWnd
 import "%rGui/seasonScene/seasonSceneContentCfg.nut" as sceneContentCfg
 from "%rGui/seasonScene/seasonSceneState.nut" import seasonSceneOpenCounter, seasonTabs, seasonTabIdx, seasonPageId,
   newsTag, PASS_OBSOLETE_SCENE, openSeasonTab, closeSeasonScene, bgScene, bgUnits, registerSeasonTabClose,
-  SEASON_SCENE_ID, COLLECTION_TAB, PASS_SCENE
+  SEASON_SCENE_ID, openSeasonHelpWnd
 from "%rGui/squad/squadChatBtn.nut" import squadChatBtn
 from "%rGui/style/gradients.nut" import mkGradientCtorRadial, gradTexSize
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
@@ -81,6 +80,7 @@ function mkSeasonTab(tabName, tabConfig, isActive) {
         padding = const [hdpx(10), 0, 0, 0]
         flow = FLOW_HORIZONTAL
         gap = hdpx(10)
+        valign = ALIGN_CENTER
         children = [
           @() {
             watch = tabConfig.icon
@@ -150,24 +150,27 @@ let seasonHeader = headerGradientWithRightBlock(
       if (!sceneContentCfg?[seasonPageId.get()].onBack())
         closeSeasonScene()
     })
-    @() {
-      watch = [newsTag, seasonPageId, curCollectionId, curBpId]
-      flow = FLOW_HORIZONTAL
-      valign = ALIGN_CENTER
-      gap = hdpx(40)
-      children = [
-        @() {
-          watch = curEventLoc
-          rendObj = ROBJ_TEXT
-          text = curEventLoc.get()
-        }.__update(fontBig)
-        seasonPageId.get() == COLLECTION_TAB
-            && curCollectionId.get() != null ? infoEllipseButton(openCollectionsHelpWnd)
-          : seasonPageId.get() == PASS_SCENE
-            && curBpId.get() != null ? infoEllipseButton(openBpHelpWnd)
-          : newsTag.get() == null ? null
-          : infoEllipseButton(@() openNewsWndTagged(newsTag.get()))
-      ]
+    function() {
+      let pageId = seasonPageId.get()
+      let isVisible = sceneContentCfg?[pageId].isVisible
+      let hasHelpWnd = hasSeasonHelpWnd(pageId) && (isVisible?.get() ?? false)
+      return {
+        watch = [newsTag, seasonPageId, isVisible].filter(@(v) v != null)
+        flow = FLOW_HORIZONTAL
+        valign = ALIGN_CENTER
+        gap = hdpx(40)
+        children = [
+          @() {
+            watch = curEventLoc
+            rendObj = ROBJ_TEXT
+            text = curEventLoc.get()
+            ...fontBig
+          }
+          hasHelpWnd ? infoEllipseButton(@() openSeasonHelpWnd(pageId))
+            : newsTag.get() == null ? null
+            : infoEllipseButton(@() openNewsWndTagged(newsTag.get()))
+        ]
+      }
     }
   ],
   headerRightBlock)

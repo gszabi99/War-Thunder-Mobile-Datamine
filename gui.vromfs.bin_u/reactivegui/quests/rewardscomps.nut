@@ -3,6 +3,7 @@ from "%appGlobals/currenciesState.nut" import WARBOND, NYBOND, APRILBOND
 import "%appGlobals/pServer/servProfile.nut" as servProfile
 from "%appGlobals/rewardType.nut" import G_UNIT, G_STAT_ADD
 from "%appGlobals/pServer/bqClient.nut" import sendUnitBqEventOnce, BQ_DETAILS_QUEST_REWARD
+from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%rGui/components/buttonStyles.nut" import COMMON
 from "%rGui/components/glare.nut" import mkGlare
 from "%rGui/components/spinner.nut" import spinner
@@ -12,7 +13,7 @@ from "%rGui/quests/questsState.nut" import openRewardsList
 from "%rGui/rewards/rewardPlateComp.nut" import REWARD_STYLE_SMALL, mkRewardPlate, mkRewardReceivedMark
 from "%rGui/rewards/rewardStyles.nut" import getRewardPlateSize
 from "%rGui/rewards/rewardViewInfo.nut" import isSingleViewInfoRewardEmpty, getUnlockRewardsViewInfo,
-  sortRewardsViewInfo
+  sortRewardsViewInfo, isUnitViewInfo
 from "%rGui/shop/goodsPreview/goodsPreviewPkg.nut" import opacityAnims, aTimeInfoItem
 from "%rGui/unit/components/unitPlateComp.nut" import mkIcon
 from "%rGui/unitDetails/unitDetailsState.nut" import openUnitDetailsWnd
@@ -58,7 +59,7 @@ let mkRewardsListBtn = @(rewards, style, isQuestFinished = false) {
 
 let mkLockedIcon = @(ovr = {}) mkIcon("ui/gameuiskin#lock_icon.svg", [statusIconSize, statusIconSize], ovr)
 
-let lockedReward = {
+let mkLockedReward = @(lockOvr) {
   size = FLEX
   children = [
     {
@@ -66,13 +67,22 @@ let lockedReward = {
       rendObj = ROBJ_SOLID
       color = bgColor
     }
-    mkLockedIcon({ hplace = ALIGN_RIGHT, margin = hdpx(7) })
+    mkLockedIcon(lockOvr)
   ]
+}
+
+let lockedReward = mkLockedReward({ hplace = ALIGN_RIGHT, margin = hdpx(7) })
+let lockedUnitReward = mkLockedReward({ hplace = ALIGN_CENTER, vplace = ALIGN_CENTER, pos = [0, -hdpx(12)] })
+
+let mkLockedRewardByType = @(r) @() {
+  watch = serverConfigs
+  size = FLEX
+  children = isUnitViewInfo(r, serverConfigs.get()) ? lockedUnitReward : lockedReward
 }
 
 let currencyProgressBarRewardCtor = @(r, isUnlocked = false, canClaimReward = false) [
   mkRewardPlate(r, canClaimReward ? rStyleNoPreview : rStyleDefault)
-  !isUnlocked ? lockedReward
+  !isUnlocked ? mkLockedRewardByType(r)
     : !canClaimReward ? mkRewardReceivedMark(REWARD_STYLE_SMALL)
     : mkGlare(rewardsBtnSize, { repeatDelay = 2.5, duration = 0.6 })
 ]

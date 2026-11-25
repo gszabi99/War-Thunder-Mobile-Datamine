@@ -786,6 +786,26 @@ return {
     "f-84g_thailand": {
       "": "ussr_i_15_1935_moscow"
     },
+    "f-86_canadair_german": {
+      "": "germ_fw_190a_5",
+      "upgraded": "usa_sb2u_2"
+    },
+    "f-86a-5": {
+      "": "usa_f_80a_5_blue_a",
+      "upgraded": "usa_a_20g_25_usaaf"
+    },
+    "f-86f-25": {
+      "": "usa_f_80a_5_blue_a",
+      "camo": "usa_f_86f25_swans"
+    },
+    "f-86f-25_prem": {
+      "": "usa_f_86f25_ice",
+      "camo": "usa_f_80a_5_blue_a"
+    },
+    "f-86f-30_japan": {
+      "": "ussr_i_15_1935_moscow",
+      "upgraded": "jap_a6m2"
+    },
     "f-89d": {
       "": "usa_f_89d",
       "standart": "germ_bf_109g_14_winter"
@@ -2149,6 +2169,10 @@ return {
     "hudson_mk_v": {
       "": "uk_spitfire_mk1a_summer"
     },
+    "hunter_f1": {
+      "": "ussr_i_15_1935_moscow",
+      "upgraded": "uk_typhoon_mk1a_camo"
+    },
     "hurricane_mk1c": {
       "": "uk_spitfire_mk1a_summer",
       "upgraded": "germ_he_111h_16_a_winter"
@@ -3345,6 +3369,10 @@ return {
     "meteor_fmk8_reaper": {
       "": "ussr_i_180s_red"
     },
+    "mig-15_ns23": {
+      "": "ussr_i_15_1935_moscow",
+      "upgraded": "ussr_i_180s_red"
+    },
     "mig-9": {
       "": "ussr_la_11_standard",
       "upgraded": "ussr_tandem_mai"
@@ -3814,7 +3842,8 @@ return {
       "": "ussr_il_2m"
     },
     "tu_14t": {
-      "": "usa_sb2u_2"
+      "": "usa_sb2u_2",
+      "camo": "ussr_pe_8_m82"
     },
     "tu_4": {
       "": "ussr_la_11_standard",
@@ -5363,6 +5392,10 @@ return {
       "": "frigate_1239_birthday_26",
       "historical": "camo_threegray_spots"
     },
+    "ussr_frigate_rckt_pr20380": {
+      "multicolor_arctic_bp": "camo_multicolor_arctic",
+      "upgraded": "camo_yamal_pr20380"
+    },
     "ussr_is_1": {
       "": "ussr_camo_green",
       "upgraded": "ussr_camo_forest_01"
@@ -5826,6 +5859,14 @@ return {
     },
     "ussr_t_72av_turms_event": {
       "": "ussr_t_72av_turms_anniversary2026"
+    },
+    "ussr_t_72b3_2011": {
+      "": "ussr_modern_green",
+      "desert": "ussr_camo_modern_desert_deform"
+    },
+    "ussr_t_72b3_2011_prem": {
+      "": "ussr_camo_polar_t_72b3_2011",
+      "forest": "ussr_modern_green"
     },
     "ussr_t_72b3_arena": {
       "": "ussr_camo_desert_sand_green_brown",

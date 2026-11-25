@@ -31,7 +31,7 @@ const leftBlockWidth = hdpx(500)
 let progressWidth = 2 * boxSize + boxGap
 
 
-let bgScene = Computed(@() getCollectionPresentation(curCollectionId.get()))
+let bgScene = keepref(Computed(@() getCollectionPresentation(curCollectionId.get())))
 let close = @() openedPuzzleId.set(null)
 
 let mkPuzzleLock = @(size, styleId, ovr) {

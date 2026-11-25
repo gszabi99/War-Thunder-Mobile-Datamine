@@ -16,7 +16,8 @@ from "%rGui/debugTools/debugMapPoints/mapEditorState.nut" import isCurPageChange
   deleteElement, isEditAllowed, needUseAutoSave, tuningPoints, tuningBgElems, historyMapElements, snapType,
   selectElem, changeCurPageField, pageGridSize, pageLineSectionLen, pageRoundedDashes, pageLineType, pageLineWidth,
   ELEM_POINT, ELEM_BG, addBgElement, editBgElement, selectedElem, copyElement, curEventNodeViews, pagePointSizes,
-  pageObjDist, isCollectionMode, tuningRewards, selectedRewardId, addOrEditReward, ELEM_REWARD
+  pageObjDist, isCollectionMode, tuningRewards, selectedRewardId, addOrEditReward, ELEM_REWARD,
+  pointPreviewStates, pointPreviewState
 from "%rGui/event/treeEvent/treeEventUtils.nut" import lineTypes, LINE_SOLID
 
 
@@ -346,6 +347,16 @@ let autoSaveBtn = @() {
     { color = needUseAutoSave.get() ? btnBgColorPositive : btnBgColorNegative })
 }
 
+function nextPointPreviewState() {
+  let idx = pointPreviewStates.indexof(pointPreviewState.get()) ?? -1
+  pointPreviewState.set(pointPreviewStates[(idx + 1) % pointPreviewStates.len()])
+}
+
+let pointStateBtn = @() {
+  watch = pointPreviewState
+  children = mkTextOptionBtnNoUpper($"Point state: {pointPreviewState.get()}", nextPointPreviewState)
+}
+
 let snapBtn = @() {
   watch = snapType
   children = mkTextOptionBtn($"Snap: {snapType.get() ?? "none"}",
@@ -608,6 +619,7 @@ let content = @() {
     historyFwdBtn
     autoSaveBtn
     snapBtn
+    pointStateBtn
     const { size = FLEX }
     deleteElemBtn
     copyElemBtn

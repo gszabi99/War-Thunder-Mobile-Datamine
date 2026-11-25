@@ -1,18 +1,23 @@
 from "%globalScripts/logs.nut" import *
+from "math" import min
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%sqstd/platform.nut" import is_ios, is_android
 
 
 let regexp2 = require_optional("regexp2") 
 let { get_user_system_info = @() {} } = require_optional("sysinfo")
+let { getSafeAreaVert = @() 1.0 } = is_ios ? require_optional("ios.platform") : null
 
 const SAFEAREA_DEFAULT = 0.9
 
 const SAFEAREA_W_DYNAMICISLAND = 0.875
 const SAFEAREA_W_PIXEL9 = 0.89
 
+let isFinite = @(v) (v * 0.0) == 0.0
+
 local safeAreaW = SAFEAREA_DEFAULT
-local safeAreaH = SAFEAREA_DEFAULT
+let systemSafeAreaH = getSafeAreaVert()
+let safeAreaH = isFinite(systemSafeAreaH) ? min(SAFEAREA_DEFAULT, systemSafeAreaH) : SAFEAREA_DEFAULT
 
 let debugSafeAreaW = hardPersistWatched("debugSafeAreaW", null)
 

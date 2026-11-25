@@ -35,7 +35,7 @@ from "%rGui/rewards/rewardPrizeView.nut" import openRewardPrizeView
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_TINY, REWARD_STYLE_SMALL, REWARD_STYLE_MEDIUM,
   getRewardPlateSize, progressBarHeight, rewardTicketDefaultSlots
 from "%rGui/rewards/rewardViewInfo.nut" import NO_DROP_LIMIT, shopGoodsToRewardsViewInfo, sortRewardsViewInfo,
-  getBlueprintMax, isBlueprintUpgradeStage, getBlueprintSpentStages, getBlueprintBarColor
+  getBlueprintMax, isBlueprintUpgradeStage, getBlueprintSpentStages, getBlueprintBarColor, isUnitViewInfo
 from "%rGui/shop/discounts.nut" import calculateNewGoodsDiscount
 from "%rGui/shop/goodsUtils.nut" import getBestUnitByGoods
 from "%rGui/shop/goodsView/sharedParts.nut" import mkBgImg, mkFitCenterImg, offerPad
@@ -640,6 +640,8 @@ function mkRewardPremiumMark(height) {
   let size = [round(height * premiumIconAspect).tointeger(), height]
   return {
     size
+    vplace = ALIGN_BOTTOM
+    margin = [0, 0, progressBarHeight + cornerIconMargin, cornerIconMargin]
     rendObj = ROBJ_IMAGE
     keepAspect = true
     image = Picture($"ui/gameuiskin#icon_premium.svg:{size[0]}:{size[1]}:P")
@@ -670,8 +672,7 @@ function mkRewardUnitFlag(unit, rStyle, hasPremiumMark) {
   }
   return !hasPremiumMark ? flag
     : {
-        flow = FLOW_HORIZONTAL
-        valign = ALIGN_CENTER
+        size = FLEX
         children = [
           flag
           mkRewardPremiumMark(size[1])
@@ -683,6 +684,7 @@ function mkUnitFlagComp(id, rStyle, hasPremiumMark) {
   let unit = Computed(@() serverConfigs.get()?.allUnits[id])
   return @() {
     watch = [unit, hasPremiumMark]
+    size = FLEX
     children = unit.get() == null ? null : mkRewardUnitFlag(unit.get(), rStyle, hasPremiumMark.get())
   }
 }
@@ -1133,16 +1135,26 @@ function mkRewardPlateWithCorner(r, rStyle, cornerIcon, overlay = null) {
   }
 }
 
-let mkRewardLocked = @(rStyle) {
-  size = FLEX
-  rendObj = ROBJ_SOLID
-  color = 0x60000000
-  children = {
-    size = rStyle.markSize
-    margin = hdpx(8)
-    rendObj = ROBJ_IMAGE
-    keepAspect = KEEP_ASPECT_FIT
-    image = Picture($"ui/gameuiskin#lock_icon.svg:{rStyle.markSize}:{rStyle.markSize}:P")
+function mkRewardLocked(rStyle, r = null) {
+  let { markSize } = rStyle
+  let lockImage = Picture($"ui/gameuiskin#lock_icon.svg:{markSize}:{markSize}:P")
+  return function() {
+    let isCentered = isUnitViewInfo(r, serverConfigs.get())
+    return {
+      watch = serverConfigs
+      size = FLEX
+      rendObj = ROBJ_SOLID
+      color = 0x60000000
+      children = {
+        size = markSize
+        margin = hdpx(8)
+        hplace = isCentered ? ALIGN_CENTER : ALIGN_LEFT
+        vplace = isCentered ? ALIGN_CENTER : ALIGN_TOP
+        rendObj = ROBJ_IMAGE
+        keepAspect = KEEP_ASPECT_FIT
+        image = lockImage
+      }
+    }
   }
 }
 

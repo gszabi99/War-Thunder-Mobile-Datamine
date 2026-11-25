@@ -26,6 +26,7 @@ function restartAll() {
     if (!hasTimer(a))
       toRemove.append(a)
     else if (t <= curTime) {
+      clearTimer(a)
       deferOnce(a)
       toRemove.append(a)
     }

@@ -214,12 +214,13 @@ let tablesActivityOvr = Watched({})
 
 let getStatsActualTimeLeft = @() (userstatStats.get()?.timestamp ?? 0) + STATS_ACTUAL_TIMEOUT - serverTime.get()
 let isStatsActualByTime = Watched(getStatsActualTimeLeft() > 0)
+let deactualizeStatsByTime = @() isStatsActualByTime.set(false)
 userstatStats.subscribe(function(_) {
   isStatsActualByBattle.set(true)
   let timeLeft = getStatsActualTimeLeft()
   isStatsActualByTime.set(timeLeft > 0)
   if (timeLeft > 0)
-    resetExtTimeout(timeLeft, @() isStatsActualByTime.set(false))
+    resetExtTimeout(timeLeft, deactualizeStatsByTime)
 })
 
 let isStatsActual = Computed(@() isStatsActualByTime.get() && isStatsActualByBattle.get())
@@ -332,6 +333,12 @@ resetUpdateTimer()
 nextUpdateIntervals.subscribe(@(_) resetUpdateTimer())
 
 
+function markStatsTablesChanged() {
+  let time = get_time_msec()
+  statsTablesUpdatable.changeEventTime.set(time)
+  descListUpdatable.changeEventTime.set(time)
+}
+
 function updateTableActivityTimer() {
   if (!isServerTimeValid.get())
     return
@@ -369,11 +376,7 @@ function updateTableActivityTimer() {
   if (needRefreshStats) {
     logU("Deactualize stats by tables time range")
     isStatsActualByTime.set(false)
-    resetExtTimeout(rnd_float(0.001, 1.0) * MAX_CONFIGS_UPDATE_DELAY,
-      function() {
-        statsTablesUpdatable.changeEventTime.set(get_time_msec())
-        descListUpdatable.changeEventTime.set(get_time_msec())
-      })
+    resetExtTimeout(rnd_float(0.001, 1.0) * MAX_CONFIGS_UPDATE_DELAY, markStatsTablesChanged)
   }
 }
 updateTableActivityTimer()

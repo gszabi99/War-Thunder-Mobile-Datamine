@@ -72,7 +72,7 @@ let icons = {
   russiabond = "ui/gameuiskin#warbond_icon_russiabond.avif"
   ukbond = "ui/gameuiskin#warbond_icon_ukbond.avif"
   japanbond = "ui/gameuiskin#warbond_icon_japanbond.avif"
-  maptoken = "ui/gameuiskin#warbond_icon_maptoken.avif"
+  maptoken = "ui/gameuiskin#warbond_icon_maptoken_s40.avif"
   
   ship_tool_kit = "ui/gameuiskin#shop_consumables_repair_gamercard.avif"
   ship_smoke_screen_system_mod = "ui/gameuiskin#shop_consumables_smoke_gamercard.avif"

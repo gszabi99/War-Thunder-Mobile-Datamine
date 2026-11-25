@@ -624,7 +624,7 @@
       }
     }
   ],
-  "ns23_armor_targets": {
+  "cannonGSh_23L_upk_23_250_armor_targets": {
     "bullet": [
       {
         "mass": 0.174,
@@ -1347,7 +1347,7 @@
       }
     ]
   },
-  "ns23_air_targets": {
+  "cannonGSh_23L_upk_23_250_air_targets": {
     "bullet": [
       {
         "mass": 0.176,
@@ -2383,7 +2383,7 @@
       }
     ]
   },
-  "ns23_stealth": {
+  "cannonGSh_23L_upk_23_250_stealth": {
     "bullet": [
       {
         "mass": 0.175,

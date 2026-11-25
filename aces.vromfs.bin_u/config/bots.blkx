@@ -293,7 +293,7 @@
       {
         "range": [
           9,
-          50
+          9
         ],
         "aircraft": [
           {
@@ -318,6 +318,39 @@
           },
           {
             "name": "meteor_fmk3",
+            "weight": 1.0,
+            "country": "britain"
+          }
+        ]
+      },
+      {
+        "range": [
+          10,
+          50
+        ],
+        "aircraft": [
+          {
+            "name": "f-86a-5",
+            "weight": 1.0,
+            "country": "usa"
+          },
+          {
+            "name": "f-86_canadair_german",
+            "weight": 1.0,
+            "country": "germany"
+          },
+          {
+            "name": "mig-15_ns23",
+            "weight": 1.0,
+            "country": "ussr"
+          },
+          {
+            "name": "f-86f-30_japan",
+            "weight": 1.0,
+            "country": "japan"
+          },
+          {
+            "name": "hunter_f1",
             "weight": 1.0,
             "country": "britain"
           }

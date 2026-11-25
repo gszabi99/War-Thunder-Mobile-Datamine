@@ -50,13 +50,13 @@ let firstBattlesRewardId = Computed(@() 1 + max(curProfileRewardId.get(), curDel
 let firstBattlesReward = Computed(@()
   serverConfigs.get()?.firstBattlesRewards[firstBattleRewardsKey.get()][firstBattlesRewardId.get()])
 
-let hasTankRestrictedOfflineMission = Computed(@() (abTests.get()?.tankRestrictedOfflineMission ?? "false") == "true")
+let hasTankWeakBotsOfflineMission = Computed(@() (abTests.get()?.tankWeakBotsOfflineMission ?? "false") == "true")
 
 let missionsList = Computed(function() {
   let singleBattleCfg = newbieGameModesConfig?[curCampaign.get()]
     .findvalue(@(cfg) (cfg?.offlineMissions ?? []).len() != 0
       && cfg.isFit(newbieModeStats.get(), battleUnitsMaxMRank.get(), abTests.get()))
-  let defaultMissions = hasTankRestrictedOfflineMission.get() && singleBattleCfg?.abTestOfflineMissions
+  let defaultMissions = hasTankWeakBotsOfflineMission.get() && singleBattleCfg?.abTestOfflineMissions
     ? singleBattleCfg?.abTestOfflineMissions
     : singleBattleCfg?.offlineMissions
 

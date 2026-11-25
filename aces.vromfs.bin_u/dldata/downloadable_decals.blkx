@@ -2854,5 +2854,37 @@
     "lod0": "enkfqkcb6swywf32aasqbn5xtytzdnuq-fjvy",
     "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
     "lod1": "c6ed2w24i77n5qu37e2jhjnptrepuzid-bsvy"
+  },
+  "greenland_dog_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "h5q2bdhfc5kvukkf7fycpezonjvvtt6j-exra",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "ckxijgj5pkyj5mkeszkllvfcgtqlryaf-bmmy"
+  },
+  "polar_conquest_decal": {
+    "category": "common",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "o3votkmzfyre5h2t2kng73xz2akuaug7-fxrq",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "t4ycuy656fyt572cvtfbuwh4gjekij2z-bq6q"
+  },
+  "s40_antartic_expedition_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "bgtjps4a7uopbg3xhi3vngr52rl5fu7o-g4pi",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "iflz6y7mzwsn45ynhrfc3wzy6l45oojv-b4cq"
+  },
+  "s40_orca_decal": {
+    "category": "special",
+    "aspect_ratio": 1.0,
+    "hdr0": "RERTeEFTVDREABAAAAIAAgoAAAAIAAF1cFUFAAAAAAA=",
+    "lod0": "6vx4wj6yuozdgw6p4asfxyzxkujuhd5b-d5ni",
+    "hdr1": "RERTeEFTVDREABAAAAEAAQkAAAAIABFlcFUBAAAAAAA=",
+    "lod1": "mlhfj4lnwgmccxhmjbk5o4uajncoi4af-belq"
   }
 }

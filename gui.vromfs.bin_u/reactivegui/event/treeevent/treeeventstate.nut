@@ -9,7 +9,7 @@ from "%rGui/event/treeEvent/eventMapLoader.nut" import defaultMapSize, defaultGr
 from "%rGui/event/treeEvent/treeEventUtils.nut" import loadPresetOnce, updatePresetByTree, getEventMapNodes,
   resolveTreeEventId, nextTreeBoundary, getTreeNodeViewTypes, getNodePageStarts, composeNodeViews, lineSectionLen,
   mapLineWidth, LINE_DASHED, VIEW_NEXT_PAGE
-from "%rGui/unlocks/unlocks.nut" import activeUnlocks
+from "%rGui/unlocks/unlocks.nut" import activeUnlocks, getUnlockAllRewardCurrencies
 
 
 
@@ -27,6 +27,7 @@ const NODE_PURCHASED = "purchased"
 const NODE_RECEIVED = "received"
 
 let selectedPointId = mkWatched(persist, "selectedPointId", null)
+let openedQuestsNodeId = mkWatched(persist, "openedQuestsNodeId", null)
 let curPage = mkWatched(persist, "treeEventCurPage", null)
 
 let openedTreeEventId = Watched(null)
@@ -183,7 +184,8 @@ let curEventUnlocksByCluster = keepref(Computed(function() {
   return res
 }))
 
-let getClusterQuests = @(clusterId) curEventUnlocksByCluster.get()?[clusterId] ?? {}
+let mkNodeQuestNames = @(id) Computed(@()
+  (curEventUnlocksByCluster.get()?[curEventMapNodes.get()?[id].meta.quests] ?? {}).keys().sort())
 
 let mkNodeAllQuestsDone = @(id) Computed(function() {
   let clusterId = curEventMapNodes.get()?[id].meta.quests
@@ -192,6 +194,11 @@ let mkNodeAllQuestsDone = @(id) Computed(function() {
   let quests = curEventUnlocksByCluster.get()?[clusterId]
   return quests == null || quests.findvalue(@(q) !(q?.isCompleted ?? false)) == null
 })
+
+let mkNodeQuestCurrencies = @(id) Computed(@()
+  (curEventUnlocksByCluster.get()?[curEventMapNodes.get()?[id].meta.quests] ?? {})
+    .reduce(@(res, q) { ...res, ...getUnlockAllRewardCurrencies(q, serverConfigs.get()) }, {})
+    .keys())
 
 function nodeHasUnseenReward(node, status, unlocksByCluster) {
   if (!isPurchased(status))
@@ -243,6 +250,7 @@ let mkPageCompleted = @(page) Computed(@()
 
 openedTreeEventId.subscribe(function(_) {
   selectedPointId.set(null)
+  openedQuestsNodeId.set(null)
   curPage.set(null)
 })
 
@@ -256,6 +264,7 @@ return {
   curPageMapSize
   curPageGridSize
   selectedPointId
+  openedQuestsNodeId
   curEventUnlocks
 
   curEventMapNodes
@@ -290,8 +299,9 @@ return {
   curPageLineWidth
   curPagePointSizes
 
-  getClusterQuests
+  mkNodeQuestNames
   mkNodeAllQuestsDone
+  mkNodeQuestCurrencies
   mkNodeHasUnseenReward
   pagesWithUnseenReward
   mkEventMapHasUnseen

@@ -11,7 +11,7 @@ from "%rGui/event/treeEvent/treeEventNodeInfo.nut" import mkNodeInfoWnd
 from "%rGui/event/treeEvent/treeEventState.nut" import openedTreeEventId, curEventMapNodes,
   curPageBgElems, curPageBackground, curPageMapSize, selectedPointId, curPagePoints, nodeViews,
   curPageGridSize, curPageLines, curPageLineSectionLen, curPageRoundedDashes, curPageLineType, curPageLineWidth,
-  nodeStatusKind, pagesList, curPage, curPageResolved, NODE_QUESTS, NODE_RECEIVED, getEventNodeType,
+  nodeStatusKind, pagesList, curPage, curPageResolved, NODE_RECEIVED,
   curEventUnlocks, lockedPages, startNodeIds, mkNodeAllQuestsDone, pagesWithUnseenReward, mkPageCompleted
 from "%rGui/unseenPriority.nut" import SEEN, UNSEEN_HIGH
 from "%rGui/style/listConst.nut" import tabExtraWidth
@@ -128,9 +128,7 @@ function nodeInfoBlock() {
   return {
     watch = [focusedNodeId, curEventMapNodes]
     size = FLEX
-    padding = node != null && getEventNodeType(node) == NODE_QUESTS
-      ? saBordersRv
-      : nodeInfoWndPadding
+    padding = nodeInfoWndPadding
     vplace = ALIGN_BOTTOM
     halign = ALIGN_LEFT
     children = node == null

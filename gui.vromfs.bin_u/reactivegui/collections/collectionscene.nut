@@ -6,7 +6,7 @@ from "%appGlobals/pServer/pServerApi.nut" import collectionInProgress, receive_c
 from "%rGui/collections/collectionComps.nut" import mkProgress, mkPuzzleBgExtensions, mkConvertionInfoBlock, infoGap,
   mkGetRewardButton
 from "%rGui/collections/collectionsState.nut" import curCollectionCfg, curCollectionId, curCollection, openPuzzle,
-  loadCollectionPresetOnce, curUnseenPiecesMasks, curRewardsToReceive, openCollectionsHelpWnd
+  loadCollectionPresetOnce, curUnseenPiecesMasks, curRewardsToReceive
 from "%rGui/collections/rewardProgressCtors.nut" import getRewardCtor
 from "%rGui/components/gradientDefComps.nut" import headerMargin
 from "%rGui/components/infoButton.nut" import infoEllipseButton
@@ -17,7 +17,7 @@ from "%rGui/event/treeEvent/eventMapLoader.nut" import mkEmptyPreset
 from "%rGui/rewards/rewardPlateComp.nut" import mkRewardPlate, mkRewardReceivedMark
 from "%rGui/rewards/rewardStyles.nut" import REWARD_STYLE_SMALL
 from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, sortRewardsViewInfo
-from "%rGui/seasonScene/seasonSceneState.nut" import openHelpWndIfUnseen
+from "%rGui/seasonScene/seasonSceneState.nut" import openHelpWndIfUnseen, COLLECTION_TAB
 from "%rGui/style/stdColors.nut" import commonTextColor
 from "%rGui/style/gradients.nut" import simpleHorGrad
 
@@ -315,7 +315,7 @@ let collectionScene = {
   size = FLEX
   padding = [0, saBorders[0]]
   flow = FLOW_HORIZONTAL
-  onAttach = @() openHelpWndIfUnseen(curCollectionId.get(), openCollectionsHelpWnd)
+  onAttach = @() openHelpWndIfUnseen(curCollectionId.get(), COLLECTION_TAB)
   children = [
     leftBlock
     collectionBlock

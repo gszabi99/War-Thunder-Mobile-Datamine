@@ -6,7 +6,8 @@ from "%rGui/style/stdAnimations.nut" import mkPressTransitionScale
 
 const defPageColor = 0xFFC0C0C0
 const paginatorHeight = evenPx(60)
-const pageGap = hdpx(20)
+const curPageGap = hdpx(20)
+const pageListGap = hdpx(5)
 
 let transitions = [{ prop = AnimProp.scale, duration = 0.2, easing = InOutQuad }]
 
@@ -25,7 +26,7 @@ let underline = @(color) {
 
 let pageContainer = @(children, ovr) {
   size = [SIZE_TO_CONTENT, paginatorHeight]
-  minWidth = paginatorHeight
+  padding = [0, hdpx(10)]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = {
@@ -41,7 +42,7 @@ let dots = pageContainer([
     pageText("...", defPageColor)
     underline(0)
   ],
-  { key = {} })
+  { key = {}, padding = 0 })
 
 let mkCurPage = @(page) pageContainer(
   [
@@ -97,7 +98,7 @@ let mkPaginatorRow = @(watch, children, ovr, height = paginatorHeight) {
   size = [SIZE_TO_CONTENT, height]
   valign = ALIGN_CENTER
   hplace = ALIGN_CENTER
-  gap = pageGap
+  gap = pageListGap
   flow = FLOW_HORIZONTAL
   children,
   ...ovr
@@ -121,9 +122,9 @@ let mkPaginator = @(curPage, lastPage, myPage = Watched(-1), ovr = {}) function(
     if (i == cur)
       children.append(mkCurPage(i + 1))
     else if ((cur - 1 <= i && i <= cur + 1)       
-             || (i == my)                         
-             || (i < 3)                           
-             || i == last)                        
+        || (i == my)                         
+        || (i == 0)                          
+        || i == last)                        
       children.append(mkPage(i + 1, onClick, my == i ? localPlayerColor : defPageColor))
     else {
       children.append(dots)
@@ -165,13 +166,13 @@ function() {
       indicatorCtor(cur)
       mkArrowBtn(false, height)(@() clickCtor(cur + 1), cur != null && cur < last)
     ],
-    ovr,
+    { gap = curPageGap, ...ovr },
     height)
 }
 
 return {
   paginatorHeight
-  pageGap
+  curPageGap
   mkPaginator
   mkPaginatorCurPage
 }

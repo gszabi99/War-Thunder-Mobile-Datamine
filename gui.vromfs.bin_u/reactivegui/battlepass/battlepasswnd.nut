@@ -10,19 +10,19 @@ from "%rGui/rewards/rewardPlateComp.nut" import mkRewardReceivedMark, mkRewardLo
   mkRewardBorder, mkRewardPlateWithCorner
 from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo
 from "%rGui/battlePass/battlePassState.nut" import curBpPages, curBpGrade, curBpGoods, curBpCurPoints,
-  curBpId, curBpTotalPoints, curBpEndTime, curBpReceived, isPurchaseWndOpened, openBpHelpWnd,
+  curBpId, curBpTotalPoints, curBpEndTime, curBpReceived, isPurchaseWndOpened,
   markBpPagesSeen, seenBattlePassPages, activeBattlePassesCfg, battlePasses
 from "%rGui/battlePass/bpRewardDesc.nut" import bpRewardDesc, getLocByRTypeNonUpdatable
 from "%rGui/battlePass/passPkg.nut" import mkPassIcon, contentH, defPassIconSize
 from "%rGui/components/buttonStyles.nut" import defButtonHeight
 from "%rGui/components/textButton.nut" import textButtonPurchase, textButtonPricePurchaseLow
-from "%rGui/components/paginator.nut" import mkPaginatorCurPage, pageGap
+from "%rGui/components/paginator.nut" import mkPaginatorCurPage, curPageGap
 from "%rGui/components/timerBlock.nut" import mkTimerBlock
 from "%rGui/components/currencyComp.nut" import mkCurrencyComp, mkCurrencyImage, mkFreeText
 from "%rGui/components/spinner.nut" import mkSpinnerHideBlock
 from "%rGui/components/unseenMark.nut" import priorityUnseenMark
 from "%rGui/event/eventState.nut" import eventSeasonIdx
-from "%rGui/seasonScene/seasonSceneState.nut" import openHelpWndIfUnseen
+from "%rGui/seasonScene/seasonSceneState.nut" import openHelpWndIfUnseen, PASS_SCENE
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase, showNoBalanceMsgAdd
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/stdColors.nut" import userlogTextColor
@@ -50,7 +50,7 @@ let pagePadding = [boardHeight * 0.06, boardWidth * 0.1, boardHeight * 0.035, sa
 let blockWidth = bpPageStyle.boxSize * 4 + bpPageStyle.boxGap * 3
 
 let actualBoardWidth = Computed(function() {
-  let pageIndicatorWidth = pageGap * 2 + paginatorHeight * 2
+  let pageIndicatorWidth = curPageGap * 2 + paginatorHeight * 2
     + curBpPages.get().len() * paginatorTabWidth
     + (curBpPages.get().len() - 1) * paginatorTabGap
   return max(blockWidth + pagePadding[1] + pagePadding[3],
@@ -158,7 +158,7 @@ function mkSlot(slot, rawReward, rStyle) {
   let reward = { ...slot, ...rawReward }
   let { isReceived, isLocked, canReceive } = reward
 
-  let lockedIcon = isLocked ? mkRewardLocked(rStyle)
+  let lockedIcon = isLocked ? mkRewardLocked(rStyle, reward)
     : !canReceive && !isReceived
       ? {
           size = strikethroughIconSize
@@ -335,7 +335,7 @@ let mkBattlePassContent = @(onGoToShop) @() {
   function onAttach() {
     curBpId.subscribe(curBpIdSubscription)
 
-    openHelpWndIfUnseen(curBpId.get(), openBpHelpWnd)
+    openHelpWndIfUnseen(curBpId.get(), PASS_SCENE)
 
     bpIdToMarkSeen.set(curBpId.get())
 

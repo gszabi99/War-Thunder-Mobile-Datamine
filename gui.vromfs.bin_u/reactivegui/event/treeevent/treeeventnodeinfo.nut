@@ -5,7 +5,7 @@ from "%appGlobals/pServer/servConfigs.nut" import serverConfigs
 from "%appGlobals/pServer/pServerApi.nut" import registerHandler, buy_event_map_node, receive_event_map_node_reward
 from "%appGlobals/pServer/seasonCurrencies.nut" import currencyToFullIdOnlyActive
 from "%rGui/event/treeEvent/treeEventState.nut" import curEventMapNodes, curEventUnlocks, selectedPointId,
-  getEventNodeType, getClusterQuests, NODE_QUESTS, NODE_REWARD, NODE_INTERMEDIATE, curEventMapStatus, isUnlocked,
+  getEventNodeType, mkNodeQuestNames, NODE_REWARD, NODE_INTERMEDIATE, curEventMapStatus, isUnlocked,
   openedTreeEventId, eventMapNodeInProgress, isPurchased, isRewardsReceived, nodeViewTypes, pageStartNodes,
   mkNodeAllQuestsDone
 from "%rGui/event/treeEvent/treeEventUtils.nut" import VIEW_START, VIEW_REWARD, VIEW_QUESTS, VIEW_NEXT_PAGE
@@ -24,8 +24,7 @@ from "%rGui/quests/rewardsComps.nut" import mkRewardsPreview, questItemsGap, get
 from "%rGui/style/stdAnimations.nut" import wndSwitchAnim
 from "%rGui/style/gradients.nut" import mkColoredGradientY
 from "%rGui/rewards/rewardViewInfo.nut" import getRewardsViewInfo, sortRewardsViewInfo
-from "%rGui/components/scrollbar.nut" import makeVertScroll
-from "%rGui/components/modalWnd.nut" import modalWndHeaderWithClose, wndHeaderHeight
+from "%rGui/components/modalWnd.nut" import modalWndHeaderWithClose
 from "%rGui/shop/bqPurchaseInfo.nut" import mkBqPurchaseInfo, PURCH_SRC_EVENT, PURCH_TYPE_MINI_EVENT
 from "%rGui/shop/msgBoxPurchase.nut" import openMsgBoxPurchase
 from "%rGui/style/stdColors.nut" import userlogTextColor
@@ -33,13 +32,11 @@ from "%rGui/style/gradients.nut" import mkGradientCtorDoubleSideX, gradTexSize
 
 
 const infoPanelWidth = hdpx(550)
-const questPopupWidth = hdpx(1300)
 const questLockIconSize = hdpxi(60)
 const purchaseBtnPadding = [hdpx(16), 0, hdpx(20), 0]
 let bgNodeCardGrad = mkColoredGradientY(0xFF304453, 0xFF030C13)
 let nodeInfoPanelSize = [infoPanelWidth, SIZE_TO_CONTENT]
 
-let questScrollMaxHeight = saSize[1] - wndHeaderHeight - buttonStyles.defButtonHeight
 let lineGradientHor = mkBitmapPicture(4, gradTexSize, mkGradientCtorDoubleSideX(0, 0x80777777, 0.25))
 
 const defNodeTitleLocId = "treeEvent/nodeTitle/point"
@@ -144,13 +141,13 @@ let chainLockIcon = {
   children = mkLockIcon(questLockIconSize)
 }
 
-let isChainReachable = @(q) q?.meta.chain_quest == null
+let isChainReachable = @(q, progress) q?.meta.chain_quest == null
   || (q.meta?.chain_quest && q.requirement == "")
-  || (unlockProgress.get()?[q.requirement].isCompleted ?? false)
+  || (progress?[q.requirement].isCompleted ?? false)
 
 function mkQuestRow(questName) {
   let quest = Computed(@() curEventUnlocks.get()?[questName])
-  let isReachable = Computed(@() isChainReachable(quest.get()))
+  let isReachable = Computed(@() isChainReachable(quest.get(), unlockProgress.get()))
   let rewardsPreview = Computed(@() getRewardsPreviewInfo(quest.get(), serverConfigs.get()))
   let eventCurrencyReward = Computed(@() getEventCurrencyReward(rewardsPreview.get()))
   let hasReceivedAllRewards = mkHasReceivedAllRewards(quest, rewardsPreview)
@@ -201,24 +198,19 @@ let mkNodeInfoPanel = @(title, id, content) {
   animations = wndSwitchAnim
 }
 
-function mkQuestsInfo(title, node, id) {
-  let clusterId = node?.meta.quests
-  if (clusterId == null)
-    return null
-
+function mkNodeQuestsList(id) {
+  let questNames = mkNodeQuestNames(id)
   let nodeStatus = nodeStatusById(id)
-  return mkNodeInfoPanel(title, id, @() {
-    watch = [nodeStatus, pageStartNodes]
-    size = const [questPopupWidth, SIZE_TO_CONTENT]
-    children = makeVertScroll({
-      size = const [questPopupWidth, SIZE_TO_CONTENT]
-      flow = FLOW_VERTICAL
-      padding = hdpx(20)
-      gap = separator
-      children = getClusterQuests(clusterId).keys().sort().map(mkQuestRow).extend(isUnlocked(nodeStatus.get()) ? []
+
+  return @() {
+    watch = [questNames, nodeStatus, pageStartNodes]
+    size = FLEX_H
+    flow = FLOW_VERTICAL
+    gap = separator
+    children = questNames.get().map(mkQuestRow)
+      .extend(isUnlocked(nodeStatus.get()) ? []
         : [mkText(getNodeBlockedDesc(id, pageStartNodes.get()), { hplace = ALIGN_CENTER }.__update(fontTiny))])
-    }, { size = SIZE_TO_CONTENT, maxHeight = questScrollMaxHeight, isBarOutside = true })
-  })
+  }
 }
 
 function mkClaimBtn(id) {
@@ -289,7 +281,6 @@ function mkStepInfo(title, _node, id) {
 }
 
 let nodeInfoByType = {
-  [NODE_QUESTS] = mkQuestsInfo,
   [NODE_REWARD] = mkRewardInfo,
   [NODE_INTERMEDIATE] = mkStepInfo,
 }
@@ -299,4 +290,7 @@ let mkNodeInfoWnd = @(id, node)
 
 return {
   mkNodeInfoWnd
+  mkNodeQuestsList
+  mkNodePurchaseBtn
+  getNodeTitle
 }

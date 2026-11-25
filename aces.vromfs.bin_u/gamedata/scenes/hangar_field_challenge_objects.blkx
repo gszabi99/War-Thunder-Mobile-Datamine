@@ -2,7 +2,7 @@
   "entity": [
     {
       "_template": "rendinst_replicated",
-      "ri_extra__name": "hangar_air",
+      "ri_extra__name": "hg_hangar_air_a",
       "transform": [
         [
           0.776905,

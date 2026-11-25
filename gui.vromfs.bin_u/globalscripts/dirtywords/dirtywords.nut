@@ -46,7 +46,7 @@ let similarCharsMapsByAlphabet = []
 
 let toRegexpFunc = {
   default = @(str) regexp2(str)
-  badcombination = @(str) regexp2("".concat("(", "\\s+".join(str.split(" ").filter(@(w) w != "")), ")"))
+  badcombination = @(str) regexp2("\\s+".join(str.split(" ").filter(@(w) w != "")))
 }
 
 function updateAsianDict(lookupTbl, upd) {
@@ -157,17 +157,13 @@ function continueInitAfterLogin(myLocation) {
   }
 }
 
-let preparereplace = [
-  {
-    pattern = regexp2(@"[\'\-\+\;\.\,\*\?\(\)]")
-    replace = " "
-  },
-  {
-    pattern = regexp2(@"[\!\:\_]")
-    replace = " "
-  }
-];
+let preparereplace = {
+  pattern = regexp2(@"['+;.,*?()!:_\-]")
+  replace = " "
+}
 
+let rePunctuation = regexp2(@"^[.,:;!?()'""_+\-]+|[.,:;!?()'""_+\-]+$")
+let stripPunctuation = @(word) rePunctuation.replace("", word)
 
 
 let prepareex = regexp2(@"^((а[х]?)|(в)|([вмт]ы)|(д[ао])|(же)|(за))$")
@@ -231,33 +227,32 @@ let preparewordwhile = {
 }
 
 function preparePhrase(text) {
-  local phrase = text
+  let wordsSrc = text.split(" ")
+  local srcWord = ""
   let buffer = []
-
-  foreach (p in preparereplace)
-    phrase = p.pattern.replace(p.replace, phrase)
-
-  let words = phrase.split(" ")
-
   let out = []
-
-  foreach (w in words) {
-    if (utf8(w).charCount() < 3 && ! prepareex.match(w)) {
-      buffer.append(w)
-    }
-    else {
-      if (buffer.len()) {
-        out.append("".join(buffer))
-        buffer.clear()
+  foreach (ws in wordsSrc) {
+    let wp = preparereplace.pattern.replace(preparereplace.replace, ws)
+    let words = wp.split(" ")
+    foreach (subIdx, w in words) {
+      if (utf8(w).charCount() < 3 && !prepareex.match(w)) {
+        if (subIdx == 0)
+          srcWord = buffer.len() == 0 ? ws : " ".join([ srcWord, ws ])
+        if (w != "")
+          buffer.append(w)
       }
-
-      out.append(w)
+      else {
+        if (buffer.len()) {
+          out.append({ srcWord, word = "".join(buffer) })
+          buffer.clear()
+        }
+        srcWord = ws
+        out.append({ srcWord, word = w })
+      }
     }
   }
-
   if (buffer.len())
-    out.append("".join(buffer))
-
+    out.append({ srcWord, word = "".join(buffer) })
   return out
 }
 
@@ -353,12 +348,6 @@ function getMaskedWord(w, maskChar = "*") {
   return "".join(array(utf8(w).charCount(), maskChar))
 }
 
-let regexpMetaRe = regexp2(@"([\\\.\^\$\|\(\)\[\]\{\}\*\+\?])")
-let escapeRegexpLiteral = @(s) regexpMetaRe.replace(@"\\\1", s)
-
-
-
-
 function checkPhraseInternal(text, isName) {
   local phrase = text
   local isDirty = false
@@ -406,19 +395,29 @@ function checkPhraseInternal(text, isName) {
       let patternStr = pattern.pattern()
       debugLogFunc?(!verboseLogging ? $"p {patternStr}"
         : $"DirtyWordsFilter: Phrase matched pattern \"{patternStr}\"")
-      let word = pattern.multiExtract("\\1", lowerPhrase)?[0] ?? ""
-      phrase = pattern.replace(getMaskedWord(word), lowerPhrase)
-      lowerPhrase = utf8ToLower(phrase)
+      let combsFound = pattern.multiExtract("\\0", lowerPhrase)
+      foreach (comb in combsFound) {
+        let idx = lowerPhrase.indexof(comb)
+        phrase = getMaskedWord(comb)
+          .concat(phrase.slice(0, idx), phrase.slice(idx + comb.len())) 
+        lowerPhrase = utf8ToLower(phrase)
+      }
       isDirty = true
     }
 
   let words = preparePhrase(phrase)
-
-  foreach (w in words)
-    if (!checkWord(w, isName)) {
-      phrase = regexp2(escapeRegexpLiteral(w)).replace(getMaskedWord(w), phrase)
-      isDirty = true
-    }
+  let found = words.filter(@(cfg) !checkWord(cfg.word, isName))
+  let foundTotal = found.len()
+  foreach (idx, cfg in found) {
+    let { word, srcWord } = cfg
+    let sw = stripPunctuation(srcWord)
+    let swMasked = getMaskedWord(sw)
+    let wordMasked = getMaskedWord(word)
+    phrase = phrase.replace(sw, swMasked).replace(word, wordMasked)
+    for (local i = idx + 1; i < foundTotal; i++)
+      found[i].srcWord = found[i].srcWord.replace(sw, swMasked).replace(word, wordMasked)
+    isDirty = true
+  }
 
   return { phrase, isDirty }
 }

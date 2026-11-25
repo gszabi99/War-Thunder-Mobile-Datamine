@@ -3,6 +3,7 @@ from "android.platform" import isDownloadedFromGooglePlay
 from "app" import get_base_game_version_str
 from "console" import register_command
 from "eventbus" import eventbus_send
+from "language" import getLocalLanguage
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "%sqstd/platform.nut" import is_android
 from "%sqstd/string.nut" import utf8ToUpper
@@ -54,7 +55,8 @@ let shouldSuggestMigrateAcc = keepref(Computed(@()
     && external_gp_build_released.get()
     && !isExternalOperator()
     && (isDownloadedFromGooglePlay() || (isDownloadedFromSite && isCompatibleVersion))
-    && ["RU","BY"].contains(getCountryCode()))
+    && ["RU","BY"].contains(getCountryCode())
+    && !["Chinese", "TChinese"].contains(getLocalLanguage()))
   || debugForceSuggest.get()))
 let debugForceCompleted = mkWatched(persist, "debugForceCompleted", false)
 let shouldSuggestSwitchClient = keepref(Computed(@() (!isExternalOperator() && authTags.get().contains("extop_wtm"))
@@ -173,15 +175,30 @@ let loadingWnd = @() modalWndBg.__merge({
   children = mkStatusText(loc("wait/common/loading"))
 })
 
+let mkCloseWndBtn = @(canCloseVal) canCloseVal
+  ? closeWndBtn(close, { hotkeys = [btnBEscUp] })
+  : {
+      hplace = ALIGN_RIGHT
+      valign = ALIGN_CENTER
+      flow = FLOW_HORIZONTAL
+      children = [
+        {
+          rendObj = ROBJ_TEXT
+          text = utf8ToUpper(loc("msgbox/btn_logout"))
+        }.__update(fontTiny)
+        closeWndBtn(doLogout)
+      ]
+    }
+
 let errorWnd = @() modalWndBg.__merge({
   watch = shouldSuggestSwitchClient
   size = !shouldSuggestSwitchClient.get() ? [wndW, wndH] : [wndCompletedW, wndCompletedH]
   children = [
     @() {
-        watch = canClose
-        size = [flex(), wndHeaderHeight]
-        children = !canClose.get() ? null : closeWndBtn(close, { hotkeys = [btnBEscUp] })
-      }
+      watch = canClose
+      size = [flex(), wndHeaderHeight]
+      children = mkCloseWndBtn(canClose.get())
+    }
     mkStatusText("\n".concat(loc("failed_to_load_data"), loc("try_again_later")))
   ]
 })
@@ -220,7 +237,7 @@ let mkSuggestMigrationContentWnd = @() modalWndBg.__merge({
       valign = ALIGN_CENTER
       children = [
         modalWndHeader(utf8ToUpper((useGpTexts.get() ? info?.titleGP : info?.title) ?? ""))
-        !canClose.get() ? null : closeWndBtn(close, { hotkeys = [btnBEscUp] })
+        mkCloseWndBtn(canClose.get())
       ]
     }
     {

@@ -148,10 +148,13 @@ let customLootboxImages = {
   past_events_box_air_seasons_1_to_34 = "ui/gameuiskin/past_events_box_seasons_1_to_34.avif"
   past_events_box_tanks_seasons_1_to_35 = "ui/gameuiskin/past_events_box_seasons_1_to_35.avif"
   past_events_box_tanks_seasons_1_to_36 = "ui/gameuiskin/past_events_box_seasons_1_to_36.avif"
+  past_events_box_tanks_seasons_1_to_37 = "ui/gameuiskin/past_events_box_seasons_1_to_37.avif"
   past_events_box_ships_seasons_1_to_35 = "ui/gameuiskin/past_events_box_seasons_1_to_35.avif"
   past_events_box_ships_seasons_1_to_36 = "ui/gameuiskin/past_events_box_seasons_1_to_36.avif"
+  past_events_box_ships_seasons_1_to_37 = "ui/gameuiskin/past_events_box_seasons_1_to_37.avif"
   past_events_box_air_seasons_1_to_35 = "ui/gameuiskin/past_events_box_seasons_1_to_35.avif"
   past_events_box_air_seasons_1_to_36 = "ui/gameuiskin/past_events_box_seasons_1_to_36.avif"
+  past_events_box_air_seasons_1_to_37 = "ui/gameuiskin/past_events_box_seasons_1_to_37.avif"
 
   main_s38_piece                             = "ui/images/collections/main_s38_piece.avif"
   main_s38_piece_uniq                        = "ui/images/collections/main_s38_piece_uniq.avif"
@@ -243,10 +246,13 @@ let lootboxPreviewBg = {
   past_events_box_air_seasons_1_to_34               = { bg = "ui/images/event_bg_season_37.avif" }
   past_events_box_tanks_seasons_1_to_35             = { bg = "ui/images/event_bg_season_38.avif" }
   past_events_box_tanks_seasons_1_to_36             = { bg = "ui/images/event_bg_season_39.avif" }
+  past_events_box_tanks_seasons_1_to_37             = { bg = "ui/images/event_bg_season_40.avif" }
   past_events_box_ships_seasons_1_to_35             = { bg = "ui/images/event_bg_season_38.avif" }
   past_events_box_ships_seasons_1_to_36             = { bg = "ui/images/event_bg_season_39.avif" }
+  past_events_box_ships_seasons_1_to_37             = { bg = "ui/images/event_bg_season_40.avif" }
   past_events_box_air_seasons_1_to_35               = { bg = "ui/images/event_bg_season_38.avif" }
   past_events_box_air_seasons_1_to_36               = { bg = "ui/images/event_bg_season_39.avif" }
+  past_events_box_air_seasons_1_to_37               = { bg = "ui/images/event_bg_season_40.avif" }
 
   event_special_china_tanks_spending_event         = { bg = "ui/images/event_bg_lunar.avif" }
   japan_tanks_spending_event_box                   = { bg = "ui/images/event_bg_japan_tanks_early_access.avif", bgColor = 0xFF999999 }
@@ -294,6 +300,9 @@ let eventLootboxScale = {
   ["ui/gameuiskin/anniversary_2026_lootbox.avif"] = 1.5,
   ["ui/gameuiskin/event_ships_big_season_37.avif"] = 1.2,
   ["ui/gameuiskin/event_ships_big_season_38.avif"] = 1.5,
+  ["ui/gameuiskin/event_ships_medium_season_39.avif"] = 0.8,
+  ["ui/gameuiskin/event_ships_big_season_39.avif"] = 1.5,
+  ["ui/gameuiskin/event_ships_big_season_40.avif"] = 1.5,
 }
 
 let eventLootboxShiftPos = {
@@ -301,6 +310,7 @@ let eventLootboxShiftPos = {
   ["ui/gameuiskin/event_ships_big_season_35.avif"] = [0, -0.1],
   ["ui/gameuiskin/event_ships_big_season_36.avif"] = [0, -0.1],
   ["ui/gameuiskin/event_ships_big_season_38.avif"] = [-0.03, -0.15],
+  ["ui/gameuiskin/event_ships_big_season_39.avif"] = [-0.03, -0.15],
 }
 
 let customGoodsLootboxScale = {

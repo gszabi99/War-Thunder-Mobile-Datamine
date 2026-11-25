@@ -10,7 +10,7 @@ let newbieGameModesConfig = {
       isSingle = true
       abTest = true
       offlineMissions = ["abandoned_factory_single_Conq3_restricted"]
-      abTestOfflineMissions = ["abandoned_factory_single_Conq3_restricted"]
+      abTestOfflineMissions = ["abandoned_factory_single_Conq3_restricted_weak_bots"]
     }
     {
       gmName = "tank_new_players_battle_coop"

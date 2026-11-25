@@ -261,6 +261,7 @@ let skinsByTag = {
     "us_camo_ags_teledyne"
     "sw_camo_space_strv_122"
     "cn_camo_space_ztz_96a_prot"
+    "ussr_camo_polar_t_72b3_2011"
   ],
 
   [NAVAL] = [
@@ -369,6 +370,7 @@ let skinsByTag = {
     "camo_green_stripes"
     "camo_small_bicolor_spots"
     "camo_multicolor_arctic"
+    "camo_yamal_pr20380"
 
     "camo_redblack_spots"
     "camo_multicolor_waves"
@@ -534,6 +536,8 @@ let skinsByTag = {
     "usa_f4u_1c"
     "usa_f4u_4b"
     "usa_f4u_1a_decals"
+    "usa_f_86f25_ice"
+    "usa_f_86f25_swans"
     "usa_f_80_camo_silver"
     "usa_f_80_camo_alaska"
     "usa_f_80a_5_blue_a"

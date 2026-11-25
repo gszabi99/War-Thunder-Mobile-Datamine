@@ -21,18 +21,28 @@ let isRefreshLbEnabled = mkWatched(persist, "isRefreshLbEnabled", false)
 
 let curLbCfg = Computed(@() lbCfgById?[curLbId.get()])
 let lbMyPlace = Computed(@() (curLbSelfRow.get()?.idx ?? -2) + 1)
-let lbMyPage = Computed(@() lbMyPlace.get() < 0 ? -1 : (lbMyPlace.get() - 1) / lbPageRows)
+let dbgMyPage = Watched(null)
+let lbMyPage = Computed(@() dbgMyPage.get()
+  ?? (lbMyPlace.get() <= 0 ? -1 : (lbMyPlace.get() - 1) / lbPageRows))
 let lbTotalPlaces = Computed(function() {
   if (curLbData.get() == null)
     return -1
   return curLbData.get().findvalue(@(val) "$" in val)?["$"].total ?? 0
 })
-let lbLastPage = Computed(function(prev) {
+let dbgLastPage = Watched(null)
+let isDbgFakePages  = Computed(@() dbgLastPage.get() != null)
+let realLastPage = Computed(function(prev) {
   if (curLbData.get() == null)
     return prev == FRP_INITIAL ? -1 : prev
   let total = lbTotalPlaces.get()
   let lastPage = total > 0 ? (min(total, MAX_PAGE_PLACE) - 1) / lbPageRows : lbPage.get()
   return lastPage
+})
+let lbLastPage = Computed(@() dbgLastPage.get() ?? realLastPage.get())
+
+let lbPaginatorLastPage = Computed(function() {
+  let last = lbLastPage.get()
+  return last < 0 ? last : max(min(lbMyPage.get(), last), min(last, lbPage.get() + 1))
 })
 
 let curLbSeasonInterval = mkSeasonInterval(Computed(@() curLbCfg.get()?.lbTable))
@@ -98,6 +108,14 @@ isEventActive.subscribe(@(isActive) isActive ? null : isLbBestBattlesOpened.set(
 register_command(@() lbPage.set(lbPage.get() + 1), "lb.page_next")
 register_command(@() lbPage.get() > 0 && lbPage.set(lbPage.get() - 1), "lb.page_prev")
 
+
+
+register_command(function(count, myPage, curPage) {
+  dbgLastPage.set(count > 0 ? count - 1 : null)
+  dbgMyPage.set(count > 0 ? max(myPage - 1, -1) : null)
+  lbPage.set(count > 0 ? max(curPage - 1, 0) : 0)
+}, "lb.paginator_fake_pages")
+
 return {
   isLbBestBattlesOpened
   isLbRequestInProgress
@@ -109,7 +127,8 @@ return {
   lbPage
   lbMyPlace
   lbMyPage
-  lbLastPage
+  lbPaginatorLastPage
+  isDbgFakePages
   lbTotalPlaces
 
   ratingBattlesCount
