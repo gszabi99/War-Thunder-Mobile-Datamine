@@ -66614,3 +66614,9 @@ t_72b3_2011_2017_skin_polar_c*
 reducedFlightModelLoop
 propsDefault
 hg_hangar_air_a
+tree_sakura_red_a_snow
+tree_sakura_red_b_snow
+tree_sakura_red_medium_a_snow
+tree_sakura_red_medium_b_snow
+tree_sakura_red_bush_a_snow
+tree_sakura_red_bush_b_snow
