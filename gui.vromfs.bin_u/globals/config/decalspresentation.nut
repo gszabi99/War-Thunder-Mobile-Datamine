@@ -23,6 +23,7 @@ let presentations = {
   april_event_2026_victory_marks = { scale = 0.8 }
   uk_guitar_decal = { preview = "ui/gameuiskin#uk_guitar_decal.avif" }
   wtm_zombiehand_decal = { preview = "ui/gameuiskin#wtm_zombiehand_decal.avif", scale = 0.7 }
+  s40_orca_decal = { preview = "ui/gameuiskin#s40_orca_decal.avif", scale = 0.8 }
 }
   .map(@(v) defPresentation.__merge(v))
 
@@ -77,6 +78,7 @@ let descPresentation = {
   ussr_tank_emblem_08 = { scale = 1.1 }
   ussr_tank_emblem_03 = { scale = 1.1 }
   flag_great_britain = { scale = 1.1 }
+  s40_orca_decal = { scale = 1.1 }
 }
 
 let getDecalCategoryLocName = @(cat) loc(categoryDecalsLoc?[cat] ?? $"decals/category/{cat}")

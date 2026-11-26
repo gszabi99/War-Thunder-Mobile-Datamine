@@ -36,6 +36,7 @@
     12000.0,
     12000.0
   ],
+  "mapDrawStylePreset": "winterMap",
   "aiTanksMapCoord0": [
     -4096.0,
     -4096.0
@@ -278,31 +279,25 @@
   },
   "micro_details": {
     "micro_detail": [
-      "microdetail_stone_a_tex_n*",
+      "microdetail_scan_sand_a_tex_n*",
+      "microdetail_snow_a_tex_n*",
       "microdetail_sand_a_tex_n*",
-      "microdetail_sand_a_tex_n*",
-      "microdetail_soil_a_tex_n*",
-      "microdetail_generic_granules_a_tex_n*",
-      "microdetail_grass_a_tex_n*",
-      "microdetail_forest_floor_a_tex_n*",
-      "microdetail_generic_granules_a_tex_n*",
+      "microdetail_snow_b_tex_n*",
+      "microdetail_snow_a_tex_n*",
+      "microdetail_snow_b_tex_n*",
+      "microdetail_ice_a_tex_n*",
+      "microdetail_ice_a_tex_n*",
       "microdetail_wood_b_tex_n*",
       "microdetail_metal_a_tex_n*",
       "microdetail_snow_a_tex_n*",
       "microdetail_generic_granules_a_tex_n*"
     ],
     "land_micro_details_uv_scale": 0.72,
-    "microdetail_stone_a_tex_n*": {
-      "coloring": 0.9
+    "microdetail_snow_a_tex_n*": {
+      "sparkles": 1.0
     },
-    "microdetail_scan_gravel_a_tex_n*": {
-      "coloring": 0.15
-    },
-    "microdetail_sand_a_tex_n*": {
-      "coloring": 0.8
-    },
-    "microdetail_forest_floor_a_tex_n*": {
-      "coloring": 0.7
+    "microdetail_snow_b_tex_n*": {
+      "sparkles": 1.0
     }
   },
   "stars": {

@@ -498,7 +498,7 @@
     "forceGlobalShadowUpdateOnSunDirChange": true,
     "shadowSunDirDeltaThreshold": 0.999,
     "riGlobalShadowsMultiframe": false,
-    "srgb8bitRT": true,
+    "srgb8bitRT": false,
     "forceCullUnderwaterRiAboveWater": true,
     "forceRenderWaves": true,
     "renderUnderwaterPlankton": true,
