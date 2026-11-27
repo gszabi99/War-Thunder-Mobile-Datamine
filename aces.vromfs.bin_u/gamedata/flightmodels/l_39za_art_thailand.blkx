@@ -2680,5 +2680,12 @@
       1.62043,
       -2.09357e-7
     ]
+  },
+  "upgraded_skin": {
+    "name": "prem_camo",
+    "replace_tex": {
+      "from": "l_39_za_art_c*",
+      "to": "l_39_za_art_thailand_3color_teal_100_anniv_c*"
+    }
   }
 }

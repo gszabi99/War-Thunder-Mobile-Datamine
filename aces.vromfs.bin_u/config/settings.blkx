@@ -1530,7 +1530,10 @@
       }
     },
     "broken_grass_height": {
-      "gpu": "Adreno (TM) 840",
+      "gpu": [
+        "Adreno (TM) 840",
+        "Adreno (TM) 850"
+      ],
       "graphics": {
         "grassLandmeshHeightCheck": true
       }

@@ -3235,7 +3235,8 @@ return {
     },
     "l_39za_art_thailand": {
       "": "ussr_la_7",
-      "standart": "ussr_la_7"
+      "standart": "ussr_la_7",
+      "upgraded": "usa_sb2u_2"
     },
     "la-11": {
       "": "ussr_la_11_standard"

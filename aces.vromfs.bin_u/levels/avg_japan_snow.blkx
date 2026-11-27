@@ -339,6 +339,30 @@
     "tree_sakura_red_medium_b": {
       "lod0": 250.0,
       "lod1": 3000.0
+    },
+    "tree_sakura_red_a_snow": {
+      "lod0": 250.0,
+      "lod1": 3000.0
+    },
+    "tree_sakura_red_b_snow": {
+      "lod0": 250.0,
+      "lod1": 3000.0
+    },
+    "tree_sakura_red_bush_a_snow": {
+      "lod0": 250.0,
+      "lod1": 3000.0
+    },
+    "tree_sakura_red_bush_b_snow": {
+      "lod0": 250.0,
+      "lod1": 3000.0
+    },
+    "tree_sakura_red_medium_a_snow": {
+      "lod0": 250.0,
+      "lod1": 3000.0
+    },
+    "tree_sakura_red_medium_b_snow": {
+      "lod0": 250.0,
+      "lod1": 3000.0
     }
   }
 }
